@@ -1,0 +1,505 @@
+Titel: Fluxbox
+Autoren: Robin Haunschild <H@unschild.de>, Nico Golde <nico@ngolde.de>
+Lizenz: GPL
+
+
+
+
+1 Einleitung
+
+
+Fluxbox entstand durch einen der großen Vorteile von quelloffenen
+Programmen. Einem überzeugten Nutzer des Fenster-Managers Blackbox in
+der Version 0.61.1 fehlten ein paar Funktionen und Optionen. Also nahm
+er sich den Quellcode vor und erweiterte den Fenster-Manager seiner Wahl
+um diverse Wunschfunktionen. Henrik Kinnunen nannte seinen erweiterten
+Fenster-Manager Fluxbox.
+
+Für viele Distributionen gibt es übersetzte Pakete. Alternativ kann
+man sich den Quelltext unter http://fluxbox.sourceforge.net/download.php
+herunterladen und selbst übersetzen.
+
+Der Funktionsumfang und die Standarderscheinung des frisch installierten
+Fluxbox richtet sich nach der installierten Version und kann auch von
+Distribution zu Distribution variieren. Die Autoren haben mehrere
+Fluxbox-Versionen installiert: 0.1.7-3 und 0.1.14-4, wodurch sich der
+Text auf diese beiden Ausführungen beziehen wird. Diese
+Fluxbox-Versionen wurden mit Debian 3.0 (woody) und dem
+momentanen Stand von Debian 3.1 (Sarge) ausgeliefert. Der Inhalt dieses
+Textes sollte aber auch auf andere Versionen anwendbar sein.
+
+Fluxbox ist ein schneller und ressourcenschonender Fenster-Manager,
+bei dem man aber nicht auf den Komfort einer hochgradigen
+Konfigurierbarkeit verzichten muss.
+
+
+
+
+2 Aussehen und Bedienung
+
+Beim ersten Start präsentiert sich Fluxbox aufgeräumt und meist sehr
+leer. Das läßt sich durch die vielseitigen Konfigurationsmöglichkeiten
+aber einfach verändern. Ein Klick mit der rechten Maustaste auf einen
+freien Platz der Arbeitsfläche bringt das Fluxbox-Menü hervor. Sein
+Aussehen variiert stark, je nach den getroffenen Einstellungen.
+Untermenüpunkte sind durch einen kleines Symbol gekennzeichnet.
+Programmstarter haben kein Symbol neben der Beschriftung. Ein Klick auf
+einen Programmstarter führt das ausgewählte Programm aus. Mit dem
+Menüpunkt "Exit" verläßt man Fluxbox, "Restart" startet Fluxbox neu,
+wobei die geöffneten Programme nicht geschlossen werden. Der Menüpunkt
+"Reconfigure" liest die Konfigurationsdateien erneut ein.
+Dies ist vor allem nützlich, wenn man für Fluxbox ein eigenes Aussehen
+(Stil) kreiert, da man ansonsten den Fenster-Manager
+bei jedem Test erneut starten müsste.
+
+Normalerweise befindet sich am unteren Bildschirmrand die
+Werkzeugleiste. In der Mitte wird der Text der Titelleiste des aktiven
+Fensters angezeigt. Mit den beiden Symbolen rechts davon kann man
+zwischen den geöffneten Programmen hin und her wechseln.
+Standardmäßig kann dieselbe Funktion mit der Tastenkombination [Alt] +
+[Tab] (vorwärts) und [Alt] + [Shift] + [Tab] (rückwärts) genutzt
+werden. Diese Standartfunktion lässt sich allerdings auch auf
+andere <!-- LINK iref="Anlegen von Tastaturkürzeln"
+-->Tastenkombinationen<!-- ENDLINK -->
+legen. Dazu aber später mehr.
+Ganz rechts in der Werkzeugleiste befindet sich eine Uhr.
+Auf der linken Seite befindet sich die
+Arbeitsflächenanzeige. Mit den Pfeilen rechts vom Arbeitsplatznamen,
+den man auch verändern kann, kann zwischen den Arbeitsflächen
+gewechselt werden. Mit der Grundeinstellung
+gelangt man über die Tastenkombination
+[Alt] + [FX] auf die Arbeitsfläche X, sofern diese existiert. Im
+Fluxbox-Menü kann man unter den
+Menüpunkten "FluxBox" und "Workspaces"
+den Menüpunkt "New Workspace" aktivieren, um eine neue Arbeitsfläche
+zu erhalten.
+Möchte man immer die gleiche Einstellung
+hierfür verwenden, so hat man
+die Möglichkeit dies in der Datei ~/.fluxbox/init unter dem Punkt
+session.screen0.workspaces: Anzahl einzutragen.
+Außerdem hat man die Auswahl zwischen den vorhandenen
+Arbeitsflächen und kann direkt ein
+dort geöffnetes Programm verwenden.
+Des Weiteren kann man die letzte Arbeitsfläche entfernen.
+Dieses Menü kann sich auch an einer anderes Stelle befinden (je nach
+Konfiguration). Bei der neueren, eingangs erwähnten Version befinden
+sich die "Workspaces"-Einstellungen
+als Hauptpunkt im Fluxbox-Menü. Mit einem
+Klick der rechten Maustaste auf
+die Werkzeugleiste kann man in dem
+danach erscheinendem Kontextmenü den Ort der Werkzeugleiste
+verändern und die aktuelle Arbeitsfläche umbenennen.
+Es kann auch bestimmt werden, ob die
+Werkzeugleiste Fenster immer überdeckt,
+oder ob sie automatisch
+verschwinden soll, wenn der Mauszeiger
+von ihr entfernt wird.
+
+Im Menü "Styles" lässt sich das
+Aussehen (Stil) von Fluxbox einstellen.
+Es werden alle installierten Stile angezeigt,
+die in dem systemweiten
+Verzeichnis /usr/share/fluxbox/styles und im
+benutzereigenen Verzeichnis ~/.fluxbox/styles gefunden werden.
+Im Letzteren
+kann jeder Benutzer seine eigenen
+Stile installieren, während im Ersteren
+nur der Systemadministrator dieses Recht besitzt.
+
+
+
+
+2.1 Besonderheiten
+
+2.1.1 Vereinigung von Fenstern (Tabbing)
+
+Jedes Fenster hat neben der Fensterleiste standardmäßig auch einen
+Reiter, in dem die Titelleistenbeschreibung in Kurzform
+angezeigt wird. Mit einem Klick der mittleren
+Maustaste (gedrückt halten) kann man den
+Reiter in ein anderes geöffnetes Fenster ziehen (und dann loslassen).
+Dadurch werden beide Fenster vereinigt. Es müssen noch nicht einmal
+die gleichen Programme in den Fenstern ablaufen. Als Ergebnis hat man
+ein Fenster mit zwei Reitern (das selbe Prinzip verwendet das
+Konsolen-Programm screen). Durch das Herüberfahren mit der Maus über
+einen der Reiter
+kann man im nachlässigen Fokustyp (Sloppy
+Focus) zwischen den vereinigten Fenstern wechseln. Bei der Verwendung
+anderer Fokustypen ist ein Klick mit der linken Maustaste notwendig.
+Um vereinigte Fenster wieder zu trennen, muss nur die oben
+beschriebene Prozedur umgekehrt werden:
+Klick mit der mittleren Maustaste auf
+den Reiter des Fensters, welches
+man verselbstständigen möchte, und anschließend den Reiter auf
+einen freien Platz der Arbeitsfläche ziehen. Benutzer von
+Zweitastenmäusen können (falls diese Option im XServer eingeschaltet
+ist) durch das gleichzeitige Drücken der linken und rechten Maustaste
+einen Klick mit der mittleren Maustaste simulieren.
+
+
+
+
+2.1.2 Fenster verändern
+
+Aktiviert man das Rechteck unter
+dem Reiter eines Fensters, so ist das
+Fenster auf allen Arbeitsflächen zu sehen und verwendbar. Ein
+Doppelklick auf die Titelleiste rollt das Fenster ein. Ein erneuter
+Doppelklick rollt es wieder aus.
+Die drei Symbole am rechten Rand sind
+wie gewohnt zum Minimieren, Maximieren und Schließen von Fenstern
+zuständig. Ein Klick mit der
+rechten Maustaste öffnet ein Kontextmenü.
+Darin kann man das aktuelle Fenster ("Send to ...") oder die aktuelle
+Fenstergruppe ("Send Group to ...") auf eine andere Arbeitsfläche
+schicken und die bisher erwähnten Aktionen ebenfalls durchführen. Des
+Weiteren kann man das Fenster auf eine niedrigere ("Lower") oder
+höhere ("Raise") Ebene schicken. Fenster auf einer höheren Ebene
+überdecken dabei immer Fenster auf einer niedrigeren Ebene.
+
+Man kann ein Fenster ebenfalls mit gedrückter
+[Alt]-Taste und einem Klick der linken Maustaste irgendwo auf das
+Fenster verschieben.  Es dürfte
+bekannt sein, daß man Fenster auch mit
+einem Klick der linken Maustaste innerhalb der Titelzeile verschieben
+kann.
+Während des Verschiebens des Fensters zeigt Fluxbox zur Information
+die Koordinaten der neuen Fensterposition relativ zur Alten
+an.
+Eine weitere sehr nützliche Funktion besteht darin, die Fenstergröße
+verändern zu können. Am einfachsten
+bewerkstelligt man dies, indem man
+die [Alt]-Taste gedrückt hält und
+bei gedrückter rechter Maustaste das
+Fenster vergrößert bzw. verkleinert.
+
+
+
+
+3 Konfiguration
+
+Fluxbox kann mit dem grafischen Werkzeug fluxbare oder direkt durch
+Editieren der Konfigurationsdateien angepasst werden. Hier wird
+Letzteres besprochen. Einige der Einstellungen lassen sich auch im
+Fluxbox-Menü im Unterpunkt "Configuration" einstellen.
+
+Es gibt systemweite Konfigurationsdateien, die bei den meisten
+Distributionen als Vorlage für die benutzerdefinierten
+Konfigurationsdateien verwendet werden. Sie liegen im Verzeichnis:
+
+<!-- Beginn Listing -->
+
+~/.fluxbox
+
+<!-- Ende Listing -->
+
+In der Datei "menu" werden die Inhalte des Fluxbox-Menüs festgelegt.
+Diese Datei braucht man normalerweise nicht zu editieren, da neue
+Programme nach einer Installation automatisch in das Menü mit
+aufgenommen werden.
+Die Datei "init" legt die verschiedenen Verhaltensweisen des
+Fenster-Managers fest. Unter anderem kann man die Namen und Orte
+der Konfigurationsdateien festlegen.
+
+
+
+
+3.1 Am Anfang war init
+
+Die wenigen Optionen, die hier von der Datei "init" besprochen werden
+beziehen sich auf die Lage und die Namen der anderen
+Konfigurationsdateien, welche sich nicht im Fluxbox-Menü
+einstellen lassen. Es sind:
+
+<!-- Beginn Aufzählung - den rechten Teil bitte linksbündig -->
+
+- session.menuFile:     /home/robin/.fluxbox/menu
+- session.keyFile:      /home/robin/.fluxbox/keys
+- session.styleFile:    /home/robin/.fluxbox/styles/GreenDebian
+
+<!-- Ende Aufzählung -->
+
+Diese drei Zeilen legen den Ort und den Namen der Dateien fest, die
+das Fluxbox-Menü, die Tastaturkürzel
+und den Stil festlegen. Verweisen
+diese Einträge auf andere Dateien, so haben die erstellten Dateien im
+home-Verzeichnis keinen Einfluss.
+
+
+
+
+3.2 Konfiguration des Fluxbox-Menüs
+
+Leerzeilen haben keinen Einfluss auf das Fluxbox-Menü. Kommentare
+werden durch "#" eingeleitet. Alle Zeichen bis zum Zeilenende werden
+in einer so gekennzeichneten Zeile ignoriert. Die Konfiguration
+beginnt mit den Zeilen:
+
+<!-- Beginn Listing -->
+
+<Name> MENU
+[begin] (<Name>)
+
+[end]
+<Name> END
+
+<!-- Ende Listing -->
+
+Die Überschrift des Fluxbox-Menüs wird durch "<Name>" festgelegt. Der
+Rest der Konfiguration erfolgt zwischen den Zeilen mit "[begin]" und
+"[end]". Ein neues Untermenü wird mit den folgenden Zeilen angelegt:
+
+<!-- Beginn Listing -->
+
+[submenu] (<Menü-Name>) {}
+
+[end]
+
+<!-- Ende Listing -->
+
+"<Menü-Name>" bestimmt den Namen des Untermenüs. Alle Menüeinträge
+für dieses Untermenü sind zwischen den Zeilen mit "[submenu]" und
+"[end]" einzutragen. Ein Untermenü kann auch weitere Untermenüs
+enthalten. Bei einer solchen Untermenüstruktur ist es ratsam, aber
+nicht zwingend notwendig, eine entsprechende Einrückung der Zeilen
+vorzunehmen. Einen Programmstarter legt man innerhalb eines
+Untermenüs mit der folgenden Zeile fest:
+
+<!-- Beginn Listing -->
+
+[exec] (<Programmname>) {<ausführbare Datei>}
+
+<!-- Ende Listing -->
+
+"<Programmname>" ist die Bezeichnung, die im Menü zu sehen sein soll.
+Mit "<ausführbare Datei>" ist die Datei, die ausgeführt werden soll
+gemeint. Die Angabe kann mit oder ohne vollständigem Pfad erfolgen.
+
+Das folgende Beispiel dient der Verdeutlichung:
+
+<!-- Beginn Listing - die Einrückungen am besten so beibehalten -->
+
+Fluxbox MENU
+[begin] (Fluxbox)
+   [submenu] (Browser) {}
+      [exec] (dillo) {/usr/bin/dillo}
+      [exec] (gFTP) {gftp}
+   [end]
+   [submenu] (X-Terminal-Emulatoren) {}
+      [exec] (Konsole) {/usr/bin/konsole}
+      [exec] (XTerm) {xterm}
+   [end]
+[end]
+Fluxbox END
+
+<!-- Ende Listing -->
+
+
+
+
+3.3 Anlegen von Tastaturkürzeln
+
+Tastaturkürzel werden im Allgemeinen, wenn nicht anders in der
+"init"-Datei angegeben in der Datei "keys" in ~/.fluxbox festgelegt.
+Genauso wie bei der Menü-Definition, leiten "#"-Zeichen auch bei den
+Tastaturkürzel-Definitionen einen Kommentar ein. Als
+Modifikationstasten stehen
+die [Alt]-Taste ("Mod1" in der Definition), die
+Umschalttaste ("Shift" in der Definition),
+die [Strg]-Tasten ("Control"
+in der Definition) und die [Windows]-Taste ("Mod4" in der Definition)
+zur Verfügung.
+Die Tasten können selbstverständlich auch zusammen benutzt werden.
+Ein Tastaturkürzel besteht aus mindestens
+einer Modifikationstaste und einer Buchstaben-, Zahlen- oder
+Funktions- (F1 - F12) Taste. Die Definition eines Tastaturkürzels
+sieht folgendermaßen aus:
+
+<!-- Beginn Listing -->
+
+<Modifikationstaste(n)> <weitere Taste> :ExecCommand <Programm>
+
+<!-- Ende Listing -->
+
+Dabei ist "<Modifikationstaste(n)>" entweder eine Modifikationstaste
+oder Mehrere. Wenn mehrere Modifikationstasten bestimmt werden, so
+müssen diese durch Leerzeichen getrennt werden.
+
+Als Beispiel dienen die -nach der Ansicht der Autoren- besonders
+nützlichen Tastaturkürzel:
+
+<!-- Beginn Listing -->
+
+- 1. Control Shift s :ExecCommand import -window
+root -quality 75 `date +shot-%Y-%m-%d-%H%M%S.jpg`
+- 2. Control Shift Tab :PrevTab
+- 3. Control Tab :NextTab
+- 4. Mod1 Shift plus :ExecCommand aumix -v+10
+- 5. Mod1 Shift numbersign :ExecCommand aumix -v-10
+- 6. Mod1 plus :MaximizeWindow
+
+<!-- Ende Listing -->
+
+Mit [Strg] + [Shift] + 's' kann man nach erstens
+ein Bildschirmfoto mit dem Namen
+"shot-<Jahr>-<Monat>-<Tag>-<Stunde><Minute><Sekunde>.jpg" im
+aktuellen Verzeichnis ablegen.
+Nach der Definition von zweitens schaltet
+das Tastaturkürzel [Strg] + [Shift] + Tabulatortaste zwischen
+den vereinigten Fenstern rückwärts um und nach
+drittens erlaubt [Strg] + Tabulatortaste das Umschalten vorwärts.
+Viertens und fünftens sind nützlich, um
+mittels [Alt] + [Shift] und '+'
+oder '-' mit dem Programm aumix die Lautstärke zu steuern.
+Mit sechstens lässt sich ein Fenster maximieren.
+
+Für die Steuerung der Fenster sind noch weitere Kurztasten sehr
+nützlich:
+
+<!-- Beginn Listing -->
+
+- 1. Mod1 KP_Add :VerticalIncrement
+- 2. Mod1 KP_Subtract :VerticalDecrement
+- 3. Mod1 KP_Multiply :HorizontalIncrement
+- 4. Mod1 KP_Divide :HorizontalDecrement
+- 5. Mod1 KP_4 :BigNudgeLeft
+- 6. Mod1 KP_6 :BigNudgeRight
+- 7. Mod1 KP_2 :BigNudgeDown
+- 8. Mod1 KP_8 :BigNudgeUp
+
+<!-- Ende Listing -->
+
+KP steht in diesen Beispielen für die Ziffernblocktasten.
+So lassen sich mit 1-4 die Größe der Fenster per
+[Alt] + Ziffernblocktaste[%,x,-,+] steuern.
+Mit 5-8 ist es möglich mittels [Alt] + Ziffernblocktaste[4,8,6,2] die
+Fenster nach links, oben, rechts und unten zu bewegen.
+
+Das Umschalten zwischen den geöffneten Fenstern mit [Alt] +
+Tabulatortaste vorwärts, [Alt] + [Shift] + Tabulatortaste rückwärts,
+wie weiter oben beschrieben, ist standardmäßig definiert mit:
+
+<!-- Beginn Listing -->
+
+Mod1 Tab :NextWindow
+Mod1 Shift Tab :PrevWindow
+
+<!-- Ende Listing -->
+
+Der Fantasie sind hierbei jedoch keine Grenzen gesetzt.
+
+
+
+
+3.4 Fluxbox mit Stil
+
+Im Fluxbox-Menü kann man im laufenden Fluxbox-Betrieb zwischen den
+installierten Stilen wechseln. Es gibt systemweit installierte und
+benutzerdefinierte Stile. Sie liegen in den Verzeichnissen:
+
+<!-- Beginn Listing -->
+
+/usr/share/fluxbox/styles
+~/.fluxbox/styles
+
+<!-- Ende Listing -->
+
+Man kann sich neue Stile erstellen, vorhandene Stile abändern oder
+Stile aus dem Internet herunterladen. Eine relativ große Auswahl an
+Stilen ist beispielsweise unter den folgenden Adressen zu finden:
+
+<!-- Beginn Listing -->
+
+<!-- LINK: url="http://fluxbox.sourceforge.net/themes.php" -->
+http://fluxbox.sourceforge.net/themes.php<!-- ENDLINK -->
+<!-- LINK: url="http://themes.freshmeat.net/browse/962/" -->
+http://themes.freshmeat.net/browse/962/<!-- ENDLINK -->
+
+<!-- Ende Listing -->
+
+Das Schreiben eigener Stile und Abwandeln vorhandener Stile wird hier
+nicht erklärt, weil diese Themen einen eigenen Text füllen würden.
+
+Einen neuen Fluxbox-Stil zu installieren, ist ganz einfach: Man
+kopiert die Datei, die den Stil definiert in eines der beiden
+Stil-Verzeichnisse. Um einen systemweiten Stil zu installieren,
+benötigt man natürlich root-Rechte.
+Auf einen benutzerdefinierten Stil
+kann selbstverständlich nur der
+jeweilige Benutzer zugreifen. Der Name
+der Stil-Datei ist gleichzeitig die Bezeichnung des Stils im
+Fluxbox-Menü.
+
+Einige Stile verwenden Hintergrundbilder. Sie müssen standardmäßig in
+einem der folgenden Verzeichnisse hinterlegt werden:
+
+<!-- Beginn Listing -->
+
+/usr/share/fluxbox/backgrounds
+~/.fluxbox/backgrounds
+
+<!-- Ende Listing -->
+
+Dieses Verzeichnis wird allerdings durch das Kommando
+
+<!-- Beginn Listing -->
+
+"rootCommand: bsetbg <Verzeichnis>/<Bilddatei>"
+
+<!-- Ende Listing -->
+
+in der Stil-Definition festgelegt, so dass dieser Ort, je nach Stil,
+auch vom Standard abweichen kann.
+Man kann unter Fluxbox auch Blackbox Stile verwenden, deshalb kann es
+manchmal vorkommen, dass man geringe
+Änderungen an einem Stil vornehmen
+muss.
+So könnte es z.B. sein, dass in einer
+Stil-Datei ein Eintrag folgender
+Form existiert:
+
+<!-- Beginn Listing -->
+
+rootCommand:    Esetroot -center ~/.blackbox/backgrounds/deepness.jpg
+
+<!-- Ende Listing -->
+
+Hier wäre es nötig den Pfadnamen zu berichtigen,
+damit der Stil auch das
+gewollte Hintergrundbild findet.
+
+
+
+
+3.5 Fluxbox Desktop
+
+Mit Fluxbox selbst ist es nicht möglich
+den Hintergrund zu verändern, da
+dies nicht die Aufgabe eines Fenster-Managers ist.
+Wie in 3.4 dargestellt wird in diesem Stil das Programm Esetroot
+verwendet, dass ein Bestandteil des Programms Eterm ist.
+Normalerweise verwendet man unter Fluxbox das Programm bsetbg, um den
+Hintergrund zu verändern, es ist allerdings auch möglich, z.B. mit
+display -window root datei.jpg
+(display ist Bestandteil von ImageMagick)
+den Hintergrund zu verändern.
+
+Ähnliches gilt für die Darstellung von Symbolen, mit denen Programme
+auf dem Desktop gestartet werden. Dies ist mit Fluxbox allein nicht
+möglich, allerdings gibt es die
+Möglichkeit einen Desktop mit Fluxbox zu
+verwenden, indem man das Programm fbdesk oder idesk benutzt.
+Dies alles ermöglicht Fluxbox:
+ein kleiner, aber durchaus funktionaler
+Fenster-Manager.
+
+
+
+4 Rückmeldung
+
+Die Autoren freuen sich über konstruktive Kritik, gefundene Fehler,
+Anregungen, etc.
+Zu erreichen sind sie per E-Mail an <H@unschild.de> oder
+<nico@ngolde.de>.
+
+Viel Spaß bei der Konfiguration und der Nutzung Ihrer Fluxbox.
