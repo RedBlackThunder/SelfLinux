@@ -1,81 +1,97 @@
-                     ************ EEiinnffüühhrruunngg iinn ssyysslloogg--nngg ************
-                            ****** RReevviissiioonn:: 00..11..11 ******
-********** IInnhhaalltt **********
-    ** _11_.._ _CC_oo_pp_yy_rr_ii_gg_hh_tt_ _uu_nn_dd_ _HH_ii_nn_ww_ee_ii_ss_ee
-    ** _22_.._ _EE_ii_nn_ff_üü_hh_rr_uu_nn_gg
-    ** _33_.._ _EE_ii_nn_ _AA_nn_ww_ee_nn_dd_uu_nn_gg_ss_ff_aa_ll_ll
-    ** _44_.._ _KK_oo_nn_ff_ii_gg_uu_rr_aa_tt_ii_oo_nn_ss_dd_ee_tt_aa_ii_ll_ss
-          oo _44_.._11_ _DD_aa_ss_ _oo_pp_tt_ii_oo_nn_ss_ _OO_bb_jj_ee_kk_tt
-          oo _44_.._22_ _DD_aa_ss_ _ss_oo_uu_rr_cc_ee_ _OO_bb_jj_ee_kk_tt
-          oo _44_.._33_ _DD_aa_ss_ _dd_ee_ss_tt_ii_nn_aa_tt_ii_oo_nn_ _OO_bb_jj_ee_kk_tt
-          oo _44_.._44_ _DD_aa_ss_ _ff_ii_ll_tt_ee_rr_ _OO_bb_jj_ee_kk_tt
-          oo _44_.._55_ _DD_aa_ss_ _ll_oo_gg_ _OO_bb_jj_ee_kk_tt
-    ** _55_.._ _BB_ee_ii_ss_pp_ii_ee_ll_dd_aa_tt_ee_ii
-    ** _66_.._ _PP_rr_oo_bb_ll_ee_mm_ee_ _uu_nn_dd_ _OO_ff_ff_ee_nn_ee_ss
-          oo _66_.._11_ _ZZ_uu_ss_aa_mm_mm_ee_nn_ss_pp_ii_ee_ll_ _kk_ll_oo_gg_dd_ _uu_nn_dd_ _ss_yy_ss_ll_oo_gg_--_nn_gg
-    ** _77_.._ _RR_ee_ff_ee_rr_ee_nn_zz_ee_nn
-    ** _88_.._ _SS_tt_ii_cc_hh_ww_öö_rr_tt_ee_rr
-    ** _99_.._ _FF_ee_hh_ll_ee_rr_,,_ _EE_rr_gg_ää_nn_zz_uu_nn_gg_ee_nn_??
-    ** _11_00_.._ _CC_hh_aa_nn_gg_ee_ll_oo_gg
+<?xml version="1.0" encoding="iso-8859-1"?>
 
-===============================================================================
-********** 11.. CCooppyyrriigghhtt uunndd HHiinnwweeiissee **********
-Copyright (c) 2003 Winfried Mueller, <wm@reintechnisch.de>.
-Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, zu verteilen und/
-oder zu verändern unter den Bedingungen der GNU Free Documentation License,
-Version 1.1 oder einer späteren, von der Free Software Foundation
-veröffentlichten Version; mit keinen unveränderlichen Abschnitten, mit keinen
-Vorderseitentexten, und keinen Rückseitentexten.
-Eine Kopie dieser Lizenz finden Sie unter _G_N_U_ _F_r_e_e_ _D_o_c_u_m_e_n_t_a_t_i_o_n_ _L_i_c_e_n_s_e.
-Eine inoffizielle Übersetzung finden Sie unter _G_N_U_ _F_r_e_e_ _D_o_c_u_m_e_n_t_i_o_n_ _L_i_c_e_n_s_e_,
-_d_e_u_t_s_c_h.
-In diesem Artikel werden evtl. eingetragene Warenzeichen, Handelsnamen und
-Gebrauchsnamen verwendet. Auch wenn diese nicht als solche gekennzeichnet sind,
-gelten die entsprechenden Schutzbestimmungen.
-Alle Informationen in diesem Artikel wurden mit Sorgfalt erarbeitet. Trotzdem
-können Inhalte fehlerhaft oder unvollständig sein. Ich übernehme keinerlei
-Haftung für eventuelle Schäden oder sonstige Nachteile, die sich durch die
-Nutzung der hier dargebotenen Informationen ergeben.
-Sollten Teile dieser Hinweise der geltenden Rechtslage nicht entsprechen,
-bleiben die übrigen Teile davon unberührt.
+<chapter>
+ <title>syslog-ng</title>
 
-===============================================================================
-********** 22.. EEiinnffüühhrruunngg **********
+ <author>
+  <name>Winfried Müller</name>
+  <mailto>wm@reintechnisch.de</mailto>
+ </author>
+
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>syslog-ng</index>
+
+ <split>
+  <section>
+   <heading>
+Einführung
+   </heading>
+
+   <textblock>
 Logfiles werden gerne übersehen und sind doch so extrem wichtig und hilfreich.
 Eines der großen Vorzüge von Linux ist, dass es fast alles im System
 protokollieren kann. So kann man immer nachvollziehen, was wann wo passiert
 oder eben schief läuft.
+   </textblock>
+
+   <textblock>
 Logging wird gerade aus Sicherheitsgründen immer wichtiger. Hierüber lässt sich
 früh erkennen, wann wo im System ein Einbruchsversuch läuft. Neben dem Logging
 sind vor allem gute Logfile-Analyse-Werkzeuge notwendig.
+   </textblock>
+
+   <textblock>
 Der Standard syslog Dämon unter Linux und vielen Unix Varianten ist in
 vielerlei Hinsicht sehr eingeschränkt. Er konnte mir nicht das liefern, was ich
 brauchte, um Logfiles vernünftig und einfach auszuwerten.
+   </textblock>
+
+   <textblock>
 Ich bin nicht der einzige, dem der syslog Dämon ziemlich angestaubt und
 unzulänglich vorkam. Und so machte sich dann Balazs Scheidler 1998 auf den Weg,
 einen neuen besseren syslog zu schreiben. Diesen nannte er syslog-ng. Das ng
 steht für New Generation.
+   </textblock>
+
+   <textblock>
 Syslog-ng ist mittlerweile ein fest etablierter und stabil laufender Ersatz für
 den syslog. Alle großen Distributionen haben ihn mit an Board, jedoch muss er
 meist noch aktiviert werden. Es spricht eigentlich alles dafür, auf syslog-ng
 umzusteigen, sobald man Möglichkeiten braucht, die über den normalen syslog
 hinausreichen.
+   </textblock>
+
+   <textblock>
 Diese Beschreibung bezieht sich auf die syslog-ng Version 1.5.15, wie sie in
 Debian Woody enthalten ist.
+   </textblock>
+  </section>
 
-===============================================================================
-********** 33.. EEiinn AAnnwweenndduunnggssffaallll **********
+  <section>
+   <heading>
+Ein Anwendungsfall
+   </heading>
+
+   <textblock>
 Als ich anfing, mir ein Logfile-Analyse-Werkzeug zu bauen, merkte ich, dass der
 Standard syslog Dämon von Linux und vielen Unix-Systemen doch erhebliche
 Einschränkungen mit sich bringt. Ich wollte ein Logfile in einer ähnlichen
 Form, wie es moderne Anwendungen wie cups, samba oder Apache machen. Das Datum
 sollte mit Jahresangabe sein, Priorität, Facility und das Programm, was loggt,
 sollten ebenfalls auftauchen. Eine Zeile sollte etwa so aussehen:
+   </textblock>
+
+   <file>
+    <content>
 [2003/10/13 12:00:42] info mail fetchmail fetchmail[30924]: No mail for ...
+    </content>
+   </file>
+
+   <textblock>
 Zuerst das Datum in einer samba-like Form, dann die Log-Priorität, die Facility
 (also der Systembereich, der loggt), das Programm und die Message. Alle
 erzeugten Logs des Systems, die über syslog laufen, sollten in einer Logdatei
 landen. Hierzu fügte ich in der syslog-ng.conf folgende Zeilen hinzu:
+   </textblock>
+
+   <file>
+    <content>
 destination mysyslog {
   file("/var/log/mysyslog"
   owner("root")
@@ -85,15 +101,28 @@ destination mysyslog {
 $PRIORITY $FACILITY $PROGRAM $MESSAGE\n")); };
 
 log { source(src);  destination(mysyslog); };
+    </content>
+   </file>
+
+   <textblock>
 Mit destination wird ein destination-Objekt festgelegt, welches mysyslog heißt
 und mit dem File /var/log/mysyslog verbunden wird. Das Ausgabe-Format
 beschreibt ein Template. Über die Zeile log wird dann ein zuvor definiertes
 source-Objekt und mein destination-Objekt zu einer Log-Aktion zusammengefügt.
+   </textblock>
+  </section>
 
-===============================================================================
-********** 44.. KKoonnffiigguurraattiioonnssddeettaaiillss **********
+  <section>
+   <heading>
+Konfigurationsdetails
+   </heading>
+
+   <textblock>
 Die Konfigurations-Syntax ist an C/Java/PHP angelehnt und sehr einfach
 gehalten. Man sollte jedoch aufpassen, Semikolons immer richtig zu setzen.
+   </textblock>
+
+   <textblock>
 Leider gehört es zum Charakter von Linux, dass fast jeder Autor eines Paketes
 sich in einer eigenwilligen Konfigurations-Syntax verewigt. Das ist die
 Schattenseite von Anarchie. Wie schön wäre es, wenn gerade bei der
@@ -103,54 +132,139 @@ andere Paketentwickler übernehmen. Die Zeit ist reif für eine standardisierte
 Konfigurations-Sprache. Der Einstieg in neue Pakete wird so wesentlich
 vereinfacht, weil man nur noch wissen muss, was man konfigurieren will und
 nicht mehr, wie man überhaupt konfigurieren kann. Ein vielversprechender Ansatz
-ist _h_t_t_p_:_/_/_c_o_n_f_i_g_4_g_n_u_._s_o_u_r_c_e_f_o_r_g_e_._n_e_t_/_d_o_c_s_/_a_r_t_i_c_l_e_._h_t_m_l.
+ist <ref lang="en" url="http://config4gnu.sourceforge.net/docs/article.html">http://config4gnu.sourceforge.net/docs/article.html</ref>.
+   </textblock>
+
+   <textblock>
 Die gesamte Konfiguration erfolgt über die Datei syslog-ng.conf, die bei Debian
 Linux unter /etc/syslog-ng/syslog-ng.conf liegt.
+   </textblock>
+
+   <textblock>
 In dieser Konfigurations-Datei gibt es prinzipiell folgende Einträge:
-  ooppttiioonnss {{ ooppttiioonn;; ooppttiioonn;; ...... }};;
-      Hiermit können globale Optionen festgelegt werden.
-  ssoouurrccee <<iiddeennttiiffiieerr>> {{ ssoouurrccee--ddrriivveerr((ppaarraammss));; ...... }};;
-      Mit jeder source Zeile wird eine syslog-Quelle festgelegt.
-  ffiilltteerr <<iiddeennttiiffiieerr>> {{ eexxpprreessssiioonn;; ...... }};;
-      Hiermit können beliebig viele Filter-Objekte angelegt werden, die später
-      in der log-Zeile benutzt werden können. Expression beschreibt die
-      Filterregel.
-  ddeessttiinnaattiioonn <<iiddeennttiiffiieerr>> {{ ddeesstt--ddrriivveerr((ppaarraammss));; ...... }};;
-      Hiermit kann man Ziel-Objekte anlegen, wohin also geloggt werden soll und
-      mit welchen Einstellungen.
-  lloogg {{ ssoouurrccee((ss11));; ssoouurrccee((ss22));; ......;; ffiilltteerr((ff11));; ffiilltteerr((ff22));; ......;; ddeessttiinnaattiioonn
-  ((dd11));; ddeessttiinnaattiioonn((dd22));; ...... ;; ffllaaggss(( ffllaagg11;; ......)) }}
-      Hiermit werden log-Objekte angelegt und log-Objekte sind die einzigen,
-      die auch Aktionen ausführen, wenn sie definiert sind. In dem Log-Objekt
-      werden zuvor definierte Objekte (source, filter, destination)
-      zusammengefügt und das Logging somit aktiviert.
+   </textblock>
+
+   <file>
+    <content>
+options { option; option; .. };
+    </content>
+   </file>
+
+   <textblock>
+Hiermit können globale Optionen festgelegt werden.
+   </textblock>
+
+   <file>
+    <content>
+source &lt;identifier&gt; { source-driver(params); ... };
+    </content>
+   </file>
+
+   <textblock>
+Mit jeder source Zeile wird eine syslog-Quelle festgelegt.
+   </textblock>
+
+   <file>
+    <content>
+filter &lt;identifier&gt; { expression; ... };
+    </content>
+   </file>
+
+   <textblock>
+Hiermit können beliebig viele Filter-Objekte angelegt werden, die später
+in der log-Zeile benutzt werden können. Expression beschreibt die
+Filterregel.
+   </textblock>
+
+   <file>
+    <content>
+destination &lt;identifier&gt; {dest-driver(params); ... };
+    </content>
+   </file>
+
+   <textblock>
+Hiermit kann man Ziel-Objekte anlegen, wohin also geloggt werden soll und
+mit welchen Einstellungen.
+   </textblock>
+
+   <file>
+    <content>
+log { source(s1); source(s2); ...; filter(f1); filter(f2); ...; destination (d1);
+      destination(d2); ...; flags( flag1; ...) }
+    </content>
+   </file>
+
+   <textblock>
+Hiermit werden log-Objekte angelegt und log-Objekte sind die einzigen,
+die auch Aktionen ausführen, wenn sie definiert sind. In dem Log-Objekt
+werden zuvor definierte Objekte (source, filter, destination)
+zusammengefügt und das Logging somit aktiviert.
+   </textblock>
+
+   <textblock>
 Nochmal zum Verständnis: Man kann beliebig viele source, filter und
 destination-Objekte anlegen, die von sich aus gar nichts tun. Erst das
 Einbinden in ein log-Objekt, aktiviert eine Logausgabe. Das log-Objekt ist das
 einzige, was irgendwie aktiv wird.
+   </textblock>
+
+   <textblock>
 Dieser objektorientierte Aufbau ist sehr leicht überschaubar und wartbar. Nach
 ein wenig Praxis wird man spüren, wie angenehm diese Form zu handeln ist.
-******** 44..11 DDaass ooppttiioonnss OObbjjeekktt ********
+   </textblock>
+
+   <section>
+    <heading>
+Das options Objekt
+    </heading>
+
+    <textblock>
 Hier kann man globale Einstellungen vornehmen. Das meiste ist für erste
 Gehversuche schon korrekt eingestellt, es geht hauptsächlich um Feintuning.
 Einige wichtige Einstellungen sind:
-  ssyynncc((nn--lliinneess))
-      Hiermit kann man festlegen, wieviele Log-Zeilen auflaufen sollen, bis
-      gesynct wird, bis also die Daten tatsächlich auf der Platte abgelegt
-      werden und nicht noch in irgendeinem Puffer im Ram stecken. Wer sicher
-      gehen will und auch keine Performance-Probleme hat, sollte hier 0
-      einstellen - es wird dann sofort jede Zeile geschrieben.
-  lloogg__ffiiffoo__ssiizzee((nn--lliinneess))
-      Anzahl der Zeilen, die zwischengepuffert werden können. Ist wichtig, wenn
-      mehr Logs einlaufen, als syslog-ng wegschreiben kann. Das kann z.B.
-      passieren, wenn eine kurzzeitige Logzeilen-Flut hereinbricht. Ein
-      typischer Wert ist 1000.
+    </textblock>
+
+    <ul>
+     <li>
+<strong>sync(n-lines)</strong><br/>
+Hiermit kann man festlegen, wieviele Log-Zeilen auflaufen sollen, bis
+gesynct wird, bis also die Daten tatsächlich auf der Platte abgelegt
+werden und nicht noch in irgendeinem Puffer im Ram stecken. Wer sicher
+gehen will und auch keine Performance-Probleme hat, sollte hier 0
+einstellen - es wird dann sofort jede Zeile geschrieben.
+     </li>
+     <li>
+<strong>log_fifo_size(n-lines)</strong><br/>
+Anzahl der Zeilen, die zwischengepuffert werden können. Ist wichtig, wenn
+mehr Logs einlaufen, als syslog-ng wegschreiben kann. Das kann z.B.
+passieren, wenn eine kurzzeitige Logzeilen-Flut hereinbricht. Ein
+typischer Wert ist 1000.
+     </li>
+    </ul>
+
+    <textblock>
 Eine Auflistung aller Möglichkeiten findet man in [2] oder [3], jedoch sind sie
 dort meist sehr kurz beschrieben.
-******** 44..22 DDaass ssoouurrccee OObbjjeekktt ********
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Das source Objekt
+    </heading>
+
+    <textblock>
 Hier kann man die Quellen angeben, woher syslog-ng Meldungen empfangen soll.
 Unter debian Linux reicht für das normale Logging folgende Zeile:
+    </textblock>
+
+    <file>
+     <content>
 source src { unix-stream("/dev/log"); internal(); };
+     </content>
+    </file>
+
+    <textblock>
 Es wird hier ein neues Source-Objekt namens src angelegt. Dieses Source-Objekt
 wird nun mit zwei Quellen verbunden, zum einen mit /dev/log, zum anderen mit
 internal. Der Typ internal steht für die Messages, dei syslog-ng selber
@@ -159,12 +273,23 @@ stream, ein Stream mit unix-style Übertragung, was man typisch unter Linux
 nutzt. Ein ähnlicher Typ ist unix-dgram, der in bsd Systemen verwendet wird.
 Unter Linux funktioniert generell auch unix-dgram, es ist aber nicht so sicher,
 weil bei zu hoher Systemlast Logs verloren gehen können.
+    </textblock>
+
+    <textblock>
 Weitere Möglichkeiten von Typen einer Datenquelle sind file, pipe, udp, tcp.
 Hiermit kann man verrückte Sachen anstellen. Im Normalfall dürfte lediglich
 udp/tcp noch interessant sein, mit dem syslog-ng als Loghost übers Netz
 fungieren kann. Er verhält sich dann genauso, wie ein syslog, der per udp
 lauscht. Eine vollständige udp Quelle sieht so aus:
+    </textblock>
+
+    <file>
+     <content>
 udp( ip(0.0.0.0) port(514) )
+     </content>
+    </file>
+
+    <textblock>
 Wobei ip und port auch weggelassen werden können, wenn die hier angegebenen
 Defaultparameter genommen werden sollen. Ip steht für die IP-Adresse, auf der
 gelauscht werden soll. Hat ein Rechner also mehrere IP-Adressen, kann man hier
@@ -172,6 +297,9 @@ Einschränkungen machen. Default ist 0.0.0.0, was auf allen Adressen lauscht.
 Man kann nicht angeben, das z.B. nur Logs von einem bestimmten Host angenommen
 werden. Port gibt den Port an, auf dem gelauscht werden soll. Default ist lt.
 altem syslog der Port 514.
+    </textblock>
+
+    <textblock>
 UDP ist ein verbindungsloses Protokoll, es kann also passieren, dass bei
 verlorenen Paketen auch Logs verloren gehen, weil die nicht erneut angefordert
 werden. Besser ist es daher, tcp einzusetzen. Konfiguriert wird es genauso, man
@@ -179,8 +307,14 @@ kann auch den gleichen Port nutzen, insofern man auf das sonst dort sitzende
 rshell verzichten kann (seit ssh sollte die eh überflüssig sein). Bei tcp gibt
 es zusätzlich noch den Parameter max-connections(n), der die Anzahl der
 Verbindungen limitiert.
+    </textblock>
+
+    <textblock>
 Wer allerdings von alten syslogs aus Logs entgegennehmen muss, der ist auf udp
 angewiesen, weil die nur udp können.
+    </textblock>
+
+    <textblock>
 Es gibt noch eine weitere Quelle, die man evtl. nicht vergessen darf - die
 Kernel-Messages. Wenn man auf seinem Linux-System einen klogd laufen hat, dann
 holt der sich alle Kernelmessages aus /proc/kmsg und reicht sie an den Syslog-
@@ -189,154 +323,397 @@ dürfte bei den meisten Distributionen der Standard-Fall sein. Der klogd hat
 auch den Vorteil, das er manche Logs noch weiter aufbereitet, z.B.
 Funktionsnamen über die .map Kernel Files dekodiert. Dadurch können Probleme
 leichter gefunden werden.
+    </textblock>
+
+    <textblock>
 Läuft kein klogd, so muss man diese Kernel-Messages selber abholen. Eine
 komplette Sourcezeile könnte dann so aussehen:
+    </textblock>
+
+    <file>
+     <content>
 source src { unix-stream("/dev/log"); internal(); file("/proc/kmsg");};
+     </content>
+    </file>
+
+    <textblock>
 Manche Distributionen benutzen hier auch pipe() statt file() für "/proc/kmsg".
-******** 44..33 DDaass ddeessttiinnaattiioonn OObbjjeekktt ********
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Das destination Objekt
+    </heading>
+
+    <textblock>
 Mit dem Destination Objekt kann man Ziele festlegen, wohin eine Log-Stream
 gehen soll. Normal ist dies eine Datei. Ein einfaches Ziel könnte so aussehen:
-destination syslog { file("/var/log/syslog" owner("root") group("adm") perm
-(0640)); };
+    </textblock>
+
+    <file>
+     <content>
+destination syslog { file("/var/log/syslog" owner("root") group("adm") perm (0640)); };
+     </content>
+    </file>
+
+    <textblock>
 Hier wird das Ziel mit dem Namen syslog angelegt, wobei es mit der Datei /var/
 log/syslog verbunden wird. Diese Datei soll mit dem Benutzer root:adm angelegt
 werden und 0640er Rechte haben.
+    </textblock>
+
+    <textblock>
 Neben den file()-Optionen owner(), group(), perm() gibt es weitere, die man bei
 speziellen Ansprüchen nutzen kann. Eine sehr interessante Option ist die
 Möglichkeit, ein Ausgabeformat mit template() festzulegen. Dies hatte ich
 weiter oben an einem Beispiel schon verdeutlicht. Hiermit kann man sich nahezu
 beliebige Logfile-Formate erstellen. Das Template ist ein String, in dem Makros
 mit einem $MakroName eingefügt werden können.
+    </textblock>
+
+    <textblock>
 Eine typisches Template könnte so aussehen:
+    </textblock>
+
+    <file>
+     <content>
 template( "[$YEAR/$MONTH/$DAY $HOUR:$MIN:$SEC] $PRIORITY $FACILITY $MESSAGE\n")
+     </content>
+    </file>
+
+    <textblock>
 Hier wird zuerst das Datum in einer typischen Form zusammengefügt, dann die
 Priorität, die Facility und die Message ausgegeben.
+    </textblock>
+
+    <textblock>
 Folgende Makros sind verfügbar:
- _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-|                       |Facility der Message. Das ist eine der vordefinierten|
-|                       |Gruppen des Subsystems, von der eine Message kommt.  |
-|                       |Möglich sind hier auth, auth-priv, cron, daemon, ftp,|
-|                       |kern, lpr, mail, mark, news, syslog, user, uucp,     |
-|                       |local0 - local7. Was welche bedeuten und welches     |
-|FACILITY               |Programm welche Facility benutzt, ist nicht immer    |
-|                       |einfach herauszufinden. Ein Beobachten der syslogs   |
-|                       |hilft am besten. Viele Programme können vor dem      |
-|                       |Kompilieren eingestellt werden, unter welcher        |
-|                       |Facility sie loggen. Das Facility-System kann man als|
-|                       |starr und veraltet betrachten, weil es für die       |
-|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_m_e_i_s_t_e_n_ _F_i_l_t_e_r_a_u_f_g_a_b_e_n_ _z_u_ _g_r_o_b_ _u_n_d_ _u_n_f_l_e_x_i_b_e_l_ _i_s_t_._ _ _ |
-|PRIORITY oder LEVEL    |Die Priorität der Message. Hier gibt es: debug, info,|
-|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_n_o_t_i_c_e_,_ _w_a_r_n_,_ _e_r_r_,_ _c_r_i_t_,_ _a_l_e_r_t_,_ _e_m_e_r_g_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|TAG                    |Die Priorität und Facility als 2-Zeichen Hexzahl     |
-|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_c_o_d_i_e_r_t_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|_D_A_T_E_,_ _F_U_L_L_D_A_T_E_,_ _I_S_O_D_A_T_E_|_D_a_s_ _D_a_t_u_m_ _i_n_ _v_e_r_s_c_h_i_e_d_e_n_e_n_ _s_t_a_n_d_a_r_d_i_s_i_e_r_t_e_n_ _F_o_r_m_a_t_e_n_.|
-|_Y_E_A_R_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_D_a_s_ _J_a_h_r_ _4_-_s_t_e_l_l_i_g_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|_M_O_N_T_H_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_D_e_r_ _M_o_n_a_t_ _2_-_s_t_e_l_l_i_g_ _n_u_m_e_r_i_s_c_h_,_ _g_g_f_._ _f_ü_h_r_e_n_d_e_ _0_._ _ _ _ _ _ |
-|_D_A_Y_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_D_e_r_ _T_a_g_ _2_-_s_t_e_l_l_i_g_ _n_u_m_e_r_i_s_c_h_,_ _g_g_f_._ _f_ü_h_r_e_n_d_e_ _0_._ _ _ _ _ _ _ _ |
-|WEEKDAY                |Wochentag 3 Buchstaben, wie unter Unix gewohnt. (Mon,|
-|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_T_u_e_._._._)_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|_H_O_U_R_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_D_i_e_ _S_t_u_n_d_e_ _2_-_s_t_e_l_l_i_g_,_ _g_g_f_._ _f_ü_h_r_e_n_d_e_ _0_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|_M_I_N_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_D_i_e_ _M_i_n_u_t_e_ _2_-_s_t_e_l_l_i_g_,_ _g_g_f_._ _f_ü_h_r_e_n_d_e_ _0_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|_S_E_C_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_D_i_e_ _S_e_k_u_n_d_e_n_ _2_-_s_t_e_l_l_i_g_,_ _g_g_f_._ _f_ü_h_r_e_n_d_e_ _0_._ _ _ _ _ _ _ _ _ _ _ _ _ |
-|_F_U_L_L_H_O_S_T_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_V_o_l_l_s_t_ä_n_d_i_g_ _q_u_a_l_i_f_i_z_i_e_r_t_e_r_ _H_o_s_t_,_ _a_l_s_o_ _h_o_s_t_._d_o_m_a_i_n_ _ _ _ |
-|_H_O_S_T_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_H_o_s_t_n_a_m_e_ _o_h_n_e_ _D_o_m_a_i_n_z_u_s_a_t_z_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|                       |Das Programm, welches die Messages abgesetzt hat.    |
-|PROGRAM                |Hierüber lässt sich oft flexibler filtern, als über  |
-|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_d_i_e_ _F_a_c_i_l_i_t_y_s_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
-|                       |Die eigentliche Message. Da es im alten syslog keine |
-|                       |Möglichkeit gab, das Programm oder den Prozess       |
-|                       |mitzuloggen, hat es sich als Standard herausgebildet,|
-|                       |in die Message als erstes das Programm mit           |
-|                       |Prozessnummer anzugeben (Programm[ps-id]: ), welches |
-|                       |die Message ausgab. Bei Unterprozessen eines         |
-|MSG oder MESSAGE       |Programmes, wird normal Programm/Unterprozess[ps-id]:|
-|                       |verwendet. Erst hinter dem Doppelpunkt beginnt die   |
-|                       |eigentliche Message. Verlassen kann man sich jedoch  |
-|                       |auf diese Regel nicht, Ausnahmen gibt es immer wieder|
-|                       |- unter Linux darf ja jeder tun, was er will... Ein  |
-|                       |Dank an alle Entwickler, die sich an Quasi-Standards |
-|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_h_a_l_t_e_n_._ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ |
+    </textblock>
+
+    <table>
+     <pdf-column/>
+     <pdf-column/>
+     <tr>
+      <td>
+FACILITY
+      </td>
+      <td>
+Facility der Message. Das ist eine der vordefinierten
+Gruppen des Subsystems, von der eine Message kommt.
+Möglich sind hier auth, auth-priv, cron, daemon, ftp,
+kern, lpr, mail, mark, news, syslog, user, uucp,
+local0 - local7. Was welche bedeuten und welches
+Programm welche Facility benutzt, ist nicht immer
+einfach herauszufinden. Ein Beobachten der syslogs
+hilft am besten. Viele Programme können vor dem
+Kompilieren eingestellt werden, unter welcher
+Facility sie loggen. Das Facility-System kann man als
+starr und veraltet betrachten, weil es für die
+meisten Filteraufgaben zu grob und unflexibel ist.
+      </td>
+     </tr>
+     <tr>
+      <td>
+PRIORITY oder LEVEL
+      </td>
+      <td>
+Die Priorität der Message. Hier gibt es: debug, info,
+notice, warn, err, crit, alert, emerg.
+      </td>
+     </tr>
+     <tr>
+      <td>
+TAG
+      </td>
+      <td>
+Die Priorität und Facility als 2-Zeichen Hexzahl
+codiert.
+      </td>
+     </tr>
+     <tr>
+      <td>
+DATE, FULLDATE, ISODATE
+      </td>
+      <td>
+Das Datum in verschiedenen standardisierten
+Formaten.
+      </td>
+     </tr>
+     <tr>
+      <td>
+YEAR
+      </td>
+      <td>
+Das Jahr 4-stellig.
+      </td>
+     </tr>
+     <tr>
+      <td>
+MONTH
+      </td>
+      <td>
+Der Monat 2-stellig numerisch, ggf. führende 0.
+      </td>
+     </tr>
+     <tr>
+      <td>
+DAY
+      </td>
+      <td>
+Der Tag 2-stellig numerisch, ggf. führende 0.
+      </td>
+     </tr>
+     <tr>
+      <td>
+WEEKDAY
+      </td>
+      <td>
+Wochentag 3 Buchstaben, wie unter Unix gewohnt. (Mon, Tue...)
+      </td>
+     </tr>
+     <tr>
+      <td>
+HOUR
+      </td>
+      <td>
+Die Stunde 2-stellig, ggf. führende 0.
+      </td>
+     </tr>
+     <tr>
+      <td>
+MIN
+      </td>
+      <td>
+Die Minute 2-stellig, ggf. führende 0.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SEC
+      </td>
+      <td>
+Die Sekunden 2-stellig, ggf. führende 0.
+      </td>
+     </tr>
+     <tr>
+      <td>
+FULLHOST
+      </td>
+      <td>
+Vollständig qualifizierter Host, also host.domain
+      </td>
+     </tr>
+     <tr>
+      <td>
+HOST
+      </td>
+      <td>
+Hostname ohne Domainzusatz.
+      </td>
+     </tr>
+     <tr>
+      <td>
+PROGRAM
+      </td>
+      <td>
+Das Programm, welches die Messages abgesetzt hat. Hierüber lässt
+sich oft flexibler filtern, als über die Facilitys.
+      </td>
+     </tr>
+     <tr>
+      <td>
+MSG oder MESSAGE
+      </td>
+      <td>
+Die eigentliche Message. Da es im alten syslog keine
+Möglichkeit gab, das Programm oder den Prozess mitzuloggen, hat es sich als
+Standard herausgebildet, in die Message als erstes das Programm mit
+Prozessnummer anzugeben (Programm[ps-id]: ), welches die Message ausgab. Bei
+Unterprozessen eines Programmes, wird normal Programm/Unterprozess[ps-id]:
+verwendet. Erst hinter dem Doppelpunkt beginnt die eigentliche Message.
+Verlassen kann man sich jedoch auf diese Regel nicht, Ausnahmen gibt es
+immer wieder - unter Linux darf ja jeder tun, was er will... Ein Dank an
+alle Entwickler, die sich an Quasi-Standards halten.
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
 Es gibt bei file() einen leistungsfähigen Mechanismus, die Makro-Substitution
 für den Dateinamen. So kann man sich dynamische Logfilenamen generieren. Hier
-kann man die gleichen Makros wie für template() benutzen. Ein destination mylog
-{ file("/var/log/syslog-$HOST" owner("root") group("adm") perm(0640)); }; loggt
-z.B. jeden Host in in eine getrennte Datei in der Form syslog-MeinErsterHost,
+kann man die gleichen Makros wie für template() benutzen. Ein
+    </textblock>
+
+    <file>
+     <content>
+destination mylog { file("/var/log/syslog-$HOST" owner("root") group("adm") perm(0640)); };
+     </content>
+    </file>
+
+    <textblock>
+loggt z. B. jeden Host in in eine getrennte Datei in der Form syslog-MeinErsterHost,
 syslog-NochEinHost. Natürlich muss man hier auch vorsichtig sein, um DoS-
 Attacken nicht Tür und Tor zu öffnen. Wer jedoch spezielle Möglichkeiten des
 Loggens braucht, kommt mit diesem Feature vielleicht weiter.
+    </textblock>
+
+    <textblock>
 Neben file gibt es noch folgende Ziel-Typen bzw. Ziel-Treiber: tcp, udp, unix-
 stream, unix-dgram, fifo, usertty, program.
+    </textblock>
+
+    <textblock>
 Udp oder tcp nutzt man ähnlich, wie schon bei dem Source-Objekt beschrieben.
 Als Ziel angegeben, schickt der syslog-ng nun diesen Log-Stream zu einem
 anderen Rechner per tcp oder udp. Ein Beispiel:
+    </textblock>
+
+    <file>
+     <content>
 destination a_udp { udp( "192.168.0.12" port(514) ); };
+     </content>
+    </file>
+
+    <textblock>
 Hier sollen an den udp-Port 514 des Rechners mit der IP 192.168.0.12 Messages
 verschickt werden. Port 514 ist sowieso Default, könnte hier also auch
 weggelassen werden.
+    </textblock>
+
+    <textblock>
 Hier gilt auch: Udp nimmt man aus Kompatibilitätsgründen, weil sich dann
 syslog-ng wie ein altes syslog verhält. Tcp ist das sicherere Verfahren, weil
 bei diesem verbindungsorientierten Protokoll Pakete nicht verloren gehen
 können.
+    </textblock>
+
+    <textblock>
 Auch udp ist relativ sicher, es werden nicht regelmäßig Packete verloren gehen,
 vor allem nicht im lokalen Netzwerk. Nur wenn Hardware oder Leitungen defekt
 sind, kommt es zu Datenverlusten. Aber auch tcp kann durch einen kaputte
 Leitung nichts mehr schicken, es kann lediglich bei einer kurzen Störung erneut
 versenden. Man sollte sehen, dass udp Jahrzehnte erfolgreich für diese Aufgabe
 eingesetzt wird.
+    </textblock>
+
+    <textblock>
 Mit usertty kann man Meldungen auf dem Terminal eines Benutzers ausgeben, der
 natürlich eingeloggt sein muss. Hier ein Beispiel:
+    </textblock>
+
+    <file>
+     <content>
 destination admin_tty { usertty(admin); };
+     </content>
+    </file>
+
+    <textblock>
 Sollen Meldungen an alle eingeloggten Benutzer gehen, nimmt man:
+    </textblock>
+
+    <file>
+     <content>
 destination warn_to_all { usertty(*); };
-******** 44..44 DDaass ffiilltteerr OObbjjeekktt ********
+     </content>
+    </file>
+   </section>
+
+   <section>
+    <heading>
+Das filter Objekt
+    </heading>
+
+    <textblock>
 Filter Objekte legen fest, wie Meldungen von einem Source-Objekt gefiltert
 werden sollen. Hiermit lassen sich also gewünschte Messages aus dem gesamten
 Datenstrom eines Source-Objektes herauspicken. Und das ist gut, wenn man z.B.
 in einem Ziel nur bestimmte Meldungen loggen möchte. Auch der alte syslog hat
 eine einfache Filtersprache, um Logausgaben in verschiedene Logdateien zu
 schreiben.
+    </textblock>
+
+    <textblock>
 Mit syslog-ng kann man wesentlich erweitert und verfeinert filtern.
-Eine typisches Filterobjekt könnte so definiert werden:
+    </textblock>
+
+    <textblock>
+Ein typisches Filterobjekt könnte so definiert werden:
+    </textblock>
+
+    <file>
+     <content>
 filter f_cnews { level(notice, err, crit) and facility(news); };
+     </content>
+    </file>
+
+    <textblock>
 Hier werden alle Meldungen durchgelassen, die vom Level oder der Priority auf
 notice, err oder crit stehen und die die Facility news haben.
+    </textblock>
+
+    <textblock>
 Filterfunktionen lassen sich mit and, or, not verknüpfen und auch klammern.
 Somit kann man sehr leistungsfähige Filterkonstrukte erstellen.
+    </textblock>
+
+    <textblock>
 Wer nicht genau weiß, wie and, or, not aufgelöst werden, sollte besser einmal
 zuviel klammern, als sich später zu wundern, warum was merkwürdiges bei heraus
 kommt. Das hilft auch anderen, die die Konfiguration verstehen wollen und auch
 nicht so genau bescheid wissen. Kurz gesagt bindet and mehr als or mehr als
 not. Ganz ähnlich wie Punktrechnung vor Strichrechnung kommt. a or b and c ist
 was anderes wie (a or b) and c.
+    </textblock>
+
+    <textblock>
 Folgende Filterfunktionen gibt es:
-  ffaacciilliittyy((ffaacciilliittyy11,,ffaacciilliittyy22,,......))
-      Lass alle Messages durch, die dieser Facility entsprechen.
-  lleevveell((pprriioo11,, pprriioo22,,......)) ((ooddeerr ssyynnoonnyymm pprriioorriittyy(())))
-      Lass alle Messages durch, die der angegebenen Priorität/Level
-      entsprechen.
-  pprrooggrraamm(( rreeggeexxpp ))
-      Alle Meldungen, die vom Programm kommen, worauf regexp passt, werden
-      durchgelassen. Hierbei ist regexp ein regulärer Ausdruck. Um welchen
-      Regexp-Dialekt es sich handelt, weiß ich nicht. Hat man Whitespaces im
-      Programmnamen, sollte man den Ausdruck zwischen doppelte
-      Anführungsstriche setzen.
-  hhoosstt((rreeggeexxpp))
-      Filterung nach Host, woher die Message kommt, ebenfalls regulärer
-      Ausdruck. Ein Tipp, wenn du nichts von regulären Ausdrücken verstehst:
-      Nimm einfach den Hostnamen, z.B. so: host(myhost). Genau genommen
-      müsstest du host("^myhost$") schreiben.
-  mmaattcchh((rreeggeexxpp))
-      Dies lässt nur Meldungen durch, wo die eigentliche Message auf dieses
-      Muster passt. Dies ist ein sehr leistungsfähiger Mechanismus, lassen sich
-      doch so ganz gezielt Meldungen herausfischen. Es gibt fast nichts, was
-      man nicht mit regulären Ausdrücken erschlagen könnte.
-  ffiilltteerr((ffiilltteerr__nnaammee))
-      Um kompliziertere Filterregeln zu erstellen, kann man mehrere Filter zu
-      einem neuen Filterkonstrukt zusammenfügen. Hiermit kann man also andere
-      Filter in einem neuen Filter aufrufen. Damit kann man verschachtelte
-      Filterkonstrukte erstellen. Es ist oft auch für die Lesbarkeit besser,
-      zuerst mehrere Teilfilter zu definieren, die man dann in einer weiteren
-      Filterregel zusammenfügt.
+    </textblock>
+
+    <ul>
+     <li>
+<strong>facility(facility1,facility2,...)</strong><br/>
+Lass alle Messages durch, die dieser Facility entsprechen.
+     </li>
+     <li>
+<strong>level(prio1, prio2,...) (oder synonym priority())</strong><br/>
+Lass alle Messages durch, die der angegebenen Priorität/Level
+entsprechen.
+     </li>
+     <li>
+<strong>program(regexp)</strong><br/>
+Alle Meldungen, die vom Programm kommen, worauf regexp passt, werden
+durchgelassen. Hierbei ist regexp ein regulärer Ausdruck. Um welchen
+Regexp-Dialekt es sich handelt, weiß ich nicht. Hat man Whitespaces im
+Programmnamen, sollte man den Ausdruck zwischen doppelte
+Anführungsstriche setzen.
+     </li>
+     <li>
+<strong>host(regexp)</strong><br/>
+Filterung nach Host, woher die Message kommt, ebenfalls regulärer
+Ausdruck. Ein Tipp, wenn du nichts von regulären Ausdrücken verstehst:
+Nimm einfach den Hostnamen, z.B. so: host(myhost). Genau genommen
+müsstest du host("^myhost$") schreiben.
+     </li>
+     <li>
+<strong>match(regexp)</strong><br/>
+Dies lässt nur Meldungen durch, wo die eigentliche Message auf dieses
+Muster passt. Dies ist ein sehr leistungsfähiger Mechanismus, lassen sich
+doch so ganz gezielt Meldungen herausfischen. Es gibt fast nichts, was
+man nicht mit regulären Ausdrücken erschlagen könnte.
+     </li>
+     <li>
+<strong>filter(filter_name)</strong><br/>
+Um kompliziertere Filterregeln zu erstellen, kann man mehrere Filter zu
+einem neuen Filterkonstrukt zusammenfügen. Hiermit kann man also andere
+Filter in einem neuen Filter aufrufen. Damit kann man verschachtelte
+Filterkonstrukte erstellen. Es ist oft auch für die Lesbarkeit besser,
+zuerst mehrere Teilfilter zu definieren, die man dann in einer weiteren
+Filterregel zusammenfügt.
+     </li>
+    </ul>
+
+    <textblock>
 Mach keine Meisterschaft daraus, möglichst komplizierte Konfigurationen zu
 produzieren. Durch komplizierte Filterregeln kann man das hier durchaus
 schaffen. Das zeigt zwar deine intellektuellen Fähigkeiten, produziert aber
@@ -345,34 +722,74 @@ es dir danken. Und es hilft auch der Verbreitung von OpenSource. OpenSource
 verbreitet sich dann rasant, wenn es für möglichst viele Menschen verständlich
 wird. Und OpenSource lebt davon, dass möglichst viele Menschen ein Produkt
 nutzen (können).
-******** 44..55 DDaass lloogg OObbjjeekktt ********
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Das log Objekt
+    </heading>
+
+    <textblock>
 Alle bisherigen Objekte waren Vorarbeiten, um jetzt Zeilen zu generieren, die
 wirklich Aktionen auslösen. Denn ohne die log-Objekte würde gar nichts
 passieren. Die anderen Objekte sind nur Daten-Definitionen. Die log-Objekte
 führen das eigentliche Logging aus, in dem sie die zuvor definierte Source-,
 Destination- und Filter-Objekte zu einer Log-Aktion verbinden. Eine typische
 Zeile sieht so aus:
+    </textblock>
+
+    <file>
+     <content>
 log { source(src); filter(f_syslog); destination(syslog); };
+     </content>
+    </file>
+
+    <textblock>
 Es wird hier also vom Source src gelesen, diese Messages durch den filter
 f_syslog geschickt und dann zum Ziel syslog geschrieben.
+    </textblock>
+
+    <textblock>
 Mehrere Sourcen bindet man mit mehreren source()-Statements ein.
+    </textblock>
+
+    <file>
+     <content>
 log { source(src); source(src1); filter(f_syslog); destination(syslog); };
+     </content>
+    </file>
+
+    <textblock>
 Mehrere Filter und sogar mehrere Ziele lassen sich nach gleichem Schema
 einbinden.
+    </textblock>
+
+    <textblock>
 Hinter destination() lässt sich auch noch flags() angeben, mit dem man
 erweitere Funktionalitäten festlegen kann.
+    </textblock>
+   </section>
+  </section>
 
-===============================================================================
-********** 55.. BBeeiissppiieellddaatteeii **********
+  <section>
+   <heading>
+Beispieldatei
+   </heading>
+
+   <textblock>
 Hier ist ein Beispiel einer kompletten Konfig-Datei, wie ich sie unter Debian
 Woody verwende. Die Kernel-Messages hole ich hier direkt ohne den klogd. Dieser
 darf also nicht gestartet sein. Es gibt unter Debian Woody noch einige Probleme
 im Zusammenspiel klogd/syslog-ng, siehe weiter unten.
+   </textblock>
 
+   <file>
+    <content>
 #
 # Syslog-ng configuration file, compatible with default Debian syslogd
 # installation. Originally written by anonymous (I can't find his name)
-# Revised, and rewrited by me (SZALAY Attila <sasa@debian.org>)
+# Revised, and rewrited by me (SZALAY Attila sasa@debian.org)
 
 # First, set some global options.
 options { long_hostnames(off); sync(0); stats(3600); };
@@ -395,49 +812,49 @@ source src { unix-stream("/dev/log"); internal(); file("/proc/kmsg"); };
 # First some standard logfile
 #
 destination authlog { file("/var/log/auth.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination syslog  { file("/var/log/syslog" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination cron    { file("/var/log/cron.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination daemon  { file("/var/log/daemon.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination kern    { file("/var/log/kern.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination lpr     { file("/var/log/lpr.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination mail    { file("/var/log/mail.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination user    { file("/var/log/user.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 destination uucp    { file("/var/log/uucp.log" owner("root")
-                           group("adm") perm(0640)); };
+                      group("adm") perm(0640)); };
 
 
 # This files are the log come from the mail subsystem.
 #
 destination mailinfo { file("/var/log/mail.info" owner("root")
-                            group("adm") perm(0640)); };
+                       group("adm") perm(0640)); };
 destination mailwarn { file("/var/log/mail.warn" owner("root")
-                            group("adm") perm(0640)); };
+                       group("adm") perm(0640)); };
 destination mailerr  { file("/var/log/mail.err" owner("root")
-                            group("adm") perm(0640)); };
+                       group("adm") perm(0640)); };
 
 # Logging for INN news system
 #
 destination newscrit   { file("/var/log/news/news.crit" owner("root")
-                              group("adm") perm(0640)); };
+                         group("adm") perm(0640)); };
 destination newserr    { file("/var/log/news/news.err" owner("root")
-                              group("adm") perm(0640)); };
+                         group("adm") perm(0640)); };
 destination newsnotice { file("/var/log/news/news.notice" owner("root")
-                              group("adm") perm(0640)); };
+                         group("adm") perm(0640)); };
 
 # Some `catch-all' logfiles.
 #
 destination debug      { file("/var/log/debug" owner("root")
-                               group("adm") perm(0640)); };
+                         group("adm") perm(0640)); };
 destination messages   { file("/var/log/messages" owner("root")
-                               group("adm") perm(0640)); };
+                         group("adm") perm(0640)); };
 
 
 # The root's console.
@@ -456,7 +873,7 @@ destination console_all { file("/dev/tty8"); };
 destination xconsole { pipe("/dev/xconsole"); };
 
 destination ppp { file("/var/log/ppp.log" owner("root")
-                       group("adm") perm(0640)); };
+                  group("adm") perm(0640)); };
 
 # Here's come the filter options. With this rules, we can set which
 # message go where.
@@ -525,60 +942,83 @@ log { source(src); filter(f_cnews); destination(xconsole); };
 log { source(src); filter(f_cother); destination(xconsole); };
 
 log { source(src); filter(ppp); destination(ppp); };
+    </content>
+   </file>
+  </section>
 
-===============================================================================
-********** 66.. PPrroobblleemmee uunndd OOffffeenneess **********
-******** 66..11 ZZuussaammmmeennssppiieell kkllooggdd uunndd ssyysslloogg--nngg ********
+  <section>
+   <heading>
+Probleme und Offenes
+   </heading>
+
+   <section>
+    <heading>
+Zusammenspiel klogd und syslog-ng
+    </heading>
+
+    <textblock>
 Es gibt ein paar Probleme im Zusammenspiel des klogd mit syslog-ng. Unter
 Debian Woody reicht der klogd nur Meldungen korrekt weiter, wenn unter syslog-
 ng die Methode unix-dgram("/dev/log") anstatt unix-stream("/dev/log") im Source
 Objekt verwendet wird. Auch gibt es Probleme, wenn syslog-ng neu gestartet
 wird, ohne gleichzeitig klogd neu zu starten. Der Datenaustausch von klogd an
 syslog-ng funktioniert dann nicht mehr korrekt.
+    </textblock>
+
+    <textblock>
 Einige Distributionen (redhat, suse) sind deshalb dazu übergegangen, entweder
 den klogd nicht zu verwenden oder aber im syslog-ng Init-skript sowohl syslog-
 ng wie auch klogd zu starten und zu stoppen. Dadurch werden beide Dämons immer
 korrekt im Tandem hoch- und runtergefahren. Evtl. sollte man 1 Sekunde nach
 Start des syslog-ng warten, bevor man klogd startet.
+    </textblock>
+
+    <textblock>
 Loggt man ohne klogd, fehlt der Prefix "kernel:" im Logfile, den klogd normal
 hinzufügt. Modernere Versionen von syslog-ng haben hierfür einen zusätzlichen
 Befehl, um diesen Prefix selber zu generieren. In einer Source-Zeile könnte
 dann z.B. stehen: pipe("/proc/kmsg" log_prefix("kernel: ")).
 Unter Debian Woody sollte man also einfach ohne klogd arbeiten oder aber die
 Init-Skripte anpassen.
+    </textblock>
+   </section>
 
-===============================================================================
-********** 77.. RReeffeerreennzzeenn **********
-[1] _h_t_t_p_:_/_/_w_w_w_._b_a_l_a_b_i_t_._c_o_m_/_p_r_o_d_u_c_t_s_/_s_y_s_l_o_g___n_g_/
-[2] Referenz Manual im Source-tar (1.5.15) unter doc/sgml/syslog-ng.txt
-[3] _h_t_t_p_:_/_/_h_o_m_e_._d_a_t_a_c_o_m_m_._c_h_/_p_r_u_t_i_s_h_a_u_s_e_r_/_t_e_x_t_e_/_s_y_s_l_o_g_-_n_g_-_d_e_._t_x_t
-[4] Beispiele im Source-tar (1.5.15) unter contrib/syslog-ng.conf.*
-[5] Beispiele im Source-tar (1.5.15) unter doc/syslog-ng.conf.*
-[6] _h_t_t_p_:_/_/_w_w_w_._l_i_n_u_x_-_m_a_g_a_z_i_n_._d_e_/_A_r_t_i_k_e_l_/_a_u_s_g_a_b_e_/_2_0_0_3_/_1_1_/_t_a_g_e_b_u_c_h_/_t_a_g_e_b_u_c_h_._h_t_m_l
-[7] man syslog-ng
-[8] man syslog (lohnt sich, weil viele Standards und Definitionen von syslog
+   <section>
+    <heading>
+Referenzen
+    </heading>
+
+    <ul>
+     <li>
+http://www.balabit.com/products/syslog_ng/
+     </li>
+     <li>
+Referenz Manual im Source-tar (1.5.15) unter doc/sgml/syslog-ng.txt
+     </li>
+     <li>
+http://home.datacomm.ch/prutishauser/texte/syslog-ng-de.txt
+     </li>
+     <li>
+Beispiele im Source-tar (1.5.15) unter contrib/syslog-ng.conf.*
+     </li>
+     <li>
+Beispiele im Source-tar (1.5.15) unter doc/syslog-ng.conf.*
+     </li>
+     <li>
+http://www.linux-magazin.de/Artikel/ausgabe/2003/11/tagebuch/tagebuch.html
+     </li>
+     <li>
+man syslog-ng
+     </li>
+     <li>
+man syslog (lohnt sich, weil viele Standards und Definitionen von syslog
 auf syslog-ng übernommen wurden.)
-[9] man grep (Beschreibung reguläre Ausdrücke (regexp))
-
-===============================================================================
-********** 88.. SSttiicchhwwöörrtteerr **********
-syslog, linux, logging, logfile, logfile-analyse, checklog, logcheck, klogd,
-kernel-log, kmsg, /proc/kmsg, syslog-ng HOWTO, syslog-ng FAQ
-
-===============================================================================
-********** 99.. FFeehhlleerr,, EErrggäännzzuunnggeenn?? **********
-Habe ich etwas vergessen? Kann etwas verbessert werden? Haben Sie eine Idee?
-Ich freue mich über Feedback zu diesem Text.
-
-===============================================================================
-********** 1100.. CChhaannggeelloogg **********
-  2266..1100..22000033 RReevv 00..11..11
-      Änderungen Debian-Beispiel, Problembeschreibung Zusammenspiel klogd/
-      syslog-ng.
-  1177..1100..22000033 RReevv 00..11
-      Erste Veröffentlichung.
-===============================================================================
-[[LLaaTTeeXX -->> HHTTMMLL bbyy _ll_tt_oo_hh]]
-     _w_w_w_._r_e_i_n_t_e_c_h_n_i_s_c_h_._d_e (_w_m_@_r_e_i_n_t_e_c_h_n_i_s_c_h_._d_e)
-     © 2003, Winfried Mueller (Last modified: Aug 1 2004) (LaTeX doc
-     modified: Mar 19 2004)
+     </li>
+     <li>
+man grep (Beschreibung reguläre Ausdrücke (regexp))
+     </li>
+    </ul>
+   </section>
+  </section>
+ </split>
+</chapter>
