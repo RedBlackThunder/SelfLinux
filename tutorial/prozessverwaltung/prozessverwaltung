@@ -1,142 +1,213 @@
-<!--
-   * Titel: Prozessverwaltung
-   *
-   * [c] Ferdinand Hahmann
-   * Autor: Ferdinand Hahmann <FerdinandHahmann@gmx.net>
-   *
-   * Lizenz: GPL
-   *
-   * $Revision: 1.3 $
-   * $Source: /selflinux/sammelbecken/prozessverwaltung/prozessverwaltung,v $
-   *
-   * Diese Datei ist Teil von SelfLinux  http://www.selflinux.org
-   *
-   *** $ $
--->
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<chapter>
 
+ <title>Prozessverwaltung</title>
 
-Prozessverwaltung
+ <author>
+  <name>Ferdinand Hahmann</name>
+  <mailto>FerdinandHahmann@gmx.net</mailto>
+ </author>
 
-1 Einleitung
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+ 
+ <license>GPL</license>
 
-Linux ist ein Multitasking-Betriebssystem. Das heißt, es können
+ <index>prozessverwaltung</index>
+
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
+   
+   <textblock>
+Linux ist ein <ref lang="de" url="http://de.wikipedia.org/wiki/Multitasking">Multitasking</ref>-Betriebssystem. Das heißt, es können
 mehrere Programme zur selben Zeit ablaufen. Üblicherweise benutzt
-jeder Anwender ein Programm im "Vordergrund", während mögliche
-weitere im "Hintergrund" ablaufen. Es ist ein Mechanismus vorhanden,
+jeder Anwender ein Programm im <strong>Vordergrund</strong>, während mögliche
+weitere im <strong>Hintergrund</strong> ablaufen. Es ist ein Mechanismus vorhanden,
 um Hintergrundprozesse zu beeinflussen, sie beispielsweise anzuhalten,
 fortzusetzen oder zu beenden. Ebenso unterstützen die meisten Shells
 Job-Control, also die Möglichkeit, Vordergrundprozesse in den
 Hintergrund zu schicken und umgekehrt.
+   </textblock>
+  </section>
+ </split>
+ 
+ <split>
+  <section>
+   <heading>
+Informationen über Prozesse
+   </heading>
 
+   <section>
+    <heading>
+ps
+    </heading>
 
-
-1 Informationen über Prozesse
-
-1.1 ps
-
+    <textblock>
 In einem Multitasking-Betriebssystem wie Linux läuft zu jedem
 Zeitpunkt eine Vielzahl von Prozessen, über die es interessante Dinge
 herauszufinden gibt. Dazu gibt es das Kommando ps:
+    </textblock>
 
-$ ps
+    <shell>
+     <user>
+ps
+     </user>
+     <output>
   PID TTY      TIME CMD
 18301 pts/1    0:00 bash
 18901 pts/1    0:00 ps
+     </output>
+    </shell>
 
+    <textblock>
 Die Ausgabe bedeutet, dass unser Pinguin momentan zwei Prozesse
-betreibt: Eine Shell und ps selbst.
+betreibt: Eine <command>Shell</command> und <command>ps</command> selbst.
+    </textblock>
 
+   <textblock>
 Die einzelnen Spalten bedeuten folgendes:
+   </textblock>
 
 <!-- Beginn Aufzählung -->
-
-- Die PID (Prozess ID) ist eine Nummer, die jeden Prozess eindeutig
+    <ul>
+     <li>
+Die <strong>PID</strong> (Prozess ID) ist eine Nummer, die jeden Prozess eindeutig
 identifiziert.
-
-- Unter TTY wird der Name des Terminals angegeben, das den Prozess
+     </li>
+     <li>
+Unter <strong>TTY</strong> wird der Name des Terminals angegeben, das den Prozess
 kontrolliert. Meist bedeutet dieser Name, dass der Prozess von diesem
 Terminal aus gestartet worden ist, und für die Ein- und Ausgabe
 benutzt wird.
-
-- TIME zeigt die von jedem dieser Prozesse
+     </li>
+     <li>
+<strong>TIME</strong> zeigt die von jedem dieser Prozesse
 bisher genutzte Rechenzeit an.
-
-- CMD (oder COMMAND) zeigt den Befehl an, mit dem der Prozess
+     </li>
+     <li>
+<strong>CMD</strong> (oder COMMAND) zeigt den Befehl an, mit dem der Prozess
 gestartet worden ist.
-
+     </li>
+    </ul>
 <!-- Ende Aufzählung -->
-
-ps hat eine Unmenge von Optionen, die alle dazu dienen, die
+ 
+    <textblock>
+<command>ps</command> hat eine Unmenge von Optionen, die alle dazu dienen, die
 Berge von Daten, die sich über Prozesse gewinnen lassen, zu
 filtern. Die einfachste Möglichkeit der Auflistung
-aller laufenden Prozesse ist "ps -ax". Es werden alle
+aller laufenden Prozesse ist <command>ps -ax</command>. Es werden alle
 Prozesse aufgelistet, auch diejenigen, die nicht vom
 aktuellen Benutzer gestartet wurden und die, die nicht mit
 einem Terminal verbunden sind (also im Hintergrund laufen).
 Diese Liste ist normalerweise sehr lang, daher sind nur die
 ersten paar Zeilen wiedergegeben.
+    </textblock>
 
-$ps -ax
+    <shell>
+     <user>
+ps -ax
+     </user>
+     <output>
 PID     TTY             STATE   TIME    COMMAND
 1       ?               S       0:04    init [2]
 2       ?               SW      0:00    [keventd]
 3       ?               SWN     0:00    [ksoftirqd_CPU0]
 ...
-
-Bei ps -ax wird auch noch der Status (STATE) des jeweiligen
+     </output>
+    </shell>
+    
+    <textblock>
+Bei <command>ps -ax</command> wird auch noch der <strong>Status</strong> (STATE) des jeweiligen
 Prozesses ausgegeben. Dabei werden folgen Abkürzungen verwendet:
+    </textblock>
 
 <!-- Beginn Aufzählung -->
-
-- D (Deep sleeping) Der Prozess befindet sich in einem
+    <ul>
+     <li>
+<strong>D</strong> (Deep sleeping)<br/>
+Der Prozess befindet sich in einem
 ununterbrechbarer Schlaf
-
-- R (Running) Der Prozess verarbeitet im Moment gerade Daten.
-
-- S (Sleeping) Der Prozess wartet auf irgendein Ereignis um Daten
+     </li>
+     <li>
+<strong>R</strong> (Running)<br/>
+Der Prozess verarbeitet im Moment gerade Daten.
+     </li>
+     <li>
+<strong>S</strong> (Sleeping)<br/>
+Der Prozess wartet auf irgendein Ereignis um Daten
 zu verarbeiten.
-
-- T (Traced) Der Prozess wurde angehalten.
-
-- Z (Zombie) Zombies sind
+     </li>
+     <li>
+<strong>T</strong> (Traced)<br/>
+Der Prozess wurde angehalten.
+     </li>
+     <li>
+<strong>Z</strong> (Zombie)<br/>
+Zombies sind
 Prozesse, die eigentlich schon beendet sein sollten, aber
 immer noch auf irgendetwas warten. Sie können immer mal
 wieder vorkommen und stellen keinen Grund zur Besorgnis dar,
 solange sie nicht in Mengen auftreten und es sich nicht um
 viele Zombies mit gleichem Namen handelt.
+     </li>
+    </ul>
 
 <!-- Ende Aufzählung -->
 
+    <textblock>
 Stehen neben diesen Statusmeldungen noch ein oder mehrere Zeichen
 bedeuten diese folgendes:
+    </textblock>
 
 <!-- Beginn Aufzählung -->
-
-- W bedeutet, dass der Prozess in den Swap-Speicher ausgelagert
+    <ul>
+     <li>
+<strong>W</strong><br/>
+bedeutet, dass der Prozess in den Swap-Speicher ausgelagert
 wurde und somit keine Speicherseiten belegt werden.
-
-- < bedeutet, dass der Prozess mit einer höheren Priorität läuft.
-
-- N bedeutet genau das Gegenteil. Der Prozess läuft mit einer
+     </li>
+     <li>
+<strong>&lt;</strong><br/>
+bedeutet, dass der Prozess mit einer höheren Priorität läuft.
+     </li>
+     <li>
+<strong>N</strong><br/>
+bedeutet genau das Gegenteil. Der Prozess läuft mit einer
 niedrigeren Priorität.
-
-- L (Locked) bedeutet, dass der Prozess im Speicher geladen
+     </li>
+     <li>
+<strong>L</strong> (Locked)<br/>
+bedeutet, dass der Prozess im Speicher geladen
 wurde und auch dort gehalten wird.
-
+     </li>
+    </ul>
 <!-- Ende Aufzählung -->
+   </section>
+    
+   <section>
+    <heading>
+pstree
+    </heading>
 
-
-
-1.1 pstree
-
+    <textblock>
 Linux merkt sich, wenn ein Programm ein anderes startet.
-Wenn der "Elternprozess" beendet wird, wird auch für das Ende
-aller "Kindprozesse" gesorgt, damit diese nicht für immer
-herumliegen und Platz wegnehmen. Die "Baumstruktur" der
-laufenden Prozesse wird mit pstree oder mit ps und der
-Option "-f" angezeigt:
+Wenn der <strong>Elternprozess</strong> beendet wird, wird auch für das Ende
+aller <strong>Kindprozesse</strong> gesorgt, damit diese nicht für immer
+herumliegen und Platz wegnehmen. Die <strong>Baumstruktur</strong> der
+laufenden Prozesse wird mit <command>pstree</command> oder mit <ref iref="ps">ps</ref> und der
+Option <command>-f</command> angezeigt:
+    </textblock>
 
-$ pstree
+    <shell>
+     <user>
+pstree
+     </user>
+     <output>
 init-+-atd
      |-automount
      |-cron
@@ -152,292 +223,466 @@ init-+-atd
      |     |-netscape---netscape
      |     `-xemacs
 ...
+     </output>
+    </shell>
 
+    <textblock>
 Hier ist ein umfangreicher Ast. Man sieht, wie der Autor an
-diesem Text mit XEmacs unter KDE schreibt.
+diesem Text mit <ref chapter="emacs">XEmacs</ref> unter <ref lang="de" url="http://www.kde.de">KDE</ref> schreibt.
 Gleichzeitig laufen noch ein Terminalfenster
-(Eterm), in dem gerade pstree ausprobiert wird und Netscape.
+(Eterm), in dem gerade <command>pstree</command> ausprobiert wird und <command>Netscape</command>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+top
+    </heading>
 
-
-1.1 top
-
+    <textblock>
 Der Systemverwalter kann seine Augen und Ohren nicht überall
 haben, darum braucht er ein Programm, das ihm die
 wichtigsten Prozesse anzeigt, die auf dem System laufen. Die
 wichtigsten sind die, die am meisten Rechenzeit oder am
 meisten Speicher belegen. Nach diesen Kriterien entscheidet
-top.
+<command>top</command>.
+    </textblock>
 
-## Hier bitte einen Screenshot von top einbauen.
 
-top fasst alle bisher genannten Kommandos zusammen und fügt
+<!-- ## Hier bitte einen Screenshot von top einbauen. -->
+
+
+    <textblock>
+<command>top</command> fasst alle bisher genannten Kommandos zusammen und fügt
 noch einiges hinzu.
+    </textblock>
 
 <!-- Beginn Aufzählung -->
 
-- Ganz oben stehen die von w bekannten
+    <ul>
+     <li>
+Ganz oben stehen die von <command>w</command> bekannten
 Werte (Systemzeit, Uptime, angemeldete Benutzer und Auslastung).
-
-- In der nächsten Zeile
+     </li>
+     <li>
+In der nächsten Zeile
 kommt die Anzahl der laufenden Prozesse und ihre Zustände.
 Die Zustände wurden bereits bei
-<!-- LINK iref="ps" -->ps<!-- ENDLINK -->
+<ref iref="ps">ps</ref>
 erklärt.
-
-- Die dritte Zeile zeigt den prozentualen Anteil an, womit sich der
+     </li>
+     <li>
+Die dritte Zeile zeigt den prozentualen Anteil an, womit sich der
 (oder die) Prozessor(en) in den letzten Sekunden beschäftigt hat
 (haben).
-
-- user: Mit user sind Prozesse gemeint, die von den Benutzern des
+     </li>
+     <li>
+<strong>user:</strong><br/>
+Mit user sind Prozesse gemeint, die von den Benutzern des
 Systems gestartet worden sind
-
-- system: Hierbei sind sämtliche Prozesse gemeint, die vom
+     </li>
+     <li>
+<strong>system:</strong><br/>
+Hierbei sind sämtliche Prozesse gemeint, die vom
 System gestartet worden sind.
-
-- nice: Damit sind all die Prozesse gemeint, die nicht mit einem
-nice von 0 null laufen.
-
-- idle: Mit idle wird die noch zur Verfügung stehende Prozessorlast
+     </li>
+     <li>
+<strong>nice:</strong><br/>
+Damit sind all die Prozesse gemeint, die nicht mit einem
+<ref iref="nice">nice</ref> von 0 null laufen.
+     </li>
+     <li>
+<strong>idle:</strong><br/>
+Mit idle wird die noch zur Verfügung stehende Prozessorlast
 bezeichnet.
-
-- Nun kommen noch die von free bekannten Speicherangaben.
-
-- Als letztes folgt die Liste mit den ressourcenträchtigesten
-  Prozessen. Im Gegensatz zu ps werden bei top weitere
-  Informationen zu den einzelnen Prozessen ausgegeben:
-
-- User gibt den Namen des Users an, unter welchem der Prozess läuft.
-
-- PR gibt die Priorität des Prozesses an
-
-- NI gibt den Nice-Wert an. Ein negativer Wert bedeutet
+     </li>
+     <li>
+Nun kommen noch die von <command>free</command> bekannten Speicherangaben.
+     </li>
+     <li>
+Als letztes folgt die Liste mit den ressourcenträchtigesten
+Prozessen. Im Gegensatz zu ps werden bei top weitere
+Informationen zu den einzelnen Prozessen ausgegeben:
+     </li>
+     <li>
+<strong>User</strong><br/>
+gibt den Namen des Users an, unter welchem der Prozess läuft.
+     </li>
+     <li>
+<strong>PR</strong><br/>
+gibt die Priorität des Prozesses an
+     </li>
+     <li>
+<strong>NI</strong><br/>
+gibt den Nice-Wert an. Ein negativer Wert bedeutet
 eine höhere Priorität, ein positiver Wert eine
 geringere Priorität
-
-- VIRT gibt die gesamte Anzahl an Speicher an, den dieser
+     </li>
+     <li>
+<strong>VIRT</strong><br/>
+gibt die gesamte Anzahl an Speicher an, den dieser
 Prozess benötigt, inklusive den Code, den Daten und
 den geteilten Bibliotheken.
-
-- RES gibt die Belegung des physikalischen Arbeitsspeichers
+     </li>
+     <li>
+<strong>RES</strong><br/>
+gibt die Belegung des physikalischen Arbeitsspeichers
 an. Auslagerungen im Swap-Speicher werden hier nicht
 berücksichtigt.
-
-- SHR gibt die Anzahl des Speichers an Daten an, die auch
+     </li>
+     <li>
+<strong>SHR</strong><br/>
+gibt die Anzahl des Speichers an Daten an, die auch
 von anderen Prozessen genutzt werden können.
-
-- S gibt den Status des Prozesses an. Siehe dazu auch
+     </li>
+     <li>
+<strong>S</strong><br/>
+gibt den Status des Prozesses an. Siehe dazu auch
 die Erklärung bei ps
-
-- %CPU gibt an wieviel Prozent von der gesamten Prozessorleistung
+     </li>
+     <li>
+<strong>%CPU</strong><br/>
+gibt an wieviel Prozent von der gesamten Prozessorleistung
 der Prozess benötigt.
-
-- %MEM gibt dasselbe wie %CPU an, diesmal aber bezogen auf den
+     </li>
+     <li>
+<strong>%MEM</strong><br/>
+gibt dasselbe wie <strong>%CPU</strong> an, diesmal aber bezogen auf den
 physikalischen Arbeitsspeicher.
+     </li>
+    </ul>
 
 <!-- Ende Aufzählung -->
+   </section>
 
+   <section>
+    <heading>
+tload
+    </heading>
 
-
-1.1 tload
-
-Die Aufgabe von tload ist es, die durchschnittliche Systemlast in
-einer einfachen ASCII-Grafik darzustellen. Mit der Option -d
+    <textblock>
+Die Aufgabe von <command>tload</command> ist es, die durchschnittliche Systemlast in
+einer einfachen ASCII-Grafik darzustellen. Mit der Option <command>-d</command>
 kann die Zeit in Sekunden angeben werden, nach der die
-Grafik aktualisiert wird. Mit -s wird die Skalierung angegeben,
+Grafik aktualisiert wird. Mit <command>-s</command> wird die Skalierung angegeben,
 also wie viele Zeilen für eine Einheit verwendet werden. Je
 größer die Zahl ist, desto gröber die Darstellung.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+fuser
+    </heading>
 
-
-1.1 fuser
-
+    <textblock>
 Manchmal kann es ganz nützlich sein, festzustellen welche
 Prozesse eine bestimmte Datei benutzen. Für diese
 Aufgabe gibt es den Befehl fuser gefolgt vom Dateinamen.
+    </textblock>
 
-$fuser ksycoca
+    <shell>
+     <user>
+fuser ksycoca
+     </user>
+     <output>
 ksycoca:        463 463m 471 471m 539 539m 546 546m
+     </output>
+    </shell>
 
-Diese Ausgabe sagt aus, dass die Datei ksycoca von den Prozessen
-mit der PID 463, 471, 539 und 546 benutzt wird. Gefolgt von der PID
+    <textblock>
+Diese Ausgabe sagt aus, dass die Datei <path>ksycoca</path> von den Prozessen
+mit der <strong>PID</strong> 463, 471, 539 und 546 benutzt wird. Gefolgt von der <strong>PID</strong>
 wird ein Buchstabe mit ausgegeben (in diesem Fall ist es immer ein
 m). Dieser Buchstabe gibt an, wie der Prozess auf die Datei
 zugreift. Konkret bedeuten die Buchstaben folgendes:
+    </textblock>
 
 <!-- Beginn Aufzählung -->
-
-- c: Die Datei wird vom Prozess als Verzeichnis behandelt
-
-- e: Die Datei ist ausführbar und wird vom Prozess ausgeführt.
-
-- f: Die Datei wurde vom Prozess geöffnet. Im Standard-Modus
-wird das f weg gelassen. Somit ist auch klar, warum in
-unserem Beispiel jede PID zweimal angegeben wurde.
-
-- m: Die Datei ist eine Bibliothek, die gemeinsam von den
+    <ul>
+     <li>
+<strong>c:</strong><br/>
+Die Datei wird vom Prozess als Verzeichnis behandelt
+     </li>
+     <li>
+<strong>e:</strong><br/>
+Die Datei ist ausführbar und wird vom Prozess ausgeführt.
+     </li>
+     <li>
+<strong>f:</strong><br/>
+Die Datei wurde vom Prozess geöffnet. Im Standard-Modus
+wird das <command>f</command> weg gelassen. Somit ist auch klar, warum in
+unserem Beispiel jede <strong>PID</strong> zweimal angegeben wurde.
+     </li>
+     <li>
+<strong>m:</strong><br/>
+Die Datei ist eine Bibliothek, die gemeinsam von den
 Prozessen genutzt wird.
-
-- r: wird verwendet, wenn es sich um das Wurzelverzeichnis
+     </li>
+     <li>
+<strong>r:</strong><br/>
+wird verwendet, wenn es sich um das Wurzelverzeichnis
 (root-Verzeichnis) handelt.
-
+     </li>
+    </ul>
+    
+    
 <!-- Ende Aufzählung -->
+    
 
-Auch für fuser gibt es noch eine Reihe weiterer Optionen.
-Interessant dabei ist die Option -n. Diese erwartet noch eine
+    <textblock>
+Auch für <command>fuser</command> gibt es noch eine Reihe weiterer Optionen.
+Interessant dabei ist die Option <command>-n</command>. Diese erwartet noch eine
 weitere Angabe:
+    </textblock>
+
 
 <!-- Anfang Aufzählung -->
-
-- file, wenn es sich um eine Datei handelt. Dabei bewirkt
-fuser -n file ksycoca dasselbe wie fuser ksycoca
-
-- udp, wenn sich die darauf folgende Angabe um einen
-<!-- LINK: chapter="tcpip" iref="UDP - User Datagram Protocol" -->UDP-Port<!-- ENDLINK -->
+    <ul>
+     <li>
+<strong>file</strong>,<br/>
+wenn es sich um eine Datei handelt. Dabei bewirkt
+<command>fuser -n file ksycoca</command> dasselbe wie <command>fuser ksycoca</command>
+     </li>
+     <li>
+<strong>udp</strong>,<br/>
+wenn sich die darauf folgende Angabe um einen
+<ref chapter="tcpip" iref="UDP - User Datagram Protocol">UDP-Port</ref>
 handelt.
-
-- tcp bedeutet das gleiche wie udp mit dem Unterschied, dass ein
-<!-- LINK: chapter="tcpip" iref="TCP - Transmission Control Protocol " -->TCP-Port<!-- ENDLINK -->
+     </li>
+     <li>
+<strong>tcp</strong><br/>
+bedeutet das gleiche wie udp mit dem Unterschied, dass ein
+<ref chapter="tcpip" iref="TCP - Transmission Control Protocol ">TCP-Port</ref>
 gemeint ist.
+     </li>
+    </ul> 
 
 <!-- Ende Aufzählung -->
 
+    <textblock>
 Der oben beschriebe Buchstaben-Code ist auch für die Port-Angaben
 gültig, da unter Linux Ports auch als Dateien behandelt werden.
+    </textblock>
 
+    <textblock>
 Weiter wichtige Optionen sind noch:
+    </textblock>
+    
 
 <!-- Anfang Aufzählung -->
 
--a: Dabei werden auch Dateien ausgegeben, auf die gerade
+    <ul>
+     <li>
+<command>-a</command>:<br/>
+Dabei werden auch Dateien ausgegeben, auf die gerade
 kein Prozess zugreift.
-
--u: Gibt in Klammern den zur PID gehörenden Benutzernamen aus.
-
--v (verbose) gibt mehr Informationen aus.
-
+     </li>
+     <li>
+<command>-u</command>:<br/>
+Gibt in Klammern den zur PID gehörenden Benutzernamen aus.
+     </li>
+     <li>
+<command>-v</command> (verbose)<br/>
+gibt mehr Informationen aus.
+     </li>
+    </ul>
+    
 <!-- Ende Aufzählung -->
+    
+   </section>
 
+   <section>
+    <heading>
+kill
+    </heading>
 
-
-1.1 kill
-
-kill ist - trotz seines Namens - nicht nur zum Beenden von Prozessen
+    <textblock>
+<command>kill</command> ist - trotz seines Namens - nicht nur zum Beenden von Prozessen
 geeignet. Es kann alle möglichen Signale an die Prozesse senden, die
-von dem Benutzer gestartet wurden, der kill aufruft. Ist dieser
+von dem Benutzer gestartet wurden, der <command>kill</command> aufruft. Ist dieser
 Benutzer der Systemverwalter, dann sind ihm alle Prozesse zugänglich.
+    </textblock>
 
+    <textblock>
 Der Aufruf ist:
+    </textblock>
 
-kill <Signal> <Prozess-ID>
+    <quotation>
+<command>kill &lt;Signal&gt; &lt;Prozess-ID&gt;</command>
+    </quotation>
 
+    <textblock>
 Die Prozess-ID (PID) können Sie beispielsweise aus der Ausgabe des
-Programmes ps entnehmen:
+Programmes <ref iref="ps">ps</ref> entnehmen:
+    </textblock>
 
-$ ps
+    <shell>
+     <user>
+ps
+     </user>
+     <output>
 [...]
 19376 pts/0    00:00:00 ps
+     </output>
+    </shell>
 
+    <textblock>
 Hier ist die PID des ps-Prozesses selbst die 19376.
+    </textblock>
 
-Wenn die PID negativ ist, wird <Signal> nicht an einen bestimmten
+    <textblock>
+Wenn die PID negativ ist, wird <strong>&lt;Signal&gt;</strong> nicht an einen bestimmten
 Prozess gesendet, sondern an alle Prozesse mit der angegebenen PGID.
 Der Befehl lautet also dann folgendermaßen:
+    </textblock>
 
-kill <Signal> -<PGID>
+    <quotation>
+<command>kill &lt;Signal&gt; -&lt;PGID&gt;</command>
+    </quotation>
 
+    <textblock>
 Anstelle der Prozess-ID kann auch -1 angegeben werden. Dabei wird
-<Signal> an alle Prozesse gesendet, ausser dem kill-Prozess
-selbst und init. Zudem zeigt dieser Befehl nur bei den Prozessen
+     <strong>&lt;Signal&gt;</strong> an alle Prozesse gesendet, ausser dem <command>kill</command>-Prozess
+selbst und <path>init</path>. Zudem zeigt dieser Befehl nur bei den Prozessen
 Wirkung, bei welchen man die nötigen Rechte hat.
+    </textblock>
 
-Wenn Sie kein Signal angeben, sendet kill das Signal 15 (SIGTERM),
+    <textblock>
+Wenn Sie kein Signal angeben, sendet <command>kill</command> das <strong>Signal</strong> <strong>15</strong> (<strong>SIGTERM</strong>),
 das die meisten Programme dazu veranlasst, hinter sich aufzuräumen,
 um sich dann zu beenden.
+    </textblock>
 
-Weitere wichtige Signale sind SIGHUP (1) und SIGKILL (9).
-SIGHUP steht für "hang-up". Wenn ein Benutzer sich über das
+    <textblock>
+Weitere wichtige Signale sind <strong>SIGHUP</strong> (<strong>1</strong>) und <strong>SIGKILL</strong> (<strong>9</strong>).
+<strong>SIGHUP</strong> steht für <strong>hang-up</strong>. Wenn ein Benutzer sich über das
 Netzwerk angemeldet hat und die Verbindung abbricht, z. B.
-weil ein Modem auflegt (eben ein "hang-up"), wird dieses Signal
+weil ein Modem auflegt (eben ein <strong>hang-up</strong>), wird dieses Signal
 an alle Prozesse gesendet, die während dieser Anmeldesitzung
 gestartet wurden. Sie werden dann beendet.
+    </textblock>
 
-SIGKILL tut genau das, was sein Name andeutet: Es unternimmt alles,
+    <textblock>
+<strong>SIGKILL</strong> tut genau das, was sein Name andeutet: Es unternimmt alles,
 um einem Prozess den Garaus zu machen. Auch wenn ein hartnäckiger
 Prozess nach einem
+    </textblock>
 
-$ kill -SIGKILL 12345
+    <shell>
+     <user>
+kill -SIGKILL 12345
+     </user>
+    </shell>
 
+    <textblock>
 möglicherweise noch in der Ausgabe von ps erscheint, bekommt er
 jedoch keine Rechenzeit mehr zugewiesen.
+    </textblock>
 
+    <textblock>
 Eine Liste mit allen Signalen finden Sie entweder in der Manpage
-von kill (man 1 kill) oder mit dem Befehl kill -l.
+von <command>kill</command> (<command>man 1 kill</command>) oder mit dem Befehl <command>kill -l</command>.
+    </textblock>
 
-Die Option -p sendet kein Signal an den Prozess, sondern gibt
+    <textblock>
+Die Option <command>-p</command> sendet kein Signal an den Prozess, sondern gibt
 nur den Namen des zur PID passenden Prozesses aus.
+    </textblock>
 
-Die bash-Shell enthält einen eingebauten Befehl kill, der im
-Prinzip dieselbe Auswirkung wie /bin/kill hat, jedoch zwei Vorteile
-bietet:
+    <textblock>
+Die bash-Shell enthält einen eingebauten Befehl <command>kill</command>, der im
+Prinzip dieselbe Auswirkung wie <command>/bin/kill</command> hat, jedoch zwei Vorteile
+bietet:<br/>
 Er erlaubt die Verwendung von Job-IDs statt PIDs,
 und wenn Sie die maximale Anzahl von Prozessen gestartet haben, die
 Ihr Systemverwalter ihnen zubilligt, können Sie einen davon beenden,
-ohne dazu einen weiteren Prozess mit /bin/kill starten zu müssen.
-Die Eingabe von kill startet den in die bash eingebauten kill-Befehl.
-/bin/kill verwendet den externen kill-Befehl.
+ohne dazu einen weiteren Prozess mit <command>/bin/kill</command> starten zu müssen.
+Die Eingabe von <command>kill</command> startet den in die <command>bash</command> eingebauten <command>kill</command>-Befehl.
+<command>/bin/kill</command> verwendet den externen <command>kill</command>-Befehl.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+killall
+    </heading>
 
-
-1.1 killall
-
-killall bewirkt im Prinzip dasselbe wie kill; es sendet Signale an
-Prozesse. Der Unterschied zwischen kill und killall ist, an
-welchen Prozesse ein Signal gesendet wird. Bei killall wird
+    <textblock>
+<command>killall</command> bewirkt im Prinzip dasselbe wie <ref iref="kill">kill</ref>; es sendet Signale an
+Prozesse. Der Unterschied zwischen <command>kill</command> und <command>killall</command> ist, an
+welchen Prozesse ein Signal gesendet wird. Bei <command>killall</command> wird
 nicht die PID des Prozesses angegeben, sondern dessen Name. Da
 allerdings der Name, im Gegensatz zur PID, nicht eindeutig ist,
 wird das Signal an alle Prozesse mit diesem Namen gesendet.
 Der genaue Aufruf lautet so:
+    </textblock>
 
-killall [Option] [Signal] <Name>
+    <quotation>
+<command>killall [Option] [Signal] &lt;Name&gt;</command>
+    </quotation>
 
-Wenn <Name> einen "/" enthält so ist damit nicht der Name eines
+    <textblock>
+Wenn <strong>&lt;Name&gt;</strong> einen <path>/</path> enthält so ist damit nicht der Name eines
 Prozesses gemeint, sondern der Name einer auszuführenden Datei.
 Dabei wird ein Signal an alle Prozesse gesendet, die diese
 Datei ausführen.
+    </textblock>
 
-Die Signale sind dieselben wie bei kill. Ohne Angabe von Signal wird
-auch ein SIGHUP (15) gesendet.
+    <textblock>
+Die Signale sind dieselben wie bei <ref iref="kill">kill</ref>. Ohne Angabe von Signal wird
+auch ein <strong>SIGHUP</strong> (<strong>15</strong>) gesendet.
+    </textblock>
 
-Eine wichtige Option ist -e (--exact). Normalerweise wertet
-killall nur die
-ersten 15 Zeichen von <Name> aus. Haben nun zwei Prozesse
+    <textblock>
+Eine wichtige Option ist <command>-e</command> (<command>--exact</command>). Normalerweise wertet
+<command>killall</command> nur die
+ersten 15 Zeichen von <strong>&lt;Name&gt;</strong> aus. Haben nun zwei Prozesse
 unterschiedliche
 Namen stimmen aber trotzdem in den ersten 15 Zeichen überein, so sind
-dennoch beide Prozesse von killall betroffen. Die Option -e erzwingt
+dennoch beide Prozesse von <command>killall</command> betroffen. Die Option <command>-e</command> erzwingt
 dass der volle Name ausgewertet wird.
+    </textblock>
 
+    <textblock>
 Eventuell will man nicht blind alle Prozesse mit gleichen Namen beenden,
 sondern vorher noch eine Nachfrage haben. Dafür gibt es die Option
--i (--interactive).
+     <command>-i</command> (<command>--interactive</command>).
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+nice
+   </heading>
 
-
-1 nice
-
+   <textblock>
 Unter Linux ist es möglich, dass mehrere Befehle, auch Jobs
 genannt, zur gleichen Zeit ausgeführt werden. Da allerdings
 nicht alle Ressourcen unbegrenzt zur Verfügung stehen, muss
 eine Auswahl getroffen werden, welche Priorität ein Job hat.
 Diese Aufgabe erledigt der Befehl nice:
+   </textblock>
 
-nice <Priorität> <Befehl> [Argumente]
+   <quotation>
+<command>nice &lt;Priorität&gt; &lt;Befehl&gt; [Argumente]</command>
+   </quotation>
 
-<Priorität> ist für normale User eine Zahl zwischen 0 und 19,
+   <textblock>
+<strong>&lt;Priorität&gt;</strong> ist für normale User eine Zahl zwischen 0 und 19,
 wobei 19 die niedrigste Priorität ist. Der Superuser hat die
 Möglichkeit Prioritäten von -20 bis 19 zu vergeben. Dabei
 ist -20 die höchste Priorität.
+   </textblock>
 
-<Befehl> ist der eigentliche Befehl, der ausgeführt werden
-soll. [Argumente] sind dabei Optionen, die
-an <Befehl> übergeben werden.
+   <textblock>
+<strong>&lt;Befehl&gt;</strong> ist der eigentliche Befehl, der ausgeführt werden
+soll. <strong>[Argumente]</strong> sind dabei Optionen, die
+an <strong>&lt;Befehl&gt;</strong> übergeben werden.
+   </textblock>
+  </section>
+ </split>
+</chapter>
