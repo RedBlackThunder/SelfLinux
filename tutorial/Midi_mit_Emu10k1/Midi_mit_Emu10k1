@@ -1,0 +1,106 @@
+Midi mit Emu10k1
+   Dieses HowTo stellt dar, wie man midi mit einer Emu10k1-Soundkarte
+   (SB!Live) ohne umständliche Software (z.B. Timidity) über alsa zum
+   laufen bekommt.
+
+   Falls Probleme auftreten oder ich irgendwen mit gecopyrightetem
+   Material zuwenig erwähnt hab PM an mich
+
+   Voraussetzungen
+   Emu10k1-Soundkarte
+   alsa
+
+
+   Zunächst werden sogenannte Soundfonts benötigt
+   Dies sind Dateien, in denen Anweisungen für die Soundkarte stehen, wie
+   sie bei welcher Midi-Anweisung zu reagieren hat
+   Auf der Treiber-CD der SB!Live befindet sich ein einfacher
+   2MB-Soundfont mit imho schlechten Klang, allerdings kann dieser auch
+   verwendet werden
+   Ich empfehle einen Soundfont von HammerSound
+   Diese sind meistens gepackt, daher mit dem entsprechenden Tool
+   extrahieren (zip mit unzip, rar mit unrar, SfArk mit sfarkxtc)
+   Für das oft verwendete SfPack gibt es leider noch keine native Lösung,
+   daher muss wine mit SfPack für Windows verwendet werden
+
+
+   Jetzt muss das Modul für den Midi-synthesizer geladen werden
+   Dies geht mit
+   Code:
+
+   modprobe snd-emu10k1-synth
+
+
+
+
+   Um die Soundfonts in den Speicher der Karte zu bekommen, benötigen wir
+   das Programm
+   Code:
+
+   sfxload
+
+   von awesfx
+
+   Der Soundfont der Wahl wird jetzt mittels
+   Code:
+
+   sfxload PFAD/ZUM/SOUNDFONT.sf2
+
+   geladen
+
+   Wenn hier keine Antwort kommt und man direkt zum Prompt zurück kehrt
+   ist alles erfolgreich gelaufen.
+
+
+   Nun muss noch im
+   Code:
+
+   alsamixer
+
+   auf Music gecapturet werden (Zum Regler Musik gehen und Leertaste
+   drücken) und auf eine brauchbare Lautstärke hochgedreht werden.
+
+
+   Nun testen wir das ganze, indem wir eine Mididatei (Google findet jede
+   Menge ) abspielen. Dies geht mittels
+   Code:
+
+   aplaymidi -p 65:0 MIDIDATEI
+
+
+   Falls das geklappt hat freuen wir uns, wir haben jetzt anständiges Midi
+
+
+   Um die Musik in ScummVM schöner hinzubekommen geht man nun wie folgt
+   vor:
+   man exportiert die Variable SCUMMVM_PORT als 65:[0-4] (also irgendwas
+   zwischen 0 und 4)
+   Dies geht mittels
+   Code:
+
+   export SCUMMVM_PORT=65:0
+
+
+   Nun muss man noch in der ~/.scummvmrc folgende Zeile eintragen
+   Code:
+
+   music_driver=alsa
+
+
+
+   Dies sollte jetzt mit einem schönen Sound bei Scumm-Spielen mit Midi
+   belohnt werden (falls man keine repacks mit flac, ogg o.ä. hat
+   praktisch alle)
+
+
+   Falls kein Ton erklingt, es aber auch keine Fehlermeldungen gibt,
+   fehlen Schreibrechte auf /dev/snd/sequencer, einfach nachtragen per
+   chmod
+
+
+
+   Viel Spaß Damit
+
+
+   PS: Kann gut sein dass es auch mit nicht-emu10k1-karten funktioniert,
+   allerdings kann ich dies mangels Hardware nicht testen
