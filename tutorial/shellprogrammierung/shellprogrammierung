@@ -28,8 +28,8 @@
  <description>
   <textblock>
 Dieses Kapitel behandelt den fortgeschrittenen Umgang mit Bourne-Shell
-kompatiblen Shells, der insbesondere im Erstellen und Pflegen von 
-Shell-Skripten Anwendung findet. 
+kompatiblen Shells, der insbesondere im Erstellen und Pflegen von
+Shell-Skripten Anwendung findet.
   </textblock>
  </description>
 
@@ -60,12 +60,12 @@ für drei Hauptaufgaben benutzt:
 Interaktive Anwendung (Dialog)
      </li>
      <li>
-Anwendungsspezifische Anpassung des Unix-Systemverhaltens 
+Anwendungsspezifische Anpassung des Unix-Systemverhaltens
 (Belegen von Umgebungsvariablen)
      </li>
      <li>
 Programmierung (Shell-Skripting). Zu diesem Zweck stehen einige
-Mechanismen zur Verfügung, die aus Hochsprachen bekannt sind 
+Mechanismen zur Verfügung, die aus Hochsprachen bekannt sind
 (Variablen, Datenströme, Funktionen usw.).
      </li>
     </ul>
@@ -73,7 +73,7 @@ Mechanismen zur Verfügung, die aus Hochsprachen bekannt sind
     <textblock>
 Ursprünglich handelte es sich dabei um ein relativ einfaches Programm, der
 Bourne Shell (wird oft auch Standard-Shell genannt). Dies ist
-praktisch die <strong>Mutter aller Shells</strong>. Aus dieser entwickelten sich 
+praktisch die <strong>Mutter aller Shells</strong>. Aus dieser entwickelten sich
 
 im Laufe der Zeit mehrere
 Varianten, die alle ihre eigenen Vor- und Nachteile mit sich bringen. Da es
@@ -89,22 +89,22 @@ Die Qual der Wahl
     </heading>
     <textblock>
 Um die Auswahl einer Shell zu erleichtern, werden hier die wichtigsten
-Varianten kurz vorgestellt. Sie sind aufgeteilt in Einfach- und 
+Varianten kurz vorgestellt. Sie sind aufgeteilt in Einfach- und
 Komfort-Shells. Die Komfort-Shells zeichnen sich durch komfortablere
 Funktionen zur interaktiven Bedienung aus, während die Einfach-Versionen
 üblicherweise für die Programmierung benutzt werden.
     </textblock>
     <textblock>
-	 <strong>Einfach-Shells:</strong>
+         <strong>Einfach-Shells:</strong>
     </textblock>
     <ul>
      <li>
-Die <name><strong>Bourne</strong>-</name> oder 
+Die <name><strong>Bourne</strong>-</name> oder
 <name><strong>Standard-Shell</strong></name>
-(<command>sh</command>) ist die kompakteste und einfachste 
-Form. Sie bietet schon Mechanismen wie die Umlenkung der Ein- oder 
-Ausgaben, Wildcards zur Abkürzung von Dateinamen, Shell-Variablen und 
-einen Satz interner Befehle zum Schreiben von Shell-Prozeduren. 
+(<command>sh</command>) ist die kompakteste und einfachste
+Form. Sie bietet schon Mechanismen wie die Umlenkung der Ein- oder
+Ausgaben, Wildcards zur Abkürzung von Dateinamen, Shell-Variablen und
+einen Satz interner Befehle zum Schreiben von Shell-Prozeduren.
 Neuere Versionen beherrschen auch das Job-Controlling. Für die
 Entwicklung von Shell-Skripten sollte man sich auf diese Shell
 beschränken, da sie auf praktisch allen Systemen zur Verfügung steht.
@@ -117,16 +117,16 @@ das Editieren in der Befehlszeile. Außerdem gibt es hier
 History-Funktionen um auf zurückliegende Befehle zurückgreifen zu können,
 eine Ganzzahl-Arithmetik, verbesserte Möglichkeiten zur Mustererkennung,
 Aliase und das Job-Controlling.
-Ein Alias ist dabei eine Abkürzung für einen Befehl. Beispielsweise kann 
-man das häufig benutzte <command>ls -la</command> einfach durch 
-<command>la</command> ersetzen. 
-Unter Job-Controlling versteht man einen Mechanismus, mit dessen Hilfe 
-der Benutzer die Ausführung von Prozessen selektiv stoppen oder fortsetzen 
+Ein Alias ist dabei eine Abkürzung für einen Befehl. Beispielsweise kann
+man das häufig benutzte <command>ls -la</command> einfach durch
+<command>la</command> ersetzen.
+Unter Job-Controlling versteht man einen Mechanismus, mit dessen Hilfe
+der Benutzer die Ausführung von Prozessen selektiv stoppen oder fortsetzen
 kann.
      </li>
      <li>
 Die <name><strong>C-Shell</strong></name> (<command>csh</command>)
-bietet ähnliche Annehmlichkeiten wie die 
+bietet ähnliche Annehmlichkeiten wie die
 <name><command>Korn-Shell</command></name>,
 lehnt sich aber in der Syntax sehr stark an die Programmiersprache C
 an. Sie sollte nach Möglichkeit nicht zur Shell-Programmierung benutzt
@@ -135,11 +135,11 @@ sollte.
      </li>
     </ul>
     <textblock>
-	 <strong>Komfort-Shells:</strong>
+         <strong>Komfort-Shells:</strong>
     </textblock>
     <ul>
      <li>
-Die <name><strong>Bourne-Again-Shell</strong></name> (<command>bash</command>) 
+Die <name><strong>Bourne-Again-Shell</strong></name> (<command>bash</command>)
 ist voll abwärtskompatibel zur <command>sh</command>, bietet
 aber von allen Shells die komfortabelsten Funktionen für das interaktive
 Arbeiten. Da die Bash ein GNU-Produkt ist, ist sie die Standard-Shell
@@ -148,13 +148,13 @@ Unixen zur Verfügung.
      </li>
      <li>
 Die <name><strong>T-C-Shell</strong></name>(<command>tcsh</command>)
-verhält sich zur <name><strong>C-Shell</strong></name> wie die 
-<name><strong>Bourne-Again-Shell</strong></name> zur Standard-Shell. Sie ist 
-voll kompatibel, bietet 
+verhält sich zur <name><strong>C-Shell</strong></name> wie die
+<name><strong>Bourne-Again-Shell</strong></name> zur Standard-Shell. Sie ist
+voll kompatibel, bietet
 aber zusätzliche Komfort-Funktionen.
      </li>
      <li>
-Die <name><strong>Stand-Alone-Shell</strong></name> (<command>sash</command>) 
+Die <name><strong>Stand-Alone-Shell</strong></name> (<command>sash</command>)
 ist vor allem nützlich für die
 <strong>System-Recovery</strong>. Sie kann gegen statische Bibliotheken gelinkt
 werden und beinhaltet bereits (teilweise vereinfachte) Formen von
@@ -170,7 +170,7 @@ http://www.baiti.net/sash/</ref>.
    </section>
   </section>
  </split>
- 
+
  <split>
   <section>
    <heading>
@@ -180,24 +180,24 @@ Wofür Shell-Programmierung?
 Shell-Skripte werden im Wesentlichen aus zwei Gründen geschrieben: Erstens,
 weil man so ständig wiederkehrende Kommandos zusammenfassen kann, die
 dann mit einem einfachen Aufruf starten, und zweitens, weil man
-so einfache Programme schreiben kann, die relativ intelligent Aufgaben 
+so einfache Programme schreiben kann, die relativ intelligent Aufgaben
 erledigen können.
    </textblock>
    <textblock>
-Der erste Aspekt ist wichtig, wenn man beispielsweise regelmäßig 
+Der erste Aspekt ist wichtig, wenn man beispielsweise regelmäßig
 auftretende Aufgaben erledigen möchte, wie z. B. das Backup von Log-Dateien.
 In dem Fall schreibt man sich ein Skript, das die Dateien archiviert, und
 sorgt dafür, dass dieses Skript in regelmäßigen Abständen aufgerufen wird
 (per <ref chapter="cron">Cron-Job</ref>).
    </textblock>
    <textblock>
-Der zweite Fall tritt ein, wenn man eine mehr oder weniger komplexe Abfolge 
+Der zweite Fall tritt ein, wenn man eine mehr oder weniger komplexe Abfolge
 von Befehlen ausführen möchte, die voneinander abhängen. Ein Skript,
-das zum Beispiel eine Audio-CD kopieren soll, muss das 
-Brennprogramm nur dann aufrufen, wenn der Einlesevorgang erfolgreich 
+das zum Beispiel eine Audio-CD kopieren soll, muss das
+Brennprogramm nur dann aufrufen, wenn der Einlesevorgang erfolgreich
 abgeschlossen wurde.
    </textblock>
-  </section> 
+  </section>
  </split>
 
  <split>
@@ -228,20 +228,20 @@ HowTo
      </heading>
      <textblock>
 Zunächst muss mit Hilfe des Editors eine Textdatei angelegt werden, in die
-der <strong>Quelltext</strong> geschrieben wird. Wie der aussieht, kann man 
+der <strong>Quelltext</strong> geschrieben wird. Wie der aussieht, kann man
 anhand der
 folgenden Abschnitte und der Beispiele im Anhang erkennen. Beim
 Schreiben sollte man nicht mit Kommentaren geizen, da ein Shell-Skript
 auch schon mal sehr unleserlich werden kann.
      </textblock>
-     <textblock> 
-Die Datei ist unter geeignetem Namen zu speichern. 
-Bitte hierfür nicht den Namen <strong>test</strong> verwenden. Es existiert ein 
-Unix-Systemkommando mit diesem Namen. Dieses steht fast immer eher im Pfad, 
-d. h. beim Kommando <command>test</command> würde nicht das eigene Skript 
-ausgeführt, sondern 
-das Systemkommando. Dies ist einer der häufigsten und zugleich einer der 
-verwirrendsten Anfängerfehler. Mehr zu dem <command>test</command>-Kommando 
+     <textblock>
+Die Datei ist unter geeignetem Namen zu speichern.
+Bitte hierfür nicht den Namen <strong>test</strong> verwenden. Es existiert ein
+Unix-Systemkommando mit diesem Namen. Dieses steht fast immer eher im Pfad,
+d. h. beim Kommando <command>test</command> würde nicht das eigene Skript
+ausgeführt, sondern
+das Systemkommando. Dies ist einer der häufigsten und zugleich einer der
+verwirrendsten Anfängerfehler. Mehr zu dem <command>test</command>-Kommando
 unter
 <ref iref="Bedingungen ([ ])">Bedingungen</ref>
      </textblock>
@@ -273,17 +273,17 @@ Ausführungsrechte.
      <textblock>
 Dann kann das Skript gestartet werden. Da sich aus Sicherheitsgründen
 auf den meisten Systemen das aktuelle Verzeichnis nicht im Pfad des
-Benutzers befindet, muss man der Shell mitteilen, wo sie zu suchen hat: 
-Mit <command>./name</command> wird versucht, im aktuellen Verzeichnis 
+Benutzers befindet, muss man der Shell mitteilen, wo sie zu suchen hat:
+Mit <command>./name</command> wird versucht, im aktuellen Verzeichnis
 (<command>./</command>) ein Programm namens
 name auszuführen.
      </textblock>
      <textblock>
-Auf den meisten Systemen befindet sich im Pfad der Eintrag 
+Auf den meisten Systemen befindet sich im Pfad der Eintrag
 <path>~/bin</path> bzw.
 <ref iref="Bedingungen ([ ])">Bedingungen</ref> <path>/home/benutzername/bin</path>,
 das bedeutet, dass man Skripte, die immer wieder
-benutzt werden sollen, dort ablegen kann, so dass sie auch ohne eine 
+benutzt werden sollen, dort ablegen kann, so dass sie auch ohne eine
 Pfadangabe gefunden werden. Wie der Pfad genau aussieht kann man an der Shell
 durch Eingabe von <command>echo $PATH</command> herausfinden.
      </textblock>
@@ -296,8 +296,8 @@ Rückgabewerte
 Wenn unter Unix ein Prozeß beendet wird, gibt er einen Rückgabewert (auch
 Exit-Code oder Exit-Status genannt) an seinen aufrufenden Prozeß zurück.
 So kann der Mutterprozeß kontrollieren, ob die Ausführung des
-Tochterprozesses ohne Fehler beendet wurde. In einigen Fällen (z. B. 
-<command>grep</command>) werden unterschiedliche Exit-Codes für 
+Tochterprozesses ohne Fehler beendet wurde. In einigen Fällen (z. B.
+<command>grep</command>) werden unterschiedliche Exit-Codes für
 unterschiedliche Ereignisse benutzt.
      </textblock>
      <textblock>
@@ -313,12 +313,12 @@ abhängen. Beispiele dazu sieht man bei der Beschreibung der Kommandos
  <ref iref="Befehlsformen">Befehlsformen</ref>.
      </textblock>
      <textblock>
-In der <name><strong>Bourne-Shell</strong></name> wird der Exit-Code des letzten 
+In der <name><strong>Bourne-Shell</strong></name> wird der Exit-Code des letzten
 
 aufgerufenen Programms
-in der Variable <command>$?</command> abgelegt. Üblicherweise geben Programme 
+in der Variable <command>$?</command> abgelegt. Üblicherweise geben Programme
 den
-Wert <command>0</command> zurück, bei irgendwelchen Problemen einen von 
+Wert <command>0</command> zurück, bei irgendwelchen Problemen einen von
 <command>0</command> verschiedenen Wert.
 Das wird im folgenden Beispiel deutlich:
      </textblock>
@@ -379,24 +379,24 @@ modernen Programmiersprachen gibt es aber keine Datentypen wie Ganzzahlen,
 Fließkommazahlen oder Strings. Alle Variablen werden als String gespeichert.
 Wenn die Variable die Funktion einer Zahl übernehmen soll, dann muss
 das verarbeitende Programm die Variable entsprechend interpretieren.
-(Für arithmetische Operationen steht das Programm expr zur Verfügung, 
+(Für arithmetische Operationen steht das Programm expr zur Verfügung,
 siehe Zählschleifen-Beispiel unter <ref iref="while. . . ">while</ref>)
     </textblock>
     <textblock>
 Man muss bei der Benutzung von Variablen sehr aufpassen, wann die
-Variable expandiert wird und wann nicht. (Mit Expansion ist das Ersetzen 
+Variable expandiert wird und wann nicht. (Mit Expansion ist das Ersetzen
 des Variablennamens durch den Inhalt gemeint). Grundsätzlich werden Variablen
 während der Ausführung des Skriptes immer an den Stellen ersetzt, an denen
-sie stehen. Das passiert in jeder Zeile, unmittelbar bevor sie ausgeführt 
-wird.  Es ist also auch möglich, in einer Variable einen Shell-Befehl 
-abzulegen. Im Folgenden kann dann der Variablenname an der Stelle des 
-Befehls stehen.  Um die Expansion einer Variable zu verhindern, benutzt 
+sie stehen. Das passiert in jeder Zeile, unmittelbar bevor sie ausgeführt
+wird.  Es ist also auch möglich, in einer Variable einen Shell-Befehl
+abzulegen. Im Folgenden kann dann der Variablenname an der Stelle des
+Befehls stehen.  Um die Expansion einer Variable zu verhindern, benutzt
 man das Quoting (siehe unter <ref iref="Quoting">Quoting</ref>).
     </textblock>
     <textblock>
 Wie aus diversen Beispielen hervorgeht, belegt man eine Variable, indem
 man dem Namen mit dem Gleichheitszeichen einen Wert zuweist. Dabei darf
-zwischen dem Namen und dem Gleichheitszeichen <strong>keine</strong> Leerstelle 
+zwischen dem Namen und dem Gleichheitszeichen <strong>keine</strong> Leerstelle
 stehen,
 ansonsten erkennt die Shell den Variablennamen nicht als solchen und
 versucht, ein gleichnamiges Kommando auszuführen - was meistens durch eine
@@ -404,19 +404,19 @@ Fehlermeldung quittiert wird.
     </textblock>
     <textblock>
 Wenn man auf den Inhalt einer Variablen zugreifen möchte, leitet man
-den Variablennamen durch ein <command>$</command>-Zeichen ein. Alles was mit 
+den Variablennamen durch ein <command>$</command>-Zeichen ein. Alles was mit
 einem <command>$</command> anfängt
-wird von der Shell als Variable angesehen und entsprechend behandelt 
+wird von der Shell als Variable angesehen und entsprechend behandelt
 (expandiert).
     </textblock>
    </section>
 
-   <section>	
+   <section>
     <heading>
 Vordefinierte Variablen
     </heading>
     <textblock>
-Es gibt eine Reihe von vordefinierten Variablen, deren Benutzung ein 
+Es gibt eine Reihe von vordefinierten Variablen, deren Benutzung ein
 wesentlicher Bestandteil des Shell-Programmierens ist.
 Die wichtigsten eingebauten Shell-Variablen sind:
     </textblock>
@@ -476,11 +476,11 @@ Variablen-Substitution
 Unter Variablen-Substitution versteht man verschiedene Methoden um die
 Inhalte von Variablen zu benutzen. Das umfaßt sowohl die einfache Zuweisung
 eines Wertes an eine Variable als auch einfache Möglichkeiten zur
-Fallunterscheidung. In den fortgeschritteneren Shell-Versionen 
-(<command>bash</command>, <command>ksh</command>)existieren sogar 
-Möglichkeiten, auf Substrings von Variableninhalten 
-zuzugreifen. In der Standard-Shell benutzt man für solche Zwecke 
-üblicherweise den Stream-Editor <command>sed</command>. Einleitende 
+Fallunterscheidung. In den fortgeschritteneren Shell-Versionen
+(<command>bash</command>, <command>ksh</command>)existieren sogar
+Möglichkeiten, auf Substrings von Variableninhalten
+zuzugreifen. In der Standard-Shell benutzt man für solche Zwecke
+üblicherweise den Stream-Editor <command>sed</command>. Einleitende
 Informationen dazu finden sich im Kapitel über die <ref iref="Mustererkennung">Mustererkennung</ref>).
     </textblock>
     <textblock>
@@ -488,7 +488,7 @@ Die folgenden Mechanismen stehen in der Standard-Shell bereit, um mit
 Variablen zu hantieren. Bei allen Angaben ist der Doppelpunkt optional.
 Wenn er aber angegeben wird, muss die Variable einen Wert enthalten.
     </textblock>
-	
+
     <table>
      <pdf-column width="150"/>
      <pdf-column/>
@@ -522,16 +522,16 @@ den Wert.
      <tr>
       <td nowrap="nowrap"><command>${Variable:?Wert}</command></td>
       <td>
-Nutzt den Wert von Variable. Falls die Variable nicht 
-gesetzt ist, wird der Wert ausgegeben und die Shell 
-beendet. Wenn kein Wert angegeben wurde, wird der Text 
+Nutzt den Wert von Variable. Falls die Variable nicht
+gesetzt ist, wird der Wert ausgegeben und die Shell
+beendet. Wenn kein Wert angegeben wurde, wird der Text
 <strong>parameter null or not set</strong> ausgegeben.
       </td>
      </tr>
      <tr>
       <td nowrap="nowrap"><command>${Variable:+Wert}</command></td>
       <td>
-Nutzt den Wert, falls die Variable gesetzt ist, 
+Nutzt den Wert, falls die Variable gesetzt ist,
 andernfalls nichts.
       </td>
      </tr>
@@ -554,14 +554,14 @@ leeren Wert erhält.
      <tr>
       <td nowrap="nowrap"><command>$ echo ${h}sprung</command></td>
       <td>
-Gibt hochsprung aus. Die Klammern müssen gesetzt 
+Gibt hochsprung aus. Die Klammern müssen gesetzt
 werden, damit h als Variablenname erkannt werden kann.
       </td>
      </tr>
      <tr>
       <td nowrap="nowrap"><command>$ echo ${h-$r}</command></td>
       <td>
-Gibt hoch aus, da die Variable h belegt ist.  
+Gibt hoch aus, da die Variable h belegt ist.
 Ansonsten würde der Wert von r ausgegeben.
       </td>
      </tr>
@@ -569,7 +569,7 @@ Ansonsten würde der Wert von r ausgegeben.
       <td nowrap="nowrap"><command>$ echo ${tmp-`date`}</command></td>
       <td>
 Gibt das aktuelle Datum aus, wenn die Variable tmp
-nicht gesetzt ist. (Der Befehl <command>date</command> gibt das Datum 
+nicht gesetzt ist. (Der Befehl <command>date</command> gibt das Datum
 zurück)
       </td>
      </tr>
@@ -577,7 +577,7 @@ zurück)
       <td nowrap="nowrap"><command>$ echo ${l=$r}</command></td>
       <td>
 Gibt runter aus, da die Variable l keinen Wert
-enthält. Gleichzeitig wird l der Wert von r 
+enthält. Gleichzeitig wird l der Wert von r
 zugewiesen.
       </td>
      </tr>
@@ -597,9 +597,9 @@ Quoting
 
     <textblock>
 Dies ist ein sehr schwieriges Thema, da hier mehrere ähnlich aussehende
-Zeichen völlig verschiedene Effekte bewirken. Unix unterscheidet allein 
-zwischen drei verschiedenen Anführungszeichen. Das Quoten dient dazu, 
-bestimmte Zeichen mit einer Sonderbedeutung vor der Shell zu 'verstecken' 
+Zeichen völlig verschiedene Effekte bewirken. Unix unterscheidet allein
+zwischen drei verschiedenen Anführungszeichen. Das Quoten dient dazu,
+bestimmte Zeichen mit einer Sonderbedeutung vor der Shell zu 'verstecken'
 um zu verhindern, dass diese expandiert (ersetzt) werden.
     </textblock>
 
@@ -649,7 +649,7 @@ Meta-Zeichen für Dateinamen
      <tr>
       <td nowrap="nowrap"><command>` ` (Backticks)</command></td>
       <td>
-Befehls-Substitution (Die Backticks erhält man 
+Befehls-Substitution (Die Backticks erhält man
 durch [shift] und die Taste neben dem Backspace.
       </td>
      </tr>
@@ -685,26 +685,26 @@ die ihre spezielle Bedeutung beibehalten: <command>$ ` "</command>
      <tr>
       <td nowrap="nowrap"><command>' ' (Ticks)</command></td>
       <td>
-Alles zwischen diesen Zeichen wird wörtlich 
+Alles zwischen diesen Zeichen wird wörtlich
 genommen, mit Ausnahme eines weiteren <command>'</command>  und
 <command>\</command>.
-(Die Ticks erhält man bei deutschen Tastaturen 
+(Die Ticks erhält man bei deutschen Tastaturen
 durch die Taste neben dem Backspace -- ohne [shift].)
       </td>
      </tr>
      <tr>
       <td nowrap="nowrap"><command>\ (Backslash)</command></td>
       <td>
-Das Zeichen nach einem <command>\</command> wird wörtlich genommen. 
+Das Zeichen nach einem <command>\</command> wird wörtlich genommen.
 Anwendung z. B. innerhalb von <command>" "</command>, um
 <command>"</command>, <command>$</command> und <command>`</command> zu
-entwerten. Häufig verwendet zur Angabe von 
-Leerzeichen (<command>space</command>) und Zeilenendezeichen, oder um 
+entwerten. Häufig verwendet zur Angabe von
+Leerzeichen (<command>space</command>) und Zeilenendezeichen, oder um
 ein <command>\</command>-Zeichen selbst anzugeben.
       </td>
      </tr>
     </table>
-                       
+
     <textblock>
 Beispiele:
     </textblock>
@@ -727,7 +727,7 @@ echo "Sie haben `ls | wc -l` Dateien in `pwd`"
      <output>
 Sie haben 43 Dateien in /home/rschaten
      </output>
-     <user>     
+     <user>
 echo "Der Wert von \$x ist $x"
      </user>
      <output>
@@ -740,9 +740,9 @@ Der Wert von $x ist 100
 Meta-Zeichen
     </heading>
     <textblock>
-Bei der Angabe von Dateinamen können eine Reihe von Meta-Zeichen verwendet 
-werden, um mehrere Dateien gleichzeitig anzusprechen oder um nicht den vollen 
-Dateinamen ausschreiben zu müssen. (Meta-Zeichen werden auch Wildcards, 
+Bei der Angabe von Dateinamen können eine Reihe von Meta-Zeichen verwendet
+werden, um mehrere Dateien gleichzeitig anzusprechen oder um nicht den vollen
+Dateinamen ausschreiben zu müssen. (Meta-Zeichen werden auch Wildcards,
 Joker-Zeichen oder Platzhalter genannt.)
      </textblock>
      <textblock>
@@ -807,7 +807,7 @@ Vorheriges Verzeichnis
        </td>
       </tr>
      </table>
-   
+
      <hint>
 Beispiele:
      </hint>
@@ -831,13 +831,13 @@ Listet 'neuX', 'neu4', aber nicht 'neu10'
       <td nowrap="nowrap"><command>ls [D-R]*</command></td>
       <td>
 Listet alle Dateien, die mit einem Großbuchstaben zwischen D und R
-anfangen (Natürlich wird in Shell-Skripten -- wie überall in der 
+anfangen (Natürlich wird in Shell-Skripten -- wie überall in der
 Unix-Welt -- zwischen Groß- und Kleinschreibung unterschieden.)
       </td>
      </tr>
     </table>
    </section>
-   
+
    <section>
     <heading>
 Mustererkennung
@@ -845,9 +845,9 @@ Mustererkennung
     <textblock>
 Man unterscheidet in der Shell-Programmierung zwischen den Meta-Zeichen,
 die bei der Bezeichnung von Dateinamen eingesetzt werden und den
-Meta-Zeichen, die in mehreren Programmen Verwendung finden, um z. B. 
-Suchmuster zu definieren. Diese Muster werden auch reguläre Ausdrücke 
-(<strong>regular expression</strong>) genannt. Sie bieten wesentlich mehr Möglichkeiten als 
+Meta-Zeichen, die in mehreren Programmen Verwendung finden, um z. B.
+Suchmuster zu definieren. Diese Muster werden auch reguläre Ausdrücke
+(<strong>regular expression</strong>) genannt. Sie bieten wesentlich mehr Möglichkeiten als
 die relativ einfachen Wildcards für Dateinamen.
     </textblock>
     <textblock>
@@ -878,7 +878,7 @@ findet sich danach.
     <th></th>
     </tr>
     <tr>
-	  <td><command>.</command></td>
+          <td><command>.</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
@@ -889,7 +889,7 @@ findet sich danach.
     <td>Ein beliebiges Zeichen</td>
     </tr>
     <tr>
-	  <td><command>*</command></td>
+          <td><command>*</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
@@ -900,7 +900,7 @@ findet sich danach.
     <td>Kein, ein oder mehrere Vorkommen des vorhergehenden Ausdrucks.</td>
     </tr>
     <tr>
-	  <td><command>^</command></td>
+          <td><command>^</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
@@ -911,7 +911,7 @@ findet sich danach.
     <td>Zeilenanfang</td>
     </tr>
     <tr>
-	  <td><command>$</command></td>
+          <td><command>$</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
@@ -922,7 +922,7 @@ findet sich danach.
     <td>Zeilenende</td>
     </tr>
     <tr>
-	  <td><command>\</command></td>
+          <td><command>\</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
@@ -933,7 +933,7 @@ findet sich danach.
     <td>Hebt die Sonderbedeutung des folgenden Zeichens auf.</td>
     </tr>
     <tr>
-	  <td><command>[ ]</command></td>
+          <td><command>[ ]</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
@@ -944,7 +944,7 @@ findet sich danach.
     <td>Ein Zeichen aus einer Gruppe</td>
     </tr>
     <tr>
-	  <td><command>\( \)   </command></td>
+          <td><command>\( \)   </command></td>
     <td>X</td>
     <td>X</td>
     <td></td>
@@ -955,7 +955,7 @@ findet sich danach.
     <td>Speichert das Muster zur späteren Wiederholung.</td>
     </tr>
     <tr>
-	  <td><command>\{ \}</command></td>
+          <td><command>\{ \}</command></td>
     <td>X</td>
     <td></td>
     <td></td>
@@ -966,7 +966,7 @@ findet sich danach.
     <td>Vorkommensbereich</td>
     </tr>
     <tr>
-	  <td><command>\&lt; \&gt;</command></td>
+          <td><command>\&lt; \&gt;</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
@@ -977,7 +977,7 @@ findet sich danach.
     <td>Wortanfang oder -ende</td>
     </tr>
     <tr>
-	  <td><command>+</command></td>
+          <td><command>+</command></td>
     <td></td>
     <td></td>
     <td></td>
@@ -988,7 +988,7 @@ findet sich danach.
     <td>Ein oder mehrere Vorkommen des vorhergehenden Ausdrucks.</td>
     </tr>
     <tr>
-	  <td><command>?</command></td>
+          <td><command>?</command></td>
     <td></td>
     <td></td>
     <td></td>
@@ -999,7 +999,7 @@ findet sich danach.
     <td>Kein oder ein Vorkommen des vorhergehenden Ausdrucks.</td>
     </tr>
     <tr>
-	  <td><command>|</command></td>
+          <td><command>|</command></td>
     <td></td>
     <td></td>
     <td></td>
@@ -1010,7 +1010,7 @@ findet sich danach.
     <td>Trennt die für die Übereinstimmung verfügbaren Alternativen.</td>
     </tr>
     <tr>
-	  <td><command>( )</command></td>
+          <td><command>( )</command></td>
     <td></td>
     <td></td>
     <td></td>
@@ -1021,7 +1021,7 @@ findet sich danach.
     <td>Gruppiert Ausdrücke für den Test.</td>
     </tr>
     </table>
-    
+
     <textblock>
 Bei einigen Tools (<command>ex</command>, <command>sed</command> und
 <command>ed</command>) werden zwei Muster angegeben: Ein Suchmuster
@@ -1043,67 +1043,67 @@ sind in einem Ersatzmuster gültig:
      <th></th>
     </tr>
     <tr>
-	  <td><command>\</command></td>
+          <td><command>\</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
     <td>Sonderbedeutung des nächsten Zeichens aufheben.</td>
     </tr>
     <tr>
-	  <td><command>\n</command></td>
+          <td><command>\n</command></td>
     <td>X</td>
     <td>X</td>
     <td>X</td>
-	  <td>Verwendet das in <command>\( \)</command> gespeicherte Muster erneut.</td>
+          <td>Verwendet das in <command>\( \)</command> gespeicherte Muster erneut.</td>
     </tr>
     <tr>
-	  <td><command>&amp;</command></td>
+          <td><command>&amp;</command></td>
     <td>X</td>
     <td>X</td>
     <td></td>
     <td>Verwendet das vorherige Suchmuster erneut.</td>
     </tr>
     <tr>
-	  <td><command>~</command></td>
+          <td><command>~</command></td>
     <td>X</td>
     <td></td>
     <td></td>
     <td>Verwendet das vorherige Ersatzmuster erneut.</td>
     </tr>
     <tr>
-	  <td><command>\u \U</command></td>
+          <td><command>\u \U</command></td>
     <td>X</td>
     <td></td>
     <td></td>
     <td>Ändert das (die) Zeichen auf Großschreibung.</td>
     </tr>
     <tr>
-	  <td><command>\l \L</command></td>
+          <td><command>\l \L</command></td>
     <td>X</td>
     <td></td>
     <td></td>
     <td>Ändert das (die) Zeichen auf Kleinschreibung.</td>
     </tr>
     <tr>
-	  <td><command>\E</command></td>
+          <td><command>\E</command></td>
     <td>X</td>
     <td></td>
     <td></td>
-	  <td>Hebt das vorangegangene <command>\U</command> oder <command>\L</command> auf.</td>
+          <td>Hebt das vorangegangene <command>\U</command> oder <command>\L</command> auf.</td>
     </tr>
     <tr>
-	  <td><command>\e</command></td>
+          <td><command>\e</command></td>
     <td>X</td>
     <td></td>
     <td></td>
-	  <td>Hebt das vorangegangene <command>\u</command> oder <command>\l</command> auf.</td>
+          <td>Hebt das vorangegangene <command>\u</command> oder <command>\l</command> auf.</td>
     </tr>
     </table>
 
     <textblock>
-Sonderzeichen in Suchmustern: 
+Sonderzeichen in Suchmustern:
     </textblock>
-	
+
     <table>
      <pdf-column width="125"/>
      <pdf-column/>
@@ -1175,7 +1175,7 @@ Vorkommen zwischen n und m. Dabei müssen n und m im Bereich zwischen
      <tr>
       <td nowrap="nowrap"><command>\&lt; \&gt;</command></td>
       <td>
-	   Steht für ein Zeichen am Anfang (<command>\&lt;</command>) oder am Ende (<command>\></command>) eines Wortes.
+           Steht für ein Zeichen am Anfang (<command>\&lt;</command>) oder am Ende (<command>\></command>) eines Wortes.
       </td>
      </tr>
      <tr>
@@ -1195,7 +1195,7 @@ Steht für kein oder ein Vorkommen des vorhergehenden Ausdrucks.
      <tr>
       <td><command>|</command></td>
       <td>
-Übereinstimmung, wenn entweder der vorhergehende oder der 
+Übereinstimmung, wenn entweder der vorhergehende oder der
 nachfolgende reguläre Ausdruck übereinstimmen.
       </td>
      </tr>
@@ -1206,7 +1206,7 @@ Steht für die eingeschlossene Gruppe von regulären Ausdrücken.
       </td>
      </tr>
     </table>
-    
+
     <textblock>
 Sonderzeichen in Ersatzmustern:
     </textblock>
@@ -1230,7 +1230,7 @@ Dabei ist n eine Zahl zwischen 1 und 9.
      <tr>
       <td><command>&amp;</command></td>
       <td>
-Verwendet das vorherige Suchmuster erneut als Teil eines 
+Verwendet das vorherige Suchmuster erneut als Teil eines
 Ersatzmusters.
       </td>
      </tr>
@@ -1278,7 +1278,7 @@ Hebt das vorangegangene <command>\U</command> oder <command>\L</command> auf.
       </td>
      </tr>
     </table>
-    
+
     <hint>
 Beispiele: Muster
     </hint>
@@ -1354,7 +1354,7 @@ Jede Zeile, die mit einem Punkt und zwei Kleinbuchstaben beginnt.</td>
      <tr>
       <td nowrap="nowrap"><command>^\.[a-z]\{2\}</command></td>
       <td>
-	   Wie oben, jedoch nur in <command>grep</command> und <command>sed</command> zulässig.
+           Wie oben, jedoch nur in <command>grep</command> und <command>sed</command> zulässig.
       </td>
      </tr>
      <tr>
@@ -1422,7 +1422,7 @@ Symbole (weder Buchstaben noch Zahlen).
      <tr>
       <td nowrap="nowrap"><command>[0-9a-zA-Z]</command></td>
       <td>
-Jedes alphanumerische Zeichen. 
+Jedes alphanumerische Zeichen.
       </td>
      </tr>
     </table>
@@ -1545,7 +1545,7 @@ Wie oben, im <command>ex</command>-Editor.
      <tr>
       <td nowrap="nowrap"><command>/^[_<keycomb><key>TAB</key></keycomb>]*$/d</command></td>
       <td>
-Löscht Leerzeilen und Zeilen, die nur aus Leerzeichen 
+Löscht Leerzeilen und Zeilen, die nur aus Leerzeichen
 oder Tabulatoren bestehen.
       </td>
      </tr>
@@ -1620,7 +1620,7 @@ Wandelt die gesamte Datei in Kleinschreibung um.
      <tr>
       <td nowrap="nowrap"><command>:s/\&lt;./\u&amp;/g</command></td>
       <td>
-Wandelt den ersten Buchstaben jedes Wortes 
+Wandelt den ersten Buchstaben jedes Wortes
 in der aktuellen Zeile in Großschreibung um.
       </td>
      </tr>
@@ -1633,7 +1633,7 @@ Ersetzt das Wort ja durch nein.
      <tr>
       <td nowrap="nowrap"><command>:%s/Ja/~/g</command></td>
       <td>
-Ersetzt global ein anderes Wort (Ja) durch nein 
+Ersetzt global ein anderes Wort (Ja) durch nein
 (Wiederverwendung des vorherigen Ersatzmusters).
       </td>
      </tr>
@@ -1674,7 +1674,7 @@ Shell das Skript ausgeführt werden soll. Das System öffnet dann eine Subshell
 und führt das restliche Skript in dieser aus.
     </textblock>
     <textblock>
-Die Angabe erfolgt über eine Zeile in der Form <command>#!/bin/sh</command>, wobei unter 
+Die Angabe erfolgt über eine Zeile in der Form <command>#!/bin/sh</command>, wobei unter
 <command>/bin/sh</command> die entsprechende Shell (in diesem Fall die
 <name><strong>Bourne-Shell</strong></name>) liegt.
 Dieser Eintrag wirkt nur dann, wenn er in der ersten Zeile des Skripts steht.
@@ -1690,20 +1690,20 @@ Dieser Befehl tut nichts, außer den Status <command>0</command> zurückzugeben. E
 um Endlosschleifen zu schreiben (siehe unter <ref iref="while. . . ">while</ref>), oder um leere Blöcke
 in <ref iref="if. . .">if</ref>- oder <ref iref="case. . .">case</ref>-Konstrukten möglich zu machen.
     </textblock>
-    
+
 
     <hint>
-Beispiel: Prüfen, ob jemand angemeldet ist:     
+Beispiel: Prüfen, ob jemand angemeldet ist:
     </hint>
-	
+
     <file>
      <title>
 checkuser.sh
      </title>
      <content>
 if who | grep $1 > /dev/null # who: Liste der Benutzer
-			     # grep: Suche nach Muster
-then :			     # tut nichts
+                             # grep: Suche nach Muster
+then :                       # tut nichts
   else echo "Benutzer $1 ist nicht angemeldet"
 fi
      </content>
@@ -1735,14 +1735,14 @@ unter <ref iref="Ein typisches Init-Skript">Ein typisches Init-Skript</ref>).
 Funktionen
     </heading>
     <textblock>
-Es ist in der Shell auch möglich, ähnlich wie in einer 'richtigen' 
+Es ist in der Shell auch möglich, ähnlich wie in einer 'richtigen'
 Programmiersprache, Funktionen zu deklarieren und zu benutzen. Da die
 <name><strong>Bourne-Shell</strong></name> (<command>sh</command>)
 nicht über Aliase verfügt, können einfache Funktionen als Ersatz
 dienen. Mit dem Kommando <ref iref="exit">exit</ref> hat man die
 Möglichkeit, aus einer Funktion einen Wert zurückzugeben.
     </textblock>
-	
+
     <hint>
 Beispiel: Die Funktion gibt die Anzahl der Dateien im aktuellen Verzeichnis
 zurück. Aufgerufen wird diese Funktion wie ein Befehl, also einfach durch
@@ -1928,7 +1928,7 @@ n1 ist kleiner n2
 
     <textblock>
 Kombinierte Formen:
-    </textblock>	   
+    </textblock>
 
     <table>
      <pdf-column width="150"/>
@@ -1993,7 +1993,7 @@ Wenn die Antwort nicht "j" ist. . .
      <tr>
       <td nowrap="nowrap"><command>if [ ! -r "$1" -o ! -f "$1" ]</command> </td>
       <td>
-Wenn das erste Argument keine lesbare oder 
+Wenn das erste Argument keine lesbare oder
 reguläre Datei ist. . .
       </td>
      </tr>
@@ -2010,7 +2010,7 @@ allen anderen Programmiersprachen, sie testet eine Bedingung auf Wahrheit
 und macht davon den weiteren Ablauf des Programms abhängig.
     </textblock>
     <textblock>
-	 Die Syntax der <command>if</command>-Anweisung lautet wie folgt:
+         Die Syntax der <command>if</command>-Anweisung lautet wie folgt:
     </textblock>
 
     <file>
@@ -2028,9 +2028,9 @@ fi
      </content>
     </file>
     <textblock>
-Wenn die Bedingung1 erfüllt ist, werden die Befehle1 ausgeführt; 
+Wenn die Bedingung1 erfüllt ist, werden die Befehle1 ausgeführt;
 andernfalls,
-wenn die Bedingung2 erfüllt ist, werden die Befehle2 ausgeführt. 
+wenn die Bedingung2 erfüllt ist, werden die Befehle2 ausgeführt.
 Trifft keine Bedingung zu, sollen die Befehle3 ausgeführt werden.
     </textblock>
     <textblock>
@@ -2041,7 +2041,7 @@ jeden Fall zutreffen sollen steht der
 <ref iref="Null-Befehl (:)">Null-Befehl :</ref>)
 zur Verfügung.
     </textblock>
-	
+
     <hint>
 Beispiele: Man achte auf die Positionierung der Semikoli.
     </hint>
@@ -2068,15 +2068,15 @@ if [ ! -e $dir ]; then
 case. . .
     </heading>
     <textblock>
-Auch die <command>case</command>-Anweisung ist vergleichbar in vielen anderen Sprachen 
-vorhanden. Sie dient, ähnlich wie die <command>if</command>-Anweisung, zur Fallunterscheidung. 
-Allerdings wird hier nicht nur zwischen zwei Fällen unterschieden 
-(Entweder / Oder), sondern es sind mehrere Fälle möglich. Man kann die 
-<command>case</command>-Anweisung auch durch eine geschachtelte <command>if</command>-Anweisung völlig umgehen, 
+Auch die <command>case</command>-Anweisung ist vergleichbar in vielen anderen Sprachen
+vorhanden. Sie dient, ähnlich wie die <command>if</command>-Anweisung, zur Fallunterscheidung.
+Allerdings wird hier nicht nur zwischen zwei Fällen unterschieden
+(Entweder / Oder), sondern es sind mehrere Fälle möglich. Man kann die
+<command>case</command>-Anweisung auch durch eine geschachtelte <command>if</command>-Anweisung völlig umgehen,
 allerdings ist sie ein elegantes Mittel um den Code lesbar zu halten.
     </textblock>
     <textblock>
-	 Die Syntax der <command>case</command>-Anweisung lautet wie folgt:
+         Die Syntax der <command>case</command>-Anweisung lautet wie folgt:
     </textblock>
 
     <file>
@@ -2084,7 +2084,7 @@ allerdings ist sie ein elegantes Mittel um den Code lesbar zu halten.
 case-beispiel-simpel.sh
      </title>
      <content>
-#!/bin/sh     
+#!/bin/sh
 case Wert in
      Muster1) Befehle1;;
      Muster2) Befehle2;;
@@ -2092,9 +2092,9 @@ case Wert in
 esac
      </content>
     </file>
-    
+
     <textblock>
-Wenn der Wert mit dem Muster1 übereinstimmt, wird die entsprechende 
+Wenn der Wert mit dem Muster1 übereinstimmt, wird die entsprechende
 Befehlsgruppe (Befehle1) ausgeführt, bei Übereinstimmung mit Muster2
 werden die Kommandos der zweiten Befehlsgruppe (Befehle2) ausgeführt,
 usw. Der letzte Befehl in jeder Gruppe muss mit ;; gekennzeichnet werden.
@@ -2103,11 +2103,11 @@ anderen Bedingungen nicht mehr überprüft werden.
     </textblock>
     <textblock>
 In den Mustern sind die gleichen Meta-Zeichen erlaubt wie bei der Auswahl
-von Dateinamen. Wenn in einer Zeile mehrere Muster angegeben werden 
+von Dateinamen. Wenn in einer Zeile mehrere Muster angegeben werden
 sollen, müssen sie durch ein Pipezeichen (<command>|</command>, logisches ODER) getrennt
 werden.
     </textblock>
-	
+
     <hint>
 Beispiele:
     </hint>
@@ -2118,13 +2118,13 @@ case-beispiel-fortgeschritten.sh
      </title>
      <content>
 #!/bin/sh
-# Mit dem ersten Argument in der Befehlszeile 
+# Mit dem ersten Argument in der Befehlszeile
 # wird die entsprechende Aktion festgelegt:
 
 case $1 in # nimmt das erste Argument
      Ja|Nein) response=1;;
-	      -[tT]) table=TRUE;;
-	   *) echo "Unbekannte Option"; exit 1;;
+              -[tT]) table=TRUE;;
+           *) echo "Unbekannte Option"; exit 1;;
 esac
 
 # Lies die Zeilen von der Standardeingabe, bis eine
@@ -2133,13 +2133,13 @@ esac
 while : # Null-Befehl (immer wahr, siehe unter 3.11)
 
 do
-	echo "Zum Beenden . eingeben ==> \c"
-	read line # read: Zeile von StdIn einlesen
-	case "$line" in
-	     .) echo "Ausgefuehrt"
-	        break;;
-	     *) echo "$line" >> $message ;;
-	esac
+        echo "Zum Beenden . eingeben ==> \c"
+        read line # read: Zeile von StdIn einlesen
+        case "$line" in
+             .) echo "Ausgefuehrt"
+                break;;
+             *) echo "$line" >> $message ;;
+        esac
 done
      </content>
     </file>
@@ -2150,8 +2150,8 @@ done
 for. . .
     </heading>
     <textblock>
-Dieses Konstrukt ähnelt nur auf den ersten Blick seinen Pendants aus 
-anderen Programmiersprachen. In anderen Sprachen wird die <command>for</command>-Schleife 
+Dieses Konstrukt ähnelt nur auf den ersten Blick seinen Pendants aus
+anderen Programmiersprachen. In anderen Sprachen wird die <command>for</command>-Schleife
 meistens dazu benutzt, eine Zählvariable über einen bestimmten Wertebereich
 iterieren zu lassen (<command>for i = 1 to 100...next</command>). In der Shell dagegen wird
 die Laufvariable nicht mit aufeinanderfolgenden Zahlen belegt, sondern mit
@@ -2170,7 +2170,7 @@ for-syntax.sh
 #!/bin/sh
 for x [ in Liste ]
 do
-	Befehle
+        Befehle
 done
      </content>
     </file>
@@ -2179,7 +2179,7 @@ done
 Die Befehle werden ausgeführt, wobei der Variablen x nacheinander die
 Werte aus der Liste zugewiesen werden. Wie man sieht ist die Angabe der
 Liste optional, wenn sie nicht angegeben wird, nimmt <strong>x</strong> der Reihe nach alle
-Werte aus <command>$@</command> (in dieser vordefinierten Variablen liegen die Aufrufparameter 
+Werte aus <command>$@</command> (in dieser vordefinierten Variablen liegen die Aufrufparameter
 - siehe unter <ref iref="Datenströme">Datenströme</ref>) an. Wenn die Ausführung eines Schleifendurchlaufs
 bzw. der ganzen Schleife abgebrochen werden soll, müssen die Kommandos
 <ref iref="continue">continue</ref> bzw. <ref iref="Datenströme">break</ref> benutzt werden.<br/>
@@ -2191,9 +2191,9 @@ Beispiele:
 for-beispiele.sh
      </title>
      <content>
-#!/bin/sh     
-# Seitenweises Formatieren der Dateien, die auf der 
-# Befehlszeile angegeben wurden, und speichern des 
+#!/bin/sh
+# Seitenweises Formatieren der Dateien, die auf der
+# Befehlszeile angegeben wurden, und speichern des
 # jeweiligen Ergebnisses:
 
 for file do
@@ -2204,19 +2204,19 @@ done
 
 for item in `cat program_list` # cat: Datei ausgeben
 do
-	echo "Pruefung der Kapitel auf"
-	echo "Referenzen zum Programm $item ..."
-	grep -c "$item.[co]" chap* # grep: nach Muster suchen
+        echo "Pruefung der Kapitel auf"
+        echo "Referenzen zum Programm $item ..."
+        grep -c "$item.[co]" chap* # grep: nach Muster suchen
 done
 
-# Ermittle einen Ein-Wort-Titel aus jeder Datei und 
+# Ermittle einen Ein-Wort-Titel aus jeder Datei und
 # verwende ihn als neuen Dateinamen:
 
 for file do
     name=`sed -n 's/NAME: //p' $file`
     # sed: Skriptsprache zur
     # Textformatierung
-    mv $file $name 
+    mv $file $name
     # mv: Datei verschieben
     # bzw. umbenennen
 done
@@ -2244,7 +2244,7 @@ while-syntax.sh
 #!/bin/sh
 while Bedingung
 do
-	Befehle
+        Befehle
 done
      </content>
     </file>
@@ -2252,7 +2252,7 @@ done
     <textblock>
 Die Befehle werden so lange ausgeführt, wie die Bedingung erfüllt ist.
 Dabei wird die Bedingung vor der Ausführung der Befehle überprüft. Die
-Bedingung wird dabei üblicherweise, genau wie bei der <command>if</command>-Anweisung, 
+Bedingung wird dabei üblicherweise, genau wie bei der <command>if</command>-Anweisung,
 mit dem Befehl <ref iref="Bedingungen ([ ])">test</ref>) formuliert.
 Wenn die Ausführung eines Schleifendurchlaufs bzw. der ganzen Schleife abgebrochen werden soll,
 müssen die Kommandos <ref iref="continue">continue</ref> bzw.
@@ -2270,16 +2270,16 @@ while-beispiel01.sh
 
 while [ -n "$1"]; do
       echo $1
-      shift	# mit shift werden die Parameter nach
-		# Links geshiftet (aus $2 wird $1)
+      shift     # mit shift werden die Parameter nach
+                # Links geshiftet (aus $2 wird $1)
 done
      </content>
     </file>
 
     <textblock>
-Eine Standard-Anwendung der <command>while</command>-Schleife ist der Ersatz für die 
-Zählschleife. In anderen Sprachen kann man mit der <command>for</command>-Schleife eine 
-Zählvariable über einen bestimmten Wertebereich iterieren lassen 
+Eine Standard-Anwendung der <command>while</command>-Schleife ist der Ersatz für die
+Zählschleife. In anderen Sprachen kann man mit der <command>for</command>-Schleife eine
+Zählvariable über einen bestimmten Wertebereich iterieren lassen
 (<command>for i = 1 to 100...next</command>). Da das mit der <command>for</command>-Schleife der Shell nicht geht,
 ersetzt man die Funktion durch geschickte Anwendung der <command>while</command>-Schleife:
     </textblock>
@@ -2289,14 +2289,14 @@ ersetzt man die Funktion durch geschickte Anwendung der <command>while</command>
 while-beispiel02.sh
      </title>
      <content>
-#!/bin/sh    
+#!/bin/sh
 # Ausgabe der Zahlen von 1 bis 100:
 
 i=1
 while [ $i -le 100 ]
 do
-	echo $i
-	i=`expr $i + 1`
+        echo $i
+        i=`expr $i + 1`
 done
      </content>
     </file>
@@ -2319,26 +2319,26 @@ Die Syntax der <command>until</command>-Schleife lautet wie folgt:
 until-syntax.sh
      </title>
      <content>
-#!/bin/sh    
+#!/bin/sh
 until Bedingung
 do
-	Befehle
+        Befehle
 done
      </content>
     </file>
-    
+
     <textblock>
 Die Befehle werden ausgeführt, bis die Bedingung erfüllt ist. Dabei wird
 die Bedingung nach der Ausführung der Befehle überprüft. Die Bedingung
 wird dabei üblicherweise, genau wie bei der <command>if</command>-Anweisung, mit dem Befehl
 <ref iref="Bedingungen ([ ])">test</ref>) formuliert. Wenn die Ausführung eines
-Schleifendurchlaufs bzw der ganzen Schleife abgebrochen werden soll, müssen 
-die Kommandos <ref iref="continue">continue</ref> bzw. 
+Schleifendurchlaufs bzw der ganzen Schleife abgebrochen werden soll, müssen
+die Kommandos <ref iref="continue">continue</ref> bzw.
 <ref iref="break">break</ref> benutzt werden.
     </textblock>
-	
+
     <hint>
-Beispiel: Hier wird die Bedingung nicht per <command>test</command> sondern mit dem 
+Beispiel: Hier wird die Bedingung nicht per <command>test</command> sondern mit dem
 Rückgabewert des Programms <command>grep</command> formuliert.
     </hint>
 
@@ -2347,7 +2347,7 @@ Rückgabewert des Programms <command>grep</command> formuliert.
 until-beispiel.sh
      </title>
      <content>
-#!/bin/sh     
+#!/bin/sh
 # Warten, bis sich der Administrator einloggt:
 
 until who | grep "root"; do
@@ -2365,14 +2365,14 @@ echo "Der Meister ist anwesend"
 continue
     </heading>
     <textblock>
-	 Die Syntax der <command>continue</command>-Anweisung lautet wie folgt:
+         Die Syntax der <command>continue</command>-Anweisung lautet wie folgt:
     </textblock>
 
     <file>
      <title>
 continue-syntax.sh
      </title>
-     <content>     
+     <content>
 #!/bin/sh
 continue [ n ]
      </content>
@@ -2384,7 +2384,7 @@ Man benutzt <command>continue</command> um die restlichen Befehle in einer Schle
 der Parameter <command>n</command> angegeben wird, werden n Schleifenebenen übersprungen.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 break
@@ -2397,13 +2397,13 @@ Die Syntax der <command>break</command>-Anweisung lautet wie folgt:
      <title>
 break-syntax.sh
      </title>
-     <content>     
+     <content>
 break [ n ]
      </content>
     </file>
 
     <textblock>
-Mit <command>break</command> kann man die innerste Ebene (bzw. n Schleifenebenen) verlassen 
+Mit <command>break</command> kann man die innerste Ebene (bzw. n Schleifenebenen) verlassen
 ohne den Rest der Schleife auszuführen.
     </textblock>
    </section>
@@ -2427,7 +2427,7 @@ exit [ n ]
 
     <textblock>
 Die <command>exit</command>-Anweisung wird benutzt, um ein Skript zu beenden. Wenn der
-Parameter n angegeben wird, wird er von dem Skript als Exit-Code 
+Parameter n angegeben wird, wird er von dem Skript als Exit-Code
 zurückgegeben.
     </textblock>
    </section>
@@ -2530,7 +2530,7 @@ Datenströme
     </heading>
     <textblock>
 Eines der markantesten Konzepte, das in Shell-Skripten benutzt wird, ist
-das der Datenströme. Die meisten der vielen Unix-Tools bieten die 
+das der Datenströme. Die meisten der vielen Unix-Tools bieten die
 Möglichkeit, Eingaben aus der sogenannten <strong>Standard-Eingabe</strong> entgegenzunehmen
 und Ausgaben dementsprechend auf der <strong>Standard-Ausgabe</strong> zu machen. Es
 gibt noch einen dritten Kanal für Fehlermeldungen, so dass man eine einfache
@@ -2539,7 +2539,7 @@ die Fehlermeldungen von den restlichen Ausgaben trennt.
     </textblock>
     <textblock>
 Es folgt eine Aufstellung der drei Standardkanäle:
-    </textblock> 
+    </textblock>
 
 
     <table>
@@ -2608,16 +2608,16 @@ Standardeingabe für Befehl aus Datei lesen.
      <tr>
       <td nowrap="nowrap"><command>Befehl1 | Befehl2</command></td>
       <td>
-Die Standardausgabe von Befehl1 wird an die 
-Standardeingabe von Befehl2 übergeben. Mit diesem 
+Die Standardausgabe von Befehl1 wird an die
+Standardeingabe von Befehl2 übergeben. Mit diesem
 Mechanismus können Programme als <strong>Filter</strong> für den
-Datenstrom eingesetzt werden. Das verwendete Zeichen 
+Datenstrom eingesetzt werden. Das verwendete Zeichen
 heißt <strong>Pipe</strong>.
       </td>
      </tr>
     </table>
-	<textblock>
-	</textblock>
+        <textblock>
+        </textblock>
     <table>
      <pdf-column width="150"/>
      <pdf-column/>
@@ -2634,8 +2634,8 @@ Standard-Ausgabe von Befehl an den Datei-Deskriptor n
      <tr>
       <td nowrap="nowrap"><command>Befehl m>&amp;n</command></td>
       <td>
-Der gleiche Vorgang, nur wird die Ausgabe, die normalerweise 
-an den Datei-Deskriptor m geht, an den Datei-Deskriptor n 
+Der gleiche Vorgang, nur wird die Ausgabe, die normalerweise
+an den Datei-Deskriptor m geht, an den Datei-Deskriptor n
 übergeben.
       </td>
      </tr>
@@ -2648,15 +2648,15 @@ Schließt die Standard-Ausgabe.
      <tr>
       <td nowrap="nowrap"><command>Befehl &lt;&amp;n</command></td>
       <td>
-Standard-Eingabe für Befehl wird vom Datei-Deskriptor n 
+Standard-Eingabe für Befehl wird vom Datei-Deskriptor n
 übernommen.
       </td>
      </tr>
      <tr>
       <td nowrap="nowrap"><command>Befehl m&lt;&amp;n</command></td>
       <td>
-Der gleiche Vorgang, nur wird die Eingabe, die normalerweise 
-vom Datei-Deskriptor m stammt, aus dem Datei- Deskriptor n 
+Der gleiche Vorgang, nur wird die Eingabe, die normalerweise
+vom Datei-Deskriptor m stammt, aus dem Datei- Deskriptor n
 übernommen.
       </td>
      </tr>
@@ -2667,9 +2667,9 @@ Schließt die Standard-Eingabe.
       </td>
      </tr>
     </table>
-	
-	<textblock>
-	</textblock>
+
+        <textblock>
+        </textblock>
 
     <table>
      <pdf-column width="150"/>
@@ -2681,38 +2681,38 @@ Schließt die Standard-Eingabe.
      <tr>
       <td nowrap="nowrap"><command>Befehl 2> Datei</command></td>
       <td>
-Fehler-Ausgabe von Befehl in Datei schreiben.  
-Die Standard-Ausgabe bleibt unverändert 
+Fehler-Ausgabe von Befehl in Datei schreiben.
+Die Standard-Ausgabe bleibt unverändert
 (z. B.  auf dem Terminal).
       </td>
      </tr>
      <tr>
       <td nowrap="nowrap"><command>Befehl &gt; Datei 2&gt;&amp;1</command></td>
       <td>
-Fehler-Ausgabe und Standard-Ausgabe von Befehl werden 
+Fehler-Ausgabe und Standard-Ausgabe von Befehl werden
 in die Datei geschrieben.
       </td>
      </tr>
      <tr>
       <td nowrap="nowrap"><command>(Befehl > D1) 2>D2</command></td>
       <td>
-Standard-Ausgabe erfolgt in die Datei D1; 
+Standard-Ausgabe erfolgt in die Datei D1;
 Fehler-Ausgabe in die Datei D2.
       </td>
      </tr>
      <tr>
       <td nowrap="nowrap"><command>Befehl | tee Dateien</command></td>
       <td>
-Die Ausgaben von Befehl erfolgen an der 
-Standard-Ausgabe (in der Regel: Terminal), 
-zusätzlich wird sie vom Kommando <command>tee</command> in die Dateien 
-geschrieben.  
+Die Ausgaben von Befehl erfolgen an der
+Standard-Ausgabe (in der Regel: Terminal),
+zusätzlich wird sie vom Kommando <command>tee</command> in die Dateien
+geschrieben.
       </td>
      </tr>
     </table>
 
     <textblock>
-Zwischen den Datei-Deskriptoren und einem Umlenkungssymbol darf kein 
+Zwischen den Datei-Deskriptoren und einem Umlenkungssymbol darf kein
 Leerzeichen sein; in anderen Fällen sind Leerzeichen erlaubt.<br/>
 Beispiele:
     </textblock>
@@ -2728,7 +2728,7 @@ Schreibt den Inhalt der Datei1 in die Datei Neu.
      <tr>
       <td nowrap="nowrap"><command>cat Datei2 Datei3 >> Neu</command></td>
       <td>
-Hängt den Inhalt der Datei2 und der Datei3 
+Hängt den Inhalt der Datei2 und der Datei3
 an die Datei Neu an.
       </td>
      </tr>
@@ -2741,32 +2741,32 @@ Das Programm mail liest den Inhalt der Datei Neu.
      <tr>
       <td nowrap="nowrap"><command>ls -l | grep "txt" | sort</command></td>
       <td>
-Die Ausgabe des Befehls <command>ls -l</command> 
-(Verzeichnisinhalt) wird an das Kommando grep 
-weitergegeben, das darin nach <strong>txt</strong> sucht. 
-Alle Zeilen, die das Muster enthalten, werden 
-anschließend an sort übergeben und landen dann 
+Die Ausgabe des Befehls <command>ls -l</command>
+(Verzeichnisinhalt) wird an das Kommando grep
+weitergegeben, das darin nach <strong>txt</strong> sucht.
+Alle Zeilen, die das Muster enthalten, werden
+anschließend an sort übergeben und landen dann
 sortiert auf der Standardausgabe.
       </td>
      </tr>
     </table>
 
     <textblock>
-Gerade der Mechanismus mit dem Piping sollte nicht unterschätzt werden. Er 
+Gerade der Mechanismus mit dem Piping sollte nicht unterschätzt werden. Er
 dient nicht nur dazu, relativ kleine Texte zwischen Tools hin- und
 herzureichen. An dem folgenden Beispiel soll die Mächtigkeit dieses kleinen
 Zeichens gezeigt werden:
     </textblock>
     <textblock>
 Es ist mit den passenden Tools unter Unix möglich, eine ganze Audio-CD
-mit zwei Befehlen an der Kommandozeile zu duplizieren. Das erste 
+mit zwei Befehlen an der Kommandozeile zu duplizieren. Das erste
 Kommando veranlaßt, dass die TOC (Table Of Contents) der CD in die Datei
 <command>cd.toc</command> geschrieben wird. Das dauert nur wenige Sekunden. Die Pipe steckt im
-zweiten Befehl. Hier wird der eigentliche Inhalt der CD mit dem Tool 
+zweiten Befehl. Hier wird der eigentliche Inhalt der CD mit dem Tool
 <ref chapter="grabber_encoder" iref="cdparanoia">cdparanoia</ref> ausgelesen. Da kein Dateiname angegeben
 schreibt <command>cdparanoia</command>
 die Daten auf seine Standardausgabe. Diese wird von dem Brennprogramm
-<command>cdrdao</command> übernommen und in Verbindung mit der TOC 
+<command>cdrdao</command> übernommen und in Verbindung mit der TOC
 <strong>on the fly</strong> auf die CD geschrieben.
     </textblock>
 
@@ -2789,31 +2789,31 @@ cdparanoia -q -R 1- - | cdrdao write --buffers 64 cd.toc
    <heading>
 Wo sind Unterschiede zu DOS-Batchdateien?
    </heading>
-   <textblock> 
-Unter <name>DOS</name> werden Batch-Dateien oft dazu benutzt, lange Kommandos abzukürzen 
+   <textblock>
+Unter <name>DOS</name> werden Batch-Dateien oft dazu benutzt, lange Kommandos abzukürzen
 um die Tipparbeit zu vermindern, oder um sich das Merken von
 vielen Parametern zu ersparen. Diese Aufgabe überläßt man unter Unix am
 besten den <strong>Shell-Aliasen</strong>.
-   </textblock> 
-   <textblock> 
+   </textblock>
+   <textblock>
 Shell-Skripte können viel mehr als Batch-Dateien.
-   </textblock> 
-   <textblock> 
+   </textblock>
+   <textblock>
 Wie der Name schon sagt, sind Batch-Dateien im Wesentlichen nur ein
 <strong>Stapel</strong> von Anweisungen, die nacheinander ausgeführt werden. Mit neueren
 <name>DOS</name>-Versionen sind zwar auch einige einfache Mechanismen zur Verzweigung
 hinzugekommen, aber das entspricht bei weitem nicht den Möglichkeiten, die
 man an der Shell hat.
-   </textblock> 
-   <textblock> 
-Shell-Skripte kann man dagegen eher mit einer <strong>richtigen</strong> 
-Programmiersprache vergleichen. Es stehen alle Konstrukte zur Verfügung, 
+   </textblock>
+   <textblock>
+Shell-Skripte kann man dagegen eher mit einer <strong>richtigen</strong>
+Programmiersprache vergleichen. Es stehen alle Konstrukte zur Verfügung,
 die eine Programmiersprache auszeichnen (Funktionen, Schleifen, Fallunterscheidungen,
 Variablen, etc).
-   </textblock> 
+   </textblock>
   </section>
  </split>
- 
+
  <split>
   <section>
    <heading>
@@ -2867,9 +2867,9 @@ von <strong>root</strong> am Zeilenanfang. Der Rückgabewert von
 <command>grep</command> ist <command>0</command> wenn das
 Muster gefunden wird, <command>1</command> wenn es nicht gefunden wird
 und <command>2</command> wenn ein Fehler
-auftrat. Damit der Rechner nicht die ganze Zeit mit dieser Schleife 
-beschäftigt ist, wird im Schleifenkörper ein sleep 30 ausgeführt, 
-um den Prozeß für 30 Sekunden schlafen zu schicken. Sobald der Admin 
+auftrat. Damit der Rechner nicht die ganze Zeit mit dieser Schleife
+beschäftigt ist, wird im Schleifenkörper ein sleep 30 ausgeführt,
+um den Prozeß für 30 Sekunden schlafen zu schicken. Sobald der Admin
 sich eingeloggt hat, wird eine entsprechende Meldung ausgegeben.
      </textblock>
     </section>
@@ -2909,13 +2909,13 @@ Ein typisches Init-Skript
     </heading>
     <textblock>
 Dieses Skript dient dazu, den Apache HTTP-Server zu starten. Es wird
-während des Bootvorgangs gestartet, wenn der dazugehörige Runlevel 
+während des Bootvorgangs gestartet, wenn der dazugehörige Runlevel
 initialisiert wird.
     </textblock>
     <textblock>
 Das Skript muss mit einem Parameter aufgerufen werden. Möglich sind
 hier <command>start</command>, <command>stop</command>,
-<command>status</command>, <command>restart</command> und <command>reload</command>. Wenn falsche Parameter 
+<command>status</command>, <command>restart</command> und <command>reload</command>. Wenn falsche Parameter
 übergeben wurden, wird eine entsprechende Meldung angezeigt.
     </textblock>
     <textblock>
@@ -2932,18 +2932,18 @@ werden soll (<ref iref="Auswahl der Shell (#!)">Auswahl der Shell</ref>).
      <title>
 beispiel.sh
      </title>
-     <content>       
+     <content>
 #!/bin/sh
      </content>
     </file>
-    <textblock> 
+    <textblock>
 Dann folgen <ref iref="Kommentare (#)">Kommentare</ref>, die den Sinn des Skriptes erläutern.
-    </textblock> 
+    </textblock>
     <file>
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
 ## Startup script for the Apache Web Server
 #
 # chkconfig: 345 85 15
@@ -2964,7 +2964,7 @@ Jetzt wird die Datei mit den <ref iref="Funktionen">Funktionen</ref> eingebunden
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
 # Source function library.
 /etc/rc.d/init.d/functions
      </content>
@@ -2976,11 +2976,11 @@ Hier werden die Aufrufparameter ausgewertet.
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
 # See how we were called.
 case "$1" in
      start)
-	echo -n "Starting httpd: "
+        echo -n "Starting httpd: "
      </content>
     </file>
     <textblock>
@@ -2993,23 +2993,23 @@ Diese Funktion startet das Programm, dessen Name hier als Parameter
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
         daemon httpd
         echo
      </content>
     </file>
     <textblock>
-Jetzt wird ein Lock-File angelegt. (Ein Lock-File signalisiert anderen 
-Prozessen, dass ein bestimmter Prozeß bereits gestartet ist. So kann ein 
+Jetzt wird ein Lock-File angelegt. (Ein Lock-File signalisiert anderen
+Prozessen, dass ein bestimmter Prozeß bereits gestartet ist. So kann ein
 zweiter Aufruf verhindert werden.)
     </textblock>
     <file>
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
         touch /var/lock/subsys/httpd
-	;;
+        ;;
       stop)
         echo -n "Shutting down http: "
      </content>
@@ -3022,13 +3022,13 @@ Hier passiert im Prinzip das gleiche wie oben, nur dass mit der Funktion
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
         killproc httpd
         echo
      </content>
     </file>
     <textblock>
-Danach werden Lock-File und PID-File gelöscht. (In einem sogenannten PID-File 
+Danach werden Lock-File und PID-File gelöscht. (In einem sogenannten PID-File
 hinterlegen einige Prozesse ihre Prozeß-ID, um anderen Programmen den
 Zugriff zu erleichtern, z.B. um den Prozeß anzuhalten etc.)
     </textblock>
@@ -3036,7 +3036,7 @@ Zugriff zu erleichtern, z.B. um den Prozeß anzuhalten etc.)
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-      <content>       
+      <content>
         rm -f /var/lock/subsys/httpd
         rm -f /var/run/httpd.pid
         ;;
@@ -3052,7 +3052,7 @@ und gibt das Ergebnis aus.
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
         status httpd
         ;;
    restart)
@@ -3067,7 +3067,7 @@ den Daemon zu <command>stoppen</command>, dann, um ihn wieder zu <command>starte
       <title>
 beispiel.sh (Fortsetzung)
       </title>
-      <content>       
+      <content>
         $0 stop
         $0 start
         ;;
@@ -3083,7 +3083,7 @@ dass er seine Konfiguration neu einlesen soll.
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
         killproc httpd -HUP
         echo
         ;;
@@ -3101,7 +3101,7 @@ beendet wurde (<ref iref="exit">exit</ref>).
      <title>
 beispiel.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
         exit 1
 esac
 exit 0
@@ -3115,11 +3115,11 @@ Parameterübergabe in der Praxis
     <textblock>
 Es kommt in der Praxis sehr oft vor, dass man ein Skript schreibt, dem der
 Anwender Parameter übergeben soll. Wenn das nur eine Kleinigkeit ist (zum
-Beispiel ein Dateiname), dann fragt man einfach die entsprechenden 
+Beispiel ein Dateiname), dann fragt man einfach die entsprechenden
 <ref iref="Vordefinierte Variablen">vordefinierten Variablen</ref> ab.
 Sollen aber <strong>richtige</strong> Parameter
-eingesetzt werden, die sich so einsetzen lassen wie man es von vielen 
-Kommandozeilentools gewohnt ist, dann benutzt man das Hilfsprogramm 
+eingesetzt werden, die sich so einsetzen lassen wie man es von vielen
+Kommandozeilentools gewohnt ist, dann benutzt man das Hilfsprogramm
 <command>getopt</command>. Dieses Programm parst die originalen
 Parameter und gibt sie in <strong>standardisierter</strong> Form zurück.
     </textblock>
@@ -3132,7 +3132,7 @@ werden. Alle anderen Parameter werden als Dateinamen interpretiert.
      <title>
 getopt.sh
      </title>
-     <content>       
+     <content>
 #!/bin/sh
 set -- `getopt "ab:" "$@"` || {
      </content>
@@ -3152,7 +3152,7 @@ Wenn dieses Kommando fehlschlägt ist das ein Zeichen dafür, dass falsche
 Parameter übergeben wurden. Also wird nach einer entsprechenden
 Meldung das Programm mit Exit-Code 1 verlassen.
     </textblock>
-	
+
     <file>
      <title>
 getopt.sh (Fortsetzung)
@@ -3178,11 +3178,11 @@ Parameters in der Variablen name gesichert.
      <title>
 getopt.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
        case "$1" in
-	    -a) aflag=1 ;;
-	    -b) shift; name="$1" ;;
-	    --) break ;;
+            -a) aflag=1 ;;
+            -b) shift; name="$1" ;;
+            --) break ;;
      </content>
     </file>
     <textblock>
@@ -3198,7 +3198,7 @@ weiterverarbeitet werden können.
      <title>
 getopt.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
        esac
        shift
 done
@@ -3212,33 +3212,33 @@ Am Ende werden die Feststellungen ausgegeben.
      <title>
 getopt.sh (Fortsetzung)
      </title>
-     <content>       
-echo "aflag=$aflag / Name = $name / Die Dateien sind $*"	
+     <content>
+echo "aflag=$aflag / Name = $name / Die Dateien sind $*"
      </content>
     </file>
    </section>
-     
+
    <section>
     <heading>
 Fallensteller: Auf Traps reagieren
     </heading>
     <textblock>
-Ein laufendes Shell-Skript kann durch Druck auf die Interrupt-Taste 
+Ein laufendes Shell-Skript kann durch Druck auf die Interrupt-Taste
 (normalerweise [
-	 <command>
-	  <keycomb>
-	  <key>CTRL</key>
-	  <key>C</key>
-	 </keycomb>
-	</command>
+         <command>
+          <keycomb>
+          <key>CTRL</key>
+          <key>C</key>
+         </keycomb>
+        </command>
 ]) unterbrochen werden. Durch Druck auf diese Taste
 wird ein Signal an den entsprechenden Prozeß gesandt, das ihn bittet sich
 zu beenden. Dieses Signal heißt <name>SIGINT</name> (für SIGnal INTerrupt) und trägt
 die Nummer 2. Das kann ein kleines Problem darstellen, wenn das Skript
 sich temporäre Dateien angelegt hat, da diese nach der Ausführung nur noch
 unnötig Platz verbrauchen und eigentlich gelöscht werden sollten. Man kann
-sich sicher auch noch wichtigere Fälle vorstellen, in denen ein Skript be-
-stimmte Aufgaben auf jeden Fall erledigen muss, bevor es sich beendet.
+sich sicher auch noch wichtigere Fälle vorstellen, in denen ein Skript
+bestimmte Aufgaben auf jeden Fall erledigen muss, bevor es sich beendet.
     </textblock>
     <textblock>
 Es gibt eine Reihe weiterer Signale, auf die ein Skript reagieren kann. Alle
@@ -3255,35 +3255,35 @@ sind in der Man-Page von signal beschrieben. Hier die wichtigsten:
      <th>Bedeutung</th>
     </tr>
     <tr>
-	  <td><command>0</command></td>
+          <td><command>0</command></td>
     <td>Normal Exit</td>
     <td>Wird durch das exit-Kommando ausgelöst.</td>
     </tr>
     <tr>
-	  <td><command>1</command></td>
+          <td><command>1</command></td>
     <td>SIGHUP</td>
     <td>Wenn die Verbindung abbricht (z.B. wenn das Terminal
 geschlossen wird).
     </td>
     </tr>
     <tr>
-	  <td><command>2</command></td>
+          <td><command>2</command></td>
     <td>SIGINT</td>
-	  <td>Zeigt einen Interrupt an ([
-	   <command>
-		<keycomb>
-		<key>CTRL</key>
-		<key>C</key>
-	   </keycomb>
-	  </command>
-	   ]).</td>
+          <td>Zeigt einen Interrupt an ([
+           <command>
+                <keycomb>
+                <key>CTRL</key>
+                <key>C</key>
+           </keycomb>
+          </command>
+           ]).</td>
     </tr>
     <tr>
-	  <td><command>15</command></td>
+          <td><command>15</command></td>
     <td>SIGTERM</td>
-	  <td>Wird vom <command>kill</command>-Kommando gesendet.</td>
+          <td>Wird vom <command>kill</command>-Kommando gesendet.</td>
     </tr>
-    </table>    
+    </table>
 
     <textblock>
 Wie löst man jetzt dieses Problem? Glücklicherweise verfügt die Shell über
@@ -3291,8 +3291,8 @@ das <command>trap</command>-Kommando, mit dessen Hilfe man auf diese Signale rea
 Die Anwendung soll in folgendem Skript beispielhaft dargestellt werden.
      </textblock>
      <textblock>
-Das Skript soll eine komprimierte Textdatei mittels zcat in ein temporäres 
-File entpacken, dieses mit <command>pg</command> seitenweise anzeigen und nachher wieder 
+Das Skript soll eine komprimierte Textdatei mittels zcat in ein temporäres
+File entpacken, dieses mit <command>pg</command> seitenweise anzeigen und nachher wieder
 löschen.
     </textblock>
 
@@ -3300,7 +3300,7 @@ löschen.
      <title>
 zeige-komprimierte-datei.sh
      </title>
-     <content>       
+     <content>
 #!/bin/sh
 stat=1
 temp=/tmp/zeige$$
@@ -3320,7 +3320,7 @@ sichergestellt werden, dass noch keine Datei mit diesem Namen existiert.
      <title>
 zeige-komprimierte-datei.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
 trap 'rm -f $temp; exit $stat' 0
 trap 'echo "`basename $0`: Ooops..." 1&gt;&amp;2' 1 2 15
      </content>
@@ -3344,7 +3344,7 @@ Danach wird das Skript beendet, und der erste <command>Trap</command> wird ausge
      <title>
 zeige-komprimierte-datei.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
 case $# in
     1) zcat "$1" > $temp
        pg $temp
@@ -3367,21 +3367,21 @@ Exit-Code zurückgegeben wird.
      <title>
 zeige-komprimierte-datei.sh (Fortsetzung)
      </title>
-     <content>       
+     <content>
     *) echo "Anwendung: `basename $0` Dateiname" 1gt;&amp;2
 esac
      </content>
     </file>
-      
+
     <textblock>
 Wenn <command>case</command> eine andere Parameterzahl feststellt, wird eine Meldung mit der
 Aufrufsyntax auf die Standard-Fehlerausgabe geschrieben.
-    </textblock>	     
+    </textblock>
    </section>
   </section>
 
 </split>
- 
+
  <split>
   <section>
    <heading>
@@ -3394,16 +3394,16 @@ Quellen
     <ul>
      <li>Bash Reference Manual
      (<ref lang="en" url="http://www.gnu.org/manual/bash-2.02/bashref.html">
-	   http://www.gnu.org/manual/bash-2.02/bashref.html</ref>)</li>
+           http://www.gnu.org/manual/bash-2.02/bashref.html</ref>)</li>
      <li>Unix In A Nutshell
-	  (<ref lang="en" url="http://www.oreilly.com/catalog/unixnut3/">
-	   http://www.oreilly.com/catalog/unixnut3/</ref>)</li>
+          (<ref lang="en" url="http://www.oreilly.com/catalog/unixnut3/">
+           http://www.oreilly.com/catalog/unixnut3/</ref>)</li>
      <li>Unix Power Tools
-	  (<ref lang="en" url="http://www.oreilly.com/catalog/upt2/">
-	   http://www.oreilly.com/catalog/upt2/</ref>)</li>
+          (<ref lang="en" url="http://www.oreilly.com/catalog/upt2/">
+           http://www.oreilly.com/catalog/upt2/</ref>)</li>
      <li>Von DOS nach Linux HOWTO
-	  (<ref lang="de" url="http://www.linuxhaven.de/dlhp/HOWTO/DE-DOS-nach-Linux-HOWTO.html">
-	   http://www.linuxhaven.de/dlhp/HOWTO/DE-DOS-nach-Linux-HOWTO.html</ref>)</li>
+          (<ref lang="de" url="http://www.linuxhaven.de/dlhp/HOWTO/DE-DOS-nach-Linux-HOWTO.html">
+           http://www.linuxhaven.de/dlhp/HOWTO/DE-DOS-nach-Linux-HOWTO.html</ref>)</li>
     </ul>
     </section>
    </section>
