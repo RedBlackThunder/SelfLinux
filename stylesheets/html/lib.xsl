@@ -258,13 +258,15 @@
          <em>
           <xsl:value-of select="normalize-space(name)"/>
          </em>
-         <br/>
-         <img src="../bilder/email.png" width="16" height="10" alt="" title=""/>
-         <xsl:text>&#160;</xsl:text>
-         <a>
-          <xsl:attribute name="href">mailto:<xsl:value-of select="normalize-space(mailto)"/></xsl:attribute>
-          <xsl:value-of select="normalize-space(mailto)"/>
-         </a>
+         <xsl:if test="mailto">
+          <br/>
+          <img src="../bilder/email.png" width="16" height="10" alt="" title=""/>
+          <xsl:text>&#160;</xsl:text>
+          <a>
+           <xsl:attribute name="href">mailto:<xsl:value-of select="normalize-space(mailto)"/></xsl:attribute>
+           <xsl:value-of select="normalize-space(mailto)"/>
+          </a>
+         </xsl:if>
         </li>
        </xsl:for-each>
       </ul>
@@ -283,13 +285,15 @@
          <em>
           <xsl:value-of select="normalize-space(name)"/>
          </em>
-         <br/>
-         <img src="../bilder/email.png" width="16" height="10" alt="" title=""/>
-         <xsl:text>&#160;</xsl:text>
-         <a>
-          <xsl:attribute name="href">mailto:<xsl:value-of select="normalize-space(mailto)"/></xsl:attribute>
-          <xsl:value-of select="normalize-space(mailto)"/>
-         </a>
+         <xsl:if test="mailto">
+          <br/>
+          <img src="../bilder/email.png" width="16" height="10" alt="" title=""/>
+          <xsl:text>&#160;</xsl:text>
+          <a>
+           <xsl:attribute name="href">mailto:<xsl:value-of select="normalize-space(mailto)"/></xsl:attribute>
+           <xsl:value-of select="normalize-space(mailto)"/>
+          </a>
+         </xsl:if>
         </li>
        </xsl:for-each>
       </ul>
