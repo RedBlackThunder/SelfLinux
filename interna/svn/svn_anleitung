@@ -1,9 +1,7 @@
-Autoren SVN
+SVN-Anleitung
 -------------
 
-Arbeit der Autoren mit dem SelfLinux-SVN
-
-Stand: 12.11.2004
+Stand: 20.11.2004
 
 
 
@@ -21,8 +19,8 @@ die Doku zu SVN auf der Homepage (http://svnbook.red-bean.com/svnbook-1.1/svn-bo
 Diese ist zwar sehr umfangreichund in Englisch, aber auch sehr interessant. Demnächst wird
 der Text auch auf Deutsch bei SelfLinux verfügbar sein.
 
-Hier soll lediglich gezeigt werden, welche svn-Befehle die
-Autoren für alltägliche Arbeit benötigen und auf was geachtet werden
+Hier soll lediglich gezeigt werden, welche svn-Befehle wir
+für unsere alltägliche Arbeit benötigen und auf was geachtet werden
 sollte. Alle hier dargestellten Befehle werden in einer Konsole
 (shell) ausgeführt.
 
@@ -34,56 +32,27 @@ dich in der entsprechenden Programm-Dokumentation.
 
 
 
-2 Allgemeine Regeln
+2. Befehle
 
+2.1 Schreibzugriff erhalten
 
-
-2.1 Wohin mit den Texten?
-
-Prinzipiell wird jeder NEUE Text erst einmal an einen Mitarbeiter des Core-Teams
-per Mail geschickt. Dieser checkt den Text dann ins SVN ein.
-
-
-
-2.1 Wohin mit den Bildern?
-
-Bilder sollen als zum Text gehörend wiedererkannt werden. Im Text an der Stelle wo das Bild
-hinsoll, den Namen des Bildes erwähnen. 
-
-Die Bildernamen sollten möglichst aussagekräftig nach dem Inhalt des
-Bildes benannt werden, also NICHT z.B. bild1.png; bild2.png oder
-ähnliches. Als Bildformat ist PNG zu verwenden. 
-
-
-
-3 Vorbereitungen
-
-
-
-3.1 Schreibzugriff erhalten
-
-Nach der Anmeldung bei SelfLinux besitzt jeder Autor die Möglichkeit sich das svn
+Nach der Anmeldung bei SelfLinux besitzt jeder die Möglichkeit sich das svn
 lokal auszuchecken, sowie lokal herunterzuladen. Einen Schreibzugriff auf das svn
 erhält man seperat bei Florian Frank oder Frank Börner, falls erwünscht.
 
 
 
-3.2 Zugang zum SVN
+2.2 Zugang zum SVN
 
 Für den Lese-Zugriff auf das SelfLinux-SVN-Repository auf
-pingos.org gibt es folgende Möglichkeiten:
-
-(Befehle auf einer Konsole [user$] bei bestehender
-Internet-Verbindung eintippen)
-
-svn checkout https://ssl.pingos.org/svn/selflinux/trunk
+pingos.org gibt es folgende Möglichkeit:
 
 Über Web:
 https://ssl.pingos.org/svn/selflinux/trunk/
 
 
 
-3.3 Checkout der Arbeitskopie
+2.3 Checkout der Arbeitskopie
 
 Um mit dem SVN arbeiten zu können, braucht man immer eine eigene,
 lokale Arbeitskopie. In dieser Arbeitskopie werden dann die
@@ -98,7 +67,7 @@ Dann wechselst du in dieses Verzeichnis:
 
 user$ cd /home/<username>/selflinux/svn
 
-Als nächstes logst du dich wie oben beschrieben in das Pingos.org-CVS ein.
+Als nächstes logst du dich wie oben beschrieben in das Pingos.org-SVN ein.
 Mit folgendem Befehl wird das gesamte
 SL-Repository als Arbeitskopie "ausgecheckt":
 
@@ -110,11 +79,9 @@ aktualisiert.
 
 
 
-4. "Alltägliche" Arbeit mit dem SVN
+3. "Alltägliche" Arbeit mit dem SVN
 
-
-
-4.1 Anlegen eines neuen Textes
+3.1 Anlegen eines neuen Textes
 
 Vorraussetzung dazu ist dass man einen Schreibzugriff hat.
 Jetzt wollen wir einen neuen Text anlegen. Dazu
@@ -146,9 +113,7 @@ user$ cp <Quelldatei> <Zieldatei>
 
 (Wie man das hier reinkopiert, ist natürlich jedem selbst überlassen.)
 
-Auch hier müssen wir unsere Textdatei dem SVN bekannt machen. Aber im
-Unterschied zu einem Verzeichnis erfolgt das bei Dateien in zwei
-Schritten:
+Auch hier müssen wir unsere Textdatei dem SVN bekannt machen:
 
 user$ svn add <neuer_text>
 user$ svn commit -m "Text ueber ... eingefuegt" <neuer_text>
@@ -168,7 +133,7 @@ oder um Kapitel soundso erweitert). Bloß keine Romane schreiben!
 
 
 
-4.2 Ablegen von Bildern eines Textes
+3.2 Ablegen von Bildern eines Textes
 
 Bilder werden immer in dem Verzeichnis des Textes 
 abgelegt. Die Schritte sind analog zu den Texten.
@@ -187,7 +152,7 @@ user$ svn commit -m "Bild soundso eingecheckt" bildname.png
 
 
 
-4.3 Bearbeiten eines vorhandenen Textes
+3.3 Bearbeiten eines vorhandenen Textes
 
 Wir wechseln in das Verzeichnis, wo unser Text liegt, den wir bearbeiten wollen:
 
@@ -216,6 +181,4 @@ durchlaufen werden!
 
 
 --------------------------------------------------------
-Autoren: Andreas Kalbitz
-	 Jörg Meinhold
-	 Frank Börner
+Autor: Frank Börner
