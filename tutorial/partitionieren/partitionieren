@@ -26,6 +26,9 @@ Das Partitionieren
    </heading>
 
    <textblock>
+Im Gegensatz zu Ordnern und Dateien die wir auch auf die Festplatte
+schreiben wollen ist das Partitionieren und Formatieren die 
+Vorbereitung für die Festplatte, um Ordner und Dateien anlegen zu können.
 Das Partitionieren ist das Aufteilen einer Festplatte in mehrere
 Teile, sogenannte Partitionen. Sie sind unabhbängig voneinander und
 können verschiedene Dateisysteme enthalten. Das Partitionieren
@@ -517,7 +520,34 @@ Der Aufruf zum Formatieren lautet für <path>/dev/hda1</path>
 mkfs.jfs /dev/hda1
      </root>
     </shell>
-   </section>
+  </section>
+
+ <section>
+    <heading>
+Erstellen der swap Partition
+    </heading>
+
+    <textblock>
+Der Aufruf zum Formatieren lautet für <path>/dev/hda2</path>
+    </textblock>
+
+    <shell>
+     <root>
+mkswap /dev/hda2
+     </root>
+    </shell>
+  </section>
+
+    <textblock>
+Der Aufruf zum einbinden der swap Partition lautet für <path>/dev/hda2</path>
+    </textblock>
+
+    <shell>
+     <root>
+swapon /dev/hda2
+     </root>
+    </shell>
+  </section>
   </section>
  </split>
 </chapter>
