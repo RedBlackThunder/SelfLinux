@@ -1,0 +1,60 @@
+<!--
+ * XML-Technik - Detailierte Beschreibung der Transformationsprozesse
+ * Copyright Johannes Kolb
+ * 
+ * $Name:  $
+ * $Revision: 1.1 $
+ * $Source: /selflinux/interna/xml/xml-technik,v $
+ *
+ * Diese Datei ist Teil von SelfLinux  http://www.selflinux.de
+ *
+ *** $Id: xml-technik,v 1.1 2003/10/08 18:12:16 jkolb Exp $
+-->
+
+KURZÜBERBLICK ÜBER DEN HTML-ERSTELLPROZESS
+
+Index-Dokument --------\
+     |                  | - - Stylesheet-Prozessor - - -> index.xml(2)
+  SelfLinux-Kapitel* --/          (index.xsl)  
+
+
+index.xml(2) - - Stylesheet-Prozessor - - - > Verzeichnisstruktur
+                     (dirs.xsl)         \ 
+                                          \-> Inhaltsverzeichnis 
+         
+SelfLinux-Kapitel + index.xml(2) - - Stylesheet-Prozessor - - -> HTML-Kapitel
+                                         (main.xsl)
+
+Ausgangspunkt für die Erstellung sind die formatierten Kapitel, die
+sich im CVS finden (unter dem Branch "format"). Diese werden in einem
+relativ einfachen, XML-Format geschrieben (Eine Anleitung dazu findet sich im
+CVS unter /interna/xml/xml-referenz). 
+Damit die einzelnen Kapitel richtig zusammengebaut und eingeordnet
+werden, gibt es die Datei /tutorial/index.xml. Darin sind die
+Kapitelgliederung und die Pfade zu den Einzelkapiteln gespeichert. Die
+benötigten Stylesheets für die Konvertierungen finden sich unter
+/stylesheets.
+
+Im ersten Schritt wird nun aus dem Index-Dokument in Verbindung mit
+allen Kapiteldateien ein erweiterter Index erstellt (als index.xml(2)
+bezeichnet). Dieser Index enthält Einträge für jeden Abschnitt jedes
+Kapitels und vergibt jedem Abschnitt auch gleich einen eindeutigen
+Bezeichner, so dass alleine mit diesem erweiterten Index gültige
+HTML-Links auf jeden Abschnitt jedes Kapitels erstellt werden können.
+Das erleichtert die Implementierung der internen Verweise.
+Für Schritt 1 benötigte Dateien: html/index.xsl
+
+Im zweiten Schritt werden aus dem erweiterten Index die verzeichnisartig
+angeordneten Übersichtsseiten erzeugt, unter anderem auch die Startseite
+für SelfLinux (index.html). Außerdem wird auch ein komplettes
+Inhaltsverzeichnis erstellt.
+Für Schritt 2 benötigte Dateien: html/dirs.xsl, html/format.xsl
+
+Der letzte Schritt muss schließlich für jede Kapiteldatei extra
+ausgeführt werden. Darin wird das Kapitel in die HTML-Ausgabe
+umgewandelt und auf die entsprechenden Ausgabedateien verteilt. (Jede
+<split></split>-Umgebung gibt eine Datei)
+Für Schritt 3 benötigte Dateien: html/main.xsl, html/lib.xsl,
+                html/toc.xsl, html/section.xsl, html/format.xsl
+
+

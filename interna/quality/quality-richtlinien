@@ -1,0 +1,556 @@
+Richtlinien für die Qualitätsprüfung von Texten
+*************************************************
+Frank Börner <frank@frank-boerner.de>
+(Teamleiter Quality )
+
+-------------------------
+1 Ziel dieses Dokumentes
+-------------------------
+
+Dieses Dokument soll zum einen Kriterien definieren, nach
+denen die Qualitätsprüfung von Texten erfolgt, die für das
+SelfLinux-Tutorial bestimmt sind. Zum anderen werden die
+notwendigen Arbeitsschritte beschrieben, die erforderlich
+sind, um die Qualitätsprüfung im Rahmen des Gesamtprojektes
+problemlos und effizient ablaufen zu lassen.
+
+Bei Fragen/Anregungen/Kritik meldet man sich am besten direkt
+via Email bei Frank Börner <frank@frank-boerner.de>
+
+
+
+------------
+2 Material
+------------
+
+Was wird an Material und Software benötigt, um als
+Qualitätsprüfer für das SelfLinux-Projekt zu arbeiten.
+arbeiten? Die wenigen Materialien werden hier aufgelistet.
+
+
+
+2.1 CVS / CVS Benutzernamen
+-----------------------------------
+
+Damit die Arbeit einfach zu erledigen ist, benötigt man CVS. Ob
+dies über die Konsole oder ein grafisches Programm gemacht wird,
+ist egal.
+
+Eine allgemeine CVS-Einführung mit den schrittweisen Abläufen gibt es unter:
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/quality/quality_cvs?rev=HEAD&content-type=text/plain
+(alles in einer Zeile!)
+
+bzw.
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/autoren_cvs?rev=HEAD&content-type=text/plain
+(alles in einer Zeile!)
+
+Für Cervisia und LinCVS, beides sind grafische CVS-Oberflächen, gibt es demnächst eine eigenständige Anleitung.
+
+
+
+2.2 Editor
+----------
+
+Jeder kann den Editor verwenden, der ihm am besten gefällt.
+Es ist darauf zu achten, daß die Dateien im Unix-Format zu
+speichern sind. Wer unter Windows arbeitet sollte seinen
+Editor so einstellen, daß der Editor für Zeilenenden das
+Newline-Zeichen verwendet, nicht die Windows-typische
+Kombination Carriage-Return/Linefeed.
+
+
+
+--------------------
+3 Der Arbeitsablauf
+--------------------
+
+3.1 Allgemeines
+---------------------
+
+Da etliche Leute mit der Qualitätsprüfung  beschäftigt sind,
+muss die Textvergabe ein wenig organisiert werden.
+
+In der Mailingliste werden in regelmässigen Abständen Statusberichte
+der Quality gepostet. Darin befindet sich eine Liste mit nicht
+zugeteilten Texten. Daraus sucht man sich einen aus und meldet dies
+via Liste dem Teamleiter und den anderen Layoutern. Es genügt eine
+einfache Antwort auf die Email mit der Bemerkung, dass man diesen Text
+bearbeitet.
+
+Nun kann die Arbeit begonnen werden.
+
+
+
+3.2 Text prüfen
+---------------
+
+Der Text muß nun nach den Kritierien der Qualitätsprüfung
+gelesen und korrigiert werden. Die Kriterien werden im
+4. Abschnitt dieses Dokumentes im Detail beschrieben. Die
+Korrekturen können als Ganzes vorgenommen und am Ende in
+das CVS überspielt (siehe Abschnitt 3.3) werden. Es können
+aber auch lediglich Teile korrigiert, dann überspielt und
+später weiterkorrigiert, wieder überspielt werden usw. Keine
+Angst vor hohen Versionsnummern. Das hat innerhalb von CVS
+nichts Kritisches zu bedeuten. Im Gegenteil: Lieber häufiger
+überspielen als zu selten. Was einmal im Repository ist, kann
+keinem privaten Plattencrash oder der Vergessenheit zum Opfer
+fallen!
+
+
+
+3.3 Korrekturen überspielen
+---------------------------
+
+Dies geschieht mittels des einfachen Kommandos
+
+$ cvs commit text
+
+oder über den entsprechenden Menüeintrag in cervisia oder lincvs.
+
+Über commit wird der Text in das CVS überspielt. Es muss eine kleine
+Meldung zur Änderung verfasst werden. Diese sollte es ermöglichen,
+dass man auch nach einem halben Jahr noch nachvollziehen kann, was sich
+dabei geändert hat. Wenn Du über die Kommandozeile arbeitest, wird zu diesem
+Zweck derjenige Editor aufgerufen, der in der Variable EDITOR steht.
+Wenn die Variable nicht gesetzt ist, wird vi aufgerufen. Solltest Du
+vi nicht kennen, stelle einen Editor Deiner Wahl ein. Sofern Du unter
+X arbeitest, kann das auch ein Editor mit eigenen Fenster sein, z.B.
+XEmacs, kwrite oder andere.
+
+Nachdem die Arbeit abgeschlossen und im CVS ist, sollte noch eine
+Email an die Mailingliste und/oder den Leiter des Qualityteams geschickt
+werden. So können dann die nachfolgenden Arbeiten angegangen werden.
+
+
+
+---------------------------------------
+4. Kriterien für die Qualitätskontrolle
+---------------------------------------
+
+So, jetzt geht es ans Eingemachte. Da SelfLinux kein Gulasch aus
+x-beliebigen Texten werden soll, sind Qualitätskriterien formaler
+und inhaltlicher Art unabdingbar, um eine geeignete Qualität des
+Tutorials sicherzustellen. Von der Arbeit der Qualitätsprüfung
+hängt daher viel ab. Wenn Du der Meinung bist, einige der Kriterien
+nicht prüfen zu können, solltest Du weder gar nichts mehr tun, noch
+die betreffenden Punkte stillschweigend übergehen. Auch wenn Du
+einzelne Anforderungen prüfst, tust Du damit wichtige Arbeit. Die
+verbleibenden Kriterien maile einfach an die Mailingliste oder
+den Leiter des Quality-Teams. Sie können dann von anderen Mitarbeitern
+nachgeholt werden.
+
+Jeder Text hat in seinem Verzeichnis auch eine Datei namens
+qp-<textname>. In dieser Datei befindet sich eine Liste der Punkte,
+auf die der Text geprüft werden muss. Wenn ein Punkt geprüft und
+für gut befunden wurde, trägt der Prüfer hinter diesen Punkt seinen
+SelfLinux-Benutzernamen sowie das aktuelle Datum ein. Der Eintrag
+sollte die Form <benutzername>/JJJJMMTT haben. Punkte, die noch nicht
+geprüft wurden bzw. die Prüfung nicht bestanden haben, bleiben im qp
+leer. Bitte nicht irgendwelche Kommentare dahinter eintragen!
+
+Die Kriterien 4.1 bis 4.8 beziehen sich auf die Plainversion
+eines Textes. Damit ist die rohe ASCII-Version gemeint, die
+im Allgemeinen vom Autor oder Übersetzer selbst stammt. Die
+Abschnitte ab 4.9 beziehen sich auf die XML-Version eines
+Textes. Zur Qualitätsprüfung der Layout-Version sind besondere
+Kenntnisse über das Layout notwendig. Wenn Du über diese noch
+nicht verfügst, aber künftig auch diesen Teil der
+Qualitätsprüfung durchführen möchtest, sind Dir die
+Mailingliste oder die Leiter von Layout- und Quality-Team
+gerne bei der Einarbeitung behilflich. Weitere Hinweise erfolgen
+unten.
+
+
+
+4.1 Lizenzprüfung
+-----------------
+
+Bevor ein Text überhaupt in SelfLinux aufgenommen werden kann,
+ist die Lizenz des Textes zu prüfen. SelfLinux erlaubt prinzipiell
+auch andere Lizenzen als die beiden in Frage kommenden Copyleft-
+Lizenzen GPL (GNU Public License) und GFDL (GNU Free Documentation
+License). Sind die Einschränkungen der Freiheit der verwendeten
+Lizenz allerdings zu gravierend, so kann der Text lediglich in einem
+speziellen "unfreien" Teil von SelfLinux veröffentlicht werden.
+Geht die Freiheit eines Textes nicht eindeutig aus der verwendeten
+Lizenz hervor, so ist diese Lizenz in der Mailingliste zu diskutieren.
+
+
+
+4.2 Ablage und Benamung des Dokumentes
+--------------------------------------
+
+4.2.1 Text in CVS
+-----------------------------
+
+Grundlage unserer Teamarbeit ist die Verwendung von CVS.
+Daher muß zuerst sichergestellt sein, daß der geprüfte Text
+auch in der zu prüfenden Version im CVS abgelegt ist. Im
+allgemeinen sollte der Text vom Qualitätsprüfer ohnehin über
+CVS geholt werden. Andernfalls ist dies unbedingt zu prüfen.
+
+
+
+4.2.2 Name des Hauptdokumentes == Verzeichnisname
+--------------------------------------------
+
+Jedes Hauptdokument sollte so heißen wie das Verzeichnis, in
+dem es liegt. Dies hat im wesentlichen verwaltungstechnische
+Gründe. Jedes Dokument liegt gewissermaßen in einem eigenen
+Verzeichnis, das den "Namensraum" des Dokumentes repräsentiert.
+In diesem Namesraum können nun Bilder oder Nebendokumente
+abgelegt werden, ohne befürchten zu müssen, daß man damit
+Bilder oder Texte eines anderen Mitarbeiters überschreibt.
+Um jedoch das Hauptdokument eindeutig identifizieren zu
+können, sollte es so heißen wie sein Verzeichnis.
+
+Es kann vorkommen, daß ein Text nicht das Hauptdokument
+eines Verzeichnisses ist. Dieser kann z.B. umfangreiche Beispiele
+oder ein später gefundenes Nebenkapitel enthalten. Wenn ein
+Text nicht den Verzeichnisnamen trägt und Zweifel daran bestehen,
+ob der lediglich ein Nebendokument darstellt oder das eigentliche
+Hauptdokument, solltest Du die Liste oder den Leiter der Quality
+zur Benamung befragen.
+
+
+
+4.2.3 Ein Textname enthält keine Endung
+------------------------------------------------------
+
+Aus dem obigen ergibt es sich schon fast von selbst, aber es soll
+nochmals explizit gesagt werden: Ein Textname enthält keine
+Endung wie z.B. .txt oder gar bestimmte Formate wie .html oder
+.xml. Der Name eines Textes definiert einfach kurz und bündig
+das Thema und enthält, vielleicht von Unterstrichen abgesehen,
+im allgemeinen keinerlei Sonderzeichen oder Umlaute.
+
+
+
+4.3 Korrekturlesen
+------------------
+
+Eine selbstverständliche und wichtige Aufgabe der Qualitätsprüfung
+ist das Korrekturlesen der Texte. Im Rahmen des Korrekturlesens
+müssen folgende Anforderungen geprüft werden:
+
+1. Unix-Linefeeds. Da manche Teammitglieder auf Windows editieren
+   und sich aus dem Unterschieden zwichen Unix- und Windows-Linefeeds
+   immer wieder Probleme ergeben könnnen, ist sicherzustellen, daß
+   Texte immer das Unix-Textformat haben (nur Newline anstelle von
+   CarriageReturn/Linefeed).
+   
+   Dies kann mit folgendem Befehl überprüft werden:
+   egrep -c "^M" <textname>
+   Die Ausgabe dieses Befehls muss 0 sein. Hinweis: ^M muss
+   eingegeben werden durch [Strg]+[V]+[M].
+
+2. Rechtschreibprüfung. Prüfung auf neue deutsche Rechtschreibung
+   ist absolut notwendig. Wenn der Autor diese nicht
+   berücksichtigt, aber noch weitere Versionen des Textes von ihm
+   zu erwarten sind, sollte das umbedingt mit ihm abgeklärt werden,
+   da sonst der Aufwand für das Korrekturlesen weiterer
+   Versionen größer wird.
+
+3. Es dürfen keine Zeilenumbrüche mittels "-"(Worttrennungen) im Text vorkommen.
+   Da jeder Text später in XML formatiert und danach in ein beliebiges
+   Endformat übersetzt wird, kann man nicht mit Sicherheit sagen, daß
+   ein Wort am Zeilenende tatsächlich auch im Endformat am Zeilenende
+   stehen wird. Somit führen solche Wortumbrüche zu Fehlern im
+   Zieldokument.
+
+4. Prüfung auf Ausdruck und Stil. Der Qualitätsprüfer hat durchaus
+   weitreichende Möglichkeiten, in die Formulierungen eines Textes
+   einzugreifen, wenn er diese als Verstöße gegen guten Ausdruck oder
+   Stil erkennt. Sätze dürfen umgestellt oder andere Worte gewählt
+   werden, insofern dies den Stil verbessert und keine inhaltlichen
+   Änderungen bedeutet. Bei gravierenden Eingriffen gebietet die
+   Höflichkeit gegenüber dem Autor, daß man diesem die Änderungen
+   mitteilt bzw. sie ggf. zuvor mit ihm abspricht. Da SelfLinux-Texte
+   unter einer Copyleft-Lizenz stehen, ist die Verbesserung der
+   Texte jedoch ein Teil der gesamten Philosophie des Projektes
+   und sollte von den Qualitätsprüfern auch wahrgenommen werden.
+
+   Richtlinien zu Ausdruck und Stil finden sich unter
+   http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibstil?rev=HEAD&content-type=text/plain
+
+5. Einheitliche Schreibweisen. Es ist vorgesehen, einen Katalog von
+   Begriffen für SelfLinux zu erstellen, die einheitlich geschrieben
+   werden sollten. Beispielsweise kann man "email" oder "Email"
+   oder "EMail" oder "E-Mail" schreiben, und natürlich sollen solche Begriffe
+   in SelfLinux einheitlich verwendet werden (korrekt ist E-Mail).
+   Siehe:
+   http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/rechtschreibung?rev=HEAD&content-type=text/plain
+
+6. Links. Die Syntax-Vorgaben für Links, wie sie im Dokument "schreibregeln"
+   http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibregeln?rev=HEAD&content-type=text/plain
+   festgehalten sind, sind für Autoren lediglich Empfehlungen. Bei der
+   Qualitätsprüfung müssen eventuell anders vermerkte Links jedoch
+   zwingend in die Syntax, wie sie in den "schreibregeln" beschrieben
+   ist, umgesetzt werden.
+
+7. Interne Verlinkung. Der Text ist auf eventuell fehlende interne Verlinkung zu
+   prüfen. Sollte der Text nicht oder nicht ausreichend intern verknüpft
+   sein, ist dies nachzuholen. Als Beispiel: Wird in einem Dokument erwähnt,
+   dass es für eine bestimmte Sache notwendig sei, den Kernel neu zu kompilieren,
+   ist es sehr sinnvoll, hier einen Link auf das entsprechende Kapitel im
+   Tutorial zu setzen. Dies kann jedoch nur eine Person vornehmen, die sich im
+   SelfLinux-Tutorial gut auskennt. Solltest Du Dich also (noch) nicht so gut im
+   Tutorial auskennen, lasse diesen Punkt weg und schreibe an die Liste, dass dieser
+   Punkt noch zu prüfen ist. 
+
+8. Ende der Datei. Jede Datei soll mit einer einzigen leeren Zeile
+   enden. In manchen Dokumenten schleichen sich viele abschließende
+   Leerzeilen ein, die entfernt werden sollen.
+
+
+
+4.4 Anpassung an die Autorenrichtlinien und Schreibregeln
+---------------------------------------
+
+Jeder Text in der Plainversion unterliegt einer Reihe von
+weiteren Arbeitsschritten verschiedener Teams. Um den reibungslosen
+Ablauf dieser Schritte zu gewährleisten, wurden einige grundlegende
+Regeln für die Formatierung von Texten in der Plainversion erstellt.
+Diese sind in den folgenden Dokumenten enthalten. Die Links sind als eine
+einzige Zeile zu lesen:
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/autoreninfos?rev=HEAD&content-type=text/plain
+(alles in einer Zeile!)
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibregeln?rev=HEAD&content-type=text/plain
+(alles in einer Zeile!)
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibstil?rev=HEAD&content-type=text/plain
+(alles in einer Zeile!)
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/rechtschreibung?rev=HEAD&content-type=text/plain
+(alles in einer Zeile!)
+
+Diese Dokumente solltest Du lesen und den Text auf die darin
+aufgestellten Regeln prüfen.
+
+
+
+4.5 Strukturelle Eigenschaften eines Dokumentes
+-----------------------------------------------
+
+Hier werden einige strukturelle Merkmale beschrieben, die
+erfüllt sein sollen, um die Freigabe: für einen Text zu erteilen.
+Zum einen muß ein Text bestimmte Textteile wie Titel, Autorenname,
+sowie eine kurze Beschreibung des Inhaltes enthalten. Zum anderen
+soll auch die Gesamtstruktur auf Übersichtlichkeit hin überprüft werden.
+
+
+
+4.5.1 Titel
+----------
+
+Jeder Text muß einen Titel haben.
+
+
+
+4.5.2 Autorenname
+-----------------
+
+Jeder Text muß einen oder mehrere Autorennamen enthalten. Jedem Namen
+sollte eine Email-Adresse in der folgenden Form hinzugefügt werden:
+
+Joe Bloggs <joe@bloggs.de>
+
+Wenn ein Autorenname oder die Mailadresse eines Autoren fehlt, wende
+Dich an die Liste, um diese zu ermitteln.
+
+
+
+4.5.3 Übersetzername
+-----------------------
+
+Für jeden Text, der aus einer anderen Sprache übersetzt wurde,
+muss der Übersetzername angegeben werden.
+
+Ansonsten siehe Autorenname.
+
+
+4.5.4 Übersichtlichkeit
+-------------------------
+
+Es sind wohl verschiedene Faktoren, welche die Übersichtlichkeit
+eines Textes herstellen. Hier ist einfach gesunder Menschenverstand
+gefragt. Beispiele für schlechte Übersichtlichkeit sind zu große
+Textblöcke, zu wenige Überschriften und Zwischenüberschriften usw.
+
+
+
+4.5.6 CVS Schlüsselwörter
+---------------------------
+
+Der Text muß *mindestens* $Revision: 1.9 $ enthalten. Idealerweise
+hat die Datei den üblichen SelfLinux-Header, der dieses und
+weitere Schlüsselwörter enthält.
+
+
+
+4.6 Stichwörter
+---------------
+
+Alle Texte sollten mit Stichwörtern versehen sein. Dies muss überprüft werden; und
+zwar, ob Stichworte vorhanden sind und ob sie zu den bisjetzigen passen.
+Einfaches Beispiel Schreibweise: Sun oder SUN.
+
+Sollten keine Stichwörter vorhanden sein, müssen sie im Zuge der
+Qualitätsprüfung erstellt werden.
+
+Die Richtlinien zur Erstellung der Stichwörter finden sich unter:
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/quality/keywords?rev=HEAD&content-type=text/plain
+(alles in einer Zeile!)
+
+
+
+4.7 Inhaltliche Bewertung des Dokumentes
+----------------------------------------
+
+Dieser Punkt stellt auch Anforderungen an Dein inhaltliches
+Wissen. Selten jedoch wird ein Qualitätsprüfer so viel über
+ein Thema wissen wie der Autor des Textes, daher fällt hier
+eine Bewertung sicher nicht leicht. Dennoch solltest Du den
+Mut haben, inhaltliche Mängel, die klar zu erkennen sind, an
+den Leiter der Quality weiterzumelden, der diese dann
+prüfen und ggf. in der Liste zur Diskussion stellen kann.
+
+Inhaltliche Mängel können sowohl rein fachliche Fehler oder
+wichtige fehlende Informationen sein, als auch ein schlecher
+Aufbau des Gesamtdokumentes, ein insgesamt mangelhafter Stil
+oder andere Auffälligkeiten, die gehobenen Qualitätsansprüchen
+nicht nachkommen.
+
+Achte auch auf die Gliederung eines Textes. Ist der Text sinnvoll
+aufgebaut? Führt er den Leser von leicht nach schwer? Ist die
+Abfolge der Kapitel nachvollziehbar?
+
+Wenn Du Dir eine inhaltliche Bewertung nicht zutraust, melde
+bitte an den Leiter der Quality zurück, dass Du diese Bewertung
+noch nicht vorgenommen hast. Sie wird dann von einem anderen
+Teammitglied vorgenommen.
+
+
+
+4.8 Zusätzliche Prüfung durch Lektoren
+------------------------------------------
+
+Um eine höchstmögliche Qualität der Texte sicherzustellen,
+darf das qa_plain_ok-Tag erst gesetzt werden, wenn der Text
+von 2 zusätzlichen Lektoren geprüft wurde. Diese Lektoren
+tragen sich ebenfalls in das qp des Textes (unter Punkt 8)
+ein und geben damit ihr Einverständnis, dass der Text die QA1
+besteht (vorausgesetzt natürlich, dass die Lektoren keine Mängel
+finden).
+
+Die Lektoren können vom Hauptprüfer (also Dir) gesucht und
+beauftragt werden. Solltest Du keine Lektoren finden, melde dies
+bitte den TLs.
+
+Aufgabe der Lektoren ist die Prüfung des Textes auf unsere
+Stilkriterien, Übersichtlichkeit, Gliederung, Rechtschreibung sowie
+Inhalt. Es ist nicht nötig, dass sich ein Lektor tief in das
+jeweilige Themengebiet einarbeitet, jedoch sollten klar ersichtliche
+inhaltliche Fehler gemeldet werden und zur Sperrung des Textes
+führen, bis die Mängel beseitigt worden sind.
+
+Optimalerweise sollte also diese Lektorenarbeit lediglich ein
+konzentriertes Durchlesen des Textes darstellen, da der Text ja
+bereits geprüft sein sollte. Leider hat die Vergangenheit gezeigt,
+dass oftmals Fehler übersehen und klare stilistische Mängel
+nicht beanstandet wurden, darum wurde diese zusätzliche Prüfung
+eingeführt.
+
+
+
+4.9 Prüfung der XML-Version eines Textes (QA2)
+-------------------------------------------------
+
+Die in XML formatierten Texte erfordern zur Qualitätsprüfung
+besonderes Wissen über die für SelfLinux definierten XML-Tags.
+Du solltest Dir zu diesem Zweck mindestens die für die Layouter
+geschriebene XML-Referenz durchgelesen und bereits einmal ein
+SelfLinux-Dokument formatiert, d.h. von der Plainversion in
+die XML-Version übertragen haben. Die Prüfung gestaltet sich
+hier ein wenig technischer als die Prüfung der Textversion, da
+einige formale Anforderungen an das XML-Dokument verifiziert
+werden müssen.
+
+
+
+4.9.1. Referenzierte Bilder im CVS?
+--------------------------------------------
+
+Da Bilder häufig erst in der XML-Version eines Textes
+auftauchen können, wird diese Prüfung erst hier vorgenommen.
+Es ist zu prüfen, daß alle referenzierten Bilder ordentlich
+im Verzeichnis des Textes abgelegt und eingecheckt sind.
+Auch sollte eine inhaltliche Kontrolle der Bilder stattfinden.
+Zeigen die Bilder das was sie zeigen sollen? Passen die Bildunterschriften?
+
+
+4.9.2 Einrückung der Tags
+---------------------------------
+
+Da die Tags potentiell sehr verschachtelt sein können, ist
+für jede neue Ebene lediglich ein einzelnes Leerzeichen zur
+Einrückung (kein Tab, nicht mehrere Leerzeichen) zu verwenden.
+Um zu verstehen, was eine neue Ebene darstellt, benötigst Du
+Kenntnisse über das Layout
+
+
+
+4.9.3 Validierung und Übersetzung
+-----------------------------------------
+
+Ein XML-Dokument kann mittels einer Validierung gegen ein
+sogenanntes XML-Schema auf einen definierten strukturellen
+Aufbau hin überprüft werden. Auf diese Weise können elementare
+Fehler der Formatierung beseitigt werden.
+
+Das Tools zur automatischen Übersetzung heisst mksl3, und befindet sich unter
+interna/tools/mksl3.
+
+Eine Anleitunbg wie das Tool zu benutzen ist befindet sich unter:
+(Der Text ist zur zeit noch nicht fertig)
+
+
+
+---------------------------------------
+5. Qualitätspapier erstellen/pflegen
+---------------------------------------
+
+Um die Qualitätsprüfung der einzelnen Texte zu verwalten, haben wir
+ein Template erstellt, in die Ergebnisse aller Prüfungsschritte
+für jeden Text festgehalten werden sollen. Jedem Text ist ein eigenes
+Qualitätspapier zugeordnet, das im Verzeichnis des Textes abgelegt
+wird. Das Qualitätspapier trägt den Namen des Textes mit einem
+vorangestellten "qp-". Das Qualitätspapier zu dem Text "kernel" heißt
+also "qp-kernel".
+
+Sollte zu einem Text, den Du prüfst, bereits ein Qualitätspapier
+vorliegen, so wirst Du dieses freilich lediglich in den Punkten
+aktualisieren, die Du geprüft hast.
+
+
+
+------------------
+6. CVS Tags setzen
+------------------
+
+Erfüllt eine Revision die Richtlinien und ist das Qualitätspapier
+(qa-paper "qp-dokument") ausgefüllt, so wird diese mit einem
+Tag markiert. Eine Revision im Plain-Ast wird mit dem Tag
+"qa_plain_ok" getaggt. Dieses Tag wird gegebenenfalls verschoben.
+Eine Revision im Format-Ast wird mit dem Tag "qa_format_ok"
+gekennzeichnet.
+
+Es ist darauf zu achten, dass verwendente Bilder ebenfalls
+geprüft und mit dem Tag "qa_format_ok" getaggt werden müssen (und
+alle anderen Dateien, die in das Release eingehen sollen).

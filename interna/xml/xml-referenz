@@ -1,0 +1,654 @@
+<!--
+ * XML-Referenz - Beschreibung des SelfLinux-Formats
+ * Copyright Johannes Kolb
+ * 
+ * $Name:  $
+ * $Revision: 1.1 $
+ * $Source: /selflinux/interna/xml/xml-referenz,v $
+ *
+ * Diese Datei ist Teil von SelfLinux  http://www.selflinux.de
+ *
+ *** $Id: xml-referenz,v 1.1 2003/10/08 18:12:16 jkolb Exp $
+-->
+
+Dieses Dokument beschreibt den Aufbau des SelfLinux-Formats und alle
+unterstützten Tags. 
+Zum Verständnis dieser Kurzreferenz sind einige grundlegende HTML-Kenntnisse
+nötig.
+
+Generelles zu XML
+=================
+
+XML ist die Abkürzung für Extensible Markup Language, eine auf HTML
+und SGML aufbauende Sprache zur Beschreibung von gegliederten
+Dokumenten (wie z.B. SelfLinux-Kapitel)
+
+Das Prinzip ähnelt dem von HTML-Dokumenten. Mit Hilfe von Tags wird
+die Funktion der von ihnen eingeschlossenen Textteilen definiert.
+Die Namen der Tags können jedoch beliebig gewählt werden, je nachdem,
+welchen Zweck das Dokument erfüllen soll. Die gültigen Tags für
+SelfLinux-Kapitel werden in diesem Dokument definiert.
+Außerdem sind die Regeln etwas härter, um die Lesbarkeit des Dokuments
+(für Programme) zu erleichtern. 
+
+Folgende *Unterschiede zu HTML* sind also zu beachten:
+
+- Jedes Dokument beginnt mit der Zeile
+   <?xml version="1.0" encoding="iso-8859-1"?>
+   dadurch wird es als XML-Dokument erkannt.
+
+- Bei allen Tags und Attributen macht Groß/Kleinschreibung einen
+   Unterschied.
+
+- *Jeder* öffnende Tag <tag> braucht einen schließenden Tag </tag>,
+   öffnende Tags ohne korrespondierenden Schlusstag sind *verboten*!
+   Verschachtelung von Tags ist erlaubt, solange die Reihenfolge
+   erhalten bleibt: 
+   <tag1><tag2></tag2></tag1> erlaubt, 
+   <tag1><tag2></tag1></tag2> jedoch verboten
+
+- <tag></tag> (ein Tag ohne Inhalt) darf mit <tag/> abgekürzt werden.
+
+- Die Werte von Attributen *müssen* in Anführungszeichen geschrieben
+   werden. <tag attrib="wert">
+
+Hier wurden natürlich nur die wichtigsten Unterschiede genannt.
+Genauere Informationen zu XML findest du im Internet auf
+
+ - http://www.w3.org/TR/REC-xml  (Die Spezifikation; Vorsicht: sehr
+                                  trocken)   
+
+Das SelfLinux-Format
+====================
+
+Änderungen
+----------
+
+bis 19. Jun 2003: geänderte Tags: author, layout, iref, table, description, shell,
+				  name, textblock, image
+                  neue Tags: license, path, keyword, sub, sup, ol, ul, li
+
+Grundgerüst eines Kapitels
+--------------------------
+
+Das folgende Dokument kann als Muster für alle SelfLinux-Kapitel
+verwendet werden, die Felder in geschweiften Klammern müssen durch die 
+entsprechenden Angaben zum Dokument ersetzt werden.
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * {Dokumenttitel}
+ * Copyright {Autor}
+ *
+ * $Revision: 1.1 $
+ * $Source: /selflinux/interna/xml/xml-referenz,v $
+ *
+ * Diese Datei ist Teil von SelfLinux  http://www.selflinux.de
+ *
+ *** $Id: xml-referenz,v 1.1 2003/10/08 18:12:16 jkolb Exp $
+-->
+
+<chapter runlevel="{Runlevel}">
+
+ <cvs>
+  <name>$Name:  $</name>
+  <id>$Id: xml-referenz,v 1.1 2003/10/08 18:12:16 jkolb Exp $</id>
+  <revision>$Revision: 1.1 $</revision>
+  <source>$Source: /selflinux/interna/xml/xml-referenz,v $</source>
+ </cvs>
+
+ <title>{Dokumenttitel}</title>
+
+ <author>
+  <name>{Autorname}</name>
+  <mailto>{Emailadresse}</mailto>
+ </author>
+ <author>
+  <name>{Autor2}</name>
+  <mailto>{Emailadresse}</mailto>
+ </author>
+
+ <layout>
+  <name>{Layoutername}</name>
+  <mailto>{Emailadresse}</mailto>
+ </layout>
+ <layout>
+  <name>{Layoutername}</name>
+  <mailto>{Emailadresse}</mailto>
+ </layout>
+
+ <license>GFDL</license>
+ <index>{Schlüsselwort}</index>
+
+ <keyword>{Stichwort1}</keyword>
+ <keyword>{Stichwort2}</keyword>
+
+ <description>
+  <textblock>
+{Kapitelzusammenfassung}
+  </textblock>
+ </description>
+
+{Der Inhalt:  Split-Abschnitte mit Kapiteln}
+
+</chapter>
+
+
+Der Abschnitt zwischen <!-- und --> ist natürlich ein Kommentar. Er
+dient zur Kennzeichnung aller SelfLinux-Dokumente und sollte daher
+übernommen werden.
+
+Danach beginnt mit dem Chapter-Tag die Beschreibung des Dokuments. 
+Das Attribut Runlevel ist für das "Runlevel-Konzept" vorgesehen. Damit
+soll es in der nahen Zukunft möglich sein, die Auswahl der Texte an
+den Leser anzupassen. Texte vom Runlevel "user" sind für Leser mit
+wenig Linux-Erfahrung gedacht, "advanced" für Fortgeschrittene und
+"expert" für die Profis.
+Ein Kapitel erscheint immer nur in den Runlevels, die bei dem
+Runlevel-Tag angegeben sind. Ist der Text für mehrere Benutzergruppen
+nützlich, so kann man eine Aufzählung aller Runlevels angeben:
+<chapter runlevel="advanced expert">
+
+Der CVS-Abschnitt kann einfach ins Dokument übernommen werden. Das
+CVS-System fügt hier automatisch die Revisionsnummer und andere
+Informationen ein. Die sind später zur Identifizierung des
+Ursprungsdokuments nützlich.
+
+Mit dem license-Tag wird die für das Kapitel geltende Lizenz
+angegeben. An dieser Stelle sollte nur der Lizenzname stehen, die
+ausgeschriebene Form findet sich im Anhang. Momentan sind nur GPL und
+GFDL vorgesehen, wenn andere Lizenzen auftauchen, sollte dies mit der
+Mailingliste abgesprochen werden.
+
+Der Dokumenttitel wird in den title-Tag geschrieben. Die author- und
+layout-Tags geben jeweils Name und Emailadresse des Autors bzw.
+Layouters an. Sind mehrere Autoren/Layouter beteiligt, so können die beiden
+Tags auch beliebig wiederholt werden.
+
+Um das Dokument unter einem eindeutigen Namen ansprechen zu können,
+muss in den index-Tag eine eindeutige Bezeichnung für das Kapitel
+geschrieben werden. Dieser dient z.B. als Dateiname für die
+Ausgabedateien.
+
+Wichtig:
+Bitte umbedingt *eindeutige* Index-Namen vergeben. Falls in
+Unterkapiteln z.B. wieder ein Vorwort o.ä. auftaucht, sollte man im
+index-Namen einen Prefix verwenden: "meinbuch-vorwort"
+Falls nämlich in zwei Kapiteln der gleiche Index-Name verwendet wird,
+so wird das Kapitel, das zuerst in HTML konvertiert wird vom
+nachfolgenden überschrieben!
+
+Mit Hilfe des keyword-Tags dürfen hier schon Stichwörter angegeben
+werden, die für das ganze Kapitel gelten. Näheres im Abschnitt
+keyword.
+
+Description enthält eine kurze Zusammenfassung des Kapitels, hier 
+dürfen dürfen Textblöcke und Tags zur Textformatierung 
+(siehe Abschnitt "Einzelformatierungen") verwendet werden.
+
+Danach folgt schließlich der eigentliche Inhalt, d.h. der erste Split-Tag.
+Erst *nach* diesem Inhalt, als letzter Tag des Kapitels folgt
+</chapter>
+
+
+Splits und Abschnitte
+---------------------
+
+split
+
+Beispiel:
+
+ <split>
+  <section>
+{...}
+  </section>
+  <section>
+{...}
+  </section>
+ </split>
+
+ <split>
+  <section>
+{...}
+  </section>
+ </split>
+
+Für manche Ausgabeformate (z.B. HTML) ist es sinnvoll, ein Kapitel in
+mehrere Dateien zu unterteilen. Um zu kontrollieren, welche Kapitel
+zusammen in ein Ausgabedokument kommen, wurde der Split-Tag eingeführt.
+
+Der Inhalt jedes SelfLinux-Dokuments besteht daher aus einer Folge von
+Split-Abschnitten, die die eigentlichen Abschnitte (section-Tags)
+beinhalten. Aus jedem Split wird dann ein Ausgabedokument.
+Aus obigem Beispiel werden also 2 Dokumente mit dem Inhalt des
+Kapitels und eines mit dem Inhaltsverzeichnis und der
+Kurzbeschreibung.
+Als grobe Richtlinie: Ein Split sollte etwa im fertigen
+Ausgabedokument nicht länger als 2 Bildschirmseiten sein. 
+(FIXME: Über die Größe muss noch diskutiert werden)
+
+
+section
+
+Der section-Tag definiert einen Abschnitt des Kapitel:
+
+  <section>
+   <heading>
+{Überschrift}
+   </heading>
+
+{Textblöcke}
+  </section>
+
+Der erste untergeordnete Tag, heading, gibt die Überschrift des
+Kapitels an. Darauf folgt eine beliebige Anzahl der verschiedenen
+Textblöcke.
+Um Unterabschnitte anzulegen, können auch innerhalb eines Abschnitts
+weitere section-Tags angelegt werden.
+
+
+Textblöcke
+----------
+Textblöcke sind die kleinsten Einheiten eines Dokuments. Sie können
+neben normalem Text aber auch Bilder, Shell-Umgebungen o.Ä. enthalten.
+
+
+textblock
+
+Textblock definiert einen normalen Textabschnitt.
+Bsp:
+   <textblock>
+Um Unterabschnitte anzulegen, darf auch innerhalb eines Abschnitts
+ein weiterer section-Tag angelegt werden.
+   </textblock>
+
+
+definition
+
+Mit definition werden Definitionen gekennzeichnet.
+Bsp:
+   <definition>
+Ein SelfLinux-Dokument als Ganzes ist immer als Chapter zu sehen. Es
+ist also das, was ein bestimmter Autor als zusammengehörigen Text zu
+SelfLinux unter einem bestimmten Titel beiträgt.
+   </definition> 
+
+
+quotation
+
+quotation kennzeichnet Zitate.
+Bsp:
+   <quotation>
+Ein System ist alles, was keines hat,<br/>
+Hardware das, wa beim Runterfallen kappert,<br/>
+und Software das, wovon man logisch erklären kann,<br/>
+warum es nicht funktioniert.<br/>
+
+Johannes Leckebusch
+   </quotation>
+
+
+hint
+
+hint-Textblöcke geben Hinweise.
+Bsp:
+   <hint>
+Sollte EMACS dich schließlich doch zum Wahnsinn gebracht haben - kein
+Problem. Tippe einfach 
+
+   <command>
+    <keycomb mode="hold">
+     <key>ALT</key>
+     <key>x</key>
+    </keycomb>
+    doctor
+   </command> 
+
+ein; da werden sie geholfen!
+   </hint>
+
+
+image
+
+Ein image-Abschnitt fügt ein Bild ein; der Bildtitel wird durch den
+title-Tag, der Dateiname durch den filename-Tag angegeben.
+Bsp:
+   <image>
+    <title>
+Das XML-Team präsentiert glücklich sein Stylesheet
+    </title>
+    <filename>xmlteam-gluecklich.jpg</filename>
+   </image>
+
+
+file
+
+Mit Hilfe des file-Tags können Dateilistings eingebunden werden. Dabei
+gibt title wieder den Titel des Listings (meistens wohl der Dateiname)
+und content den Inhalt. Wenn Dateilistings viele reservierte Zeichen
+enthalten (spitze Klammern), braucht man nicht jedes Zeichen einzeln
+durch die Umschreibung (z.B. &lt;) ersetzen; ein <![CDATA[ ... ]]> -
+Abschnitt übernimmt alle umschlossenen Zeichen direkt in das
+Ausgabedokument.
+Bsp:
+   <file>
+    <title>
+SelfLinux-Minimaldokument
+    </title>
+    <content><![CDATA[
+<?xml version="1.0" encoding="ISO-8859-1"?>
+ <chapter>
+  <title>
+Ein Minimaldokument
+  </title>
+
+...
+ </chapter>
+    ]]></content>
+</file>
+
+
+shell
+
+Die Shell-Umgebungen gibt dem Layouter die Möglichkeit, einen
+"Shell-Dialog" in das Dokument aufzunehmen.
+
+Bsp:
+   <shell>
+    <user path="~">
+cd xml
+    </user>
+    <user path="~/xml">
+su
+    </user>
+    <output>
+Password:
+    </output>
+    <input>
+geheim
+    </input>
+    <root path="/home/beispielbenutzer">
+    </root>
+</shell>
+
+Jeder der Unterabschnitte (user,root,output,input) gibt dabei genau
+eine Zeile an. user und root geben eine Eingabe an einer User- bzw.
+Root-Shell an. Der Prompt wird automatisch generiert und enthält auch
+eine Pfadangabe, die durch das Attribut path bestimmt wird. (Fehlt die
+Angabe von path, so wird der Pfad des letzten Prompt übernommen)
+
+Wenn die Befehle unter einem bestimmten Usernamen ausgeführt werden
+sollen (z.B. als mysql oder news), kann dieser Name beim user-Tag mit
+angebeben werden: 
+<user name="mysql">mysqladmin ...</user>
+Auch hier gilt: bei allen folgenden user-Tags muss kein Name mehr
+angegeben werden, sie übernehmen ihn automatisch. 
+
+Achtung: Es sollte nur dann ein Benutzername angegeben werden, wenn
+dieser wirklich entscheidend ist. Wenn nur irgendein normaler Benutzer
+gemeint ist, sollte das name-Attribut weggelassen werden.
+
+Werden Programme aus der Shell ausgeführt (im Beispiel: su), die
+eigene Ausgaben machen, so werden diese mit dem <output>-Tag
+angegeben. Benutzereingaben an dieses Programm (keine Eingaben an der
+Shell!) werden mit dem <input>-Tag gekennzeichnet.
+
+Bevor der Inhalt der user,root und output-Tags ausgegeben wird, wird
+jeweils eine neue Zeile begonnen. Input-Tags machen keinen
+Zeilenwechsel, um Konstrukte wie im Beispiel zu ermöglichen.
+
+
+table
+
+Mit table können Tabellen erzeugt werden; die Tags funktionieren
+genauso wie in HTML.
+Als Tags dürfen verwendet werden: <table>,<tr>,<th>,<td>
+Als Attribute sind erlaubt: border,align,valign,widht,height,rowspan,colspan,nowrap
+
+Bsp:
+ <table border="1">
+  <th>
+   <td>Wichtige Kommandos</td>
+   <td>Beschreibung</td>
+  </th>
+  <tr>
+   <td>ls</td>
+   <td>zeigt die Dateien im aktuellen Verzeichnis an,</td>
+  </tr>
+  <tr>
+   <td>cd mydir</td>
+   <td>wechselt ins Verzeichnis mydir,</td>
+  </tr>
+ </table>
+
+
+Einzelformatierungen
+--------------------
+
+ref
+
+Ref ist das Analogon zum <a> in HTML. Es dient dazu, Hyperlinks zu
+Seiten im Web oder zu anderen SelfLinux-Kapiteln zu setzen.
+
+Bsp:
+Den Kernel und kernelnahe Programme gibt es immer frisch auf
+<ref url="http://www.kernel.org">kernel.org</ref>.
+Nähere Informationen zum Basteln eines eigenen Kernels, gibts im
+Kapitel <ref chapter="kernelbacken">Kernel selbstgebaut</ref>.
+
+Bei Hyperlinks zu URLs,  muss einfach ins url-Attribut die
+*vollständige* Addresse der zu verlinkenden Seite  eingetragen werden.
+(Bitte umbedingt http:// bzw. ftp:// mit angeben!)
+
+Wenn auf SelfLinux-Dokumente verlinkt werden soll, so können folgende
+Varianten verwendet werden:
+
+<ref iref="Kartentyp">
+  verlinkt auf den Abschnitt "Kartentyp" im aktuellen Kapitel
+<ref chapter="isdn">
+  verlinkt auf das ganze Kapitel "isdn".
+<ref chapter="isdn" iref="Kartentyp">
+  verlinkt auf den Abschnitt "Kartentyp" im Kapitel "isdn".
+
+Zur eindeutigen Kennzeichnung der Kapitel dienen dabei die
+Index-Namen, bei den Abschnitten der Name, der als "heading"
+angegeben wurde. Es können auch Textblöcke verlinkt werden, wenn
+diesen mit dem name-Attribut ein eindeutiger Bezeichner zugewiesen
+wurde.
+
+
+keyword
+
+Mit dem keyword-Tag können Stichworte zu einem Abschnitt oder einem
+ganzen Kapitel angegeben werden. Beim Erzeugen des SelfLinux-Tutorials
+wird dann der Abschnitt bzw. das Kapitel ins Stichwortverzeichnis
+aufgenommen.
+
+Bsp:
+<chapter runlevel="advanced expert">
+ {...}
+ <index>apache</index>
+ <license>GFDL</license>
+
+ <keyword>Webserver</keyword>
+ <keyword>Apache</keyword>
+
+ {...}
+ <section>
+  <heading>
+Konfigurationsbeispiel mit PHP und MySQL
+  </heading>
+  <keyword>LAMP</keyword>
+  <keyword>PHP</keyword>
+  <keyword>MySQL</keyword>
+
+  {...}
+ </section>
+ {...}
+</chapter>
+
+Es empfielt sich, die Keyword-Tags der Übersichtlichkeit halber an den
+Anfang ihrer Abschnitte zu setzen. 
+
+Listen (ol, ul, li)
+
+Mit den Tags ol, ul und li können - wie von HTML bekannt - numerierte
+oder unnumerierte Listen angegeben werden.
+Bsp:
+   <textblock>
+    <ol>
+     <li>eins</li>
+     <li>zwei</li>
+     <li>drei></li>
+    </ol>
+    <ul>
+     <li>ein Punkt</li>
+     <li>noch ein Punkt</li>
+    </ul>
+   </textblock>
+
+
+strong
+
+Analog zu HTML dient strong zur Hervorhebung eines Textteils.
+Bsp:
+
+   <textblock>
+Die folgenden <strong>wichtigen</strong> Fragen müssen noch geklärt
+werden:
+   </textblock>
+
+
+sub und sup
+
+Die Tags sub(script) und sup(erscript) ergeben tief- bzw.
+hochgestellten Text.
+Bsp:
+   <textblock>
+Der Text kann <sup>hoch oben</sup> oder <sub>tief unten</sub> liegen.
+   </textblock>
+
+command
+
+Mit command werden Befehle gekennzeichnet, die im Text erwähnt werden.
+Bsp:
+   <textblock>
+Ein einfacher Aufruf von
+    <command>
+make all
+    </command>
+genügt, um das Programm zu kompilieren.
+   </textblock>
+
+
+path
+
+Wird im Text ein Pfad oder ein Dateiname erwähnt, so kann man ihn mit
+path kennzeichnen.
+Bsp:
+   <textblock>
+Wechseln sie nun ins Verzeichnis <path>/etc/init.d</path>.
+   </textblock>
+
+name
+
+Werden im Text Namen genannt, so werden sie mit diesem Tag
+gekennzeichnet.
+Bsp:
+   <textblock>
+Linux wurde 1991 vom finnischen Studenten 
+    <name email="torvalds@osdl.org"> 
+Linus Benedict Torvalds
+    </name> 
+entwickelt.
+   </textblock>
+
+
+br
+
+Mit Hilfe von br können Zeilenumbrüche, wie von HTML her bekannt, 
+erzwungen werden. Der korrekte XML-Tag lautet <br></br>, kann aber 
+wie in der Einleitung oben beschrieben mit <br/> abgekürzt werden. 
+Diese Abkürzung ist der Übersichtlichkeit wegen zu bevorzugen.
+
+Bsp:
+ Eine Zeile mit <br/>
+ einem Zeilenumbruch.
+
+Achtung:
+<br/> dient zum Einfügen besonderer Zeilenumbrücke, z.B. in Zitaten.
+Es sollte *nicht* verwendet werden, um Unterüberschriften abzutrennen
+oder Absätze anzulegen. Für Unterüberschriften ist ein geschachteltes
+Section-Tag, für Absätze ein neuer Textblock zu benutzen.
+
+
+keycomb
+
+Damit werden Tastenkombinationen speziell hervorgehoben.
+
+Bsp:
+<keycomb mode="hold">
+     <key>ALT</key>
+     <key>x</key>
+</keycomb>
+
+<keycomb mode="sequence">
+	<key>ESC</key>
+	<key>q</key>
+</keycomb>
+
+Innerhalb des Keycomb-Tags werden mit key-Tags die einzelnen Tasten
+angegeben. Steuertasten wie CTRL, ALT, SHIFT sollten in Großbuchstaben
+geschrieben werden.
+Mit dem Attribut mode wird angegeben, ob die Tasten gleichzeitig oder
+hintereinander gedrückt werden sollen.
+
+
+Erstellen von Ausgabedateien
+============================
+
+Damit ein Layouter sein Dokument auch in HTML bewundern kann, muss es
+mit Hilfe der Stylesheets und eines XSLT-Parsers umgewandelt werden.
+Alles was dazu benötigt wird, ist im Paket slcompile enthalten, das
+unter
+http://selflinux.sourceforge.net/xml/slcompile.tar.bz2
+erhältlich ist.
+
+Darin steckt der XSLT-Parser Saxon, die aktuellen Stylesheets aus dem
+CVS und das slcompile-Skript, das Saxon mit den richtigen Parametern
+aufruft.
+
+Um slcompile zu verwenden muss es natürlich entpackt werden, am besten
+irgenwo ins Home-Verzeichnis. Danach muss im Skript von Hand die
+Variable MYDIR auf den Pfad dieses Skripts gesetzt werden. (Bitte
+den Pfad direkt eingeben, nicht  `pwd` o.Ä., das funktioniert nicht)
+Evtl. kann man auch mit Hilfe der JAVA-Variable den zu verwendenden
+Java-Interpreter wählen.  Zuletzt sollte man noch das
+slcompile-Verzeichnis in den Pfad (PATH) aufnehmen. 
+
+Nun kann ein SelfLinux-Dokument (egal, wo es sich befindet) einfach
+durch Aufruf von 
+slcompile dokument
+umgewandelt werden. Das Ergebnis ist im slcompile-Verzeichnis unter
+output/html zu finden; der Dateiname der Inhaltsübersicht ist
+dokument.html, die weiteren Splits sind mit dokument01.html,
+dokument02.html durchnumeriert.
+
+Wenn die Stylesheets im CVS (unter interna/xml) geupdated werden,
+müssen sie ins Verzeichnis styles/html im slcompile-Verzeichnis
+kopiert werden, damit sie auch zum Übersetzen von SL-Dokumenten
+genutzt werden. Ebenso ist ein Update des slcompile-Skripts durch
+eine neuere Version aus dem CVS möglich.
+
+
+Alternativ oder zusätzlich dazu kann man auch "mksl2" im
+Einzeldateimodus verwenden. Eine genaue und ausführliche
+Beschreibung findet sich im Dokument "release-infos". mksl2
+kümmert sich automatisch auch um Bilder und ist so optimiert,
+möglichst automatisch zu arbeiten. Dieses Script muß nicht
+editiert werden und verwendet automatisch die Styles aus der CVS
+Sandbox - es muß also nichts kopiert werden. Viele Details hierzu
+finden sich in "release-infos". Aufrufen kann man mksl2 wie
+slcompile: mit der zu übersetzenden Datei als Parameter.
+
