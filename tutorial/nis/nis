@@ -947,7 +947,7 @@ option: [yes|no]
     </file>
 
     <textblock>
-Mögliche Optionen sind <command>dns</command> (der Server fragt DNS, um die Klienten
+Mögliche Optionen sind <command>dns</command> (der Server fragt DNS, um die Clients
 zu finden, die nicht in den hosts-Maps auftauchen), <command>sunos_kludge</command>
 (obsolet) und <command>xfr_check_port</command> (um den Server auf einen Port unter 1024 zu
 lenken - yes als Default)
@@ -1032,7 +1032,7 @@ und <path>/etc/shadow</path> zu mischen sind.
     </textblock>
 
     <textblock>
-Letztes Detail bevor wir die NIS-Datenbank erstellen, die Verwaltung der
+Noch ein letztes Detail bevor wir die NIS-Datenbank erstellen, die Verwaltung der
 Zugriffsrechte. Es gibt zwei Methoden den Zugang zum Server zu
 verwalten: entweder macht er alles selbst, oder über <strong>tcp_wrapper</strong>. Wir
 behandeln hier die Sicherheitseinstellungen über <command>ypserv</command> selbst.
@@ -1149,7 +1149,7 @@ ypinit -s charly
 
     <textblock>
 Um sicherzustellen, dass alles korrekt läuft, reicht es aus, einen Server
-in einen Klienten zu verwandeln, egal ob Master oder Slave,  und einen
+in einen Client zu verwandeln, egal ob Master oder Slave,  und einen
 Request abzusetzen. Zum Beispiel auf <strong>charly</strong>:
     </textblock>
 
@@ -1161,7 +1161,7 @@ scully:x:501:100::/home/scully:/bin/bash
     </file>
 
     <textblock>
-Man kann nebenbei auch feststellen, dass die Shadowpasswörter korrekt
+Man kann nebenbei auch feststellen, ob die Shadowpasswörter korrekt
 funktionieren.
     </textblock>
    </section>
@@ -1269,7 +1269,7 @@ gehört. <command>ypwhich</command> gestattet es, den Namen der Domäne zu testen!
 Der NIS-Domänenname erscheint an mehreren Stellen, besonders im
 Verzeichnis <path>/var/yp</path>, oder auch in einem Unterverzeichnis, das während
 der NIS-Installation angelegt wurde (auf dem(n) Server(n), aber auch auf
-den Klienten) und den Namen der NIS-Domäne trägt. Man muss deshalb die
+den Clients) und den Namen der NIS-Domäne trägt. Man muss deshalb die
 Zugangsrechte zu diesem Verzeichnis genau festlegen. Man darf auf es
 keinen Fall, nicht einmal read only, mit <ref chapter="nfs">NFS</ref> exportieren. Jeder kann
 dann dieses Verzeichnis auf seiner eigenen Maschine mounten, um den
@@ -1284,7 +1284,7 @@ RPC-Requests auf die eigene Maschine absetzt.
 
    <textblock>
 Es ist ebenfalls von Vorteil, die Defaultroute nicht über Ihren
-NIS-Server zu legen, sondern statisches Routing zu den Klienten und den
+NIS-Server zu legen, sondern statisches Routing zu den Clients und den
 Slaveservern zu benutzen. Der Server kennt auf diese Art nur Routen zu
 genau festgelegten Maschinen und kann deshalb nicht auf Requests von
 unbekannten Maschinen antworten.
