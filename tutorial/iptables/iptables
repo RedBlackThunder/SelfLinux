@@ -26,7 +26,7 @@ Einleitung
    </heading>
 
    <textblock>
-Dieses Kapitel beschäftigt sich vorrangig mit Paketfiltern. 
+Dieses Kapitel beschäftigt sich vorrangig mit Paketfiltern.
 Obwohl ein knapper Einstieg gegeben wird, ist es sinnvoll,
 wenn detaillierte Kenntnisse zum Thema <strong>Netzwerke</strong>
 (Topologien, Routing, QoS,
@@ -36,16 +36,16 @@ auch Grundlagen des
 sind.
    </textblock>
   </section>
-  
+
   <section>
    <heading>
 Grundlegende Begriffe
    </heading>
 
    <textblock>
-Um Doppelungen zu vermeiden, soll an dieser Stelle auf 
+Um Doppelungen zu vermeiden, soll an dieser Stelle auf
 zwei wesentliche Selflinux Kapitel hingewiesen werden,
-welche die grundlegenden Begriffe erläutern: 
+welche die grundlegenden Begriffe erläutern:
    </textblock>
 
    <textblock>
@@ -58,7 +58,7 @@ welche die grundlegenden Begriffe erläutern:
 Protokolle TCP/UDP/ICMP/IP/ARP, Ports )
    </textblock>
   </section>
-  
+
   <section>
    <heading>
 Grundlegendes zu Paketfiltern
@@ -91,7 +91,7 @@ pakete.png
 
    <textblock>
 Paketfilter werten den Paketkopf (Header) aus und entscheiden
-anhand dessen über das weitere Schicksal des 
+anhand dessen über das weitere Schicksal des
 ganzen Paketes. Entweder wird das Paket verworfen (Drop),
 das bedeutet, es wird einfach gelöscht, oder es wird akzeptiert
 (ACCEPT), das heißt es passiert den Filter, oder es wird
@@ -107,7 +107,7 @@ ip-filter.png
    <textblock>
 Bei Linux ist ein Paketfilter im Kernel integriert (einkompiliert
 oder als eingebundenes Modul). Mit Hilfe eines Programms (z.B.
-<command>ipchains</command> für Kernel 2.2 oder <command>iptables</command> für Kernel 2.4) kann man
+<command>ipchains</command> für Kernel 2.2 oder <command>iptables</command> für Kernel 2.4/2.6) kann man
 mit dem Filter kommunizieren. Dies beinhaltet unter anderem
 das Aufstellen von Regeln, mit denen man definieren kann, welche
 Pakete den Filter unter welcher Voraussetzung passieren dürfen.
@@ -136,38 +136,38 @@ Inhalt des Paketes!
 
     <textblock>
 Ein Beispiel:<br/>
-Die meisten Internetbenutzer wollen keine eigenen 
-Dienste vom heimischen PC aus anbieten. Es sollte also 
-niemandem aus dem Internet heraus erlaubt sein, eine 
-Verbindung zu dem privaten PC aufzubauen. 
+Die meisten Internetbenutzer wollen keine eigenen
+Dienste vom heimischen PC aus anbieten. Es sollte also
+niemandem aus dem Internet heraus erlaubt sein, eine
+Verbindung zu dem privaten PC aufzubauen.
     </textblock>
 
     <textblock>
-Zweites Beispiel:<br/> 
+Zweites Beispiel:<br/>
 Ein mittelständiges Unternehmen unterhält eine
 eigene kleine Entwicklungsabteilung, deren
 Erkenntnisse einer gewissen Geheimhaltungsstufe unterliegen:<br/>
 Die Dokumente sollen nicht in die Hände der Konkurrenz fallen.
-Das schwierige an der Sache ist, dass die Mitarbeiter für 
-ihre Arbeit einen WWW-Zugang benötigen. Ein Paketfilter hat 
-die Aufgabe den Datenaustausch von geheimen Dokumenten 
+Das schwierige an der Sache ist, dass die Mitarbeiter für
+ihre Arbeit einen WWW-Zugang benötigen. Ein Paketfilter hat
+die Aufgabe den Datenaustausch von geheimen Dokumenten
 zu erschweren. Wie - dies wird später erläutert.
     </textblock>
 
     <textblock>
-Paketfilter können auch sehr differenziert entscheiden, 
+Paketfilter können auch sehr differenziert entscheiden,
 wer etwas darf und wer nicht.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Beobachtung des Netzverkehres
     </heading>
 
     <textblock>
-Paketfilter können auch den Datenverkehr überwachen und bei 
-Unregelmäßigkeiten eine Meldung erzeugen. 
+Paketfilter können auch den Datenverkehr überwachen und bei
+Unregelmäßigkeiten eine Meldung erzeugen.
     </textblock>
 
     <textblock>
@@ -178,15 +178,15 @@ liegt die Vermutung nahe, es könnte ein Virus oder ein
 Trojanisches Pferd ungewollte Dinge verrichten.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Paketumleitung und Paketmanipulation
     </heading>
 
     <textblock>
-Paketfilter können den Datenverkehr auf einen Proxy 
-umleiten, der auf Applikationsebene Entscheidungen 
+Paketfilter können den Datenverkehr auf einen Proxy
+umleiten, der auf Applikationsebene Entscheidungen
 fällt. Damit lassen sich beispielsweise transparente
 Virenscanner oder Kindersicherungen einrichten, und zwar
 ohne dass die Netzwerkteilnehmer (also z.B. Schüler)
@@ -202,41 +202,41 @@ oder <ref chapter="adsl">DSL</ref>-Verbindung
 mit dem Internet verbinden.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Attackenbekämpfung
     </heading>
 
     <textblock>
-Prinzipiell werden zwei Angriffstypen unterschieden: 
+Prinzipiell werden zwei Angriffstypen unterschieden:
     </textblock>
 
     <textblock>
-Zum einen sind dies Attacken mit dem Ziel, in ein System 
-einzudringen, um dann Daten zu stehlen oder es als 
+Zum einen sind dies Attacken mit dem Ziel, in ein System
+einzudringen, um dann Daten zu stehlen oder es als
 Ausgangspunkt für weitere Angriffe zu nutzen. Dazu nutzen
-die Angreifer Schwachstellen im Betriebssystem oder in 
+die Angreifer Schwachstellen im Betriebssystem oder in
 Anwendungsprogrammen (Client- und Serversoftware).
     </textblock>
 
     <textblock>
 Zum anderen besteht das Angriffsziel darin, einen Rechner
 lahm zu legen oder diesen vom Netzwerk zu trennen. Solche
-Attacken bezeichnet man auch als DOS- bzw. ihre 
-Weiterentwicklung als DDOS-Attacken 
+Attacken bezeichnet man auch als DOS- bzw. ihre
+Weiterentwicklung als DDOS-Attacken
 (Distributed Denial of Service Attack).
     </textblock>
 
     <textblock>
 Paketfilter können einige Angriffsvarianten vereiteln, so
-zum Beispiel TCP-SYN-Flooding-Attacken oder 
+zum Beispiel TCP-SYN-Flooding-Attacken oder
 Large Packet Attacks (Ping of Death). Man kann auch das
 Scannen des Netzwerkes verhindern. Mit dieser Technik
-versuchen Angreifer, so viel wie möglich Informationen 
-über das System zu erhalten. Ebenfalls erschweren kann man 
+versuchen Angreifer, so viel wie möglich Informationen
+über das System zu erhalten. Ebenfalls erschweren kann man
 IP-Spoofing Attacken durch das Aufstellen genereller
-Filterregeln (z.B. Pakete mit interner Absenderadresse 
+Filterregeln (z.B. Pakete mit interner Absenderadresse
 dürfen nicht von Außen nach Innen gelangen.)
     </textblock>
    </section>
@@ -251,7 +251,7 @@ Prinzipielle Funktionsweise unter Linux
 
    <textblock>
 Folgende Erklärungen beziehen sich auf 2.4er/2.6er Kernel,
-bei  früheren Versionen gab es andere Konzepte
+bei früheren Versionen gab es andere Konzepte
 (<command>ipchains</command>, <command>ipfw</command>).
    </textblock>
 
@@ -264,15 +264,15 @@ ein <command>CONFIG_NETFILTER=Y</command> in der Kernelkonfiguration.
    <textblock>
 Das Programm <command>iptables</command> kommuniziert mit dem
 <ref chapter="kernel">Linux-Kernel</ref>
-und weist diesen an, Pakete nach bestimmten Regeln zu 
-filtern. <command>iptables</command> übernimmt also unter anderem das 
-Einfügen, Löschen und Manipulieren von Regeln in die 
-Filtertabellen des Kernels sowie das Setzen der 
-Filterpolitik. Bei einem Neustart des Computers gehen 
-alle angelegten Regeln verloren, deshalb ist ein 
-automatisches Setzen von Regeln sinnvoll. Mit den Tools 
-<command>iptables-save</command> und <command>iptables-restore</command> können die Regeln 
-gesichert und wiederhergestellt werden. Beim Bootvorgang 
+und weist diesen an, Pakete nach bestimmten Regeln zu
+filtern. <command>iptables</command> übernimmt also unter anderem das
+Einfügen, Löschen und Manipulieren von Regeln in die
+Filtertabellen des Kernels sowie das Setzen der
+Filterpolitik. Bei einem Neustart des Computers gehen
+alle angelegten Regeln verloren, deshalb ist ein
+automatisches Setzen von Regeln sinnvoll. Mit den Tools
+<command>iptables-save</command> und <command>iptables-restore</command> können die Regeln
+gesichert und wiederhergestellt werden. Beim Bootvorgang
 übernimmt dies ein Init-Script.
    </textblock>
 
@@ -280,7 +280,7 @@ gesichert und wiederhergestellt werden. Beim Bootvorgang
 Im 2.4er/2.6er Linuxkernel werden Listen von Regeln
 (Firewall-Ketten) in einer Filtertabelle verwaltet.
 Standardmäßig sind INPUT, OUTPUT und FORWARD-Ketten vorhanden.
-Der genaue Weg der Pakete  wird weiter unten beschrieben,
+Der genaue Weg der Pakete wird später beschrieben,
 das folgende Diagramm gibt schon mal einen ersten Überblick:
    </textblock>
 
@@ -291,20 +291,20 @@ filter-tabellen.png
    </image>
 
    <textblock>
-Jede Kette (INPUT, OUTPUT, FORWARD) entscheidet anhand von 
-Regeln, ob ein Paket gelöscht oder akzeptiert wird. Wird es 
-akzeptiert, dann reist es weiter durch das Diagramm bis es 
+Jede Kette (INPUT, OUTPUT, FORWARD) entscheidet anhand von
+Regeln, ob ein Paket gelöscht oder akzeptiert wird. Wird es
+akzeptiert, dann reist es weiter durch das Diagramm bis es
 letztendlich den Rechner über den Ausgang verlassen kann.
    </textblock>
 
    <textblock>
-Jede Kette beinhaltet eine Checkliste von Regeln, die ungefähr 
+Jede Kette beinhaltet eine Checkliste von Regeln, die ungefähr
 so aussehen:
    </textblock>
 
    <textblock>
-WENN (Filteroption) 
-DANN Aktion (Löschen, Akzeptieren, ... des Paketes) 
+WENN (Filteroption)
+DANN Aktion (Löschen, Akzeptieren, ... des Paketes)
    </textblock>
 
    <textblock>
@@ -320,52 +320,52 @@ regeln.png
 
    <textblock>
 Ist das Ende der Regelkette erreicht (keine Regel traf zu)
-entscheidet die <strong>*Policy*</strong> der Kette (zu deutsch: 
-Politik, Taktik, Vorgehensweise) darüber, was mit dem Paket 
-zu tun ist. In einem sicherheitsbewussten System werden 
+entscheidet die <strong>*Policy*</strong> der Kette (zu deutsch:
+Politik, Taktik, Vorgehensweise) darüber, was mit dem Paket
+zu tun ist. In einem sicherheitsbewussten System werden
 alle Pakete verworfen, für die keine Regel zutrifft.
 (prohibitive Sicherheitspolitik)
    </textblock>
 
    <textblock>
 Nun soll noch einmal der Weg der Pakete
-durch den Paketfilter ganz genau betrachtet werden: 
+durch den Paketfilter ganz genau betrachtet werden:
    </textblock>
 
    <textblock>
-Nach Eingang eines Paketes an einer Netzwerkschnittstelle (a) 
-wird dessen Zieladresse ausgewertet (Routing). Ein Paket mit 
-Zieladresse dieses Rechners (b) wird anschließend durch die 
-INPUT-Kette geprüft. Diese kann das Paket entweder verwerfen 
-oder für die weitere Verarbeitung durchlassen. Letztendlich 
-kann eine Anwendung die empfangenen Daten dem Nutzer zur 
+Nach Eingang eines Paketes an einer Netzwerkschnittstelle (a)
+wird dessen Zieladresse ausgewertet (Routing). Ein Paket mit
+Zieladresse dieses Rechners (b) wird anschließend durch die
+INPUT-Kette geprüft. Diese kann das Paket entweder verwerfen
+oder für die weitere Verarbeitung durchlassen. Letztendlich
+kann eine Anwendung die empfangenen Daten dem Nutzer zur
 Verfügung stellen (anzeigen, abspeichern, ...).
    </textblock>
 
    <textblock>
-Ein lokaler Prozess (z.B. Mozilla) könnte ein neues Paket 
-(Anforderung einer Webseite) erzeugen und dieses ins 
-Netzwerk versenden (d). Die OUTPUT-Kette leitet nach einer 
-erfolgreichen Prüfung das Paket weiter zur gewünschten 
+Ein lokaler Prozess (z.B. Mozilla) könnte ein neues Paket
+(Anforderung einer Webseite) erzeugen und dieses ins
+Netzwerk versenden (d). Die OUTPUT-Kette leitet nach einer
+erfolgreichen Prüfung das Paket weiter zur gewünschten
 Netzwerkschnittstelle (z.B. <command>eth0</command> / <command>ippp0</command>).
    </textblock>
 
    <textblock>
-Kommunikationsserver oder Router verbinden meist ein inneres 
-(privates) Netzwerk mit einem äußeren (öffentlichen) Netz, 
-zum Beispiel dem Internet. Dafür wird die Paketweiterleitung 
+Kommunikationsserver oder Router verbinden meist ein inneres
+(privates) Netzwerk mit einem äußeren (öffentlichen) Netz,
+zum Beispiel dem Internet. Dafür wird die Paketweiterleitung
 von einer Netzwerkschnittstelle (Eingang) zu einer anderen
-(Ausgang) benötigt. Die FORWARD-Kette prüft in diesem 
-Fall nun die Pakete, die vom inneren ins äußere Netz oder 
+(Ausgang) benötigt. Die FORWARD-Kette prüft in diesem
+Fall nun die Pakete, die vom inneren ins äußere Netz oder
 umgekehrt (f), (g) übertragen werden sollen.
    </textblock>
 
    <textblock>
 Es sei an dieser Stelle darauf hingewiesen, dass es neben der
-Filtertabelle (INPUT-, OUTPUT-, FORWARD-Kette) auch noch eine 
+Filtertabelle (INPUT-, OUTPUT-, FORWARD-Kette) auch noch eine
 NAT-Tabelle (PREROUTING-, POSTROUTING-, OUTPUT-Kette) für die
 sogenannte <strong>Network Address Translation</strong> existiert, welches
-<ref iref="Kombinieren von NAT und Paketfilter">weiter unten</ref>
+<ref iref="Kombinieren von NAT und Paketfilter">später</ref>
 beschrieben ist. Ebenso gibt es auch noch eine MANGLE Tabelle
 mit PREROUTING- und OUTPUT-Kette zur
 <ref iref="Explizite Erweiterungen">Paketmanipulation</ref>
@@ -397,13 +397,13 @@ in den Init-Skripten)
     </textblock>
 
     <textblock>
-Die Standard-Policy kann geändert werden, wenn das 
+Die Standard-Policy kann geändert werden, wenn das
 <command>iptables_filter</command> Kernelmodul mit einer entsprechende Option
 gestartet wurde (z.B. für FORWARD-Kette: <command>forward=0</command>).
     </textblock>
 
     <textblock>
-Das Programm <command>iptables</command> bietet folgende Optionen 
+Das Programm <command>iptables</command> bietet folgende Optionen
 zur Verwaltung von Filterregelketten:
     </textblock>
 
@@ -450,24 +450,24 @@ Die erste passende Regel in einer Kette löschen (<command>-D</command>).
      </li>
     </ul>
    </section>
-   
+
    <section>
     <heading>
 Operationen auf einer einzelnen Regel (Regeln manipulieren)
     </heading>
 
     <textblock>
-Mit den Befehlen zum Anhängen (<command>-A</command>) oder Löschen (<command>-D</command>) einer Regel 
-stehen die grundlegenden Kommandos zur Verfügung. Weitere 
-Befehle zum Einfügen (<command>-I</command>) und zum Ersetzen (<command>-R</command>) sind einfache 
+Mit den Befehlen zum Anhängen (<command>-A</command>) oder Löschen (<command>-D</command>) einer Regel
+stehen die grundlegenden Kommandos zur Verfügung. Weitere
+Befehle zum Einfügen (<command>-I</command>) und zum Ersetzen (<command>-R</command>) sind einfache
 Erweiterungen, die das Leben manchmal erleichtern und die
 dennoch kaum gebraucht werden.
     </textblock>
 
     <textblock>
-Jede Regel definiert eine Menge von Bedingungen, die ein 
-eintreffendes Paket erfüllen muss, und ein Ziel (target), 
-welches das weitere Schicksal des Paketes bestimmt. 
+Jede Regel definiert eine Menge von Bedingungen, die ein
+eintreffendes Paket erfüllen muss, und ein Ziel (target),
+welches das weitere Schicksal des Paketes bestimmt.
     </textblock>
 
     <textblock>
@@ -476,7 +476,7 @@ Zum Beispiel:
 
     <textblock>
 Es sollen alle ICMP-Pakete (z.B. von <command>ping</command> generiert)
-verworfen werden, die vom lokalen Rechner 127.0.0.1 
+verworfen werden, die vom lokalen Rechner 127.0.0.1
 stammen:
     </textblock>
 
@@ -486,8 +486,8 @@ Ziel: ist Verwerfen (DROP).
     </textblock>
 
     <textblock>
-Ping sendet einen <command>echo request</command> (ICMP Typ 8) und 
-alle kooperierenden Hosts antworten darauf 
+Ping sendet einen <command>echo request</command> (ICMP Typ 8) und
+alle kooperierenden Hosts antworten darauf
 verbindlich mit einem <command>echo reply</command> (ICMP Typ 0).
     </textblock>
 
@@ -532,17 +532,17 @@ ping -c 1 127.0.0.1
      </root>
      <output>
 PING 127.0.0.1 (127.0.0.1): 56 data bytes
-      
+
 --- 127.0.0.1 ping statistics ---
 1 packets transmitted, 0 packets received, 100% packet loss
      </output>
     </shell>
 
     <textblock>
-Die Regel scheint zu funktionieren. Doch wie löscht man nun 
-diese Regel wieder? Wenn die Position der Regel in der Kette 
+Die Regel scheint zu funktionieren. Doch wie löscht man nun
+diese Regel wieder? Wenn die Position der Regel in der Kette
 bekannt ist (in diesem Fall gibt es nur die eine
-Regel, deshalb Position 1), kann man diese Position 
+Regel, deshalb Position 1), kann man diese Position
 als Parameter verwenden:
     </textblock>
 
@@ -555,7 +555,7 @@ iptables -D INPUT 1
     <textblock>
 Sollte die Position jedoch nicht bekannt sein, so muss man die
 Regel nochmals vollständig angeben, also genau wie beim Anhängen
-der Regel, nur das anstelle des Befehls <command>-A</command> 
+der Regel, nur das anstelle des Befehls <command>-A</command>
 der Befehl <command>-D</command> steht:
     </textblock>
 
@@ -566,12 +566,12 @@ iptables -D INPUT -s 127.0.0.1 -p icmp -j DROP
     </shell>
 
     <textblock>
-Wenn die Regel mehrfach in Regelkette aufgenommen wurde, so wird 
+Wenn die Regel mehrfach in Regelkette aufgenommen wurde, so wird
 nur die erste gelöscht. Man sollte also IMMER nach dem Entfernen
 nochmals alles kontrollieren! (In diesem Falle also mit <command>ping</command>)
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Schnelle Lösung ohne viele Worte
@@ -585,7 +585,7 @@ Die folgende Anleitung funktioniert mit einem 2.4er/2.6er Kernel.
     </textblock>
 
     <textblock>
-1) Kernelmodule einfügen, wenn diese noch nicht einkompiliert 
+1) Kernelmodule einfügen, wenn diese noch nicht einkompiliert
 wurden (notwendig wegen Verbindungsverfolgung)
     </textblock>
 
@@ -691,7 +691,7 @@ IP-Adresse (Bsp. "127.0.0.1")
 Subnetz ("192.168.1.0/24" oder "192.168.1.0/255.255.255.0"
 sind alle IP-Adressen von 192.168.1.0 bis 192.168.1.255)<br/>
 Bsp: <br/><br/>
-<command>iptables -A INPUT -s 192.168.1.0/24 -j	DROP</command><br/>
+<command>iptables -A INPUT -s 192.168.1.0/24 -j DROP</command><br/>
        </li>
       </ol>
      </li>
@@ -718,7 +718,7 @@ Netzwerkschnittstelle <br/>
 <command>-i</command> oder <command>--in-interface</command>   Eingangsschnittstelle <br/>
 <command>-o</command> oder <command>--out-interface</command>  Ausgangsschnittstelle<br/><br/>
 
-Mit dem <command>ifconfig</command> Kommando können alle aktiven 
+Mit dem <command>ifconfig</command> Kommando können alle aktiven
 Schnittstellen angezeigt werden. <br/><br/>
 
 Die INPUT-Kette stellt  keine Output-Schnittstelle zur
@@ -730,16 +730,16 @@ obsolet. Nur Pakete, welche die FORWARD-Kette durchwandern,
 können über INPUT- und OUTPUT-Schnittstelle gefiltert
 werden.<br/><br/>
 
-Es können auch Schnittstellen zuordnet werden, die 
-beim Anlegen der Regel noch gar nicht existieren 
+Es können auch Schnittstellen zuordnet werden, die
+beim Anlegen der Regel noch gar nicht existieren
 (Dialup-PPP Schnittstellen)
-Kein Paket kann bis zur Aktivierung der Schnittstelle 
+Kein Paket kann bis zur Aktivierung der Schnittstelle
 die Regel erfüllen, sie stört somit also keinesfalls.<br/><br/>
-      
-Schnittstellennamen, die mit einem <command>+</command> enden, bezeichnen alle 
-Schnittstellen, die mit dieser Zeichenkette beginnen, 
-egal ob diese in dem Moment existieren oder nicht.<br/> 
-Beispiel: Eine Regel mit der folgenden Option trifft auf alle 
+
+Schnittstellennamen, die mit einem <command>+</command> enden, bezeichnen alle
+Schnittstellen, die mit dieser Zeichenkette beginnen,
+egal ob diese in dem Moment existieren oder nicht.<br/>
+Beispiel: Eine Regel mit der folgenden Option trifft auf alle
 PPP-Schnittstellen zu:  <command>-i ppp+</command><br/><br/>
      </li>
      <li>
@@ -755,63 +755,63 @@ lokalen Rechner kommen.
      </li>
     </ul>
    </section>
-   
+
    <section>
     <heading>
 Fragmente filtern
     </heading>
 
     <textblock>
-Zu große Pakete werden in Fragmente aufgeteilt und in 
-mehreren Paketen weiterverschickt. Die Gegenstelle setzt 
-diese Fragmente wieder zusammen, um das gesamte Paket 
+Zu große Pakete werden in Fragmente aufgeteilt und in
+mehreren Paketen weiterverschickt. Die Gegenstelle setzt
+diese Fragmente wieder zusammen, um das gesamte Paket
 zu rekonstruieren.
     </textblock>
 
     <textblock>
 Bei <strong>connection tracking</strong> oder NAT werden alle Fragmente
-wieder miteinander verschmolzen, bevor sie den Paketfilter 
+wieder miteinander verschmolzen, bevor sie den Paketfilter
 erreichen, alles ist also wie gehabt.
     </textblock>
 
     <textblock>
-Ansonsten hat unseren Paketfilter nun folgendes Problem: das 
+Ansonsten hat unseren Paketfilter nun folgendes Problem: das
 erste Fragment enthält die kompletten Header-Felder (IP + TCP,
-UDP und ICMP), die nachfolgenden Fragmente besitzen nur 
-Teilstücke der Header (IP ohne die zusätzlichen 
-Protokoll-Felder) Daher ist es nicht möglich, in 
-nachfolgenden Fragmenten nach Protokoll-Headern zu suchen 
-(wie es zum Beispiel bei TCP, UDP und ICMP Erweiterungen 
+UDP und ICMP), die nachfolgenden Fragmente besitzen nur
+Teilstücke der Header (IP ohne die zusätzlichen
+Protokoll-Felder) Daher ist es nicht möglich, in
+nachfolgenden Fragmenten nach Protokoll-Headern zu suchen
+(wie es zum Beispiel bei TCP, UDP und ICMP Erweiterungen
 getan wird).
     </textblock>
 
     <textblock>
-Anders formuliert: Das erste Fragment kann wie jedes andere 
-Paket gefiltert werden, bei dem zweiten und alle weiteren 
-Fragmenten greifen die bisher bekannten Regeln nicht. 
-So wird beispielsweise <command>-p TCP --sport www</command> 
-(die einen Quellport von www filtert) ausschließlich auf 
+Anders formuliert: Das erste Fragment kann wie jedes andere
+Paket gefiltert werden, bei dem zweiten und alle weiteren
+Fragmenten greifen die bisher bekannten Regeln nicht.
+So wird beispielsweise <command>-p TCP --sport www</command>
+(die einen Quellport von www filtert) ausschließlich auf
 das erste Fragment zutreffen.
     </textblock>
 
     <textblock>
-Die Lösung des Problems besteht im Hinzufügen einer Regel 
-für Fragmente mittels <command>-f</command> (<command>--fragment</command>) Option. 
+Die Lösung des Problems besteht im Hinzufügen einer Regel
+für Fragmente mittels <command>-f</command> (<command>--fragment</command>) Option.
     </textblock>
 
     <textblock>
-Normalerweise gilt es als sicher, wenn man zweite und 
-weitere Fragmente akzeptiert und nur das erste Fragment 
-herausgefiltert wird. Trotzdem: Werden Fragmente 
+Normalerweise gilt es als sicher, wenn man zweite und
+weitere Fragmente akzeptiert und nur das erste Fragment
+herausgefiltert wird. Trotzdem: Werden Fragmente
 akzeptiert, dann können durch das Ausnutzen von
-Software-Bugs Rechner zum Absturz gebracht werden. 
+Software-Bugs Rechner zum Absturz gebracht werden.
 (DOS Attacke)
     </textblock>
 
     <textblock>
 Anmerkung:<br/>
-Missgeformte Pakete (die z.B. zu klein sind, 
-um Ports oder ICMP Code oder Type zu lesen) werden 
+Missgeformte Pakete (die z.B. zu klein sind,
+um Ports oder ICMP Code oder Type zu lesen) werden
 verworfen. TCP-Fragmente starten also bei Position 8.
     </textblock>
 
@@ -838,38 +838,38 @@ Grundlegendes zu Erweiterungen
      </heading>
 
      <textblock>
-Sowohl der <command>iptables</command> Kernel-Code als auch das iptables Tool 
+Sowohl der <command>iptables</command> Kernel-Code als auch das iptables Tool
 können erweitert werden. Viele dieser Erweiterungen sind für
-eine sichere Firewall unumgänglich. Jeder kann Erweiterungen 
+eine sichere Firewall unumgänglich. Jeder kann Erweiterungen
 entwickeln und diese anbieten.
      </textblock>
 
      <textblock>
-Kernelerweiterungen residieren normalerweise im 
-Unterverzeichnis für Kernelmodule, z.B.  
-<path>/lib/modules/2.4.24/net</path> und werden bei Bedarf geladen. Wenn 
-im Kernel die Option <command>CONFIG_KMOD</command> gesetzt ist, dann erfolgt 
+Kernelerweiterungen residieren normalerweise im
+Unterverzeichnis für Kernelmodule, z.B.
+<path>/lib/modules/2.4.24/net</path> und werden bei Bedarf geladen. Wenn
+im Kernel die Option <command>CONFIG_KMOD</command> gesetzt ist, dann erfolgt
 das Laden vollautomatisch.
      </textblock>
 
      <textblock>
-Erweiterungen für das Tool <command>iptables</command> sind Shared Libraries, 
-die gewöhnlich unter <path>/usr/local/lib/iptables</path> , unter 
-<path>/lib/iptables</path> oder bei manchen Distributionen auch unter 
+Erweiterungen für das Tool <command>iptables</command> sind Shared Libraries,
+die gewöhnlich unter <path>/usr/local/lib/iptables</path> , unter
+<path>/lib/iptables</path> oder bei manchen Distributionen auch unter
 <path>/usr/lib/iptables</path> zu finden sind.
      </textblock>
 
      <textblock>
 Wir betrachten hier erst einmal MATCH-Erweiterungen, es geht
-also um eine Erweiterung der Filterbedingungen. Implizite 
-Erweiterungen (tcp, udp, icmp) werden mit der Option <command>-p</command> 
+also um eine Erweiterung der Filterbedingungen. Implizite
+Erweiterungen (tcp, udp, icmp) werden mit der Option <command>-p</command>
 geladen, explizite Erweiterungen mit der Option <command>-m</command>.
      </textblock>
 
      <textblock>
-Die Hilfe für eine Erweiterung erhält man, wenn nach 
-der Option zum Laden der Erweiterung (<command>-p</command> oder <command>-m</command>) 
-ein <command>-h</command> oder <command>--help</command> angegeben wird. 
+Die Hilfe für eine Erweiterung erhält man, wenn nach
+der Option zum Laden der Erweiterung (<command>-p</command> oder <command>-m</command>)
+ein <command>-h</command> oder <command>--help</command> angegeben wird.
      </textblock>
 
      <textblock>
@@ -882,29 +882,29 @@ iptables -p udp --help
       </root>
      </shell>
     </section>
-    
+
     <section>
      <heading>
 TCP Erweiterungen
      </heading>
 
      <textblock>
-Manchmal sollen bestimmte Dienste innerhalb des Netzes 
-von außen (bzw. anderen Netzbereichen) nicht erreichbar 
-sein. Viele Dienste benutzen das verbindungsorientierte 
+Manchmal sollen bestimmte Dienste innerhalb des Netzes
+von außen (bzw. anderen Netzbereichen) nicht erreichbar
+sein. Viele Dienste benutzen das verbindungsorientierte
 TCP-Protokoll. Der Aufbau dieser TCP-Verbindungen erfolgt
 nach dem Three-Way-Handshake Protokoll, hier ist
 nochmals eine Kurzzusammenfassung:
      </textblock>
 
      <textblock>
-Der Server wurde mit <strong>S</strong> bezeichnet, der Client mit <strong>C</strong>. 
+Der Server wurde mit <strong>S</strong> bezeichnet, der Client mit <strong>C</strong>.
      </textblock>
 
      <ol>
       <li>
 (C) --> [SYN] --> (S)<br/>
-Der Client sendet ein Synchronisationspaket (Synchronize) 
+Der Client sendet ein Synchronisationspaket (Synchronize)
 und erklärt damit, dass er eine Verbindung aufbauen möchte.
       </li>
       <li>
@@ -914,28 +914,28 @@ SYN/ACK Paket (Synchronize/Acknowledgement) zurück.
       </li>
       <li>
 (C) --> [ACK] --> (S)<br/>
-Der Client wiederum bestätigt, dass die Verbindung nun 
+Der Client wiederum bestätigt, dass die Verbindung nun
 aufgebaut ist/wird mit einem ACK-Paket (Empfangsbestätigung)
       </li>
      </ol>
 
      <textblock>
-[Ein SYN-Paket ist ein TCP-Paket, bei dem ausschließlich 
+[Ein SYN-Paket ist ein TCP-Paket, bei dem ausschließlich
 das SYN-Flag gesetzt ist.]
      </textblock>
 
      <textblock>
-Alle weiteren TCP-Pakete dieser Verbindung haben übrigens 
+Alle weiteren TCP-Pakete dieser Verbindung haben übrigens
 auch ein gesetztes ACK-Flag.
      </textblock>
 
      <textblock>
-Wenn man nur die [SYN] Pakete eines Rechners blockt, können 
-Verbindungsversuche von diesem unterbunden werden. 
-Die Filterung dieser Pakete erfolgt durch 
-die TCP Erweiterungen, die mit <command>-p tcp</command> geladen werden. 
-Inversionen  (Verneinungen) sind durch ein <command>!</command> 
-hinter der Option möglich. 
+Wenn man nur die [SYN] Pakete eines Rechners blockt, können
+Verbindungsversuche von diesem unterbunden werden.
+Die Filterung dieser Pakete erfolgt durch
+die TCP Erweiterungen, die mit <command>-p tcp</command> geladen werden.
+Inversionen  (Verneinungen) sind durch ein <command>!</command>
+hinter der Option möglich.
      </textblock>
 
      <textblock>
@@ -948,11 +948,11 @@ Es gibt folgende Optionen:
 
      <quotation>
 gefolgt von zwei Zeichenketten. Die erste Zeichenkette
-enthält eine Liste von Flags, die untersucht werden. 
+enthält eine Liste von Flags, die untersucht werden.
 Die zweite Zeichenkette sind die Flags, die gesetzt
 sein sollen. Mögliche Flags sind: <br/>
-<strong>SYN, ACK, FIN, RST, URG, PSH</strong> bzw. <strong>ALL</strong> für alle und 
-<strong>NONE</strong> für keine Flags.    
+<strong>SYN, ACK, FIN, RST, URG, PSH</strong> bzw. <strong>ALL</strong> für alle und
+<strong>NONE</strong> für keine Flags.
      </quotation>
 
      <textblock>
@@ -969,9 +969,9 @@ entspricht <command>--tcp-flags SYN,RST,ACK SYN</command>.
 
      <quotation>
 Gefolgt von einem bzw. mehreren TCP-Ports.
-Ports können durch Namen (<path>/etc/services</path>) oder Portnummer 
+Ports können durch Namen (<path>/etc/services</path>) oder Portnummer
 angegeben werden. Auch ganze Bereiche sind möglich.
-(z.B. 10000-11000) 
+(z.B. 10000-11000)
      </quotation>
 
      <textblock>
@@ -988,7 +988,7 @@ bedeutet Zielport
 
      <quotation>
 Gefolgt von einer Nummer, welche die TCP-Option angibt.
-TCP-Pakete ohne kompletten Header werden bei dem Versuch, 
+TCP-Pakete ohne kompletten Header werden bei dem Versuch,
 die TCP-Option zu bestimmen, automatisch verworfen.
      </quotation>
 
@@ -1002,7 +1002,7 @@ iptables -A INPUT -p TCP -s 192.168.1.0/24 --tcp-flags SYN,RST,ACK SYN -j DROP
       </root>
      </shell>
     </section>
-    
+
     <section>
      <heading>
 UDP Erweiterungen
@@ -1010,19 +1010,19 @@ UDP Erweiterungen
 
      <textblock>
 Diese Erweiterungen werden mit <command>-p udp</command> automatisch geladen.
-Sie bieten die Optionen <command>--source-port</command> (<command>--sport</command>) und 
-<command>--destination-port</command> (<command>--dport</command>), wie sie bereits oben für 
+Sie bieten die Optionen <command>--source-port</command> (<command>--sport</command>) und
+<command>--destination-port</command> (<command>--dport</command>), wie sie bereits oben für
 TCP detailliert beschrieben wurden.
      </textblock>
     </section>
-    
+
     <section>
      <heading>
 ICMP Erweiterungen
      </heading>
 
      <textblock>
-Diese Erweiterungen werden mit <command>-p icmp</command> geladen und bieten 
+Diese Erweiterungen werden mit <command>-p icmp</command> geladen und bieten
 nur eine neue Option:
      </textblock>
 
@@ -1031,23 +1031,23 @@ nur eine neue Option:
      </textblock>
 
      <quotation>
-Gefolgt vom ICMP-Typnamen (zum Beispiel 'host-unreachable'), 
+Gefolgt vom ICMP-Typnamen (zum Beispiel 'host-unreachable'),
 oder einer entsprechenden Nummer.<br/><br/>
 
-Eine Liste verfügbarer ICMP Typnamen erhält man mit 
+Eine Liste verfügbarer ICMP Typnamen erhält man mit
 der Option "-p icmp --help".
      </quotation>
     </section>
-    
+
     <section>
      <heading>
 Explizite Erweiterungen
      </heading>
 
      <textblock>
-Die expliziten Erweiterungen im netfilter-Paket sind keine 
-Standarderweiterungen. Man muss dazu spezielle Kernelmodule 
-(z.B. <command>ipt_mac</command>, <command>ipt_limit</command>, <command>ipt_owner</command>) laden, eine 
+Die expliziten Erweiterungen im netfilter-Paket sind keine
+Standarderweiterungen. Man muss dazu spezielle Kernelmodule
+(z.B. <command>ipt_mac</command>, <command>ipt_limit</command>, <command>ipt_owner</command>) laden, eine
 Auflistung der Module befindet sich im
 <ref iref="Übersicht über die Standard-Module von IP-Tables">Anhang</ref>.
      </textblock>
@@ -1061,10 +1061,10 @@ Die Erweiterung ruft man mit der Option <command>-m</command> auf.
      </textblock>
 
      <quotation>
-Dieses Modul wird verwendet, um die 
+Dieses Modul wird verwendet, um die
 MAC-Adressen einkommender Pakete zu filtern.
-Hinter der Option <command>--mac-source</command> wird eine 
-Netzwerkadresse in durch Doppelpunkte 
+Hinter der Option <command>--mac-source</command> wird eine
+Netzwerkadresse in durch Doppelpunkte
 getrennter Hex-Notation angegeben.
 (z.B. <command>-m mac --mac-source 00:60:08:91:CC:B7</command>).
      </quotation>
@@ -1074,11 +1074,11 @@ getrennter Hex-Notation angegeben.
      </textblock>
 
      <quotation>
-Limit schränkt die Paketanzahl auf eine vorgegebene Rate 
-ein. Vorstellen kann man sich das System wie ein 
-Rückhaltebecken mit konstantem Abfluss. Damit das Speicherbecken 
-nicht überläuft, wird im Falle eines zu großem Stromes 
-ein anderer Weg eingeschlagen. 
+Limit schränkt die Paketanzahl auf eine vorgegebene Rate
+ein. Vorstellen kann man sich das System wie ein
+Rückhaltebecken mit konstantem Abfluss. Damit das Speicherbecken
+nicht überläuft, wird im Falle eines zu großem Stromes
+ein anderer Weg eingeschlagen.
      </quotation>
 
      <image height="200">
@@ -1100,15 +1100,15 @@ Das System kann mit zwei Parametern beschrieben werden:
 
      <ul>
       <li>
-Das Speichervolumen (Parameter "<command>--limit-burst</command>") beschreibt 
+Das Speichervolumen (Parameter "<command>--limit-burst</command>") beschreibt
 die Anzahl der Maximaltreffer.
       </li>
       <li>
 Die Abflussgeschwindigkeit ("<command>--limit</command>") legt die Anzahl
 der maximalen Treffer pro Zeiteinheit fest.
 Werden diese beiden optionalen Parameter nicht angegeben,
-dann gelten die die Standardwerte (3 Treffer/Stunde und 
-Maximalgrenze von 5 Treffern). 
+dann gelten die die Standardwerte (3 Treffer/Stunde und
+Maximalgrenze von 5 Treffern).
      </li>
     </ul>
 
@@ -1123,7 +1123,7 @@ iptables -A FORWARD -m limit -j LOG
      </shell>
 
      <textblock>
-Limit bietet Schutz vor "Syn-Flood-Attacken":     
+Limit bietet Schutz vor "Syn-Flood-Attacken":
      </textblock>
 
      <shell>
@@ -1133,7 +1133,7 @@ iptables -A FORWARD -p tcp --syn -m limit 1/s -j ACCEPT
      </shell>
 
      <textblock>
-Schutz vor "Ping of Death": 
+Schutz vor "Ping of Death":
      </textblock>
 
      <shell>
@@ -1160,8 +1160,8 @@ iptables -A FORWARD -p tcp --tcp-flags ALL ALL -m limit --limit 1/h -j ACCEPT
      </textblock>
 
      <quotation>
-Diese Erweiterung filtert Charakteristika von Paketen und 
-bestimmt damit deren Herkunft (lokaler Prozess). Man darf 
+Diese Erweiterung filtert Charakteristika von Paketen und
+bestimmt damit deren Herkunft (lokaler Prozess). Man darf
 es nur in der Output-Kette benutzen:
      </quotation>
 
@@ -1170,7 +1170,7 @@ es nur in der Output-Kette benutzen:
      </textblock>
 
      <quotation>
-Das Paket wurde von einem Prozess mit der 
+Das Paket wurde von einem Prozess mit der
 angegebenen effektiven User ID generiert.
      </quotation>
 
@@ -1179,7 +1179,7 @@ angegebenen effektiven User ID generiert.
      </textblock>
 
      <quotation>
-Das Paket wurde von einem Prozess mit der 
+Das Paket wurde von einem Prozess mit der
 angegebenen effektiven Gruppen ID generiert.
      </quotation>
 
@@ -1197,7 +1197,7 @@ angegebenen effektiven Prozess ID generiert.
      </textblock>
 
      <quotation>
-Das Paket wurde von einem Prozess in der 
+Das Paket wurde von einem Prozess in der
 angegebenen session group generiert.
      </quotation>
 
@@ -1206,8 +1206,8 @@ angegebenen session group generiert.
      </textblock>
 
      <quotation>
-Mit dieser Erweiterung können durch die Option <command>--state</command> 
-Verbindungszustände von Paketen gefiltert werden. 
+Mit dieser Erweiterung können durch die Option <command>--state</command>
+Verbindungszustände von Paketen gefiltert werden.
 Zustände sind:
      </quotation>
 
@@ -1216,7 +1216,7 @@ Zustände sind:
      </quotation>
 
      <quotation>
-Ein Paket, das eine neue Verbindung aufbaut, erfüllt 
+Ein Paket, das eine neue Verbindung aufbaut, erfüllt
 diese Regelbedingung.
      </quotation>
 
@@ -1234,8 +1234,8 @@ Verbindung gehören
      </quotation>
 
      <quotation>
-Trifft für verwandte Pakete zu. Verwandt sind z.B. 
-ICMP Fehler einer Verbindung, oder (mit dem eingefügten 
+Trifft für verwandte Pakete zu. Verwandt sind z.B.
+ICMP Fehler einer Verbindung, oder (mit dem eingefügten
 FTP-Modul) ein Paket, das eine FTP Datenverbindung aufbaut.
      </quotation>
 
@@ -1249,14 +1249,14 @@ Ein Paket, das nicht identifiziert werden konnte.
      </quotation>
 
      <quotation>
-Die Möglichkeiten, die diese Option bietet, 
-werden noch sehr detailliert im Kapitel 
+Die Möglichkeiten, die diese Option bietet,
+werden noch sehr detailliert im Kapitel
 <ref iref="Verbindungsverfolgung (Connection Tracking)">Verbindungsverfolgung
 (Connection Tracking)</ref> bespochen werden.
      </quotation>
 
      <textblock>
-Beispiel: 
+Beispiel:
      </textblock>
 
      <shell>
@@ -1270,12 +1270,12 @@ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
      </textblock>
 
      <textblock>
-Die TOS-Bits (Table-Of-Service) sind Flags im IP-Header, die 
+Die TOS-Bits (Table-Of-Service) sind Flags im IP-Header, die
 eine Dienstgüte beschreiben. Im Einzelnen sind dies:
      </textblock>
 
      <table border="1">
-      <pdf-column/>      
+      <pdf-column/>
       <pdf-column/>
       <pdf-column/>
       <tr>
@@ -1399,8 +1399,8 @@ iptables -A FORWARD -m tos --tos Minimize-Delay -j ACCEPT
      <quotation>
 Im IP-Header ist etwas Platz zum Markieren von Paketen. Diese
 Markierungen können mit der Option <command>--mark</command> ausgelesen werden.
-Zum Setzen der Markierung kann die PREROUTING Kette in der 
-mangle-Tabelle dienen 
+Zum Setzen der Markierung kann die PREROUTING Kette in der
+mangle-Tabelle dienen
      </quotation>
 
      <textblock>
@@ -1418,12 +1418,12 @@ iptables -t filter -A FORWARD -m mark --mark 5 -j Drop
      </textblock>
 
      <quotation>
-Dieses Modul ist bislang zu wenig getestet und sollte 
+Dieses Modul ist bislang zu wenig getestet und sollte
 nicht verwendet werden.
      </quotation>
 
      <quotation>
-multiport, nat, ... 
+multiport, nat, ...
      </quotation>
 
      <quotation>
@@ -1446,14 +1446,14 @@ Grundlegendes zu Zielen (Targets)
     </heading>
 
     <textblock>
-Wie bereits erwähnt, beinhaltet jede Kette 
-(INPUT, OUTPUT, FORWARD) eine Checkliste von 
+Wie bereits erwähnt, beinhaltet jede Kette
+(INPUT, OUTPUT, FORWARD) eine Checkliste von
 Regeln, die folgendermaßen aussehen:
     </textblock>
 
     <textblock>
-WENN (Filteroption) 
-DANN Aktion (Löschen, Akzeptieren, ... des Paketes) 
+WENN (Filteroption)
+DANN Aktion (Löschen, Akzeptieren, ... des Paketes)
     </textblock>
 
     <shell>
@@ -1463,14 +1463,14 @@ iptables -A INPUT -s 127.0.0.1 -p icmp -j DROP
     </shell>
 
     <textblock>
-Neben den einfachen, eingebauten Zielen DROP (Paket Verwerfen) und 
+Neben den einfachen, eingebauten Zielen DROP (Paket Verwerfen) und
 ACCEPT (Paket annehmen) gibt es spezielle Ziele (RETURN, QUEUE) und
-Erweiterungen, die entsprechende Kernelmodule erfordern. Weiterhin 
-hat man die Möglichkeit, zu benutzerdefinierten Ketten zu 
+Erweiterungen, die entsprechende Kernelmodule erfordern. Weiterhin
+hat man die Möglichkeit, zu benutzerdefinierten Ketten zu
 verzweigen.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Benutzerdefinierte Ketten
@@ -1481,23 +1481,23 @@ Ein relativ sicherer Paketfilter kann nur durch ein sehr komplexes
 Regelwerk realisiert werden. Um dieses Regelwerk zu strukturieren,
 gibt es die Möglichkeit, neben den
 <ref iref="Grundlegendes zu iptables">eingebauten Ketten</ref>
-(INPUT, OUTPUT und FORWARD) zusätzliche benutzerdefinierte Ketten 
+(INPUT, OUTPUT und FORWARD) zusätzliche benutzerdefinierte Ketten
 zu erstellen.
     </textblock>
 
     <textblock>
-Diese Ketten sollten mit Kleinbuchstaben benannt werden, um 
+Diese Ketten sollten mit Kleinbuchstaben benannt werden, um
 sie besser von den eingebauten unterscheiden zu können.
     </textblock>
 
     <textblock>
-Wenn ein Paket auf eine Regel (beispielsweise der INPUT Kette) 
-mit dem Ziel einer benutzerdefinierten Kette zutrifft, wird das 
+Wenn ein Paket auf eine Regel (beispielsweise der INPUT Kette)
+mit dem Ziel einer benutzerdefinierten Kette zutrifft, wird das
 Filtern des Paketes in dieser Kette fortgeführt. Sollte tatsächlich
-keine Regel in dieser benutzerdefinierten Kette zutreffen, wird 
-die Suche in der vorherigen Kette fortgesetzt. Benutzerdefinierte 
+keine Regel in dieser benutzerdefinierten Kette zutreffen, wird
+die Suche in der vorherigen Kette fortgesetzt. Benutzerdefinierte
 Ketten können zu anderen benutzerdefinierten Ketten verzweigen.
-Wenn die Pakete in einer Schleife gefangen sind, 
+Wenn die Pakete in einer Schleife gefangen sind,
 werden sie einfach verworfen (gelöscht).
     </textblock>
 
@@ -1506,14 +1506,14 @@ Ein Beispiel  befindet sich im Abschnitt
 <ref iref="Schnelle Lösung ohne viele Worte">Schnelle Lösung ohne viele Worte</ref>
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Erweiterungen der Ziele
     </heading>
 
     <textblock>
-Eine Zielerweiterung besteht aus einem Kernelmodul und einer 
+Eine Zielerweiterung besteht aus einem Kernelmodul und einer
 optionalen Erweiterung der Kommandozeilenoptionen von <command>iptables</command>.
     </textblock>
 
@@ -1524,7 +1524,7 @@ optionalen Erweiterung der Kommandozeilenoptionen von <command>iptables</command
     <textblock>
 Dieses Ziel bietet Kernel-Logging. Damit die LOG-Files
 nicht überflutet werden, sollte es mit einem
-<command>limit</command> Parameter eingesetzt werden. Folgende Optionen 
+<command>limit</command> Parameter eingesetzt werden. Folgende Optionen
 sind möglich:
     </textblock>
 
@@ -1533,8 +1533,8 @@ sind möglich:
     </textblock>
 
     <quotation>
-Gefolgt von einer Level-Nummer (Priorität) oder einem 
-Namen (<command>debug</command>, <command>info</command>, <command>notice</command>, <command>warning</command>, <command>err</command>, 
+Gefolgt von einer Level-Nummer (Priorität) oder einem
+Namen (<command>debug</command>, <command>info</command>, <command>notice</command>, <command>warning</command>, <command>err</command>,
 <command>crit</command>, <command>alert</command> und <command>emerg</command>).
 Im Kapitel über <ref chapter="syslog">syslog</ref> werden diese Level erklärt.
     </quotation>
@@ -1544,7 +1544,7 @@ Im Kapitel über <ref chapter="syslog">syslog</ref> werden diese Level erklärt.
     </textblock>
 
     <quotation>
-Gefolgt von einer Zeichenkette (max. 30 Zeichen), die 
+Gefolgt von einer Zeichenkette (max. 30 Zeichen), die
 zu Beginn der Logmeldung ausgeschrieben wird.
     </quotation>
 
@@ -1553,7 +1553,7 @@ zu Beginn der Logmeldung ausgeschrieben wird.
     </textblock>
 
     <quotation>
-Zeichnet die TCP-Sequenznummer auf. <strong>Achtung: Mögliches 
+Zeichnet die TCP-Sequenznummer auf. <strong>Achtung: Mögliches
  Sicherheitsrisiko, wenn Benutzer Zugriff auf Log-Files hat!</strong>
     </quotation>
 
@@ -1588,8 +1588,8 @@ iptables -A INPUT -p icmp -m limit --limit 10/s -j LOG --log-level debug --log-p
     </textblock>
 
     <quotation>
-Dieses Ziel verwirft das Paket und schickt dem Sender eine 
-ICMP 'port unreachable' Fehlermeldung. Einschränkungen und 
+Dieses Ziel verwirft das Paket und schickt dem Sender eine
+ICMP 'port unreachable' Fehlermeldung. Einschränkungen und
 weitere Informationen siehe RFC 1122.
     </quotation>
 
@@ -1602,8 +1602,8 @@ befindet sich noch in einer experimentellen Phase.
     </quotation>
 
     <quotation>
-Die erweiterten Ziele SNAT, DNAT, MASQUERADE und REDIRECT werden 
-für Network Address Translation verwendet und sind deshalb nur 
+Die erweiterten Ziele SNAT, DNAT, MASQUERADE und REDIRECT werden
+für Network Address Translation verwendet und sind deshalb nur
 in der NAT-Tabelle gültig:
     </quotation>
 
@@ -1612,7 +1612,7 @@ in der NAT-Tabelle gültig:
     </textblock>
 
     <quotation>
-Dieses Ziel manipuliert die Quelladresse eines Paketes 
+Dieses Ziel manipuliert die Quelladresse eines Paketes
 (siehe <ref iref="Kombinieren von NAT und Paketfilter">Kombinieren von NAT und Paketfilter</ref>).
 Es ist nur in der POSTROUTING-Kette gültig.
     </quotation>
@@ -1631,9 +1631,9 @@ Dieses Ziel manipuliert die Zieladresse eines Paketes.
     </textblock>
 
     <quotation>
-Dieses Ziel wird für die Maskierung von Verbindungen mit 
-dynamisch zugewiesenen IPs benutzt (für Verbindungen mit 
-statischen IPs sollte SNAT verwendet werden). 
+Dieses Ziel wird für die Maskierung von Verbindungen mit
+dynamisch zugewiesenen IPs benutzt (für Verbindungen mit
+statischen IPs sollte SNAT verwendet werden).
 Es ist nur in der POSTROUTING-Kette gültig.
     </quotation>
 
@@ -1642,11 +1642,11 @@ Es ist nur in der POSTROUTING-Kette gültig.
     </textblock>
 
     <quotation>
-Dieses Ziel ändert die Adresse eines Paketes, so dass es 
-an die lokale Maschine gesendet wird. Es ist nur in den 
+Dieses Ziel ändert die Adresse eines Paketes, so dass es
+an die lokale Maschine gesendet wird. Es ist nur in den
 PREROUTING- und OUTPUT-Ketten gültig und wird vorzugsweise
 für <ref chapter="grundlagen_sicherheit">transparente Proxies</ref>
-eingesetzt. 
+eingesetzt.
     </quotation>
 
     <textblock>
@@ -1660,7 +1660,7 @@ iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 31
     </shell>
 
     <textblock>
-Die folgenden beiden Ziele dienen der Paketmanipulation und 
+Die folgenden beiden Ziele dienen der Paketmanipulation und
 sind nur in der MANGLE-Tabelle gültig:
     </textblock>
 
@@ -1669,7 +1669,7 @@ sind nur in der MANGLE-Tabelle gültig:
     </textblock>
 
     <quotation>
-Mit der Option <command>--set-tos</command> kann das Type-of-Service-Feld 
+Mit der Option <command>--set-tos</command> kann das Type-of-Service-Feld
 geändert werden. Weitere Informationen zu diesem TOS-Feld
 gibt es <ref iref="Explizite Erweiterungen">hier</ref>.
     </quotation>
@@ -1679,8 +1679,8 @@ gibt es <ref iref="Explizite Erweiterungen">hier</ref>.
     </textblock>
 
     <quotation>
-Mit der Option <command>--set-mark</command> kann der Netfilter-Markierungswert 
-gesetzt werden. Weitere Informationen gibt es 
+Mit der Option <command>--set-mark</command> kann der Netfilter-Markierungswert
+gesetzt werden. Weitere Informationen gibt es
 <ref iref="Explizite Erweiterungen">hier</ref>.
     </quotation>
 
@@ -1694,24 +1694,24 @@ iptables -t mangle -A PREROUTING -p tcp -m multiport --dport 22,25,119,110,143 -
      </root>
     </shell>
    </section>
-   
+
    <section>
     <heading>
 Spezielle eingebaute Ziele (RETURN und QUEUE)
     </heading>
 
     <textblock>
-<command>RETURN</command> 
+<command>RETURN</command>
     </textblock>
 
     <quotation>
-Bei benutzerdefinierten Ketten bedeutet ein RETURN die direkte 
-Rückkehr zur aufrufenden Kette. Die Filterung durch die 
+Bei benutzerdefinierten Ketten bedeutet ein RETURN die direkte
+Rückkehr zur aufrufenden Kette. Die Filterung durch die
 benutzerdefinerte Kette wird abgebrochen.
     </quotation>
 
     <quotation>
-Bei eingebauten Ketten (INPUT, FORWARD, OUTPUT) wird die 
+Bei eingebauten Ketten (INPUT, FORWARD, OUTPUT) wird die
 Abarbeitung beendet und es greift die Standard-Policy.
     </quotation>
 
@@ -1721,13 +1721,13 @@ Abarbeitung beendet und es greift die Standard-Policy.
 
     <quotation>
 Hier können Regelentscheidungen durch Anwendungsprogramme
-(Benutzerprozesse) getroffen werden. Dazu wird ein 
+(Benutzerprozesse) getroffen werden. Dazu wird ein
 <strong>queue handler</strong> benötigt (für IPv4 gibt es das <command>ip_queue</command> Modul),
 der das Paket an ein Anwendungsprogramm überreicht. Wenn
 Sie tatsächlich ein Programm entwickeln möchten, sollten Sie
 die <command>libipq</command> API verwenden, die mit <command>iptables</command> mitgeliefert wird.
-Beispielcode (z.B. <path>redirect.c</path>) finden Sie in der Testsuite 
-Tools auf dem CVS Server 
+Beispielcode (z.B. <path>redirect.c</path>) finden Sie in der Testsuite
+Tools auf dem CVS Server
 <ref url="http://cvs.netfilter.org/netfilter/">http://cvs.netfilter.org/netfilter/</ref>.
     </quotation>
 
@@ -1755,7 +1755,7 @@ Kombinieren von NAT und Paketfilter
 
    <textblock>
 Mittels NAT (Network Address Translation) können durch eine
-Maskierung der internen IP-Adressen private Netze 
+Maskierung der internen IP-Adressen private Netze
 (z.B. 192.168.1.0/24) mit öffentlichen gekoppelt werden.
    </textblock>
 
@@ -1768,7 +1768,7 @@ Source-NAT (SNAT):
    </textblock>
 
    <quotation>
-Hier wird die Quell-Adresse eines Paketes 
+Hier wird die Quell-Adresse eines Paketes
 manipuliert. SNAT findet nach dem Routing statt.
 Masquerading ist ein spezieller Fall von SNAT.
    </quotation>
@@ -1778,15 +1778,15 @@ Destination-NAT (DNAT):
    </textblock>
 
    <quotation>
-Hier wird die Zieladresse eines Paketes 
-manipuliert. Es findet vor dem Routing statt. 
+Hier wird die Zieladresse eines Paketes
+manipuliert. Es findet vor dem Routing statt.
 Ein Beispiel fuer DNAT ist Port-Forwarding.
    </quotation>
 
    <textblock>
-NAT wird nicht in der Filtertabelle sondern in einer eigenen 
+NAT wird nicht in der Filtertabelle sondern in einer eigenen
 Tabelle verwaltet. In dieser NAT-Tabelle sind standardmäßig
-die Ketten POSTROUTING, PREROUTING und OUTPUT aufgeführt.  
+die Ketten POSTROUTING, PREROUTING und OUTPUT aufgeführt.
    </textblock>
 
    <image height="150">
@@ -1796,9 +1796,9 @@ nat-tabelle.png
    </image>
 
    <textblock>
-Der Zugriff auf die NAT-Tabelle erfolgt mit der Option <command>-t nat</command>, 
+Der Zugriff auf die NAT-Tabelle erfolgt mit der Option <command>-t nat</command>,
 die Auswahl der Filtertabelle wie gewoht mit <command>-A</command>. Eine Auflistung
-der <command>iptables</command>-Optionen wurde bereits an 
+der <command>iptables</command>-Optionen wurde bereits an
 <ref iref="Grundlegendes zu iptables">dieser Stelle</ref>
 gegeben.
    </textblock>
@@ -1855,49 +1855,49 @@ Grundlegendes zur Verbindungsverfolgung
     </heading>
 
     <textblock>
-Unter Verbindungsverfolgung oder auch connection tracking 
+Unter Verbindungsverfolgung oder auch connection tracking
 versteht man das Speichern von Statusinformationen einer Verbindung
-(z.B. Quell- und Zieladresse, Portnummern, Protokolltyp, 
-Timeouts,...). Bei <command>iptables</command> ist dafür die <command>state</command>-Option 
+(z.B. Quell- und Zieladresse, Portnummern, Protokolltyp,
+Timeouts,...). Bei <command>iptables</command> ist dafür die <command>state</command>-Option
 zuständig (siehe
 <ref iref="Explizite Erweiterungen">Explizite Erweiterungen</ref>).
     </textblock>
 
     <textblock>
-Die Verbindungsverfolgung erfolgt entweder in der 
-PREROUTING- oder in der OUTPUT- Kette. Die Pakete werden 
+Die Verbindungsverfolgung erfolgt entweder in der
+PREROUTING- oder in der OUTPUT- Kette. Die Pakete werden
 automatisch defragmentiert, Fragmente  (siehe
 <ref iref="Fragmente filtern">Fragmente filtern</ref>)
 brauchen also nicht behandelt werden.
     </textblock>
 
     <textblock>
-Die Statustabellen für UDP- und TCP Verbindungen werden in 
+Die Statustabellen für UDP- und TCP Verbindungen werden in
 <path>/proc/net/ip_conntrack</path> gehalten. Wie die Einträge in dieser
-Tabelle aussehen, wird später gezeigt. Die maximale 
-Anzahl der Verbindungen, die diese Tabelle aufnehmen kann, 
-wird in <path>/proc/sys/net/ipv4/ip_conntrack_max</path> gespeichert und 
-je nach verfügbaren Hauptspeicher mit einem Standardwert 
+Tabelle aussehen, wird später gezeigt. Die maximale
+Anzahl der Verbindungen, die diese Tabelle aufnehmen kann,
+wird in <path>/proc/sys/net/ipv4/ip_conntrack_max</path> gespeichert und
+je nach verfügbaren Hauptspeicher mit einem Standardwert
 belegt (z.B. 512 MB, ip_conntrack_max = 32760).
     </textblock>
 
     <textblock>
-Die nächsten drei Unterkapiteln erläutern die 
-Verbindungsverfolgung für die Protokolle udp, tcp und icmp, 
+Die nächsten drei Unterkapiteln erläutern die
+Verbindungsverfolgung für die Protokolle udp, tcp und icmp,
 im letzten Kapitel wird das FTP-Protokoll behandelt.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 UDP
     </heading>
 
     <textblock>
-UDP wird auch als verbindungsloses (zustandsloses) Protokoll 
+UDP wird auch als verbindungsloses (zustandsloses) Protokoll
 bezeichnet, da im Header keine Sequenznummern oder Ähnliches
 zu finden sind. Das bedeutet aber nicht, dass man UDP-Verbindungen
-nicht aufspüren und verfolgen kann. Es gibt immer noch andere 
+nicht aufspüren und verfolgen kann. Es gibt immer noch andere
 nützliche Informationen, welche das genau sind, zeigt der folgende
 Eintrag in der Statustabelle:
     </textblock>
@@ -1945,8 +1945,8 @@ iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT
     </shell>
 
     <textblock>
-Udp Timeouts (Zeitlimits) werden vor dem Kompilieren in 
-<path>/usr/src/linux/net/ipv4/netfilter/ip_conntrack_proto_udp.c</path> 
+Udp Timeouts (Zeitlimits) werden vor dem Kompilieren in
+<path>/usr/src/linux/net/ipv4/netfilter/ip_conntrack_proto_udp.c</path>
 gesetzt, und zwar genau an dieser Stelle:
     </textblock>
 
@@ -1963,13 +1963,13 @@ ip_conntrack_proto_udp.c
     </file>
 
     <textblock>
-Eine einzelne TCP-Anforderung wird normalerweise 30 Sekunden 
-in der Tabelle vorgehalten, im Falle unseres Eintrages 
+Eine einzelne TCP-Anforderung wird normalerweise 30 Sekunden
+in der Tabelle vorgehalten, im Falle unseres Eintrages
 (Beispiel oben) sind es nur noch 21 Sekunden. Das bedeutet, dass
-die Verbindungsanfrage bereits seit 9 Sekunden bestand ohne 
-dass ein Antwortpaket empfangen wurde. Wenn nun ein Antwortpaket 
-eintrifft, wird das Zeitlimit auf 30 Sekunden zurückgesetzt und 
-die UNREPLIED Markierung gelöscht. Der Tabelleneintrag hätte 
+die Verbindungsanfrage bereits seit 9 Sekunden bestand ohne
+dass ein Antwortpaket empfangen wurde. Wenn nun ein Antwortpaket
+eintrifft, wird das Zeitlimit auf 30 Sekunden zurückgesetzt und
+die UNREPLIED Markierung gelöscht. Der Tabelleneintrag hätte
 nun folgendes Aussehen:
     </textblock>
 
@@ -1980,10 +1980,10 @@ udp 17 28 src=192.168.1.3 dst=192.168.1.88 sport=1032 dport=53 src=192.168.1.88 
     </shell>
 
     <textblock>
-Sollten mehrere Verbindungsanfragen (multiple requests) und 
+Sollten mehrere Verbindungsanfragen (multiple requests) und
 Verbindungsantworten zwischen gleichen Socket-Paaren auftreten,
-so wird ein Stream festgestellt und das Zeitlimit auf 180 
-Sekunden erhöht. Der Tabelleneintrag hätte nun folgendes 
+so wird ein Stream festgestellt und das Zeitlimit auf 180
+Sekunden erhöht. Der Tabelleneintrag hätte nun folgendes
 Aussehen:
     </textblock>
 
@@ -1994,45 +1994,45 @@ udp  17 177 src=192.168.1.2 dst=192.168.1.50 sport=1032 dport=53 src=192.168.1.5
     </shell>
 
     <textblock>
-Man erkennt die Markierung ASSURED, das bedeutet, dass die 
-Verbindung am längsten aufrechterhalten wird. Wir erinnern 
-uns an den Parameter <command>ip_conntrack_max</command>, der die maximale 
-Verbindungsanzahl festlegte. Bei Erreichen dieses Limits 
-werden die mit UNREPLIED markierten Verbindungen zuerst 
+Man erkennt die Markierung ASSURED, das bedeutet, dass die
+Verbindung am längsten aufrechterhalten wird. Wir erinnern
+uns an den Parameter <command>ip_conntrack_max</command>, der die maximale
+Verbindungsanzahl festlegte. Bei Erreichen dieses Limits
+werden die mit UNREPLIED markierten Verbindungen zuerst
 gelöscht und die mit ASSURED Markierten zuletzt.
     </textblock>
 
     <textblock>
-Anmerkung: Es gibt weder für UDP noch für TCP Verbindungen 
-ein absolutes Zeitlimit. 
+Anmerkung: Es gibt weder für UDP noch für TCP Verbindungen
+ein absolutes Zeitlimit.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 TCP
     </heading>
 
     <textblock>
-Jede TCP-Verbindung wird mittels eines Drei-Wege-Händeschüttelns 
-(three-way handshake) aufgebaut. Kurz zur Erinnerung:<br/> 
-Es beginnt mit einer Synchronisationsanforderung (SYN) 
-des Client, der Server bestätigt diese 
-Synchronisationsanforderung (SYN+ACK) und 
-letztendlich bestätigt der Client die aufgebaute Verbindung 
-(ACK). Alle weiteren TCP-Pakete dieser Verbindung werden 
+Jede TCP-Verbindung wird mittels eines Drei-Wege-Händeschüttelns
+(three-way handshake) aufgebaut. Kurz zur Erinnerung:<br/>
+Es beginnt mit einer Synchronisationsanforderung (SYN)
+des Client, der Server bestätigt diese
+Synchronisationsanforderung (SYN+ACK) und
+letztendlich bestätigt der Client die aufgebaute Verbindung
+(ACK). Alle weiteren TCP-Pakete dieser Verbindung werden
 ebenfalls mit einem ACK-Flag gekennzeichnet.
     </textblock>
 
     <textblock>
-Neben SYN und ACK-Flags beinhaltet der TCP-Header eine 
-32 bit Sequenz (Sequence Number) eine ACK-Nummer 
+Neben SYN und ACK-Flags beinhaltet der TCP-Header eine
+32 bit Sequenz (Sequence Number) eine ACK-Nummer
 (Acknowledgment Number), sodass ein TCP-Paket eindeutig
 einer Verbindung zugewiesen werden kann.
     </textblock>
 
     <textblock>
-Zur Verfolgung von TCP-Verbindungen dienen 
+Zur Verfolgung von TCP-Verbindungen dienen
 beispielsweise folgende Regeln:
     </textblock>
 
@@ -2051,28 +2051,28 @@ Tabelleneinträge während des Verbindungsaufbaus
      </heading>
 
      <textblock>
-An dieser Stelle sollen die Tabelleneinträge während des 
+An dieser Stelle sollen die Tabelleneinträge während des
 Verbindungsaufbau analysiert werden:
      </textblock>
 
      <textblock>
-<strong>1)</strong> Eine Verbindungsanforderung (SYN-Paket) wandert in die 
+<strong>1)</strong> Eine Verbindungsanforderung (SYN-Paket) wandert in die
 OUTPUT-Kette und wird dort akzeptiert.
      </textblock>
-      
+
      <shell>
       <output>
 tcp  6 119 SYN_SENT src=140.208.5.62 dst=207.46.230.218 sport=1 dport=80 [UNREPLIED] src=207.46.230.218 dst=140.208.5.62 sport=80 dport=1 use=1
       </output>
      </shell>
-     
+
      <textblock>
-Der Verbindungsstatus ist SYN_SENT und die Verbindung wurde 
+Der Verbindungsstatus ist SYN_SENT und die Verbindung wurde
 als UNREPLIED markiert.
      </textblock>
 
      <textblock>
-<strong>2)</strong> Nach Empfang eines SYN+ACK Paketes wird der Verbindungsstatus 
+<strong>2)</strong> Nach Empfang eines SYN+ACK Paketes wird der Verbindungsstatus
 auf SYN_RECV gesetzt und die UNREPLIED Markierung verschwindet.
      </textblock>
 
@@ -2083,13 +2083,13 @@ tcp  6 57 SYN_RECV src=140.208.5.62 dst=207.46.230.218 sport=1 dport=80 src=207.
      </shell>
 
      <textblock>
-<strong>3)</strong> Nun sollte eine Bestätigung, also ein ACK-Paket, folgen. 
-Dieses müsste dieselbe Sequenznummer wie das ACK Paket 
+<strong>3)</strong> Nun sollte eine Bestätigung, also ein ACK-Paket, folgen.
+Dieses müsste dieselbe Sequenznummer wie das ACK Paket
 des Servers aufweisen. Bei
 Übereinstimmung erhält die Verbindung eine ESTABLISHED Markierung
 und der Tabelleneintrag wird als ASSURED markiert.
-(Hinweis: Bei Erreichen des ip_conntrack_max Limits werden 
-die mit UNREPLIED markierten Verbindungen zuerst gelöscht und 
+(Hinweis: Bei Erreichen des ip_conntrack_max Limits werden
+die mit UNREPLIED markierten Verbindungen zuerst gelöscht und
 die mit ASSURED Markierten zuletzt.)
      </textblock>
 
@@ -2107,17 +2107,17 @@ Die Statustabelle aus Sicht der Verbindungsverfolgung
 
      <textblock>
 Bei der Verbindungsverfolgung gibt es lediglich den Status
-NEW, ESTABLISHED, RELATED und INVALID 
+NEW, ESTABLISHED, RELATED und INVALID
 (<ref iref="Explizite Erweiterungen">Explizite Erweiterungen</ref>).
      </textblock>
 
      <textblock>
-Achtung! Dieser Status ist 
+Achtung! Dieser Status ist
 <strong>nicht äquivalent</strong>
-zum TCP Status. Wenn beispielsweise ein ACK-Paket zu einem 
-nicht-existierenden Rechner hinter der Firewall versendet wird, 
+zum TCP Status. Wenn beispielsweise ein ACK-Paket zu einem
+nicht-existierenden Rechner hinter der Firewall versendet wird,
 wird ein Verbindungseintrag in der Statustabelle erzeugt, weil
-es als erstes Paket einer noch nicht bestehenden Verbindung 
+es als erstes Paket einer noch nicht bestehenden Verbindung
 (und damit als NEW) gilt. Unter dem Gesichtspunkt, dass solche
 ACK Pakete die Statustabelle überfluten können, ist die
 folgende Regel sehr sinnvoll:
@@ -2130,33 +2130,33 @@ iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
      </shell>
 
      <textblock>
-Diese Regel stellt sicher, dass der Aufbau von TCP-Verbindungen 
-ausschlißlich durch SYN-Pakete initiiert werden kann. Sie hat 
+Diese Regel stellt sicher, dass der Aufbau von TCP-Verbindungen
+ausschlißlich durch SYN-Pakete initiiert werden kann. Sie hat
 jedoch einen kleinen Nachteil:<br/>
 Manchmal treten bei TCP-Verbindungen
 äußerst lange Wartezeiten auf, und die korrespondierenden Einträge
-verschwinden dann aus der Statustabelle. Wenn aber nun die 
+verschwinden dann aus der Statustabelle. Wenn aber nun die
 Verbindung mit ACK-Paketen (Daten)
-von außen fortgesetzt wird, dann verhindert die Regel den 
-Transport nach innen. Anders ausgedrückt: Die Firewall dachte, die 
-Verbindung wurde abgebrochen und entfernte deshalb den Eintrag in 
+von außen fortgesetzt wird, dann verhindert die Regel den
+Transport nach innen. Anders ausgedrückt: Die Firewall dachte, die
+Verbindung wurde abgebrochen und entfernte deshalb den Eintrag in
 der Statustabelle. Das ankommende Datenpaket (ACK) kann keiner
 Verbindung zugeordnet werden und gilt deshalb als "NEW". Die
 obenstehende Regel blockiert aber TCP-Pakete ohne SYN-Flag, die
-zu keiner Verbindung zugeordnet werden können. 
+zu keiner Verbindung zugeordnet werden können.
 [besser Workaround <ref iref="Patches">tcp-window-tracking</ref>]
      </textblock>
     </section>
-    
+
     <section>
      <heading>
 Zeitbeschränkungen (Timeouts)
      </heading>
 
      <textblock>
-Die Zeitbeschränkungen ähneln sehr denen von UDP. Wenn eine 
-Verbindung ein Paket erhält, wird der Timeout zurückgesetzt. 
-Die Zeitbeschränkungen sind fest eincompiliert und in der 
+Die Zeitbeschränkungen ähneln sehr denen von UDP. Wenn eine
+Verbindung ein Paket erhält, wird der Timeout zurückgesetzt.
+Die Zeitbeschränkungen sind fest eincompiliert und in der
 Datei ersichtlich:<br/>
 <path>/usr/src/linux/net/ipv4/netfilter/ip_conntrack_proto_tcp.c</path><br/>
 Wichtig sind die folgenden Zeilen:
@@ -2182,7 +2182,7 @@ ip_conntrack_proto_tcp.c
       </content>
      </file>
     </section>
-    
+
     <section>
      <heading>
 Terminierung der Verbindung
@@ -2204,28 +2204,28 @@ Der natürliche Weg (FIN+ACK) wurde kurz skizziert:
      </file>
 
      <textblock>
-Sollte die Statustabelle den Verbindungswert auf TIME_WAIT setzen, 
+Sollte die Statustabelle den Verbindungswert auf TIME_WAIT setzen,
 dann wird der Eintrag nach zwei Minuten automatisch gelöscht.
      </textblock>
 
      <textblock>
-Der andere Weg des Verbindungsabbaus ist, wenn ein 
+Der andere Weg des Verbindungsabbaus ist, wenn ein
 Verbindungspartner ein Reset-Paket sendet (RST-Flag gesetzt).
-Reset Pakete werden nicht bestätigt (kein resultierendes 
+Reset Pakete werden nicht bestätigt (kein resultierendes
 ACK-Paket). Der Verbindungsstatus in der Tabelle wird auf
 CLOSE geändert und läuft nach 10 Sekunden ab. Das passiert häufig
 bei (ausgelasteten) HTTP-Servern.
      </textblock>
     </section>
    </section>
-   
+
    <section>
     <heading>
 ICMP
     </heading>
 
     <textblock>
-Es gibt nur vier ICMP-Typen, deren Pakete als NEW oder 
+Es gibt nur vier ICMP-Typen, deren Pakete als NEW oder
 ESTABLISHED markiert werden können.
     </textblock>
 
@@ -2245,13 +2245,13 @@ Address mask request (17) und reply (18).
     </ol>
 
     <textblock>
-Die Anforderung (request) wird in jedem fall mit NEW markiert und 
+Die Anforderung (request) wird in jedem fall mit NEW markiert und
 die Antwort (reply) mit ESTABLISHED.
     </textblock>
 
     <textblock>
-Pakete anderer ICMP-Typen können nur eine <strong>verwandtschaftliche</strong> 
-Beziehung zu einer Verbindung haben und werden deshalb mit 
+Pakete anderer ICMP-Typen können nur eine <strong>verwandtschaftliche</strong>
+Beziehung zu einer Verbindung haben und werden deshalb mit
 RELATED markiert.
     </textblock>
 
@@ -2280,7 +2280,7 @@ Ein <command>icmp redirect</command> gilt als RELATED und passiert somit sowohl 
      </li>
     </ol>
    </section>
-   
+
    <section>
     <heading>
 Verbindungsverfolgung und ftp
@@ -2296,7 +2296,7 @@ Man benötigt das <command>ip_conntrack_ftp</command> Kernelmodul.
      </textblock>
 
      <textblock>
-Für den Hausgebrauch (einzelner PC am Internet) eignen sich 
+Für den Hausgebrauch (einzelner PC am Internet) eignen sich
 die folgenden zwei Regeln, um FTP-Verbindungen zu akzeptieren:
      </textblock>
 
@@ -2315,13 +2315,13 @@ vorangehendes Unterkapitel</ref>)
      </textblock>
 
      <textblock>
-Leider ist es damit noch nicht getan, eine FTP-Verbindung benötigt 
-einen eigenständigen Datenkanal, welcher durch zwei 
+Leider ist es damit noch nicht getan, eine FTP-Verbindung benötigt
+einen eigenständigen Datenkanal, welcher durch zwei
 unterschiedliche Arten aufgebaut werden kann. Die folgenden zwei
 Unterkapitel beschreiben die Vorgehensweise.
      </textblock>
     </section>
-    
+
     <section>
      <heading>
 Aktives ftp
@@ -2329,28 +2329,28 @@ Aktives ftp
 
      <textblock>
 Der FTP-Client sendet eine Port-Nummer über den FTP-Kanal
-zum FTP-Server. Dieser verbindet sich von Port 20 zu diesem Port 
-und sendet über diese neue Verbindung (ftp-data) die Daten, z.B. 
-das Resultat eines <command>ls</command> oder eines <command>get</command>-Kommandos. Die 
-FTP-Datenverbindung (ftp-data) wird also vom Server aufgebaut, 
+zum FTP-Server. Dieser verbindet sich von Port 20 zu diesem Port
+und sendet über diese neue Verbindung (ftp-data) die Daten, z.B.
+das Resultat eines <command>ls</command> oder eines <command>get</command>-Kommandos. Die
+FTP-Datenverbindung (ftp-data) wird also vom Server aufgebaut,
 und nicht wie die FTP-Verbindung vom Client.
      </textblock>
 
      <textblock>
-Um aktives FTP zu erlauben (Der Zielport ist nicht bekannt), 
-müsste eine generelle Regel für alle einkommenden 
-Verbindungen von Port 20 (FTP-Server) auf hohe Port-Nummern 
+Um aktives FTP zu erlauben (Der Zielport ist nicht bekannt),
+müsste eine generelle Regel für alle einkommenden
+Verbindungen von Port 20 (FTP-Server) auf hohe Port-Nummern
 (&gt;1023) des Clients anlegt werden. Dies stellt jedoch
 eine sehr unsichere Lösung dar.
      </textblock>
 
      <textblock>
 Eine besseren Ansatz besteht in der Verbindungsverfolgung.
-Dazu muß das Modul <command>ip_conntrack_ftp</command> eingebunden werden. 
-Es durchsucht das PORT Kommando nach der 
-Port-Nummer, mit der sich der Server verbinden wird. Damit kann 
-eine Beziehung zwischen ftp und ftp-data hergestellt 
-werden (RELATED). Die folgenden Regeln sind also vollkommen 
+Dazu muß das Modul <command>ip_conntrack_ftp</command> eingebunden werden.
+Es durchsucht das PORT Kommando nach der
+Port-Nummer, mit der sich der Server verbinden wird. Damit kann
+eine Beziehung zwischen ftp und ftp-data hergestellt
+werden (RELATED). Die folgenden Regeln sind also vollkommen
 ausreichend:
      </textblock>
 
@@ -2363,19 +2363,19 @@ iptables -A OUTPUT -p tcp --dport 20 -m state --state ESTABLISHED -j ACCEPT
       </root>
      </shell>
     </section>
-    
+
     <section>
      <heading>
 Passives ftp
      </heading>
 
      <textblock>
-Im Gegensatz zu aktivem ftp wird die gewünschte PORT-Nummer 
-der Datenverbindung nicht vom Client sondern vom Server 
-festgelegt (via PORT-Kommando). Der Client verbindet sich dann 
+Im Gegensatz zu aktivem ftp wird die gewünschte PORT-Nummer
+der Datenverbindung nicht vom Client sondern vom Server
+festgelegt (via PORT-Kommando). Der Client verbindet sich dann
 zu diesem Port auf dem Server und der Datenverkehr kann beginnen.
-Obwohl diese Vorgehensweise als sicherer gilt, sollte man 
-bedenken, dass fast gar nichts mehr über die Portnummern 
+Obwohl diese Vorgehensweise als sicherer gilt, sollte man
+bedenken, dass fast gar nichts mehr über die Portnummern
 der Verbindung bekannt ist.
      </textblock>
 
@@ -2395,17 +2395,17 @@ iptables -A OUTPUT -p tcp --sport 1024: --dport 1024: -m state --state ESTABLISH
      </shell>
     </section>
    </section>
-   
+
    <section>
     <heading>
 Patches
     </heading>
 
     <textblock>
-Zur erweiterten Verbindungsverfolgung (andere Protokolle) eignen 
-sich auch folgende Patches, die unter 
+Zur erweiterten Verbindungsverfolgung (andere Protokolle) eignen
+sich auch folgende Patches, die unter
 <ref lang="de" url="http://www.netfilter.org/documentation/HOWTO/de/netfilter-extensions-HOWTO.html">http://www.netfilter.org/documentation/HOWTO/de/netfilter-extensions-HOWTO.html</ref>
-dokumentiert sind und von dort auch heruntergeladen werden 
+dokumentiert sind und von dort auch heruntergeladen werden
 können.
     </textblock>
 
@@ -2459,29 +2459,29 @@ Testen der Firewall
 
    <textblock>
 Ein erster Test sollte mit dem Netzwerkscanner nmap erfolgen.
-Mit ihm kann man sowohl einzelne Rechner als auch ganze Netzwerke 
-nach Schwachstellen untersuchen. Ein weiterer Netzwerkscanner 
+Mit ihm kann man sowohl einzelne Rechner als auch ganze Netzwerke
+nach Schwachstellen untersuchen. Ein weiterer Netzwerkscanner
 ist <ref lang="en" url="http://www.nessus.org/">Nessus</ref>,
-der unter der GPL steht und sehr umfangreiche Tests ermöglicht. 
+der unter der GPL steht und sehr umfangreiche Tests ermöglicht.
    </textblock>
 
    <textblock>
-Man sollte auch unbedingt stets die Log-Files auswerten, 
+Man sollte auch unbedingt stets die Log-Files auswerten,
 Hilfe dabei bietet das Tool
 <ref lang="en" url="http://www.logwatch.org/">logwatch</ref>.
    </textblock>
 
    <textblock>
-Je nach Sicherheitsbedarf ist die Firewall regelmäßig mit den 
+Je nach Sicherheitsbedarf ist die Firewall regelmäßig mit den
 jeweils aktuellen Versionen der Netzwerkscanner zu testen, denn
-Sicherheit ist kein Produkt, sondern ein Prozess, 
+Sicherheit ist kein Produkt, sondern ein Prozess,
 der niemals als abgeschlossen betrachtet werden soll!
    </textblock>
   </section>
-  
+
   <section>
    <heading>
-Tipps 
+Tipps
    </heading>
 
    <textblock>
@@ -2494,7 +2494,7 @@ ständig gebraucht wird!
    </textblock>
 
    <textblock>
-Deinstallieren Sie alle Programme mit bekannten 
+Deinstallieren Sie alle Programme mit bekannten
 Sicherheitslücken, selbst wenn diese gebraucht werden!
    </textblock>
 
@@ -2507,8 +2507,8 @@ Spielen Sie Updates sofort nach Erscheinen ein!
    </textblock>
 
    <textblock>
-Aktualisieren Sie ständig Ihr System, auch wenn keine Lücke 
-bekannt gegeben wurde. Hersteller gehen oftmals von aktuellen 
+Aktualisieren Sie ständig Ihr System, auch wenn keine Lücke
+bekannt gegeben wurde. Hersteller gehen oftmals von aktuellen
 Systemen aus.
    </textblock>
 
@@ -2552,7 +2552,7 @@ als ein Firewall-Rechner!
    <textblock>
 Eine Firewall kann nur so sicher sein, wie die
 Sicherheitspolitik, die sie realisiert. Investieren Sie
-also sehr viel Zeit in die Aufstellung einer für Sie 
+also sehr viel Zeit in die Aufstellung einer für Sie
 sicheren Politik!
    </textblock>
 
@@ -2593,11 +2593,11 @@ Probleme potenzieren sich anstatt einander aufzuheben.
    </ul>
 
    <textblock>
-Aktivieren Sie <strong>Route Verification</strong>. Das bedeutet, 
-dass Pakete, die von einer unerwarteten Schnittstelle kommen, 
-verworfen werden oder anders formuliert: Wenn ein Paket mit 
-einer Quelladresse des internen Netzwerkes an einer externen 
-Schnittstelle ankommt, wird es verworfen. 
+Aktivieren Sie <strong>Route Verification</strong>. Das bedeutet,
+dass Pakete, die von einer unerwarteten Schnittstelle kommen,
+verworfen werden oder anders formuliert: Wenn ein Paket mit
+einer Quelladresse des internen Netzwerkes an einer externen
+Schnittstelle ankommt, wird es verworfen.
    </textblock>
 
    <textblock>
@@ -2623,16 +2623,16 @@ Oder für alle Netzwerkschnittstellen:
    </file>
 
    <textblock>
-Verwenden Sie Logging nur mit Limit-Option, ansonsten besteht 
-die Gefahr, dass die Log-Files schnell sehr groß werden und 
+Verwenden Sie Logging nur mit Limit-Option, ansonsten besteht
+die Gefahr, dass die Log-Files schnell sehr groß werden und
 <strong>überlaufen</strong>.
    </textblock>
 
    <textblock>
-Wenn Sie Sicherheit der Performance vorziehen, sollten Sie 
-Regeln zur Verbindungsverfolgung  (<strong>connection tracking</strong>) 
-aufstellen. Es ist eingewisser Overhead nicht vermeidbar, 
-da meist alle Verbindungen verfolgt werden, aber ein 
+Wenn Sie Sicherheit der Performance vorziehen, sollten Sie
+Regeln zur Verbindungsverfolgung  (<strong>connection tracking</strong>)
+aufstellen. Es ist eingewisser Overhead nicht vermeidbar,
+da meist alle Verbindungen verfolgt werden, aber ein
 besser kontrollierter Zugang lässt Sie vielleicht etwas besser
 schlafen.
    </textblock>
@@ -2672,9 +2672,9 @@ iptables -A FORWARD -j no-conns-from-ppp0
    </shell>
 
    <textblock>
-Nochmals: Agieren Sie sehr minimalistisch, 
-umso weniger Sie erlauben, desto weniger Fehler 
-können sich einschleichen und desto 
+Nochmals: Agieren Sie sehr minimalistisch,
+umso weniger Sie erlauben, desto weniger Fehler
+können sich einschleichen und desto
 weniger müssen Sie auch aktualisieren.
    </textblock>
   </section>
@@ -2687,8 +2687,8 @@ Ausblick
    </heading>
 
    <textblock>
-So wie man Sicherheit ständig aktualisieren und pflegen muss, 
-so hat auch dieses Kapitel regelmäßige Updates und 
+So wie man Sicherheit ständig aktualisieren und pflegen muss,
+so hat auch dieses Kapitel regelmäßige Updates und
 Erweiterungen nötig. Geplant sind unter anderem Fallbeispiele
 mit Skripten zu
    </textblock>
@@ -2709,8 +2709,8 @@ Logging.
    </ul>
 
    <textblock>
-Weiterhin wollen wir einen Ausblick auf IPv6 geben, und das 
-Thema mit Kapiteln zur 
+Weiterhin wollen wir einen Ausblick auf IPv6 geben, und das
+Thema mit Kapiteln zur
    </textblock>
 
    <ul>
@@ -2766,7 +2766,7 @@ BSI Grundschutzhandbuch
      </quotation>
 
      <textblock>
-DFN-Cert: Firewalls - Klassifikation und Bewertung 
+DFN-Cert: Firewalls - Klassifikation und Bewertung
      </textblock>
 
      <quotation>
@@ -2815,7 +2815,7 @@ Linux Security HOWTO
 <ref lang="en" url="http://www.linuxsecurity.com/docs/LDP/Security-HOWTO/">http://www.linuxsecurity.com/docs/LDP/Security-HOWTO/</ref>
      </quotation>
     </section>
-    
+
     <section>
      <heading>
 Sicherheitspflege
@@ -2845,14 +2845,14 @@ Bugtraq-Mailingliste
 <ref lang="en" url="http://online.securityfocus.com/archive">http://online.securityfocus.com/archive</ref>
      </quotation>
     </section>
-    
+
     <section>
      <heading>
 Sicherheit v. Distribution
      </heading>
 
      <textblock>
-SuSE-Linux Security-Updates 
+SuSE-Linux Security-Updates
      </textblock>
 
      <quotation>
@@ -2860,8 +2860,8 @@ SuSE-Linux Security-Updates
      </quotation>
 
      <textblock>
-RedHat-Linux 
-Security-Updates 
+RedHat-Linux
+Security-Updates
      </textblock>
 
      <quotation>
@@ -2871,8 +2871,8 @@ Securing and Optimizing Red Hat Linux<br/>
      </quotation>
 
      <textblock>
-Debian-Linux 
-Security-Updates 
+Debian-Linux
+Security-Updates
      </textblock>
 
      <quotation>
@@ -2881,14 +2881,14 @@ Securing Debian HOWTO<br/>
 <ref lang="en" url="http://www.linuxsecurity.com/docs/harden-doc/html/securing-debian-howto">http://www.linuxsecurity.com/docs/harden-doc/html/securing-debian-howto</ref>
      </quotation>
     </section>
-    
+
     <section>
      <heading>
-weiterführende Artikel 
+weiterführende Artikel
      </heading>
 
      <textblock>
-kleine Sammlung von Online-Artikeln 
+kleine Sammlung von Online-Artikeln
      </textblock>
 
      <quotation>
@@ -2921,7 +2921,7 @@ Firewall Handbuch für LINUX 2.0 und 2.2
 <ref lang="de" url="http://www.little-idiot.de/firewall/zusammen.html">http://www.little-idiot.de/firewall/zusammen.html</ref>
      </quotation>
     </section>
-    
+
     <section>
      <heading>
 Dokumentationen außerhalb Selflinux
@@ -2944,7 +2944,7 @@ SSH
      </quotation>
 
      <textblock>
-Distributed Denial of Service Angriffe    
+Distributed Denial of Service Angriffe
      </textblock>
 
      <quotation>
@@ -2952,7 +2952,7 @@ Distributed Denial of Service Angriffe
      </quotation>
     </section>
    </section>
-   
+
    <section>
     <heading>
 Übersicht über die Standard-Module von IP-Tables
@@ -3183,7 +3183,7 @@ Tabelle nat
      </tr>
     </table>
    </section>
-   
+
    <section>
     <heading>
 Regeln zum Verhindern eines NMAP-Scan
@@ -3192,54 +3192,54 @@ Regeln zum Verhindern eines NMAP-Scan
     <shell>
      <root>
 IPTABLES -t mangle -A PREROUTING
-         -p tcp --tcp-flags ALL FIN,URG,PSH 
-         -j LOG --log-prefix "NMAP-XMAS SCAN:" 
+         -p tcp --tcp-flags ALL FIN,URG,PSH
+         -j LOG --log-prefix "NMAP-XMAS SCAN:"
          --log-tcp-options --log-ip-options
      </root>
     </shell>
 
     <shell>
      <root>
-IPTABLES -t mangle -A PREROUTING 
-         -p tcp --tcp-flags ALL NONE 
-         -j LOG --log-prefix "NMAP-NULL SCAN:" 
+IPTABLES -t mangle -A PREROUTING
+         -p tcp --tcp-flags ALL NONE
+         -j LOG --log-prefix "NMAP-NULL SCAN:"
          --log-tcp-options --log-ip-options
      </root>
     </shell>
 
     <shell>
      <root>
-IPTABLES -t mangle -A PREROUTING 
-         -p tcp --tcp-flags SYN,RST SYN,RST 
-         -j LOG --log-prefix "SYN/RST SCAN:" 
+IPTABLES -t mangle -A PREROUTING
+         -p tcp --tcp-flags SYN,RST SYN,RST
+         -j LOG --log-prefix "SYN/RST SCAN:"
          --log-tcp-options --log-ip-options
      </root>
     </shell>
 
     <shell>
      <root>
-IPTABLES -t mangle -A PREROUTING 
-         -p tcp --tcp-flags SYN,FIN SYN,FIN 
-         -j LOG --log-prefix "SYN/FIN SCAN:" 
+IPTABLES -t mangle -A PREROUTING
+         -p tcp --tcp-flags SYN,FIN SYN,FIN
+         -j LOG --log-prefix "SYN/FIN SCAN:"
          --log-tcp-options --log-ip-options
      </root>
     </shell>
 
     <shell>
      <root>
-IPTABLES -t mangle -A PREROUTING 
+IPTABLES -t mangle -A PREROUTING
          -p tcp --tcp-flags ALL FIN,URG,PSH -j DROP
      </root>
      <root>
-IPTABLES -t mangle -A PREROUTING 
+IPTABLES -t mangle -A PREROUTING
          -p tcp --tcp-flags ALL NONE -j DROP
      </root>
      <root>
-IPTABLES -t mangle -A PREROUTING 
+IPTABLES -t mangle -A PREROUTING
          -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
      </root>
      <root>
-IPTABLES -t mangle -A PREROUTING 
+IPTABLES -t mangle -A PREROUTING
          -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
      </root>
     </shell>
