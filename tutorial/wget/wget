@@ -8,7 +8,9 @@
   <name>Johnny Graber</name>
   <mailto>linux@jgraber.ch</mailto>
  </author>
- 
+ <author>
+  <name>Christoph Stöttner</name>
+  <mailto>selflinux@stoeps.de</mailto>
  <layout>
   <name>Torsten Hemm</name>
   <mailto>T.Hemm@gmx.de</mailto>
@@ -22,9 +24,10 @@
   <description> 
    <textblock>
 GNU wget ist ein praktisches Tool, um Dateien aus dem Web zu 
-holen. Über die zahlreichen Optionen kann man genau das 
-erreichen, was man will; sogar abgebrochene Downloads können
-wieder aufgenommen werden.
+laden. Über zahlreiche Optionen kann man genau das 
+erreichen. Sogar abgebrochene Downloads können
+wieder aufgenommen werden. Es werden Dateien und Seiten sowohl
+per http, als auch per ftp geladen werden.
    </textblock>
   </description>
 
@@ -59,7 +62,7 @@ der Aufruf
 
   <shell>
    <user path="~">
-wget http://www.selflinux.de/basisrelease.tar.gz
+wget http://mesh.dl.sourceforge.net/sourceforge/selflinux/SelfLinux-0.10.0-html.tar.gz
    </user>
   </shell>
 
@@ -70,34 +73,39 @@ mit der Option <command>-c wieder</command> aufgenommen werden:
 
   <shell>
    <user path="~">
-wget -c http://www.selflinux.de/basisrelease.tar.gz
-    </user>
+wget -c http://mesh.dl.sourceforge.net/sourceforge/selflinux/SelfLinux-0.10.0-html.tar.gz
+   </user>
     <output>
---18:35:45--  http://www.selflinux.de/basisrelease.tar.gz
-           => `basisrelease.tar.gz'
-Auflösen des Hostnamen »www.selflinux.de«.... fertig.
-Verbindungsaufbau zu www.selflinux.de[134.100.212.78]:80... verbunden.
-HTTP Anforderung gesendet, warte auf Antwort... 206 Partial Content
-Länge: 696,644 (noch 122,068) [application/x-gzip]
-100%[===============================>] 696,644   63.75K/s  ETA 00:00
-18:35:47 (63.75 KB/s) - »basisrelease.tar.gz« gespeichert [696644/696644]
+    --21:41:52--  http://mesh.dl.sourceforge.net/sourceforge/selflinux/SelfLinux-0.10.0-html.tar.gz
+               => `SelfLinux-0.10.0-html.tar.gz'
+	       Auflösen des Hostnamen »mesh.dl.sourceforge.net«.... 213.203.218.122
+	       Verbindungsaufbau zu mesh.dl.sourceforge.net[213.203.218.122]:80... verbunden.
+	       HTTP Anforderung gesendet, warte auf Antwort... 206 Partial Content
+	       Länge: 4,039,004 (noch 3,963,516) [application/x-tar]
+
+	       100%[+++==========================================================>] 4,039,004    112.39K/s    ETA 00:00
+
+	       21:42:25 (120.79 KB/s) - »SelfLinux-0.10.0-html.tar.gz« gespeichert [4039004/4039004]
     </output>
   </shell>
 
   <textblock>
 <command>wget</command> zeigt einem alle wichtigen Optionen auf einen 
- Blick an. Der
-Statusbalken zeigt, wie weit man schon vorangeschritten ist, 
+ Blick an. Der Statusbalken zeigt, wie weit man schon vorangeschritten ist, 
 danach folgt die Angabe der aktuellen Geschwindigkeit und hinter 
-ETA steht die verbleibende Zeit.
-  </textblock>
+ETA steht die verbleibende Zeit. 
+</textblock>
+<textblock>
++-Zeichen im Statusbalken zeigen Dateifragmente, die durch Wiederaufnahme 
+des Downloads fortgesetzt wurden.
+</textblock>
 
   <textblock>
-Die Option <command>-c</command> ist gerade bei grossen Dateien wie
+Die Option <command>-c</command> ist gerade bei großen Dateien wie
 ISO-Images sehr angenehm. Bricht der Download über einen Webbrowser
 bei 600 von 650 MB ab, ist die Datei verloren. Mit <command>wget</command>
-genügt das <command>-c</command> und schon wird dort weitergemacht, wo 
-der Unterbruch statt fand.
+genügt das <command>-c</command> und es werden nur noch die fehlenden Teile
+heruntergeladen.
   </textblock>
  </section> 
 </split>
@@ -112,26 +120,34 @@ Spiegeln von Webseiten
   <textblock>
 Mit <command>wget</command> können nicht nur einzelne Dateien gespeichert, 
 sondern auch ganze Seiten gespiegelt werden. Die dafür zu verwendende 
-Option ist <command>-r</command>. Damit wird bei der angegebene Seite 
-rekursiv den Links gefolgt. Standardmässig folgt <command>-r</command>
-den Links 5 Ebenen entlang. Dabei wird nicht unterschieden, ob die Seite
-vom gewünschten Server stammt, oder nicht. 
+Option ist <command>-r</command>. Damit wird bei der angegebenen Seite 
+rekursiv den Links gefolgt. 
+Die Standardeinstellung für <command>-r</command> folgt fünf Ebenen von
+Links. Dabei wird nicht unterschieden, ob die Seiten vom gleichen Server stammen,
+oder nicht. 
+  </textblock>
+  <textblock>
+Bei FTP-Adressen werden demensprechend fünf Unterverzeichnisebenen heruntergeladen.
   </textblock>
   
   <textblock>
-Die Sache mit den Ebenen ist am Anfang recht mühsam zu verstehen.
+Ebenen heißen an dieser Stelle einfach verschachtelte Links.
 Man muss sich dies wie eine gewöhnliche Sitzung mit einem Browser
 vorstellen. Jeder Link, den man anklickt, öffnet eine neue Ebene.
-Ein <command>-r</command> bedeutet also, das man von der Startseite
-5 tiefer gelegene Seiten aufrufen kann.
+Ein <command>-r</command> bedeutet also, daß man von der Startseite
+fünf tiefer gelegene Seiten aufrufen kann.
+Fünf Ebenen sind eine ganze Menge, da die Link-Anzahl der gefolgt wird, in dieser 
+Einstellung nicht begrenzt ist. Wenn z.B. die erste Seite 20 Links enthält, diese 20
+jeweils weitere 10, dann werden bereit 1 + 20 + 10 * 20 = 121 Seiten heruntergeladen.
+Das wären also drei Ebenen.
   </textblock>
 
   <textblock>
 Weist ein Link auf der 2. Seite zu
-<ref lang="de" url="http://www.linux.de">www.linux.de</ref>, wird auch dort
+<ref lang="de" url="http://www.linux.org">www.linux.org</ref>, wird auch dort
 wiederum den Links gefolgt und die Dateien auf dem eigenen 
-Rechner abgelegt. Je nach Seiten kann dies sehr schnell mühsam 
-werden.
+Rechner abgelegt. Dabei sollte man immer bedenken, daß alle verlinkten Dokumente
+geladen werden und das können schnell mehrere hundert Megabyte sein.
   </textblock>
 
   <textblock>
@@ -142,22 +158,21 @@ positive Zahl ersetzt werden.
 
   <shell>
    <user path="~">
-wget -r -l 2 www.selflinux.de
+wget -r -l 2 www.selflinux.org
    </user>
   </shell>
   
   <textblock>
 Speichert alle Dateien, die über eine andere Datei verlinkt sind,
-im Verzeichnis <strong>www.selflinux.de.</strong>
+im Verzeichnis <strong>www.selflinux.org</strong>
 Die gefundene Verzeichnisstruktur wird dabei übernommen. Allerdings wird 
-nur 2 Ebenen tief gesucht, was bei grossen Kapiteln dazu führt, das 
+nur 2 Ebenen tief gesucht, was bei großen Kapiteln dazu führt, daß
 nicht alle Dateien heruntergeladen werden.
   </textblock>
 
   <textblock>
 <command>wget</command> ist gut um sich schnell einige Seiten zu holen. Für ein 
-effektives Spiegeln eines Servers sollte man sich ein anderes 
-Tool suchen. 
+effektives Spiegeln eines Servers sollte man sich ein anderes Tool suchen. 
   </textblock>
  </section>
 </split>
@@ -193,7 +208,7 @@ Die Verzeichnisstruktur wird nun komplett übernommen.
     <textblock>
 Neben diesen beiden bietet <command>wget</command> noch eine dritte 
 Möglichkeit. Hierbei wird die Verzeichnisstruktur übernommen, doch 
-wird der Ordner mit dem Domainnamen weg gelassen. Dies erreicht man 
+wird der Ordner mit dem Domainnamen weggelassen. Dies erreicht man 
 mit <command>-nH (--no-host-directories)</command>.
     </textblock>
    </section>  
@@ -204,14 +219,16 @@ Nur bestimmte Dateitypen herunterladen
     </heading>
     
      <textblock> 
-Wildcards können bei <command>wget</command> nicht verwendet werden.
+Wildcards können bei <command>wget</command> nicht verwendet werden, wenn die
+Dateien per http geladen werden.
 Es gibt aber dennoch eine Möglichkeit, nur spezielle Dateitypen zu bekommen.
 Dafür muss man eine Liste mit <command>-A (--accept)</command> erstellen.
+FTP kennt wildcards!
      </textblock>
 
      <shell>
       <user path="~">
-wget -r -A jpg,png http://www.selflinux.de
+wget -r -A jpg,png http://www.selflinux.org
       </user>
      </shell>
 
@@ -231,7 +248,7 @@ werden, lautet der Aufruf
      
      <shell>
       <user path="~">   
-wget -r -R jpg,png http://www.selflinux.de
+wget -r -R jpg,png http://www.selflinux.org
       </user>
      </shell>
     </section>
@@ -242,24 +259,24 @@ Grössenbegrenzung des Downloads
      </heading>
 
      <textblock>
-Auf die Grösse des Downloads kann aber nicht nur über <command>-A
+Auf die Größe des Downloads kann aber nicht nur über <command>-A
 </command> und <command>-R</command> Einfluss genommen werden, sondern
-auch mittels <command>-Q (--quota)</command>. Die Grössenangabe erfolgt
+auch mittels <command>-Q (--quota)</command>. Die Größenangabe erfolgt
 in Bytes und legt den Wert für den ganzen Download fest. 
-Da die Angabe grosser Werte in Bytes mühsam ist, kann man auch 
+Da die Angabe großer Werte in Bytes mühsam ist, kann man auch 
 andere Einheiten verwenden. Für Megabytes wird an die Zahl ein m
 angehängt, für Kilobytes dient ein k.
      </textblock>
      
      <shell>
       <user path="~">
-wget -r -nH -Q5m http://www.selflinux.de
+wget -r -nH -Q5m http://www.selflinux.org
       </user>
      </shell>
      
      <textblock>
-Damit werden maximal 5 Megabyte Daten von <ref lang="de" url="htpp://www.selflinux.de">
-www.selflinux.de</ref> geholt und im aktuellen Verzeichnis abgelegt.
+Damit werden maximal 5 Megabyte Daten von <ref lang="de" url="htpp://www.selflinux.org">
+www.selflinux.org</ref> geholt und im aktuellen Verzeichnis abgelegt.
 Sind weniger als 5 MB Daten vorhanden, kann <command>wget</command> ja nicht
 das ganze Quota ausnutzen.
      </textblock>
@@ -280,7 +297,7 @@ lokale Datei veraltet ist, beginnt wget mit dem Download.
 
      <shell>
       <user path="~">
-wget -N http://www.selflinux.de
+wget -N http://www.selflinux.org
       </user>
      </shell> 
     </section>
@@ -292,14 +309,18 @@ Verwenden eines Proxy-Servers
 
      <textblock>
 Will man einen Proxy-Server verwenden, genügt die Option 
-<command>-Y on/off</command>. Dabei wird auf die Umgebungsvariable 
-<command>$http_proxy</command> ausgelesen. Diese muss natürlich gesetzt werden:
+<command>-Y on/off</command>. Dabei wird auf die Umgebungsvariablen
+<command>$http_proxy</command> und <command>$FTP_PROXY</command> ausgelesen. Diese müssen
+natürlich gesetzt werden:
      </textblock>
 
      <shell>
       <user path="~"> 
-export http_proxy="http://meinproxy.provider.de:3128"
+export http_proxy="http://meinproxy.provider.de:3128/"
       </user> 
+      <user path="~">
+export FTP_PROXY="http://meinproxy.provider.de:3128/"
+      </user>
      </shell> 
     </section>
    </section> 
@@ -312,7 +333,7 @@ Die Dateien /etc/wgetrc und .wgetrc
     </heading>
    
     <textblock>
-Eine grosse Anzahl der Startoptionen können in diese 
+Eine große Anzahl der Startoptionen können in diese 
 Konfigurationsdateien eingetragen werden. Die Datei 
 <strong>/etc/wgetrc</strong> gilt für alle User, die 
 <strong>~/.wgetrc</strong> nur für den jeweiligen Benutzer.
