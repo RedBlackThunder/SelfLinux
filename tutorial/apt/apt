@@ -1,79 +1,129 @@
-Autoren:
-Florian Frank
-David Spreen
-Gustavo Noronha Silva
+<?xml version="1.0" encoding="iso-8859-1"?>
+<chapter>
+ <title>APT Howto</title>
 
-Lizenz: GDFL
+ <author>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </author>
 
+ <author>
+  <name>David Spreen</name>
+  <mailto>netzwurm@debian.org</mailto>
+ </author>
 
+ <author>
+  <name>Gustavo Noronha Silva</name>
+  <mailto>kov@debian.org</mailto>
+ </author>
 
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
 
-APT HOWTO
+ <license>GFDL</license>
 
+ <index>apt</index>
 
-
-
-Zusammenfassung
-
+ <description>
+  <textblock>
 Dieses Dokument soll dem Benutzer ein gutes Verständnis für die
-Arbeitsweise des Debian-Paketmanagement-Werkzeugs APT liefern. Ziel ist
+Arbeitsweise des Debian-Paketmanagement-Werkzeugs <command>APT</command> liefern. Ziel ist
 es, das Leben für neue Debian-Benutzer zu erleichtern und denen zu
 helfen, die ihr Verständnis für die Administration dieses Systems
 vertiefen wollen.
+  </textblock>
+ </description>
 
+ <split>
+  <section>
+   <heading>
+Einführung
+   </heading>
 
-
-
-1 Einführung
-
-Am Anfang war das .tar.gz. Benutzer mussten jedes Programm, welches Sie
+   <textblock>
+Am Anfang war das <path>.tar.gz</path>. Benutzer mussten jedes Programm, welches Sie
 auf ihren GNU/Linux-Systemen benutzen wollten, selbst kompilieren. Zu
 Beginn der Entwicklung des Debian-Projekts erachtete man es für
 notwendig, dass das System eine Methode zum Verwalten der Pakete, die
 auf dem System installiert sind, enthält. Man gab dieser Methode den
-Namen dpkg. Dadurch war das erste "Paket" auf GNU/Linux geboren, bevor
-Red Hat sich entschied, ihr eigenes RPM-System zu erschaffen.
+Namen dpkg. Dadurch war das erste <strong>Paket</strong> auf GNU/Linux geboren, bevor
+<ref url="http://www.redhat.com/">Red Hat</ref> sich entschied, ihr eigenes RPM-System zu erschaffen.
+   </textblock>
 
+   <textblock>
 Schnell standen die Macher von GNU/Linux vor einem neuen Problem. Sie
 brauchten ein schnelles, praktisches und effizientes Mittel, um Pakete
 zu installieren, das Abhängigkeiten automatisch behandeln und ihre
 Konfigurationsdateien während des Aktualisierens berücksichtigen würde.
-Und wieder war es das Debian-Projekt, das den Weg machte und APT, das
-"Advanced Packaging Tool", welches seitdem von Connectiva auf RPM
+Und wieder war es das Debian-Projekt, das den Weg machte und <command>APT</command>, das
+<strong>Advanced Packaging Tool</strong>, welches seitdem von <ref url="http://www.connective.com/">Connectiva</ref> auf RPM
 portiert und von einigen anderen Distributionen übernommen wurde, das
 Licht der Welt erblicken ließ.
+   </textblock>
 
-Diese Anleitung versucht nicht, apt-rpm (den Connectiva-Port von APT) zu
+   <textblock>
+Diese Anleitung versucht nicht, apt-rpm (den Connectiva-Port von <command>APT</command>) zu
 behandeln.
+   </textblock>
 
+   <textblock>
 Diese Dokumentation basiert auf der Debian-Version: Sarge.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Basis-Konfiguration
+   </heading>
 
+   <section>
+    <heading>
+Die Datei /etc/apt/sources.list
+    </heading>
 
-
-1 Basis-Konfiguration
-
-1.1 Die Datei /etc/apt/sources.list
-
-Als Teil seiner Arbeit benutzt APT eine Datei, die die "Quellen", von
+    <textblock>
+Als Teil seiner Arbeit benutzt <command>APT</command> eine Datei, die die <strong>Quellen</strong>, von
 denen man Pakete beziehen kann, auflistet. Diese Datei heisst
-/etc/apt/sources.list.
+<path>/etc/apt/sources.list</path>.
+    </textblock>
 
+    <textblock>
 Die Einträge in dieser Datei sind von folgendem Format:
+    </textblock>
 
+    <file>
+     <title>
+/etc/apt/sources.list
+     </title>
+     <content>
 deb http://site.http.org/debian distribution sektion1 sektion2 sektion3
 deb-src http://site.http.org/debian distribution sektion1 sektion2 sektion3
+     </content>
+    </file>
 
+    <textblock>
 Natürlich sind obige Einträge erfunden und sollten nicht benutzt werden.
 Das erste Wort jeder Zeile, deb oder deb-src zeigt den Typ des Archivs:
-Entweder es enthält Binär-Pakete (deb), das sind die vorkompilierten
-Pakete, die wir normalerweise benutzen, oder Quellpakete (deb-src),
+Entweder es enthält <strong>Binär-Pakete</strong> (<command>deb</command>), das sind die vorkompilierten
+Pakete, die wir normalerweise benutzen, oder <strong>Quellpakete</strong> (<command>deb-src</command>),
 welche die originalen Programmquellen, die Debian-Kontrolldatei
-(.dsc) und das diff.gz, welches die Änderungen enthält, die für das
-"Debianisieren" des Programms von Nöten sind.
+(<path>.dsc</path>) und das <path>diff.gz</path>, welches die Änderungen enthält, die für das
+<strong>Debianisieren</strong> des Programms von Nöten sind.
+    </textblock>
 
+    <textblock>
 Normalerweise finden wir folgendes in der Standard-Debian-sources.list:
+    </textblock>
 
+    <file>
+     <title>
+/etc/apt/sources.list
+     </title>
+     <content>
 # See sources.list(5) for more information, especialy
 # Remember that you can only use http, ftp or file URIs
 # CDROMs are managed through the apt-cdrom tool.
@@ -84,98 +134,165 @@ deb http://security.debian.org stable/updates main contrib non-free
 # Uncomment if you want the apt-get source function to work
 #deb-src http://http.us.debian.org/debian stable main contrib non-free
 #deb-src http://non-us.debian.org/debian-non-US stable/non-US main contrib non-free
+     </content>
+    </file>
 
+    <textblock>
 Dieses sind die Zeilen, die eine Debian-Basis-Installation benötigt. Die
 erste deb-Zeile zeigt auf das offizielle Archiv, die zweite auf das
 Archiv non-US und die dritte auf das Archiv der Sicherheits-Updates von
 Debian.
+    </textblock>
 
-Die letzten beiden Zeilen sind auskommentiert (mit einem "#" am Anfang).
+    <textblock>
+Die letzten beiden Zeilen sind auskommentiert (mit einem <strong>#</strong> am Anfang).
 Deshalb wird apt-get sie ignorieren. Sie sind deb-src-Zeilen, das
 bedeutet, sie führen uns zu Debian-Quellpaketen. Wenn Sie öfters
 Programm-Quellen herunterladen, um sie zu testen oder neu zu
 kompilieren, sollten Sie die Kommentarzeichen entfernen.
+    </textblock>
 
-Die Datei /etc/apt/sources.list kann verschiedene Typen von Zeilen
-enthalten. APT kann mit Archiven der Typen http, ftp und file (lokale
+    <textblock>
+Die Datei <path>/etc/apt/sources.list</path> kann verschiedene Typen von Zeilen
+enthalten. <command>APT</command> kann mit Archiven der Typen <path>http</path>, <path>ftp</path> und <path>file</path> (lokale
 Dateien, z. B. ein Verzeichnis, mit einem gemounteten
 ISO9660-Dateisystem).
+    </textblock>
 
-Vergessen Sie nicht, apt-get update auszuführen, nachdem die
-/etc/apt-/sources.list editiert wurde. Dies ist notwendig, damit APT die
+    <textblock>
+Vergessen Sie nicht, <command>apt-get update</command> auszuführen, nachdem die
+<path>/etc/apt-/sources.list</path> editiert wurde. Dies ist notwendig, damit <command>APT</command> die
 Paketlisten der spezifizierten Quellen bezieht.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Wie man APT lokal benutzt
+    </heading>
 
-
-
-1.1 Wie man APT lokal benutzt
-
-Manchmal haben Sie vielleicht einige .debs, bei denen Sie APT für die
+    <textblock>
+Manchmal haben Sie vielleicht einige <path>.debs</path>, bei denen Sie <command>APT</command> für die
 Installation benutzen wollen, so dass Abhängigkeiten automatisch
 aufgelöst werden.
+    </textblock>
 
-Um das zu tun, erstellen Sie ein Verzeichnis und legen die .debs, die
+    <textblock>
+Um das zu tun, erstellen Sie ein Verzeichnis und legen die <path>.debs</path>, die
 Sie indizieren wollen, dort hinein. Zum Beispiel:
+    </textblock>
 
-# mkdir /root/debs/
+    <shell>
+     <root>
+mkdir /root/debs/
+     </root>
+    </shell>
 
+    <textblock>
 Es ist möglich, die Definitionen der paketeigenen Kontrolldatei
-(debian/control) für das Repository mit Hilfe einer override-Datei zu
+(<path>debian/control</path>) für das Repository mit Hilfe einer <path>override</path>-Datei zu
 übergehen. In dieser Datei können Sie einige Optionen definieren, die
 die paketeigenen Optionen überschreiben. Das Format sieht folgendermassen
 aus:
+    </textblock>
 
+    <file>
+     <content>
 Paket Priorität Sektion
+     </content>
+    </file>
 
-Paket ist der Name des Pakets, die Priorität ist "low" (niedrig),
-"medium" (mittel) oder "high" (hoch) und die Sektion ist die Sektion, zu
+    <textblock>
+Paket ist der Name des Pakets, die Priorität ist <strong>low</strong> (niedrig),
+<strong>medium</strong> (mittel) oder <strong>high</strong> (hoch) und die Sektion ist die Sektion, zu
 der das Paket gehört. Der Dateiname spielt keine Rolle, er muss als
-Argument an dpkg-scanpackages übergeben werden. Wenn keine
-override-Datei gebraucht wird, kann man dpkg-scanpackages auch /dev/null
+Argument an <command>dpkg-scanpackages</command> übergeben werden. Wenn keine
+override-Datei gebraucht wird, kann man <command>dpkg-scanpackages</command> auch <path>/dev/null</path>
 übergeben.
+    </textblock>
 
-Immer noch im Verzeichnis /root führen Sie folgendes aus:
+    <textblock>
+Immer noch im Verzeichnis <path>/root</path> führen Sie folgendes aus:
+    </textblock>
 
-# dpkg-scanpackages debs Datei | gzip > debs/Packages.gz
+    <shell>
+     <root>
+dpkg-scanpackages debs Datei | gzip > debs/Packages.gz
+     </root>
+    </shell>
 
-In der obenstehenden Zeile ist Datei die override-Datei. Das Kommando
-generiert eine Datei Packages.gz, welche verschiedene Informationen über
-die Pakete enthält, die APT benötigt. Um die Pakete benutzen zu können,
-fügen Sie folgendes der /etc/sources.list hinzu:
+    <textblock>
+In der obenstehenden Zeile ist Datei die <path>override</path>-Datei. Das Kommando
+generiert eine Datei <path>Packages.gz</path>, welche verschiedene Informationen über
+die Pakete enthält, die <command>APT</command> benötigt. Um die Pakete benutzen zu können,
+fügen Sie folgendes der <path>/etc/apt/sources.list</path> hinzu:
+    </textblock>
 
+    <file>
+     <title>
+/etc/apt/sources.list
+     </title>
+     <content>
 deb file:/root debs/
+     </content>
+    </file>
 
+    <textblock>
 Nachdem Sie das getan haben, können Sie einfach die gewöhnlichen
-APT-Kommandos benutzen. Sie können ebenfalls ein Quellarchiv erstellen.
-Die Prozedur ist dieselbe, aber die Dateien .orig.tar.gz, .dsc und
-.diff.gz müssen sich in dem Verzeichnis befinden und statt Packages.gz
-heisst es hier Sources.gz. Ausserdem müssen Sie ein anderes Programm
-benutzen. Es heisst dpkg-scansources. Das Kommando sieht folgendermassen
+<command>APT</command>-Kommandos benutzen. Sie können ebenfalls ein Quellarchiv erstellen.
+Die Prozedur ist dieselbe, aber die Dateien <path>.orig.tar.gz</path>, <path>.dsc</path> und
+<path>.diff.gz</path> müssen sich in dem Verzeichnis befinden und statt <path>Packages.gz</path>
+heisst es hier <path>Sources.gz</path>. Ausserdem müssen Sie ein anderes Programm
+benutzen. Es heisst <command>dpkg-scansources</command>. Das Kommando sieht folgendermassen
 aus:
+    </textblock>
 
-# dpkg-scansources debs | gzip > debs/Sources.gz
+    <shell>
+     <root>
+dpkg-scansources debs | gzip > debs/Sources.gz
+     </root>
+    </shell>
 
-dpkg-scansources braucht keine override-Datei. Die Zeile in der
-sources.list lautet:
+    <textblock>
+<command>dpkg-scansources</command> braucht keine <path>override</path>-Datei. Die Zeile in der
+<path>sources.list</path> lautet:
+    </textblock>
 
+    <file>
+     <title>
+/etc/apt/sources.list
+     </title>
+     <content>
 deb-src file:/root debs/
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+Entscheidung - Welcher Mirror ist der beste für die sources.list: netselect, netselect-apt
+    </heading>
 
-
-
-1.1 Entscheidung - Welcher Mirror ist der beste für die sources.list: netselect, netselect-apt
-
-Eine häufige Frage, der meist neuen Benutzer ist: "Welchen Debian-Mirror
-soll ich in die sources.list eintragen?". Es gibt viele Wege, sich für
+    <textblock>
+Eine häufige Frage, der meist neuen Benutzer ist: <strong>Welchen Debian-Mirror
+soll ich in die sources.list eintragen?</strong>. Es gibt viele Wege, sich für
 einen Mirror zu entscheiden. Die fortgeschritteneren Benutzer haben
 möglicherweise ein Skript, welches den Ping mehrerer Mirrors vergleicht.
 Aber es gibt so ein Programm inzwischen auch für weniger erfahrene
-Benutzer: netselect.
+Benutzer: <command>netselect</command>.
+    </textblock>
 
-Installieren tut man netselect wie üblich:
+    <textblock>
+Installieren tut man <command>netselect</command> wie üblich:
+    </textblock>
 
-# apt-get install netselect
+    <shell>
+     <root>
+apt-get install netselect
+     </root>
+    </shell>
 
+    <textblock>
 Wenn man es ohne Parameter ausführt, zeigt es seinen Hilfetext an. Führt
 man es mit einer durch Leerzeichen separierten Liste von Hostnamen
 (Mirrors) aus, gibt es uns einen Hostnamen zusammen mit der einer
@@ -184,123 +301,251 @@ und die Zahl der Hops (Rechner, die eine Netzwerkanfrage passiert, um
 ihren Zielort zu erreichen) und ist antiproportional zur erwarteten
 Downloadgeschwindigkeit (also je niedriger, desto besser). Angezeigt
 wird nur der Host mit der niedrigsten Punktzahl (Die ganze Liste der
-Mirrors kann mit der Option -vv angesehen werden). Zum Beispiel:
+Mirrors kann mit der Option <command>-vv</command> angesehen werden). Zum Beispiel:
+    </textblock>
 
-# netselect ftp.debian.org http.us.debian.org ftp.at.debian.org download.unesp.br ftp.debian.org.br
+    <shell>
+     <root>
+netselect ftp.debian.org http.us.debian.org ftp.at.debian.org download.unesp.br ftp.debian.org.br
+     </root>
+     <output>
 365 ftp.debian.org.br
+     </output>
+    </shell>
 
+    <textblock>
 Das bedeutet, dass von den Mirrors, die als Parameter an netselect
-übergeben wurden, ftp.debian.org.br der beste war mit einer Punktzahl
-von 365. (Achtung! Weil es auf meinem Computer ausgeführt wurde und die
+übergeben wurden, <path>ftp.debian.org.br</path> der beste war mit einer Punktzahl
+von 365. (<strong>Achtung!</strong> Weil es auf meinem Computer ausgeführt wurde und die
 Netzwerktopographie extrem unterschiedlich und abhängig vom Standort des
 Computers ist, ist dieser Wert nicht notwendigerweise die richtige
 Geschwindigkeit für andere Computer).
+    </textblock>
 
+    <textblock>
 Jetzt tragen Sie einfach den schnellsten Mirror in die
-/etc/apt/sources.list ein (sehen Sie "Die Datei /etc/apt/sources.list")
-und befolgen Sie die Tips im Kapitel Paketverwaltung.
+<path>/etc/apt/sources.list</path> ein (sehen Sie <ref iref="Die Datei /etc/apt/sources.list">Die Datei /etc/apt/sources.list</ref>)
+und befolgen Sie die Tips im Kapitel <ref iref="Paketverwaltung">Paketverwaltung</ref>.
+    </textblock>
 
-Hinweis: Die Liste der Mirrors ist immer auf
-http://www.debian.org/mirror/mirrors_full zu finden.
+    <textblock>
+<strong>Hinweis:</strong> Die Liste der Mirrors ist immer auf
+<ref lang="en" url="http://www.debian.org/mirror/mirrors_full">http://www.debian.org/mirror/mirrors_full</ref> zu finden.
+    </textblock>
 
+    <textblock>
 Ab Version 0.3 enthält das netselect-Paket das netselect-apt-Skript, das
 obigen Prozess automatisiert. Übergeben Sie einfach die Distribution als
-Parameter (Der Defaultwert ist stable) und die sources.list wird mit den
-besten "main"- und "non-US"-Mirrors generiert und im aktuellen
+Parameter (Der Defaultwert ist <strong>stable</strong>) und die <path>sources.list</path> wird mit den
+besten <strong>main</strong>- und <strong>non-US</strong>-Mirrors generiert und im aktuellen
 Verzeichnis gespeichert. Das folgende Beispiel generiert eine
-sources.list für die stabile Distribution:
+<path>sources.list</path> für die stabile Distribution:
+    </textblock>
 
-# ls sources.list
+    <shell>
+     <root>
+ls sources.list
+     </root>
+     <output>
 ls: sources.list: File or directory not found
-# netselect-apt stable
+     </output>
+     <root>
+netselect-apt stable
+     </root>
+     <output>
 (...)
-# ls sources.list
+     </output>
+     <root>
+ls sources.list
+     </root>
+     <output>
 sources.list
+     </output>
+    </shell>
 
-Hinweis: Die sources.list wird im aktuellen Verzeichnis erzeugt und muss
-nach /etc/apt verschoben werden.
+    <textblock>
+<strong>Hinweis:</strong> Die <path>sources.list</path> wird im aktuellen Verzeichnis erzeugt und muss
+nach <path>/etc/apt</path> verschoben werden.
+    </textblock>
 
-Danach befolgen Sie die Tips im Kapitel Paketverwaltung.
+    <textblock>
+Danach befolgen Sie die Tips im Kapitel <ref iref="Paketverwaltung">Paketverwaltung</ref>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Hinzufügen einer CD-ROM in die sources.list
+    </heading>
 
-
-
-1.1 Hinzufügen einer CD-ROM in die sources.list
-
+    <textblock>
 Wenn Sie lieber eine CD-ROM zum Installieren von Paketen oder Updaten
-ihres Systems durch APT verwenden möchten, können Sie sie in Ihre
-sources.list eintragen. Um dieses zu tun, können Sie das Programm
-apt-cdrom, wie im folgenden beschrieben, benutzen:
+ihres Systems durch <command>APT</command> verwenden möchten, können Sie sie in Ihre
+<path>sources.list</path> eintragen. Um dieses zu tun, können Sie das Programm
+<command>apt-cdrom</command>, wie im folgenden beschrieben, benutzen:
+    </textblock>
 
-# apt-cdrom add
+    <shell>
+     <root>
+apt-cdrom add
+     </root>
+    </shell>
 
+    <textblock>
 Hierfür muss die Debian CD-ROM im Laufwerk liegen. Die CD-ROM wird
 gemountet, und wenn sie eine gültige Debian-CD ist, wird nach
 Paketinformationen gesucht. Wenn Ihre CD-ROM-Konfiguration ein wenig
 ungewöhnlich ist, können Sie die folgenden Optionen benutzen:
+    </textblock>
 
--h           - program help
--d directory - CD-ROM mount point
--r           - Rename a recognized CD-ROM
--m           - No mounting
--f           - Fast mode, don't check package files
--a           - Thorough scan mode
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <td>
+<command>-h</command>
+      </td>
+      <td>
+program help
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-d directory</command>
+      </td>
+      <td>
+CD-ROM mount point
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-r</command>
+      </td>
+      <td>
+Rename a recognized CD-ROM
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-m</command>
+      </td>
+      <td>
+No mounting
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-f</command>
+      </td>
+      <td>
+Fast mode, don't check package files
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-a</command>
+      </td>
+      <td>
+Thorough scan mode
+      </td>
+     </tr>
+    </table>
 
+    <textblock>
 Zum Beispiel:
+    </textblock>
 
-# apt-cdrom -d /home/kov/mycdrom add
+    <shell>
+     <root>
+apt-cdrom -d /home/kov/mycdrom add
+     </root>
+    </shell>
 
+    <textblock>
 Eine CD kann auch identifiziert werden ohne sie zur sources.list
 hinzuzufügen:
+    </textblock>
 
-# apt-cdrom ident
+    <shell>
+     <root>
+apt-cdrom ident
+     </root>
+    </shell>
 
-Obiges funktioniert nur, wenn das CD-ROM Laufwerk in der /etc/fstab
+    <textblock>
+Obiges funktioniert nur, wenn das CD-ROM Laufwerk in der <path>/etc/fstab</path>
 korrekt konfiguriert ist.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Paketverwaltung
+   </heading>
 
+   <section>
+    <heading>
+Update der Liste der verfügbaren Pakete
+    </heading>
 
-
-1 Paketverwaltung
-
-1.1 Update der Liste der verfügbaren Pakete
-
+    <textblock>
 Das Paketsystem benutzt eine eigene Datenbank mit Informationen über
 installierte, nicht installierte und für eine Installation verfügbare
-Pakete. Das Programm apt-get benutzt diese Datenbank, um herauszufinden,
+Pakete. Das Programm <command>apt-get</command> benutzt diese Datenbank, um herauszufinden,
 wie es die vom Benutzer angeforderten Pakete installieren soll und
 welche zusätzlichen Pakete benötigt werden, damit die ausgewählten
 Pakete ordentlich funktionieren.
+    </textblock>
 
-Um diese Liste zu updaten, benutzt man das Kommando apt-get update.
-apt-get sucht dann nach den Paketlisten in den Archiven aus der
-/etc/apt/sources.list. Im Kapitel "Die Datei /etc/apt/sources.list"
+    <textblock>
+Um diese Liste zu updaten, benutzt man das Kommando <command>apt-get update</command>.
+<command>apt-get</command> sucht dann nach den Paketlisten in den Archiven aus der
+<path>/etc/apt/sources.list</path>. Im Kapitel <ref iref="Die Datei /etc/apt/sources.list">Die Datei /etc/apt/sources.list</ref>
 finden Sie weitere Information über diese Datei.
+    </textblock>
 
+    <textblock>
 Es ist eine gute Idee, dieses Kommando regelmäßig auszuführen, um sich
 selbst und sein System auf dem neusten Stand über mögliche Paket- bzw.
 Sicherheitsupdates zu halten.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Installieren von Paketen
+    </heading>
 
-
-
-1.1 Installieren von Paketen
-
+    <textblock>
 Endlich kommt das, worauf Sie alle gewartet haben! Mit der fertigen
-sources.list und der Liste der verfügbaren Pakete auf dem neusten Stand
-ist alles, was Sie zu tun haben apt-get auszuführen, um das gewünschte
+<path>sources.list</path> und der Liste der verfügbaren Pakete auf dem neusten Stand
+ist alles, was Sie zu tun haben <command>apt-get</command> auszuführen, um das gewünschte
 Paket zu installieren. Zum Beispiel:
+    </textblock>
 
-# apt-get install xchat
+    <shell>
+     <root>
+apt-get install xchat
+     </root>
+    </shell>
 
-APT durchsucht seine Datenbank nach der aktuellsten Version dieses
+    <textblock>
+<command>APT</command> durchsucht seine Datenbank nach der aktuellsten Version dieses
 Paketes und holt es aus dem entsprechenden Archiv, welches in der
-sources.list spezifiziert ist. Wenn es eintritt, dass das Paket von einem
-anderen abhängt -- wie es hier der Fall ist -- überprüft APT die
+<path>sources.list</path> spezifiziert ist. Wenn es eintritt, dass das Paket von einem
+anderen abhängt -- wie es hier der Fall ist -- überprüft <command>APT</command> die
 Abhängigkeiten und installiert die benötigten Pakete. Sehen Sie
 folgendes Beispiel:
+    </textblock>
 
-# apt-get install nautilus
+    <shell>
+     <root>
+apt-get install nautilus
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
   The following extra packages will be installed:
@@ -310,34 +555,96 @@ The following NEW packages will be installed:
 0 packages upgraded, 4 newly installed, 0 to remove and 1  not upgraded.
 Need to get 8329kB of archives. After unpacking 17.2MB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-Das Paket nautilus benötigt die genannten Bibliotheken (bonobo
-libmedusa0 libnautilus0), deshalb holt APT sie aus dem Archiv. Übergibt
-man apt-get die Namen der Bibliotheken beim Aufruf mit, fragt es nicht,
+    <textblock>
+Das Paket <command>nautilus</command> benötigt die genannten <ref chapter="bibliotheken">Bibliotheken</ref> (<command>bonobo</command>
+<command>libmedusa0</command> <command>libnautilus0</command>), deshalb holt <command>APT</command> sie aus dem Archiv. Übergibt
+man <command>apt-get</command> die Namen der <ref chapter="bibliotheken">Bibliotheken</ref> beim Aufruf mit, fragt es nicht,
 ob es fortfahren soll, es akzeptiert automatisch, dass die genannten
 Pakete installiert werden sollen.
+    </textblock>
 
-Das bedeutet, dass APT nur um Bestätigung bittet, wenn es Pakete
+    <textblock>
+Das bedeutet, dass <command>APT</command> nur um Bestätigung bittet, wenn es Pakete
 installieren muss, die man nicht auf der Kommandozeile übergeben hat.
+    </textblock>
 
-Die folgenden Optionen von apt-get können hilfreich sein:
+    <textblock>
+Die folgenden Optionen von <command>apt-get</command> können hilfreich sein:
+    </textblock>
 
--h  Dieser Hilfetext
--d  Nur herunterladen - Nicht installieren oder entpacken
--f  Versuche fortzufahren wenn der integrity check fehlschlägt
--s  Nichts wirklich tun. Simulation durchführen.
--y  Beantworte alle Fragen mit Ja anstatt sie zu stellen.
--u  Zeige eine Liste der Pakete die geupgraded werden.
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <td>
+<command>-h</command>
+      </td>
+      <td>
+Dieser Hilfetext
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-d</command>
+      </td>
+      <td>
+Nur herunterladen - Nicht installieren oder entpacken
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-f</command>
+      </td>
+      <td>
+Versuche fortzufahren wenn der integrity check fehlschlägt
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-s</command>
+      </td>
+      <td>
+Nichts wirklich tun. Simulation durchführen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-y</command>
+      </td>
+      <td>
+Beantworte alle Fragen mit Ja anstatt sie zu stellen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-u</command>
+      </td>
+      <td>
+Zeige eine Liste der Pakete die geupgraded werden.
+      </td>
+     </tr>
+    </table>
 
+    <textblock>
 Es können mehrere Pakete in einer Zeile zur Installation ausgewählt
 werden. Pakete, die über das Netzwerk oder Internet heruntergeladen
-wurden, werden im Verzeichnis /var/cache/apt/archives für spätere
+wurden, werden im Verzeichnis <path>/var/cache/apt/archives</path> für spätere
 Installationen gespeichert.
+    </textblock>
 
+    <textblock>
 Ebenfalls kann man Pakete zum Entfernen auf derselben Zeile angeben,
-indem man ein "-" direkt hinter den Paketnamen hängt wie im folgenden:
+indem man ein <strong>-</strong>direkt hinter den Paketnamen hängt wie im folgenden:
+    </textblock>
 
-# apt-get install nautilus gnome-panel-
+    <shell>
+     <root>
+apt-get install nautilus gnome-panel-
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following extra packages will be installed:
@@ -349,62 +656,95 @@ The following NEW packages will be installed:
 0 packages upgraded, 4 newly installed, 4 to remove and 1  not upgraded.
 Need to get 8329kB of archives. After unpacking 2594kB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-Im Abschnitt "Pakete entfernen" finden Sie weitere Details zum Entfernen
+    <textblock>
+Im Abschnitt <ref iref="Pakete entfernen">Pakete entfernen</ref> finden Sie weitere Details zum Entfernen
 von Paketen.
+    </textblock>
 
+    <textblock>
 Wenn Sie ein installiertes Paket irgendwie beschädigt haben oder einfach
 die Dateien eines Paketes mit der aktuellsten verfügbaren Version neu
-installieren möchten, können Sie die Option --reinstall wie im folgenden
+installieren möchten, können Sie die Option <command>--reinstall</command> wie im folgenden
 nutzen:
+    </textblock>
 
-# apt-get --reinstall install gdm
+    <shell>
+     <root>
+apt-get --reinstall install gdm
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 0 packages upgraded, 0 newly installed, 1 reinstalled, 0 to remove and
 1 not upgraded.
 Need to get 0B/182kB of archives. After unpacking 0B will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-Die Version des APT, die zur Erstellung dieser Anleitung benutzt wurde,
-ist Version 0.5.3, die aktuelle Version in Debian "unstable" (sid) zur
+    <textblock>
+Die Version des <command>APT</command>, die zur Erstellung dieser Anleitung benutzt wurde,
+ist Version 0.5.3, die aktuelle Version in Debian <strong>unstable</strong> (sid) zur
 Zeit als sie geschrieben wurde. Wenn diese Version installiert ist, kann
-APT auf Ihren Wunsch noch mehr: Sie können ein Kommando der Form apt-get
-install paket/distribution benutzen, um ein Paket einer anderen
-Distribution zu installieren, oder apt-get install package=version. Zum
+<command>APT</command> auf Ihren Wunsch noch mehr: Sie können ein Kommando der Form <command>apt-get
+install paket/distribution</command> benutzen, um ein Paket einer anderen
+Distribution zu installieren, oder <command>apt-get install package=version</command>. Zum
 Beispiel:
+    </textblock>
 
-# apt-get install nautilus/unstable
+    <shell>
+     <root>
+apt-get install nautilus/unstable
+     </root>
+    </shell>
 
-Dies installiert nautilus aus der Distribution "unstable", auch wenn die
-aktuell laufende Distribution "stable" ist. Mögliche Werte für
-"distribution" sind stable, testing, und unstable.
+    <textblock>
+Dies installiert nautilus aus der Distribution <strong>unstable</strong>, auch wenn die
+aktuell laufende Distribution <strong>stable</strong> ist. Mögliche Werte für
+<strong>distribution</strong> sind <path>stable</path>, <path>testing</path>, und <path>unstable</path>.
+    </textblock>
 
-Meistens ist es besser, die Option -t zu benutzen, um eine Distribution
-zu wählen, was dazu führt, dass apt-get diese Distribution beim Auflösen
+    <textblock>
+Meistens ist es besser, die Option <command>-t</command> zu benutzen, um eine Distribution
+zu wählen, was dazu führt, dass <command>apt-get</command> diese Distribution beim Auflösen
 von Abhängigkeiten bevorzugt.
+    </textblock>
 
-WICHTIG: Die "unstable"-Version von Debian ist die Version, in welcher
+    <textblock>
+<strong>WICHTIG:</strong> Die <strong>unstable</strong>-Version von Debian ist die Version, in welcher
 neue Versionen von Debian-Paketen zuerst erscheinen. Diese Distribution
 sieht alle Änderungen, die an Paketen vorgenommen werden, kleinere und
 größere, welche mehrere Pakete oder das ganze System betreffen können.
 Aus diesem Grund sollte sie nicht von unerfahrenen Benutzern oder
 solchen, die geprüfte Stabilität brauchen, verwendet werden.
+    </textblock>
 
-Die "testing"-Distribution ist ein wenig besser als "unstable" was
+    <textblock>
+Die <strong>testing</strong>-Distribution ist ein wenig besser als <strong>unstable</strong> was
 Stabilität angeht, jedoch sollte für Produktionssysteme die Distribution
-"stable" benutzt werden.
+<strong>stable</strong> benutzt werden.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Pakete entfernen
+    </heading>
 
-
-
-1.1 Pakete entfernen
-
-Wenn ein Paket nicht mehr gebraucht wird, kann es mit APT vom System
-entfernt werden. Geben Sie einfach apt-get remove package ein. Zum
+    <textblock>
+Wenn ein Paket nicht mehr gebraucht wird, kann es mit <command>APT</command> vom System
+entfernt werden. Geben Sie einfach <command>apt-get remove package</command> ein. Zum
 Beispiel:
+    </textblock>
 
-# apt-get remove gnome-panel
+    <shell>
+     <root>
+apt-get remove gnome-panel
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following packages will be REMOVED:
@@ -412,19 +752,29 @@ The following packages will be REMOVED:
 0 packages upgraded, 0 newly installed, 4 to remove and 1  not upgraded.
 Need to get 0B of archives. After unpacking 14.6MB will be freed.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-Wie im obigen Beispiel zu sehen ist, kümmert sich APT ebenfalls um das
+    <textblock>
+Wie im obigen Beispiel zu sehen ist, kümmert sich <command>APT</command> ebenfalls um das
 Entfernen der Pakete, die das Paket, das Sie entfernen wollen,
-benötigen. Es gibt keine Möglichkeit, Pakete mit APT zu entfernen, ohne
+benötigen. Es gibt keine Möglichkeit, Pakete mit <command>APT</command> zu entfernen, ohne
 gleichzeitig die Pakete zu entfernen, die von dem entfernten Paket
 abhängen.
+    </textblock>
 
-Wenn man apt-get ausführt wie oben angegeben, werden die Pakete
+    <textblock>
+Wenn man <command>apt-get</command> ausführt wie oben angegeben, werden die Pakete
 entfernt, aber die Konfigurationsdateien, falls es welche gibt, bleiben
 auf dem System. Für eine komplette Entfernung der Pakete, sehen Sie
 folgendes Beispiel:
+    </textblock>
 
-# apt-get --purge remove gnome-panel
+    <shell>
+     <root>
+apt-get --purge remove gnome-panel
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following packages will be REMOVED:
@@ -432,17 +782,27 @@ The following packages will be REMOVED:
 0 packages upgraded, 0 newly installed, 4 to remove and 1  not upgraded.
 Need to get 0B of archives. After unpacking 14.6MB will be freed.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-Der "*" hinter den Namen der Pakete, die vom zu entfernenden Paket
+    <textblock>
+Der <strong>*</strong> hinter den Namen der Pakete, die vom zu entfernenden Paket
 abhängen, bedeutet, dass deren Konfigurationsdateien ebenso entfernt
 werden.
+    </textblock>
 
-Genau wie bei der Methode install kann man auch bei remove ein Symbol
+    <textblock>
+Genau wie bei der Methode <command>install</command> kann man auch bei <command>remove</command> ein Symbol
 benutzen, um die Wirkung für ein einzelnes Paket umzukehren. Hier fügt
-man einem Paket ein '+' zu und das Paket wird installiert, anstatt
+man einem Paket ein <strong>+</strong> zu und das Paket wird installiert, anstatt
 entfernt zu werden.
+    </textblock>
 
-# apt-get --purge remove gnome-panel nautilus+
+    <shell>
+     <root>
+apt-get --purge remove gnome-panel nautilus+
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following extra packages will be installed:
@@ -454,33 +814,46 @@ The following NEW packages will be installed:
 0 packages upgraded, 4 newly installed, 4 to remove and 1  not upgraded.
 Need to get 8329kB of archives. After unpacking 2594kB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-apt-get listet die Pakete auf, die extra installiert werden (die
+    <textblock>
+<command>apt-get</command> listet die Pakete auf, die extra installiert werden (die
 gebraucht werden, damit das Programm einwandfrei funktionieren kann),
 die entfernt werden und die installiert werden (hier werden die
 extra-Pakete noch einmal mit aufgelistet).
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Upgrade von Paketen
+    </heading>
 
-
-
-1.1 Upgrade von Paketen
-
-Das Aktualisieren von Paketen ist eine tolle Sache mit APT. Es braucht
-dafür nur einen einzigen Befehl: apt-get upgrade. Man kann diesen
+    <textblock>
+Das Aktualisieren von Paketen ist eine tolle Sache mit <command>APT</command>. Es braucht
+dafür nur einen einzigen Befehl: <command>apt-get upgrade</command>. Man kann diesen
 benutzen, um Pakete aus der gleichen Distribution zu aktualisieren, oder
-aus einer neuen Distribution, obwohl für letzteres apt-get dist-upgrade
-empfehlenswerter ist; siehe "Upgrade einer Debian-Version" für weitere
+aus einer neuen Distribution, obwohl für letzteres <command>apt-get dist-upgrade</command>
+empfehlenswerter ist; siehe <ref iref="Upgrade einer Debian-Version">Upgrade einer Debian-Version</ref> für weitere
 Einzelheiten.
+    </textblock>
 
-Es ist sinnvoll, diesen Befehl mit der Option -u auszuführen. Diese
-Option lässt APT die komplette Liste der Pakete anzeigen, die
+    <textblock>
+Es ist sinnvoll, diesen Befehl mit der Option <command>-u</command> auszuführen. Diese
+Option lässt <command>APT</command> die komplette Liste der Pakete anzeigen, die
 aktualisiert werden sollen. Ohne diese Option aktualisiert man quasi
-blind. APT lädt die aktuellsten Versionen aller Pakete herunter und
+blind. <command>APT</command> lädt die aktuellsten Versionen aller Pakete herunter und
 installiert sie in der richtigen Reihenfolge. Es ist wichtig, dass vor
-jedem Aktualisieren der Pakete apt-get update ausgeführt wird. Siehe
-Abschnitt "Update der Liste der verfügbaren Pakete". Zum Beispiel:
+jedem Aktualisieren der Pakete <command>apt-get update</command> ausgeführt wird. Siehe
+Abschnitt <ref iref="Update der Liste der verfügbaren Pakete">Update der Liste der verfügbaren Pakete</ref>. Zum Beispiel:
+    </textblock>
 
-# apt-get -u upgrade
+    <shell>
+     <root>
+apt-get -u upgrade
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following packages have been kept back
@@ -495,52 +868,73 @@ libesd0-dev
 29 packages upgraded, 0 newly installed, 0 to remove and 3 not upgraded.
 Need to get 5055B/5055kB of archives. After unpacking 1161kB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
+    <textblock>
 Das Ganze ist extrem einfach. Die ersten paar Zeilen sagen, dass einige
-Pakete zurückgehalten werden ("have been kept back"). Das bedeutet, dass
+Pakete zurückgehalten werden (<strong>have been kept back</strong>). Das bedeutet, dass
 es neuere Versionen dieser Pakete gibt, die aus irgendeinem Grund nicht
 installiert werden. Mögliche Gründe sind unerfüllbare Abhängigkeiten
 (z.B. wenn ein Paket, von dem das neue Paket abhängt, nicht im Archiv
 verfügbar ist) oder neue Abhängigkeiten (das Paket hängt nun von neuen
 Paketen ab).
+    </textblock>
 
-Es gibt keine "saubere" Lösung für das erste Problem. Für den zweiten
-Fall kann man apt-get install für das spezielle Paket ausführen, das
+    <textblock>
+Es gibt keine <strong>saubere</strong> Lösung für das erste Problem. Für den zweiten
+Fall kann man <command>apt-get install</command> für das spezielle Paket ausführen, das
 zurückgehalten wurde, da dann auch die Abhängigkeiten aufgelöst werden.
-Eine noch sauberere Lösung ist es, dist-upgrade zu benutzen. Siehe
-Abschnitt "Upgrade einer Debian-Version".
+Eine noch sauberere Lösung ist es, <command>dist-upgrade</command> zu benutzen. Siehe
+Abschnitt <ref iref="Upgrade einer Debian-Version">Upgrade einer Debian-Version</ref>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Upgrade einer Debian-Version
+    </heading>
 
-
-
-1.1 Upgrade einer Debian-Version
-
+    <textblock>
 Diese Funktion erlaubt es, ein ganzes Debian-System entweder über das
 Internet oder von einer neuen CD (die sie kaufen oder aus dem Internet
 herunterladen können) auf einmal zu aktualisieren.
+    </textblock>
 
+    <textblock>
 Ausserdem ist es sinnvoll, wenn an den Abhängigkeiten zwischen den
-Paketen Änderungen vorgenommen wurden. Mit apt-get upgrade werden solche
+Paketen Änderungen vorgenommen wurden. Mit <command>apt-get upgrade</command> werden solche
 Pakete nicht installiert (sie werden auf dem derzeitigen Stand gehalten
-kept back).
+<strong>kept back</strong>).
+    </textblock>
 
+    <textblock>
 Wenn auf Ihrem System z.B. Revision 0 der stabilen Debian-Version läuft
-und Sie sich Revision 3 auf CD kaufen, können Sie APT benutzen, um ein
+und Sie sich Revision 3 auf CD kaufen, können Sie <command>APT</command> benutzen, um ein
 Upgrade auf die neue Version von CD durchzuführen. Dafür benutzen Sie
-apt-cdrom (siehe Abschnitt "Hinzufügen einer CD-ROM in die
-sources.list"), um die CD zu ihrer /etc/apt/sources.list hinzuzufügen
-und führen Sie apt-get dist-upgrade aus.
+apt-cdrom (siehe Abschnitt <ref iref="Hinzufügen einer CD-ROM in die sources.list">Hinzufügen einer CD-ROM in die
+sources.list</ref>), um die CD zu ihrer <path>/etc/apt/sources.list</path> hinzuzufügen
+und führen Sie <command>apt-get dist-upgrade</command> aus.
+    </textblock>
 
-Es ist wichtig zu wissen, dass APT immer nach der aktuellsten Version
-eines Pakets sucht. Wenn also Ihre /etc/apt/sources.list auf ein Archiv
+    <textblock>
+Es ist wichtig zu wissen, dass <command>APT</command> immer nach der aktuellsten Version
+eines Pakets sucht. Wenn also Ihre <path>/etc/apt/sources.list</path> auf ein Archiv
 zeigt, das eine neuere Version eines Pakets enthält als sich auf der CD
-befindet, lädt APT das Paket aus diesem herunter.
+befindet, lädt <command>APT</command> das Paket aus diesem herunter.
+    </textblock>
 
-In dem Beispiel aus "Upgrade von Paketen" sehen wir, dass manche Pakete
-nicht aktualisiert wurden (kept back). Wir werden dieses Problem nun mit
-der Funktion dist-upgrade lösen:
+    <textblock>
+In dem Beispiel aus <ref iref="Upgrade von Paketen">Upgrade von Paketen</ref> sehen wir, dass manche Pakete
+nicht aktualisiert wurden (<strong>kept back</strong>). Wir werden dieses Problem nun mit
+der Funktion <command>dist-upgrade</command> lösen:
+    </textblock>
 
-# apt-get -u dist-upgrade
+    <shell>
+     <root>
+apt-get -u dist-upgrade
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 Calculating Upgrade... Done
@@ -559,14 +953,22 @@ ftp gcc
 31 packages upgraded, 10 newly installed, 0 to remove and 1 not upgraded.
 Need to get 0B/7098kB of archives. After unpacking 3118kB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
+    <textblock>
 Hier ist zu bemerken, dass die Pakete aktualisiert werden, aber neue
 Pakete (neue Abhängigkeiten der aktualisierten Pakete) zusätzlich
-installiert werden. Weiterhin wird lilo immer noch nicht aktualisiert,
+installiert werden. Weiterhin wird <command>lilo</command> immer noch nicht aktualisiert,
 es gibt möglicherweise schwerwiegendere Probleme mit diesem Paket. Wir
 können das prüfen, in dem wir folgendes ausführen:
+    </textblock>
 
-# apt-get -u install lilo
+    <shell>
+     <root>
+apt-get -u install lilo
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following extra packages will be installed:
@@ -582,15 +984,25 @@ The following packages will be upgraded
 1 packages upgraded, 9 newly installed, 1 to remove and 31 not upgraded.
 Need to get 225kB/1179kB of archives. After unpacking 2659kB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-Hier erfahren wir, dass das neue lilo einen Konflikt mit dem Paket
-debconf-tiny hat, was bedeutet, dass wir es nicht installieren (oder
-aktualisieren) können, ohne debconf-tiny zu entfernen.
+    <textblock>
+Hier erfahren wir, dass das neue <command>lilo</command> einen Konflikt mit dem Paket
+<command>debconf-tiny</command> hat, was bedeutet, dass wir es nicht installieren (oder
+aktualisieren) können, ohne <command>debconf-tiny</command> zu entfernen.
+    </textblock>
 
+    <textblock>
 Um herauszufinden, wovon ein Paket zurückgehalten oder entfernt wird,
 können Sie folgendes tun:
+    </textblock>
 
-# apt-get -o Debug::pkgProblemResolver=yes dist-upgrade
+    <shell>
+     <root>
+apt-get -o Debug::pkgProblemResolver=yes dist-upgrade
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 Calculating Upgrade... Starting
@@ -609,95 +1021,157 @@ Done
 The following packages have been kept back
   gs python1.5-dev
 0 packages upgraded, 0 newly installed, 0 to remove and 2  not upgraded.
+     </output>
+    </shell>
 
+    <textblock>
 Auf diesem Wege ist es einfach festzustellen, dass das Packet
-python1.5-dev wegen einer ungelösten Abhängigkeit zu python1.5 nicht
+<command>python1.5-dev</command> wegen einer ungelösten Abhängigkeit zu <command>python1.5</command> nicht
 installiert werden kann.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Ungenutzte Pakete entfernen: apt-get clean and autoclean
+    </heading>
 
+    <textblock>
+Wenn ein Paket installiert werden soll, bezieht <command>APT</command> von den Quellen, die
+in der <path>/etc/apt/sources.list</path> aufgelistet sind, die nötigen Dateien, legt
+sie in ein lokales Archiv (<path>/var/cache/apt/archives/</path>) und fährt mit der
+Installation fort. (sehen Sie <ref iref="Installieren von Paketen">Installieren von Paketen</ref>).
+    </textblock>
 
-
-1.1 Ungenutzte Pakete entfernen: apt-get clean and autoclean
-
-Wenn ein Paket installiert werden soll, bezieht APT von den Quellen, die
-in der /etc/apt/sources.list aufgelistet sind, die nötigen Dateien, legt
-sie in ein lokales Archiv (/var/cache/apt/archives/) und fährt mit der
-Installation fort. (sehen Sie "Installieren von Paketen").
-
+    <textblock>
 Nach und nach kann dieses lokale Archiv immer größer werden und eine
-Menge Platz auf der Festplatte belegen. Auch für diesen Fall bietet APT
-Werkzeuge an, um sein lokales Archiv zu warten: apt-gets clean und
-autoclean Methoden.
+Menge Platz auf der Festplatte belegen. Auch für diesen Fall bietet <command>APT</command>
+Werkzeuge an, um sein lokales Archiv zu warten: apt-gets <command>clean</command> und
+<command>autoclean</command> Methoden.
+    </textblock>
 
-apt-get clean entfernt alles bis auf Lock-Dateien aus
-/var/cache/apt/archives/ und /var/cache/apt/archives/partial/. In der
-Folge muss APT ein Paket, das Sie erneut installieren wollen auch erneut
+    <textblock>
+<command>apt-get clean</command> entfernt alles bis auf Lock-Dateien aus
+<path>/var/cache/apt/archives/</path> und <path>/var/cache/apt/archives/partial/</path>. In der
+Folge muss <command>APT</command> ein Paket, das Sie erneut installieren wollen auch erneut
 herunterladen.
+    </textblock>
 
-apt-get autoclean entfernt nur Pakete, die nicht mehr heruntergeladen
+    <textblock>
+<command>apt-get autoclean</command> entfernt nur Pakete, die nicht mehr heruntergeladen
 werden können.
+    </textblock>
 
-Das folgende Beispiel sollte zeigen, wie apt-get autoclean arbeitet:
+    <textblock>
+Das folgende Beispiel sollte zeigen, wie <command>apt-get autoclean</command> arbeitet:
+    </textblock>
 
-# ls /var/cache/apt/archives/logrotate* /var/cache/apt/archives/gpm*
+    <shell>
+     <root>
+ls /var/cache/apt/archives/logrotate* /var/cache/apt/archives/gpm*
+     </root>
+     <output>
 logrotate_3.5.9-7_i386.deb
 logrotate_3.5.9-8_i386.deb
 gpm_1.19.6-11_i386.deb
+     </output>
+    </shell>
 
-In /var/cache/apt/archives liegen zwei Versionen des Pakets logrotate
-und eine Version des Pakets gpm.
+    <textblock>
+In <path>/var/cache/apt/archives</path> liegen zwei Versionen des Pakets <command>logrotate</command>
+und eine Version des Pakets <command>gpm</command>.
+    </textblock>
 
-# apt-show-versions -p logrotate
+    <shell>
+     <root>
+apt-show-versions -p logrotate
+     </root>
+     <output>
 logrotate/stable uptodate 3.5.9-8
-# apt-show-versions -p gpm
+     </output>
+     <root>
+apt-show-versions -p gpm
+     </root>
+     <output>
 gpm/stable upgradeable from 1.19.6-11 to 1.19.6-12
+     </output>
+    </shell>
 
-apt-show-versions zeigt, dass logrotate_3.5.9-8_i386.deb
-die aktuelle Version von logrotate bereitstellt, daher wird
-logrotate_3.5.9-7_i386.deb nicht mehr benötigt. Ebenso wird
-gpm_1.19.6-11_i386.deb nicht mehr benötigt, da eine aktuellere Version
+    <textblock>
+<command>apt-show-versions</command> zeigt, dass <path>logrotate_3.5.9-8_i386.deb</path>
+die aktuelle Version von <command>logrotate</command> bereitstellt, daher wird
+<path>logrotate_3.5.9-7_i386.deb</path> nicht mehr benötigt. Ebenso wird
+<path>gpm_1.19.6-11_i386.deb</path> nicht mehr benötigt, da eine aktuellere Version
 von den Debian-Archiven heruntergeladen werden kann.
+    </textblock>
 
-# apt-get autoclean
+    <shell>
+     <root>
+apt-get autoclean
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 Del gpm 1.19.6-11 [145kB]
 Del logrotate 3.5.9-7 [26.5kB]
+     </output>
+    </shell>
 
-apt-get autoclean entfernt also nur die alten Pakete. Für weitere
-Informationen über apt-show-versions sehen sie "Upgrade von Paketen
-spezieller Debian-Versionen".
+    <textblock>
+<command>apt-get autoclean</command> entfernt also nur die alten Pakete. Für weitere
+Informationen über <command>apt-show-versions</command> sehen Sie <ref iref="Upgrade von Paketen spezieller Debian-Versionen">Upgrade von Paketen
+spezieller Debian-Versionen</ref>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+APT unter dselect verwenden...
+    </heading>
 
-
-
-1.1 APT unter dselect verwenden...
-
-dselect ist ein Programm, das Debian-Benutzern hilft, zu installierende
+    <textblock>
+<command>dselect</command> ist ein Programm, das Debian-Benutzern hilft, zu installierende
 Pakete auszuwählen. Viele halten es für zu kompliziert und vielmehr
 langweilig, aber mit ein wenig Übung kann man durchaus Gefallen an
 seiner konsolen-basierten ncurses-Oberfläche finden.
+    </textblock>
 
-Eine Stärke von dselect ist es, dass es mit den Möglichkeiten umgehen
+    <textblock>
+Eine Stärke von <command>dselect</command> ist es, dass es mit den Möglichkeiten umgehen
 kann, die Debian-Pakete haben, um andere Pakete zu empfehlen
-("suggesting") oder vorzustellen ("recommending"). Um es zu benutzen,
-rufen Sie dselect als root auf. Wählen Sie "apt" als Zugriffsmethode.
+(<strong>suggesting</strong>) oder vorzustellen (<strong>recommending</strong>). Um es zu benutzen,
+rufen Sie <command>dselect</command> als <strong>root</strong> auf. Wählen Sie <strong>apt</strong> als Zugriffsmethode.
 Das ist zwar nicht dringend notwendig, aber wenn Sie keine CD-ROM
 benutzen und Pakete aus dem Internet herunterladen möchten, ist es der
 beste Weg.
+    </textblock>
 
-Um ein besseres Verständnis über die Benutzung von dselect zu erhalten,
+    <textblock>
+Um ein besseres Verständnis über die Benutzung von <command>dselect</command> zu erhalten,
 lesen sie die Dokumentation auf der Debian-Homepage
-http://www.debian.org/doc/ddp.
+<ref lang="de" url="http://www.debian.org/doc/ddp">http://www.debian.org/doc/ddp</ref>.
+    </textblock>
 
-Nachdem Sie Ihre Auswahl mit dselect getroffen haben, benutzen Sie
+    <textblock>
+Nachdem Sie Ihre Auswahl mit <command>dselect</command> getroffen haben, benutzen Sie
 folgendes Kommando
+    </textblock>
 
-# apt-get -u dselect-upgrade
+    <shell>
+     <root>
+apt-get -u dselect-upgrade
+     </root>
+    </shell>
 
+    <textblock>
 wie im folgenden Beispiel:
+    </textblock>
 
-# apt-get -u dselect-upgrade
+    <shell>
+     <root>
+apt-get -u dselect-upgrade
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following packages will be REMOVED:
@@ -714,10 +1188,18 @@ The following packages will be upgraded
 1 packages upgraded, 30 newly installed, 1 to remove and 0  not upgraded.
 Need to get 7140kB of archives. After unpacking 16.3MB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
-Im Vergleich: apt-get dist-upgrade auf demselben System:
+    <textblock>
+Im Vergleich: <command>apt-get dist-upgrade</command> auf demselben System:
+    </textblock>
 
-# apt-get -u dist-upgrade
+    <shell>
+     <root>
+apt-get -u dist-upgrade
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 Calculating Upgrade... Done
@@ -726,93 +1208,152 @@ The following packages will be upgraded
 1 packages upgraded, 0 newly installed, 0 to remove and 0  not upgraded.
 Need to get 421kB of archives. After unpacking 25.6kB will be freed.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
+    <textblock>
 Viele der Pakete im oberen Beispiel werden installiert, weil andere
-Pakete sie "empfehlen ("suggest" or "recommend"). Andere werden aufgrund
+Pakete sie <strong>empfehlen</strong> (<strong>suggest</strong> or <strong>recommend</strong>). Andere werden aufgrund
 unserer Auswahl, die wir beim Navigieren durch die Paketlisten von
-dselect getroffen haben, installiert oder entfernt (Im Falle von
-lbxproxy z. B.). Dselect kann in Verbindung mit APT ein nützliches
+<command>dselect</command> getroffen haben, installiert oder entfernt (Im Falle von
+<command>lbxproxy</command> z. B.). <command>dselect</command> kann in Verbindung mit <command>APT</command> ein nützliches
 Werkzeug sein.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Wartung eines "gemischten" Systems
+    </heading>
 
-
-
-1.1 Wartung eines "gemischten" Systems
-
-Viele benutzen die "testing"-Distribution, da sie stabiler ist als
-"unstable" und aktueller als "stable" ist. Benutzer, die aktuelle
+    <textblock>
+Viele benutzen die <strong>testing</strong>-Distribution, da sie stabiler ist als
+<strong>unstable</strong> und aktueller als <strong>stable</strong> ist. Benutzer, die aktuelle
 Versionen von Paketen wollen, sich aber nicht trauen, ihr ganzes System
-auf "unstable" umzustellen haben die Möglichkeit "testing" und
-"unstable" zu mischen. Auf der anderen Seite möchten konservativere
-Benutzer vielleicht "stable" und "testing" mischen.
+auf <strong>unstable</strong> umzustellen haben die Möglichkeit <strong>testing</strong> und
+<strong>unstable</strong> zu mischen. Auf der anderen Seite möchten konservativere
+Benutzer vielleicht <strong>stable</strong> und <strong>testing</strong> mischen.
+    </textblock>
 
-Für diesen Zweck muss die folgende Zeile in die /etc/apt/apt.conf
+    <textblock>
+Für diesen Zweck muss die folgende Zeile in die <command>/etc/apt/apt.conf</command>
 eingefügt werden:
+    </textblock>
 
+    <file>
+     <title>
+/etc/apt/apt.conf
+     </title>
+     <content>
 APT::Default-Release "testing";
+     </content>
+    </file>
 
-Um nun Pakete aus unstable zu installieren, muss die Option -t benutzt
+    <textblock>
+Um nun Pakete aus unstable zu installieren, muss die Option <command>-t</command> benutzt
 werden:
+    </textblock>
 
-# apt-get -t unstable install Paketname
+    <shell>
+     <root>
+apt-get -t unstable install Paketname
+     </root>
+    </shell>
 
+    <textblock>
 Vergessen Sie aber nicht, dass sie, um ein Paket aus einer anderen
 Debian Version zu installieren, eine Quellzeile in die
-/etc/apt/sources.list einfügen müssen. In unserem Beispiel brauchen wir
-Quellzeilen für die "unstable"-Distribution neben denen für "testing".
+<path>/etc/apt/sources.list</path> einfügen müssen. In unserem Beispiel brauchen wir
+Quellzeilen für die <strong>unstable</strong>-Distribution neben denen für <strong>testing</strong>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Upgrade von Paketen spezieller Debian-Versionen
+    </heading>
 
-
-
-1.1 Upgrade von Paketen spezieller Debian-Versionen
-
-apt-show-versions bietet einen sicheren Weg für Benutzer gemischter
+    <textblock>
+<command>apt-show-versions</command> bietet einen sicheren Weg für Benutzer gemischter
 Systeme, um ihre Systeme zu aktualisieren, ohne mehr aus der weniger
 stabilen Distribution zu installieren als sie im Sinn haben. Zum
-Beispiel ist es möglich, nur die "unstable"-Pakete zu aktualisieren, in
+Beispiel ist es möglich, nur die <strong>unstable</strong>-Pakete zu aktualisieren, in
 dem man folgendes ausführt:
+    </textblock>
 
-# apt-get install `apt-show-versions -u -b | grep unstable`
+    <shell>
+     <root>
+apt-get install `apt-show-versions -u -b | grep unstable`
+     </root>
+    </shell>
+   </section>
 
+   <section>
+    <heading>
+Wie man bestimmte Versionen eines Paketes behält (komplex)
+    </heading>
 
-
-
-1.1 Wie man bestimmte Versionen eines Paketes behält (komplex)
-
+    <textblock>
 Manchmal gibt es Gründe, etwas in einem Paket zu verändern, und es fehlt
 die Zeit oder die Lust, diese Dinge auf neue Versionen des Paketes zu
 übertragen. Vielleicht haben Sie auch gerade ihre Debian-Version auf 3.0
 aktualisiert, aber möchten trotzdem ein Paket aus Version 2.2 behalten.
-Es ist möglich, die installierte Version zu markieren (pin), so dass sie
+Es ist möglich, die installierte Version zu markieren (<strong>pin</strong>), so dass sie
 nicht aktualisiert wird.
+    </textblock>
 
+    <textblock>
 Diese Möglichkeit einzusetzen ist einfach. Editieren Sie einfach die
-Datei /etc/apt/preferences.
+Datei <path>/etc/apt/preferences</path>.
+    </textblock>
 
+    <textblock>
 Das Format ist trivial:
+    </textblock>
 
-Package: <Paket>
-Pin: <Pin-Definition>
-Pin-Priority: <Priorität des Pins>
+    <file>
+     <title>
+/etc/apt/preferences
+     </title>
+     <content>
+Package: &lt;Paket&gt;
+Pin: &lt;Pin-Definition&gt;
+Pin-Priority: &lt;Priorität des Pins&gt;
+     </content>
+    </file>
 
-Um zum Beispiel das Paket "sylpheed" in Version 0.4.99 zu behalten,
+    <textblock>
+Um zum Beispiel das Paket <command>sylpheed</command> in Version <strong>0.4.99</strong> zu behalten,
 fügen wir folgendes hinzu:
+    </textblock>
 
+    <file>
+     <title>
+ /etc/apt/preferences
+     </title>
+     <content>
 Package: sylpheed
 Pin: version 0.4.99*
+     </content>
+    </file>
 
-Beackten Sie das * (Sternchen/Asterisk). Es funktioniert als
-Platzhalter; das bedeutet, dass dieser "Pin" für alle Versionen, die mit
-0.4.99 beginnen, gültig sein soll. Das ist nötig, da Pakete in Debian
-eine Nummer für die "Debian-Revision" enthalten und ich nicht verhindern
+    <textblock>
+Beachten Sie das <strong>*</strong> (Sternchen/Asterisk). Es funktioniert als
+Platzhalter; das bedeutet, dass dieser <strong>Pin</strong> für alle Versionen, die mit
+<strong>0.4.99</strong> beginnen, gültig sein soll. Das ist nötig, da Pakete in Debian
+eine Nummer für die <strong>Debian-Revision</strong> enthalten und ich nicht verhindern
 möchte, dass diese Revisionen installiert werden. Folglich werden die
-Versionen 0.4.99-1 und 0.4.99-10 installiert, sobald sie verfügbar sind.
+Versionen <strong>0.4.99-1</strong> und <strong>0.4.99-10</strong> installiert, sobald sie verfügbar sind.
 Beachten Sie, dass Sie das vermutlich nicht möchten, wenn Sie das Paket
 modifiziert haben, da diese Änderungen dann verloren gehen.
+    </textblock>
 
+    <textblock>
 Das Feld Pin-Priority ist optional; wenn nicht anders spezifiziert, hat
-der "Pin" die Priorität 989.
+der <strong>Pin</strong> die Priorität 989.
+    </textblock>
 
+    <textblock>
 Lassen Sie uns einen Blick darauf werfen, wie die Pin-Priorität
 funktioniert. Eine niedrigere Priorität als Null bewirkt, dass das Paket
 nie installiert wird. Prioritäten von 0 bis 100 bezeichnen Pakete, die
@@ -821,7 +1362,9 @@ werden in der Auswahl verfügbarer Versionen nicht berücksichtigt. Die
 Priorität 100 bezeichnet ein installiertes Paket. Damit eine
 installierte Version von einer anderen ersetzt wird, muss die Priorität
 über 100 liegen.
+    </textblock>
 
+    <textblock>
 Prioritäten über 100 sagen aus, dass ein Paket installiert werden soll.
 Normalerweise wird ein installiertes Paket nur durch neuere Versionen
 ersetzt. Alle Prioritäten zwischen 100 und 1000 (inklusive) führen zu
@@ -831,55 +1374,84 @@ eine niedrigere Version ersetzt. Wenn ich also zum Beispiel sylpheed
 Priorität 999 definiert habe, wird Version 0.4.99 nicht installiert
 werden, um den Pin zu erfüllen. Um Pakete deaktualisieren zu können, um
 einen Pin zu erfüllen, braucht der Pin eine Priorität von über 1000.
+    </textblock>
 
+    <textblock>
 Ein Pin kann für die Version, das Release oder die Herkunft (origin)
 definiert werden.
+    </textblock>
 
+    <textblock>
 Für einen Pin auf die Version, wie oben beschrieben, kann man sowohl
 Versionsnummern als auch Platzhalter (Sternchen) verwenden. Letzteres
 spezifiziert mehrere Versionen in einem Pin.
+    </textblock>
 
-Die Option Release benutzt die Release-Datei aus den APT-Archiven oder
+    <textblock>
+Die Option Release benutzt die Release-Datei aus den <command>APT</command>-Archiven oder
 von den CDs. Die Brauchbarkeit dieser Version verfällt, wenn Sie
-APT-Archive benutzen, die diese Datei nicht zur Verfügung stellen. Sie
+<command>APT</command>-Archive benutzen, die diese Datei nicht zur Verfügung stellen. Sie
 können den Inhalt der Release-Dateien, die Sie haben in
-/var/lib/apt/lists/ nachlesen. Die Parameter für ein Release sind: a
+<path>/var/lib/apt/lists/</path> nachlesen. Die Parameter für ein Release sind: a
 (Archiv(Archive)), c (Sektion(Component)), v (Version(Version)), o
 (Herkunft(Origin)) und l (Label(Label)).
+    </textblock>
 
+    <textblock>
 Beispiel:
+    </textblock>
 
+    <file>
+     <title>
+ /etc/apt/preferences
+     </title>
+     <content>
 Package: *
 Pin: release v=2.2*,a=stable,c=main,o=Debian,l=Debian
 Pin-Priority: 1001
+     </content>
+    </file>
 
+    <textblock>
 In diesem Beispiel wählen wir die Debian-Version 2.2* (was 2.2r2, 2.2r3
-sein kann -- r* bezeichnet so genannte "point releases", welche
+sein kann -- <strong>r*</strong> bezeichnet so genannte <strong>point releases</strong>, welche
 normalerweise Sicherheitsupdates und andere extrem wichtige Updates
 enthalten), das stable Archiv, die Sektion main (im Gegensatz zu contrib
 oder non-free) und Herkunft und Label Debian. Herkunft (o=) bezeichnet,
 wer die Release-Datei erstellt hat, das Label (l=) definiert den Namen
 der Debian-Distribution: Debian für Debian selbst und Progeny für
 Progeny Linux zum Beispiel. Ein Beispiel einer Release-Datei:
+    </textblock>
 
-$
-cat
-/var/lib/apt/lists/ftp.debian.org.br_debian_dists_potato_main_binary-
-i386_Release
+    <shell>
+     <root>
+cat /var/lib/apt/lists/ftp.debian.org.br_debian_dists_potato_main_binary-i386_Release
+     </root>
+     <output>
 Archive: stable
 Version: 2.2r3
 Component: main
 Origin: Debian
 Label: Debian
 Architecture: i386
+     </output>
+    </shell>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Sehr nützliche Helfer
+   </heading>
 
+   <section>
+    <heading>
+Installieren selbstkompilierter Pakete: equivs
+    </heading>
 
-
-1 Sehr nützliche Helfer
-
-1.1 Installieren selbstkompilierter Pakete: equivs
-
+    <textblock>
 Manchmal will man spezielle Versionen eines Programms benutzen, die nur
 als Quellcode verfügbar sind und nicht als Debian-Paket. Hier kann es
 allerdings Probleme mit dem Paket-System geben. Angenommen Sie wollen
@@ -887,75 +1459,107 @@ eine neue Version ihres Mailservers kompilieren und alles klappt, aber
 viele Pakete in Debian hängen von einem MTA (Mail Transfer Agent) ab. Da
 etwas installiert wurde, was Sie selbst kompiliert haben, weiss das
 Paketsystem darüber nicht Bescheid.
+    </textblock>
 
-Hier kommt das equivs ins Spiel. Um es zu benutzen, installieren Sie das
+    <textblock>
+Hier kommt das <command>equivs</command> ins Spiel. Um es zu benutzen, installieren Sie das
 Paket mit diesem Namen. Es erstellt ein leeres Paket, das die
 Abhängigkeiten erfüllt und dem Paketsystem mitteilt, so dass es keine
 Probleme mit Abhängigkeiten gibt.
+    </textblock>
 
+    <textblock>
 Bevor wir näher darauf eingehen, ist es wichtig, Sie darauf hinzuweisen,
 dass es sicherere Möglichkeiten gibt, Programme, für die in Debian schon
 Pakete existieren, mit anderen Optionen zu kompilieren und man equivs
 nicht benutzen sollte, um Abhängigkeiten zu entfernen, ohne genau zu
-wissen, was man tut. Siehe "Das Arbeiten mit Quellpaketen" für nähere
+wissen, was man tut. Siehe <ref iref="Das Arbeiten mit Quellpaketen">Das Arbeiten mit Quellpaketen</ref> für nähere
 Informationen.
+    </textblock>
 
+    <textblock>
 Lassen Sie uns mit dem MTA-Beispiel fortfahren. Sie haben also gerade
-ihren frisch kompilierten postfix installiert und wollen nun mutt (ein
-Mailprogramm) installieren. Plötzlich stellen Sie fest, dass mutt einen
+ihren frisch kompilierten <command>postfix</command> installiert und wollen nun mutt (ein
+Mailprogramm) installieren. Plötzlich stellen Sie fest, dass <ref chapter="mutt">mutt</ref> einen
 anderen MTA installieren möchte, obwohl Sie schon ihren
 selbstkompilierten MTA laufen haben.
+    </textblock>
 
-Wechseln Sie in irgendein Verzeichnis (z. B. /tmp), und führen Sie
+    <textblock>
+Wechseln Sie in irgendein Verzeichnis (z. B. <path>/tmp</path>), und führen Sie
 folgendes aus:
+    </textblock>
 
-# equivs-control name
+    <shell>
+     <root>
+equivs-control name
+     </root>
+    </shell>
 
-Ersetzen Sie name durch den Namen der Kontrolldatei, die Sie erstellen
+    <textblock>
+Ersetzen Sie <strong>name</strong> durch den Namen der Kontrolldatei, die Sie erstellen
 wollen. Die Datei wird wie folgt erstellt:
+    </textblock>
 
+    <file>
+     <content>
 Section: misc
 Priority: optional
 Standards-Version: 3.0.1
 
-Package: <Paketname; wenn nicht angegeben: equivs-dummy>
-Version: <Versionsnummer; wenn nicht angegeben: 1.0>
-Maintainer: <Ihr Name mit Emailadresse; wenn nicht angegeben:
-Benutzername >
-Pre-Depends: <Pakete>
-Depends: <Pakete>
-Recommends: <Pakete>
-Suggests: <Pakete>
-Provides: <(virtuelles) Paket>
+Package: &lt;Paketname; wenn nicht angegeben: equivs-dummy&gt;
+Version: &lt;Versionsnummer; wenn nicht angegeben: 1.0&gt;
+Maintainer: &lt;Ihr Name mit Emailadresse; wenn nicht angegeben: Benutzername&gt;
+Pre-Depends: &lt;Pakete&gt;
+Depends: &lt;Pakete&gt;
+Recommends: &lt;Pakete&gt;
+Suggests: &lt;Pakete&gt;
+Provides: &lt;(virtuelles) Paket&gt;
 Architecture: all
-Copyright: <copyright Datei; normalerweise GPL2>
-Changelog: <changelog file; normalerweise ein generisches Changelog>
-Readme: <README.Debian file; wenn nicht angegeben, ebenfalls ein generisches>
-Extra-Files: <Zusätzliche Dateien für das doc-Verzeichnis, kommasepariert>
-Description: <kurze Beschreibung; Standard ist "some wise words">
+Copyright: &lt;copyright Datei; normalerweise GPL2&gt;
+Changelog: &lt;changelog file; normalerweise ein generisches Changelog&gt;
+Readme: &lt;README.Debian file; wenn nicht angegeben, ebenfalls ein generisches&gt;
+Extra-Files: &lt;Zusätzliche Dateien für das doc-Verzeichnis, kommasepariert&gt;
+Description: &lt;kurze Beschreibung; Standard ist "some wise words"&gt;
  Lange Beschreibung und Info
  .
  Zweiter Paragraph
+     </content>
+    </file>
 
+    <textblock>
 Nun muss das so angepasst werden, dass es tut, was wir wollen. Schauen
 Sie sich die Felder und ihre Beschreibungen an, es ist nicht nötig,
 jedes einzelne hier zu erklären, lassen Sie uns das Nötigste tun:
+    </textblock>
 
+    <file>
+     <content>
 Section: misc
 Priority: optional
 Standards-Version: 3.0.1
 
 Package: mta-local
 Provides: mail-transport-agent
+     </content>
+    </file>
 
-Das war es schon. mutt hängt von mail-transport-agent ab, was ein
+    <textblock>
+Das war es schon. <ref chapter="mutt">mutt</ref> hängt von mail-transport-agent ab, was ein
 virtuelles Paket ist, das alle MTAs liefern. Ich hätte das Paket einfach
 mail-transport-agent nennen können, aber ich bevorzugte das Schema für
-virtuelle Pakete, welches das Feld "Provides" benutzt.
+virtuelle Pakete, welches das Feld <strong>Provides</strong> benutzt.
+    </textblock>
 
+    <textblock>
 Nun muss das Paket nur noch gebaut werden:
+    </textblock>
 
-# equivs-build name
+    <shell>
+     <root>
+equivs-build name
+     </root>
+     <output>
 dh_testdir
 touch build-stamp
 dh_testdir
@@ -977,85 +1581,125 @@ dpkg-deb: building package `name' in `../name_1.0_all.deb'.
 
 The package has been created.
 Attention, the package has been created in the current directory,
+     </output>
+    </shell>
 
+    <textblock>
 Und nun installieren Sie das erzeugte .deb.
+    </textblock>
 
+    <textblock>
 Wie man unschwer erkennen kann, gibt es verschiedene Anwendungen für
-equivs. Man könnte sogar ein Favoriten-Paket erstellen, was von den
+<command>equivs</command>. Man könnte sogar ein Favoriten-Paket erstellen, was von den
 Paketen abhängt, die Sie normalerweise installieren. Lassen Sie Ihren
-Vorstellungen einfach freien Lauf, aber seien Sie vorsichtig.
+Vorstellungen einfach freien Lauf, aber seien Sie <strong>vorsichtig</strong>.
+    </textblock>
 
-Es ist wichtig zu erwähnen, dass es in /usr/share/doc/equivs/examples
+    <textblock>
+Es ist wichtig zu erwähnen, dass es in <path>/usr/share/doc/equivs/examples</path>
 einige Beispiel-Kontrolldateien gibt. Werfen Sie mal einen Blick
 darauf.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Entfernen von unbenutzten locale-Dateien: localepurge
+    </heading>
 
-
-
-1.1 Entfernen von unbenutzten locale-Dateien: localepurge
-
-Viele Debian-Benutzer verwenden nur ein locale (Spracheinstellung). Ein
+    <textblock>
+Viele Debian-Benutzer verwenden nur ein <strong>locale</strong> (Spracheinstellung). Ein
 brasilianischer Debian-Benutzer benutzt z. B. vermutlich immer das
 brasilianische pt_BR-locale und interessiert sich nicht für das
 spanische es-locale.
+    </textblock>
 
-localepurge ist ein sehr nützliches Werkzeug für diese Art von
+    <textblock>
+<command>localepurge</command> ist ein sehr nützliches Werkzeug für diese Art von
 Benutzern. Sie können eine Menge Festplattenplatz sparen, wenn Sie nur
 die locales installiert haben, die Sie auch wirklich brauchen.
-Installieren Sie einfach apt-get install localepurge.
+Installieren Sie einfach <command>apt-get install localepurge</command>.
+    </textblock>
 
-Es ist wirklich einfach zu konfigurieren, Debconf-Fragen führen den
+    <textblock>
+Es ist wirklich einfach zu konfigurieren, <command>Debconf</command>-Fragen führen den
 Benutzer Schritt für Schritt durch die Konfiguration. Seien Sie
 vorsichtig beim Beantworten der ersten Frage, da falsche Antworten alle
-locales entfernen können - selbst die, die Sie benutzen. Die einzige
+<strong>locales</strong> entfernen können - selbst die, die Sie benutzen. Die einzige
 Möglichkeit, sie wiederherzustellen, ist, alle Pakete neu zu
 installieren, die sie enthalten.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Erfahren, welche Pakete aktualisiert werden können
+    </heading>
 
-
-
-1.1 Erfahren, welche Pakete aktualisiert werden können
-
-apt-show-versions ist ein Programm, das zeigt, welche Pakete im System
+    <textblock>
+<command>apt-show-versions</command> ist ein Programm, das zeigt, welche Pakete im System
 aktualisiert werden können und andere hilfreiche Informationen bietet.
-Die Option -u zeigt eine Liste der Pakete, die aktualisiert werden
+Die Option <command>-u</command> zeigt eine Liste der Pakete, die aktualisiert werden
 können:
+    </textblock>
 
-$ apt-show-versions -u
+    <shell>
+     <root>
+apt-show-versions -u
+     </root>
+     <output>
 libeel0/unstable upgradeable from 1.0.2-5 to 1.0.2-7
 libeel-data/unstable upgradeable from 1.0.2-5 to 1.0.2-7
+     </output>
+    </shell>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Informationen über Pakete
+   </heading>
 
-
-
-1 Informationen über Pakete
-
-Es gibt einige Oberflächen für das APT-System, die es signifikant
+   <textblock>
+Es gibt einige Oberflächen für das <command>APT</command>-System, die es signifikant
 einfacher machen, Listen über verfügbare Pakete oder schon installierte
 Pakete zu bekommen oder auch herauszufinden, zu welcher Sektion ein
 Paket gehört, welche Priorität es hat, wie seine Beschreibung lautet,
 etc.
+   </textblock>
 
-Unser Ziel aber hier ist, APT selbst benutzen zu lernen. Wie können wir
+   <textblock>
+Unser Ziel aber hier ist, <command>APT</command> selbst benutzen zu lernen. Wie können wir
 also den Namen eines Paketes herausfinden, welches wir installieren
 wollen?
+   </textblock>
 
+   <textblock>
 Es gibt eine Reihe von Möglichkeiten für eine solche Aufgabe. Fangen wir
-mit apt-cache an. Dieses Programm wird vom APT-System zum Warten seiner
+mit apt-cache an. Dieses Programm wird vom <command>APT</command>-System zum Warten seiner
 Datenbank benutzt. Werfen wir nur einen kleinen Blick auf einige seiner
 praktischeren Anwendungen.
+   </textblock>
 
+   <section>
+    <heading>
+Paketnamen entdecken
+    </heading>
 
-
-
-1.1 Paketnamen entdecken
-
+    <textblock>
 Angenommen Sie wollen die alten Zeiten des Atari 2600 wieder aufleben
-lassen. Sie möchten APT benutzen, um einen Atari-Emulator zu
+lassen. Sie möchten <command>APT</command> benutzen, um einen Atari-Emulator zu
 installieren und dann Spiele herunterladen. Sie haben folgende
 Möglichkeit:
+    </textblock>
 
-# apt-cache search atari
+    <shell>
+     <root>
+apt-cache search atari
+     </root>
+     <output>
 atari-fdisk-cross - Partition editor for Atari (running on non-Atari)
 circuslinux - The clowns are trying to pop balloons to score points!
 madbomber - A Kaboom! clone
@@ -1063,20 +1707,28 @@ tcs - Character set translator.
 atari800 - Atari emulator for svgalib/X/curses
 stella - Atari 2600 Emulator for X windows
 xmess-x - X binaries for Multi-Emulator Super System
+     </output>
+    </shell>
 
+    <textblock>
 Wir finden verschiedene Pakete mit kurzen Beschreibungen. Um weitere
 Informationen über ein bestimmtes Paket zu erhalten, können wir
 folgendes machen:
+    </textblock>
 
-# apt-cache show stella
+    <shell>
+     <root>
+apt-cache show stella
+     </root>
+     <output>
 Package: stella
 Priority: extra
 Section: non-free/otherosfs
 Installed-Size: 830
-Maintainer: Tom Lear <tom@trap.mtview.ca.us>
+Maintainer: Tom Lear &lt;tom@trap.mtview.ca.us&gt;
 Architecture: i386
 Version: 1.1-2
-Depends: libc6 (>= 2.1), libstdc++2.10, xlib6g (>= 3.3.5-1)
+Depends: libc6 (&gt;= 2.1), libstdc++2.10, xlib6g (&gt;= 3.3.5-1)
 Filename: dists/potato/non-free/binary-i386/otherosfs/stella_1.1-2.deb
 Size: 483430
 MD5sum: 11b3e86a41a60fa1c4b334dd96c1d4b5
@@ -1085,24 +1737,32 @@ Description: Atari 2600 Emulator for X windows
  written in C++.  You can play most Atari 2600 games with it.  The latest
  news, code and binaries for Stella can be found at:
  http://www4.ncsu.edu/~bwmott/2600
+     </output>
+    </shell>
 
+    <textblock>
 Mit dieser Ausgabe erhalten Sie eine Menge Details über das Paket, das
 Sie installieren wollen (oder nicht wollen) inklusive der vollständigen
 Beschreibung des Pakets. Wenn das Paket schon installiert ist und es
 eine neuere Version gibt, bekommen Sie Informationen über beide
 Versionen. Beispiel:
+    </textblock>
 
-# apt-cache show lilo
+    <shell>
+     <root>
+apt-cache show lilo
+     </root>
+     <output>
 Package: lilo
 Priority: important
 Section: base
 Installed-Size: 271
-Maintainer: Russell Coker <russell@coker.com.au>
+Maintainer: Russell Coker &lt;russell@coker.com.au&gt;
 Architecture: i386
 Version: 1:21.7-3
-Depends: libc6 (>= 2.2.1-2), debconf (>=0.2.26), logrotate
+Depends: libc6 (&gt;= 2.2.1-2), debconf (&gt;=0.2.26), logrotate
 Suggests: lilo-doc
-Conflicts: manpages (<<1.29-3)
+Conflicts: manpages (&gt;&gt;1.29-3)
 Filename: pool/main/l/lilo/lilo_21.7-3_i386.deb
 Size: 143052
 MD5sum: 63fe29b5317fe34ed8ec3ae955f8270e
@@ -1119,9 +1779,9 @@ Status: install ok installed
 Priority: important
 Section: base
 Installed-Size: 190
-Maintainer: Vincent Renardias <vincent@debian.org>
+Maintainer: Vincent Renardias &lt;vincent@debian.org&gt;
 Version: 1:21.4.3-2
-Depends: libc6 (>= 2.1.2)
+Depends: libc6 (&gt;= 2.1.2)
 Recommends: mbr
 Suggests: lilo-doc
 Description: LInux LOader - The Classic OS loader can load Linux and
@@ -1131,15 +1791,23 @@ others
  .
  You can use Lilo to manage your Master Boot Record (with a simple text screen)
  or call Lilo from other Boot-Loaders to jump-start the Linux kernel.
+     </output>
+    </shell>
 
+    <textblock>
 Das erste in der Liste ist die neu verfügbare Version und das zweite die
 installierte Version. Für generellere Informationen über ein Paket
 können sie folgendes benutzen:
+    </textblock>
 
-# apt-cache showpkg penguin-command
+    <shell>
+     <root>
+apt-cache showpkg penguin-command
+     </root>
+     <output>
 Package: penguin-command
 Versions:
-1.4.5-1(/var/lib/apt/lists/download.sourceforge.net_debian_dists_unstable_main_binary-i386_Packages)(/var/lib/dpkg/status)
+1.4.5-1(...)(/var/lib/dpkg/status)
 
 Reverse Depends:
 Dependencies:
@@ -1147,228 +1815,385 @@ Dependencies:
 Provides:
 1.4.5-1 -
 Reverse Provides:
+     </output>
+    </shell>
 
+    <textblock>
 Und um nur herauszufinden, von welchen Paketen es abhängt:
+    </textblock>
 
-# apt-cache depends penguin-command
+    <shell>
+     <root>
+apt-cache depends penguin-command
+     </root>
+     <output>
 penguin-command
   Depends: libc6
   Depends: libpng2
   Depends: libsdl-mixer1.1
   Depends: libsdl1.1
   Depends: zlib1g
+     </output>
+    </shell>
 
+    <textblock>
 Zusammengefasst haben wir eine handvoll Waffen, die wir benutzen
 können, um den Namen des Paketes herauszufinden, das wir installieren
 wollen.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Paketnamen mit dpkg finden
+    </heading>
 
-
-
-1.1 Paketnamen mit dpkg finden
-
+    <textblock>
 Ein Weg, den Namen eines Pakets zu finden, ist, den Namen einer
 wichtigen Datei zu kennen, die sich in dem Paket befindet. Um zum
-Beispiel das Paket zu finden, welches eine bestimmte ".h" Datei enthält,
+Beispiel das Paket zu finden, welches eine bestimmte <strong>.h</strong> Datei enthält,
 die für das Kompilieren eines Programms benötigt wird, ist folgendes
 auszuführen:
+    </textblock>
 
-# dpkg -S stdio.h
+    <shell>
+     <root>
+dpkg -S stdio.h
+     </root>
+     <output>
 libc6-dev: /usr/include/stdio.h
 libc6-dev: /usr/include/bits/stdio.h
 perl: /usr/lib/perl/5.6.0/CORE/nostdio.h
+     </output>
+    </shell>
 
+    <textblock>
 oder:
+    </textblock>
 
-# dpkg -S /usr/include/stdio.h
+    <shell>
+     <root>
+dpkg -S /usr/include/stdio.h
+     </root>
+     <output>
 libc6-dev: /usr/include/stdio.h
+     </output>
+    </shell>
 
+    <textblock>
 Um den Namen installierter Pakete herauszufinden, was zum Beispiel zum
 Aufräumen der Festplatte nützlich sein kann, benutzen Sie:
+    </textblock>
 
-# dpkg -l | grep mozilla
+    <shell>
+     <root>
+dpkg -l | grep mozilla
+     </root>
+     <output>
 ii  mozilla-browse 0.9.6-7        Mozilla Web Browser
+     </output>
+    </shell>
 
-Das Problem mit diesem Befehl ist, dass er Paketnamen "brechen" kann. Im
+    <textblock>
+Das Problem mit diesem Befehl ist, dass er Paketnamen <strong>brechen</strong> kann. Im
 obigen Beispiel ist der ganze Name des Pakets mozilla-browser. Um das
-Problem zu beheben, können Sie die Umgebungsvariable COLUMNS
+Problem zu beheben, können Sie die Umgebungsvariable <command>COLUMNS</command>
 folgendermaßen benutzen:
+    </textblock>
 
-$ COLUMNS=132 dpkg -l | grep mozilla
+    <shell>
+     <root>
+COLUMNS=132 dpkg -l | grep mozilla
+     </root>
+     <output>
 ii  mozilla-browser             0.9.6-7                     Mozilla Web
 Browser - core and browser
+     </output>
+    </shell>
 
+    <textblock>
 oder die Beschreibung bzw. einen Teil dieser wie im folgenden:
+    </textblock>
 
-# apt-cache search "Mozilla Web Browser"
+    <shell>
+     <root>
+apt-cache search "Mozilla Web Browser"
+     </root>
+     <output>
 mozilla-browser - Mozilla Web Browser
+     </output>
+    </shell>
+   </section>
 
+   <section>
+    <heading>
+Pakete nach Bedarf installieren
+    </heading>
 
-
-1.1 Pakete nach Bedarf installieren
-
+    <textblock>
 Sie kompilieren gerade ein Programm, und es gibt einen Fehler, da eine
-.h Datei gebraucht wird, die Sie nicht haben. Das Programm auto-apt kann
+.h Datei gebraucht wird, die Sie nicht haben. Das Programm <command>auto-apt</command> kann
 Sie vor solchen Szenarios bewahren. Es fragt, ob es die benötigten
 Pakete installieren soll, nachdem es den betroffenden Prozess gestoppt
 hat und führt ihn fort, wenn die relevanten Pakete installiert sind.
+    </textblock>
 
+    <textblock>
 Der Befehl sieht folgendermassen aus:
+    </textblock>
 
-# auto-apt run Kommando
+    <shell>
+     <root>
+auto-apt run Kommando
+     </root>
+    </shell>
 
-Wobei "Kommando" das Kommando ist, sas ausgeführt werden soll und evtl.
+    <textblock>
+Wobei <strong>Kommando</strong> das Kommando ist, sas ausgeführt werden soll und evtl.
 nicht vorhandene Dateien benötigt. Beispiel:
+    </textblock>
 
-# auto-apt run ./configure
+    <shell>
+     <root>
+auto-apt run ./configure
+     </root>
+    </shell>
 
+    <textblock>
 Es wird fragen, ob die benötigten Pakete installiert werden sollen, und
-apt-get automatisch aufrufen. Wenn X läuft, ersetzt eine grafische
+<command>apt-get</command> automatisch aufrufen. Wenn <ref chapter="was_ist_x">X</ref> läuft, ersetzt eine grafische
 Oberfläche die übliche Text-Oberfläche.
+    </textblock>
 
-Auto-apt funktioniert mit einer Datenbank welche aktuell gehalten werden
+    <textblock>
+<command>Auto-apt</command> funktioniert mit einer Datenbank welche aktuell gehalten werden
 muss, um effektiv zu funktionieren. Das erreicht man mit den Kommandos
-auto-apt update, auto-apt updatedb und auto-apt update-local.
+<command>auto-apt update</command>, <command>auto-apt updatedb</command> und <command>auto-apt update-local</command>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Herausfinden, zu welchem Paket eine Datei gehört
+    </heading>
 
-
-
-1.1 Herausfinden, zu welchem Paket eine Datei gehört
-
+    <textblock>
 Wenn ein Paket installiert werden soll und Sie nicht herausfinden
-können, wie es heiaat, indem Sie mit apt-cache suchen, aber den
+können, wie es heiaat, indem Sie mit <command>apt-cache</command> suchen, aber den
 Dateinamen des Programms oder einer Datei, die zu dem Paket gehört
-kennen, können Sie apt-file benutzen, um den Dateinamen zu finden. Das
+kennen, können Sie <command>apt-file</command> benutzen, um den Dateinamen zu finden. Das
 wird folgendermaaaen gemacht:
+    </textblock>
 
-$ apt-file search Dateinamen
+    <shell>
+     <root>
+apt-file search Dateinamen
+     </root>
+    </shell>
 
-Es funktioniert genau wie dpkg -S, es zeigt Ihnen aber auch nicht
+    <textblock>
+Es funktioniert genau wie <command>dpkg -S</command>, es zeigt Ihnen aber auch nicht
 installierte Pakete, die die Datei enthalten. Man kann es auch dazu
 benutzen, benötigte include-Dateien, die beim Kompilieren von Programmen
-fehlen, zu installieren, allerdings ist auto-apt eine wesentlich bessere
-Methode solche Fälle zu lösen, siehe "Pakete nach Bedarf installieren".
+fehlen, zu installieren, allerdings ist <command>auto-apt</command> eine wesentlich bessere
+Methode solche Fälle zu lösen, siehe <ref iref="Pakete nach Bedarf installieren">Pakete nach Bedarf installieren</ref>.
+    </textblock>
 
+    <textblock>
 Man kann auch den Inhalt von Paketen auflisten:
+    </textblock>
 
-$ apt-file list Paketname
+    <shell>
+     <root>
+apt-file list Paketname
+     </root>
+    </shell>
 
-apt-file hat genau wie auto-apt eine Datenbank über die Dateien aller
+    <textblock>
+<command>apt-file</command> hat genau wie <command>auto-apt</command> eine Datenbank über die Dateien aller
 Pakete und diese muss aktuell gehalten werden:
+    </textblock>
 
-# apt-file update
+    <shell>
+     <root>
+apt-file update
+     </root>
+    </shell>
 
-Normalerweise benutzt apt-file die gleiche Datenbank wie auto-apt, sehen
-Sie "Pakete nach Bedarf installieren".
+    <textblock>
+Normalerweise benutzt <command>apt-file</command> die gleiche Datenbank wie <command>auto-apt</command>, sehen
+Sie <ref iref="Pakete nach Bedarf installieren">Pakete nach Bedarf installieren</ref>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Über Änderungen in Paketen informiert bleiben
+    </heading>
 
-
-
-1.1 Über Änderungen in Paketen informiert bleiben
-
+    <textblock>
 Jedes Paket installiert in sein Dokumentationsverzeichnis
-(/usr/share/doc/Paketname) eine Datei mit Namen changelog.Debian.gz,
+(<path>/usr/share/doc/Paketname</path>) eine Datei mit Namen <path>changelog.Debian.gz</path>,
 welche die Liste der Änderungen gegenüber der letzten Version enthält.
-Sie können diese Dateien z. B. mit Hilfe von zless lesen, aber es ist
+Sie können diese Dateien z. B. mit Hilfe von <command>zless</command> lesen, aber es ist
 nicht wirklich leicht, nach einem System-Upgrade nach dem changelog
 jedes aktualisierten Paketes zu suchen.
+    </textblock>
 
+    <textblock>
 Es gibt aber eine Möglichkeit, diese Aufgabe zu automatisieren mit Hilfe
-eines Werkzeugs mit Namen apt-listchanges. Hierfür muss das Paket
-apt-listchanges erst einmal installiert werden. Während der Installation
-übernimmt Debconf die Installation. Beantworten Sie die Fragen nach
+eines Werkzeugs mit Namen <command>apt-listchanges</command>. Hierfür muss das Paket
+<command>apt-listchanges</command> erst einmal installiert werden. Während der Installation
+übernimmt <command>Debconf</command> die Installation. Beantworten Sie die Fragen nach
 Ihren Bedürfnissen.
+    </textblock>
 
-Die Option "Soll apt-listchanges nach dem Anzeigen der Changelogs um
-eine Bestätigung bitten?" ist sehr nützlich, da es eine Liste der
+    <textblock>
+Die Option <strong>Soll apt-listchanges nach dem Anzeigen der Changelogs um
+eine Bestätigung bitten?</strong> ist sehr nützlich, da es eine Liste der
 Änderungen jedes Paketes, das während eines Upgrades installiert wird,
 anzeigt und Ihnen die Möglichkeit bietet, diese vor dem Fortfahren
 einzusehen. Wenn Sie hier sagen, dass Sie nicht fortfahren möchten, gibt
-apt-listchanges einen Fehlercode zurück und APT bricht die Installation
+apt-listchanges einen Fehlercode zurück und <command>APT</command> bricht die Installation
 ab.
+    </textblock>
 
-Nachdem apt-listchanges installiert wurde, zeigt es die Liste der
+    <textblock>
+Nachdem <command>apt-listchanges</command> installiert wurde, zeigt es die Liste der
 Änderungen installierter Pakete an, wenn Pakete aus dem Netz (oder von
 einer CD oder gemounteten Partition) heruntergeladen werden, bevor sie
 installiert werden.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Das Arbeiten mit Quellpaketen
+   </heading>
 
+   <section>
+    <heading>
+Herunterladen von Quellpaketen
+    </heading>
 
-
-1 Das Arbeiten mit Quellpaketen
-
-1.1 Herunterladen von Quellpaketen
-
+    <textblock>
 In der Welt der freien Software ist es üblich, den Quellcode zu
 studieren oder auch Korrekturen an fehlerhaftem Code vorzunehmen. Um
 dieses zu tun, muss der Quellcode des Programms heruntergeladen werden.
-Das APT-System bietet eine einfache Möglichkeit, den Quellcode der
+Das <command>APT</command>-System bietet eine einfache Möglichkeit, den Quellcode der
 vielen Programme der Distribution einschließlich aller für das Erstellen
-eines .deb des Programms nötigen Dateien zu beziehen.
+eines <path>.deb</path> des Programms nötigen Dateien zu beziehen.
+    </textblock>
 
+    <textblock>
 Eine andere übliche Anwendung für Debian-Quellen ist es eine aktuellere
-Version eines Programms aus der Distribution "unstable" zum Beispiel in
-"stable" zu benutzen. Das Paket "gegen" "stable" zu kompilieren erzeugt
-ein Paket mit Abhängigkeiten, die auf die Pakete aus "stable"
+Version eines Programms aus der Distribution <strong>unstable</strong> zum Beispiel in
+<strong>stable</strong> zu benutzen. Das Paket <strong>gegen</strong> <strong>stable</strong> zu kompilieren erzeugt
+ein Paket mit Abhängigkeiten, die auf die Pakete aus <strong>stable</strong>
 ausgerichtet sind.
+    </textblock>
 
-Hierfür sollte der deb-src-Eintrag in Ihrer /etc/apt/sources.list auf
-"unstable" zeigen. Er sollte ausserdem aktiviert sein, d.h. eventuelle
+    <textblock>
+Hierfür sollte der <command>deb-src</command>-Eintrag in Ihrer <path>/etc/apt/sources.list</path> auf
+<strong>unstable</strong> zeigen. Er sollte ausserdem aktiviert sein, d.h. eventuelle
 Kommentarzeichen vor der Zeile müssen entfernt werden (siehe Abschnitt
-"Die Datei /etc/apt/sources.list").
+<ref iref="Die Datei /etc/apt/sources.list">Die Datei /etc/apt/sources.list</ref>).
+    </textblock>
 
+    <textblock>
 Um ein Quellpaket herunterzuladen, benutzen Sie folgendes Kommando:
+    </textblock>
 
-$ apt-get source Paketname
+    <shell>
+     <root>
+apt-get source Paketname
+     </root>
+    </shell>
 
-Drei Dateien werden daraufhin heruntergeladen: ein .orig.tar.gz, ein
-.dsc und ein .diff.gz. Im Falle von Paketen, die speziell für Debian
-erzeugt wurden, fällt das letzte weg und das erste hat kein "orig" im
+    <textblock>
+Drei Dateien werden daraufhin heruntergeladen: ein <path>.orig.tar.gz</path>, ein
+<path>.dsc</path> und ein <path>.diff.gz</path>. Im Falle von Paketen, die speziell für Debian
+erzeugt wurden, fällt das letzte weg und das erste hat kein <path>orig</path> im
 Namen.
+    </textblock>
 
-Die Datei .dsc wird von dpkg-source benutzt, um das Quellpaket in das
+    <textblock>
+Die Datei <path>.dsc</path> wird von <command>dpkg-source</command> benutzt, um das Quellpaket in das
 Verzeichnis Paketname-Version zu entpacken. In jedem heruntergeladenen
-Quellpaket befindet sich ein Verzeichnis debian/, welches die für das
-Bauen des .deb-Paketes nötigen Dateien enthält.
+Quellpaket befindet sich ein Verzeichnis <path>debian/</path>, welches die für das
+Bauen des <path>.deb</path>-Paketes nötigen Dateien enthält.
+    </textblock>
 
+    <textblock>
 Um das Paket beim Herunterladen automatisch zu erzeugen, fügen Sie
-einfach -b zur Kommandozeile hinzu:
+einfach <command>-b</command> zur Kommandozeile hinzu:
+    </textblock>
 
-$ apt-get -b source Paketname
+    <shell>
+     <user>
+apt-get -b source Paketname
+     </user>
+    </shell>
 
+    <textblock>
 Wenn Sie sich dazu entscheiden, das Paket noch nicht beim Herunterladen
 zu erzeugen, können Sie dieses später nachholen mittels
+    </textblock>
 
-$ dpkg-buildpackage -rfakeroot -uc -b
+    <shell>
+     <user>
+dpkg-buildpackage -rfakeroot -uc -b
+     </user>
+    </shell>
 
+    <textblock>
 in dem Verzeichnis, welches für das Paket nach dem Herunterladen
 erstellt wurde. Um das zuvor erzeugte Paket zu installieren, muss man
 den Paketmanager direkt einsetzen:
+    </textblock>
 
-# dpkg -i Datei.deb
+    <shell>
+     <root>
+dpkg -i Datei.deb
+     </root>
+    </shell>
 
-Es besteht ein Unterschied zwischen der Methode "apt-get source" und den
-anderen Methoden von apt-get. Die source-Methode kann von normalen
-Benutzern ohne Root-Rechten benutzt werden. Die Dateien werden in das
-Verzeichnis heruntergeladen, aus dem das apt-get source Paket aufgerufen
+    <textblock>
+Es besteht ein Unterschied zwischen der Methode <command>apt-get source</command> und den
+anderen Methoden von <command>apt-get</command>. Die <command>source</command>-Methode kann von normalen
+Benutzern <strong>ohne Root-Rechten</strong> benutzt werden. Die Dateien werden in das
+Verzeichnis heruntergeladen, aus dem das <command>apt-get source Paket</command> aufgerufen
 wurde.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Für das Kompilieren eines Quellpaketes nötige Pakete
+    </heading>
 
-
-
-1.1 Für das Kompilieren eines Quellpaketes nötige Pakete
-
+    <textblock>
 Normalerweise müssen sich spezielle Bibliotheken auf dem System
 befinden, um ein Quellpaket zu kompilieren. Alle Quellpakete haben ein
-Feld mit Namen "Build-Depends" in ihrer Kontrolldatei, welches die Namen
+Feld mit Namen <strong>Build-Depends</strong> in ihrer Kontrolldatei, welches die Namen
 der zusätzlichen Pakete enthält, die für das Erzeugen des Paketes aus
 dem Quellcode nötig sind.
+    </textblock>
 
-APT bietet eine einfache Möglichkeit diese Pakete herunterzuladen.
-Führen Sie einfach apt-get build-dep Paket aus, wobei "Paket" für den
+    <textblock>
+<command>APT</command> bietet eine einfache Möglichkeit diese Pakete herunterzuladen.
+Führen Sie einfach <command>apt-get build-dep Paket</command> aus, wobei <strong>Paket</strong> für den
 Namen des Pakets, welches Sie erzeugen wollen steht. Beispiel:
+    </textblock>
 
-# apt-get build-dep gmc
+    <shell>
+     <root>
+apt-get build-dep gmc
+     </root>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 The following NEW packages will be installed:
@@ -1378,119 +2203,205 @@ libgnorba-dev
 0 packages upgraded, 7 newly installed, 0 to remove and 1  not upgraded.
 Need to get 1069kB of archives. After unpacking 3514kB will be used.
 Do you want to continue? [Y/n]
+     </output>
+    </shell>
 
+    <textblock>
 Die Pakete, die hier installiert werden, werden gebraucht, um gmc
 korrekt zu erzeugen. Beachten Sie jedoch, dass dieses Kommando sich
 nicht um das Quellpaket selbst kümmert, welches Sie bauen möchten. Sie
-müssen hierfür zusätzlich apt-get source ausführen.
+müssen hierfür zusätzlich <command>apt-get source</command> ausführen.
+    </textblock>
 
+    <textblock>
 Falls Sie nur feststellen möchten, welche Pakete zum Bau eines
 bestimmten Paketes benötigt werden, ist eine Variante des Kommandos
-apt-cache show (siehe "Informationen über Pakete"),
+<command>apt-cache show</command> (siehe <ref iref="Informationen über Pakete">Informationen über Pakete</ref>),
 die neben anderer Information die Zeile Build-Depends aufführt, die
 ihrerseits die erforderlichen Pakete auflistet.
+    </textblock>
 
+    <shell>
+     <root>
 # apt-cache showscrc Paket
+     </root>
+    </shell>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Der Umgang mit Fehlern
+   </heading>
 
+   <section>
+    <heading>
+Häufige Fehler
+    </heading>
 
-
-1 Der Umgang mit Fehlern
-
-1.1 Häufige Fehler
-
+    <textblock>
 Fehler wird es immer geben. Viele werden durch unachtsame Benutzer
 verursacht. Im folgenden finden Sie eine Liste mit häufig gemeldeten
 Fehlern und wie Sie mit ihnen umgehen sollten.
+    </textblock>
 
+    <textblock>
 Wenn Sie eine Nachricht erhalten, die aussieht wie die im unteren
-Beispiel, bei dem Versuch apt-get install Paket auszuführen ...
+Beispiel, bei dem Versuch <command>apt-get install Paket</command> auszuführen ...
+    </textblock>
 
+    <shell>
+     <output>
 Reading Package Lists... Done
 Building Dependency Tree... Done
 W: Couldn't stat source package list 'http://people.debian.org unstable/ Packages' (/var/state/apt/lists/people.debian.org_%7ekov_debian_unstable_Packages) - stat (2 No such file or directory)
 W: You may want to run apt-get update to correct these missing files
 E: Couldn't find package penguineyes
+     </output>
+    </shell>
 
+    <textblock>
 haben Sie vergessen apt-get update nach Ihrer letzten Änderung in der
-/etc/apt/sources.list auszuführen.
+<path>/etc/apt/sources.list</path> auszuführen.
+    </textblock>
 
-Wenn folgender Fehler auftritt ...
+    <textblock>
+Wenn folgender Fehler auftritt...
+    </textblock>
 
+    <shell>
+     <output>
 E: Could not open lock file /var/lib/dpkg/lock - open (13 Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+     </output>
+    </shell>
 
-nach dem Versuch, irgend eine andere apt-get-Methode auszuführen als
+    <textblock>
+nach dem Versuch, irgend eine andere <command>apt-get</command>-Methode auszuführen als
 source, haben Sie keine Root-Rechte, d.h. Sie haben sie als normaler
 Benutzer ausgeführt.
+    </textblock>
 
+    <textblock>
 Der gleiche Fehler wie oben tritt auf, wenn versucht wird, zweimal
-apt-get gleichzeitig auszuführen oder auch, wenn versucht wird apt-get
-auszuführen während ein dpkg-Prozess läuft. Die einzige Methode, die
-simultan zu anderen ausgeführt werden darf, ist die source-Methode.
+<command>apt-get</command> gleichzeitig auszuführen oder auch, wenn versucht wird <command>apt-get</command>
+auszuführen während ein <command>dpkg</command>-Prozess läuft. Die einzige Methode, die
+simultan zu anderen ausgeführt werden darf, ist die <command>source</command>-Methode.
+    </textblock>
 
-Wenn eine Installation mitten im Prozeß abbricht und Sie merken, daß es
+    <textblock>
+Wenn eine Installation mitten im Prozess abbricht und Sie merken, dass es
 nicht länger möglich ist, Pakete zu installieren oder zu entfernen,
 versuchen Sie diese zwei Befehle auszuführen:
+    </textblock>
 
-# apt-get -f install
-# dpkg --configure -a
+    <shell>
+     <root>
+apt-get -f install
+dpkg --configure -a
+     </root>
+    </shell>
 
+    <textblock>
 Danach versuchen Sie es erneut. Es kann nötig sein, den zweiten der
 beiden Befehle mehr als einmal auszuführen. Dies ist eine wichtige
-Information für die Abenteurer, die "unstable" benutzen.
+Information für die Abenteurer, die <strong>unstable</strong> benutzen.
+    </textblock>
 
-Tritt "E: Dynamic MMap ran out of room" beim Ausführen von apt-get
-update auf, sollte die folgende Zeile der /etc/apt/apt.conf hinzugefügt
+    <textblock>
+Tritt <strong>E: Dynamic MMap ran out of room</strong> beim Ausführen von <command>apt-get
+update</command> auf, sollte die folgende Zeile der <path>/etc/apt/apt.conf</path> hinzugefügt
 werden:
+    </textblock>
 
+    <file>
+     <title>
+/etc/apt/apt.conf
+     </title>
+     <content>
 APT::Cache-Limit 10000000;
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+Wo gibt es Hilfe?
+    </heading>
 
-
-
-1.1 Wo gibt es Hilfe?
-
+    <textblock>
 Wenn Sie sich von Zweifeln geplagt fühlen, ziehen Sie die umfangreiche
-Dokumentation des Debian-Paketsystems zu Rate. --help und Manpages
+Dokumentation des Debian-Paketsystems zu Rate. <command>--help</command> und Manpages
 können eine enorme Hilfe sein, genau wie die Dokumentation in den
-Verzeichnissen in /usr/share/doc ebenso wie in /usr/share/doc/apt.
+Verzeichnissen in <path>/usr/share/doc</path> ebenso wie in <path>/usr/share/doc/apt</path>.
+    </textblock>
 
+    <textblock>
 Wenn diese Dokumentation nicht ausreicht, um Ihre Probleme zu
 beseitigen, versuchen Sie es auf den Debian-Mailinglisten. Mehr
 Informationen über die speziellen Benutzer-Listen gibt es auf der
-Debian-Webseite: http://www.debian.org.
+Debian-Webseite: <ref lang="de" url="http://www.debian.org/">http://www.debian.org</ref>.
+    </textblock>
 
+    <textblock>
 Natürlich sind diese Listen und Hilfen nur für Debian-Benutzer; Benutzer
 anderer Systeme werden von der Gemeinschaft ihrer Distribution bessere
 Hilfe erlangen.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Welche Distributionen unterstützen APT?
+   </heading>
 
+   <textblock>
+Hier finden Sie die Namen einiger Distributionen, die <command>APT</command> unterstützen:
+   </textblock>
 
-1 Welche Distributionen unterstützen APT?
-
-Hier finden Sie die Namen einiger Distributionen, die APT unterstützen:
-
-Debian GNU/Linux (http://www.debian.org) - Für diese Distribution wurde APT entwickelt
-
-Conectiva (http://www.conectiva.com.br) - Die erste Distribution, die APT mit RPM benutzt
-
-Mandrake (http://www.mandrake.com)
-
-PLD (http://www.pld.org.pl)
-
-Vine (http://www.vinelinux.org)
-
-APT4RPM (http://apt4rpm.sf.net)
-
-Alt Linux (http://www.altlinux.ru/)
-
-Red Hat (http://www.redhat.com/)
-
-Sun Solaris (http://www.sun.com/)
-
-SuSE (http://www.suse.de/)
-
-Yellow Dog Linux (http://www.yellowdoglinux.com/)
-
-Yoper (http://www.yoper.com/)
+   <ul>
+    <li>
+Debian GNU/Linux (<ref lang="de" url="http://www.debian.org">http://www.debian.org</ref>) - Für diese Distribution wurde <command>APT</command> entwickelt
+    </li>
+    <li>
+Conectiva (<ref lang="en" url="http://www.conectiva.com.br">http://www.conectiva.com.br</ref>) - Die erste Distribution, die <command>APT</command> mit RPM benutzt
+    </li>
+    <li>
+Mandrake (<ref lang="en" url="http://www.mandrake.com">http://www.mandrake.com</ref>)
+    </li>
+    <li>
+PLD (<ref lang="en" url="http://www.pld.org.pl">http://www.pld.org.pl</ref>)
+    </li>
+    <li>
+Vine (<ref lang="en" url="http://www.vinelinux.org">http://www.vinelinux.org</ref>)
+    </li>
+    <li>
+APT4RPM (<ref lang="en" url="http://apt4rpm.sf.net">http://apt4rpm.sf.net</ref>)
+    </li>
+    <li>
+Alt Linux (<ref lang="en" url="http://www.altlinux.ru/">http://www.altlinux.ru/</ref>)
+    </li>
+    <li>
+Red Hat (<ref lang="en" url="http://www.redhat.com/">http://www.redhat.com/</ref>)
+    </li>
+    <li>
+Sun Solaris (<ref lang="en" url="http://www.sun.com/">http://www.sun.com/</ref>)
+    </li>
+    <li>
+SuSE (<ref lang="de" url="http://www.suse.de/">http://www.suse.de/</ref>)
+    </li>
+    <li>
+Yellow Dog Linux (<ref lang="en" url="http://www.yellowdoglinux.com/">http://www.yellowdoglinux.com/</ref>)
+    </li>
+    <li>
+Yoper (<ref lang="de" url="http://www.yoper.de/">http://www.yoper.de/</ref>, <ref lang="en" url="http://www.yoper.com/">http://www.yoper.com/</ref>)
+    </li>
+   </ul>
+  </section>
+ </split>
+</chapter>
