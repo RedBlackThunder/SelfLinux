@@ -368,6 +368,28 @@ eine <ref chapter="tcpip" iref="Adressierung im IP">IP-Adresse</ref>
      </li>
     </ul>
 
+    <file>
+     <title>
+/etc/exports
+     </title>
+     <content>
+# /etc/exports: the access control list for filesystems which may be exported
+# to NFS clients.  See exports(5).
+/storage1/home          10.0.0.0/24(rw,async)
+/storage1/system        10.0.0.0/24(rw,async)
+/storage1/cdroms        10.0.0.0/24(rw,async)
+/storage2/audio         10.0.0.0/24(rw,async)
+/storage2/video         10.0.0.0/24(rw,async)
+/storage2/backup        10.0.0.0/24(rw,async)
+/storage2/transfer      10.0.0.0/24(rw,async)
+
+/diskless/excelsior     excelsior(rw,async,no_root_squash)
+/diskless/yorktown      yorktown(rw,async,no_root_squash)
+/diskless/stargazer     stargazer(rw,async,no_root_squash)
+/diskless/saratoga      saratoga(rw,async,no_root_squash)
+     </content>
+    </file>
+
     <textblock>
 Ohne im Detail alle verfügbaren <command>mount</command>-Optionen beschreiben zu wollen,
 hier dennoch eine Aufzählung der wichtigsten Optionen:
