@@ -1,178 +1,335 @@
-Title: Very Secure FTP Daemon
-Autor: Mario M. Knopf <netzmeister@neo5k.org>
-Lizenz: GFDL
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>
+Very Secure FTP Daemon
+ </title>
 
+ <author>
+  <name>Mario M. Knopf</name>
+  <mailto>netzmeister@neo5k.org</mailto>
+ </author>
 
+ <author>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </author>
 
-Dieser Artikel soll eine grundlegende Einführung zum "Very Secure FTP
-Daemon" darstellen. Beginnen möchte ich mit einer allgemeinen
-Beschreibung von FTP und vsftpd. Danach sehen wir uns die Installation,
-Konfiguration und Startmöglichkeiten des vsftp-Daemons genauer an.
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>vsftpd</index>
+
+ <description>
+  <textblock>
+Dieser Artikel soll eine grundlegende Einführung zum <strong>Very
+Secure FTP Daemon</strong> darstellen. Beginnen möchte ich mit einer
+allgemeinen Beschreibung von <strong>FTP</strong> und
+<command>vsftpd</command>. Danach sehen wir uns die Installation,
+Konfiguration und Startmöglichkeiten des
+<command>vsftp</command>-Daemons genauer an.
 Abschließend wird noch ein kurzer Funktionstest durchgeführt werden.
+  </textblock>
+ </description>
 
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
 
-
-
-1 Einleitung
-
+   <textblock>
 Das File Transfer Protocol (FTP) dient zur plattformunabhängigen
 Dateiübertragung im Internet und basiert auf einer
 Server-Client-Architektur.
-<ref url="ftp://ftp.rfc-editor.org/in-notes/rfc959.txt">RFC 959</ref>
-schreibt vor, daß FTP in zwei unterschiedliche Kanäle getrennt wird,
+<ref lang="en" url="ftp://ftp.rfc-editor.org/in-notes/rfc959.txt">RFC 959</ref>
+schreibt vor, dass FTP in zwei unterschiedliche Kanäle getrennt wird,
 wobei ein Kanal für die Daten (TCP-Port 20) und der andere zur
 Steuerung (TCP-Port 21) dient. Über den Steuerkanal tauschen die beiden
 Seiten (Server und Client) Kommandos aus, welche dann den Datentransfer
 einleiten. Eine FTP-Verbindung verläuft in vier Schritten:
+   </textblock>
 
-* Benutzerauthentifizierung
-* Aufbau des Steuerungskanals
-* Aufbau des Datenkanals
-* Beenden der Verbindung
+   <ol>
+    <li>
+Benutzerauthentifizierung
+    </li>
+    <li>
+Aufbau des Steuerungskanals
+    </li>
+    <li>
+Aufbau des Datenkanals
+    </li>
+    <li>
+Beenden der Verbindung
+    </li>
+   </ol>
 
-FTP benutzt als Transportprotokoll das verbindungsorientierte TCP
-(Transmission Control Protocol), welches sicherstellt, daß die Daten
+   <textblock>
+FTP benutzt als Transportprotokoll das verbindungsorientierte
+<ref chapter="tcpip" iref="TCP - Transmission Control Protocol">TCP</ref>
+(Transmission Control Protocol), welches sicherstellt, dass die Daten
 auch wirklich beim Empfänger ankommen. Somit braucht sich FTP nicht um
 einen möglichen Paketverlust bzw. eine Fehlerkontrolle bei der
-Dateiübertragung kümmern. Grob formuliert sorgt TCP also dafür, daß
-jedes einzelne Datenpaket nur einmal ankommt - fehlerfrei bei der
-Übertragung und in der richtigen Reihenfolge.
+Dateiübertragung kümmern. Grob formuliert sorgt
+<ref chapter="tcpip" iref="TCP - Transmission Control Protocol">TCP</ref>
+also dafür, dass jedes einzelne Datenpaket nur einmal ankommt - fehlerfrei
+bei der Übertragung und in der richtigen Reihenfolge.
+   </textblock>
 
+   <textblock>
 Bei der Dateiübertragung unterscheidet man drei Transferarten, wobei der
 Abschluß des Transfers im Stream-Modus durch ein End-of-File (EOF), bei
 den beiden anderen Übertragungsarten durch ein End-of-Record (EOR)
 gekennzeichnet wird.
+   </textblock>
 
-* Stream
-* Block
-* Compressed
+   <ul>
+    <li>
+Stream
+    </li>
+    <li>
+Block
+    </li>
+    <li>
+Compressed
+    </li>
+   </ul>
 
+   <textblock>
 Des Weiteren gibt es zwei verschiedene Transfermodi:
+   </textblock>
 
-* ASCII
-* Binary
+   <ul>
+    <li>
+ASCII
+    </li>
+    <li>
+Binary
+    </li>
+   </ul>
 
+   <textblock>
 Der ASCII-Modus dient zur Übertragung von Textdateien, wohingegen der
 Binary-Modus beispielsweise zum Transfer von Programmen oder dergleichen
 dient. Der Benutzer muß den Transfermodus für gewöhnlich nicht explizit
 auswählen, da mittlerweile alle FTP-Clients die zu übertragende Datei
 erkennen und automatisch umschalten.
+   </textblock>
 
+   <textblock>
 Da die Übermittlung der Benutzerkennung und des Passworts zur
 Authentifizierung nicht verschlüsselt wird, ist es sehr wichtig,
 ausdrücklich auf dieses potentielle Sicherheitsrisiko hinzuweisen. Aus
 diesem Grund machte man sich Gedanken über die Sicherheit von FTP. Im
 Oktober 1997 wurde schließlich das
-<ref url="ftp://ftp.rfc-editor.org/in-notes/rfc2228.txt">RFC 2228
+<ref lang="en" url="ftp://ftp.rfc-editor.org/in-notes/rfc2228.txt">RFC 2228</ref>
 veröffentlicht, welches sicherheitsspezifische Erweiterungen für das
 File Transfer Protocol definiert.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+vsftpd
+   </heading>
 
-
-
-1 vsftpd
-
-vsftpd stellt einen FTP-Server für unixoide Betriebssysteme dar und
-läuft somit auf Plattformen wie Linux, *BSD, Solaris, HP-UX und IRIX.
+   <textblock>
+<command>vsftpd</command> stellt einen FTP-Server für unixoide Betriebssysteme dar und
+läuft somit auf Plattformen wie <ref chapter="was_ist_linux">Linux</ref>, *BSD, Solaris, HP-UX und IRIX.
 Dabei unterstützt vsftpd viele Merkmale, die man bei anderen FTP-Servern
 unter Umständen schmerzlich vermisst. Einige davon sind beispielsweise:
+   </textblock>
 
-* sehr hohe Sicherheitsansprüche
-* Bandbreitenbegrenzung
-* gute Skalierbarkeit
-* Möglichkeit, virtuelle User zu erstellen
-* IPnG-Unterstützung
-* überdurchschnittliche Performance
-* Möglichkeit, virtuelle IPs zu vergeben
-* hohe Geschwindigkeit
+   <ul>
+    <li>
+sehr hohe Sicherheitsansprüche
+    </li>
+    <li>
+Bandbreitenbegrenzung
+    </li>
+    <li>
+gute Skalierbarkeit
+    </li>
+    <li>
+Möglichkeit, virtuelle User zu erstellen
+    </li>
+    <li>
+IPnG-Unterstützung
+    </li>
+    <li>
+überdurchschnittliche Performance
+    </li>
+    <li>
+Möglichkeit, virtuelle IPs zu vergeben
+    </li>
+    <li>
+hohe Geschwindigkeit
+    </li>
+   </ul>
 
-Der Name vsftpd steht für "Very Secure FTP Daemon", welcher auch gleich
-eines der Hauptanliegen des Entwicklers Chris Evans wiederspiegelt. Bei
+   <textblock>
+Der Name <command>vsftpd</command> steht für <strong>Very Secure FTP Daemon</strong>, welcher auch gleich
+eines der Hauptanliegen des Entwicklers <name>Chris Evans</name> wiederspiegelt. Bei
 der Entwicklung und dem Design des FTP-Servers wurde von Anfang an sehr
 viel Wert auf Sicherheit gelegt.
+   </textblock>
 
-Als Beispiel hierfür kann die Tatsache genannt werden, daß vsftpd im
-chroot-Modus betrieben wird. chroot bedeutet, daß einem Programm (in
-diesem Fall vsftpd) ein neues Wurzelverzeichnis (/) zugewiesen wird und
-es somit nicht mehr auf Programme oder Dateien außerhalb dieses
+   <textblock>
+Als Beispiel hierfür kann die Tatsache genannt werden, dass <command>vsftpd</command> im
+<command>chroot</command>-Modus betrieben wird. <command>chroot</command> bedeutet, dass einem Programm (in
+diesem Fall <command>vsftpd</command>) ein neues
+<ref chapter="verzeichnisse_unter_linux">Wurzelverzeichnis</ref> (<path>/</path>) zugewiesen
+wird und es somit nicht mehr auf Programme oder Dateien außerhalb dieses
 Verzeichnisses zugreifen darf - es wird sozusagen in einem Gefängnis
 eingesperrt. Sollte nun ein potentieller Angreifer den FTP-Server
 kompromittieren, ist er vom übrigen System abgeschottet und kann dadurch
 keinen größeren Schaden anrichten. Wer sich jedoch besonders für die
 Implementierung und das Design der diversen Sicherheitsmechanismen von
-vsftpd interessiert, dem sei http://vsftpd.beasts.org/DESIGN empfohlen.
+<command>vsftpd</command> interessiert, dem sei
+<ref lang="en" url="http://vsftpd.beasts.org/DESIGN">http://vsftpd.beasts.org/DESIGN</ref> empfohlen.
+   </textblock>
 
+   <textblock>
 Durch diese umfangreichen Merkmale - wobei der Anspruch an die
 Sicherheit des FTP-Dienstes höchste Priorität genießen sollte - hebt
-sich vsftpd deutlich von anderen FTP-Servern ab. Als Negativbeispiel sei
-hier der <ref url="http://www.wu-ftpd.org/">WU-FTPD genannt, welcher
+sich <command>vsftpd</command> deutlich von anderen FTP-Servern ab. Als Negativbeispiel sei
+hier der <ref url="http://www.wu-ftpd.org/">WU-FTPD</ref> genannt, welcher
 in den vergangenen Jahren ständig durch diverse Sicherheitslücken auffiel.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Installation
+   </heading>
 
-
-
-1 Installation
-
-Die Installation des vsftp-Daemons verläuft recht einfach, da jede
-größere Distribution fertige RPM-Pakete zu vsftpd bereitstellt, welche
+   <textblock>
+Die Installation des <command>vsftp</command>-Daemons verläuft recht einfach, da jede
+größere Distribution fertige <ref chapter="software_installation" iref="RPM">RPM-Pakete</ref>
+zu <command>vsftpd</command> bereitstellt, welche
 in den meisten Fällen sogar schon installiert sind. Alternativ besorgt
-man sich von http://www.vsftpd.beasts.org/ die Quellen und übersetzt das
-Programm manuell.
+man sich von <ref lang="en" url="http://www.vsftpd.beasts.org/">http://www.vsftpd.beasts.org/</ref>
+die Quellen und übersetzt das Programm manuell.
+   </textblock>
 
+   <textblock>
 Hat man sich die Quellen beschafft, entpackt man den Tarball, wechselt
-in das soeben enstandene Verzeichnis und führt make aus. Nachfolgend
+in das soeben enstandene Verzeichnis und führt <ref chapter="make">make</ref> aus. Nachfolgend
 werden die dazu benötigten Befehle demonstriert:
+   </textblock>
 
+   <shell>
+    <root>
 tar xzvf vsftpd-x.x.x.tar.gz
+    </root>
+    <root>
 cd vsftpd-x.x.x
+    </root>
+    <root>
 make
+    </root>
+   </shell>
 
-Zuvor sollte man jedoch überprüfen, ob der Benutzer "nobody" und das
-Verzeichnis "/usr/share/empty" existiert und gegebenenfalls neu anlegen.
-Plant man Zugriffsmöglichkeiten für anonyme Benutzer, muß der User "ftp"
-mitsamt Homeverzeichnis "/var/ftp" angelegt werden. Letzteres erreicht
+   <textblock>
+Zuvor sollte man jedoch überprüfen, ob der Benutzer <strong>nobody</strong> und das
+Verzeichnis <path>/usr/share/empty</path> existiert und gegebenenfalls neu anlegen.
+Plant man Zugriffsmöglichkeiten für anonyme Benutzer, muss der User <strong>ftp</strong>
+mitsamt Homeverzeichnis <path>/var/ftp</path> angelegt werden. Letzteres erreicht
 man durch die Eingabe der folgenden beiden Befehle:
+   </textblock>
 
+   <shell>
+    <root>
 mkdir /var/ftp
+    </root>
+    <root>
 useradd -d /var/ftp ftp
+    </root>
+   </shell>
 
-Aus Sicherheitsgründen sollte das Verzeichnis "/var/ftp" dem Benutzer
-"ftp" weder gehören, noch sollte dieser darin Schreibrechte besitzen.
+   <textblock>
+Aus Sicherheitsgründen sollte das Verzeichnis <path>/var/ftp</path> dem Benutzer
+<strong>ftp</strong> weder gehören, noch sollte dieser darin Schreibrechte besitzen.
 Wenn der Benutzer bereits existiert, genügen die nächsten beiden
 Kommandos, um den Besitzer zu ändern und anderen Benutzern die
 Schreibrechte zu entziehen:
+   </textblock>
 
+   <shell>
+    <root>
 chown root.root /var/ftp
+    </root>
+    <root>
 chmod og-w /var/ftp
+    </root>
+   </shell>
 
-Sofern alle Voraussetzungen erfüllt sind, kann man den vsftp-Daemon
+   <textblock>
+Sofern alle Voraussetzungen erfüllt sind, kann man den <command>vsftp</command>-Daemon
 installieren:
+   </textblock>
 
+   <shell>
+    <root>
 make install
+    </root>
+   </shell>
 
-Jetzt werden normalerweise die Manpages und das Programm an den
+   <textblock>
+Jetzt werden normalerweise die <ref chapter="linux_hilfe" iref="man">Manpages</ref> und das Programm an den
 richtigen Ort im Dateisystem kopiert. Wenn es wider Erwarten zu
 Komplikationen kommt, hilft jedoch auch ein manuelles Kopieren der
 Dateien.
+   </textblock>
 
+   <shell>
+    <root>
 cp vsftpd /usr/sbin/vsftpd
+    </root>
+    <root>
 cp vsftpd.conf.5 /usr/share/man/man5
+    </root>
+    <root>
 cp vsftpd.8 /usr/share/man/man8
+    </root>
+   </shell>
+
+   <textblock>
 Da die Beispiel-Konfigurationsdatei nicht mit kopiert wird, diese aber
-den Einstieg erleichtert, muß man auch hier noch einmal Hand anlegen:
+den Einstieg erleichtert, muss man auch hier noch einmal Hand anlegen:
+   </textblock>
 
+   <shell>
+    <root>
 cp vsftpd.conf /etc
+    </root>
+   </shell>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Konfiguration
+   </heading>
 
-
-
-1 Konfiguration
-
-Die Konfigurationsdatei zu vsftpd läßt sich unter "/etc/vsftpd.conf"
-finden. Wie bei den meisten Konfigurationsdateien werden auch bei vsftpd
+   <textblock>
+Die Konfigurationsdatei zu <command>vsftpd</command> lässt sich unter <path>/etc/vsftpd.conf</path>
+finden. Wie bei den meisten Konfigurationsdateien werden auch bei <command>vsftpd</command>
 Kommentare mit einer einleitenden Raute gekennzeichnet.
+   </textblock>
 
+   <file>
+    <content>
 # Kommentarzeile
 Eine beispielhafte Konfiguration könnte so aussehen:
 
@@ -185,19 +342,16 @@ anon_upload_enable=NO
 # Dürfen anonyme User Verzeichnisse erstellen? YES/NO
 anon_mkdir_write_enable=NO
 
-# Dürfen anonyme User andere Schreiboperationen wie Umbenennen oder
-Löschen durchführen? YES/NO
+# Dürfen anonyme User andere Schreiboperationen wie Umbenennen oder Löschen durchführen? YES/NO
 anon_other_write_enable=NO
 
 # Anmeldung von lokalen Usern erlauben? YES/NO
 local_enable=YES
 
-# Sollen lokale Benutzer in ihrem Homeverzeichnis eingesperrt werden?
-YES/NO
+# Sollen lokale Benutzer in ihrem Homeverzeichnis eingesperrt werden? YES/NO
 chroot_local_user=YES
 
-# Die maximal erlaubte Datentransferrate in Bytes/Sekunde für lokal
-angemeldete User. Vorgabe = 0 (unbegrenzt)
+# Die maximal erlaubte Datentransferrate in Bytes/Sekunde für lokal angemeldete User. Vorgabe = 0 (unbegrenzt)
 local_max_rate=7200
 
 # Schreibrechte prinzipiell erlauben? YES/NO
@@ -216,8 +370,7 @@ xferlog_enable=YES
 # Achtung! Durch diesen Eintrag können sehr große Datenmengen entstehen.
 log_ftp_protocol=NO
 
-# Versichern, daß Verbindungen nur an Port 20 (ftp-data) zustande
-kommen. YES/NO
+# Versichern, daß Verbindungen nur an Port 20 (ftp-data) zustande kommen. YES/NO
 connect_from_port_20=YES
 
 # Unterbrechung (time out) bei Leerlaufzeiten (idle sessions)
@@ -229,108 +382,175 @@ data_connection_timeout=120
 # Zugriff wird über Pluggable Authentication Modules (PAM) geregelt.
 pam_service_name=vsftpd
 
-# Standalone-Betrieb? YES/NO - abhängig vom Betriebsmodus (inetd,
-xinetd, Standalone)
-# Des Autors FTP-Dienst wird per xinetd gestartet, deswegen lautet der
-Wert hier NO.
+# Standalone-Betrieb? YES/NO - abhängig vom Betriebsmodus (inetd, xinetd, Standalone)
+# Des Autors FTP-Dienst wird per xinetd gestartet, deswegen lautet der Wert hier NO.
 listen=NO
+    </content>
+   </file>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Starten des FTP-Dienstes
+   </heading>
 
+   <textblock>
+<command>vsftpd</command> läßt sich auf drei verschiedene Arten betreiben. Zum einen über
+<command>inetd</command> oder <ref chapter="xinetd">xinetd</ref>, zum anderen im Standalone-Betrieb.
+   </textblock>
 
+   <section>
+    <heading>
+inetd
+    </heading>
 
-1 Starten des FTP-Dienstes
+    <textblock>
+Soll der FTP-Dienst via <command>inetd</command> betrieben werden, öffnet man die
+Konfigurationsdatei <path>/etc/inetd.conf</path> mit einem Editor:
+    </textblock>
 
-vsftpd läßt sich auf drei verschiedene Arten betreiben. Zum einen über
-inetd oder xinetd, zum anderen im Standalone-Betrieb.
-
-
-
-1.1 inetd
-
-Soll der FTP-Dienst via inetd betrieben werden, öffnet man die
-Konfigurationsdatei "/etc/inetd.conf" mit einem Editor:
-
+    <shell>
+     <root>
 vi /etc/inetd.conf
+     </root>
+    </shell>
 
+    <textblock>
 Dann sucht man sich die entsprechenden Zeilen zu den FTP-Diensten und
-entfernt nur noch das Kommentarzeichen vor dem vsftpd-Eintrag. Sollte
+entfernt nur noch das Kommentarzeichen vor dem <command>vsftpd</command>-Eintrag. Sollte
 kein entsprechender Eintrag vorhanden sein, kann man ihn auch manuell
-erstellen. Dabei ist zu beachten, daß nach den durchgeführten Änderungen
-der inetd zwingend neu gestartet werden muß. Der Eintrag sollte dann so
+erstellen. Dabei ist zu beachten, dass nach den durchgeführten Änderungen
+der inetd zwingend neu gestartet werden muss. Der Eintrag sollte dann so
 aussehen:
+    </textblock>
 
+    <file>
+     <content>
 # ftp   stream   tcp   nowait   root   /usr/sbin/tcpd   in.ftpd
 ftp   stream   tcp   nowait   root   /usr/sbin/tcpd   vsftpd
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+xinetd
+    </heading>
 
-
-
-1.1 xinetd
-
-Empfehlenswert ist es jedoch, den vsftp-Daemon per xinetd starten zu
-lassen, da dieser zahlreiche Erweiterungen gegenüber inetd besitzt.
+    <textblock>
+Empfehlenswert ist es jedoch, den <command>vsftp</command>-Daemon per <ref chapter="xinetd">xinetd</ref> starten zu
+lassen, da dieser zahlreiche Erweiterungen gegenüber <command>inetd</command> besitzt.
 Einige davon sind bspw. Protokollierung von Anfragen, Zugriffssteuerung,
 Bindung des Dienstes an bestimmte Netzwerkschnittstellen, et cetera.
-Eine sehr gute Einführung zum Thema xinetd findet man in diesem
-Kapitel. Auch hier ist nach erfolgter Modifikation ein Neustart des
-xinetd nötig. Die Konfiguration des xinetd könnte folgendermaßen
+Eine sehr gute Einführung zum Thema <command>xinetd</command> findet man in diesem
+<ref chapter="xinetd">Kapitel</ref>. Auch hier ist nach erfolgter Modifikation ein Neustart des
+<command>xinetd</command> nötig. Die Konfiguration des <command>xinetd</command> könnte folgendermassen
 aussehen:
+    </textblock>
 
+    <file>
+     <content>
 # vsftp daemon.
 service ftp
 {
-     disable = no
-     socket_type = stream
-     wait = no
-     user = root
-     server = /usr/sbin/vsftpd
-     per_source = 5
-     instances = 200
-     no_access = 192.168.1.3
-     banner_fail = /etc/vsftpd.busy_banner
-     log_on_success += PID HOST DURATION
-     log_on_failure += HOST
-     nice = 10
+ disable = no
+ socket_type = stream
+ wait = no
+ user = root
+ server = /usr/sbin/vsftpd
+ per_source = 5
+ instances = 200
+ no_access = 192.168.1.3
+ banner_fail = /etc/vsftpd.busy_banner
+ log_on_success += PID HOST DURATION
+ log_on_failure += HOST
+ nice = 10
 }
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+Standalone-Betrieb
+    </heading>
 
-
-
-1.1 Standalone-Betrieb
-
-Zusätzlich besteht die Möglichkeit, den vsftp-Daemon im
+    <textblock>
+Zusätzlich besteht die Möglichkeit, den <command>vsftp</command>-Daemon im
 Standalone-Modus zu betreiben. Dazu öffnet man wieder die Datei
-"/etc/vsftpd.conf" und führt die folgende Änderung durch:
+<path>/etc/vsftpd.conf</path> und führt die folgende Änderung durch:
+    </textblock>
 
+    <file>
+     <content>
 # Soll der vsftp-Daemon im Standalone-Betrieb laufen? YES/NO
 listen=YES
+     </content>
+    </file>
+
+    <textblock>
 Nach erfolgtem Eintrag kann man den Daemon dann durch die nachfolgend
 genannte Eingabe starten.
+    </textblock>
 
-/usr/sbin/vsftpd &
+    <shell>
+     <root>
+/usr/sbin/vsftpd &amp;
+     </root>
+    </shell>
 
+    <textblock>
 Sofern die Einstiegspfade richtig gesetzt sind, genügt zum Starten auch
 ein schlichtes
+    </textblock>
 
-vsftpd &
+    <shell>
+     <root>
+vsftpd &amp;
+     </root>
+    </shell>
 
+    <textblock>
 Durch die nächste Eingabe kann geprüft werden, ob die Einstiegspfade
 richtig gesetzt wurden:
+    </textblock>
 
+    <shell>
+     <root>
 echo $PATH
+     </root>
+     <output>
 /usr/sbin:/bin:/usr/bin:/sbin:/usr/X11R6/bin
+     </output>
+    </shell>
 
-Natürlich sollte man beim Betrieb im Standalone-Modus darauf achten, daß
-der vsftp-Daemon weder per inetd noch xinetd gestartet wird.
+    <textblock>
+Natürlich sollte man beim Betrieb im Standalone-Modus darauf achten, dass
+der <command>vsftp</command>-Daemon weder per <command>inetd</command>
+noch <ref chapter="xinetd">xinetd</ref> gestartet wird.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Funktionstest
+   </heading>
 
-
-1 Funktionstest
-
+   <textblock>
 Hat man die Installation und Konfiguration erfolgreich hinter sich
 gelassen, kann man das erste Mal auf seinen FTP-Server zugreifen.
+   </textblock>
 
+   <shell>
+    <root>
 ftp phobos
+    </root>
+    <output>
 Connected to phobos
 220 "Welcome to neo5k's FTP service."
 Name (phobos:neo5k): testuser
@@ -339,27 +559,40 @@ Password:
 230 Login successful
 Remote system type is UNIX.
 Using binary mode to transfer files.
+    </output>
+    <input>
 ftp> ls -l
+    </input>
+    <output>
 229 Entering Extended Passive Mode
 150 Here comes the directory listing
 drwxr-xr-x      11  500      100         400  May 07 16:22  docs
 drwxr-xr-x        9  500      100         464  Feb   01 23:05  hlds
 drwxr-xr-x      39  500      100       4168  May 10 09:15  projects
 226 Directory send OK.
-ftp>
+    </output>
+   </shell>
+  </section>
 
+  <section>
+   <heading>
+Fazit
+   </heading>
 
-
-
-1 Fazit
-
-Wie man sehen konnte, ist der vsftp-Daemon weder schwer aufzusetzen
+   <textblock>
+Wie man sehen konnte, ist der <command>vsftp</command>-Daemon weder schwer aufzusetzen
 noch schwierig zu konfigurieren. Trotzdem bietet er zahlreiche
 Funktionsmerkmale und ein hohes Maß an Sicherheit.
+   </textblock>
 
-Es versteht sich von selbst, daß diese Einführung nur einen kleinen
-Ausschnitt aus der Welt von vsftpd bieten kann, da der FTP-Server
+   <textblock>
+Es versteht sich von selbst, dass diese Einführung nur einen kleinen
+Ausschnitt aus der Welt von <command>vsftpd</command> bieten kann, da der FTP-Server
 äußerst umfangreiche Konfigurationsmöglichkeiten zur Verfügung stellt.
-Wer sich nach diesem Artikel eingehender mit vsftpd beschäftigen möchte,
+Wer sich nach diesem Artikel eingehender mit <command>vsftpd</command> beschäftigen möchte,
 sollte die Projektseite unter http://www.vsftpd.beasts.org/ besuchen
 und sich dort die umfangreiche Dokumentation zu Gemüte führen.
+   </textblock>
+  </section>
+ </split>
+</chapter>
