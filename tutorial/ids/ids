@@ -90,8 +90,9 @@ Begriffsklärung und Einordnung der verschiedenen Systeme
 Um ein Intrusion Detection System konkretisieren zu können,
 ist zunächst die Frage zu klären, durch was
 <strong>Eindringen</strong> (Intrusion) überhaupt gekennzeichnet ist.
-Heberlein, Levitt und Mukherjee von der University of
-California, und Davis haben sie 1991 wie folgt definiert:
+<name>Heberlein</name>, <name>Levitt</name> und <name>Mukherjee</name>
+von der University of California, und <name>Davis</name> haben sie 1991
+wie folgt definiert:
     </textblock>
 
     <quotation>
@@ -140,17 +141,16 @@ zu erkennen - geschweige denn - ihnen entgegenzuwirken.
     </textblock>
 
     <textblock>
-Bei Host basierten
-Intrusion Detection Systemen (HIDS) läuft ein Teil der 
-Überwachungssoftware (nämlich die 
+Bei Host basierten Intrusion Detection Systemen (HIDS) läuft ein Teil der
+Überwachungssoftware (nämlich die
 <ref iref="Aufbau eines IDS">Ereigniskomponente</ref>
 auf dem zu überwachenden Rechner (Host),
 d. h. dass die zu analysierenden Daten von diesem
 Host stammen. Angriffsanalyse, Protokollierung und
 eventuelle Gegenmaßnahmen sind nicht zwangsweise auf
 einen Rechner beschränkt. Zur Gruppe der HIDS zählen die so
-genannten System-Integritäts-Verifikatoren (SIV), zu denen
-z. B. auch <command>tripwire</command> und 
+genannten <strong>System-Integritäts-Verifikatoren</strong> (SIV), zu denen
+z. B. auch <command>tripwire</command> und
 <ref chapter="samhain">samhain</ref> gehören.
     </textblock>
 
@@ -161,8 +161,9 @@ zu nennen. Die meisten Netzwerk-IDS arbeiten im promiscious-Modus.
     </textblock>
 
     <textblock>
-Honeypots (Honigtöpfe) geben fälschlicherweise vor, wichtige Daten vorzuhalten
-und lenken damit von den tatsächlich sicherheitskritischen Systemen ab.
+<strong>Honeypots</strong> (Honigtöpfe) geben fälschlicherweise vor,
+wichtige Daten vorzuhalten und lenken damit von den tatsächlich
+sicherheitskritischen Systemen ab.
 Bei einem Angriff protokollieren sie alle Aktivitäten des Angreifers
 mit dem Ziel, diesen möglichst frühzeitig überführen zu können und
 zwar ohne sensitive Daten preiszugeben.
@@ -208,17 +209,17 @@ einen Angriff aus.
     <textblock>
 Schwachstellen lassen sich aber auch oftmals in der
 auf dem System vorhandenen Software finden - meist in
-Form von Pufferüberläufen (Buffer Overflows), durch die ein 
+Form von Pufferüberläufen (Buffer Overflows), durch die ein
 normaler Benutzer u. U. sogar
 <ref chapter="nutzer_unter_linux" iref="root">root</ref>-Rechte
 erlangen kann. Besonders
-negativ aufgefallen sind der DNS-Daemon BIND, welcher schon seit
-Jahrzehnten unter Unix und seinen Derivaten markführend ist,
+negativ aufgefallen sind der DNS-Daemon <ref chapter="dns" iref="Bind">BIND</ref>,
+welcher schon seit Jahrzehnten unter Unix und seinen Derivaten markführend ist,
 der FTP-Server WuFTP und natürlich der <strong>Klassiker</strong>, der
 Microsoft Internet Information Server. Durch die ersten beiden Programme
 gelangten die ersten Würmer in die Unix-Welt. Mittlerweile gibt es
 sogar einen Wurm, der eine Kombination aus Sicherheitslöchern
-im Microsoft IIS und BIND ausnutzt.
+im Microsoft IIS und <ref chapter="dns" iref="Bind">BIND</ref> ausnutzt.
     </textblock>
 
     <textblock>
@@ -226,7 +227,8 @@ Fälschlicherweise wird oft angenommen, dass Einbruchsversuche
 grundsätzlich nur in Firmen-Netzwerken oder in großen
 Organisationen geschehen. Tatsächlich ist jeder private
 Internetnutzer den Gefahren eines Angriffs ausgesetzt. Aber eine
-IP-Adresse, von der man weiß, dass die dahinter steckenden
+<ref chapter="tcpip" iref="Adressierung im IP">IP-Adresse</ref>,
+von der man weiß, dass die dahinter steckenden
 Rechnersysteme häufig wechseln, ist nicht halb so interessant
 wie ein System, welches dauerhaften Kontakt zum Internet hat oder
 gar mehrere Systeme in einem Netzwerk, die für einen der
@@ -305,7 +307,7 @@ auf lange unbenutzte Benutzerkonten, neue ungewöhnliche
 Benutzerkonten, etc.),
      </li>
      <li>
-ungewöhnliche Systemprozesse oder Kernel-Module,
+ungewöhnliche Systemprozesse oder <ref chapter="kernel">Kernel-Module</ref>,
      </li>
      <li>
 abnormal hohe CPU-/Speicherauslastung, ungewöhnliches
@@ -378,7 +380,7 @@ Aufbau und Funktionalität eines IDS
 
    <textblock>
 Im Allgemeinen erledigt ein MD-IDS seine Arbeit in drei Schritten,
-wie Abbildung 2 veranschaulicht.
+wie folgende Abbildung veranschaulicht.
    </textblock>
 
    <image>
