@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<chapter>
 
- <title>Journaling Dateisysteme für Linux</title>
+<chapter>
+ <title>>Journaling Dateisysteme</title>
+
+ <author>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</name>
+ </author>
 
  <author>
   <name>Jörn Bruns</name>
@@ -25,19 +30,20 @@ Vorbemerkung
 
    <textblock>
 Ein Dateisystem ermöglicht das Ablegen und Bearbeiten von Dateien und
-Verzeichnissen auf einem Datenträger.<br/>
-Damit ist hier nicht die Hierarchie des UNIX-Verzeichnisbaumes mit
-<path>/var</path>, <path>/usr</path> ... gemeint, sondern die unterliegende Struktur, um
-die Daten physikalisch auf dem Datenträger abzulegen.
+Verzeichnissen auf einem Datenträger. Damit ist hier nicht die Hierarchie
+des UNIX-Verzeichnisbaumes mit <path>/var</path>, <path>/usr</path>, etc.
+gemeint, sondern die unterliegende Struktur, um die Daten physikalisch auf
+dem Datenträger abzulegen.
    </textblock>
 
    <textblock>
 Für Linux gibt es inzwischen eine größere Auswahl an Dateisystemen mit
-jeweils verschiedenen Vor- und Nachteilen.<br/>
-Da wären einerseits das traditionelle <ref iref="Ext2 und Ext3">Ext2</ref>, andererseits die Journaling
-Dateisysteme <ref iref="Ext2 und Ext3">Ext3</ref>, <ref iref="ReiserFS">ReiserFS</ref>, <ref iref="IBM-JFS">JFS</ref> und <ref iref="SGI-XFS">XFS</ref>.
-Es gilt nun, für die jeweilige Nutzung das am besten geeignete
-auszuwählen.
+jeweils verschiedenen Vor- und Nachteilen. Da wären einerseits das
+traditionelle <ref iref="Ext2 und Ext3">Ext2</ref>, andererseits die
+Journaling Dateisysteme <ref iref="Ext2 und Ext3">Ext3</ref>,
+<ref iref="ReiserFS">ReiserFS</ref>, <ref iref="IBM-JFS">JFS</ref> und
+<ref iref="SGI-XFS">XFS</ref>. Es gilt nun, für die jeweilige Nutzung das
+am besten geeignete auszuwählen.
    </textblock>
 
    <textblock>
@@ -80,8 +86,13 @@ aus Performance-Gründen zunächst im Arbeitsspeicher gehalten.
 Für die Anwendungen gelten die Daten aber schon in diesem Zustand
 als gespeichert, damit diese zügig weiterarbeiten können.
 Im Arbeitsspeicher wird zusätzlich die Reihenfolge der
-Schreibzugriffe so umgestellt, dass die Kopfbewegungen der Festplatte
-erheblich reduziert werden.<br/> 
+Schreibzugriffe so umgestellt, dass möglichst viele Schreibzugriffe
+auf einmal durchgeführt werden können. Durch die Firmware der Festplatten
+wird die nochmals optimiert, so dasse Kopfbewegungen der Festplatte
+erheblich reduziert werden.
+     </textblock>
+
+     <textblock>
 Die Daten werden anschließend, mit einer gewissen zeitlichen 
 Verzögerung, in einem Rutsch auf die Festplatte geschrieben.
 Dieses als Caching bezeichnete Verfahren ermöglicht ein wesentlich
@@ -90,16 +101,15 @@ schnelleres Arbeiten.
 
      <textblock>
 Fällt nun aber plötzlich der Strom aus, ist nicht klar, in welchem
-Zustand die Daten gerade waren.<br/>
-Sind sie auf die Platte geschrieben oder waren sie noch im
-Arbeitsspeicher?
+Zustand die Daten gerade waren. Sind sie auf die Platte geschrieben
+oder waren sie noch im Arbeitsspeicher?
      </textblock>
 
      <textblock>
 Deshalb ist in solch einem Fall ohne Journaling eine Prüfung aller
 Dateien notwendig, was bei größeren Festplatten sehr lange, bis zu
-mehrere Stunden, dauern kann.<br/>
-Dies ist für Produktiv-Systeme in der Regel nicht akzeptabel.
+mehrere Stunden, dauern kann. Dies ist für Produktiv-Systeme in der
+Regel nicht akzeptabel.
      </textblock>
 
      <textblock>
@@ -111,8 +121,8 @@ nicht mehr reparieren, was allerdings sehr selten vorkommt.
      <textblock>
 Das Journaling-Dateisystem vermeidet derartig lange
 Dateisystem-Prüfungen. Darüber hinaus werden die genannten
-Inkonsistenzen, die in seltenen
-Fällen das Dateisystem zerstören können, verhindert.
+Inkonsistenzen, die in seltenen Fällen das Dateisystem zerstören können,
+meist vermieden.
      </textblock>
     </section>
 
@@ -129,10 +139,9 @@ Metadaten
       <textblock>
 Ein Dateisystem benötigt interne Verwaltungs-Strukturen, welche
 die eigentlichen Daten der Festplatte organisieren und griffbereit
-halten.<br/>
-Solche internen Strukturen werden Metadaten genannt und sind sozusagen
-die Daten über die Daten.
-Die Metadaten definieren z.B., wo die Datenblöcke einer Datei zu finden
+halten. Solche internen Strukturen werden <strong>Metadaten</strong> genannt
+und sind sozusagen die Daten über die Daten.
+Die Metadaten definieren z. B., wo die Datenblöcke einer Datei zu finden
 sind, wer Besitzer ist, die Rechte, die letzten Zugriffszeitpunkte
 und anderes mehr.
       </textblock>
@@ -165,20 +174,18 @@ Anlegen einer neuen Datei, werden die dafür nötigen
 Metadaten-Änderungen zunächst ausschließlich in das Journal
 geschrieben, welches eine Art Log-Datei darstellt.
 Diese Einträge im Journal gelten solange nicht für das Dateisystem,
-bis die Journal-Einträge mit einem "commit" abgeschlossen werden.
-Erst dann werden die neuen Metadaten auf die Festplatte geschrieben.
+bis die Journal-Einträge mit einem <strong>commit</strong> abgeschlossen
+werden. Erst dann werden die neuen Metadaten auf die Festplatte geschrieben.
       </textblock>
 
       <textblock>
-Wie soll dies nun vor Inkonsistenzen nach einem Systemabsturz schützen?<br/>
-Nach einem Neustart zieht das Dateisystem als erstes das Journal zu
-Rate.
-Sind die Einträge im Journal schon mit einem <strong>commit</strong> abgeschlossen, 
-sind die Metadaten gültig und die Einträge werden auf die Festplatte
-übertragen.
-Fehlt das <strong>commit</strong> als abschließender Eintrag, werden die Metadaten
-nicht
-von dem Journal auf die Festplatte geschrieben, sondern verworfen.
+Wie soll dies nun vor Inkonsistenzen nach einem Systemabsturz schützen?
+Nach einem Neustart zieht das Dateisystem als erstes das Journal zu Rate.
+Sind die Einträge im Journal schon mit einem <strong>commit</strong>
+abgeschlossen, sind die Metadaten gültig und die Einträge werden auf
+die Festplatte übertragen. Fehlt das <strong>commit</strong> als
+abschließender Eintrag, werden die Metadaten nicht von dem Journal auf
+die Festplatte geschrieben, sondern verworfen.
       </textblock>
 
       <textblock>
@@ -189,26 +196,23 @@ Wartezeiten bewirkt.
 
       <textblock>
 Was ist nun mit den eigentlichen Daten, wann werden diese auf die 
-Festplatte gespeichert?<br/>
-Das ist bei den verschiedenen Dateisystemen verschieden implementiert.
-Bei <strong>Ext3</strong> werden zunächst die eigentlichen Daten auf die Festplatte
-geschrieben,
-erst anschließend wird das abschließende Commit im Journal gesetzt.
-Bei den anderen Journaling Dateisystemen können dagegen die Metadaten
+Festplatte gespeichert? Das ist bei den verschiedenen Dateisystemen
+verschieden implementiert. Bei <strong>Ext3</strong> werden zunächst die
+eigentlichen Daten auf die Festplatte geschrieben,
+erst anschließend wird das abschließende <strong>commit</strong> im Journal
+gesetzt. Bei den anderen Journaling Dateisystemen können dagegen die Metadaten
 schon auf die Festplatte geschrieben werden, bevor die Daten komplett
-auf der Festplatte sind, was zu Problemen führen kann, aber
-schneller ist.
+auf der Festplatte sind, was zu Problemen führen kann, aber schneller ist.
 Hier hat <strong>Ext3</strong> in Sachen Sicherheit die Nase vorn.
       </textblock>
 
       <textblock>
-Die Integrität der eigentlichen Daten stellt das Journal leider nicht
-sicher.
+Die Integrität der eigentlichen Daten stellt das Journal leider nicht sicher.
 Es kann also durchaus sein, das nach einem Absturz eine Datei einen
 Mix aus einer alten und neuen Version enthält.
-Auch hier hat <strong>Ext3</strong> die Nase vorn, denn nur <strong>Ext3</strong> kann über die
-Metadaten hinaus auch die Datenänderungen selbst mitprotokollieren,
-mehr dazu siehe <ref iref="Ext2 und Ext3">Ext2 und Ext3</ref>
+Auch hier hat <strong>Ext3</strong> die Nase vorn, denn nur <strong>Ext3</strong>
+kann über die Metadaten hinaus auch die Datenänderungen selbst
+mitprotokollieren, mehr dazu siehe <ref iref="Ext2 und Ext3">Ext2 und Ext3</ref>.
       </textblock>
      </section>
     </section>
@@ -222,12 +226,11 @@ Binärbäume
     <textblock>
 Ein Binärbaum ermöglicht einen beschleunigten Zugriff auf die
 Informationen der Verzeichniseinträge, insbesondere bei Verzeichnissen
-mit vielen Dateien und Unterverzeichnissen.
-Bei einem traditionellen Dateisystem wie <strong>Ext2/Ext3</strong> müssen der Reihe
+mit vielen Dateien und Unterverzeichnissen. Bei einem traditionellen
+Dateisystem wie <strong>Ext2/Ext3</strong> müssen der Reihe
 nach alle Verzeichniseinträge durchgegangen werden, bis der gesuchte
-Eintrag gefunden ist.
-Somit ermöglicht ein Binärbaum ein beschleunigtes Suchen im
-Dateisystem.
+Eintrag gefunden ist (doppelt verzeigerte Liste).
+Somit ermöglicht ein Binärbaum ein beschleunigtes Suchen im Dateisystem.
     </textblock>
 
     <textblock>
@@ -237,8 +240,7 @@ Beispiel:
     <hint>
 Wird ein Verzeichnis mit 1000 Einträgen nach einem Dateinamen
 durchsucht, sind ohne Binärbaum-Struktur durchschnittlich 500
-Suchaktionen
-notwendig, mit Hilfe eines Binärbaum dagegen nur 10.
+Suchaktionen notwendig, mit Hilfe eines Binärbaum dagegen nur 10.
     </hint>
     
     <textblock>
@@ -268,8 +270,6 @@ nahezu beliebig viele Nutzer und Gruppen vergeben werden, was
 insbesondere für Netzwerkanwendungen sehr nützlich ist.
 So kann einer Gruppe Lese-, einer anderen Gruppe Schreibrecht
 gegeben werden, alle anderen können ausgeschlossen werden.
-Weitere Informationen zu ACLs sind zu finden unter
-[LINK SelfLinux->Sicherheit->Erweiterte Dateiattribute]
     </textblock>
 
     <textblock>
@@ -292,10 +292,9 @@ großer Vorsicht genossen werden.
 
     <textblock>
 Außerdem entwickeln sich die neueren Dateisysteme rasant, so dass die
-Tests oft schon veraltet sind.
-Und es ist die Frage, wie relevant die Geschwindigkeit für die Praxis
-ist.
-Deshalb sind hier nur allgemeine Tendenzen der Dateisysteme angegeben.
+Tests oft schon veraltet sind. Und es ist die Frage, wie relevant die
+Geschwindigkeit für die Praxis ist. Deshalb sind hier nur allgemeine
+Tendenzen der Dateisysteme angegeben.
     </textblock>
    </section>
 
@@ -307,14 +306,12 @@ Regelmäßige Dateisystem-Check
     <textblock>
 Journaling verhindert leider nicht die regelmäßigen
 Dateisystem-Überprüfungen, wie oft behauptet wird.
-Ist der <strong>maximum mount count</strong> (oft nach dem 24. mounten) oder aber
-der <strong>check intervall</strong> (oft nach einem halben Jahr ohne
-Dateisystem-Check)
-überschritten, löst ein Neustart eine Dateisystemprüfung aus, was 
-natürlich oft sehr störend ist.
-Es sollen damit einerseits Fehler im Dateisystem-Code begegnet, 
-andererseits frühzeitig Hardware-Fehler erkannt werden, wie etwa 
-defekte Sektoren.
+Ist der <strong>maximum mount count</strong> (oft nach dem 24. mounten) oder
+aber der <strong>check intervall</strong> (oft nach einem halben Jahr ohne
+Dateisystem-Check) überschritten, löst ein Neustart eine Dateisystemprüfung
+aus, was  natürlich oft sehr störend ist. Es sollen damit einerseits Fehler
+im Dateisystem-Code begegnet, andererseits frühzeitig Hardware-Fehler
+erkannt werden, wie etwa  defekte Sektoren.
     </textblock>
    </section>
 
@@ -355,27 +352,25 @@ Ext2 und Ext3
 
     <textblock>
 Bis vor kurzem war <strong>Ext2</strong> das einzig ernsthaft nutzbare
-Linux-Dateisystem.
-Es ist sehr stabil, da es seit 1993 für Linux entwickelt und
-korrigiert wird.<br/>
-<strong>Ext2</strong> enthält keine Journal-Funktion und muss ohne Binärbaum
-auskommen,<br/>
-<strong>Ext3</strong> ist ein <strong>Ext2</strong>, das um das Journaling erweitert wurde.<br/>
-<strong>Ext2</strong> kann in <strong>Ext3</strong> umgewandelt werden und umgekehrt.
+Linux-Dateisystem. Es ist sehr stabil, da es seit 1993 für Linux entwickelt
+und korrigiert wird. <strong>Ext2</strong> enthält keine Journal-Funktion
+und muss ohne Binärbaum auskommen, <strong>Ext3</strong> ist ein
+<strong>Ext2</strong>, das um das Journaling erweitert wurde.
+<strong>Ext2</strong> kann in <strong>Ext3</strong> umgewandelt werden
+und umgekehrt. Diese Konvertierung ist zwischen anderen Dateisysteme nicht
+möglich.
     </textblock>
 
     <textblock>
-Die Geschwindigkeit scheint erstaunlich gut zu sein für die klassische,
-<strong>unmoderne</strong> Architektur des Dateisystems. Nur bei sehr große Dateien im
-GB-Bereich sowie bei Verzeichnissen mit tausenden von Dateien scheint
-Ext2/3 von der Konkurrenz deutlich abgehängt zu werden. Aber selbst
-dazu
-geben die verschiedenen Tests keine eindeutige Aussage.
+Die Geschwindigkeit scheint akzeptabel zu sein für die klassische,
+<strong>unmoderne</strong> Architektur des Dateisystems. Nur bei sehr große
+Dateien im GB-Bereich sowie bei Verzeichnissen mit tausenden von Dateien
+scheint Ext2/3 von der Konkurrenz deutlich abgehängt zu werden.
     </textblock>
 
     <textblock>
-Wie bereits weiter oben erwähnt, hat <strong>Ext3</strong> zwei Features, welche die
-anderen <strong>modernen</strong> Dateisysteme nicht haben.
+Wie bereits weiter oben erwähnt, hat <strong>Ext3</strong> zwei Funktionen,
+welche die anderen <strong>modernen</strong> Dateisysteme nicht haben.
     </textblock>
 
     <textblock>
@@ -387,23 +382,23 @@ zur Beschleunigung übrigens deaktivierbar mit der Mount-Option
     </textblock>
 
     <textblock>
-     Zum anderen kann <strong>Ext3</strong> als einziger Kandidat auch die Daten
-selbst in sein Journal eintragen, was aber meistens einen
-starken Geschwindigkeitseinbruch zu bewirken scheint. Um diese
-Funktion zu aktivieren, muss die Mount-Optionenn <command>data=journal</command> in die
-<path>/etc/fstab</path> eingetragen werden.
-Wird dies so eingerichtet, empfiehlt sich zur Beschleunigung das 
-Auslagern des Journals auf eine weitere Festplatte.
+Zum anderen kann <strong>Ext3</strong> als einziger Kandidat auch die Daten
+selbst in sein Journal eintragen, was aber meistens einen starken
+Geschwindigkeitseinbruch bewirkt. Um diese Funktion zu aktivieren, muss die
+Mount-Optionenn <command>data=journal</command> in die <path>/etc/fstab</path>
+eingetragen werden. Wird dies so eingerichtet, empfiehlt sich zur
+Beschleunigung das  Auslagern des Journals auf eine weitere Festplatte.
     </textblock>
 
     <textblock>
-Des Weiteren hat <strong>Ext2/3</strong> die meisten ergänzenden Zusatz-Programme.
+Des Weiteren hat <strong>Ext2/3</strong> die meisten ergänzenden
+Zusatz-Programme.
     </textblock>
 
     <textblock>
-Wenn es also darum geht, ein sehr zuverlässiges Linux aufzusetzen, die
+Wenn es also darum geht, ein sehr zuverlässiges Linux aufzusetzen und die
 Geschwindigkeit des Dateisystems nicht das Allerwichtigste ist,
-scheint Ext3 eine sehr gute Wahl zu sein.
+scheint <strong>Ext3</strong> eine gute Wahl zu sein.
     </textblock>
    </section>
 
@@ -413,10 +408,11 @@ ReiserFS
     </heading>
 
     <textblock>
-<strong>ReiserFS</strong> wurde als einziges der hier erwähnten Journaling Dateisysteme 
-komplett neu für Linux geschrieben.
+<strong>ReiserFS</strong> wurde als einziges der hier erwähnten
+Journaling Dateisysteme  komplett neu für Linux geschrieben.
 Es ist das neueste Dateisystem, gleichzeitig ist es jedoch auch
-das am längsten für Linux verfügbare Journaling-Dateisystem.
+das am längsten für Linux verfügbare Journaling-Dateisystem. Auch wenn es in
+den Anfangszeiten kein Journaling bereitstellte.
     </textblock>
 
     <textblock>
@@ -430,26 +426,24 @@ Durch den konsequenten Einsatz neuer Techniken sollte man annehmen,
 ReiserFS sei das schnellste aller Dateisysteme.
 Den Tests nach zu urteilen ist dies aber nicht unbedingt so.
 Es zeigt sich jedoch, dass <strong>ReiserFS</strong> viele kleine Dateien
-schnell löschen kann wie kein anderes Linux-Dateisystem.
+schneller löschen kann als jedes andere Linux-Dateisystem.
     </textblock>
 
     <textblock>
-<strong>ReiserFS</strong> unterstützt im Kernel 2.6 als einziges Dateisystem keine
-<ref iref="Flexibleres setzen der Rechte durch ACLs (Access
-Control Lists)">ACLs</ref>, was dieses Dateisystem für den Fileserver Samba weniger
-attraktiv macht, zumindest wenn dort diese erweiterten Rechte genutzt 
-werden sollen.
+<strong>ReiserFS</strong> unterstützt im Kernel 2.6 als einziges Dateisystem
+keine <ref iref="Flexibleres setzen der Rechte durch ACLs (Access Control Lists)">ACLs</ref>,
+was dieses Dateisystem für den Fileserver Samba weniger attraktiv macht,
+zumindest wenn dort diese erweiterten Rechte genutzt  werden sollen.
     </textblock>
 
     <textblock>
-Es scheint so, dass es relativ wenig Hilfs-Programme für <strong>ReiserFS</strong> gibt.
+Es gibt auch nur sehr wenige Hilfs-Programme für <strong>ReiserFS</strong>.
     </textblock>
 
     <textblock>
-<strong>ReiserFS</strong> gilt in den neueren Tests als sehr stabil.
-Es gab in der Vergangenheit mehrere Probleme 
-mit einigen Anwendungen, wie mit NFS, die aber anscheinend inzwischen
-behoben sind.
+<strong>ReiserFS</strong> gilt in den neueren Tests als akzeptabel stabil.
+Es gab in der Vergangenheit mehrere Probleme  mit einigen Anwendungen,
+wie mit NFS, die aber anscheinend inzwischen behoben sind.
     </textblock>
 
     <textblock>
@@ -457,12 +451,19 @@ Mit einigen Einschränkungen muss <strong>ReiserFS</strong> leben:
     </textblock>
 
     <ul>
-     <li>Softraid ist nicht implementiert</li>
-     <li>Die Blockgröße ist auf 4K festgelegt</li>
-     <li>Es ist auf x86-Plattformen beschränkt</li>
-     <li>Quota, also Beschränkung auf eine maximalen Größe, die z.B.
-	 ein Home-Verzeichnis haben darf, wird nicht unterstützt</li>
-     <li>Es unterstützt keine ACLs</li>
+     <li>
+Die Blockgröße ist auf 4K festgelegt.
+     </li>
+     <li>
+Es ist auf x86-Plattformen beschränkt.
+     </li>
+     <li>
+Quota, also Beschränkung auf eine maximalen Größe, die z. B.
+ein Home-Verzeichnis haben darf, wird nicht unterstützt.
+     </li>
+     <li>
+Es unterstützt keine ACLs.
+     </li>
     </ul>
    </section>
 
@@ -472,18 +473,17 @@ IBM-JFS
     </heading>
 
     <textblock>
-Unter OS2 und AIX schon länger bewährt, hat <strong>IBM JFS</strong> auf Linux portiert
-und unter GNU freigegeben. <strong>JFS</strong> ist Bestandteil des Standard-Kernels
-ab der Version 2.4.20.
+Unter OS2 und AIX schon länger bewährt, hat <strong>IBM JFS</strong> auf  Linux
+portiert und unter GPL freigegeben. <strong>JFS</strong> ist Bestandteil des
+Standard-Kernels ab der Version 2.4.20.
     </textblock>
 
     <textblock>
-Die anfänglichen Stabilitätsprobleme scheinen überwunden. 
+Die anfänglichen Stabilitätsprobleme scheinen überwunden zu sein.
 Die Entwicklung ist aber noch nicht sehr weit vorangeschritten, so 
 gibt es keine Quotas und die Hilfswerkzeuge, welche unter AIX zur 
 Verfügung stehen, sind unter Linux nur zu einem geringem Umfang 
-verfügbar. 
-Auch die Dokumentation ist bisher eher knapp gehalten.
+verfügbar.  Auch die Dokumentation ist bisher eher knapp gehalten.
     </textblock>
 
     <textblock>
@@ -497,33 +497,32 @@ SGI-XFS
     </heading>
 
     <textblock>
-Auch <strong>XFS</strong> scheint inzwischen stabil zu laufen. In einigen Tests holt
+Auch <strong>XFS</strong> läuft inzwischen sehr stabil. In einigen Tests holt
 es sich Performance-Siege ein, v.a. beim Kopieren vieler kleiner
 Dateien als auch im Umgang mit sehr großen Dateien im GB Bereich.
     </textblock>
 
     <textblock>
-Der Bootmanager <command>LILO</command> muss so konfiguriert werden, das er in den MBR
-(Master Boot Record),
-nicht in die Root-Partition installiert wird, damit das System
-bootfähig ist.
-<command>GRUB</command>, ein anderer Bootmanager, kann seit der Version 0.91 mit <strong>XFS</strong>
-umgehen.
+Der Bootmanager <command>LILO</command> muss so konfiguriert werden,  das er
+in den MBR (Master Boot Record), nicht in die Root-Partition installiert
+wird, damit das System bootfähig ist.
+<command>GRUB</command>, ein anderer Bootmanager, kann seit der Version 0.91
+mit <strong>XFS</strong> umgehen.
     </textblock>
 
     <textblock>
-Von den hier vorgestellten Dateisystemen ist <strong>XFS</strong> als letztes in den 
-Kernel 2.4 integriert worden, seit der Version 2.4.25.
-Im Kernel 2.6 ist es seit dem ersten Release dabei.
+Von den hier vorgestellten Dateisystemen ist <strong>XFS</strong> als letztes
+in den  Kernel 2.4 integriert worden, seit der Version 2.4.25. Im Kernel 2.6
+ist es seit dem ersten Release dabei.
     </textblock>
 
     <textblock>
-<strong>XFS</strong> hat viele Werkzeuge zur Verwaltung des Dateisystems zu bieten,
-wie etwa zur Daten-Sicherung inklusive der ACL-Rechte (<command>xfsdump</command>),
-Partitionen vergrößern (<command>xfs_growfs</command>) oder Rettungs-Tools.
-Von der Anzahl und Vielseitigkeit dieser Werkzeuge her kann dem nur
-<strong>Ext2/3</strong> das Wasser reichen. Außerdem ist die Dokumentation 
-umfangreich.
+<strong>XFS</strong> hat viele Werkzeuge zur Verwaltung des Dateisystems zu
+bieten, wie etwa zur Daten-Sicherung inklusive der ACL-Rechte
+(<command>xfsdump</command>), Partitionen vergrößern
+(<command>xfs_growfs</command>) oder Rettungs-Tools. Von der Anzahl und
+Vielseitigkeit dieser Werkzeuge her kann dem nur <strong>Ext2/3</strong>
+das Wasser reichen. Außerdem ist die Dokumentation umfangreich.
     </textblock>
    </section>
   </section>
@@ -536,31 +535,39 @@ Fazit
    </heading>
 
    <textblock>
-Für eine normale Workstation, einen Laptop und selbst für viele
-Server-Systeme ist es nicht relevant, welches der genannten Dateisystem
-genutzt wird, solange es über Journaling-Funktionalitäten verfügt.
-Der Anwender wird die Unterschiede selten zu spüren bekommen.
+Für eine normale Workstation oder einen Laptop ist es nicht sonderlich
+relevant, welches der genannten Dateisysteme genutzt wird, solange es über
+Journaling-Funktionalitäten verfügt. Der Anwender wird die Unterschiede
+selten zu spüren bekommen. Anders sieht es hier im Server-Bereich aus. Hier
+kann die Wahl des falschen Dateisystems sehr neagtive Auswirkungen auf die
+Gesamtgeschwindigkeit des Systems haben. Hier sollte man vor allem bei
+grösseren Installationen unbedingt eigene Tests unter den zu erwartenden
+Bedingungen durchführen.
    </textblock>
 
    <textblock>
 Soll Samba mit ACLs genutzt werden, sollte ein Dateisystem um diese
-Funktionalität ergänzt werden. Nur <strong>ReiserFS</strong> ist dazu derzeit nicht
-in der Lage und schließt sich somit für diesen Anwendungsfall aus.
+Funktionalität ergänzt werden. Nur <strong>ReiserFS</strong> ist dazu
+derzeit nicht in der Lage und schließt sich somit für diesen
+Anwendungsfall aus.
    </textblock>
 
    <textblock>
-<strong>Ext2</strong>, vor allem aber <strong>Ext3</strong> scheinen noch lange nicht überlebt zu sein.
-<strong>Ext3</strong> hat einige Funktionen, die kein anderes der hier genannten
-Dateisystem bieten kann, siehe <ref iref="Ext2 und Ext3">Ext2 und Ext3</ref> .
-Vor allem ist <strong>Ext2/3</strong> das bewährteste Dateisystem, das weitgehend
-fehlerbereinigt ist.
-Soll also ein möglichst stabiles System eingerichtet werden, könnte 
-<strong>Ext3</strong> die erste Wahl sein.
+<strong>Ext2</strong>, vor allem aber <strong>Ext3</strong> scheinen noch
+lange nicht überlebt zu sein. <strong>Ext3</strong> hat einige Funktionen,
+die kein anderes der hier genannten Dateisystem bieten kann, siehe
+<ref iref="Ext2 und Ext3">Ext2 und Ext3</ref> . Vor allem ist
+<strong>Ext2/3</strong> das bewährteste Dateisystem, das weitgehend
+fehlerbereinigt ist. Soll also ein möglichst stabiles System eingerichtet
+werden, könnte  <strong>Ext3</strong> die erste Wahl sein.
    </textblock>
 
    <textblock>
-<strong>ReiserFS</strong> scheint inzwischen ebenfalls einen sehr stabilen Status
-erreicht zu haben und hat sich seit einigen Jahren bewährt.
+<strong>ReiserFS</strong> scheint inzwischen ebenfalls einen einigermassen
+stabilen Zustand erreicht zu haben und hat sich seit einigen Jahren bewährt.
+Dennoch liest man immer wieder von extremen Probleme in Bezug auf
+<strong>ReiserFS</strong>, wenn es zu einem Ausfall gekommen ist. Diese
+können bis hin zum totalen Datenverlust gehen.
    </textblock>
 
    <textblock>
@@ -569,15 +576,13 @@ und Erfahrungen mit <strong>JFS</strong> und <strong>XFS</strong> unter Linux.
    </textblock>
 
    <textblock>
-Die Beurteilungen von <strong>XFS</strong> und <ref>JFS</ref> fallen in den Tests sehr
-unterschiedlich aus. Dies liegt vermutlich auch an der kurzen
+Die Beurteilungen von <strong>XFS</strong> und <ref>JFS</ref> fallen in den
+Tests sehr unterschiedlich aus. Dies liegt vermutlich auch an der kurzen
 Bewährungszeit und deren noch relativ seltenem Einsatz unter Linux.
-Schließlich ist es nicht jedermanns Sache,
-einen Kernel zu patchen und zu kompilieren.
-Da der Linux-Kernel nun alle erwähnten
-Dateisysteme von Haus aus dabei hat, wird die Nutzung von <strong>JFS</strong> und <strong>XFS</strong>
-unter Linux sicherlich zunehmen, da sie somit in jeder kommenden 
-Linux-Distribution enthalten sind.
+Da der Linux-Kernel nun alle erwähnten Dateisysteme von Haus aus dabei hat,
+wird die Nutzung von <strong>JFS</strong> und <strong>XFS</strong> unter
+Linux sicherlich zunehmen, da sie somit in jeder kommenden  Linux-Distribution
+enthalten sind.
    </textblock>
   </section>
  </split>
