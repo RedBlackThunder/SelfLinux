@@ -1,0 +1,203 @@
+<!--
+ * GnuPG-Handbuch
+ *
+ * Vorwort
+ *
+ * $Revision: 1.3 $
+ * $Source: /selflinux/tutorial/gpg_handbuch/vorwort,v $
+ *
+ * Autor: Mike Ashley 
+ * Übersetzung: Harald Martin, Roland Goretzki und Peter Neuhaus
+ * E-Mail: <gnupg-doc.de@gnupg.org>
+ *
+ * Lizenz: GFDL
+ *
+ *** $Id: vorwort,v 1.2 2003/06/09 17:09:04 florian Exp $
+-->
+
+1 Vorwort
+
+[Grundgesetz Artikel 10, Absatz 1: "Das Briefgeheimnis sowie das
+Post- und Fernmeldegeheimnis sind unverletzlich."]
+
+["Eckpunkte der deutschen Kryptopolitik", verabschiedet vom
+deutschen Bundeskabinett am 2. Juni 1999: "Der Einsatz
+kryptographischer Verfahren ist von außerordentlicher Bedeutung für
+eine effiziente technische Kriminalprävention. Dies gilt sowohl für
+die Gewährleistung der Authentizität und Integrität des Datenverkehrs
+wie auch für den Schutz der Vertraulichkeit."]
+
+Elektronische Daten spielen im Zeitalter des Computers und der
+weltweiten Vernetzung eine herausragende Rolle. Privatleute, Firmen,
+Politiker, Organisationen und Behörden machen zunehmend Gebrauch von
+der bequemen, schnellen und preisgünstigen Möglichkeit, per E-Mail zu
+kommunizieren. sie nutzen elektronische Speichermedien (Festplatten,
+Disketten, CDROMs), um darauf ihre persönlichen Daten,
+Forschungsergebnisse, Firmengeheimnisse, Kunden- oder
+Patienteninformationen, Statistiken, Notizen, Entwürfe, Umsatzzahlen
+usw. zu speichern. Bei der Abwicklung von Geschäftsvorgängen
+(Bestellung, Bezahlung, Verträge) spielt das Internet eine immer
+wichtigere Rolle. Den Weg, den die Daten über das Internet zu einer
+Zieladresse nehmen, kann niemand vorhersagen oder vorherbestimmen.
+Alle Daten, die unverschlüsselt (oder mit einer unsicheren Methode
+verschlüsselt) über's Netz gehen, sind faktisch öffentlich. Man muss davon
+ausgehen, das diese Daten - von wem auch immer - mitgelesen oder
+manipuliert und - zu welchem Zweck auch immer - missbraucht werden
+können. Daten, die auf Computern abgespeichert sind, sind
+meist nicht sicher vor unbefugten Zugriffen. Viele Rechner sind nicht
+einmal mit einem Passwort geschützt. Falls doch, gibt es immer noch Möglichkeiten, an die Daten zu
+gelangen. Noch nie war es so einfach, auch in ihre
+Privatsphäre einzudringen oder Zugang zu ihren vertraulichen
+Informationen zu erlangen.
+
+
+
+1.1 Warum Kryptographie?
+
+Kryptographie (die Wissenschaft von der Verschlüsselung) gewährleistet
+
+  * Vertraulichkeit
+  * Integrität und
+  * Authentizität
+
+ihrer Daten und ihrer Kommunikation.
+
+Wenn sie E-Mails unverschlüsselt verschicken, müssen sie sich darüber
+im klaren sein, dass deren Inhalt weniger vertraulich ist als bei einer
+Postkarte. Die Administratoren sowohl ihres Mailservers als auch des
+Empfängers können ohne Probleme alle durchgehenden E-Mails lesen, abfangen oder
+verändern. Auf ihrem Weg zum Empfänger durchlaufen E-Mails unter
+Umständen etliche Rechner. Jeder, der Zugang zu einem dieser Rechner
+hat, auch jeder Cracker (*), der durch Sicherheitslöcher in diese Rechner eindringt, kann mühelos auf ihre
+E-Mails zugreifen. Unter Umständen werden die Mails sogar auf der
+Festplatte eines dieser Zwischenrechner gespeichert. Auch könnte der
+Carrier, also der, der die Datenleitungen zu Verfügung stellt, (in
+Deutschland meist die Deutsche Telekom oder Colt-Telekom) die
+Datenpakete, die über seine Leitungen gehen, gezielt filtern. Es ist
+auch nicht auszuschließen, dass jemand diese Leitungen von außen
+anzapft.
+
+Es geht aber nicht allein darum, sich gegen Cracker oder korrupte
+Systemadministratoren zu schützen. Auch gegen das planmäßige
+Eindringen staatlicher Organisationen (des eigenen oder eines anderen
+Landes), die sich für ihre Privatsphäre interessieren. Die Geheimdienste vieler Länder filtern nicht nur Telefongespräche, sondern zunehmend auch die
+Daten, die über das Internet transportiert werden. Zumeist wollen sie
+wirtschaftliche, politische oder für die Strafverfolgung nutzbare Daten
+gewinnen. Eine Studie der "Kommission zur Technikfolgeabschätzung
+des Europaparlamentes" (STOA - Scientific and Technological Options
+Assessment) über die "Entwicklung von Überwachungstechnologie und dem
+Risiko des Missbrauchs wirtschaftlicher Informationen" zeigt, dass das Belauschen elektronischer Kommunikation bereits
+systematisch und in großem Stil betrieben wird. Eines der
+bekannteren Beispiele ist das ECHELON-System, das von den USA,
+Kanada, Großbritannien, Australien und Neuseeland gemeinsam
+unterhalten wird. Ursprünglich zum Belauschen des Ostblocks
+entwickelt, sammeln heute über 120 Stationen mit großem Aufwand
+Informationen. sie hören Satellitenverbindungen ab, zapfen
+Transatlantikkabel an und gewinnen Daten über Personen, Organisationen,
+Regierungen, Wirtschaftsunternehmen, Forschungsprojekte und
+internationale Institutionen. Auf europäischer Ebene plant
+die Arbeitsgruppe "Polizeiliche Zusammenarbeit" des Europa-Rats
+konkrete Maßnahmen für die Überwachung der
+Telekommunikation. Als Ziele, festgeschrieben in dem Dokument "ENFOPOL 98", werden ausdrücklich auch das Internet und zukünftige Technologien genannt.
+
+Daten, die unverschlüsselt auf der Festplatte ihres Rechners oder
+einem anderen Speichermedium liegen, sind vor unbefugten Zugriffen
+nicht sicher. Jemand könnte sich über eine Netzwerkverbindung Zugang
+verschaffen bzw. sich durch Diebstahl oder Einbruch in Besitz ihrer
+Daten bringen. Sind ihre Daten dann verschlüsselt, kann ein
+Angreifer diese nicht lesen. Selbst dann nicht wenn er das Speichermedium gestohlen hat.
+
+Ein weiteres Problem ist das Authentifizieren von elektronischen
+Daten. Wie bereits oben erwähnt, ist es möglich, die Absenderadresse
+und den Inhalt einer E-Mail zu fälschen. Gerade bei offizieller oder
+geschäftlicher Korrespondenz, dem Austausch von Dokumenten und dem
+Abwickeln von Geschäften über das Internet ist es wichtig, den
+Absender eindeutig zu identifizieren und die Originalität der Daten
+überprüfen zu können.
+
+Die einzige Möglichkeit, Vertraulichkeit, Echtheit und
+Authentizität von elektronischen Dokumenten zu gewährleisten, ist die
+sichere Verschlüsselung der Daten. Zum Beispiel mit GnuPG. Indem sie Daten verschlüsseln, erreichen sie, dass die Informationen nur von den Personen gelesen werden können, für die sie auch
+bestimmt sind. E-Mails werden quasi in einen "kryptographischen Briefumschlag" gesteckt,
+den nur der Empfänger öffnen kann. Darüber hinaus wird durch
+digitale Unterschriften eine eindeutige Zuordnung zum Urheber der
+Signatur möglich, und Manipulationen des Dokumentes oder Vortäuschen
+eines falschen Urhebers (Absenders) lassen sich feststellen.
+
+In der Elektronischen Datenverarbeitung sollte für sie die gleiche
+Sicherheit selbstverständlich sein wie in anderen Bereichen.
+Wahrscheinlich würden sie weder ein intimes Liebesgeständnis, noch
+eine Mitteilung an ihren Rechtsanwalt, noch ihre wissenschaftliche
+oder geschäftliche Korrespondenz als Postkarte schicken. Auch lassen
+sie wahrscheinlich keine vertraulichen Dokumente offen in ihrer
+Wohnung oder an ihrem Arbeitsplatz liegen. Ebensowenig würden sie
+einen Kaufvertrag ohne rechtsgültige Unterschrift akzeptieren.
+Verschlüsselung und digitale Signaturen sollten also ein alltäglicher
+Vorgang für sie sein oder werden. Ob sie nun berufliches oder privates Interesse
+am Schutz ihrer Daten haben: mangelndes Problembewusstsein ist das
+größte Risiko.
+
+
+
+1.1 Warum GnuPG?
+
+GnuPG (der GNU Privacy Guard) ist ein Programm zum Verschlüsseln und
+Signieren von digitalen Daten. Es arbeitet unabhängig von den
+jeweiligen Datenformaten (E-Mail, Textdateien, Bilddaten, Sourcecode,
+Datenbanken, komplette Festplatten usw.). Es entspricht der im RFC2440
+festgelegten OpenPGP-Spezifikation und ist kompatibel zu PGP 5.x der
+Firma NAI. GnuPG verwendet dazu hauptsächlich ein hybrides Verfahren
+mit öffentlichem Schlüssel. Zum Verschlüsseln kann GnuPG aber ebenso
+ausschließlich symmetrische Verfahren einsetzen.
+
+GnuPG ist derzeit eine der sichersten Anwendungen zum Verschlüsseln
+und Signieren von Daten. Bei sorgfältiger Anwendung ist eine
+Verschlüsselung mit GnuPG auch in absehbarer Zukunft nicht zu knacken.
+Im Gegensatz zu anderen Verschlüsselungsprogrammen wie beispielsweise
+PGP von der Firma NAI ist GnuPG freie Software. Das bedeutet unter
+anderem, dass der Programm-Quellcode frei verfügbar, frei von Patenten
+und frei von einschränkenden Lizenzbedingungen ist(**). Jeder
+Anwender kann das Programm nachvollziehen und auf Sicherheit prüfen. Das
+heißt, dass niemand versteckte Hintertüren (Key Recovery) oder
+'Generalschlüssel' (Key Escrow) einbauen kann und
+jeder Anwender die Möglichkeit hat, Fehler zu beseitigen, das Programm
+zu verbessern oder nach seinen Vorstellungen zu verändern.
+Darüber hinaus ist GnuPG nicht - wie amerikanische
+Verschlüsselungsprogramme - durch Ausfuhrbestimmungen künstlich in
+seiner Funktionalität und Sicherheit beschränkt.
+
+
+
+1.1 Aufbau des Buches
+
+Die grundlegenden Konzepte und Hintergründe der Verschlüsselung und
+digitaler Signaturen werden in Kapitel 1 "Konzepte" behandelt.
+Kapitel 2 "Grundlagen" führt in die Arbeit mit GnuPG ein: die
+wichtigsten Funktionen, Arbeitsschritte und Optionen werden dort an
+Beispielen erklärt. In Kapitel 3 "Schlüsselverwaltung" wird
+ausführlich auf das Editieren, Authentifizieren und Verwalten von
+Schlüsseln eingegangen. Auf die wichtigsten Aspekte des praktischen
+Einsatzes und das "Web of Trust" wird in Kapitel 4 "GnuPG im
+Alltagsgebrauch" eingegangen. Kapitel 5 gibt einen kurzen Überblick
+über die Kryptographie-Gesetzgebung. Im Anhang des Buches finden sie
+ein ausführliches Glossar, das die verwendeten Fachausdrücke erklärt,
+ein Literaturverzeichnis, eine Sammlung von Internet-Ressourcen sowie
+eine Anleitung zur Installation von GnuPG.
+
+
+
+Fußnoten 
+
+(*) Cracker
+
+Eine Person, die vorsätzlich, unbefugterweise und oft mit bösartiger
+Absicht in fremde Rechnersysteme eindringt, im deutlichen Gegensatz zu
+"Hacker", womit ein gutmeinender Computer-Freak gemeint ist (RFC
+1983)
+
+
+
+(**) Lizenzbedingungen
+
+GnuPG steht unter der sogenannten GNU General Public License (GPL) der
+Free Software Foundation.

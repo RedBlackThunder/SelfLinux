@@ -1,0 +1,735 @@
+Einführung in die Bourne Again Shell (Bash)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Autor: Selflinux <info@selflinux.de>
+Lizenz: GFDL
+
+
+Funktionsweise
+--------------
+
+
+<!-- KEYWORDS: Bash; Bourne Again Shell (Bash);  -->
+
+
+Sie möchten ein Kommando ausführen. Das Kommando liegt im Binärformat auf
+einem Ihrer Datenträger. Da Sie das Kommando nicht mit Ihrem Finger
+anschnippen können, muss es einen Weg geben, das Kommando aufzurufen.
+Vielleicht halten Sie das für einen einfachen Vorgang, aber das ist es nicht.
+
+Aus der Sicht des Betriebssystems ist ein Kommando ein Prozess wie jeder
+andere auch. Auf einem Multitasking-Betriebssystem wie Linux läuft zu jeder
+Zeit eine große Zahl von Prozessen »gleichzeitig«. Bei der Besprechung des
+Linux-Kernels werden wir später noch darauf eingehen, was dieses
+»gleichzeitig« bedeutet und welche Arbeit dabei für den Kernel anfällt. Im
+Augenblick genügt es uns zu wissen, dass die Prozessverwaltung - und damit auch
+der Start von Prozessen - zu den wesentlichen Aufgaben des Betriebssystems
+selbst gehört.
+
+In Wahrheit ist es so, dass Sie selbst gar nicht befugt sind, ein Kommando zu
+starten. Vielmehr müssen Sie das Betriebssystem damit beauftragen, dies für
+Sie zu tun. Damit tut sich aber gleich das nächste Problem auf: Der Kernel
+selbst ist lediglich eine Sammlung von C-Funktionen, und es dürfte wohl kaum
+in Ihrem Interesse liegen, mit diesen Funktionen selbst zu kommunizieren.
+Keine Angst - das müssen Sie auch nicht. Betrachten Sie die folgende
+Abbildung:
+
+ [../../Daten/_webseiten/selflinux/homepage/tutorial/images/
+ shell_funktionsweise01.png]
+
+
+Wie Sie in dieser schematischen Abbildung sehen können, bildet die Shell
+eine Schale um den Systemkern. Daher rührt auch ihr Name: Im
+Englischen bedeutet »shell« soviel wie »Schale« oder »Muschel«. Damit ist
+ausgedrückt, dass ein Zugriff auf Betriebssystem-Routinen üblicherweise über
+eine Shell erfolgt; die Shell vermittelt zwischen dem Benutzer und dem
+Betriebssystem. Um dem Betriebssystem also beispielsweise den Auftrag zu
+geben, ein bestimmtes Kommando für Sie zu starten, kommunizieren Sie zunächst
+mit der Shell, und diese reicht Ihren Auftrag in geeigneter Form weiter.
+
+In der Unix-Welt gibt es viele Shells, von denen einige sicher zweckmäßiger
+als andere sind. Die meisten dieser Shells sind in einer freien Version auch
+unter Linux verwendbar. Die meist verbreitete Shell unter Linux, die von
+praktisch allen Distributoren als die Standard-Shell verwendet wird, ist die
+Bourne Again Shell (Bash), eine verbesserte Version der alten Bourne Shell. Alle
+weiteren Ausführungen in diesem Abschnitt werden sich daher auf die Bash
+beziehen.
+
+Bei der Eingabe von Kommandos werden Sie von der Shell auf vielfältige Art
+und Weise unterstützt. Einen Teil dieser Unterstützung stellen Editierhilfen
+dar, die Ihnen einfach etwas Tipparbeit abnehmen sollen. Diesen Hilfen werden
+wir uns im nächsten Absatz widmen. Alle weiteren Absätze widmen sich den
+Shell-Mechanismen, die einen flexiblen und effizienten Gebrauch von
+Kommandos ermöglichen. Diese Mechanismen stellen gleichzeitig auch die
+Grundlage der Shell-Programmierung dar, die wir jedoch erst in einem späteren
+Kapitel behandeln möchten.
+
+Hinweise zur Benutzung
+----------------------
+
+   Die History
+   ´´´´´´´´´´´
+
+<!-- KEYWORDS: Bash-History; History der Bash; -->
+
+
+Wie viele andere Shells verfügt die Bash über eine Liste der zuletzt
+abgesetzten Kommandos, eine sogenannte History. Selbst wenn Sie nur
+gelegentlich die Kommandozeile verwenden, erweist sich die History als ein
+ausgesprochen nützlicher Helfer. Das gilt umso mehr, wenn Sie ausgiebigen
+Gebrauch von der Shell machen. Die Möglichkeiten zur Nutzung der History
+entsprechen der Verwendung eines effizienten Editors und werden in ihrem
+vollen Umfang nur von den wenigsten Anwendern genutzt. Sie gehen weit über die
+Möglichkeiten beispielsweise von doskey hinaus, das Sie vielleicht noch aus
+DOS-Zeiten kennen. Wir möchten an dieser Stelle wieder nur die beiden
+Möglichkeiten herausgreifen, die für den alltäglichen Gebrauch die wichtigste
+Rolle spielen, und verweisen für weitere Details auf das
+Shell-Kapitel für Fortgeschrittene.
+
+Eine Übersicht über die aktuelle History erhalten Sie mit dem Kommando
+
+ history
+
+ohne Angabe eines Parameters. Das Kommando gibt eine nummerierte Liste
+aus, die alle abgesetzten Kommandos inklusive ihrer Parameter enthält.
+Standardmäßig werden bis zu 500 Kommandos verwaltet, und dies unabhängig
+davon, ob ein Kommando syntaktisch richtig war oder nicht. Die Kommandos
+werden als Strings in exakt der eingegebenen Form gespeichert, genau in der Form,
+in der sie bei der Eingabe am Bildschirm erscheinen. Einzige Voraussetzung für die
+Aufnahme in die Liste ist die Bestätigung des Kommandos mit der
+Enter-Taste. Die Zahl der verwalteten Kommandos kann verändert werden - mehr zu
+Konfigurationsfragen weiter unten. Die für uns interessante Frage lautet nun, in
+welcher Weise wir die History möglichst effizient nutzen können.
+
+Am häufigsten werden bei der History die Pfeiltasten
+HOCH und RUNTER verwendet. Mit der HOCH-Taste holen Sie das zuletzt abgesetzte
+Kommando in die aktuelle Kommandozeile zurück. Sie brauchen
+danach nur noch Enter zu drücken, um
+das Kommando nochmals abzusetzen. Sie können die Kommandozeile aber auch wie
+gewöhnlich editieren und erst dann bestätigen. Durch wiederholtes Drücken der 
+HOCH-Taste gehen Sie in der Liste jeweils um einen Schritt weiter zurück.
+Mit der RUNTER-Taste gehen Sie wieder den umgekehrten Weg nach vorne. Auf diese
+Weise können Sie sehr schnell in den zuletzt abgesetzten Kommandos blättern.
+
+Je komplexer Ihre Kommandos werden, desto sinnvoller kann es sein, auch
+weiter zurückliegende Kommandos zurückzuholen. Einfaches
+Blättern ist nicht gerade ein effizienter Suchalgorithmus. Neben einer Reihe
+weiterer Methoden leistet hier insbesondere die inkrementelle Rückwärtssuche
+gute Dienste. Sie wird durch die Tastenkombination Strg-R eingeleitet, die zu
+dem folgenden Prompt führt:
+
+(reverse-i-search)`':
+
+Sie können nun damit beginnen, einen beliebigen String einzugeben, der in dem
+Kommando enthalten ist, das Sie aus der History zurückholen wollen. Zu dem
+von Ihnen angegebenen String wird das letzte Kommando, in dem
+der von Ihnen eingegebene String vorkommt, herausgesucht und hinter dem Doppelpunkt
+angezeigt. Sie müssen die Eingabe nun lediglich so lange verfeinern, bis das
+gewünschte Kommando erscheint. Danach können Sie es entweder mit Enter sofort
+absetzen oder eingeleitet durch ESC das Kommando zuvor noch editieren.
+
+   Tastenkürzel
+   ´´´´´´´´´´´´
+
+<!-- KEYWORDS: Bash-Tastenkürzel; Tastenkürzel für die Bash -->
+
+
+In den obigen Absätzen war gelegentlich vom Editieren der Kommandozeile die
+Rede. Nun scheiden sich bei persönlichen Vorlieben für bestimmte Editoren
+gewöhnlich die Geister. Die meisten Linux-Anwender entscheiden sich für
+vi oder Emacs, von denen jeweils mehrere Implementierungen zur Verfügung stehen. Wenn Sie bereits mit einem
+dieser Editoren vertraut sind, können Sie die
+folgende Tabelle überspringen. Alle anderen Leser können dieser Tabelle die
+elementarsten Tastenkürzel entnehmen, welche die Bash im Emacs-Modus zur
+Verfügung stellt. Der Emacs-Modus ist gleichzeitig die Standardeinstellung
+der Bash.
+
+
+Pfeiltasten     VOR und ZURÜCK dienen wie üblich dem Verändern der
+                Cursorposition
+Pos1, Ende      an den Beginn/an das Ende der Zeile bewegen
+Alt-b, Alt-f    je ein Wort rückwärts (»backward«) oder vorwärts (»forward«)
+                bewegen
+Backspace, Entf Zeichen rückwärts/vorwärts löschen
+Strg-k          bis zum Ende der Zeile löschen
+Strg-t          die beiden vorangehenden Zeichen vertauschen (Dreher
+                beseitigen)
+Alt-t           die beiden vorangehenden Wörter vertauschen
+Strg-l          löscht den Bildschirm
+
+
+   Die Nutzung der Tabulator-Taste
+   ´´´´´´´´´´´´´´´´´´´´´´´´´
+Die Tabulator-Taste stellt Ihnen einen Mechanismus zur Verfügung, den
+Sie gar nicht hoch genug einschätzen können: die Vervollständigung von
+Namen. Es handelt sich hier lediglich um einen Hilfsmechanismus für
+die Eingabe von Kommandozeilen und nicht etwa um einen mit der 
+so genannten Dateinamenserweiterung verwandten Mechanismus. Sollten
+Sie von Berufs wegen mit der Kommandozeile
+arbeiten, so können wir hier getrost festhalten, dass diese eine
+Taste ihnen sehr viele Tastatureingaben ersparen wird.
+
+Wie die Bash den begonnenen Namen zu vervollständigen sucht, hängt
+von Ihrer Eingabe ab. Beginnt die Eingabe mit einem $, so versucht sie,
+einen Variablennamen daraus zu machen. Beginnt die Eingabe mit ~,
+so versucht sie einen Benutzernamen zu bilden. Beginnt die Eingabe mit @,
+so versucht die Bash, sie zu einem Host-Namen zu vervollständigen. Wenn
+keine dieser Bedingungen zutrifft, sucht die Bash nach einem 
+Alias- oder Funktionsnamen. Am häufigsten erstellt die Bash jedoch einen Pfadnamen. 
+
+Selbstverständlich muss der Name, zu dem die Bash vervollständigt,
+sei es nun eine Variable, ein Benutzername, ein Host-Name, ein Alias,
+eine Funktion oder ein Pfad, auch wirklich existieren. Wenn Sie mit
+einigen der genannten Begriffe im Augenblick noch nichts anfangen
+können, machen Sie sich nichts draus. Alle diese Themen werden wir
+weiter unten noch ausführlich behandeln.
+
+Schlagen alle Versuche, eine passende Vervollständigung zu erreichen,
+fehl, ertönt ein kurzer Piepston. Wenn Sie die Tabulator-Taste nun
+noch einmal betätigen, zeigt die Bash alle möglichen
+Vervollständigungen an. Sie können dann die Eingabe ergänzen,
+bis sie eindeutig ist, und den Namen schließlich wieder mit der
+Tabulator-Taste vervollständigen lassen. Wenn es überhaupt keine
+mögliche Vervollständigung Ihrer Eingabe gibt, quittiert die Bash das
+wiederholte Drücken der Tabulator-Taste mit einem weiteren Piepston.
+
+Die häufigste Anwendung dieses Mechanismus ist sicher das Navigieren
+im Dateibaum. Erstens kann man auf diese Weise auch lange Pfade in
+beachtlich kurzer Zeit eingeben (wenn Sie den Mechanismus erst einmal
+beherrschen, vergleichen Sie dies einmal mit dem Klicken in einem
+grafischen Datei-Manager). Und zweitens hilft es auch Ihrem
+Gedächtnis auf die Sprünge, wenn Sie einen Datei- oder
+Verzeichnisnamen nur noch ungefähr im Kopf haben. Geben Sie
+einfach die ersten zwei oder drei Buchstaben, die Sie noch im Kopf haben,
+ein und lassen Sie sich dann die möglichen Vervollständigungen
+anzeigen. 
+
+
+Dateinamenerweiterung
+-------------------
+
+<!-- KEYWORDS: Bash-Dateinamenerweiterung; Dateinamenerweiterung bei der Bash; -->
+
+
+Obwohl der Begriff Dateinamenerweiterung auch gut auf den gerade beschriebenen
+Mechanismus passen würde, bezeichnet er doch etwas völlig
+anderes. Bei dieser Form der Erweiterung betätigen Sie keine Taste,
+sondern Sie geben ein Muster (engl. pattern) ein, nach dem die 
+Bash suchen soll. Ist die Suche erfolgreich, ersetzt die Shell das
+Muster durch jeden einzelnen gefundenen Dateinamen. 
+
+Sie können Muster bilden, indem Sie neben den üblichen Zeichen, die
+einen Dateinamen bilden können, eines der Zeichen *, ?, 
+[ oder ] verwenden. Findet die Shell ein Wort, das eines dieser Zeichen
+enthält, so betrachtet sie es automatisch als Muster und sucht nach
+passenden Dateinamen. Die Bedeutung der einzelnen Zeichen wird aus der
+folgenden Tabelle ersichtlich:
+
+*       eine beliebige Zeichenfolge, auch eine leere
+?	ein beliebiges einzelnes Zeichen
+[...]	eines der in [...] aufgeführten Zeichen
+[!...]	keines der in [!...] aufgeführten Zeichen
+        (das Ausrufezeichen wirkt als Negierung)
+
+Die genannten Zeichen werden auch als Wildcards oder Jokerzeichen
+bezeichnet. Den Mechanismus, Wildcards auf alle Dateinamen aus einem
+Verzeichnis anzuwenden und aus den passenden Dateinamen eine Liste zu
+bilden, nennt man Globbing. Häufig möchte man eine Aktion für viele
+Dateien eines Verzeichnisses durchführen. Vielleicht möchten Sie z. B. alle
+Dateien, die auf ".gif" enden, in ein anderes Verzeichnis verschieben.
+In einem solchen Fall vergleichen Sie diese Dateien mit dem
+Muster "*.gif" und benutzen das entsprechende Kommando, um die sich
+ergebende Dateiliste zu verschieben. Ähnliches gilt für das
+Fragezeichen. 
+
+Wenn Sie die Verwendung der eckigen Klammern noch nicht kennen,
+verdienen diese noch einige Erklärung. Durch eckige Klammern können
+Sie eine so genannte Zeichenklasse definieren. Alle Zeichen innerhalb der eckigen
+Klammern stehen im Gesamtmuster für ein einzelnes
+Zeichen, ebenso wie das Fragezeichen. Während das Fragezeichen aber
+ein beliebiges Zeichen vergleicht, können Sie durch die eckigen Klammern
+ganz bestimmte Zeichen auswählen. Das Muster [aeiou] vergleicht einen
+beliebigen Vokal. Das Gesamtmuster s[aeiou]x passt also auf sax, sex,
+six, sox und sux. Eine Zeichenklasse steht immer für
+ein einzelnes Zeichen. So wird z. B. die Datei saeioux hier
+nicht als Übereinstimmung erkannt, da zwischen s und x mehr als ein Zeichen steht.
+
+Häufig ist es sinnvoller, die Zeichen anzugeben, die nicht verglichen
+werden sollen. Dann verwendet man die eckigen Klammern mit einem
+führenden Ausrufezeichen. Es handelt sich hier ebenso um eine
+Zeichenklasse wie bei der Eingabe ohne Ausrufezeichen, d. h. es wird genau ein Zeichen
+verglichen. Die Verwendung erfolgt also auf dieselbe Art. 
+
+Die Bash kennt weitere Mechanismen zur Erweiterung, die gelegentlich
+nützlich sein können, auf die wir hier jedoch nicht weiter eingehen werden. 
+Im Shell-Kapitel für Fortgeschrittene finden Sie weitere Einzelheiten zur Arbeit mit der Bash.
+
+Pipes und Verwandtes
+--------------------
+
+   Eingabe und Ausgabe von Daten
+   ´´´´´´´´´´´´´´´´´´´´´´´´´´´´´
+
+<!-- KEYWORDS: Bash-Eingabe; Bash-Ausgabe; Standardeingabe; Standardausgabe; Standardfehlerausgabe; -->
+
+
+Programme verhalten sich meist so, dass sie bestimmte Daten aufnehmen,
+diese Daten auf irgendeine Weise verwenden und schließlich wieder
+Daten ausgeben. Besonders deutlich ist dieses Schema bei
+interaktiven Programmen zu erkennen, die immer wieder Informationen vom Benutzer
+annehmen und ihm andere Informationen zurückliefern. Eine Shell ist
+ein typisches interaktives Programm. Sie muss daher über
+einen Eingabekanal verfügen, über den sie Information aufnehmen
+kann. Unter Linux heißt dieser Eingabekanal
+"Standardeingabe". Sie können sich die Standardeingabe
+als einen Kanal oder ein Rohr vorstellen, über das die Shell
+Daten entgegennimmt. 
+
+Womit ist die Standardeingabe verbunden? Im Normalfall ist
+dies Ihre Tastatur. Die Shell nimmt von
+Ihrer Tastatur ein Zeichen nach dem anderen entgegen und gibt diese Zeichen auch sofort auf dem
+Bildschirm aus. Damit haben wir in technischer Hinsicht jedoch bereits
+einen großen Sprung getan, denn die Ausgabe von Zeichen auf dem
+Bildschirm kann selbstverständlich nicht von der Standardeingabe
+erledigt werden. Die Shell verfügt also über einen weiteren Kanal, der
+folgerichtig mit "Standardausgabe" bezeichnet wird. Die
+Standardausgabe der Shell ist üblicherweise mit Ihrem Monitor
+verbunden, so dass Sie die eingetippten Zeichen sehen können. 
+
+Es gibt noch einen dritten Kanal, der eine besondere Aufgabe zu
+erfüllen hat, nämlich den so genannten "Standardfehlerkanal". Wie der Name schon
+sagt, dient dieser Kanal zur Ausgabe von Fehlermeldungen, wenn der
+Programmablauf, in unserem Fall die Arbeit der Shell, aus irgendeinem
+Grund nicht ordnungsgemäß fortgesetzt werden kann. Üblicherweise ist der
+Standardfehlerkanal ebenfalls mit dem Bildschirm verbunden und schreibt
+daher seine Meldungen zwischen die gewöhnliche Ausgabe. Es ist
+jedoch sinnvoll, Stardardausgabe und Standardfehler voneinander zu
+trennen, damit man gewöhnliche Ausgaben und
+Fehlerausgaben getrennt verarbeiten kann. Beispielsweise könnte man die
+Fehlerausgabe in eine Datei umlenken, um sie später zu analysieren,
+während die gewöhnliche Ausgabe weiterhin über den Bildschirm läuft. 
+
+Hier ist es wichtig, sich Folgendes klarzumachen: Standardeingabe,
+Standardausgabe und Standardfehler sind lediglich Kanäle, die mit
+irgendeiner Quelle und irgendeinem Ziel verbunden sein können. 
+Standardeingabe ist nicht gleich Tastatur. Und Standardausgabe ist
+nicht gleich Monitor. Es gibt viele andere Quellen und Ziele, mit 
+denen diese Kanäle verbunden werden können, z. B. 
+Dateien oder andere Programme. Bei einer Shell ist es jedoch 
+sinnvoll, Tastatur und Monitor als Eingabe und Ausgabe zu verwenden, 
+weshalb dies auch die Voreinstellung ist.
+
+Die drei Standardkanäle werden von Linux wie Dateien behandelt. Für
+geöffnete Dateien verwaltet das System eine Liste von
+Dateideskriptoren, die mit fortlaufenden ganzen Zahlen bezeichnet
+werden. Die Zahlen von 0 bis 2 sind für die drei Standardkanäle
+belegt: 
+
+Standardeingabe        (stdin) : 0
+Standardausgabe	       (stdout): 1
+Standardfehlerausgabe  (stderr): 2
+
+[Bild einfügen]
+
+Bei der Umlenkung der Kanäle werden wir diese Bezeichnungen noch
+benötigen. 
+
+
+   Datenströme für Kommandos
+   ´´´´´´´´´´´´´´´´´´´´´´´´´
+
+<!-- KEYWORDS: Bash-Datenströme; -->
+
+
+Standardeingabe und -ausgabe der Shell sind wenig aufregend, denn es
+handelt sich um die bloße Eingabe von Zeichen durch die Tastatur und
+deren Ausgabe auf dem Monitor.
+
+Ebenso wie die Shell verfügen jedoch auch viele andere Programme und
+Kommandos über eine Standardeingabe und eine Standardausgabe. Ein
+anschauliches Beispiel liefert uns das kleine Programm wc ("word count"),
+das zum Zählen von Wörtern, Zeilen und anderem dient. Lassen Sie uns
+hier durch Angabe der Option "-w" lediglich die Wörter zählen:
+
+$ wc -w
+
+
+Der übliche Prompt der Shell verschwindet. Scheinbar geschieht nichts,
+aber das ist auch verständlich. wc dient schließlich zum Zählen - doch
+was soll es hier zählen? Es wartet schlichtweg auf eine Eingabe des
+Benutzers. Geben wir wc etwas zu tun:
+
+$wc -w
+wort1 wort2
+
+Nanu? Noch immer kein Ergebnis? Wir müssen wc mitteilen, dass die
+Eingabe beendet ist. In diesem Fall genügt nicht das einfache Enter,
+da wc auch nach dem Drücken der Enter-Taste weitere Worte erwartet. Das
+Endezeichen ist hier die Kombination Strg-d:
+
+$wc -w
+wort1 wort2
+      2
+
+Sie können hier die Betätigung von Strg-d zwar nicht erkennen, aber
+Sie sehen das Ergebnis: wc hat die eingegebenen Wörter gezählt und gibt
+die Anzahl auf dem Bildschirm aus. wc verfügt also über eine
+Standardeingabe, die hier mit der Tastatur verbunden ist, und über
+eine Standardausgabe, die mit dem Bildschirm verbunden ist.
+
+Erinnern wir uns nun daran, dass die Datenströme keineswegs fest mit
+Tastatur und Monitor verbunden sind. Tatsächlich ist es sehr einfach,
+diese Datenströme umzuleiten. Hierbei kommt eine Reihe spezieller
+Symbole zum Einsatz, die wir im Folgenden kennen lernen werden.
+
+   Umleitung von Datenströmen
+   ´´´´´´´´´´´´´´´´´´´´´´´´´´
+      Aus einer Datei lesen
+      #####################
+      
+Wir möchten, dass die Standardeingabe nicht mit der Tastatur verbunden
+wird, sondern mit einer Datei. Zum Beispiel möchten wir mittels wc die
+Anzahl der Wörter in einer Datei lesen:
+
+$ wc -w < datei.txt
+       157 datei.txt
+
+wc hat diesmal nicht auf eine Eingabe gewartet, sondern direkt aus der
+Datei datei.txt gelesen. Dies wurde durch das Umlenkungszeichen "<"
+erreicht. Das folgende Bild veranschaulicht dies:
+
+[Hier Bild einfügen]
+
+      In eine Datei schreiben
+      #######################
+
+Dasselbe können wir mit der Standardausgabe machen. Verbinden wir
+sie mit der Datei anzahl.txt und geben einige Wörter ein:
+
+$ wc -w > anzahl.txt
+wort1 wort2
+wort3
+$
+
+Der Prompt der Shell erscheint wieder, ohne dass wir die Ausgabe von wc
+lesen konnten. Statt auf dem Bildschirm wurde die Ausgabe in die
+Datei anzahl.txt geschrieben, was wir mittels cat (einem Kommando, das den Inhalt
+von Textdateien ausgibt) leicht ersehen können:
+
+$ cat anzahl.txt
+       3
+$
+
+Der Mechanismus wird durch das folgende Schaubild veranschaulicht:
+
+(Hier entsprechendes Bild einfügen)
+
+      An eine Datei anhängen
+      ######################
+
+Falls die Datei bereits vorhanden war, wird deren Inhalt durch die vorhergehende Umleitung 
+überschrieben. Wollen wir die
+neuen Daten lediglich an das Ende der Datei anhängen, so benutzen wir die
+folgende Schreibweise:
+
+$ wc -w >> anzahl.txt
+wort1 wort2 wort3 wort4
+$ cat anzahl.txt
+       3
+       4
+$
+
+Der alte Inhalt ist erhalten geblieben.
+
+      Fehler umleiten
+      ###############
+
+Der Fehlerkanal ist dem Dateideskriptor 2 zugeordnet. Bei der
+Umleitung des Fehlerkanals verwenden wir nun diese interne Bezeichnung: 
+
+$ programm 2> error.txt
+
+Dies ist irgendein Programm, dessen Fehlerausgabe wir in der Datei error.txt
+speichern möchten. Stehen in error.txt bereits andere Fehlermeldungen,
+die erhalten bleiben sollen, kann die folgende Schreibweise verwendet
+werden: 
+
+$ programm 2>> error.txt
+
+Manchmal sollen alle Ausgaben, Standardausgabe und Standardfehler, in
+eine einzige Datei umgeleitet werden. Hierzu können wir folgende Schreibweise
+verwenden: 
+
+$ programm > ausgabedatei 2>&1
+
+Zunächst wird die Standardausgabe mit einer Datei verbunden. Dann wird
+der Standarfehlerkanal mit der Standardausgabe verbunden, so dass er
+ebenfalls in diese Datei schreibt. 
+
+      Kommandos verbinden
+      ###################
+
+Jetzt wird es komplizierter. Der folgende
+Mechanismus bringt die Philosophie von
+Unix-Betriebssystemen hervorragend zum Ausdruck. Wie bereits an anderer Stelle
+erwähnt, ähnelt Unix (also auch Linux) einem Baukasten: Es besteht aus
+einer Vielzahl kleiner Elemente, die sich zu einem Gesamtsystem zusammenfügen
+lassen. 
+
+Der zentrale Mechanismus hierbei ist die Umlenkung der Standardausgabe
+eines Kommandos in die Standardeingabe eines anderen Kommandos. Dies
+erreichen Sie durch die Verwendung des Pipe-Symbols "|". Übergeben wir
+wc einmal die Ausgabe eines ls:
+
+$ ls | wc -w
+       15
+$ ls
+_webseiten      deepcalc        gimp            mp3             themes
+bewerbung       dokumente       karteikarten    rcs             tutorials
+bilder          downloads       linuxartikel    software_liste  verzeichnisse 
+$ 
+
+Wie Sie sehen, findet ls im aktuellen Verzeichnis genau 15
+Verzeichnisse. Leiten wir seine Standardausgabe zu wc um, so benutzt
+dieses die Eingabe als Standardeingabe und zählt die Wörter. Die Namen
+erscheinen dann nicht auf dem Bildschirm, wie sie es beim
+darauffolgenden Aufruf ohne Umleitung tun.
+
+Dies veranschaulicht das folgende Bild:
+
+[Bild einfügen]
+
+Auf diese Weise lassen sich beliebig viele Kommandos zusammenfügen, so
+dass sich häufig auch sehr komplizierte Aufgabenstellungen durch eine
+einzige Kommandozeile bewältigen lassen. Sie möchten beispielsweise
+alle Dateien in einem bestimmten Verzeichnis finden, die auf ".html"
+enden, aus diesen diejenigen herausfiltern, die die Zeichenkette
+"projekt" enthalten, und sie in ein anderes Verzeichnis, diesmal aber
+mit der Endung ".htm", verschieben. Für diese Aufgabe können sie
+mehrere Kommandos verwenden, die Sie mittels mehrerer Pipes
+verbinden. Das gesamte Gebilde bezeichnen wir als Pipeline. Betrachten
+wir als Beispiel das folgende Bild:
+
+(Bild einfügen von dem oben genannten Szenario, oder diese anpassen)
+
+
+Der Alias-Mechanismus
+---------------------
+
+<!-- KEYWORDS: Aliasamen in der Batch; Bash-Aliasnamen; -->
+
+Der Alias-Mechanismus verringert die Tipparbeit, macht
+Kommandos leichter erinnerbar, verschönert Kommandoausgaben und kann auch
+zur Absicherung gegen Tippfehler verwendet werden. Ein Alias ist
+eine definierte Zeichenfolge, die für eine andere Zeichenfolge
+steht. Welche Aliase in Ihrer aktuellen Shell definiert sind, können
+Sie folgendermaßen feststellen:
+
+$ alias
+alias +='pushd .'
+alias -='popd'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ckde1='source /opt/kde2/bin/kde1'
+alias ckde2='source /opt/kde2/bin/kde2'
+alias dir='ls -l'
+alias dos2unix='recode ibmpc:lat1'
+alias l='ls -alF'
+alias la='ls -la'
+alias ll='ls -l'
+alias ls='ls $LS_OPTIONS'
+alias ls-l='ls -l'
+alias md='mkdir -p'
+alias o='less'
+alias rd='rmdir'
+alias rehash='hash -r'
+alias rm='rm -i'
+alias unix2dos='recode lat1:ibmpc'
+alias unzip='unzip -L'
+alias which='type -p'                          
+$
+
+Die Ausgabe zeigt die auf meinem System definierten Aliase. Die Syntax
+ist einfach <cmd>alias name=wert</cmd>. Da wir bislang eigentlich noch
+keine Kommandos kennengelernt haben (von den wenigen Beispielen
+abgesehen, die nur zur Demonstration von Shell-Mechanismen dienten),
+wollen wir nicht im Detail auf die Ausgabe eingehen. Wir möchten
+lediglich feststellen, dass es sinnvoll ist, das häufig verwendete ls -l
+durch die einfache Eingabe von ll aufzurufen. Auch dos2unix für die
+Konvertierung von DOS-Texten in das UNIX-Textformat ist eingängiger als 
+recode ibmpc:lat1. Ebenfalls sehr nützlich ist, dass der Alias rm auf rm -i davor schützt, durch
+eine Unkonzentriertheit den kompletten Inhalt eines Verzeichnisses
+(oder mehr) zu löschen. Alles in
+allem ist dies also ein nützlicher Mechanismus, mit dem Sie
+Ihre tägliche Arbeit effizienter erledigen können. Wenn Sie
+einen Alias wieder löschen möchten, können Sie dies einfach mit unalias
+name tun.
+
+
+Kommandosubstitution
+--------------------
+
+<!-- KEYWORDS: Bash-Kommandosubstitution; Kommandosubstitution in der Bash; -->
+
+
+Wie wir bereits an anderer Stelle gesehen haben, bearbeitet die Shell
+eine gegebene Kommandozeile in vielfacher Weise. Zu den
+Bearbeitungsschritten zählen diverse Substitutionen, wie
+beispielsweise die Ersetzung von Wildcards durch entsprechende 
+Datei- oder Verzeichnisnamen, die Ersetzung von Aliasen durch ihren Wert oder
+auch die Ersetzung von Variablen, die wir weiter unten noch betrachten
+werden. Als Kommandosubstitution bezeichnet man einen Mechanismus, der
+ein Kommando durch dessen Standardausgabe ersetzt. Das
+zu ersetzende Kommando wird also aus der Kommandozeile
+entfernt. Danach wird an seiner Stelle die Standardausgabe des
+entfernten Kommandos eingefügt. Hier ein Beispiel:
+
+echo Im Verzeichnis existieren `ls | wc -w` Einträge
+Im Verzeichnis existieren 22 Einträge
+
+Das Kommando echo gibt alles, was es als Argument erhält, auf die Standardausgabe aus.
+Die Pipeline ls | wc -w wird in den
+Text eingefügt, umgeben von so genannten Backticks,
+linksgeneigten Hochkommata. Die Backticks bewirken, dass vor dem
+Aufruf von echo das eingeschlossene Kommando ausgeführt und seine
+Ausgabe an Stelle des Kommandos eingefügt wird. Hier der Beweis:
+
+ls | wc -w
+22
+
+In der Bash können Sie noch eine zweite Schreibweise verwenden:
+
+echo Im Verzeichnis existieren $(ls | wc -w) Einträge
+Im Verzeichnis existieren 22 Einträge
+
+Das Kommando ist in runde Klammern eingefasst, denen ein Dollar-Zeichen
+voransteht. Das Ergebnis ist dasselbe. 
+
+
+Vordergrund und Hintergrund: Einführung in die Jobkontrolle
+===========================================================
+
+<!-- KEYWORDS: Vordergrundprozess; Hintergrundprozess;  -->
+
+
+Wenn Sie ein Kommando abgesetzt haben, wartet die Shell normalerweise,
+bis das Kommando ordnungsgemäß beendet wurde, und gibt dann wieder
+einen Prompt aus, um auf das nächste Kommando zu warten. Manche
+Kommandos benötigen jedoch viel Zeit oder laufen während der
+kompletten Arbeitssitzung. Wenn Sie in einer grafischen
+Umgebung wie dem X Window-System arbeiten, können Sie von der Shell
+aus beliebige Programme starten, was häufig viel komfortabler ist, als
+per Maus zum gewünschten Programm zu klicken. Damit Sie nicht für
+jedes Programm, das Sie starten möchten, eine eigene Shell aufmachen
+müssen, können Sie Programme im Hintergrund
+starten. Das bedeutet nichts anderes, als dass die Shell nicht erst auf
+die Beendigung des abgesetzten Programmes wartet, sondern sofort
+wieder einen Prompt ausgibt, um gegebenenfalls ein weiteres Kommando zu
+bearbeiten. Die Ausführung eines Kommandos im Hintergrund erreichen
+Sie, indem Sie nach dem Kommando ein kaufmännisches Und (&) einfügen:
+
+kommando & 
+
+oder auch
+
+kommando&
+
+Der Sinn der Bezeichnungen Vordergrund und Hintergrund ist unmittelbar
+eingängig. In technischer Hinsicht sind Vordergrund und Hintergrund 
+zwei Begriffe, die sich im Zusammenhang mit der Shell nur auf ein 
+bestimmtes Terminal beziehen können. Ist die so genannte 
+Prozessgruppen-ID eines Prozesses identisch mit der eines Terminals,
+so kann der Prozess von diesem Terminal Signale empfangen. Solche
+Prozesse laufen im Vordergrund. Was eine Prozessgruppen-Id ist, werden
+wir weiter unten noch ausführlich behandeln. Hintergrund-Prozesse sind solche,
+deren Prozessgruppen-Id von der des Terminals abweicht. Sie
+sind daher auch immun gegen irgendwelche Signale, die von der Tastatur
+herrühren.
+
+Der Begriff des Jobs ist eine Abstraktion, die von der Shell zur
+Verwaltung eingesetzt wird. Als Job wird jede Pipeline bezeichnet, aus
+wie vielen Kommandos oder Prozessen sie auch besteht. Dem
+Job wird von der Bash eine Jobnummer zugewiesen, unter der er
+angesprochen werden kann. Die komplette Liste der in einer Shell
+laufenden Jobs können Sie mit dem Kommando jobs anzeigen lassen:
+
+$ kommando1 &
+[1] 5520
+$ kommando2 &
+[2] 5521
+$ kommando3 &
+[3] 5522
+$ jobs
+[1]   Running                 kommando1 &
+[2]-  Running                 kommando2 &
+[3]+  Running                 kommando3 &
+
+In den eckigen Klammern sehen Sie die zugeteilte
+Jobnummer. Sie unterscheidet sich von der so genannten Prozessnummer,
+die hinter der Jobnummer angegeben wird. Das Pluszeichen bei der
+Ausgabe des Kommandos jobs markiert den zuletzt gestarteten Job, das
+Minuszeichen den als vorletztes gestarteten Job.
+
+Es gibt eine Reihe von Möglichkeiten, auf einen bestimmten Job zu
+verweisen. Das Zeichen % leitet einen Jobnamen ein. Jobnummer n kann
+als %n angesprochen werden. Man kann auch auf einen Job Bezug nehmen,
+indem man dem % die ersten Buchstaben des Kommandos voranstellt, mit
+dem man den Job gestartet hat. Hat man z. B. <cmd>kommando</cmd> gestartet, so kann
+man darauf mit %ko verweisen, falls kein weiterer laufender
+Job so beginnt. Auch ein Wildcard-Zeichen ist erlaubt: %?ommando und
+%?mmando beziehen sich ebenfalls auf den Job, der mittels 
+<cmd>kommando</kommando> gestartet wurde. Wenn das angegebene Präfix oder
+Muster auf mehr als einen Job passt, erfolgt eine Fehlermeldung. %%
+und %+ beziehen sich immer auf den letzten Job, also auf den zuletzt beendeten Vordergrundprozess oder den zuletzt
+gestarteten Hintergrundprozess. %- bezieht sich entsprechend auf den
+vorletzten gestarteten Job.
+
+fg, bg und Strg-Z
+-----------------
+
+Selbstverständlich möchten Sie jederzeit bestimmen können, ob ein
+Kommando im Vordergrund oder im Hintergrund läuft. Sie möchten es aus
+dem Hintergrund wieder hervorholen oder aus dem Vordergrund in den
+Hintergrund schicken können, auch während es bereits läuft. Hierfür
+können Sie die beiden Kommandos fg ("foreground") und bg
+("background") verwenden. Sie können dabei in der oben
+beschriebenen Weise einen beliebigen Job ansprechen, z. B.:
+
+$ kommando1 &
+[1] 5520
+$ kommando2 &
+[2] 5521
+$ fg %1
+kommando2
+(hier kein Prompt)
+
+kommando2 läuft jetzt wieder im Vordergrund. Wenn Sie es wieder in den
+Hintergrund schicken wollen, können Sie dies nicht unmittelbar mit bg
+tun, da Ihnen derzeit kein Prompt für die Kommandoeingabe
+zur Verfügung steht. Sie müssen den Job daher erst mit der Tastenkombination
+Strg-Z anhalten:
+
+[Strg-Z]
+[2]+  Stopped                 kommando2
+$ bg
+[2]+ kommando2 & 
+$
+
+Wir haben das Kommando zunächst erfolgreich angehalten und es dann
+mittels bg in den Hintergrund geschickt. Von dort aus können wir es
+mittels fg %2 jederzeit wieder hervorholen.
+
+
+(
+Todo: 
+- Test, ob alle Kommandos (ehemalige Schmierzeichen) noch da sind
+  das Kapitel über die Ein-/Ausgabeumleitung könnte noch etwas in 
+  die Tiefe gehen
+- weitere Kapitel hinzufügen
+- Einführung in Variablen sollte noch hinzu, ebenso Abarbeitung der
+  Kommandozeile
+- beim Abschnitt Jobkontrolle sollte noch etwas über kill gesagt
+  werden
+- Kommandosubstituion kann ausführlicher und besser erklärt sein, 
+  auch mit mehr Beispielen
+)
+

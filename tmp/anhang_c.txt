@@ -1,0 +1,121 @@
+<!--
+ * GnuPG-Handbuch
+ *
+ * Anhang C - Installation von GnuPG
+ *
+ * $Revision: 1.2 $
+ * $Source: /selflinux/tutorial/gpg_handbuch/anhang_c,v $
+ *
+ * Autor: Mike Ashley
+ * Übersetung: Harald Martin, Roland Goretzki und Peter Neuhaus
+ * E-Mail: <gnupg-doc.de@gnupg.org>
+ *
+ * Lizenz: GFDL
+ *
+ *** $Id: anhang_c,v 1.1 2003/05/17 17:31:23 florian Exp $
+-->
+
+
+
+1. Anhang C Installation von GnuPG
+
+Dieses Kapitel beschreibt die Installation von GnuPG auf verschiedenen Plattformen. Die Beschreibung bezieht sich auf die Version 1.0.1 von GnuPG. Bitte lesen Sie auf jeden Fall auch die Dateien "README" und "INSTALL" im GnuPG Source-Verzeichnis. Wo Sie aktuelle Versionen von GnuPG als TAR-Archiv, RPM oder Binary für Win32 bekommen, können sie im Anhang B nachlesen.
+
+
+
+1.1 Unix und GNU/Linux
+
+Bevor sie mit der Installation beginnen, stellen sie bitte sicher, dass ihre Quell-Dateien nicht modifiziert wurden. Das ist ein sehr wichtiger Schritt, denn nur so können sie sicherstellen, dass  keine Hintertüren oder Schwachstellen absichtlich in den Code eingebaut wurden.
+
+Wenn sie bereits eine Version von GnuPG installiert haben, können sie einfach die Signatur überprüfen. Benutzen Sie jedoch niemals die Version, die sie gerade Installieren möchten, für diese Überprüfung. Der Schlüssel mit dem die Signatur überprüft wird, heißt:
+
+
+
+pub  1024D/57548DCD 1998-07-07 Werner Koch (gnupg sig) <dd9jn@gnu.org>
+
+
+
+Sollten sie diesen Schlüssel noch nicht in Ihrem öffentlichen Schlüsselbund haben, müssen sie ihn zuerst aus der Datei g10/pubring.asc aus den Sourcen importieren:
+
+
+
+alice$  gpg --import src/gnupg-1.0.0/g10/pubring.asc
+
+
+
+oder von einem der vielen Key Server holen, z.B:
+
+
+
+alice$  gpg --keyserver blackhole.pca.dfn.de --recv-keys 0x57548DCD
+
+
+
+Dann können sie die Signatur überprüfen mit
+
+
+
+alice$  gpg --verify gnupg-1.0.1.tar.gz.asc
+
+
+
+Sollten sie eine überprüfte [trusted] Version von PGP 2 oder PGP 5 installiert haben, können Sie die PGP 2 Signatur gnupg-1.0.1.tar.gz.sig überprüfen:
+
+
+
+alice$  pgp gnupg-1.0.1.tar.gz.sig gnupg-1.0.1.tar.gz
+
+
+
+Falls sie weder GnuPG noch PGP installiert haben, dann benutzen Sie den MD5 Hash-Algorithmus um eine Prüfsumme der Tar-gepackten Datei zu erzeugen.
+
+
+
+alice$  md5sum gnupg-1.0.1.tar.gz
+37eeae62c1823edc787996bfee70351a  gnupg-1.0.1.tar.gz
+
+
+
+Vergleichen Sie dann bitte die ausgegebene Prüfsumme mit der, die Sie unter
+http://www.gnupg.org/download.html finden.
+
+Nehmen wir an, sie möchten GnuPG systemweit installieren, damit es für alle User nutzbar ist. Nehmen wir weiterhin an, bei Ihrem System befinden sich die Quelldateien für lokal installierte Software unter /usr/local/src/. Kopieren Sie die TAR-Datei nach /usr/local/src; wechseln sie in das Verzeichnis und entpacken dort die TAR-Datei:
+
+
+
+root#  cd /usr/local/src/
+root#  gzip -d gnupg-1.0.1.tar.gz
+root#  tar xvf gnupg-1.0.1.tar
+
+
+
+Danach wechseln Sie in das neu angelegte Unterverzeichnis gnupg-1.0.1/ und führen dann nacheinander die drei folgenden Befehle aus:
+
+
+
+root# ./configure
+root# make
+root# make install
+
+
+
+Die ausführbare Datei "gpg" befindet sich dann in /usr/local/bin. Für weitere Optionen von configure benutzen Sie die Option --help und lesen die Datei INSTALL. Um zu verhindern, dass vertrauliche Daten auf die Swap-Partition
+ausgelagert werden, empfiehlt es sich das "Set-User-ID Bit" für "gpg" zu setzen:
+
+
+
+root#  chmod u+s /usr/local/bin/gpg
+
+
+
+GnuPG verhindert dann, dass Teile seines Speicherbereichs auf die Festplatte ausgelagert werden. Wenn Sie dies nicht tun möchten, können sie die Option no-secmem-warning in die Datei ~/.gnupg/options einfügen. Dann bekommen Sie auch keine entsprechenden Warnmeldungen mehr.
+
+Sollten Sie keine Root-Rechte auf dem System haben oder will der Systemadministrator GnuPG nicht systemweit installieren, besteht immer noch die Möglichkeit zu einer User-Installation. Legen Sie dazu am Besten ein Unterverzeichnis "src/" in Ihrem Home-Verzeichnis an, wenn sie dies nicht schon haben. Entpacken sie die Tar-Datei nach "~/src" und führen dann:
+
+
+
+alice$  ./configure --prefix=$HOME
+
+
+
+aus. Dann können Sie genau wie oben ein make und make install durchführen. make install legt dann die Unterverzeichnisse "bin/""lib/" "man/" "share/" in Ihrem Home-Verzeichnis an. Die ausführbare Datei befindet sich dann unter "$HOME/bin/gpg". $HOME/bin sollte natürlich in ihrem Pfad liegen.

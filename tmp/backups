@@ -1,0 +1,463 @@
+<!--
+ * Backups - Kurze Einführung in die Welt der Backups
+ *
+ * $Revision: 1.1 $
+ * $Source: /selflinux/tutorial/backups/backups,v $
+ *
+ *
+ *** $Id: backups,v 1.1 2003/05/06 22:46:36 florian Exp $
+
+Autor: Johnny Graber <linux@jgraber.ch>
+Lizenz: GFDL
+Datum: 12.11. 2002
+
+
+Layout:
+*Wörter* bitte hervorheben
+
+
+-->
+
+
+
+Backups 
+
+
+Das Anlegen eines Backup sollte man nicht so lange hinauszögern,
+bis man tatsächlich eine Sicherungskopie benötigt. In dem Fall ist es zu spät - 
+die benötigten Daten sind nicht mehr vorhanden. 
+Dieser Text soll einige grundlegende Begriffe erklären und dem Anwender
+bei der Entscheidung helfen, was gesichert werden muss und was 
+nicht.
+
+
+
+
+1 Begriffe
+
+1.1 Backup
+
+
+<!-- KEYWORDS: Backup; Datensicherung; Sicherungskopie; -->
+
+
+Als Backup wird die Datensicherung bezeichnet. Der Sinn dieser
+Sicherung besteht darin, in möglichst kurzer Zeit alle 
+Daten wieder verfügbar zu machen, sollten diese durch einen äußeren Einfluss, 
+einen Bedienungs- oder Programmfehler zerstört worden sein.
+Man sollte die Datensicherung immer rechtzeitig durchführen, 
+denn dann, wenn man das Backup tatsächlich braucht, ist es bekanntlich
+zu spät für eine Sicherung.
+
+
+
+1.1 Vollständiges Backup
+
+
+<!-- KEYWORDS: Vollständiges Backup; Backup, vollständig; -->
+
+
+Bei einem vollständigen Backup werden alle zu sichernden Daten auf
+einmal gesichert. Der Vorteil dieses Verfahrens besteht darin, dass alle diese 
+Daten bei Bedarf in einem Arbeitsgang zurückgespielt werden können.
+Bei den heutigen Standardinstallationen der Linux-Distributionen 
+ist es allerdings nur selten möglich, das ganze System auf ein 
+einziges Medium zu schreiben. Einen Tape-Streamer haben die wenigsten 
+Privatanwender, und auf eine CD passt ein komplettes System selten.
+
+Zudem dauert ein vollständiges Backup ziemlich lange. 
+Die lange Dauer der Sicherung ist häufig der Grund dafür, 
+dass sie nicht durchgeführt wird. Wieso sollte man auch täglich unzählige 
+Dateien speichern, die man schon seit Wochen nicht mehr 
+angefasst hat?
+
+
+
+1.1 Differentielles Backup
+
+
+<!-- KEYWORDS: Differentielles Backup; Backup, differentiell; -->
+
+
+Bei einem differentiellen Backup werden nur die seit dem letzten
+vollständigen Backup geänderten Dateien gesichert. Dies spart 
+sowohl Zeit als auch Speicherplatz.
+
+Bei einer Wiederherstellung der Daten muss man dabei allerdings mit mehreren 
+Medien arbeiten: Zuerst wird das vollständige Backup eingespielt und
+danach das differentielle Backup.
+
+
+
+1.1 Inkrementelles Backup
+
+
+<!-- KEYWORDS: Inkrementelles Backup; Backup, inkrementell; -->
+
+
+Beim inkrementellen Backup werden nur die Dateien gesichert, 
+die seit dem letzten Backup geändert wurden. Daher eignet 
+sich das inkrementelle Backup besonders für die tägliche 
+Sicherung.
+
+
+
+1.1 Backup-Medien
+
+
+<!-- KEYWORDS: Backup-Medien; -->
+
+
+Für das Backup kann man jedes Medium verwenden, auf das man Daten 
+speichern kann: von der Floppy-Diskette über Zip-Medien,
+CD, DVD und Magnetband bis hin zur Festplatte.
+Legt man sich ein neues Backup-System zu, so sollte man sich
+vorher Gedanken über die notwendige Kapazität machen. Dadurch
+erspart man sich nicht nur einen Fehlkauf, sondern auch unnötigen 
+Ärger beim Betrieb.
+
+
+
+
+
+
+1 Backup-Strategien
+
+1.1 Was soll gesichert werden?
+
+<!-- KEYWORDS: Backup-Strategien; -->
+
+Letztlich will man bei einem Datenverlust sein System 
+möglichst schnell wiederherstellen können. Daher 
+muss man *alle persönlichen Daten und Einstellungen*
+sichern. Arbeitet man an *Projekten* oder mit *Datenbanken*,
+muss man auch diese in das Backup einbeziehen.
+
+
+
+1.1 Was braucht man nicht zu sichern?
+
+Alles, was bereits auf andere CDs kopiert wurde, braucht nicht gesichert zu werden.
+Es ist nicht sinnvoll, bei jedem vollständigen Backup auch alle Programme,
+die mit der Distribution mitgeliefert wurden, zu sichern.
+Braucht man für die Arbeit aber zusätzliche Programme oder hat 
+man Programme selbst modifiziert, so sollte man diese neben dem Backup auf einer
+speziellen CD sichern. Diese Programme ändern sich kaum, und wenn
+sie einmal gesichert sind, kann man sie jederzeit wiederherstellen.
+
+
+
+1.1 Wie geht man vor? Ein Beispiel
+
+Nehmen wir an, dass wir 5 Dateien haben (a, b, c, d und e) und
+uns 8 CD-RWs zur Verfügung stehen.
+
+Am *Montag* machen wir ein *vollständiges Backup* und sichern dabei alle 
+Dateien auf CD1. 
+Am *Dienstag* ändern wir die Dateien b, c und d. Da unsere Arbeit 
+sehr wichtig ist, machen wir ein *differentielles Backup* und 
+sichern dabei die Dateien b, c und d auf CD2.
+Am *Mittwoch* ändern wir die Dateien d und e. Würden wir nun ein
+weiteres differentielles Backup machen, müssten wir die Dateien
+b, c, d und e sichern, da sich diese seit dem vollständigen 
+Backup geändert haben. Führen wir stattdessen ein *inkrementelles 
+Backup* durch, so sichern wir nur die Unterschiede zum letzten Backup - also
+die Dateien d und e auf CD3.
+
+Mit dem inkrementellen Backup fahren wir nun täglich fort und 
+fangen jeden Tag eine neue CD an, bis wir am *nächsten Montag* 
+wieder ein vollständiges Backup vornehmen. Wichtig ist dabei, dass wir dieses
+nicht erneut auf CD1, sondern auf CD8 sichern, 
+denn sonst wäre bei einem Fehlschlag unser vollständiges Backup zerstört und alle 
+anderen CDs wären nutzlos.
+
+Sobald CD8 korrekt geschrieben wurde, sind die CDs 1 bis 7 
+für eine Wiederherstellung des Systems nicht mehr erforderlich. CD1 verwenden 
+wir erst wieder für das nächste vollständige 
+Backup. Die CDs 2 bis 7 können wir für die inkrementellen Backups der
+nächsten Tage verwenden, wodurch wir 
+Kosten sparen.
+
+
+So legen wir an den ersten 8 Tagen 8 Backups an und brauchen 8 CDs. 
+Dies mag auf den ersten Blick übertrieben erscheinen. Aber wie viel 
+kostet ein Rohling? Wie wichtig ist die Arbeit und wie viel Zeit 
+steckt dahinter?
+Die Kosten eines Datenverlustes (Erstellungszeit * 
+Stundensatz) übersteigen den Preis von 
+8 CD-RWs, insbesondere da diese 8 CDs wiederverwendet werden können. 
+
+
+
+1.1 komprimierte Archive
+
+Aus Platzgründen erscheint eine Komprimierung der angelegten Archive 
+sinnvoll. Allerdings steht der Platzersparnis die größere 
+Fehleranfälligkeit der Archive gegenüber.
+Werden beim Schreiben des komprimierten Archivs nur wenige Bits 
+falsch kopiert, kann das ganze Archiv unbrauchbar werden. Daher 
+sollte man Fehler beim Schreibvorgang unbedingt vermeiden.
+
+
+
+
+
+
+1 tar
+
+
+<!-- KEYWORDS: tar; Backup-Archiv mit tar; -->
+
+
+Mit tar können einzelne Dateien oder ganze Verzeichnisse in 
+ein Archiv gepackt werden. Da tar für größere Systeme
+geschrieben wurde, versucht es standardmäßig, auf ein 
+Bandlaufwerk zu schreiben. 
+Dies stellt allerdings kein Problem dar, da man mit der Option
+-f den Datenstrom in eine Datei (f für file) umleiten kann.
+Daher wird tar in den hier angeführten Beispielen immer mit -f 
+aufgerufen.
+
+tar ist zwar ein älteres Programm, nach wie vor ist es aber weit
+verbreitet und steht unter vielen Systemen zur Verfügung.
+
+
+
+1.1 Vollständiges Backup
+
+$ tar [Optionen] [Ziel] [Dateien und Verzeichnisse]
+
+Will man eine neue Datei erstellen, so genügen die Optionen 
+-cf. Dabei werden die vorangestellten Schrägstriche in den Pfadangaben
+jedoch entfernt. Will man die Dateien im Rahmen einer Wiederherstellung (Restore) 
+zurückschreiben, so benötigt man die vollständigen Pfade. Diese müssen
+entweder beim entweder angegeben oder beim Erstellen mit der
+Option -P explizit angefordert werden:
+
+$ tar -Pcf /mnt/disk2/backup-1.tar /home/
+
+Mit diesem Aufruf werden alle Dateien unter /home in der Datei
+/mnt/disk2/backup-1.tar gespeichert. Die vollständigen Pfade bleiben 
+zwar erhalten, werden aber relativ von dem Ort aus eingetragen, 
+von dem aus tar aufgerufen wird.
+
+Hinweis:
+Mit -P kann man die Dateien nur an ihrem
+ursprünglichen Ort wiederherstellen. Will man sich alle Möglichkeiten
+offen halten, sollte man daher auf -P verzichten.
+
+
+
+1.1 Inkrementelles Backup
+
+tar wurde vor allem für vollständige Backups erstellt. Es gibt aber 
+einige relativ einfache Möglichkeiten, inkrementelle 
+Backups durchzuführen.
+
+Die einfachste Möglichkeit besteht darin, beim ersten vollständigen 
+Backup die Option -g zu verwenden. 
+Dabei werden Informationen über die gesicherten Dateien in
+die externe Datei zeitstempel geschrieben:
+
+$ tar -vcf /mnt/disk2/backup-1.tar -g zeitstempel /home/
+
+
+Abgesehen vom Archivnamen erfolgt der Aufruf beim inkrementellen Backup 
+auf dieselbe Weise, doch sichert tar diesmal nur die Dateien, die seit dem 
+vollständigen Backup geändert wurden.
+
+
+Man kann tar auch mitteilen, dass es nur Dateien sichern soll, die
+seit einem bestimmten Datum geändert wurden. Bei dem folgenden Aufruf werden
+die seit dem 1. November modifizierten Dateien archiviert:
+
+$ tar -N 2002-11-01 -Pcf /mnt/disk2/backup-1.tar /home/
+
+
+Will man ein eigenes kleines Backup-Script schreiben, das 
+alle Dateien sichert, die weniger als 5 Tage alt sind, kann man date 
+verwenden:
+
+
+$ tar -N $(date -d "now 5 days ago" +%Y-%b-%d) -Pcf /mnt/disk2/backup-1.tar /home/
+
+
+
+
+1.1 komprimierte Backups
+
+
+<!-- KEYWORDS: Backup komprimieren; gzip; gunzip; -->
+
+
+Man kann ein nach dem oben erklärten Verfahren angelegtes Backup auch komprimieren. 
+Dazu genügt der Aufruf von gzip:
+
+$ gzip backup-1.tar
+
+Danach befindet sich im Verzeichnis eine Datei mit dem Namen 
+backup-1.tar.gz. Um die Datei zu dekomprimieren, ruft man 
+statt gzip das Tool gunzip auf:
+
+$ gunzip backup-1.tar.gz
+
+
+tar verfügt auch über ein integriertes Komprimierungsverfahren. Mit der 
+Option -z wird gzip direkt über tar aufgerufen.
+Neben gzip kann auch bzip2 
+für die Komprimierung verwendet werden. Dafür dient die 
+Option -j.
+
+
+$ tar -zcf /mnt/disk2/backup-1.tar /home/
+$ ls
+backup-1.tar.gz
+
+
+
+1.1 Überprüfen
+
+
+<!-- KEYWORDS: Backup prüfen; -->
+
+
+Einer der wichtigsten Schritte beim Anlegen eines Backups ist 
+die Überprüfung der Sicherungskopie. 
+Sofern man sich noch in dem Verzeichnis befindet, in dem man tar gestartet
+hat und die Option -P verwendet hat, verwendet man hierfür die Option -d:
+
+$ tar -df /mnt/disk2/backup-1.tar
+
+
+Wurde das Backup erfolgreich durchgeführt, so gibt tar keine Fehlermeldung aus.
+Hat man 
+-P nicht verwendet, so muss man tar den Pfad mitteilen:
+
+$ tar -C / -df /mnt/disk2/backup-1.tar
+
+
+Diese Option kann man auch dann verwenden, wenn man das 
+Verzeichnis gewechselt hat.
+Mit -t wird der Inhalt des Archivs angezeigt:
+
+$ tar -tf /mnt/disk2/backup-1.tar
+/home/jg/datei1
+/home/jg/datei2
+/home/jg/datei3
+/home/jg/datei4
+
+
+
+1.1 Restore
+
+
+<!-- KEYWORDS: Backup wiederherstellen; -->
+
+
+Wenn man Archive anlegt, sollte man für den Notfall
+auch mit der Wiederherstellung vertraut sein. Dafür benötigt
+man die Option -x (extract = extrahieren). Die Option -v 
+(verbose = wortreich) zeigt den Ablauf an:
+
+
+$ tar -xvzf /mnt/disk2/backup-1.tar.gz
+
+
+Mit einer zusätzlichen Pfadangabe und einem nicht komprimierten 
+Archiv sieht der Aufruf folgendermaßen aus:
+
+$ tar -C / -xvf /mnt/disk2/backup-1.tar
+
+
+
+
+
+
+1 cpio
+
+
+<!-- KEYWORDS: cpio; Backup archivieren mit cpio; -->
+
+
+cpio (copy in/out) ist tar sehr ähnlich, kann im Gegensatz
+zu tar aber auch mit beschädigten Archiven umgehen. So kann man den unbeschädigten 
+Teil des Archivs meistens noch retten.
+Allerdings funktioniert cpio nur auf Festplatten mit dem 
+Dateisystem ext2.
+
+
+1.1 Vollständiges Backup
+
+Will man die zu sichernden Dateien an cpio übergeben, so müssen diese
+nach einem speziellen Muster angegeben werden. cpio erwartet 
+in jeder übergebenen Zeile einen Dateinamen. Daher verwendet man am besten
+das Pipe-Zeichen:
+
+$ ls *.tex | cpio -o > /mnt/disk2/backup-2
+
+
+Bei dieser Befehlskette werden zuerst alle TeX-Dateien (Endung .tex)
+aufgelistet und an cpio übergeben. Mit der Option -o wird die Datei 
+backup-2 erstellt. 
+
+Der Nachteil des Aufrufes mit ls mit besteht darin, dass man Unterverzeichnisse
+nicht sichern kann. Verwendet man stattdessen den Befehl find, so kann man dieses Problem
+mit der Option -depth umgehen:
+
+$ find /home/jg/ -maxdepth 2 -depth | cpio -o > /mnt/disk2/backup-3
+
+
+
+
+1.1 Inkrementelles Backup
+
+Mit find kann man nicht nur Verzeichnisebenen anzeigen lassen, 
+sondern auch prüfen, wann eine Datei zuletzt geändert wurde. Daher genügt es,
+den oben verwendeten Befehl um -mtime -5 zu erweitern, um alle 
+Dateien zu erhalten, die in den letzten fünf Tagen geändert wurden:
+
+$ find /home/jg/ -mtime -5 -maxdepth 2 -depth | cpio -o > /mnt/disk2/backup-4
+
+Weitere Optionen zu find werden in man find aufgeführt.
+
+
+
+1.1 Überprüfen
+
+Ein Mangel von cpio besteht darin, dass es keine direkte Überprüfung der 
+gesicherten Dateien ermöglicht. Um einen wirklichen Vergleich durchzuführen,
+muss man die Dateien in ein anderes Verzeichnis entpacken und
+sie mit Hilfe von diff prüfen.
+
+Allerdings bietet cpio die Möglichkeit, die Dateien im
+Archiv anzuzeigen:
+
+$ cpio -itvI /mnt/disk2/backup-2
+-rw-r--r--    1 jg      jg           100 Nov  5 20:03 /home/jg/test1.tex
+-rw-r--r--    1 jg      jg            91 Nov  1 19:24 /home/jg/test2.tex
+-rw-r--r--    1 jg      jg           212 Nov  4 17:05 /home/jg/test3.tex
+-rw-r--r--    1 jg      jg            69 Nov  5 15:38 /home/jg/test4.tex
+
+Die Option i entpackt das Archiv. Um dies zu verhindern, stellt 
+man ihr t voran. Über I teilt man das Verzeichnis mit, und mit v
+gibt man an, dass auch die Dateirechte angezeigt werden sollen.
+
+
+1.1 Zurückspielen
+
+$ cpio -id < /mnt/disk2/backup-2
+
+Mit diesem Befehl werden die Dateien aus dem Archiv an ihren ursprünglichen 
+Speicherort zurückkopiert, sofern die dort vorhandenen Dateien nicht identisch mit
+oder älter als die Dateien im Archiv sind.
+
+
+
+
+
+
+1 dd
+
+
+1 dump und restore
+

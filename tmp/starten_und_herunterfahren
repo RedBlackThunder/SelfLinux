@@ -1,0 +1,143 @@
+Starten und Herunterfahren
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Autor: Matthias Kleine <kleine_matthias@gmx.de>
+Lizenz: GFDL
+
+
+Einführung
+----------
+
+<!-- KEYWORDS: Rechnerstart; Starten; Herunterfahren; Booten; Systemboot; 
+               Strg-Alt-Entf; Neustart; Reboot; shutdown;  -->
+
+Das Starten und das Herunterfahren eines Rechners sind ausgesprochen sensible
+Vorgänge. Die zahlreichen Meldungen, die vom Kernel und verschiedenen Diensten
+stammen, liefern dem 
+<!-- LINK chapter="nutzer_unter_linux" iref="Root" -->Systemverwalter<!-- ENDLINK -->
+ wertvolle Daten über die
+Funktionsfähigkeit des Systems. An dieser Stelle wäre es freilich noch
+verfrüht, auf all diese Meldungen näher einzugehen - dies werden wir daher im
+Kapitel <!-- LINK chapter="index_elementare_systemverwaltung" -->Elementare Systemverwaltung<!-- ENDLINK -->
+nachholen. Da viele Benutzer heute
+jedoch bereits an Linux-Rechnern arbeiten, die sie als Systemverwalter eigenständig starten (auch booten genannt) und
+herunterfahren dürfen, sind einige Bemerkungen angebracht.
+
+Lange Zeit war es den Benutzern einer Unix-Maschine gar nicht möglich, das
+System zu starten oder herunterzufahren. Starten deshalb, weil die Rechner im
+Regelfall hinter verschlossenen Türen liefen und nur dem Systemverwalter
+physisch zugänglich waren. Und herunterfahren, weil es 
+<!-- LINK chapter="was_ist_unix" -->Unix<!-- ENDLINK --> (und auch Linux)
+seinen Benutzern verbietet, den Lauf des Systems ohne weiteres zu beenden.
+Auch dies bleibt dem mit den notwendigen Rechten ausgestatteten Systemverwalter mit dem Benutzernamen root vorbehalten.
+
+Für ein 
+<!-- LINK chapter="userverwaltung" iref="Vorteile von Multiuser-Systemen " -->Multiuser-Betriebssystem<!-- ENDLINK -->
+ versteht sich diese Eigenschaft von selbst,
+schließlich arbeiten möglicherweise mehrere Benutzer auf einem Rechner. Hinzu
+kommt, dass der Rechner auch innerhalb eines Netzes für die Bereitstellung von
+Diensten zuständig sein kann, die natürlich ebenfalls beendet würden. Ein
+Benutzer kann oft gar nicht abschätzen, wie viele andere Benutzer von der
+Maschine abhängen, auf der er gerade arbeitet. In Zeiten der bootfreudigen
+Windows-Rechner mag auch die Tatsache, dass Unix-Rechner im Regelfall viele
+Wochen und Monate ohne einen Neustart (Reboot) ihren Dienst tun, etwas in Vergessenheit
+geraten sein.
+
+Nachdem Linux nun auch auf gewöhnlichen PC's, und damit in den Büros und
+Arbeitszimmern der Benutzer, Einzug gehalten hat, ist es auch den Benutzern
+möglich geworden, über Start und Beendigung des Systems zu entscheiden. Der
+Rechner ist nun frei zugänglich und kann jederzeit eingeschaltet werden. Etwas
+anders verhält es sich noch mit dem geordneten Herunterfahren. Dies ist eigentlich
+nach wie vor (z.B. mittels der Kommandos "shutdown", "init" oder "halt") dem
+Administrator root vorbehalten. Viele Distributionen bieten mittlerweile jedoch 
+im Rahmen eines grafischen Login-Managers die Möglichkeit, das System
+nach dem Abmelden über einen Knopf herunterzufahren. Des Weiteren
+funktioniert meist auch die Tastenkombination Strg-Alt-Entf, wenn man
+einen Reboot auslösen möchte. 
+
+
+
+Den Rechner starten
+-------------------
+
+<!-- KEYWORDS: Bootloader; LILO; Grub; Betriebssystem auswählen; -->
+
+Um das 
+Linux-System vollständig booten zu lassen, muss man nur den Power-Knopf betätigen.
+Zu Beginn des Systemstarts wird
+man kurz mit einem so genannten Bootloader konfrontiert. Im Regelfall
+wird dies der LInux-LOader 
+<!-- FUTURELINK chapter="lilo" -->LILO<!-- ENDLINK --> 
+sein, der einen kurzen Moment lang auf
+eine Eingabe wartet. Tut man an dieser Stelle nichts, lädt LILO
+dasjenige Betriebssystem, das ihm vom Systemverwalter als Standard
+bekannt gemacht wurde. Wir gehen hier davon aus,
+dass dies unser aktuelles Linux-System ist. Es ist jedoch auch möglich, dass
+hier weitere Betriebssysteme oder andere Linux-Versionen ausgewählt werden
+können. Eine Liste aller Möglichkeiten erhält man mittels der Tab-Taste,
+während LILO auf eine Eingabe wartet. Neuere Distributionen bieten anstelle 
+des ehemals spartanischen LILO-Promptes gelegentlich ein grafisches Menü, das
+die verschiedenen Bootmöglichkeiten anzeigt. Auch der Bootloader Grub
+kommt meist in einem grafischen Gewand daher und bietet Ihnen ein
+Auswahlmenü an. In der Regel muss man nichts anderes tun als mittels
+der Pfeiltasten das Betriebssystem auszuwählen, das man starten möchte, und 
+dann durch Betätigung der Enter-Taste den Bootvorgang zu starten. Nachdem der
+Bootloader schließlich den Bootvorgang in die Wege geleitet hat,
+können wir die Bootmeldungen am Bildschirm verfolgen.
+Ist der Bootvorgang abgeschlossen, so erscheint
+eine lapidare "<!-- LINK chapter="anmelden_und_abmelden" -->login:"-Aufforderung<!-- ENDLINK -->. 
+Wurde ein <!-- LINK chapter="anmelden_und_abmelden" iref="Display Manager" -->grafischer Login-Manager<!-- ENDLINK -->
+konfiguriert, so öffnet sich ein Anmeldefenster und
+wartet auf die Eingabe von Benutzername und Passwort. Alle Datails
+zum An- und Abmeldevorgang  werden im
+<!-- LINK chapter="anmelden_und_abmelden" -->nächsten Kapitel<!-- ENDLINK --> behandelt.
+
+
+
+Den Rechner herunterfahren
+--------------------------
+
+<!-- KEYWORDS: Zeitgesteuert herunterfahren; -->
+
+Ein DOS-Betriebssystem kennt kein Herunterfahren und darf in der Regel
+ohne Vorbereitungen ausgeschaltet werden. Wie andere Unix-Systeme auch, reagiert Linux
+jedoch ausgesprochen empfindlich, wenn es nicht ordnungsgemäß beendet wird.
+Welche Hintergründe dies hat, erfordert einige Einblicke in die
+Funktionsweise des <!-- LINK chapter="kernel" -->Kernels<!-- ENDLINK -->
+und wird daher an dieser Stelle nicht
+näher behandelt. Vorläufig soll der Rat genügen, ein Linux-System niemals
+durch den Power- oder Reset-Knopf abrupt zu beenden, wenn dies
+vermeidbar ist. 
+
+Wenn Sie das Passwort von root nicht kennen, den Rechner aber dennoch
+herunterfahren wollen, bleibt Ihnen normalerweise nur die Tastenkombination Strg-Alt-Entf.
+Warten sie danach ab, bis alle Dienste beendet sind und der Rechner mit dem
+Neustart beginnen will. In diesem Moment können Sie den Rechner beruhigt
+ausschalten. Natürlich können Sie auch die entsprechende Funktion 
+eines <!-- LINK chapter="anmelden_und_abmelden" iref="Display Manager" -->grafischen Login-Managers<!-- ENDLINK --> verwenden, wenn diese angeboten wird. 
+Verfügen Sie andererseits über <!-- LINK chapter="nutzer_unter_linux" iref="root" -->root-Rechte<!-- ENDLINK -->, ist es meist praktischer, 
+das passende Kommando abzusetzen. 
+
+Grundsätzlich stehen zu diesem Zweck mehrere unterschiedliche Kommandos zur
+Verfügung. An dieser Stelle soll vorerst nur das gebräuchlichste genannt werden,
+das in praktisch allen Situationen einsetzbar ist - das Kommando shutdown. Das
+richtige Kommando zum sofortigen Herunterfahren (Parameter "-h" für halt) lautet
+
+shutdown -h now
+
+Unmittelbar nach dem Absetzen des Kommandos (als root) erscheint die Meldung
+"The System in going down for system halt NOW!!". Den laufenden Prozessen
+werden Signale versendet, die sie zur Beendigung veranlassen. Das System fährt
+hoffentlich vollständig herunter und verabschiedet sich mit der Meldung
+"Master Ressource Control: runlevel 0 has been reached". Die Parameter
+von shutdown deuten an dieser Stelle bereits an, dass das Kommando weitere
+Möglichkeiten bietet. Beispielsweise kann durch den Paramenter "-r", also
+durch
+
+shutdown -r now
+
+anstelle des einfachen Herunterfahrens ein Reboot veranlasst werden. Darüber
+hinaus können anstelle von "now" auch absolute oder relative Zeitangaben
+verwendet werden, um den Shutdown erst später durchzuführen und damit
+beispielsweise weiteren Benutzern die Möglichkeit zu geben, ihre Arbeit zu
+sichern und alle laufenden Aktivitäten ordnungsgemäß zu beenden.
+

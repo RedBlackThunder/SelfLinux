@@ -1,0 +1,157 @@
+<!--
+ * GnuPG-Handbuch
+ *
+ * kapitel_4 (GnuPG im Alltagsgebrauch)
+ *
+ * $Revision: 1.2 $
+ * $Source: /selflinux/tutorial/gpg_handbuch/kapitel_4,v $
+ *
+ * Autor: Mike Ashley
+ * Übersetung: Harald Martin, Roland Goretzki und Peter Neuhaus
+ * E-Mail: <gnupg-doc.de@gnupg.org>
+ *
+ * Lizenz: GFDL
+ *
+ *** $Id: kapitel_4,v 1.1 2003/05/17 17:34:19 florian Exp $
+-->
+
+
+
+1. GnuPG im Alltagsgebrauch
+
+GnuPG ist nicht nur eine komplexe Software, sondern es gibt auch
+einige technische, gesellschaftliche und rechtliche Aspekte, die wichtig sind:
+
+  * Technisch muss die private Verschlüsselung verschiedenen Situationen mit sehr unterschiedlichen Sicherheitsanforderungen genügen. Das verkompliziert die Schlüsselverwaltung.
+  * Die Benutzung von GnuPG ist keine Einzel-Entscheidung. Um GnuPG nutzen zu können, müssen die, die es nutzen wollen, vorher Absprachen treffen.
+  * Die Haltung der Gesetzgeber zur elektronischen Verschlüsselung und zu digitalen Signaturen unterscheidet sich von Land zu Land. Insbesondere steht die Frage, ob private Verschlüsselung überhaupt erlaubt werden soll, gegenwärtig bei vielen Regierungen zur Debatte. Auf diese Aspekte wollen wir im Folgenden eingehen.
+
+
+
+1.1 Definition ihres Sicherheitsbedarfs
+
+GnuPG schützt ihre Privatsphäre. GnuPG ermöglicht, mit anderen zu korrespondieren, ohne dass Dritte mitlesen können. Außerdem können sie
+vertrauliche Daten auf ihrem Rechner so stark verschlüsseln, dass sie niemand lesen kann, der es nicht soll. Ebenso gibt ihnen GnuPG die Möglichkeit, ihre Daten (E-Mail) durch digitale Signaturen zu authentifizieren und deren Integrität zu gewährleisten.
+
+Die Zielstrebigkeit und Findigkeit derer, die unerlaubt ihre verschlüsselten Nachrichten mitlesen wollen, sollte ihren Umgang mit GnuPG bestimmen. Ein solcher "Lauscher" kann ein neugieriger Systemadministrator sein, der ihre E-Mails mitliest. Es könnte ein Industriespion sein, der versucht, ihre Firmengeheimnisse auszuspähen. Oder gar die Staatsanwaltschaft, die ihnen auf den Fersen ist. Wenn sie GnuPG benutzen, um mehr oder weniger zufälliges Mitlesen zu verhindern, wird das wahrscheinlich anders aussehen, als wenn sie ihre Daten gegen einen entschlossenen Angreifer schützen wollen.
+
+Tipp: ihr Ziel sollte es dabei sein, dass der Aufwand zur Entschlüsselung ihrer Daten für einen Angreifer so groß wird, dass ein Versuch nicht lohnt.
+
+Wenn sie GnuPG auf ihren persönlichen Gebrauch abstimmen möchten, sind vor allem vier Punkte wichtig:
+ 1. Die Wahl der Schlüssel-Länge ihres öffentlichen und privaten Schlüsselpaars
+ 2. Der Schutz ihres geheimen Schlüssels
+ 3. Die Verfallsdaten ihrer Schlüssel und die Benutzung von
+    Unterschlüsseln
+ 4. Der Aufbau ihres Web of Trust
+
+Eine gut gewählte Schlüssel-Länge schützt verschlüsselte Dateien gegen Brute-Force-Angriffe. Indem sie ihren privaten Schlüssel geheim halten, verhindern sie, dass ein Angreifer diesen einfach zum Entschlüsseln verwendet oder Nachrichten in ihrem Namen unterschreibt. Ein sorgfältig aufgebautes Web of Trust verhindert, dass ein Unbefugter sich als einer ihrer Korrespondenzpartner ausgeben kann.
+
+Der Aufwand, den sie zum Schutz ihrer Daten   betreiben möchten, hängt von ihren Sicherheitsanforderungen ab.
+
+
+
+1.1.1 Die Wahl der Schlüssel-Länge
+
+Die Wahl der Schlüssel-Länge hängt von der Art des jeweiligen Schlüssels ab. Bei OpenPGP besteht ein Schlüsselbund gewöhnlich aus mehreren öffentlichen und geheimen Schlüsseln. Es sollte zumindest einen Hauptschlüssel zum Signieren und einen oder eventuell mehrere zusätzliche Unterschlüssel für die Verschlüsselung geben. Wenn man die Standardeinstellungen von GnuPG beim erzeugen der Schlüssel verwendet, ist der Hauptschlüssel ein DSA-Schlüssel, die Unterschlüssel sind
+ElGamal-Schlüssel.
+
+DSA erlaubt eine Schlüssel-Länge bis zu 1024 Bit. Das ist bei heute üblichen Rechenleistungen nicht besonders lang, entspricht jedoch dem Standard. Warum das so ist und warum ein DSA-Schlüssel mit 1024 Bit zur Benutzung sogar empfohlen wird, geht aus dem folgenden Absatz
+hervor.
+
+ElGamal-Schlüssel können beliebig lang sein. GnuPG ist ein hybrides Verschlüsselungsverfahren mit öffentlichem Schlüssel. Der öffentliche Schlüssel wird zum Verschlüsseln eines 128-Bit-Sitzungs-Schlüssels benutzt und der private Schlüssel wird zu dessen Entschlüsselung verwendet. Allerdings beeinflusst die Schlüssel-Länge die Geschwindigkeit beim ver - und entschlüsseln erheblich, weil der Rechenaufwand bei diesen Algorithmen exponentiell mit der Länge des Schlüssels steigt. Damit wird der praktische Nutzen eines langen Schlüssels trotz seiner größeren Sicherheit durchaus zweifelhaft. Wenn der Schlüssel lang genug ist, um einem Brute-Force-Angriff zu widerstehen, wird der Angreifer wahrscheinlich zu einer anderen Methode greifen. Er wird versuchen, ihre unverschlüsselten Daten zu bekommen. Es könnte ihm leichter fallen, in ihre Wohnung oder ihr Büro einzudringen oder sie möglicherweise sogar zu überfallen. 1024 Bit sind eine gute Schlüssel-Länge. Wenn sie wirklich einen längeren Schlüssel brauchen, dann sollten sie ohnehin einen Fachmann in Sachen Datensicherheit konsultieren.
+
+
+
+1.1.1 Der Schutz ihres geheimen Schlüssels
+
+Den geheimen Schlüssel zu verlieren, ist eine Katastrophe für ihre Datensicherheit. Haben sie ihren geheimen Schlüssel verloren, können sie keine Daten mehr entschlüsseln, die für sie verschlüsselt worden sind Außerdem können sie keine Unterschriften mehr leisten.
+
+Egal wie sie GnuPG benutzen, sie sollten die Widerruf-Urkunde des öffentlichen Schlüssels und eine Sicherheitskopie ihres geheimen Schlüssels auf einem schreibgeschützten Datenträger - eine CD-ROM oder Diskette - speichern und an einem sicheren Ort aufbewahren. Z.B. in einem Bank-Schließfach oder gut versteckt in ihrer Wohnung. Um eventuellen Datenträger-Defekten vorzubeugen, sollten sie auch jeweils einen ASCII-Ausdruck (*** gpg --armor) aufPapier aufbewahren. Was immer sie tun, die Widerrufurkunde und die Sicherheitskopie ihres geheimen Schlüssels sollten auf Datenträger gebracht werden, die eine sichere Aufbewahrung so lange ermöglichen, wie sie ihren Schlüssel voraussichtlich behalten werden und sie sollten diese sorgfältiger aufbewahren als die Kopie ihres täglich benutzten geheimen Schlüssels.
+
+Als weitere Sicherheitsmaßnahme speichert GnuPG ihren privaten Schlüssel nicht in "roher" Form ab, sondern verschlüsselt ihn stattdessen mit einem symmetrischen Verschlüsselungsverfahren. Deshalb brauchen sie das Mantra, um mit ihrem geheimen Schlüssel zu entschlüsseln oder zu signieren. Somit müsste ein Angreifer gleich zwei Probleme lösen, um Zugang zu ihrem geheimen Schlüssel zu bekommen:
+ 1. Er müsste tatsächlich den Schlüssel in die Hand bekommen.
+ 2. Er müsste entweder dessen Verschlüsselung knacken oder an das Mantra kommen.
+
+Die sichere Aufbewahrung ihres geheimen Schlüssels ist wichtig und womöglich mit einigem Aufwand verbunden. Im Idealfall würden sie den geheimen Schlüssel auf einem mobilen, schreibgeschützten Datenträger, etwa einer Diskette, speichern und ihn auf einem nicht vernetzten Computer benutzen, zu dem nur sie Zugang haben. Vielleicht ist das für sie zu unbequem oder unmöglich. Vielleicht besitzen sie auch keinen eigenen Computer und haben nur am Arbeitsplatz oder in der Schule Zugang zu einem Computer.
+
+Das heißt aber nicht, dass sie nun GnuPG nicht benutzen können oder sollten. sie haben sich  entschieden, dass ihnen ihre Daten wichtig genug sind, um sie zu verschlüsseln. Aber auch wieder nicht so wichtig, dass sie besondere Maßnahmen treffen müssten, um die erste Barriere gegen Angreifer sicherer zu machen. Es ist letztlich ihre Entscheidung, ob ihr Sicherheitsanspruch damit schon erfällt ist oder nicht.
+
+Absolut unerlässlich ist ein gutes Mantra. Jeder Angreifer, der Zugang zu ihrem geheimen Schlüssel bekommt, muss dann erst noch die Verschlüsselung ihres geheimen Schlüssels knacken. Ein Angreifer wird erst einmal versuchen, das Mantra zu erraten. Viel länger bräuchte er, mit einem Brute-Force-Angriff den Schlüssel selbst herauszufinden.
+
+Es ist nicht gerade leicht, sich eine ausreichend große Zahl von Unzusammenhängenden Zeichen als Mantra zu merken. Deshalb ist die Versuchung sehr groß, ein Mantra zu wählen, das leichter zu erraten ist als ein nach dem Zufallsprinzip erstellter 128-Bit-Schlüssel. Die meisten Leute erliegen dieser Versuchung. Für einen Lauscher ist es aber besonders verlockend, das Mantra zu erraten. Wenn sie wirklich verhindern möchten, dass ihre Daten gelesen werden, sollten sie dieser Versuchung nicht erliegen und die Mühe auf sich nehmen und ein kompliziertes Mantra auswendig lernen.
+
+Wenn das Mantra aus einem normalen Wort besteht, dann ist es ein Leichtes, alle Wörter aller Wörterbücher sämtlicher Sprachen der Welt zu testen. Selbst wenn die Reihenfolge der Buchstaben oder Zeichen innerhalb des Wortes verändert worden ist, ist es immer noch leicht, Wörter aus dem Wörterbuch mit einem Katalog von Permutationen auszuprobieren. Dasselbe Problem stellt sich bei Zitaten. Im
+Allgemeinen sind Mantras, die auf Äußerungen der natürlichen Sprache
+beruhen, schlechte Mantras. ihre Zufälligkeit ist zu gering, weil es in der deutschen Sprache eine Menge Redundanz gibt. sie sollten Mantras aus der normalen Sprache tunlichst vermeiden.
+
+Ein gutes Mantra ist eines, das nur sehr schwer zu erraten ist, obwohl sie es sich gut merken können. Es sollte Zeichen aus der ganzen Reihe der druckbaren Zeichen auf ihrer gesamten Tastatur enthalten. Dazu gehören auch Großbuchstaben, Ziffern und Sonderzeichen: etwa }, # oder ^.
+
+  Tipp: Seien sie kreativ und nehmen sie sich Zeit bei der Wahl ihres Mantras!
+
+
+1.1.1 Auswählen der Verfallsdaten und Benutzung von Unterschlüsseln
+
+Wenn sie ein neues Schlüsselpaar erzeugen, werden standardmäßig ein DSA-Hauptschlüssel zum Unterschreiben und ein ElGamal-Unterschlüssel zum Entschlüsseln erzeugt. Das ist von Vorteil, weil die Aufgaben der beiden Schlüssel verschieden sind und es sinnvoll sein könnte, den beiden Schlüsseln verschiedene Verfallsdaten zu geben. Mit dem DSA-Hauptschlüssel werden um digitale Unterschriften geleistet. Er bestätigt ihre Identität, wenn andere ihn signiert haben. Der ElGamal-Unterschlüssel wird nur benutzt, um an sie geschickte verschlüsselte Daten zu entschlüsseln. Typischerweise
+sollte eine digitale Signatur eine lange oder unbegrenzte Gültigkeitsdauer haben. sie wollen ja auch die Unterschriften auf ihrem Schlüssel nicht verlieren, die sie mühsam zusammengetragen haben. Andererseits sollte der ElGamal-Unterschlüssel in gewissen Zeitabständen gewechselt werden, um ihre Datensicherheit zu erhöhen. Hat ein Angreifer den ElGamal-Unterschlüssel erst einmal geknackt, kann er alle Dokumente lesen, die für sie persönlich verschlüsselt wurden.
+
+In der Regel sollten sie also eine unbeschränkte Gültigkeitsdauer für den DSA-Hauptschlüssel wählen. Es gibt jedoch Gründe, weshalb sie vielleicht doch ein Verfalldatum für ihren Hauptschlüssel wählen
+sollten. Erstens kann es sein, dass sie dem Schlüssel nur eine beschränkte Geltungsdauer geben wollen, z.B., wenn sie den Schlüssel für ein zeitlich befristetes Ereignis wie etwa eine politische Kampagne benutzen wollen und danach nicht mehr. Ein weiterer Grund könnte in einer zusätzlichen Vorsichtsmaßnahme bestehen: Falls der Hauptschlüssel gestohlen und geknackt wird (und sie möglicherweise auch keine Widerruf-Urkunde haben), würde ein Verfallsdatum den Schlüssel genau an diesem Datum unbrauchbar werden lassen.
+
+  Tipp: Einem solchen Unglück sollten sie jedoch möglichst durch Sicherheitsvorkehrungen vorbeugen, wie in 4.1.2 beschrieben.
+
+Das Erneuern von ElGamal-Unterschlüsseln ist zwar kein Problem, kann aber unbequem werden. Kurz vor dem Verfallsdatum sollten sie einen neuen ElGamal-Unterschlüssel erzeugen und die davon abgeleiteten
+öffentlichen Schlüssel ihren Korrespondenz-Partnern bekannt geben. Je nachdem, wie sie die Verteilung ihrer öffentlichen Schlüssel organisieren, kann das eine mühsame Angelegenheit werden. sie müssen aber Gott sei Dank keine neuen Unterschriften einholen, um ihren neuen Unterschlüssel zu authentisieren. Eine Unterschrift mit ihrem authentifizierten DSA-Hauptschlüssel bestätigt die Echtheit des neuen Schlüssels.
+
+Die erzielte zusätzliche Sicherheit mag diese Unbequemlichkeit wert sein oder nicht.
+
+Es ist auch nicht nötig, mehr als einen gültigen Unterschlüssel in einem Schlüsselbund zu haben. Man erzielt keine zusätzliche Sicherheit durch zwei oder mehr aktive Unterschlüssel im Schlüsselbund. Es können natürlich mehrere verfallene Schlüssel in einem Bund sein. Damit können sie Dokumente lesen, die noch mit dem alten Schlüssel chiffriert wurden. Doch braucht nie mehr als ein Unterschlüssel aktiv zu sein.
+
+
+
+1.1.1 Verwaltung ihres Web of Trust
+
+Genauso wie beim Schutz ihres geheimen Schlüssels müssen sie auch bei der Verwaltung ihres Web of Trust zwischen Bequemlichkeit und Sicherheit abwägen. Wenn sie GnuPG lediglich zum Schutz gegen mehr oder weniger zufälliges Mitlesen und Dokumentenfälschungen benutzen, dann können sie relativ vertrauensvoll hinsichtlich der digitalen Signaturen anderer Leute sein. Wenn sie sich allerdings Sorgen machen, dass ein zu allem entschlossener Angreifer an ihren Firmendaten oder am Eindringen in ihre Privatsphäre interessiert ist, dann sollten sie die Unterschriften anderer sorgfältig prüfen.
+
+Ungeachtet ihrer eigenen Sicherheitsbedürfnisse sollten sie jedoch beim Unterschreiben anderer Schlüssel immer Sorgfalt walten lassen. Im Sinne des Web of Trust ist es nicht ratsam, einen Schlüssel zu unterschreiben, dessen Authentizität sie gerade noch so weit vertrauen, wie es für ihr eigenes Sicherheitsbedürfnis ausreichend ist. Andere, die einen höheren Sicherheits-Bedarf haben, sollten sich auf ihre Unterschrift verlassen können. Wenn man sich auf ihre Signatur nicht verlassen kann, dann schwächt dies das Web of Trust und macht die Kommunikation für alle Benutzer von GnuPG schwieriger.
+
+  Tipp: Lassen sie also beim Unterschreiben von Schlüsseln dieselbe
+  Sorgfalt walten, die sie von anderen auch angewandt sehen möchten,
+  wenn sie sich auf deren Unterschriften verlassen.
+
+Bei der Verwaltung ihres Web of Trust sollten sie sich auf zwei Dinge konzentrieren: Einerseits auf die Frage, wessen Schlüssel sie genügend vertrauen, um sie selber zu signieren, und andererseits auf das Abstimmen der Optionen --marginals-needed und --completes-needed.
+Jeder Schlüssel, den sie persönlich signieren, wird als gültig betrachtet, deshalb ist es - außer in kleinen Gruppen - keine gute Praxis, persönlich den Schlüssel jeder Person zu unterschreiben, mit der sie kommunizieren. Sinnvoller ist es, sich daran zu gewöhnen, den Unterschriften anderer zu vertrauen.
+
+Es ist wahrscheinlich die beste Strategie, beim Unterzeichnen von Schlüsseln genau die Authentizität des Schlüssels bzw. die Identität des Schlüsselbesitzers zu überprüfen und ansonsten durch Optionen zu bestimmen, wie sorgfältig GnuPG bei der Authentisierung sein soll. Ein konkretes Beispiel: sie mögen einigen wenigen engen Freunden voll Vertrauen. Von denen wissen sie, dass diese beim Unterschreiben von Schlüsseln sorgfältig vorgehen. Den weiteren Schlüsselbesitzern in ihrem Schlüsselbund vertrauen sie in dieser Hinsicht nur teilweise.
+Danach können sie --completes-needed auf 1 und --marginals-needed auf 2 setzen. Wenn sie um die Sicherheit mehr besorgt sind, können sie auch die Werte 1 bzw. 3 oder 2 bzw. 3 wählen. Wenn sie allerdings mit einem weniger großen Vertrauen hinsichtlich der Authentizität auskommen wollen und nicht so sehr mögliche Angriffe auf ihre Privatsphäre oder Firmendaten befürchten, dann können sie die Werte 1 und 1 einsetzen. Je höher die Werte für diese Optionen sind, desto schwieriger ist es, ihnen einen gefälschten Schlüssel unterzuschieben.
+
+
+
+1.1 Aufbau ihres Web of Trust
+
+Es reicht nicht aus, wenn nur sie selbst GnuPG benutzen wollen. Um GnuPG zur sicheren Kommunikation mit anderen zu nutzen, müssen sie ein funktionierendes Web of Trust aufbauen. Auf den ersten Blick scheint dies eine mühsame Aufgabe zu sein: Die Leute, mit denen sie kommunizieren, müssen wie sie GnuPG oder ein kompatibles Verschlüsselungsprogramm benutzen. Die Schlüssel sollten von ausreichend vielen Personen unterschrieben sein, so dass ihre Korrespondenz als authentisch zu betrachten sind. Dies ist wohlgemerkt kein technisches Problem, sondern ein soziales.
+
+Anfangs ist es noch nicht so wichtig, dass sie mit allen Korrespondenzpartnern privat Emails schicken können. Wenn sie mit GnuPG beginnen, suchen sie sich einen kleinen Kreis von Leuten - sie selbst und noch ein oder zwei andere -, die ebenfalls ihr Recht auf Privatsphäre in Anspruch nehmen wollen. Unterschreiben sie jeweils, wenn sie sich von der Identität der anderen Person überzeugt haben, deren öffentlichen Schlüssel und lassen sie sich im Gegenzug ihren Schlüssel signieren. Dieses kleine, robuste Web of Trust ist ihr Ausgangspunkt. sie werden den Wert schätzen lernen und - wenn sie ihr Web of Trust in der Zukunft weiter ausbauen - umso gewissenhafter und vorsichtiger sein. Über ihr anfängliches Web of Trust hinaus möchten sie wahrscheinlich auch mit anderen Personen sicher kommunizieren; hierbei können zwei Schwierigkeiten auftreten:
+ 1. sie wissen nicht immer, ob ihr Gegenüber GnuPG benutzt oder überhaupt benutzen will.
+ 2. Selbst wenn sie wissen, dass der andere GnuPG verwendet, könnten sie Schwierigkeiten bei der Authentifizierung seines öffentlichen Schlüssels haben.
+
+Das erste Problem rührt daher, dass viele Leute nicht öffentlich bekannt geben, dass sie Verschlüsselungsprogramme benutzen. Am besten, sie gehen mit gutem Beispiel voran und sorgen dafür, dass jeder ihrer potentiellen Kommunikationspartner weiß, dass sie GnuPG benutzen. Hierfür gibt es mehrere Möglichkeiten:
+
+  * Signieren sie Nachrichten mit GnuPG, die sie an ihre Korrespondenzpartner
+    oder Mailinglisten verschicken.
+  * Veröffentlichen sie ihren öffentlichen Schlüssel auf ihrer Website.
+  * Geben sie ihren öffentlichen Schlüssel auf einen Key-Server und veröffentlichen sie die Schlüssel-ID in ihrer E-Mail-Signatur oder auf ihrer Visitenkarte. Andere werden ihrem Beispiel vielleicht folgen.
+
+Die Authentisierung der öffentlichen Schlüssel ist schwieriger. Wenn sie sich nicht persönlich von der Identität einer Person überzeugt haben, dann dürfen sie deren Schlüssel auch nicht unterschreiben. In diesem Fall müssen sie auf die Unterschriften von anderen vertrauen und hoffen, eine Kette von Unterschriften zu finden, die von dem betreffenden Schlüssel zurück zu ihrem eigenen führt. Solch eine Kette kann nur zustande kommen, wenn ihr Schlüssel von Leuten außerhalb ihres anfänglichen Web of Trust unterschrieben wurde. Am einfachsten ist dies auf so genannten Key-Signing-Partys zu erreichen: Das sind Treffen, bei denen man gegenseitig die öffentlichen Schlüssel unterzeichnet. Sollten sie zum Beispiel zu einer Konferenz gehen, halten sie Ausschau nach einer Key-Signing-Party. Falls dort keine stattfindet, dann laden sie doch einfach selbst zu einer ein. Auf jeden Fall sollten sie aber ihren GnuPG-Fingerabdruck immer bei sich tragen. Vielleicht auf ihrer Visitenkarte. So können sie spontan mit Anderen die Schlüssel tauschen. Derjenige, dem sie den Fingerabdruck gegeben haben, könnte dann, nachdem er ihre Identität überprüft hat, bei der nächsten Gelegenheit ihren öffentlichen Schlüssel unterschreiben.
+
+Welchen Aufwand sie betreiben, ist ihre Entscheidung und hängt allein von ihren Sicherheitsbedürfnissen ab. Niemand ist verpflichtet, seinen Schlüssel öffentlich zu machen oder die Schlüsselanderer zu unterschreiben. Eine der Stärken von GnuPG ist dessen Flexibilität. sie werden jedoch feststellen, dass sie ihr Web of Trustausbauen müssen, wenn sie GnuPG für wirklich sichere Kommunikation einsetzen möchten.
+
+
+
+Fußnoten
+
+(*) GnuPG
+
+In diesem Abschnitt bezieht sich GnuPG sowohl auf die
+GnuPG-Implementierung von OpenPGP als auch auf andere
+Implementierungen wie das Verschlüsselungsprogramm PGP der "PGP Corporation". Bis 2002 wurde es von der Firma "Network Associated" entwickelt und verkauft.
+
