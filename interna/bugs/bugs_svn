@@ -1,9 +1,9 @@
-Autoren SVN
+Bugs SVN
 -------------
 
-Arbeit der Autoren mit dem SelfLinux-SVN
+Arbeit der Bugfixer mit dem SelfLinux-SVN
 
-Stand: 31.10.2004		$Revision: 1.11 $
+Stand: 02.11.2004		$Revision: 1.0 $
 
 
 
@@ -33,33 +33,11 @@ dich in der entsprechenden Programm-Dokumentation.
 
 
 
-2 Allgemein Regeln
+2 Vorbereitungen
 
 
 
-2.1 Wohin mit den Texten?
-
-Prinzipiell wird jeder NEUE Text erst einmal an einen Mitarbeiter des Core-Teams
-per Mail geschickt. Dieser checkt den Text dann ins SVN ein.
-
-
-
-2.1 Wohin mit den Bildern?
-
-Bilder sollen als zum Text gehörend wiedererkannt werden. Im Text an der Stelle wo das Bild
-hinsoll, den Namen des Bildes erwähnen. 
-
-Die Bildernamen sollten möglichst aussagekräftig nach dem Inhalt des
-Bildes benannt werden, also NICHT z.B. bild1.png; bild2.png oder
-ähnliches. Als Bildformat ist PNG zu verwenden. 
-
-
-
-3 Vorbereitungen
-
-
-
-3.1 Schreibzugriff erhalten
+2.1 Schreibzugriff erhalten
 
 Nach der Anmeldung bei SelfLinux besitzt jeder Autor die Möglichkeit sich das svn
 lokal auszuchecken, sowie lokal herunterzuladen. Einen Schreibzugriff auf das svn
@@ -67,7 +45,7 @@ erhält man seperat bei Florian Frank oder Frank Börner, falls erwünscht.
 
 
 
-3.2 Zugang zum SVN
+2.2 Zugang zum SVN
 
 Für den Lese-Zugriff auf das SelfLinux-SVN-Repository auf
 pingos.org gibt es folgende Möglichkeiten:
@@ -112,75 +90,7 @@ aktualisiert.
 4. "Alltägliche" Arbeit mit dem SVN
 
 
-
-4.1 Anlegen eines neuen Textes
-
-Vorraussetzung dazu ist dass man einen Schreibzugriff hat.
-Jetzt wollen wir einen neuen Text anlegen. Dazu
-gehen wir in das Verzeichnis unserer (ausgecheckten) lokalen
-Arbeitskopie.
-
-user$ cd /home/<username>/selflinux/svn/tutorial/...
-
-Dort müssen wir zuerst ein Verzeichnis mit dem Namen für den neuen
-Text anlegen. 
-
-user$ mkdir <neuer_text>
-(Achtung! Das ist ein Verzeichnis, keine Datei!)
-
-Als nächstes muss dieses Verzeichnis unserem SVN-Repository bekannt
-gemacht werden. Das erfolgt mit dem Befehl:
-
-user$ cvs add <neuer_text>
-
-Damit haben wir in unserem SVN ein neues Verzeichnis im Tutorial
-angelegt.
-
-Nun wechselt man in das neue Verzeichnis und kopiert seinen Text
-hinein.
-
-user$ cd <neuer_text>
-user$ cp <Quelldatei> <Zieldatei>
-
-(Wie man das hier reinkopiert, ist natürlich jedem selbst überlassen.)
-
-Auch hier müssen wir unsere Textdatei dem SVN bekannt machen. Aber im
-Unterschied zu einem Verzeichnis erfolgt das bei Dateien in zwei
-Schritten:
-
-user$ svn add <neuer_text>
-user$ svn commit  "Text ueber ... eingefuegt" <neuer_text>
-
-Damit wird unser neuer Text endgültig in unser SVN-Repository
-eingefügt.
-
-Es wird der Standard-Editor geöffnet um einen Kommentar in das log-file
-schreiben zu können. Hier sollte sehr kurz und prägnant reingeschrieben werden,
-was man an der Datei gemacht hat (z.B. Rechtschreibfehler korrigiert
-oder um Kapitel soundso erweitert). Bloß keine Romane schreiben!
-
-
-
-4.2 Ablegen von Bildern eines Textes
-
-Bilder werden immer in dem Verzeichnis des Textes 
-abgelegt. Die Schritte sind analog zu den Texten.
-
-Wenn man mehrere Bilder hat, kann man diese natürlich auch mit einem
-Male einchecken.
-
-user$ svn add bildname1.png bildname2.png bildname3.png
-
-usw.
-
-Abschließend müssen die Bilder wie die Textdateien auch ins SVN mit
-"commit" eingefügt werden.
-
-user$ svn commit "Bild soundso eingecheckt" bildname.png
-
-
-
-4.3 Bearbeiten eines vorhandenen Textes
+4.1 Korrigieren eines vorhandenen Textes
 
 Wir wechseln in das Verzeichnis, wo unser Text liegt, den wir bearbeiten wollen:
 
@@ -209,6 +119,4 @@ neuen Bearbeitung der Datei erneut durchlaufen werden!
 
 
 --------------------------------------------------------
-Autoren: Andreas Kalbitz
-	 Jörg Meinhold
-	 Frank Börner
+Autoren:		Frank Börner
