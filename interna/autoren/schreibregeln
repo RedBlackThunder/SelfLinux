@@ -1,0 +1,585 @@
+
+Schreibregeln für die "plain"-Texte von SelfLinux
+-------------------------------------------------
+
+Stand: 31.03.2004		 $Revision: 1.16 $
+
+
+Eine Zusammenfassung der Regeln steht am Schluß von diesem Text!
+
+
+
+1 Was ist "plain"-Text?
+
+Plain-Text bedeutet reiner ASCII-Text ohne Formatierung des
+Textes und der Schriftzeichen. Da wir ein deutsches Tutorial sind,
+verwenden wir natürlich die speziellen deutschen Buchstaben (wie ö,ä,ü
+oder ß).
+
+Besonders wichtig ist, das am Ende einer jeden Zeile für den
+Zeilenvorschub ein für Unix-Systeme übliches Linefeed (LF)
+steht! Windows- und MS-DOS-basierte Systeme verwenden hierfür zwei
+Befehle, den Linefeed (LF) und Carriage Return
+(CR=Zeilenrücklauf). Wenn Sie einen Text unter Linux/Unix mit einem
+dort gebräuchlichen Editor erstellen, so brauchen Sie sich um den
+Zeilenvorschub nicht zu kümmern. Falls Sie aber einen Text unter
+Windows/MS-DOS erzeugen, müssen Sie da besondere Vorsicht walten
+lassen. Einige Editoren unter Windows (z.B. UltraEdit) haben aber die
+Möglichkeit, die Art und Weise des Zeilenvorschubs in ihren Optionen
+einzustellen.
+
+
+
+2 Dokumentenkopf oder der "Header"
+
+Am Anfang eines jeden Textdokumentes fügen Sie bitte (z.B. durch
+Kopieren) diesen "Muster"-Dokumentenkopf ein:
+
+
+ <!--
+  * Titel: 
+  * [c]
+  * Autor:
+  * Layout:
+  * Lizenz: 
+  *
+  * $Revision: $
+  * $Source:   $
+  *
+  * Diese Datei ist Teil von SelfLinux http://www.selflinux.org
+  *
+  *** $Id: $
+  -->
+
+
+Dieser Header enthält wichtige Verwaltungsinformationen für uns und
+wird außerdem vom Layout-Team bei der Erstellung der XML-Datei
+benötigt!
+
+Vergessen Sie bitte nicht, diesen "Header", soweit wie Sie können,
+auszufüllen. Es soll anhand eines Beispiel gezeigt werden, auf was für
+wichtige Punkte dabei geachtet werden soll:
+
+----------------------------------------------------------------------- 
+
+Beispiel 1:
+
+ <!--
+  * Titel: INN Newsserver
+  * [c] Steffen Dettmer
+  * Autor: Steffen Dettmer <steffen@dett.de>
+  * Layout: Matthias Hagedorn <matthias.hagedorn@selflinux.org>
+  * Lizenz: GFDL 
+  *
+  * $Revision: 1.2 $
+  * $Source: /var/cvs/selflinux/tutorial/inn/inn,v $
+  *
+  * Diese Datei ist Teil von SelfLinux  http://www.selflinux.org
+  *
+  *** $Id: inn,v 1.2 2003/10/18 15:25:24 florian Exp $
+  -->
+
+Erläuterungen:
+
+Der Titel ist selbsterklärend. Das [c] ist der Copyright-Hinweis. Die
+Autoren haben ja auf ihre geistigen "Ergüsse" das Urheberrecht, darum
+wird hier noch mal extra der "Urheber" des Textes angegeben. Bei Autor
+wird der vollständige Name und die E-Mail Adresse wie in dem Beispiel
+angegeben. Hier dürfen auch mehrere Autoren stehen, wenn z.B. an einen
+Text mehrere Autoren Teilstücke geschrieben haben. Als Autoren lassen
+Sie bitte das Layout-Feld frei, dieses wird dann vom Layout-Team
+ausgefüllt.
+
+Unter Lizenz können Sie als Autor ihre gewünschte Lizenz
+eintragen.
+
+Alle anderen Punkte in dem Header brauchen Sie nicht zu
+verändern. Zwischen den $-Zeichen wird bei jedem "Commit"
+Informationen vom CVS eingetragen. Diese werden immer automatisch
+eingetragen. Also egal was Sie da reinschreiben, es wird beim
+Einchecken überschrieben. (Es gibt aber einen speziellen CVS-Befehl,
+der das verhindern kann, der aber nur in Ausnahmefällen zu Einsatz
+kommt.) Autoren, die mit CVS nicht umgehen können, verändern bitte NIE
+das was zwischen den $-Zeichen steht! Es sind für uns sehr wichtige
+Informationen darin. Das gilt vor allem, wenn man den Text jemand
+anderen zum Einfügen ins CVS schickt. 
+
+Am besten ist, Sie schauen sich auch mal Beispiele
+im CVS an.
+
+
+
+3. Lizenz
+
+Wenn der Text in SelfLinux erscheinen soll und wir nehmen
+mal an, er soll es, sonst hätten Sie sich bei SelfLinux ja nicht
+angemeldet, dann sollten Sie die GPL (GNU General Public License) als
+Lizenz verwenden.
+
+Es ist weiterhin möglich, die GFDL (GNU Free Documentation License)
+als Lizenz zu verwenden. Allerdings ist die Anwendung der GFDL in
+jüngster Zeit in Diskussion gekommen, weil sich in einigen
+problematischen Punkten langsam herausstellt, das die Freiheit (im
+Sinne der GPL) von Dokumentationen durch die GFDL nicht genügend
+geschützt wird. Diese Problematik war zu Beginn des SL-Projektes nicht
+zu erkennen. Daher gibt es noch eine ganze Reihe von Texten, die unter
+GFDL stehen. Im Allgemeinen sollte jetzt die GFDL nicht verwendet
+werden, weil wir nicht wissen, wie die Diskussionen um die GFDL
+ausgehen werden.
+
+Anderen Lizenzen müssten erst mal von uns dahingehend
+überprüft werden, ob sie mit dem Freie-Software-Gedanken vereinbar
+sind.
+
+
+
+4 Text als eine Datei
+
+Ein Text wird prinzipiell als EINE zusammenhängende Datei
+geschrieben.
+
+Ausnahmen sind nur in außergewöhnlichen Fällen möglich! Bei
+aufgeteilten Texten gibt es große Probleme bei der Erstellung unserer
+HTML- und PDF-Seiten. Daher sollte eine Aufteilung des Textes auch bei
+umfangreichen Texten vermieden werden.
+
+
+
+5 Zeilenlänge
+
+Eine Zeile soll nicht mehr als 70 Zeichen lang sein.
+
+Begründung:
+
+Diff, welches auch vom CVS benutzt wird, um Änderungen
+in Dateien zu verfolgen, arbeitet zeilenweise. Jede Zeile, in der
+sich etwas geändert hat, wird als eine "Änderung" markiert. Zum
+synchronisieren werden sicherheitshalber noch drei Zeilen "Context"
+vor und nach der Änderung dazugenommen.
+
+Wenn ein Abschnitt jedoch nur eine einzige Zeile ist, wird der
+komplette Absatz als eine Änderung erkannt. Was das im Praktischen
+für Nachteile hat, soll hier mal an einem Beispiel näher erläutert
+werden.
+
+-----------------------------------------------------------------------
+Beispiel 2:
+
+Beispielsatz:
+_______________________________________________________________________
+SourceForge bietet allen aktiven Nutzern einen
+Zugang per SSH an. SSH ist kurz gesagt eine
+Weiterentwicklung des bekannten Telnet-Systems zum
+Arbeiten auf fremden Rechnern. Im Gegensatz zum
+Standard-Telnet findet die Kommunikation zwischen
+den Rechnern bei SSH allerdings verschlüsselt
+statt, deswegen stellen immer mehr
+Systemadministratoren von Telnet auf SSH um.
+_______________________________________________________________________
+
+Eine Person 1 ändert die erste Zeile (z.B. "Nutzern" ändern in
+"Mitglieder") und gleichzeitig arbeitet eine Person 2 an der letzten
+Zeile (z.B. "Telnet" ändern in "Telnet oder RSH2").
+
+Person 1 commited (spezielles Kommando zum Einchecken von den
+Texten oder Änderungen der Texte in das CVS) die Änderungen. Dann
+versucht Person 2 ein commit. Das geht schief, weil im CVS ja bereits
+eine neuere Version liegt. Person 2 muß jetzt also erstmal updaten.
+
+In diesem Fall macht Person 2 einfach "cvs update" und bekommt die
+Änderungen von Person 1 auf seinen Bildschirm. Person 2 hat jetzt den
+Text mit "BEIDEN" Änderungen, da CVS automatisch die Änderungen
+"merged"(zusammenfügt). Er kann diese Version nun einchecken!
+
+
+Angenommen der Absatz wäre in einer einzigen Zeile geschrieben:
+________________________________________________________________________
+SourceForge bietet allen aktiven Nutzern einen Zugang per SSH an. SSH ist kurz gesagt eine Weiterentwicklung des bekannten Telnet-Systems zum Arbeiten auf fremden Rechnern. Im Gegensatz zum Standard-Telnet findet die Kommunikation zwischen den Rechnern bei SSH allerdings verschlüsselt statt, deswegen stellen immer mehr Systemadministratoren von Telnet auf SSH um.
+________________________________________________________________________
+
+Es erfolgt jetzt der gleiche Ablauf wie oben. Allerdings klappt jetzt
+das update von Person 2 nicht automatisch. CVS merkt, daß die gleiche
+Stelle von Person 1 geändert ist und markiert diese ganze Zeile (hier
+also den kompletten Abschnitt) als Konflikt.
+
+Person 2 muß nun den kompletten Abschnitt sorgfältig durchlesen, um
+die Änderungen von Person 1 zu finden und diese manuell übernehmen,
+um einchecken zu können.
+
+Wie man sieht, macht sich die Arbeit einfacher, wenn man viele Zeilen
+hat und damit die Wahrscheinlichkeit für Konflikte sinkt.
+
+Deshalb darf man den Text auch niemals formatieren, weil sich durch
+die Verschiebungen dann ja alle Zeilen ändern würden. Also wird aus
+jeder weiteren Änderung zeitgleich ein Konflikt. Und das bedeutet
+einen erheblichen Mehraufwand an Arbeit.
+
+-----------------------------------------------------------------------
+
+Wenn eine Zeile mal länger geworden sein sollte
+(z.B. beim Zufügen von Wörtern), dann machen Sie einfach einen
+Zeilenvorschub rein (wo der Text geteilt werden
+soll, die "ENTER-Taste" drücken).
+So wie
+es hier in diesem Abschnitt zu sehen ist.
+
+WICHTIG!!! Den Text nicht neu formatieren!!!
+
+Es macht überhaupt nichts, wenn die Textversion nicht "schön
+formatiert" aussieht! Die Texte werden später erst mit Format-Tags
+für die endgültigen Ausgabe-Formate versehen!(Das macht das Layout-Team.)
+Auch hier ein Beispiel.
+
+-----------------------------------------------------------------------
+Beispiel 3:
+
+Was macht man mit solchen Zeilen ( die länger geworden sind als geplant):
+_______________________________________________________________________
+SourceForge bietet allen aktiven Nutzern einen Zugang per SSH an. SSH ist kurz gesagt eine Weiterentwicklung des bekannten Telnet-Systems
+zum.......
+_______________________________________________________________________
+
+
+das zeigt folgendes Beispiel:
+_______________________________________________________________________
+SourceForge bietet allen aktiven Nutzern einen
+Zugang per SSH an. SSH ist kurz gesagt eine Weiterentwicklung des bekannten
+Telnet-Systems
+zum.......
+_______________________________________________________________________
+
+Die erste Zeile war zu lang, also einfach soviele Returns reinmachen,
+bis es weniger als 70 Zeichen hat. Das jetzt eine Zeile zu kurz ist
+(Zeile 3), stört überhaupt nicht. Bloß nicht auf die glorreiche
+Idee kommen, das jetzt "schön" machen zu wollen (zu formatieren).
+(Weil sich ja dann alle Zeilen ändern und damit die Konflikte
+vorprogrammiert sind!!!)
+
+-----------------------------------------------------------------------
+
+70 Zeichen sind ein guter Wert, dann kann man unter Umständen
+nämlich noch Rechtschreibfehler korrigieren (einzelne Zeichen
+einfügen), ohne daß sich gleich neue Zeilen bilden.
+
+
+
+6 Absätze
+
+Da keine Textzeilen-Formatierung benutzt werden kann, wird das
+Erkennen eines Absatzes erschwert. Eine Unterscheidung der Art, daß
+die letzte Zeile eines Absatzes kürzer ist als die anderen, kommt
+hier nicht in Frage, da dies auch mitten in einem Satz passieren
+kann. (Wenn z.B., wie oben beschrieben, ein Zeilenumbruch
+durchgeführt wird, kann es vorkommen, daß nur zwei Wörter in einer
+Zeile stehen).
+
+Aus diesem Grund wird nach jedem Absatz genau EINE Leerzeile eingefügt.
+Diese ist dann eindeutig zu erkennen.
+
+Dieses Vorgehen bringt noch einen weiteren Vorteil mit sich: Die
+Layouter belassen die Leerzeile auch in ihrer Version (die viele
+Tags enthält) und können diese Leerzeile schnell finden. So ist es
+einfacher, beide Textversionen nebeneinander zu bearbeiten.
+
+
+
+7 Überschriften
+
+Verzichten Sie bitte bei Überschriften auf alle Formen von
+Unterstreichungen! Diese Unterstreichungen müssen von den Layoutern
+wieder mühevoll entfernt werden. Also sparen wir uns diese Arbeit
+gleich.
+
+Überschriften müssen wie die Absätze auch durch Leerzeilen abgetrennt
+werden. Um die Überschriften und die Absätze auseinander halten zu
+können, werden vor einer Überschrift GENAU drei (3) und danach GENAU
+eine (1) Leerzeile eingefügt.
+
+Der Hauptgrund ist, das wir ein Perl-Tool (plain2xml.pl) verwenden, um
+schon eine einigermaßen gut aufgebaute XML-Datei aus dem Plaintext zu
+erzeugen. Das erleichtert dem Layout-Team enorm die Arbeit. Dazu muss
+sich aber peinlichst genau an diese Leerzeilen-Regeln gehalten werden,
+da der Layouter sonst manuell eingreifen muss.
+
+Weiterhin erleichtert es das Auffinden im Text und gibt
+gleichzeitig dem CVS eine große Chance zum Synchronisieren
+(da ja CVS 3 Zeilen Context benutzt).
+
+Ausnahme!
+Zwischen zwei genau aufeinander folgenden Überschriften dürfen "nur"
+die DREI (3) Leerzeilen eingefügt werden.
+
+
+
+7.1 Überschriften-Nummerierung
+
+Die Nummern einer Überschrift müssen im allgemeinen nicht "stimmen".
+Letztendlich wird in der Format-Version die Nummerierung durch Tags
+erzeugt. Die Zahlen dienen im Layout eigentlich nur zur
+Verdeutlichung, welche Tiefe eine Überschrift hat.
+
+So können Sie also immer die gleiche Zahl verwenden, z.B. immer "1"
+oder auch "0". Wir empfehlen z.B. die Nummer "1".
+
+Sie können aber ihr Text auch ganz normal nummerieren, wie man es
+sonst gewohnt ist. Hier ist dann aber zu beachten, daß wenn ein
+Dokument richtig nummeriert und fertig formatiert ist und
+Sie z.B. noch einen neuen Abschnitt einfügen möchten, daß Sie dann die
+vorhandene Nummerierung so lassen, wie sie ist. Fügen Sie einfach den
+Abschnitt mit derselben Nummerierung wie den vorherigen Abschnitt
+ein. Also hat z.B. der Abschnitt zwischen 2.1.3 und 2.1.4
+dann auch die Nummer 2.1.3. Man hat zwar dann zwei gleiche Nummern,
+dem Layouter ist das aber egal, weil er nur die Tiefe der Überschrift
+wissen muss.
+
+Wie Sie am besten mit der Nummerierung umgehen, soll an einem Beispiel 
+gezeigt werden:
+
+-----------------------------------------------------------------------
+
+Beispiel 4:
+
+
+
+1 Überschrift Eins
+
+
+
+1.1 Überschrift Eins-Eins
+
+Ein kurzer Absatz.
+
+Ein weiterer Abschnitt, dieser ist sogar etwas länger, aber sagt
+auch nicht mehr aus, als der vorherige, nämlich ziemlich genau
+gar nichts.
+
+
+
+1.2 Überschrift Eins-Zwei
+
+
+
+1.2.1 Überschrift Eins-Zwei-Eins
+
+Wie Sie sehen, sind vor dieser Überschrift 3 Leerzeilen, wobei diese
+mehr heraus sticht als die 1.1
+
+Und hier kommt schon wieder so ein Absatz, der eigentlich wirklich
+überhaupt nichts aussagt. Eben ein Beispiel, nicht mehr.
+
+Auch ein Abschnitt und keine Überschrift.
+
+
+
+2 Überschrift Zwei
+
+Und noch ein Absatz.
+
+
+
+3 Überschrift Drei
+
+
+
+3.1 Überschrift Drei-Eins
+
+...
+
+usw. usf.
+
+-----------------------------------------------------------------------
+
+
+  
+8 Links
+
+Bei Links werden externe und interne Verknüpfungen unterschieden. Externe
+Links verweisen irgendwo ins Internet, z.B. auf www.kernel.org. Interne
+Links zeigen auf andere SelfLinux-Texte, die weiterführende Informationen
+zum jeweiligen Stichpunkt enthalten. Sie können dabei auf den Anfang eines
+SL-Textes oder auch auf eine Überschrift in einem SL-Text verweisen.
+
+Interne Links sind für die Struktur von SelfLinux erwünscht, es ist dabei
+allerdings notwendig, dass man den Aufbau von SL gut kennt. Sollten Sie Sich
+also im Tutorial auskennen, wäre es sehr schön, wenn Sie auch Links zu
+anderen Kapiteln setzen würden. Andernfalls wird dies auf jeden Fall im Rahmen
+der Qualitätsprüfung (QA1) vorgenommen.
+
+Die für Autoren empfohlene Syntax für Links in plain-Texten ist folgende (bitte
+beachten Sie, dass es wirklich nur Empfehlungen sind, kein Autor ist gezwungen,
+damit zu arbeiten):
+
+
+
+8.1 Interner Link an den Anfang eines Textes:
+
+ <!-- LINK: chapter="was_ist_unix" -->Unix<!-- ENDLINK -->
+
+Es handelt sich dabei um zwei Kommentare, die den Begriff, der
+später in der Layout-Version den Link darstellt, einrahmen. Im
+obigen Beispiel ist dieser Begriff "Unix".
+Das Ziel des Links wird später der SL-Text was_ist_unix sein.
+Dass es sich um einen internen Link handelt, wird
+durch das Attribut "chapter=" verdeutlicht.
+
+Achtung: Die Benennung des Linkziels richtet sich nach dem plain-Namen des
+Textes, wie er im CVS hinterlegt ist.
+
+
+
+8.2 Interner Link zu einer Überschrift in einem Text
+
+In einem Text kann gezielt eine bestimmte Überschrift angesprungen werden.
+Diese Überschrift wird per Attribut "iref=" angegeben:
+
+ <!-- LINK: chapter="was_ist_shell" iref="Der Ersetzer sed" -->sed<!-- ENDLINK -->
+
+
+
+8.3 Interner Link zu einer Überschrift im GLEICHEN Text
+
+Eine Verküpfung zu einer Überschrift im gleichen Text braucht keine Kapitelangabe.
+Ein interner Link zu einer Überschrift im gleichen Text wäre also:
+
+ <!-- LINK iref="Ueberschrift im Text zu der gelinkt werden soll" -->Linktext<!-- ENDLINK -->
+
+
+
+8.4 Zukünftige interne Links
+
+Auf noch nicht in SL enthaltene, aber für die Zukunft erwartete Texte kann
+eine Verknüpfung vorgemerkt werden:
+
+ <!-- FUTURELINK: chapter="Auf das kommende Kapitel Kernelprogrammierung verlinken" -->SIGTERM<!-- ENDLINK -->
+
+
+
+8.5 Externe Links
+
+Externe Links werden folgendermassen beschrieben:
+
+ <!-- LINK: url="http://www.selflinux.org" -->www.selflinux.org<!-- ENDLINK -->
+
+ 
+ 
+8.6 Vorlagen für copy&paste
+
+<!-- LINK: chapter="" -->
+<!-- LINK: chapter="" iref="" -->
+<!-- LINK iref="" -->
+<!-- FUTURELINK: chapter="" -->
+<!-- LINK: url="http://" -->
+
+<!-- ENDLINK -->
+
+
+
+9 Rechtschreibung
+
+Bitte im Extra-Dokument unter:
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/rechtschreibung
+(eine Zeile)
+
+nachlesen.
+
+
+
+10 Schreibstil
+
+Bitte im Extra-Dokument unter:
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibstil
+(eine Zeile)
+
+nachlesen.
+
+
+
+11 Stichwörter
+
+Es gibt in der html-Version von SelfLinux eine Stichwortliste, zu finden unter
+
+http://www.selflinux.org/selflinux-devel/html/keyword
+
+Damit neue Texte hier aufgenommen werden und somit die Stichwortliste
+erweitert wird, ist es nötig, Stichwörter in die Texte mit aufzunehmen.
+Wie dies geht, wird im Dokument
+
+http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/quality/keywords?rev=HEAD&content-type=text/plain
+
+erklärt. Für Autoren ist es (wie auch bei den Links) keine Pflicht, diese
+Stichwörter aufzunehmen, es wird dann vom Team Quality gemacht. Wenn der Autor
+es trotzdem machen will, dann sollte er sich bitte das oben genannte Dokument
+sehr genau durchlesen!
+
+
+
+12 Aufzählungen
+
+Die folgenden Erläuterungen sind Empfehlungen, keine Pflicht.
+
+Aufzählungen können mit einem Bindestrich "-" gekennzeichnet werden. Wenn
+zusätzlich eine Verschachtelung gewünscht ist, also ein Punkt mehrere
+Unterpunkte hat, ist es sinnvoll, die Unterpunkte 4 Leerzeichen einzurücken
+und ebenfalls mit Bindestrichen zu kennzeichnen. Wer ganz sichergehen will,
+dass es nicht übersehen wird, kann auch einen Kommentar einfügen.
+
+Beispiel:
+
+<!-- Beginn Aufzählung -->
+
+- - Test
+- - Test
+    - Test
+    - Test
+
+<!-- Ende Aufzählung -->
+
+Alternativ kann es auch in Tabellenform gestaltet werden:
+
+<!-- Beginn Tabelle -->
+
+Kommando        Beschreibung
+ps              Text Text Text Text Text Text Text Text Text Text Text
+                Text Text Text Text Text Text Text Text 
+
+wich            Text Text Text Text 
+
+<!-- Ende Tabelle -->
+
+
+
+13 Zusammenfassung
+
+- wir schreiben "plain"-Text mit dem für Unix typischen LF
+- Dokumentenkopf (Header) einfügen und ausfüllen
+- Text als EINE zusammenhängende Datei
+- Zeilenlänge nicht mehr als 70 Zeichen
+- einen bestehenden Text nicht neu formatieren
+- Absätze werden durch EINE Leerzeile getrennt
+- das Aussehen der Absätze spielt bei plain-Texten keine Rolle.
+- vor einer Überschrift werden genau DREI (3) und danach genau  
+  EINE (1) Leerzeile eingefügt. Ausnahme: zwischen zwei Überschriften
+  müssen nur die DREI (3) Leerzeilen sein! 
+- keine Unterstreichungen der Überschriften
+- die Überschriften-Nummerierung soll nur die Tiefe der Überschrift
+  angeben, die Zahlenwerte sind dabei nicht von Bedeutung
+- Verwendung der Regeln für die Rechtschreibung
+- für das Einfügen von Links und Aufzählungen gibt es Empfehlungen
+- falls Stichwörter aufgenommen werden, sind die Richtlinien dazu genauestens
+  zu beachten
+- Beachtung der Stilregeln bei Formulierungen
+
+
+-----------------------------------------------------------------
+Autoren: Steffen Dettmer
+	 Lothar Ketterer
+         Matthias Kleine
+	 Jörg Meinhold
+	 Arnulf Pelzer
+
+	 	 
+
+Viele Verbesserungsvorschläge hinsichtlich der Rechtschreibung sowie der Link-Syntax kamen
+von Rolf Brunsendorf. Vielen Dank!
