@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Was ist eine Shell?</title>
+
+ <author>
+  <name>Matthias Kleine</name>
+  <mailto>kleine_matthias@gmx.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+    GPL
+ </license>
+
+ <index>was_ist_shell</index>
+
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Das vorliegende Kapitel gibt bewusst keine Einführung in technische
+Details. Es ist insbesondere an Benutzer gerichtet, die noch keine
+große Erfahrung im Umgang mit Shells haben und die wissen möchten,
+warum Shells überhaupt verwendet werden und welchen Nutzen sie haben.
+Wer nach technischen Einzelheiten zum Umgang mit Shells sucht, sei
+auf die beiden Kapitel 
+<ref chapter="bash_basic">Einführung in die Bourne Again Shell</ref>
+und <ref chapter="shellprogrammierung">Shellprogrammierung</ref> 
+verwiesen. 
+   </textblock>
+
+   <textblock>
+In diesem Kapitel werden insbesondere die folgenden Fragen beantwortet:
+   </textblock>
+
+   <ul>
+    <li>Welche Rolle spielt eine Shell innerhalb des Gesamtsystems?</li>
+    <li>Wodurch erleichtert eine Shell die tägliche Arbeit?</li>
+    <li>Wie trägt die Shell zur Einrichtung einer persönlichen Umgebung bei?</li>
+    <li>Gibt es nur eine oder gibt es unterschiedliche Shells?</li>
+   </ul>
+
+  </section>
+
+  <section>
+   <heading>
+Ein Mittler zwischen Benutzer und Betriebssystem-Kern
+   </heading>
+
+   <textblock>
+Weil die direkte Kommunikation mit dem Betriebssystem-Kern für einen 
+Benutzer viel zu komplex wäre, ist eine vereinfachte 
+Benutzer-Schnittstelle erforderlich. Neben einer grafischen 
+Schnittstelle wie dem X Window System wird diese Leistung vor allem
+von einer Shell bereitgestellt. Der englische  Ausdruck <strong>Shell</strong>, zu
+Deutsch etwa <strong>Schale</strong> oder <strong>Ummantelung</strong>, drückt diesen Sachverhalt 
+bereits aus. Die Übersetzung oder Symbolisierung als <strong>Muschel</strong> hat 
+dabei wohl mehr mit Spieltrieb und Anschaulichkeit als mit einem 
+echten technischen Hintergrund zu tun. Jedenfalls lässt sich eine 
+Shell als eine Schicht zwischen Betriebssystem und Benutzer
+verstehen. Wir veranschaulichen dies in der folgenden Grafik:
+   </textblock>
+
+   <image height="150">
+    <title>
+Funktionsweise einer Shell
+    </title>
+    <filename>
+shell_funktionsweise01.png
+    </filename>
+   </image>
+
+   <textblock>
+Während Benutzer, die noch nicht häufig mit Shells in Berührung
+gekommen sind, den wartenden Eingabeprompt einer Shell als trist
+und abweisend, ja sogar als Hindernis empfinden mögen, wurden Shells
+doch mit der gegenteiligen Absicht entwickelt: Sie sollten die
+tägliche Arbeit vereinfachen und erleichtern. 
+   </textblock>
+
+  </section>
+
+  <section>
+   <heading>
+Die Interpretation der Kommandozeile
+   </heading>
+
+   <textblock>
+Die Hauptaufgabe einer Shell besteht darin, Kommandos entgegenzunehmen
+und das Betriebssystem um ihre Ausführung zu bitten. Das klingt 
+einfach, stößt aber in der Praxis auf besondere Probleme und 
+Anforderungen. Eine Shell hat daher zunächst eine Interpretation
+der Kommandozeile zu leisten. Sie interpretiert einzelne Zeichen 
+oder Worte der Eingabe und ersetzt sie ggf. durch neue Zeichen oder 
+Worte. So stehen beispielsweise Variablen für bestimmte Zeichenketten 
+und werden zunächst von der Shell durch ihren Inhalt ersetzt, bevor 
+der Aufruf eines Kommando erfolgt. Das gleiche gilt für 
+Platzhalterzeichen wie <command>*</command> oder <command>?</command>, die für die Angabe von Zeichenmustern
+verwendet werden können. Diese und zahlreiche weitere Mechanismen kann 
+der Benutzer verwenden, um seine Kommandozeilen knapper und effektiver
+zu formulieren.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Die Kombination von Kommandos
+   </heading>
+
+   <textblock>
+Häufig ist es auch nicht nur ein einzelnes Kommando, das ausgeführt
+werden soll. Kommandos können beispielsweise so miteinander verbunden
+werden, dass die Ausgabe eines Kommandos zur Eingabe eines weiteren
+Kommandos wird. Auch wiederholte oder bedingte Ausführungen in Form 
+von Schleifen und <strong>wenn - dann</strong>-Konstrukten sind wünschenswert und 
+werden daher von vielen Shells ermöglicht. Und schließlich möchte
+man häufig eine bestimmte wiederkehrende Folge von Kommandos ausführen
+lassen, die man daher in einer Datei niederschreibt und für die
+spätere Ausführung abspeichert. Die Konfiguration eines Linux-Systems
+erfolgt häufig über solche Dateien, die als Shell-Skripte bezeichnet
+werden.
+   </textblock>
+
+  </section>
+
+  <section>
+   <heading>
+Bereitstellung einer persönlichen Arbeitsumgebung
+   </heading>
+
+   <textblock>
+Bei der täglichen Arbeit ist des weiteren die Konfiguration einer
+typischen Arbeitsumgebung von Bedeutung. So möchte ein Benutzer
+beispielsweise meist mit einer passenden Spracheinstellung arbeiten,
+seinen Lieblingseditor zum Editieren von Texten verwenden, verwendeten
+Programmen Information über seine Vorlieben mitteilen, die Form seines
+Eingabepromptes ändern und vieles andere. All dies lässt sich über
+sogenannte Shellvariablen konfigurieren, auf Wunsch auch dauerhaft in
+einer Konfigurationsdatei, damit die Einstellungen nicht bei jeder
+Anmeldung wiederholt werden müssen. Eine Shell bietet ihrem Benutzer
+somit eine konfigurierbare, persönliche Umgebung, um typische
+Arbeitsabläufe möglichst komfortabel und fehlerfrei abwickeln zu
+können.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Unterschiedliche Shells
+   </heading>
+
+   <textblock>
+Im Laufe der Zeit wurden unterschiedliche Shells entwickelt. Je nach 
+Erfahrungshintergrund bevorzugen Anwender einzelne Shells, die es ihnen
+besonders gut ermöglichen, ihre jeweiligen Ziele zu erreichen. Die oben
+beschriebenen Anforderungen werden zwar von jeder Shell erfüllt,
+gelegentlich können jedoch besondere Anforderungen wie beispielsweise
+besonders komfortable Programmierbarkeit, Unterstützung spezieller
+Programmier-Konstrukte oder Kompatibilitätserwägungen eine Rolle bei der
+Auswahl der Shell spielen. 
+   </textblock>
+
+   <textblock>
+Die Mutter aller Shells stellt gewissermaßen die <strong>Bourne Shell</strong> dar.
+Unter Unix darf man sicher sein, zumindest eine mit der Bourne Shell
+kompatible Shell anzutreffen, und die meisten Skripte sind auch heute
+noch in der Bourne Shell-Syntax gehalten. In der Linux-Welt ist
+zweifellos die <strong>Bourne Again Shell</strong> (<strong>bash</strong>) am weitesten verbreitet, die
+zur Bourne Shell aufwärtskompatibel ist und darüber hinaus zahlreiche
+Erweiterungen erfahren hat. Aber auch andere Shells wie etwa die
+<strong>C-Shell</strong> (<strong>csh</strong>) und ihre Nachfolger sowie <strong>ash</strong> oder <strong>zsh</strong> sind in der
+Praxis immer wieder anzutreffen. Wenn keine besonderen Anforderungen
+eine Rolle spielen, ist die bash für den Einstieg eine gute Wahl. 
+   </textblock>
+
+  </section>
+
+  <section>
+   <heading>
+Zusammenfassung
+   </heading>
+
+   <textblock>
+Wir haben in diesem Kapitel keine technischen Details besprochen,
+sondern uns der Frage gewidmet, warum Shells überhaupt verwendet
+werden und welche Leistung sie für die Arbeit mit einem Computer
+erbringen. Der Urgrund für die Entwicklung von Shells war die
+Bereitstellung einer Kommunikations-Schicht zwischen Betriebssystem
+und Benutzer, damit dieser nicht die komplexen Eigenheiten des
+Betriebssystemes selbst kennenlernen musste. In der täglichen
+Arbeit ergab sich dann der Wunsch nach zusätzlichen Mechanismen,
+welche dem Benutzer halfen, typische Arbeitsschritte effizienter
+zu bewältigen. Die Entwicklung unterschiedlicher Shells ist in
+diesem Sinne nur ein Ausdruck unterschiedlicher Anforderungen
+an den Komfort und die Leistungsfähigkeit der Shell. Man sollte 
+die verschiedenen Mechanismen ebenso wie die Vielfalt der Shells
+weniger als eine Hürde, sondern als einen Luxus verstehen.
+   </textblock>
+
+   <textblock>
+Wenn Sie diesen Luxus näher kennenlernen wollen, sei daher hier
+nochmals auf die beiden Kapitel 
+<ref chapter="bash_basic">Einführung in die Bourne Again Shell</ref>
+und <ref chapter="shellprogrammierung">Shellprogrammierung</ref> 
+verwiesen, welche sich dann auch den technischen Einzelheiten
+mit größerer Ausführlichkeit widmen.
+   </textblock>
+  </section>
+ </split>
+</chapter>

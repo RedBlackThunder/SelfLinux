@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>PPP-Verbindung</title>
+
+ <author>
+  <name>Jörn Absatz</name>
+  <mailto>mail@absatz.de</mailto>
+ </author>
+
+ <author>
+  <name>Alexander Fischer</name>
+  <mailto>selflinux@tbanus.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>ppp_verbindung</index>
+
+ <description>
+  <textblock>
+Die Pfadbeispiele sind in diesem Dokument wie folgt
+geregelt:
+  </textblock>
+
+  <textblock>
+<command>pppd</command>, <command>chat</command> und
+<command>diald</command> befinden sich in
+<command>/usr/sbin</command>.<br/>
+Die Konfigurationsdateien befinden sich in <command>/etc/ppp</command>,
+<command>/etc/diald</command> und
+<command>/etc/chatscripts</command>.
+  </textblock>
+
+  <textblock>
+Bei anderen Linux-Distributionen können es andere Verzeichnisse sein.
+  </textblock>
+</description>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->   
+   <heading>
+PPP-Verbindung von Hand herstellen: pppd und chat
+   </heading>
+
+   <textblock>
+Um eine PPP-Verbindung herzustellen, ruft man auf: <command>/usr/sbin/pppd</command>.
+<command>pppd</command> ruft seinerseits auf: <command>/usr/sbin/chat</command>. <command>chat</command> stellt das Modem ein,
+wählt den Provider an, identifiziert sich und verlangt vom Provider,
+den PPP-Server zu starten. Dann gibt es zurück an <command>pppd</command>.
+   </textblock>
+   
+   <textblock>
+<command>pppd</command> verhandelt dann mit dem PPP-Server über den Aufbau einer
+PPP-Verbindung und bekommt schließlich zwei temporäre IP-Nummern:
+eine für den lokalen Rechner und eine zweite für den Rechner auf
+der Provider-Seite. Über diese IP-Nummern wird dann der Verkehr
+mit dem Internet abgewickelt. Anfragen ans Internet gehen an
+die IP-Nummer des Providers, Antworten aus dem Internet gehen
+an die lokale IP-Nummer.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+PPP-Verbindung von Hand beenden:
+   </heading>
+
+   <textblock>
+Die Verbindung kann beendet werden mit dem Shell-Skript
+<command>/usr/sbin/poff</command>.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Parameter / Optionen für pppd und chat
+   </heading>
+
+   <textblock>
+<command>pppd</command> benötigt einige Parameter (Optionen). Es sucht diese Parameter
+in der Datei <command>/etc/ppp/options</command> und in der Kommandozeile.
+Die Kommandozeilenparameter haben Vorrang.
+   </textblock>
+
+   <textblock>
+Die Bedeutung jedes Parameters sieht man sich mit <command>man pppd</command> an.
+Bei mir lautet der Aufruf von <command>pppd</command> folgendermaßen:
+   </textblock>
+
+   <shell>
+	<root>
+/usr/sbin/pppd
+/dev/modem
+115200
+asyncmap 0
+noauth
+crtscts
+debug
+lock
+modem
+defaultroute
+proxyarp
+noipdefault
+lcp-echo-interval 30
+lcp-echo-failure 4
+ipcp-accept-local
+ipcp-accept-remote
+noipx
+connect "/usr/sbin/chat -v -f /etc/chatscripts/cis"
+user &lt;meine user-id&gt;
+disconnect "/usr/sbin/chat -v -f /etc/chatscripts/hangug"
+	</root>
+   </shell>
+
+   <textblock>
+Das Ganze ist eine einzige Kommandozeile. Die Schrägstriche am Ende
+jeder Zeile bedeuten:
+<strong>Diese Zeile wird in der nächsten Zeile fortgesetzt</strong>.
+   </textblock>
+
+   <textblock>
+Der komplizierteste ist der Parameter <command>connect</command>. Der Inhalt dieses
+Parameters ist selbst wiederum eine komplette Kommandozeile mit
+Parametern / Optionen. Nämlich der Aufruf des Programms
+<command>chat</command>.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Der Parameter connect bzw. der chat-Aufruf
+   </heading>
+
+	<textblock>
+Das Programm <command>chat</command> wickelt ein Frage-Antwort-Spiel
+ab nach dem Muster:
+   </textblock>
+
+   <textblock>
+Warte auf &lt;Ausgabe vom Provider&gt;, antworte &lt;lokale Eingabe&gt;,<br/>
+Warte auf &lt;Ausgabe vom Provider&gt;, antworte &lt;lokale	Eingabe&gt;,<br/>
+Warte auf &lt;Ausgabe vom Provider&gt;, antworte &lt;lokale	Eingabe&gt;, usw.
+   </textblock>
+
+	<textblock>
+Die Liste von Fragen und Antworten kann in einer Datei z.B.
+<command>/etc/chatscripts/cis</command> oder in der Kommandozeile übergeben werden.
+	</textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Chatskript /etc/chatscripts/cis2 für Compuserve (neues Netz):
+	</heading>
+
+	<file>
+	 <title>/etc/chatscripts/cis2 für Compuserve (neues Netz)</title>
+	 <content>
+"" ATZ
+OK ATDT25449324
+CONNECT ""
+"Login:" cisv1
+"Password:" classic
+"User ID:" "&lt;meine user-id&gt;/noint/go:pppconnect"
+"Password: " "&lt;mein passwort&gt;"
+	 </content>
+	</file>
+
+	<textblock>
+Diese Zeilen bedeuten:<br/>
+warte auf nichts - antworte mit Modembefehl: Reset,<br/>
+warte auf Meldung vom Modem: OK -antworte mit Modembefehl:
+Tonwahl Compuserve,<br/>
+warte auf Meldung vom Modem: CONNECT - antworte mit nichts (d.h. nur
+Zeilenvorschub),<br/>
+Die restlichen 3 Zeilen sind die Verhandlung mit dem Provider.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Chatskript /etc/chatscripts/cis für Compuserve (altes Netz):
+	</heading>
+
+	<file>
+	 <title>/etc/chatscripts/cis für Compuserve (altes Netz)</title>
+	 <content>
+'' 'ATZ'
+'OK' 'ATDT0406913666'
+'CONNECT' ''
+'Host Name:' 'CIS'
+'User ID:' '&lt;meine user id&gt;/GO:PPPCONNECT'
+'Password:' '&lt;mein passwort&gt;'
+	 </content>
+	</file>
+   </section>
+
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Chatskript /etc/chatscripts/ton für T-Online:
+	</heading>
+
+	<file>
+	 <title>/etc/chatscripts/ton für T-Online</title>
+	 <content>
+"" ATZ
+OK ATDT0191011
+CONNECT
+	 </content>
+	</file>
+
+	<textblock>
+Hinter <command>CONNECT</command> habe ich noch ein Leerzeichen stehen,
+ich bin allerdings nicht sicher, ob das wirklich nötig ist.
+	</textblock>
+
+	<textblock>
+Aus verschiedenen Newsgroup-Beiträgen weiß ich, dass es bei
+T-Online sehr darauf ankommt, was man nach der Meldung
+<command>Connect</command> (vom Modem) noch an T-Online sendet, damit dort
+auch tatsächlich der PPP-Server gestartet wird.
+	</textblock>
+
+	<textblock>
+Die obige Version meines Chat-Skripts läuft zur Zeit mit Debian-Linux
+2.1 (<name>slink</name>). Vor einem dreiviertel Jahr lief mit Debian-Linux 2.0
+(<name>hamm</name>)folgende Version:
+	</textblock>
+
+	<file>
+	 <title>Debian-Linux 2.1 /etc/chatscripts/ton für T-Online</title>
+	 <content>
+"" ATZ
+OK ATDT0191011
+CONNECT \d\c
+	 </content>
+	</file>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Chatskript /etc/chatscripts/hangup für den pppd-Parameter
+disconnect:
+	</heading>
+
+	<file>
+	 <title>/etc/chatscripts/hangup für den pppd-Parameter
+disconnect
+	 </title>
+	 <content>
+'' '\K\d'
+'' '+++\d'
+'' 'ATH\d'
+'' 'ATZ'
+	 </content>
+	</file>
+
+	<textblock>
+Diese Zeilen bedeuten:<br/>
+warte auf nichts - lass das Modem einen BREAK senden, warte 1 Sekunde,<br/>
+warte auf nichts - Modembefehl Kommandomodus, warte 1 Sekunde,<br/>
+warte auf nichts - Modembefehl Aufhängen,warte 1 Sekunde,<br/>
+warte auf nichts - Modembefehl Reset
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Chatskript für andere Provider: minicom
+	</heading>
+
+	<textblock>
+Ein Terminalprogramm wie z.B. minicom kann man benutzen, um das
+Chatskript für andere Provider bzw. andere Einwahlprozeduren zu
+ermitteln. Für Compuserve muß man die Modemparameter auf 7E1
+einstellen (7 Bit Data, Even Parity, 1 Stop Bit), sonst auf 8N1.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Der Parameter /dev/modem für pppd:
+   </heading>
+
+   <textblock>
+<command>/dev/modem</command> bedeutet das Gerät bzw. die Schnittstelle für die
+PPP-Verbindung. Wenn das Gerät <command>/dev/modem</command> noch nicht vorhanden
+ist, kann man es z.B. erzeugen mit <command>cp /dev/ttyS0 /dev/modem</command> ,
+dabei steht <command>ttyS0</command> für <command>COM1</command>, <command>ttyS1</command> für <command>COM2</command>, usw.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Der Parameter user für pppd:
+   </heading>
+
+   <textblock>
+Während der PPP-Verhandlung (das ist nach Beendigung des
+<command>chat</command>-Programms) benötigt <command>pppd</command> noch einmal die User-ID und das
+Passwort. Bei Compuserve gehen also User-ID und Passwort zweimal durch
+die Leitung: Einmal mit <command>chat</command> und einmal mit
+<command>pppd</command>.
+   </textblock>
+
+   <textblock>
+Wenn User-ID und Passwort gesendet werden müssen, nimmt <command>pppd</command> den
+Inhalt des Parameters user und schlägt dann das Passwort in der Datei
+<command>/etc/ppp/pap-secrets</command> nach. Dort sucht es nach einer Zeile der Form
+   </textblock>
+
+   <quotation>
+	<strong>&lt;user-id&gt; * &lt;passwort&gt;</strong>
+   </quotation>
+
+   <textblock>
+Die User-ID in Compuserve besteht üblicherweise aus einer
+sechsstelligen Zahl, gefolgt von einem Komma, gefolgt von einer
+dreistelligen Zahl, Beispiel: 123456,789
+   </textblock>
+
+   <textblock>
+Die User-ID in T-Online besteht aus der Anschlusskennung
+(z.B. 000011112222), gefolgt von der T-Online-Nummer
+(z.B. 320044445555), gefolgt von einer Raute, gefolgt von der
+Mitbenutzernummer, (z.B. 0001). Beispiel:
+000011112222320044445555#0001
+   </textblock>
+
+   <textblock>
+Die T-Online-Nummer ist im allgemeinen von der Telefonnummer
+abgeleitet. Die Anschlusskennung ist die erste und längere der beiden
+Zahlen, die Sie geheimhalten sollten, und die Ihnen im Brief auf
+dunklem Untergrund mitgeteilt wurde. (Die zweite Zahl, die Sie
+geheimhalten sollten, ist das Passwort).
+   </textblock>
+
+   <textblock>
+Wenn - wie z.B. bei T-Online - die User-ID eine Raute (#) enthält,
+oder wenn sie Leerzeichen enthält, sollte die User-ID in
+Anführungszeichen eingeschlossen werden. Die Raute könnte sonst als
+Kommentarzeichen (<strong>alles was jetzt kommt, ist nur Kommentar ohne
+Bedeutung</strong>) bzw. das Leerzeichen als Parameter-Trennzeichen
+interpretiert werden.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+PPP-Verbindung automatisch herstellen: diald
+   </heading>
+
+   <textblock>
+Der Ablauf ist hier so: <command>diald</command> erzeugt beim Start einen Proxy-Server,
+über den alle Netzanfragen gehen. Wenn der Proxy merkt, dass eine
+gewünschte IP-Nummer im lokalen Netz nicht vorhanden ist, läßt er
+diald eine PPP-Verbindung aufbauen. Wenn die Verbindung eine gewisse
+Zeit nicht benutzt wird, baut <command>diald</command> die Verbindung wieder ab und
+läßt das Modem auflegen.
+   </textblock>
+
+   <textblock>
+Zum Herstellen der Verbindung ruft diald erst <command>chat</command> und anschließend
+<command>pppd</command> auf. Die Kommandozeile zum Aufruf von <command>chat</command> und sämtliche
+Parameter für <command>pppd</command> werden beim Aufruf von diald nur an <command>diald</command>
+übergeben. <command>diald</command> gibt sie dann bei Bedarf weiter an <command>chat</command> bzw. an <command>pppd</command>.
+Der Parameter <command>connect</command> fehlt also diesmal bei den Parametern für <command>pppd</command>,
+statt dessen bekommt ihn <command>diald</command>.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Parameter-Datei /etc/diald/diald.options
+   </heading>
+   
+   <file>
+	<title>/etc/diald/diald.options</title>
+	<content>
+mode ppp
+device /dev/modem
+connect "/usr/sbin/chat -v -f /etc/chatscripts/ton"
+speed 115200
+modem
+lock
+crtscts
+local 127.0.0.2
+remote 127.0.0.3
+dynamic
+defaultroute
+include /etc/diald/standard.filter
+pppd-options \
+debug \
+noauth \
+user &lt;meine user-id&gt; \
+ipcp-accept-local \
+ipcp-accept-remote
+debug 0x007D
+	</content>
+   </file>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Die Datei /etc/ppp/options muß für diald leer sein:
+   </heading>
+
+   <textblock>
+Falls eine Datei <command>/etc/ppp/options</command> vorhanden ist, wird ihr Inhalt <command>diald</command>
+stören. Irgendwo habe ich gelesen, dass diese Datei aber auch nicht
+ganz fehlen darf, sie muß vorhanden, aber leer sein.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Erfolgskontrolle: früher in /var/log/ppp.log - jetzt in
+/var/log/debug:
+   </heading>
+
+   <textblock>
+Wenn diald richtig läuft, sollte die Logdatei etwa so aussehen:
+   </textblock>
+   
+   <file>
+	<title>/var/log/debug</title>
+	<content>
+Jul 26 15:04:54 server diald[136]: Running connect (pid = 392).
+Jul 26 15:04:54 server chat[392]: abort on (BUSY)
+Jul 26 15:04:54 server chat[392]: abort on (NO CARRIER)
+Jul 26 15:04:54 server chat[392]: abort on (VOICE)
+Jul 26 15:04:54 server chat[392]: abort on (NO DIALTONE)
+Jul 26 15:04:54 server chat[392]: abort on (NO ANSWER)
+Jul 26 15:04:54 server chat[392]: send (ATZ^M)
+Jul 26 15:04:54 server chat[392]: expect (OK)
+Jul 26 15:04:54 server chat[392]: ^M
+Jul 26 15:04:54 server chat[392]: OK
+Jul 26 15:04:54 server chat[392]: -- got it
+Jul 26 15:04:54 server chat[392]: send (ATDT0191011^M)
+Jul 26 15:04:54 server chat[392]: expect (CONNECT)
+Jul 26 15:04:54 server chat[392]: ^M
+Jul 26 15:05:21 server chat[392]: ^M
+Jul 26 15:05:21 server chat[392]: CONNECT
+Jul 26 15:05:21 server chat[392]: -- got it
+Jul 26 15:05:21 server chat[392]: send (\d)
+Jul 26 15:05:22 server diald[136]: Running pppd (pid = 425).
+Jul 26 15:05:22 server diald[425]: Running pppd: /usr/sbin/pppd
+-detach modem crtscts mtu 1500 mru 1500 debug noauth user &lt;my user id&gt;
+ipcp-accept-local ipcp-accept-remote
+Jul 26 15:05:22 server pppd[425]: pppd 2.3.5 started by root, uid 0
+Jul 26 15:05:22 server pppd[425]: Using interface ppp0
+Jul 26 15:05:22 server pppd[425]: Connect: ppp0 &lt;--&gt; /dev/ttyS1
+Jul 26 15:05:22 server pppd[425]: sent [LCP ConfReq id=0x1 &lt;magic
+0x9b58&gt; &lt;pcomp&gt; &lt;accomp&gt;]
+Jul 26 15:05:23 server pppd[425]: rcvd [LCP ConfReq id=0x1 &lt;mru 1524&gt;
+&lt;asyncmap 0xa0000&gt; &lt;auth pap&gt; &lt;pcomp&gt; &lt;accomp&gt; &lt; 13 09 03 00 c0 7b 7d
+a5 75&gt;]
+Jul 26 15:05:23 server pppd[425]: sent [LCP ConfRej id=0x1 &lt; 13 09 03
+00 c0 7b 7d a5 75&gt;]
+Jul 26 15:05:23 server pppd[425]: rcvd [LCP ConfAck id=0x1 &lt;magic
+0x9b58&gt; &lt;pcomp&gt; &lt;accomp&gt;]
+Jul 26 15:05:23 server pppd[425]: rcvd [LCP ConfReq id=0x2 &lt;mru 1524&gt;
+&lt;asyncmap 0xa0000&gt; &lt;auth pap&gt; &lt;pcomp&gt; &lt;accomp&gt;]
+Jul 26 15:05:23 server pppd[425]: sent [LCP ConfAck id=0x2 &lt;mru 1524&gt;
+&lt;asyncmap 0xa0000&gt; &lt;auth pap&gt; &lt;pcomp&gt; &lt;accomp&gt;]
+Jul 26 15:05:23 server pppd[425]: sent [PAP AuthReq id=0x1 user="&lt;my
+user id&gt;" password="&lt;my password&gt;"]
+Jul 26 15:05:23 server pppd[425]: rcvd [PAP AuthAck id=0x1 ""]
+Jul 26 15:05:23 server pppd[425]: Remote message:
+Jul 26 15:05:23 server pppd[425]: sent [IPCP ConfReq id=0x1 &lt;addr
+192.168.13.17&gt; &lt;compress VJ 0f 01&gt;]
+Jul 26 15:05:23 server pppd[425]: rcvd [IPCP ConfReq id=0x1 &lt;compress
+VJ 0f 01&gt; &lt;addr 193.158.143.45&gt;]
+Jul 26 15:05:23 server pppd[425]: sent [IPCP ConfAck id=0x1 &lt;compress
+VJ 0f 01&gt; &lt;addr 193.158.143.45&gt;]
+Jul 26 15:05:23 server pppd[425]: rcvd [IPCP ConfNak id=0x1 &lt;addr
+62.156.32.53&gt;]
+Jul 26 15:05:23 server pppd[425]: sent [IPCP ConfReq id=0x2 &lt;addr
+62.156.32.53&gt; &lt;compress VJ 0f 01&gt;]
+Jul 26 15:05:23 server pppd[425]: rcvd [IPCP ConfAck id=0x2 &lt;addr
+62.156.32.53&gt; &lt;compress VJ 0f 01&gt;]
+Jul 26 15:05:23 server pppd[425]: local IP address 62.156.32.53
+Jul 26 15:05:23 server pppd[425]: remote IP address 193.158.143.45
+Jul 26 15:05:23 server diald[136]: New addresses: local 62.156.32.53,
+remote 193.158.143.45.
+Jul 26 15:08:35 server diald[136]: Closing down idle link.
+Jul 26 15:08:35 server pppd[425]: Terminating on signal 2.
+Jul 26 15:08:35 server pppd[425]: sent [LCP TermReq id=0x2 "User
+request"]
+Jul 26 15:08:35 server pppd[425]: rcvd [LCP TermAck id=0x2]
+Jul 26 15:08:35 server pppd[425]: Connection terminated.
+Jul 26 15:08:36 server pppd[425]: Exit.
+Jul 26 15:08:38 server diald[136]: Delaying 30 seconds before clear to
+dial.
+	</content>
+   </file>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Zum Surfen werden Nameserver-Eintragungen  in /etc/resolv.conf
+gebraucht:
+   </heading>
+
+   <file>
+	<title>/etc/resolv.conf</title>
+	<content>
+#Nameserver für Compuserve:
+search compuserve.com
+nameserver 195.232.32.6
+nameserver 195.232.32.7
+
+#Nameserver für T-Online:
+search btx.dtag.de
+nameserver 194.25.2.129
+	</content>
+   </file>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Weitere Informationsquellen:
+   </heading>
+
+   <ul>
+	<li>
+Alberts Homepage - die umfassendste Seite zu T-Online und PPP, die ich
+bisher gesehen habe - (<ref lang="en" url="http://www.albert-rommel.de/ppp.htm">http://www.albert-rommel.de/ppp.htm</ref>)
+	</li>
+	<li>
+Besonderheiten des Netzzugangs bei T-Online
+(<ref lang="de" url="http://home.t-online.de/home/Diedrich.Ehlerding/besonderheiten.html">http://home.t-online.de/home/Diedrich.Ehlerding/besonderheiten.html</ref>)
+	</li>
+	<li>
+ZDNet-Special zum Thema Linux
+(<ref lang="de" url="http://www.zdnet.de/produkte/artikel/sw/linuxspecial/linuxspecial01-wf.html">http://www.zdnet.de/produkte/artikel/sw/linuxspecial/linuxspecial01-wf.html</ref>)
+	</li>
+	<li>
+PPP Help (<ref lang="en" url="http://howto.linuxberg.com/">http://howto.linuxberg.com/</ref>)
+	</li>
+	<li>
+T-Online PPP (<ref lang="de" url="http://www.et.FH-Osnabrueck.de/~std7765">http://www.et.FH-Osnabrueck.de/~std7765</ref>)
+	</li>
+	<li>
+The diald Homepage (<ref lang="en" url="http://diald.sourceforge.net/">http://diald.sourceforge.net/</ref>)
+	</li>
+   </ul>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>Bibliotheken</title>
+
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+
+ <layout>
+  <name>Torsten Hemm</name>
+  <mailto>T.Hemm@gmx.de</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>bibliotheken</index>
+
+
+ <split>
+<!-- Kapitel 1 -->
+  <section>
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Dieses Kapitel erklärt Sinn, Zweck und Handhabung von
+Systembibliotheken für Anwender. Softwareentwickler können
+diesen Artikel als Einführung in die Materie verwenden, werden
+jedoch keine Details über Bibliotheken aus Programmierer- oder
+Entwicklersicht finden.
+   </textblock>
+
+   <textblock>
+Benutzer und Anwender von Linuxsystemen finden hier einen
+verständnisfördernden Überblick. Systemadministratoren gewinnen
+einen Einblick in die Zusammenhänge unter den für sie
+interessanten Gesichtspunkten, werden jedoch weitere Lektüre
+benötigen, um Einzelheiten zu den sie interessierenden
+Punkten zu erfahren.
+   </textblock>
+  </section>
+
+<!-- Kapitel 2 -->
+  <section>
+   <heading>
+Komplexe Systeme
+   </heading>
+   
+   <textblock>
+Ein Komplexes System besteht in der Regel aus mehreren, kleineren
+Systemkomponenten oder Subsystemen. Diese können wiederum aus
+kleineren Komponenten bestehen. Nur durch das Zusammenspiel vieler
+kleiner Komponenten lassen sich große Systeme beherrschen. Häufig
+ergibt es sich, dass einfach kleine Komponenten von mehreren
+komplexeren Komponenten benutzt werden.
+   </textblock>
+   
+   <textblock>
+Sieht man sich zum Beispiel verschiedene X-Anwendungen an, so
+fallen viele Ähnlichkeiten unter den Anwendungen auf. So kann
+beispielsweise jede Anwendung durch Maus oder Tastatur gesteuert
+werden, Anwendungen haben Fenster mit Rahmen und
+Funktionssymbolen und reagieren auf verschiedene Ereignisse (zum
+Beispiel Mausklicks).
+   </textblock>
+
+   <textblock>
+Hier erkennt man, dass selbst grundverschiedene Anwendungen häufig
+in Details ähnliche Funktionalitäten haben.
+   </textblock>
+ 
+<!-- Kapitel 2.1 -->
+   <section>
+    <heading>
+Systemkomponenten
+    </heading>
+
+    <textblock>
+Ein Linux- beziehungsweise Unix-System besteht aus sehr vielen
+Komponenten. Dabei lässt sich ein solches System auf mehrere Arten
+in Komponenten zerlegen. Die Art der Zerlegung reflektiert eine
+bestimmte Sicht auf das System. Eine Zerlegung könnte man aus
+Sicht der Hardware vornehmen. Ein Linuxsystem besteht nach dieser
+Sicht aus Monitor, Tastatur und Rechner. Der Rechner besteht
+wiederum aus Einsteckkarten, Festplatten und einem Netzteil. Eine
+Einsteckkarte besteht aus einer Leiterplatte und etlichen
+Schaltkreisen.
+    </textblock>
+
+    <textblock>
+Je nach Ebene, auf der man sich bei einer Systemanalyse befindet,
+sind mehr oder weniger Details von Interesse. Von ganz oben
+gesehen besteht im Beispiel das System aus Rechner und Monitor,
+die über ein Kabel verbunden sind. Dass dies überhaupt nur
+funktioniert, weil eine Grafikkarte in den Rechner eingebaut ist,
+die Speicherschaltkreise, Oszillatoren und viele andere Bauteile
+enthält, und wie nun eigentlich ein Speicherschaltkreis
+funktioniert, ist auf dieser Ebene unerheblich. Jedoch ist es
+von elementarer Bedeutung, dass eine Grafikkarte
+Speicherschaltkreise hat, wenn man sich auf einer Ebene befindet,
+die den Aufbau von Grafikkarten zeigt.
+    </textblock>
+
+    <textblock>
+Das Interessante an den Ebenen des Systems ist, das jede
+Systemkomponente auch als System angesehen werden kann (daher
+auch der Name Subsytem). Für Grafikkartenhersteller ist eine
+VGA-Karte ein vollständiges System. Für einen Linuxanwender ist
+ein Computersystem (Rechner, Monitor usw.) ein vollständiges
+System. Diese Struktur lässt sich jedoch auch nach oben hin
+weiterführen: Für einen Mitarbeiter einer IT Abteilung ist erst ein
+Netzwerk mit vielen daran angeschlossenen Computersystemen ein
+vollständiges System; einzelne Server (also Computersysteme) sind
+für ihn eine Komponente. Auch hier gilt der
+Komponentensichtbereich: Sicherlich ist einem IT Mitarbeiter
+klar, dass ein Server üblicherweise über Speicherschaltkreise
+verfügt, aber es interessiert ihn überhaupt nicht.
+    </textblock>
+
+    <textblock>
+Dieses Strukturierungsbeispiel reflektiert die Hardware-Sicht.
+Neben vielen weiteren kann man eine solche Strukturierung auch
+aus Software-Sicht vornehmen. Hier spricht man von Anwendungen
+als Systemen, die aus Unteranwendungen oder Programmen bestehen.
+Diese wiederum bestehen vielleicht aus Funktionen. Anwendungen
+können auch andere Anwendungen verwenden.
+    </textblock>
+
+    <textblock>
+Hier findet man eine weitere interessante Eigenschaft: Die
+einzelnen Sichten untereinander interessieren sich in der Regel
+nicht für andere Sichten. Betrachtet man eine Anwendung, so ist
+sicherlich klar, dass diese irgendwo wieder in
+Speicherschaltkreisen lebt, aber das interessiert in dieser
+Sichtweise überhaupt nicht. Das gibt die Möglichkeit, sich auf
+die essentiellen Aspekte von Systemebenen zu konzentrieren.
+Dadurch kann man auch komplexe Systeme verstehen. Eine typische
+X-Anwendung verwendet möglicherweise Millionen von
+Maschineninstruktionen, die in Millionen von Speicherstellen von
+Speicherschaltkreisen gespeichert sind. Das ist viel zu komplex,
+um von Menschen überblickt werden zu können. Aber jede Ebene für
+sich betrachtet kann verstanden und beherrscht werden.
+    </textblock>
+
+    <textblock>
+Auch bei der Softwaresicht lässt sich die Strukturierung nach oben
+hin erweitern: Man spricht beispielsweise von verteilten
+Systemen, deren Komponenten verschiedene Anwendungen (zum
+Beispiel Datenbanken und Webserver) sind, die auf verschiedenen
+Servern laufen (wobei das mit den Servern jedoch schon wieder
+uninteressant ist).
+    </textblock>
+
+    <textblock>
+Im Folgenden wird die Softwaresicht etwas detaillierter beschrieben.
+    </textblock>
+
+<!-- Kapitel 2.1.1 -->
+    <section>
+     <heading>
+Systemkomponenten von oben gesehen
+     </heading>
+     
+     <textblock> 
+Betrachtet man eine Anwendung, kann man Komponenten finden, aus
+denen die Anwendung besteht. Ein KDE Programm 
+beispielsweise besteht aus Fenstern, die Menüs besitzen können 
+und einen Rahmen haben. Ein Menü besteht aus Einträgen und
+Ereignisverarbeitungsfunktionen, die dafür sorgen, dass auch etwas
+passiert, wenn man eine Menüfunktion auswählt. Ein Rahmen besteht
+nun aus einer Titelleiste, einigen Knöpfen und vielleicht einer
+Laufleiste.
+     </textblock>
+     
+     <textblock>
+Betrachtet man das System genauer, stellt man schnell fest, dass
+etliche dieser Komponenten bei allen KDE Anwendungen
+sehr ähnlich sind. So hat fast jedes KDE Programm ein 
+Fenster mit einem Titel, und wenn zwei Fenster Laufleisten haben, 
+sehen diese sehr ähnlich aus. Diese Eigenschaften sind also bei allen
+KDE Programmen ähnlich.
+     </textblock>
+     
+     <textblock>
+Geht man eine weitere Ebene tiefer, stellt man fest, dass man
+viele Eigenschaften findet, die bei den eben beschriebenen
+Komponenten ähnlich sind. Zum Beispiel besteht eine Titelleiste
+und eine Laufleiste aus Bildpunkten, die über Grafikkarten
+dargestellt werden. Das hört sich zunächst banal an, aber wenn
+man bedenkt, dass diese Grafikkarten in verschiedenen Systemen
+eingebaut sein können und über Netzwerke hinweg dargestellt
+werden können, kommt man zu der Erkenntnis, dass es gar nicht so
+banal ist, einen Bildpunkt in die richtige Grafikkarte zu
+schreiben. Auf der Ebene der Bildpunkte ist dies jedoch eine
+interessante Frage: Es muss etwas geben, das Informationen und
+Netzwerkverbindungen verwaltet. Dabei spielen
+Zugriffsbeschränkungen und viele andere Fragen eine Rolle.
+     </textblock>
+     
+     <textblock>
+Neben grafischen Elementen gibt es noch weitere ähnliche
+Eigenschaften. Viele KDE Programme können zum Beispiel
+verschiedene Arten von Konfigurationsdateien verwenden. Diese
+Dateien müssen irgendwie geöffnet und eingelesen werden. Die
+Daten müssen dann weiterverarbeitet werden, es müssen Fehler
+erkannt werden, zum Beispiel wenn das Dateiformat ungültig ist.
+Hier gibt es Komponenten, welche die Konfigurationsoptionen aus
+Dateien einlesen und verarbeiten.
+     </textblock>
+     
+     <textblock>
+Diese Komponenten verwenden Dateioperationen. Auch viele andere
+Komponenten verwenden Dateioperationen, darunter
+selbstverständlich auch viele Anwendungen oder Komponenten, die
+überhaupt nichts mit dem KDE zu tun haben.
+     </textblock>
+     
+     <textblock>
+Eine Dateioperation wiederum verwendet Systemfunktionen, um auf
+die Datenbytes einer Datei nach dem Öffnen zugreifen zu können.
+Diese Systemfunktionen verwenden Systemtreiber, um die Daten
+beispielsweise von Festplatten lesen zu können. Die Systemtreiber
+kann man intern auch als System betrachten. Diese Sicht wird
+vermutlich von einem Festplattentreiberprogrammierer verwendet
+werden. Für ihn verwendet sein System (der Treiber) viele
+Funktionen, darunter auch andere Systemfunktionen.
+     </textblock>
+
+     <textblock>
+Die Treiber, die Teil des Systemkerns (Kernels) sind, verwenden
+Maschineninstruktionen und Maschinenkommunikationsmittel. Dies
+ist die unterste Softwareebene, die es bei Personalcomputern
+(PCs) gibt. Der zentrale Schaltkreis, das Herz eines PCs, ist die
+CPU (Central Processing Unit). Sie kann ganz einfache Maschinenbefehle
+ausführen und über Steuerleitungen mit anderen Geräten kommunizieren.
+     </textblock>
+    </section>
+
+<!-- Kapitel 2.1.1 -->
+    <section>
+     <heading>
+Systemkomponenten von unten gesehen
+     </heading>
+
+     <textblock>
+Nun stellt sich möglicherweise dennoch die Frage: Wenn eine
+CPU mit einer Festplatte kommunizieren kann, warum dann diese
+ganzen Systemebenen? Warum verwendet man Treiber, wenn eine
+Anwendung doch auch direkt mit der Festplatte kommunizieren kann?
+     </textblock>
+     
+     <textblock>
+Mindestens eine Antwort sollte nach kurzer Überlegung gefunden
+werden können. Natürlich würde die Anwendung viel zu komplex.
+Anstatt einer Komponente zu sagen "lade mir mal den Parameter x
+aus der Datei y" müsste sie Hunderte von Maschineninstruktionen
+verwenden, um allein die Datei zu finden. Weiterhin müsste sie
+alle Geräte direkt unterstützen; kommt eine neue Festplatte auf
+den Markt, müssten unter Umständen sämtliche Anwendungen angepasst
+werden!
+     </textblock>
+
+     <textblock>
+Alle Festplattentreiber haben eines gemeinsam: Im
+Wesentlichen können sie Datenpakete an bestimmte Stellen
+schreiben oder von diesen lesen. Diese Stellen haben nichts mit
+Unterverzeichnissen oder Dateien zu tun: Es sind einfach nur
+Nummern. Ein Datenpaket hat auch eine feste Größe. Auf dieser
+Ebene ist es sehr umständlich, Dateien zu verwalten: Man muss sich
+um Listen mit den Speicherstellennummern kümmern, alle diese
+einlesen und so weiter. Wie man eine solche Speicherstelle liest,
+ist zudem noch für verschiedene Geräte (wie IDE oder SCSI
+Festplatten) unterschiedlich. Daher fasst man diese Funktionalität
+in Treibern zusammen.
+     </textblock>
+     
+     <textblock>
+Hat man solche Treiber, die sich um die gesamte
+Gerätekommunikation kümmern, kann man darauf aufsetzen und ein
+Dateisystem bauen. Das sorgt dafür, dass man sich nicht mehr um
+Tausende Details kümmern muss, sondern einfach beliebig lange
+Daten (anstatt Datenpakete fester, jedoch geräteabhängiger Größe)
+über Namen (anstatt Nummern) lesen und schreiben kann.
+     </textblock>
+
+     <textblock>
+Man kann nun auch Dateisysteme bauen, die nicht direkt auf
+Gerätetreiber zugreifen, sondern die Lese- und Schreibanfragen
+über Netzwerkgerätetreiber an andere Server weiterreichen und
+hier über Gerätetreiber ausgeführt werden. Damit kann man auch
+auf Dateien zugreifen, die im Netzwerk liegen.
+     </textblock>
+
+     <textblock>
+All diese Funktionen spielen sich im Kernel ab.
+Anwendungsprogrammierer interessieren sich nicht dafür, wie ein
+Kernel eine Datei öffnet. Sie interessieren sich nur dafür, wie
+sie diese Kernelfunktion aufrufen können. Hierzu bietet der Kernel
+Schnittstellenfunktionen an, um zum Beispiel eine Datei mit einem bestimmten
+Namen zu öffnen und Daten aus ihr zu lesen.
+     </textblock>
+
+     <textblock>
+Diese Programmierschnittstelle ist jedoch immer noch
+unkomfortabel. Zum Beispiel ist es sehr langsam, eine solche
+Funktion aufzurufen. Möchte man 100 Zeichen einzeln aus einer
+Datei lesen, so muss man sinnvollerweise sofort 100 Zeichen lesen,
+irgendwo zwischenspeichern und dann erst verarbeiten. Die
+Kernelschnittstelle umfasst auch nur relativ wenige, ziemlich
+"dumme" Funktionen.
+     </textblock>
+     
+     <textblock>
+Da alle Programmierer diese Probleme haben, gibt es fertige
+Funktionen, die diese lösen. Diese Funktionen sind bequemer zu
+verwenden und bieten weitere Vorteile.
+     </textblock>
+     
+     <textblock>
+Nun könnte natürlich jedes Programm diese Funktionen als Kopie
+mitbringen. Die Nachteile hierfür sind wieder klar: Bei
+Änderungen müsste man alle Programme anpassen, die Programme
+würden sehr groß und kompliziert werden und so weiter.
+     </textblock>
+     
+     <textblock>
+Also fasst man diese grundlegenden Funktionen mit vielen anderen,
+die indirekten, aber komfortableren Zugriff auf Kernelfunktionen
+bieten, zusammen. Solche Funktions-Zusammenfassungen nennt man
+Bibliotheken. Die Zusammenfassungen von den hier genannten
+Basisfunktionen nennt man C-Bibliothek. "C" ist eine
+hardwarenahe Programmiersprache, in welcher der Unix-Kernel und die
+C-Bibliothek geschrieben sind. Dieser Name deutet an, dass hier
+eine C-Programmierschnittstelle bereitgestellt wird, also können
+in C geschriebene Programme einfach darauf zugreifen. Da
+C-Programme ja auch "nur" in Maschineninstruktionen übersetzt
+werden (eine CPU kann ja nur diese Maschineninstruktionen
+ausführen), kann auch jede andere Sprache, die in solche
+Maschineninstruktionen übersetzt wird, hierauf zugreifen. In der
+Praxis sind das demzufolge eigentlich alle Sprachen (da eine CPU
+ja nur eine Maschinensprache kennt!). <strong>Eigentlich</strong> zeigt, dass es
+auch Ausnahmen gibt, wie zum Beispiel Java. Java läuft auf einer
+sogenannten virtuellen Maschine, die eine eigene Maschinensprache
+hat. Natürlich wird diese indirekt auch wieder "nur" auf
+Maschineninstruktionen abgebildet, doch eine genauere
+Betrachtung würde den Rahmen dieses Dokumentes sprengen.
+     </textblock>
+
+     <textblock>
+Diese C-Bibliothek ist so grundsätzlich, dass in der Praxis so
+gut wie jedes Programm direkt oder indirekt auf sie zugreift.
+     </textblock>
+
+     <textblock>
+In unserem Beispiel sahen wir aber, dass eine Anwendung auf noch
+speziellere und komfortablere Funktionen zurückgreift. Wenn man
+beispielsweise Konfigurationsdateien verarbeiten möchte, kann man
+natürlich in jede Anwendung die vielen hundert erforderlichen
+Schritte einprogrammieren. Aber es gibt ja eine bessere Lösung:
+Man baut eine Bibliothek dafür! Diese Bibliothek liest intern
+einzelne Zeichen aus Dateien und verarbeitet diese. Verwendet
+man Funktionen dieser Bibliothek, muss man sich gar nicht mehr
+darum kümmern, dass man mehrere Funktionen benötigt, um die Daten
+zu lesen. Man ruft einfach eine Funktion auf, die das Weitere
+erledigt.
+     </textblock>
+    </section>
+   </section>
+  </section> 
+ </split> 
+
+ <split>
+<!-- Kapitel 3 -->
+  <section>
+   <heading>
+Motivation für Bibliotheken
+   </heading>
+   
+   <textblock>
+In den vorherigen Absätzen wurden schon etliche Gründe genannt,
+warum Bibliotheken sinnvoll sind. Man kann Funktionen so
+bereitstellen, dass andere Anwendungen oder Komponenten diese
+verwenden. Änderungen oder Erweiterungen müssen nur an einer
+zentralen Stelle (in der Bibliothek) vorgenommen werden. Die
+Wahrscheinlichkeit von Programmfehlern ist geringer, da man durch
+die häufige Verwendung derselben Funktionen Fehler schneller
+finden kann. Das Entwickeln von Anwendungen ist einfacher und
+schneller, wenn man auf komfortable Schnittstellen von
+Bibliotheksfunktionen zurückgreifen kann. In der Praxis geht man
+noch einen Schritt weiter: Es gibt Bibliotheken mit identischen
+Schnittstellen für verschiedenste Systeme. Beispielsweise
+unterscheiden sich die Kernel von Unix- und Windows-Systemen
+erheblich, jedoch sind die gleichen C-Bibliotheksfunktionen
+vorhanden. Das C-Programm, das nur C-Bibliotheksfunktionen
+verwendet, kann auf Windows und Linux übersetzen werden, ohne dass
+man es anpassen muss, selbst wenn indirekt unterschiedliche
+Kernelfunktionen von der C-Bibliothek verwendet werden. Man
+benötigt eben nur eine passende Bibliothek.
+   </textblock>
+
+   <textblock>
+Die Verwendung von Bibliotheken kann weitere Vorteile haben. So
+spart man beispielsweise Speicherplatz, wenn man die Funktionen
+nur einmal hat, anstatt in jeder Programmdatei. Auch bei
+Aktualisierungen wie zum Beispiel Sicherheitslücken ist das
+Hilfreich: Man aktualisiert die betroffene Bibliothek, und alle
+Programme, die diese verwenden, verwenden automatisch die neue,
+sicherere Funktion.
+   </textblock>
+  </section>
+ 
+<!-- Kapitel 4 -->
+  <section>
+   <heading>
+Arten von Bibliotheken
+   </heading>
+   
+   <textblock> 
+Es gibt sehr viele Arten von Bibliotheken. Diese lassen sich
+unter verschiedenen Gesichtspunkten einteilen. Man kann sie nach
+Funktionsart einteilen. So gibt es zum Beispiel Bibliotheken für
+grafische und mathematische Funktionen. Man kann sie auch nach
+der Programmiersprache einteilen. Bisher bezogen sich alle
+Beispiele auf Systembibliotheken, die aus C heraus sehr 
+bequem, aber auch aus anderen Sprachen heraus aufgerufen werden können.
+Es gibt aber auch Sprachbibliotheken, die nur für bestimmte
+Sprachen zur Verfügung stehen. So gibt es beispielsweise sehr
+viele Bibliotheken für Perl oder Java,
+die man aus anderen Sprachen heraus kaum verwenden kann.
+   </textblock>
+
+   <textblock>
+Dieser Artikel beschäftigt sich mit Systembibliotheken. Auch
+diese kann man in verschiedene Klassen einteilen, ein Beispiel
+gab es bereits. Eine weitere Einteilung ist etwas schwieriger zu
+verstehen: Man unterscheidet Bibliotheken danach, wann sie zu
+einem Programm hinzugebunden werden. Hier gibt es drei
+Zeitpunktklassen: direkt nach der Programmübersetzung, bei jedem
+Programmstart oder zu einem beliebigen Zeitpunkt während der
+Programmlaufzeit (also den Zeitpunkten, an denen das Programm
+läuft). Analog unterscheidet man drei Bindungsarten, die im
+folgenden kurz genannt werden. Die Namen dieser Bindungsarten
+mögen etwas verwirrend erscheinen, hiervon sollte man sich nicht
+beeindrucken lassen.
+   </textblock>
+  
+  <!-- Kapitel 4.1 -->
+   <section>
+    <heading>
+Statische Bindung
+    </heading>
+    
+    <textblock>
+Die erste Möglichkeit wurde bisher etwas unterschlagen: Das
+Binden von Programmen und Bibliotheken zur Entwicklungszeit. In
+diesem Fall wird das Programm und die Bibliothek fest verbunden.
+Anschließend wird die Bibliotheksdatei nicht mehr für das Programm
+benötigt, da die verwendeten Funktionen in die Datei kopiert
+werden. Man spricht hier vom statischen Linken (engl. to link:
+verbinden).
+    </textblock>
+
+    <textblock>
+Programme, die statisch mit Bibliotheken verbunden sind, nutzen
+einige der oben genannten Vorteile nicht. So sind sie zum Beispiel
+größer, und die Bibliotheken können vom Anwender nicht so ohne weiteres
+aktualisiert werden. Deshalb verwendet man dieses Verfahren meist
+nur für sehr spezielle Programmbibliotheken, die nur von diesem
+Programm verwendet werden oder die man aus verschiedenen anderen
+Gründen fest mit dem Programm verbinden möchte.
+    </textblock>
+    
+    <textblock>
+Diese Bibliotheken sind technisch gesehen einfache Archive, die
+viele Objekt-Dateien enthalten können. So ein Archiv ist in etwa
+mit einem <command>tar</command> oder <command>jar</command> Archiv vergleichbar (aber
+üblicherweise unkomprimiert). Die Bezeichnung Archiv sollte
+hier aber nicht verwendet werden. Sie ist irreführend, da man
+heutzutage sofort an allgemeine Archive wie <command>tar</command> oder
+Zip-Archive denkt.
+    </textblock>
+   </section>
+ 
+ <!-- Kapitel 4.2 -->
+   <section>
+    <heading>
+Gemeinsame Nutzung
+    </heading>
+    
+    <textblock>
+Eleganter ist die Möglichkeit, Programme bei deren Start mit der
+passenden Bibliothek zu verbinden. Dies nennt man dynamisches
+Binden. Dies ist ein komplizierterer Vorgang. Beim Start führt
+ein besonderes Programm die Verbindung unmittelbar vor dem
+eigentlichen Programmstart aus. Dazu muss die Bibliothek geladen
+werden, Einsprungadressen geprüft und weitere Aktionen
+durchgeführt werden. Dieses Vorgehen ermöglicht es, dass mehrere
+verschiedene Anwendungen eine Bibliothek gemeinsam nutzen. Die
+Bibliotheken, die so verwendet werden, nennt man <strong>gemeinsam
+nutzbare Bibliotheken</strong> (eng: shared libraries). Auch wenn es
+sich technisch gesehen um dynamisch verbundene Bibliotheken
+handelt, und sie auch manchmal DLLs (dynamically linked
+libraries) genannt werden, nennt man sie üblicherweise nicht
+dynamische Bibliothek, da dieser Begriff für das folgende
+Vorgehen reserviert ist.
+    </textblock>
+   </section> 
+
+
+<!-- Kapitel 4.3 -->
+   <section>
+    <heading>
+Dynamische Bindung
+    </heading>
+    
+    <textblock>
+Richtig dynamisch wird es, wenn ein Programm erst zur Laufzeit
+Bibliotheken lädt und verwendet. Dies ermöglicht eine sehr hohe
+Flexibilität. Zum Beispiel kann ein Programm unter Umständen
+teilweise funktionieren, wenn nicht alle benötigten Bibliotheken
+installiert sind, oder es kann Bibliotheken erst dann laden, wenn
+sie tatsächlich benötigt werden. Hier spricht man von dynamischen
+Bibliotheken, oder von dynamisch ladbaren Bibliotheken (eng:
+dynamically loaded libraries)
+    </textblock>
+    
+    <textblock>
+Unter Linux (und anderen Systemen) sind die <path>shared libraries</path>
+bzw. <path>dynamically linked libraries</path> und 
+<path>dynamically loaded libraries</path> die gleichen Dateien und
+sich sehr ähnlich. Nur die Art der Verwendung unterscheidet sich.
+    </textblock>
+    
+    <textblock>
+Daher kommt vermutlich auch die unklare Namensabgrenzung: Meint
+man mit "Bibliotheken" bestimmte Dateien für eine dieser beiden
+Bindungsarten, so sind das eben dynamische Bibliotheken.
+    </textblock>
+    
+    <textblock>
+Interessant ist hier ein weiteres Detail. Da jedes Programm,
+welches dynamisch Bibliotheken laden möchte, sehr ähnliche
+Funktionen verwenden muss, gibt es auch hierfür eine Bibliothek:
+eine Bibliothek zum Laden von Bibliotheken. Diese heißt <strong>libdl</strong>
+(engl. dl: <strong>dynamic loading</strong>). Diese Bibliothek wird dynamisch
+gelinkt und ermöglicht komfortables dynamisches Laden (diese
+Bibliothek dynamisch zu laden, macht verständlicherweise kaum
+Sinn).
+    </textblock>
+   </section>
+
+<!-- Kapitel 4.4 -->
+   <section>
+    <heading>
+Beispiele
+    </heading>
+
+    <textblock>
+Die bereits erwähnte C-Systembibliothek, die kurz als <strong>libc</strong> oder
+<strong>C-Lib</strong> bezeichnet wird, ist fast immer eine dynamische
+Bibliothek, die dynamisch gelinkt (und nicht geladen!) wird. In
+der Praxis werden die meisten C-Bibliotheken dynamisch gelinkt,
+und nur in sehr wenigen, speziellen Fällen macht man vom
+dynamischen Laden Gebrauch.
+    </textblock>
+
+    <textblock>
+Die Bibliotheken, die Zugriff auf X-Window-System-Funktionen
+gestatten (<strong>X-Lib</strong> genannt), fallen ebenso in diese Kategorie wie
+die Mathematikbibliothek <strong>math</strong>, die Funktionen wie Sinus und
+Cosinus bereitstellt.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+<!-- Kapitel 5-->
+  <section>
+   <heading>
+Gemeinsam genutzte, dynamisch gelinkte Bibliotheken
+   </heading>
+
+<!-- Kapitel 5.1 -->
+  <section>
+   <heading>
+Verwenden von Bibliotheken
+   </heading>
+
+   <textblock>
+Hat man eine Linux-Distribution (SuSE Linux, RedHat Linux oder
+andere) installiert, so hat man sehr viele Komponenten
+installiert. Neben dem Kernel (also Linux selbst) sind unzählige
+Programme und natürlich Bibliotheken installiert worden. Die
+Bibliotheksdateien befinden sich in den Verzeichnissen <path>/lib</path> und
+<path>/usr/lib</path>. Etliche der installierten Programme verwenden auch
+statisch gebundene Bibliotheken, aber da man davon im Betrieb
+nichts merkt, wird das hier nicht näher betrachtet.
+    </textblock>
+
+    <textblock>
+Die dynamischen, gemeinsam benutzbaren Bibliotheken sind für alle
+Programme des Linuxsystems verwendbar. Neben der einfachen
+Benutzung bietet ein Linuxsystem jedoch weitere Vorteile, die
+anspruchsvolleren Anforderungen genügen.
+    </textblock>
+    
+    <textblock>
+Es ist möglich, zu einem Zeitpunkt verschiedene Versionen einer
+Bibliothek installiert zu haben. Man kann in diesem Fall
+beeinflussen, welche Bibliotheken ein Programm verwendet. So kann
+man auch ältere Programme weiterverwenden, die eine alte,
+inkompatible Version einer Bibliothek benötigen.
+    </textblock>
+    
+    <textblock>
+Man kann auch veranlassen, dass bestimmte Bibliotheken, die ein
+Programm verwendet, gegen andere ersetzt werden, um damit
+beispielsweise gezielt einzelne Funktionen zu ersetzen.
+    </textblock>
+   </section>
+  
+ <!-- Kapitel 5.2-->
+   <section>
+    <heading>
+Der Linux Programmlader
+    </heading>
+    
+    <textblock>
+Soll ein Programm, welches Bibliotheken verwendet, gestartet
+werden, so müssen diese natürlich mitgeladen werden. Dazu wird
+zunächst gar nicht das eigentliche Programm gestartet, sondern
+der sogenannte Programmlader (engl.: program loader). Dieser wird
+auch "dynamic linker" genannt, da er die Bibliotheken zum
+Programm bindet. Auf Linuxsystemen heißt dieser
+<path>/lib/ld-linux.so.2</path> (die .2 ist wieder eine Versionsnummer; das
+"-linux" zeigt, dass er Linux spezifisch ist. Oft wird er jedoch
+insbesondere in technischer Dokumentation <path>ld.so</path> genannt). Der
+Programmlader lädt nun auch die benötigten Bibliotheken
+automatisch. Im Kopf der Programmdateien steht eine Liste mit
+diesen. Nach dem Laden bereitet er das Programm zum Start vor
+und startet es letztendlich.
+    </textblock>
+    
+    <textblock>
+Dieser Vorgang findet bei fast allen Linux-Programmen statt. Nur
+sehr wenige Programme verwenden keine dynamischen Bibliotheken.
+Beispiele dafür sind <command>login</command> (hier aus 
+Sicherheitsgründen) und <command>rpm</command> (damit man es auch
+starten kann, wenn die Systembibliotheken beschädigt oder defekt sind).
+    </textblock>
+    
+    <textblock>
+Um eine Bibliothek zu laden, bestimmt der Programmlader den
+Namen der Bibliotheksdatei.
+    </textblock>
+   </section>
+  
+  <!-- Kapitel 5.3 -->
+   <section>
+    <heading>
+Namen von Bibliotheken
+    </heading>
+    
+    <textblock>
+Jede Bibliothek hat natürlich einen Namen. So heißt
+die Lib-C beispielsweise <strong>c</strong> und Mathematikfunktionen findet
+man als <strong>m</strong> und die für das dynamische Laden heißt 
+<strong>dl</strong> (C-Programmierer scheinen sehr kurze Namen zu lieben).  
+    </textblock>
+    
+    <textblock>
+Vor diese Namen wird <path>lib</path> vorangestellt, um kenntlich zu 
+machen, dass es sich um eine Bibliothek handelt. Dahinter schreibt man
+bei gemeinsam benutzbaren Bibliotheken <path>.so</path> (für engl.: 
+shared object) und bei statisch linkbaren <path>.a</path>
+(für engl.: archive).
+    </textblock>
+    
+    <textblock>
+Hinter das <path>.so</path> hängt man noch eine Versionsnummer an. 
+Diese Versionsnummer wird durch einen Punkt abgetrennt und kann
+mehrwertig sein, so kann man beispielsweise eine
+<path>/lib/libdl.so.1.9.9</path> haben. Hierbei handelt es sich um die
+<path>dl</path> in der Version 1.9.9.
+    </textblock>
+    
+    <textblock>
+Da die Bibliotheken die Versionsnummer im Dateinamen haben,
+aber ein Programm in der Regel nicht an einer bestimmten Version
+interessiert ist, werden symbolische Links angelegt (wie diese
+Links entstehen, wird später noch beschrieben). So wird
+beispielsweise die Datei <path>libcrack.so.2.7</path> auch als
+<path>libcrack.so.2</path> und als <path>libcrack.so</path> 
+bekannt gemacht. Ein Programm kann nun gegen <path>libcrack</path> 
+gelinkt werden, und es wird auch noch funktionieren, wenn eine 
+<path>libcrack.so.2.8</path> installiert wird, oder ein System nur
+eine <path>libcrack.so.2.6</path> anbietet. Linkt ein Programm direkt
+gegen eine Version, so muss natürlich die genau passende vorhanden sein.
+Dies ist mitunter beabsichtigt, kann aber bei Updates zu Problemen
+führen, weil die Programme plötzlich nicht mehr gestartet werden können.
+Oft funktionieren die Programme jedoch auch mit neueren Versionen. 
+Nun kann man
+natürlich einfach einen Link per Hand erzeugen, der von dem betroffenen Programm
+verwendet wird und auf eine vorhandene, neuere Version zeigt,
+doch kann es auch hier zu Problemen kommen. Dieses Vorgehen
+sollte daher in der Regel vermieden werden.
+    </textblock>
+   </section>
+  
+  <!-- Kapitel 5.4 -->
+   <section>
+    <heading>
+Platzierung im Dateisystem
+    </heading>
+    
+    <textblock>
+Werden die Bibliotheken bereits für das Starten eines Linuxsystems
+benötigt, so werden sie in <path>/lib</path> installiert.
+Andere, die zum Starten selbst noch nicht benötigt werden (zum
+Beispiel Grafikbibliotheken) finden sich dagegen in <path>/usr/lib</path>.
+Zusätzliche Bibliotheken, die nicht zu einer Distribution
+gehören, sondern selbst installiert wurden, finden sich meistens
+in <path>/usr/local/lib</path>.
+    </textblock>
+   </section>
+  
+ <!-- Kapitel 5.6 -->
+   <section>
+    <heading>
+Funktion des Dynamischen Linkers (Programmladers)
+    </heading>
+    
+    <textblock>
+Der Programmlader versucht zunächst, sämtliche Bibliotheken zu
+laden. Er sucht dazu in den Pfaden, die in der Umgebungsvariablen
+<command>LD_LIBRARY_PATH</command> hinterlegt sind. Anschließend wird
+in einer Cache-Datei gesucht (<path>/etc/ld.so.cache</path>), welche
+aus Effizienzgründen verwendet wird, und letztlich in 
+<path>/usr/lib</path> und <path>/lib</path>. Da die Verwendung
+von <command>LD_LIBRARY_PATH</command> im Normalbetrieb umständlich ist,
+wird diese normalerweise nicht gesetzt, vielmehr stehen alle Bibliotheken
+in der Cache-Datei. Diese wird über ein spezielles Werkzeug erstellt. Fast 
+alle Bibliotheken werden über diesen Weg geladen.
+    </textblock>
+    
+    <textblock>
+Findet der Dynamische Linker nicht alle benötigen Bibliotheken
+(oder fehlt eine Funktion oder ein anderes Symbol in einer
+gefundenen Bibliothek), so wird der Start mit einer
+Fehlermeldung abgebrochen. 
+    </textblock>
+   </section> 
+
+<!-- Kapitel 5.7 -->
+   <section>
+    <heading>
+Umgebungsvariablen
+    </heading>
+    
+    <textblock>
+Der Dynamische Linker wird über Umgebungsvariablen gesteuert.
+Neben der bereits erwähnten Variable <command>LD_LIBRARY_PATH</command>
+erkennt der Programmlader die Variable <command>LD_PRELOAD</command>.
+Die durch Leerzeichen getrennten Einträge dieser Variable bilden eine Liste
+von Bibliotheken, die auf jeden Fall zuerst geladen werden sollen.
+Dies ermöglicht es, Bibliotheken zu laden, die Funktionen von
+anderen Bibliotheken <strong>überschreiben</strong>. Der Linker verbindet die
+Programmfunktionen in diesem Fall nämlich mit denen aus dieser
+Bibliothek, selbst wenn später eine andere Bibliothek diese
+Funktion ebenfalls definiert. Dies ist jedoch auch für Angriffe
+ausnutzbar, so könnte man beispielsweise Bibliotheken
+"unterschieben", die über Seiteneffekte von "normalen" Funktionen
+bestimmte ungewollte Aktionen ausführen. Aus diesem Grund
+ignoriert der Programmlader (beide) Variablen bei <strong>setuid</strong>
+Programmen (also Programme, die unter anderen Benutzerrechten
+laufen, als der Aufrufer besitzt). Dadurch kann ein Aufrufer sich
+keine zusätzlichen Rechte verschaffen.
+    </textblock>
+    
+    <textblock>
+Eine Liste aller Umgebungsvariablen findet man in der Manpage
+<path>ld.so</path>. 
+    </textblock>
+   </section> 
+  
+  <!-- Kapitel 5.8 -->
+   <section>
+    <heading>
+Cache-Datei erzeugen
+    </heading>
+    
+    <textblock>
+Die bereits erwähnte Cache-Datei wird vom Werkzeug 
+<command>ldconfig</command> erzeugt. Dieses verwendet eine 
+Konfigurationsdatei <path>/etc/ld.so.conf</path>. 
+Aus dem Namen dieser Datei geht hervor, dass <command>ldconfig</command>
+und <path>ld-linux.so</path> eng zusammenarbeiten.
+    </textblock>
+    
+    <textblock>
+<command>ldconfig</command> sucht in den Verzeichnissen, die in 
+<path>/etc/ld.so.conf</path> stehen, nach Bibliotheken. Bei
+diesem Vorgang werden auch die symbolischen Links angelegt, die
+im Abschnitt "Namen von Bibliotheken" beschrieben wurden. Die
+gefundenen Bibliotheken aus allen angegebenen Verzeichnissen werden
+mit Versions- und weiteren Informationen in der Cache-Datei 
+<path>/etc/ld.so.cache</path> abgespeichert (welche dann vom 
+Programmlader verwendet wird).
+    </textblock>
+    
+    <textblock>
+Das Programm <command>ldconfig</command> lässt sich über 
+Kommandozeilenparameter steuern, die in der Manpage gelistet sind.
+Ein Beispiel ist der Schalter <command>-v</command>, der etliche 
+Informationen anzeigt. Versuchen Sie doch einmal an dieser Stelle 
+einen Aufruf von <command>ldconfig -v</command> (als root) und sehen Sie sich die 
+Ausgabe an.
+    </textblock>
+    
+    <textblock>
+Aus naheliegenden Gründen verwendet <command>ldconfig</command> selbst
+keine dynamischen Bibliotheken, sondern ist statisch gebunden.
+    </textblock>
+   </section> 
+  </section>
+ </split>
+
+ <split>
+<!-- Kapitel 6 -->
+  <section>
+   <heading>
+Verwalten von Bibliotheken
+   </heading>
+   
+   <textblock>
+Ein Administrator hat mit Bibliotheken üblicherweise recht wenig
+Arbeit. Wird ein neues Verzeichnis mit Bibliotheken eingerichtet,
+beispielsweise <path>/usr/local/lib</path>, so muss es in die
+Datei <path>/etc/ld.so.conf</path> eingetragen werden. Anschließend
+ist natürlich das Starten von <command>ldconfig</command> erforderlich.
+   </textblock>
+  
+  <!-- Kapitel 6.1 -->
+   <section>
+    <heading>
+Installieren von Bibliotheken
+    </heading>
+    
+    <textblock>
+Meistens installiert man Bibliotheken über RPMs oder andere
+Pakete. Diese Pakete führen manchmal <command>ldconfig</command>
+automatisch aus, jedoch sollte man nach dem Installieren 
+sicherheitshalber immer <command>ldconfig</command> ausführen.
+    </textblock>
+   </section> 
+  
+  <!-- Kapitel 6.2 -->
+   <section>
+    <heading>
+Aktualisieren von Bibliotheken
+    </heading>
+    
+    <textblock>
+Das Aktualisieren von Bibliotheken ist zunächst sehr einfach, wenn man
+RPM oder andere Paketverwaltungswerkzeuge benutzt. Diese
+überschreiben in der Regel die alten Versionen automatisch.
+Manchmal wird <command>ldconfig</command> automatisch gestartet, aber man
+sollte es auch hier sicherheitshalber immer per Hand nach dem Aktualisieren
+ausführen.
+    </textblock>
+    
+    <textblock>
+Hier können sich aber einige Schwierigkeiten ergeben,
+insbesondere, wenn man häufig benutzte Bibliotheken aktualisiert.
+Meistens klappt dies einfach, treten jedoch Probleme auf,
+kann eine Reparatur aufwendig werden. Am kritischsten sind
+Erneuerungen der <path>libc</path>, da diese von praktisch allen 
+Kommandos verwendet wird. Ohne diese Bibliothek funktionieren so
+elementare Kommandos wie <command>ls</command> oder 
+<command>cp</command> unter Umständen nicht mehr 
+(<command>ls</command> ist jedoch meistens ein Shellkommando; 
+<command>/bin/ls</command> wird zum Beispiel von der Bash nicht
+verwendet, weil sie ein <strong>eigenes</strong> <command>ls</command> hat).
+    </textblock>
+    
+    <textblock>
+Wenn man wirklich wichtige Systeme aktualisiert, empfiehlt es
+sich, einige Vorsichtsmaßnahmen zu ergreifen, die jedoch
+schon recht tiefes Systemverständnis erfordern. Zunächst sollte
+der gewissenhafte Administrator die Stand-Alone-Shell <command>sash</command>
+installiert haben. Diese wird in der Regel statisch gelinkt, dass
+heißt, sie funktioniert komplett ohne Bibliotheken. Sash hat den
+großen Vorteil, sehr viele Kommandos (in beschränkter Form) fest
+eingebaut zu haben. Vor einem Update sollte man die Sash in einem
+oder zwei erst mal unbenutzten Fenstern öffnen. Dann macht man
+Sicherheitskopien der Dateien, die das Update verändert. Neben
+den eigentlichen Bibliotheken sollte man <path>/etc/ld.so.conf</path>
+und <path>/etc/ld.so.cache</path> sichern. Geht beim folgenden Update
+etwas schief, kann man unter Umständen keine Programme mehr starten,
+welche die aktualisierten Bibliotheken verwenden. Dies erkennt man z.B.
+daran, dass <command>cp</command> nicht mehr funktioniert.
+    </textblock>
+    
+    <textblock>
+In diesem Fall darf man nun keinesfalls "sicherheitshalber
+erst mal neu starten", wie man es möglicherweise von Windows
+gewöhnt ist! Das System würde nämlich auch nach einem Start nicht
+funktionieren; es würde überhaupt nicht hochfahren!
+    </textblock>
+    
+    <textblock>
+Zunächst sollte man (nochmals) <command>ldconfig -v</command>
+ausführen (das funktioniert ja immer). Bringt das keine Abhilfe, 
+kommen die zuvor geöffneten Fenster mit der Stand-Alone-Shell 
+zum Einsatz.
+Da diese beispielsweise <command>cp</command> eingebaut hat, kann
+man die Sicherheitskopien wieder aktivieren, obwohl 
+<command>/bin/cp</command> nicht mehr gestartet werden kann. Da 
+die Sash möglicherweise nicht ganz intuitiv bedienbar 
+ist, sollte man vorher etwas mit ihr arbeiten.
+    </textblock>
+    
+    <textblock>
+Es folgen einige Hinweise zur Verwendung der Sash (falls man vorher
+nicht mit ihr gearbeitet hat und <command>man sash</command> gerade 
+nicht funktioniert): Sash 
+kennt ein <command>help</command> Kommando. Muss man eingebaute Kommandos
+verwenden, zunächst <command>aliasall</command> eingeben. 
+Erklärungen hierzu finden sich in <command>help</command> und in der Manpage
+(die nach dem Zurückkopieren der Sicherheitskopien wieder funktionieren
+wird). 
+    </textblock>
+    
+    <textblock>
+Nach dem Wiederherstellen der lib*so* Dateien aus den Kopien
+sollte ein Start von <command>ldconfig</command> wieder für ein
+funktionierendes System sorgen. Das kann man z.B. durch das Ausprobieren
+von Kommandos prüfen (<command>/bin/echo hallo</command> usw.). 
+    </textblock>
+    
+    <textblock>
+Hat man die Bibliotheken erfolgreich aktualisiert und geprüft,
+ob das System funktioniert, sollte man bei nächstmöglicher
+Gelegenheit das System neu starten. Dies ist notwendig, weil
+Bibliotheken ja beim Programmstart geladen werden, und damit
+bereits gestartete Programme noch die alten Versionen verwenden.
+Ein Neustart ist eine schnelle Methode, alle Programme
+neuzustarten. Erfahrene Administratoren wissen, wie sie alle
+Programme einzeln auch ohne System-Neustart neu starten, was auf
+wirklich wichtigen Systemen die Ausfallzeiten minimiert.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+<!-- Kapitel 7 -->
+  <section>
+   <heading>  
+Werkzeuge
+   </heading>
+   
+   <textblock>
+Es folgen Kurzbeschreibungen einiger Werkzeuge, die speziell
+auf die Arbeit mit Bibliotheken zugeschnitten sind.
+   </textblock>
+  
+ <!-- Kapitel 7.1 -->
+   <section>
+    <heading>
+ld-linux.so
+    </heading>
+    
+    <textblock>
+Der Programmlader oder Dynamische Linker wurde oben bereits
+beschrieben. Er ist dafür zuständig, die von einem Programm
+benötigten Bibliotheken zu laden und zu binden.
+    </textblock> 
+   </section>
+ 
+ <!-- Kapitel 7.2 -->
+   <section>
+    <heading>  
+ldconfig
+    </heading>
+    
+    <textblock>
+Dieses ebenfalls bereits oben beschriebene Werkzeug erstellt die
+Cache-Datei für den Programmlader. <command>ldconfig</command> ist
+statisch gebunden.
+    </textblock>
+   </section> 
+  
+  <!-- Kapitel 7.3 -->
+   <section>
+    <heading>
+ldd
+    </heading>
+    
+    <textblock>
+Dieses Werkzeug zeigt an, ob und welche gemeinsam benutzbaren
+Bibliotheken ein Programm verwendet. Es gibt die Abhängigkeiten
+dieser aus. ldd ist statisch gebunden.
+    </textblock>
+    
+    <textblock>
+Mit <command>ldd</command> kann man sich anzeigen lassen, welche Bibliotheken in
+welchen Versionen ein Programm verwendet. Dabei verwenden fast
+alle Programme mindestens den Programmlader <path>/lib/ld-linux.so.2</path>
+und die Lib-C <path>/lib/libc.so.6</path>. Komplexe Programme verwenden
+oft 10 und mehr Bibliotheken (z.B. xterm). Mit <command>ldd</command> kann man
+erkennen, ob ein Programm direkt gegen Versionen gelinkt ist,
+oder ob es überhaupt dynamisch gebunden wird. Betrachten Sie
+die folgenden Kommandos:
+    </textblock>
+
+    <shell>
+     <user path="~">
+ldd /lib/ld-linux.so.2
+     </user>
+     <output>
+statically linked
+     </output>
+     <user path="~">
+ldd /sbin/ldconfig 
+     </user>
+     <output>
+not a dynamic executable
+     </output>
+    </shell>
+    
+    <textblock>
+ldd zeigt auch, welche Bibliotheken von Bibliotheken
+verwendet werden, so ist zum Beispiel die Mathematikbibliothek
+<path>/lib/libm.so.6</path> gegen <path>libc.so.6</path> gelinkt.
+    </textblock>
+   </section> 
+
+<!-- Kapitel 7.4 -->
+   <section>
+    <heading>
+nm
+    </heading>
+    
+    <textblock>
+<command>nm</command> zeigt die Symbole (also Funktionen und Variablen) an,
+welchen eine Bibliothek anbietet. Das sind zum einem die
+Symbole, die eine Bibliothek bereitstellt (exportierte
+Funktionen) und zum anderen die, die sie verwendet (importiert).
+<command>nm -u</command> zeigt die Symbole an, die eine Bibliothek 
+benötigt, und <command>nm -g</command> die, die exportiert werden. Dies
+kann man sich gut am Beispiel libm.so anschauen. 
+<command>nm -u /lib/libm.so.6</command> zeigt beispielsweise, dass libm
+die Standardfehlerausgabe "stderr" aus der libc verwendet und 
+<command>nm -g /lib/libm.so.6</command> zeigt, dass
+eine Funktion "tan" bereitgestellt wird (die den Tangens berechnet).
+    </textblock>
+   </section>
+  </section>
+  
+ <!-- Kapitel 8 -->
+  <section>
+   <heading>
+Literatur
+   </heading>
+   
+   <textblock> 
+Details zu den Programmen finden sich in den entsprechenden
+Manpages. Die Manpage zu <path>ld-linux.so</path> heißt unter
+Umständen kurz <path>ld.so</path>.
+   </textblock>
+   
+   <textblock>
+<name>David A. Wheeler</name> schrieb das 
+<name>Program Library HOWTO</name>, das von 
+<name>Christoph Schönfeld</name> ins Deutsche übersetzt wurde. Dieses
+beschreibt Bibliotheken aus Entwicklersicht und zeigt, wie man
+Bibliotheken erstellt
+(siehe auch <ref lang="en" url="http://www.dwheeler.com/program-library/">http://www.dwheeler.com/program-library/</ref>)
+   </textblock>
+  </section>
+ </split>
+</chapter>

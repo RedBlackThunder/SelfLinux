@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Benutzerverwaltung unter Linux</title>
+
+ <author>
+  <name>Heiko Degenhardt</name>
+  <mailto>hede@pingos.org</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+   GFDL
+ </license>
+
+ <index>userverwaltung</index>
+
+ <split>
+  <section>
+<!-- 1. Kapitel-->
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Dieses Kapitel führt in das Benutzerkonzept von Linux ein.
+Die Benutzerverwaltung sowie alle daraus resultierenden Aufgaben
+werden in späteren Kapiteln ausführlich behandelt.
+Die Grundlagen zum Benutzer- und Berechtigungskonzepte unter Linux
+werden in <ref chapter="nutzer_unter_linux">diesem Kapitel</ref> erklärt.
+   </textblock>
+  </section>
+
+  <section>
+<!-- 2. Kapitel-->
+   <heading>
+Grundlagen
+   </heading>
+
+   <textblock>
+Zu den wichtigsten Eigenschaften von Linux zählt sicher die
+Fähigkeit zu echtem Multitasking und zum Multiuser-Betrieb.
+<strong>"Multitasking"</strong> bedeutet dabei, dass mehrere Prozesse (englisch <strong>"tasks"</strong>)
+parallel ablaufen, und sich dabei die vorhandenen Ressourcen
+teilen. <strong>"Multiuser"</strong> bedeutet, dass mehrere Benutzer
+gleichzeitig am System arbeiten und damit die
+Multitasking-Fähigkeiten des Systems nutzen können. Hierbei trennt
+das Betriebssystem die einzelnen Benutzer, die von diesen Benutzern
+gestarteten Prozesse/Tasks sowie die von ihnen angelegten
+<ref chapter="dateien_unter_linux">Dateien</ref> und <ref chapter="verzeichnisse_unter_linux">Verzeichnisse</ref> voneinander und kontrolliert restriktiv
+den Zugriff darauf.
+   </textblock>
+
+   <textblock>
+In der <ref chapter="win_vs_linux">Windows-Welt</ref> ist dieser Multiuser-Betrieb
+wenig bekannt. Zwar ist es auch unter Windows z. B. möglich, mehrere
+<ref chapter="nutzer_unter_linux" iref="Was ist ein Benutzer?">Benutzer</ref> auf demselben System anzulegen. Diese können im Normalfall aber
+nicht gleichzeitig an diesem System arbeiten.
+   </textblock>
+  </section>
+
+  <section>
+<!-- 3. Kapitel-->
+   <heading>
+Vorteile von Multiuser-Systemen
+   </heading>
+
+   <textblock>
+Für Privatanwender scheint ein Multiuser-System zunächst
+wenig vorteilhaft zu sein. In erster Linie denkt
+man bei solchen Systemen sicher an Server, auf die über
+Shell-Accounts, FTP, Internet usw. viele Kunden gleichzeitig
+zugreifen können.
+Trotzdem bringt dieses Konzept auch für <strong>"normale"</strong> Anwender
+entscheidende Vorteile:
+   </textblock>
+
+   <ul>
+    <li>
+Ein Multiuser-System ist eine gute Basis für diszipliniertes Arbeiten.
+Man kann z. B. sehr genau beobachten, unter welchem Account
+man welche Aufgaben erledigt.
+    </li>
+    <li>
+Es bietet eine wesentlich höhere <ref chapter="grundlagen_sicherheit">Sicherheit</ref> als ein "Single-User-System",
+da die Zugriffsrechte auf Daten, Prozesse etc. je nach Benutzer
+und Nutzergruppe kontrolliert und eingeschränkt
+werden können.<br/>
+Dadurch ist es z. B. möglich, dass ein <ref chapter="grundlagen_sicherheit" iref="Viren">Virus</ref> nur Zugriff auf die Daten
+desjenigen Benutzers erhält, über den er in das System gelangt ist.
+Voraussetzung dafür ist natürlich das bereits genannte disziplinierte
+Arbeiten.
+    </li>
+   </ul>
+  </section>
+
+  <section>
+<!-- 3. Kapitel-->
+   <heading>
+Das Benutzerkonzept von Linux
+   </heading>
+
+   <textblock>
+Unter Linux werden alle Benutzer, die zur Arbeit am System berechtigt sein
+sollen, zu Benutzergruppen zusammengefasst. Alle Ressourcen können nun
+für bestimmte Gruppen oder Benutzer
+freigegeben werden. Diese Rechtevergabe beruht auf:
+   </textblock>
+
+   <ul>
+    <li>
+User-ID (uid)<br/>
+Dies ist die ID, mit der sich ein Benutzer am System anmeldet.
+    </li>
+    <li>
+effektive User-ID (euid)<br/>
+Dies ist die ID, mit der ein Benutzer auf eine Ressource
+zuzugreifen versucht.
+    </li>
+    <li>
+Group-ID (gid)<br/>
+Dies ist die ID, mit der sich eine Gruppe am System anmeldet.
+    </li>
+    <li>
+effektive Group-ID (egid)<br/>
+Dies ist die ID, mit der eine Gruppe auf eine Ressource
+zuzugreifen versucht.
+    </li>
+   </ul>
+
+   <textblock>
+Für die Zugriffskontrolle überprüft das System bei jedem Zugriff auf
+eine Ressource, unter welcher effektiven uid und guid der Zugriff
+erfolgt. Durch diese Unterscheidung von ID und effektiver ID ist es z. B.
+möglich, dass ein Benutzer zwar unter seiner eigenen uid arbeitet, zugleich aber
+(temporär) auf Dateien zugreift, die anderen Gruppen gehören.
+   </textblock>
+
+   <textblock>
+Beispiel:
+   </textblock>
+
+   <quotation>
+Wird das <ref chapter="passwoerter">Passwort</ref> eines Benutzers geändert, so muss das Programm <command>passwd</command>
+z. B. auf die Datei <path>/etc/shadow</path> zugreifen. Normalerweise ist kein Benutzer
+berechtigt, auf diese Datei zuzugreifen. Trotzdem kann das Programm <command>passwd</command>
+diese Datei lesen, da es während dieses Vorganges einmal von der <command>uid</command>
+des aufrufenden Benutzers zur <command>uid</command> von root wechselt und damit
+über alle notwendigen Rechte verfügt. Dies ist möglich, da bei der
+ausführbaren Datei <command>/usr/bin/passwd</command> das Bit <strong>"set uid"</strong> gesetzt ist
+(in der folgenden Codezeile wird dies durch das erste "s" angezeigt):
+   </quotation>
+
+   <shell>
+    <user path="~/temp">
+ls -al /usr/bin/passwd
+    </user>
+    <output>
+-rwsr-xr-x    1 root     root        24680 Apr  7 17:59
+    </output>
+   </shell>
+
+   <textblock>
+Weitere Informationen hierzu finden Sie mit <command>"info chmod"</command> und
+<command>"man chmod"</command>. Mehr Information zu man und info finden Sie im
+Kapitel <ref chapter="linux_hilfe">Linux Hilfe</ref>.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 4. Kapitel-->
+   <heading>
+Wichtige Befehle
+   </heading>
+
+   <section>
+<!-- 4.1 Kapitel-->
+    <heading>
+ls -al - Anzeigen von Datei- und Verzeichniseigenschaften
+    </heading>
+
+    <textblock>
+Beispiel:
+    </textblock>
+
+    <shell>
+     <user path="~/temp">
+ls -al
+     </user>
+     <output>
+total 8
+drwxr-xr-x    2 hede     hede         4096 Jul 10 07:25 .
+drwxr-xr-x    8 hede     hede         4096 Jul 10 07:25 ..
+-rw-r--r--    1 hede     hede            0 Jul 10 07:25 test.txt
+     </output>
+    </shell>
+
+    <textblock>
+Die Datei test.txt gehört dem Benutzer hede und der Gruppe hede.
+Der Eigentümer hat Lese- und Schreibzugriff auf die Datei, während
+die Gruppe und alle anderen Benutzer die Datei nur lesen dürfen.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 4.2 Kapitel-->
+    <heading>
+chmod - Ändern der Dateizugriffsrechte
+    </heading>
+
+    <textblock>
+Beispiel:
+    </textblock>
+
+    <quotation>
+Das folgende Shellkommando bestimmt, dass alle Mitglieder der Gruppe
+auch Schreibzugriff auf die Datei erhalten und andere Benutzer sie
+nicht lesen dürfen:
+    </quotation>
+
+    <shell>
+     <user path="~/temp">
+chmod 660 test.txt
+     </user>
+   </shell>
+
+    <textblock>
+Überprüfung:
+    </textblock>
+
+    <shell>
+     <user path="~/temp">
+ls -al
+     </user>
+     <output>
+total 8
+drwxr-xr-x    2 hede     hede         4096 Jul 10 07:25 .
+drwxr-xr-x    8 hede     hede         4096 Jul 10 07:25 ..
+-rw-rw----    1 hede     hede            0 Jul 10 07:25 test.txt
+     </output>
+    </shell>
+   </section>
+
+   <section>
+<!-- 4.3 Kapitel-->
+    <heading>
+chown -  Ändern des Eigentümers und der Gruppenzugehörigkeit
+von Dateien und Verzeichnisse
+    </heading>
+
+    <textblock>
+Test:
+    </textblock>
+
+    <shell>
+     <user path="~/temp">
+ls -al
+     </user>
+     <output>
+total 8
+drwxr-xr-x    2 hede     users         4096 Jul 10 07:25 .
+drwxr-xr-x    8 hede     users         4096 Jul 10 07:25 ..
+-rw-rw----      1 user      users               0 Jul 10 07:25 test.txt
+     </output>
+    </shell>
+
+    <textblock>
+Die folgende Codezeile ändert den Besitzer der Datei:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+chown hede.users test.txt
+    </user>
+   </shell>
+
+   <shell>
+    <user path="~/temp">
+ls -al
+     </user>
+     <output>
+total 8
+drwxr-xr-x    2 hede     users         4096 Jul 10 07:25 .
+drwxr-xr-x    8 hede     users         4096 Jul 10 07:25 ..
+-rw-rw----      1 hede     users               0 Jul 10 07:25 test.txt
+     </output>
+    </shell>
+
+    <textblock>
+Um den Eigentümer und die Gruppe zu ändern, braucht man
+ausreichende <ref chapter="nutzer_unter_linux" iref="Berechtigungsklassen: Lesen, Schreiben und Ausführen">Rechte</ref>. Meist müssen derartige Änderungen also
+vom <ref chapter="nutzer_unter_linux" iref="root">root-Benutzer</ref> vorgenommen werden. Grundsätzlich können sie
+nur von einem Angehörigen derjenigen Gruppe durchgeführt werden,
+die zum Eigentümer der Datei erklärt werden soll.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 4.4 Kapitel-->
+    <heading>
+chgrp - Ändern der Gruppenzugehörigkeit von Dateien oder
+      Verzeichnissen
+    </heading>
+
+    <textblock>
+Auch mit diesem Befehl kann man die Gruppenzugehörigkeit von
+Dateien und Verzeichnissen ändern. Soll nun die Gruppe users der
+Eigentümer der Datei test.txt werden, geht man folgendermaßen vor:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+chgrp users test.txt
+     </user>
+    </shell>
+
+    <textblock>
+Nachweis:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+ls -al
+     </user>
+     <output>
+total 8
+drwxr-xr-x     2 hede      hede          4096 Jul 10 07:25 .
+drwxr-xr-x     8 hede      hede          4096 Jul 10 07:25 ..
+-rw-rw----     1 hede      users            0 Jul 10 07:25 test.txt
+     </output>
+    </shell>
+
+    <textblock>
+Auch diese Änderung kann nur von einem Benutzer vorgenommen werden,
+der über die erforderlichen <ref chapter="nutzer_unter_linux" iref="Berechtigungsklassen: Lesen, Schreiben und Ausführen">Rechte</ref> verfügt.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 4.5 Kapitel-->
+    <heading>
+id - Ermitteln der effektiven UIDs und GIDs
+    </heading>
+
+    <textblock>
+Mit dem Befehl <command>"id"</command> kann man ermitteln, unter welcher UID man
+eingeloggt ist, zu welchen Gruppen man gehört, welche die primäre
+Gruppe ist usw.:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+id
+     </user>
+     <output>
+uid=1000(hede) gid=1000(hede)
+groups=1000(hede),25(floppy),100(users)
+     </output>
+    </shell>
+   </section>
+
+   <section>
+<!-- 4.6 Kapitel-->
+    <heading>
+groups - die Gruppenzugehörigkeit ermitteln
+    </heading>
+
+    <textblock>
+Mit dem Befehl groups kann man anzeigen lassen, welchen
+Gruppen man angehört:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+groups
+     </user>
+     <output>
+hede floppy users
+     </output>
+    </shell>
+
+    <textblock>
+Diese Informationen kann man auch für andere Benutzer anzeigen
+lassen:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+groups root
+     </user>
+     <output>
+root : root
+     </output>
+    </shell>
+   </section>
+
+   <section>
+<!-- 4.7 Kapitel-->
+    <heading>
+Angemeldete Benutzer ermitteln
+    </heading>
+
+    <textblock>
+Der folgende Befehl zeigt an, wer momentan beim System angemeldet ist:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+w
+     </user>
+     <output>
+07:37:58 up 15 days, 49 min,  5 users, load average: 0.05, 0.08 0.03
+ USER   TTY      FROM      LOGIN@   IDLE   JCPU   PCPU   WHAT
+ root   tty1     -         25Jun02  6:20   0.82s  0.82s  -bash
+ hede   tty2     -         02Jul02  7days  0.30s  0.30s  -bash
+ hede   tty3     -         Thu16    5days  0.21s  0.21s  -bash
+ hede   pts/0    www2      Mon11    3.00s  3.94s  3.45s  vim t.txt
+ hede   pts/1    www2      07:32    0.00s  0.13s  0.06s  w
+     </output>
+    </shell>
+
+    <textblock>
+Damit kann man also auch erkennen, wer sich von wo aus angemeldet hat und
+was die einzelnen Benutzer gerade machen.
+    </textblock>
+
+    <textblock>
+Eine verkürzte Information liefert der Befehl who:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+who
+     </user>
+     <output>
+root     tty1         Jun 25 06:49
+hede     tty2         Jul  2 07:47
+hede     tty3         Jul  4 16:28
+hede     pts/0        Jul  8 11:45 (www2.sentec-elektronik.de)
+hede     pts/1        Jul 10 07:32 (www2.sentec-elektronik.de)
+     </output>
+    </shell>
+
+    <textblock>
+Um zu ermitteln, unter welcher ID man selbst angemeldet ist, gibt man den
+Befehl whoami ein. Dieser zeigt aktuelle uid an:
+    </textblock>
+
+   <shell>
+    <user path="~/temp">
+hede@www:~/temp$ whoami
+     </user>
+     <output>
+hede
+     </output>
+    </shell>
+   </section>
+
+   <section>
+<!-- 4.8 Kapitel-->
+    <heading>
+Informationen über laufende Prozesse,
+offene Dateien etc. ermitteln
+    </heading>
+
+    <textblock>
+Mit <command>"lsof"</command> (<strong>"list open files"</strong>) kann man herausfinden, welche
+Dateien im Moment geöffnet sind, und wer sie geöffnet hat.
+    </textblock>
+
+    <textblock>
+<command>"ps aux"</command> zeigt die laufenden Prozesse sowie zusätzliche Informationen über
+Eigentümer, Ressourcenverbrauch usw. an.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 4.9 Kapitel-->
+    <heading>
+Benutzerverwaltung
+    </heading>
+
+    <textblock>
+Die folgenden Befehle dienen der Benutzerverwaltung, also dem Anlegen, Ändern
+und Löschen von Benutzern und Gruppen:
+    </textblock>
+
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <td>
+<command>useradd</command>
+      </td>
+      <td>
+Neuen Benutzer anlegen
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>usermod</command>
+      </td>
+      <td>
+Existierenden Benutzer ändern
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>groupadd</command>
+      </td>
+      <td>
+Gruppe anlegen
+      </td>
+     </tr>
+
+     <tr>
+      <td>
+<command>groupmod</command>
+      </td>
+      <td>
+Existierende Gruppe ändern
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Diese Befehle werden in einem eigenen Kapitel ausführlich behandelt.
+    </textblock>
+
+    <textblock>
+Die einzelnen Distributionen bieten darüber hinaus noch weitere Möglichkeiten,
+diese Verwaltungsaufgaben zu erledigen. So stellt z. B. <ref lang="de" url="http://www.debian.org/">Debian</ref>
+die Tools <command>adduser</command>, <command>addgroup</command>, <command>deluser</command>, <command>delgroup</command> bereit. Unter <ref lang="de" url="http://www.suse.de/">SuSE Linux</ref>
+kann man diese Aufgaben auch bequem mit <command>yast</command> erledigen.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 5. Kapitel-->
+   <heading>
+Hinweise
+   </heading>
+
+   <textblock>
+Hier folgen noch ein paar Hinweise zur
+Arbeit mit dem Benutzerkonzept:
+   </textblock>
+
+   <ul>
+    <li>
+Man sollte grundsätzlich nur dann als root arbeiten, wenn es
+unbedingt notwendig ist.<br/>
+Dadurch wird gewährleistet, dass man nicht aus Versehen
+wichtige Dateien löscht.
+Alle Prozesse (also z.B. auch Mail-Tools), die unter dem
+root-Account laufen, uneingeschränkt auf das ganze System zugreifen.
+Tritt dabei ein Fehler auf oder enthält das Programm
+z. B. potenziell schädlichen Code, so ist das gesamte System gefährdet!
+    </li>
+    <li>
+Alle Dienste und Server sollten mit möglichst wenigen
+Rechten betrieben werden.<br/>
+Dieses Verhalten ist bei den meisten Systemen als Standard voreingestellt.
+    </li>
+    <li>
+Als Benutzer sollte man sich gut überlegen, welche Zugriffsrechte
+man Dateien und Verzeichnissen gibt.<br/>
+Mit einer behutsamen Rechtevergabe schützt man nicht nur die
+eigene Privatssphäre, sondern auch die Sicherheit des Systems.
+    </li>
+   </ul>
+  </section>
+ </split>
+</chapter>

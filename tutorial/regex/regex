@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+
+ <title>Reguläre Ausdrücke</title>
+
+  <author>
+    <name>Dennis Roch</name>
+    <mailto>ysae@users.sourceforge.net</mailto>
+  </author>
+
+  <layout>
+    <name>Matthias Hagedorn</name>
+    <mailto>matthias.hagedorn@selflinux.org</mailto>
+  </layout>
+
+ <license>
+GFDL
+ </license>
+
+ <index>regex</index>
+
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Der Mensch ist ständig auf der Suche.
+Bei der Suche nach sich selbst, nach Geborgenheit
+und Wärme oder etwa nach den Autoschlüsseln,
+kann SelfLinux jedoch leider nicht weiterhelfen ...
+   </textblock>
+
+   <textblock>
+Wer aber viel mit Texten arbeitet oder gar
+programmiert, dem wird dieser Text vermutlich eine nützliche
+Ergänzung seines Wissens sein.
+   </textblock>
+
+   <textblock>
+Wie bereits der Überschrift zu entnehmen, geht es um
+Reguläre Ausdrücke (auch: Regular Expressions, Regexp, Regex, RE).
+Sie ermöglichen uns, Kollege Computer
+zu sagen, was wir eigentlich suchen (und ggf. ersetzen)
+wollen. Und das mit erstaunlicher Flexibilität
+und Präzision. Und da es Reguläre Ausdrücke
+schon zu Urzeiten von <ref chapter="was_ist_unix">Unix</ref> gab, existieren auch eine
+Reihe von Programmen und Programmiersprachen, die
+sie verstehen. Dazu zählen <command>grep</command>, <ref chapter="editoren" iref="vi">vi</ref>, <ref chapter="editoren" iref="emacs">Emacs</ref>, sed,
+<ref chapter="dateien_unter_linux" iref="more und less">more, less</ref> oder auch <command>Perl</command>.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Muster und Reguläre Ausdrücke
+   </heading>
+
+   <textblock>
+Das Prinzip der RE dürfte von den <ref chapter="shellprogrammierung" iref="Mustererkennung">Mustern</ref> (engl: Patterns) her
+bekannt sein. Ihnen ist eigentlich jeder schon mal begegnet.
+   </textblock>
+
+   <textblock>
+Einfaches Beispiel:<br/>
+<command>echo *</command><br/>
+listet alle Dateien und Verzeichnisse des aktuellen
+Verzeichnisses auf.
+   </textblock>
+
+   <textblock>
+Das Sternchen ist also ein Platzhalter für
+alle Dateien und Verzeichnisse des aktuellen Verzeichnisses,
+deren Name eine beliebige Zeichenkette ist
+(also quasi alle Dateien).
+Ein <strong>a*</strong> bezöge sich auf alle Dateinamen,
+die mit einem kleinen <strong>a</strong> beginnen.
+   </textblock>
+
+   <textblock>
+Mit nur einem Muster kann man also eine Reihe von Dateinamen
+(bei Verwendung in Programmen auch Textstellen etc.) abdecken,
+ohne diese einzeln auflisten zu müssen.
+Die passenden Dateinamen werden aus allen insgesamt
+vorhandenen Dateinamen nach einer Regel (z.B. sie beginnen mit <strong>a</strong>)
+heraus gefiltert.
+   </textblock>
+
+   <textblock>
+Reguläre Ausdrücke verfolgen wie gesagt das gleiche
+Grundprinzip, sind jedoch wesentlich flexibler und mächtiger als
+Muster.
+In der Praxis muss man sie jedoch gedanklich vollkommen von den Mustern
+trennen.
+   </textblock>
+
+   <textblock>
+Zum einen müssen reguläre Ausdrücke nicht auf das ganze Wort bzw.
+die ganze Zeile passen, es reicht wenn eine passende Zeichenkette
+darin enthalten ist. Wie man dieses Verhalten umgehen kann
+wird natürlich auch noch erklärt.
+   </textblock>
+
+   <textblock>
+Zum anderen weisen reguläre Ausdrücke und Muster einige
+beachtliche Unterschiede bezüglich der Syntax auf.
+Sie sind also wie zwei verschiedene Sprachen zu behandeln.
+Viele Zeichen finden in beiden Sprachsystematiken Verwendung, allerdings mit
+unterschiedlichen Bedeutungen.
+Man muss also ein wenig aufpassen, um sie nicht zu
+verwechseln.
+   </textblock>
+
+   <textblock>
+Damit die <ref chapter="was_ist_shell">Shell</ref> diese nicht verwechselt, sollte man ihr bei
+regulären Ausdrücken sagen, dass sie diese nicht (als Muster)
+interpretieren, sondern unverändert an das Programm übergeben
+soll (das dann nach Möglichkeit RE beherrscht).
+Dazu maskiert man sie durch Einschließen in
+Hochkommata (
+    <keycomb mode="hold">
+     <key>SHIFT</key>
+     <key>#</key>
+    </keycomb>).
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+BRE und ERE
+   </heading>
+
+   <textblock>
+Um die Verwirrung vollkommen zu machen, gibt es noch zwei Arten von
+regulären Ausdrücken, die sich jedoch nur geringfügig voneinander
+unterscheiden (meist nur ein paar Backslashes mehr oder weniger),
+vergleichbar mit zwei Dialekten derselben Sprache:
+   </textblock>
+
+   <ul>
+    <li>
+BRE (Basic Regular Expressions) - Einfache Reguläre Ausdrücke (auch:'ed-style')
+    </li>
+    <li>
+ERE (Extended Regular Expressions) - Erweiterte Reguläre Ausdrücke(auch: 'egrep-style')
+    </li>
+   </ul>
+
+   <textblock>
+Welches Programm welchen Dialekt versteht, wird meist durch
+einen Blick in die entsprechende Dokumentation ersichtlich.
+Falls dies nicht weiterhilft, muss man es stattdessen anhand
+einfacher Beispiele ausprobieren.
+   </textblock>
+
+   <textblock>
+In der GNU-Implementierung regulärer Ausdrücke verstehen
+beide Dialekte jeweils alle Sprachelemente des anderen - sie
+werden lediglich ein wenig anders geschrieben.
+Deshalb werden im nächsten Abschnitt auch zunächst keine
+Unterschiede gemacht. Es wird jeweils die Schreibweise der
+<command>ERE</command> benutzt, da sie in der Regel etwas übersichtlicher ist.
+   </textblock>
+
+   <textblock>
+Zum Ausprobieren eignet sich daher <command>egrep</command> ganz gut.
+Es gibt jeweils die Zeilen der Standardeingabe wieder aus,
+auf die ein Ausdruck passt. Möchte man wissen, welche Zeilen
+einer (vorher mit dem Lieblings-Editor erstellten) Datei
+passen, verwendet man:
+   </textblock>
+
+   <shell>
+    <user>
+egrep 'MeinRegulärerAusdruck' testdatei1
+    </user>
+   </shell>
+
+   <textblock>
+Möchte man eine Zeile testen, ist man mit:
+   </textblock>
+
+   <shell>
+    <user>
+echo 'Meine Testzeile' | egrep 'MeinRegulärerAusdruck'
+    </user>
+   </shell>
+
+   <textblock>
+wohl schneller.<br/>
+Bleibt noch die Möglichkeit:
+   </textblock>
+
+   <shell>
+    <user>
+egrep 'MeinRegulärerAusdruck'
+    </user>
+   </shell>
+
+   <textblock>
+aufzurufen. Man kann dann einfach Zeilen eingeben und mit
+<command>Enter</command> abschließen. Wenn sie wiederholt ausgegeben wird,
+so passt der Ausdruck, sonst nicht. Hat man genug rumgespielt,
+kann <command>egrep</command> mit einem beherzten Druck auf <keycomb mode="hold"><key>Strg</key><key>C</key></keycomb> beendet werden.
+   </textblock>
+
+   <textblock>
+Soviel also zum Spiel mit <command>ERE</command>.
+Für einen guten Überblick und damit man auch weiß,
+wie die jeweiligen Ausdrücke in <command>BRE</command> aussehen,
+findet sich am Ende dieses Artikels eine <ref iref="Übersicht">Übersichtstabelle</ref>.
+Wer alleine damit klar kommt, kann sich freuen.
+Für alle anderen folgen ein paar Erläuterungen.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Und los geht's
+   </heading>
+
+   <textblock>
+Reiht man ein paar Zeichen aneinander, so stehen diese zunächst
+jeweils für sich selbst. <strong>abc</strong> findet also alles, was erst ein
+<strong>a</strong> dann ein <strong>b</strong> und schließlich ein <strong>c</strong> enthält - in genau
+dieser Reihenfolge und ohne sonstige Zeichen dazwischen.
+Zugegeben, das bekommt wohl auch jeder bessere Texteditor auf
+die Reihe.
+   </textblock>
+
+   <textblock>
+Will man an einer Stelle mehrere alternative Zeichen finden, kann
+man das mit Hilfe von eckigen Klammern realisieren. <strong>[aeiou]</strong> findet
+also Vokale und <strong>H[au]nd</strong> sowohl die <strong>Hand</strong> als auch den besten
+Freund des Menschen (und Wörter, die diese Wörter enthalten).
+   </textblock>
+
+   <textblock>
+Wenn Zeichen eine vorgegebene Reihenfolge haben (wie z.B. Buchstaben
+durch das Alphabet), so kann man auch Zeichenbereiche benennen.
+<strong>[3-9]</strong> findet alle Ziffern im Bereich von <strong>3 bis 9</strong>, <strong>[A-Z]</strong>
+alle Großbuchstaben.
+   </textblock>
+
+   <textblock>
+Interessant ist auch die Möglichkeit, Zeichen auszuschließen.
+Man stellt dazu ein <strong>^</strong> hinter die öffnende eckige Klammer.
+<strong>A[^r]t</strong> findet also die <strong>Art</strong> (und derartige Zusammensetzungen)
+nicht, sehr wohl aber das <strong>Amt</strong> oder die <strong>Abtei</strong>.
+Genauso funktioniert das natürlich auch bei Zeichenbereichen
+(z.B. <strong>[^0-9]</strong> um Ziffern auszuschließen).
+   </textblock>
+
+   <textblock>
+Eine Suche nach einer beliebigen Zeichenkette (in Mustern
+per <strong>*</strong>) lässt sich in regulären Ausdrücken per <strong>.*</strong> realisieren.
+Dies ist ein zusammengesetzter Ausdruck.
+Der Punkt steht nämlich für ein einzelnes beliebiges Zeichen.
+Der Stern dient als Wiederholungsoperator, d.h. durch ihn gilt
+das vorangehende Zeichen (hier der Punkt) nicht bloß einmal,
+sondern beliebig oft (oder nie).
+   </textblock>
+
+   <textblock>
+Der Stern ist aber nur eine Spezialform der Wiederholung.
+Die allgemeine Form wird mit geschweiften Klammern
+geschrieben. Sie schließen zwei durch ein Komma getrennte
+Zahlen ein, die angeben, wie oft das jeweilige Zeichen
+wiederholt werden darf.
+<strong>a{2,5}</strong> meint beispielsweise <strong>2</strong>
+bis <strong>5</strong> <strong>a</strong>'s hintereinander.
+Man kann die zweite Zahl auch weglassen. <strong>a{2,}</strong> bedeutet dann
+zwei oder mehr aufeinander folgende <strong>a</strong>'s.
+Lässt man schließlich noch das Komma weg, handelt
+es sich um eine genaue Angabe der Wiederholungen.
+<strong>a{2}</strong> bedeutet also exakt <strong>zwei a</strong>'s hintereinander.
+   </textblock>
+
+   <textblock>
+Der Stern ist folglich eine Abkürzung für <strong>{0,}</strong>, analog
+steht das Fragezeichen <strong>?</strong> für <strong>{0,1}</strong> und das Plus <strong>+</strong>
+für <strong>{1,}</strong>.
+Noch einmal deutlich: <strong>?</strong> heißt, das Zeichen darf ein Mal
+stehen muss aber nicht (also höchstens ein Mal).
+<strong>+</strong> heißt, das Zeichen muss mindestens ein Mal stehen.
+   </textblock>
+
+   <textblock>
+All diese Sprachelemente kann man auch miteinander kombinieren.
+<strong>[0-9]{5}</strong> hilft beispielsweise beim Auffinden von Postleitzahlen.
+(Wobei natürlich erstmal auch längere Zahlen gefunden werden; wir lernen
+auch noch, das zu verhindern)
+Beim Kombinieren muss man ab und an eine Reihenfolge festlegen.
+Dabei helfen uns runde Klammern.<br/>
+Ein Beispiel:<br/>
+<strong>bla+se</strong> findet 'blase', 'blaase', 'blaaase' usw.<br/>
+Möchte man hingegen<br/>
+'blase', 'blablase', 'blablablase' etc. finden, schreibt man
+<strong>(bla)+se</strong>.
+   </textblock>
+
+   <textblock>
+Die Klammern sorgen dafür, dass sich die Wiederholung
+nicht bloß auf das Zeichen vor dem Plus bezieht (hier das <strong>a</strong>)
+sondern auf die ganze Silbe.
+Das funktioniert natürlich mit allen Operatoren.
+   </textblock>
+
+   <textblock>
+Alternativen trennt man durch einen senkrechten Strich
+voneinander (
+    <keycomb>
+     <key>AltGr</key>
+     <key>&lt;</key>
+    </keycomb>).
+<strong>(Schloss|B[ue]rg)</strong> erkennt also
+sowohl das <strong>Schloss</strong> als auch die <strong>Burg</strong>
+und den <strong>Berg</strong>.
+Im Gegensatz zur eckigen Klammer kann man so nicht
+bloß alternative Zeichen angeben, sondern auch
+Auswahlmöglichkeiten zwischen kompletten regulären Ausdrücken.
+(Übrigens: die runden Klammern sind in diesem Beispiel
+zunächst nicht wichtig, sie sind jedoch später von Bedeutung
+um die Alternative zu begrenzen, wenn sie selbst nur ein
+Teilausdruck ist, wie im <ref iref="Emanzipierte Superfrauen">Superman-Beispiel</ref> am Ende des Artikels.)
+   </textblock>
+
+   <textblock>
+Für kommende Experten sind auch die so genannten Backreferences
+(also Rückbezüge) unverzichtbar.
+Ein Beispiel: <strong>([a-z])\1\1</strong> findet drei gleiche aufeinander
+folgende Kleinbuchstaben, wie in <strong>Schifffahrt</strong> oder <strong>Seeelefant</strong>.
+   </textblock>
+
+   <textblock>
+Die Eins steht dabei für das im ersten runden Klammerpaar gefundene
+Zeichen. Im Gegensatz zu den Wiederholungsoperatoren
+benennt der Rückbezug also das, was konkret gefunden wurde.
+Backreferences beziehen sich immer auf Ausdrücke in runden
+Klammern. Man kann bis zu neun von ihnen in einem
+Ausdruck verwenden. Sie sind von <strong>\1</strong> bis <strong>\9</strong> nummeriert; gezählt
+wird von links nach rechts. Bei Verschachtelungen sind die
+öffnenden Klammern ausschlaggebend.
+   </textblock>
+
+   <textblock>
+Für den Fall, dass man den Suchbegriff am Anfang oder Ende der Zeile
+verankern möchte, stehen in regulären Ausdrücken die Zeichen <strong>^</strong> und
+<strong>$</strong> zur Verfügung. Der Suchbegriff "toll" findet sowohl die Zeilen
+'toll' als auch 'tolles Beispiel' sowie 'richtig tolles Beispiel' und
+'alle(s) toll'. <strong>^toll</strong> kann sich hingegen nur mit den ersten beiden
+Möglichkeiten anfreunden, <strong>toll$</strong> nur mit der ersten und der letzten
+und <strong>^toll$</strong> nur mit der ersten.
+   </textblock>
+
+   <textblock>
+Was für Zeilen funktioniert, geht natürlich auch auf Wortebene.
+"car" könnte beispielsweise 'car', 'cartoon', 'oscar' und 'scary'
+finden. <strong>\&lt;car</strong> gibt sich jedoch nur mit 'car' und 'cartoon' zufrieden.
+<strong>car\&gt;</strong> mag nur 'car' und 'oscar'. <strong>\&lt;car\&gt;</strong>" verlangt schließlich
+ausdrücklich 'car'. Zu erwähnen wäre noch <strong>\b</strong>, dass sowohl auf
+Wortanfang als auch -ende passt und <strong>\B</strong>, dass überall da passt, wo
+<strong>\b</strong> das nicht tut.
+   </textblock>
+
+   <section>
+    <heading>
+Übersicht
+    </heading>
+
+    <textblock>
+Nun folgt wie versprochen eine Übersicht über die Sprachmittel
+von ERE und BRE.
+Die Möglichkeiten, die sich in der GNU-Implementierung ergeben,
+aber so nicht im entsprechenden POSIX-Standard gefordert werden,
+sind durch <strong>-1-</strong> gekennzeichnet.
+    </textblock>
+
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+BRE
+      </th>
+     <th>
+ERE
+      </th>
+     <th>
+Bedeutung
+      </th>
+     </tr>
+     <tr>
+      <td>
+xy
+      </td>
+     <td>
+xy
+      </td>
+     <td>
+Ein 'x' gefolgt von einem 'y'
+      </td>
+     </tr>
+     <tr>
+      <td>
+.
+      </td>
+     <td>
+.
+      </td>
+     <td>
+Ein beliebiges Zeichen
+      </td>
+     </tr>
+     <tr>
+      <td>
+[xyz]
+      </td>
+     <td>
+[xyz]
+      </td>
+     <td>
+Ein 'x' oder ein 'y' oder ein 'z'
+      </td>
+     </tr>
+     <tr>
+      <td>
+[a-z]
+      </td>
+     <td>
+[a-z]
+      </td>
+     <td>
+Ein beliebiges Zeichen, das in der Sortierreihenfolge (in diesem Fall das Alphabet) zwischen 'a' und 'z' liegt; 'a' und 'z' gelten ebenfalls
+      </td>
+     </tr>
+     <tr>
+      <td>
+[^xyz]
+      </td>
+     <td>
+[^xyz]
+      </td>
+     <td>
+Ein beliebiges Zeichen, außer 'x', 'y' und 'z'
+      </td>
+     </tr>
+     <tr>
+      <td>
+a\{2,5\}
+      </td>
+     <td>
+a{2,5}
+      </td>
+     <td>
+zwei bis fünf mal 'a' (hintereinander)
+      </td>
+     </tr>
+     <tr>
+      <td>
+a\{2,\}
+      </td>
+     <td>
+a{2,}
+      </td>
+     <td>
+zwei mal 'a' oder öfter
+      </td>
+     </tr>
+     <tr>
+      <td>
+a\{2\}
+      </td>
+     <td>
+a{2}
+      </td>
+     <td>
+genau zwei mal 'a'
+      </td>
+     </tr>
+     <tr>
+      <td>
+a*
+      </td>
+     <td>
+a*
+      </td>
+     <td>
+beliebig oft 'a' (also auch kein mal)
+      </td>
+     </tr>
+     <tr>
+      <td>
+a\+ -1-
+      </td>
+     <td>
+a+
+      </td>
+     <td>
+mindestens ein mal 'a'
+      </td>
+     </tr>
+     <tr>
+      <td>
+a\? -1-
+      </td>
+     <td>
+a?
+      </td>
+     <td>
+höchstens ein mal 'a'
+      </td>
+     </tr>
+     <tr>
+      <td>
+\(...\) -1-
+      </td>
+     <td>
+(...)
+      </td>
+     <td>
+Klammern legen die Reihenfolge der Operationen fest (und die Zählung für Rückbezüge)
+      </td>
+     </tr>
+     <tr>
+      <td>
+a\|b -1-
+      </td>
+     <td>
+a|b
+      </td>
+     <td>
+entweder 'a' oder 'b' (a und b können auch zusammengesetzte Ausdrücke sein)
+      </td>
+     </tr>
+     <tr>
+      <td>
+\1 .. \9
+      </td>
+     <td>
+\1 .. \9 -1-
+      </td>
+     <td>
+Rückbezüge
+      </td>
+     </tr>
+     <tr>
+      <td>
+^
+      </td>
+     <td>
+^
+      </td>
+     <td>
+Zeilenanfang (am Anfang des Ausdrucks)
+      </td>
+     </tr>
+     <tr>
+      <td>
+$
+      </td>
+     <td>
+$
+      </td>
+     <td>
+Zeilenende (Am Ende des Ausdrucks)
+      </td>
+     </tr>
+     <tr>
+      <td>
+\&lt; -1-
+      </td>
+     <td>
+\&lt; -1-
+      </td>
+     <td>
+Wortanfang
+      </td>
+     </tr>
+     <tr>
+      <td>
+\&gt; -1-
+      </td>
+     <td>
+\&gt; -1-
+      </td>
+     <td>
+Wortende
+      </td>
+     </tr>
+     <tr>
+      <td>
+\b -1-
+      </td>
+     <td>
+\b -1-
+      </td>
+     <td>
+Wortanfang oder -ende
+      </td>
+     </tr>
+     <tr>
+      <td>
+\B -1-
+      </td>
+     <td>
+\B -1-
+      </td>
+     <td>
+Weder Wortanfang noch -ende
+      </td>
+     </tr>
+     <tr>
+      <td>
+\. \* \[ \] \+ \?
+      </td>
+     <td>
+\. \* \[ \] \+ \?
+      </td>
+     <td>
+Jeweils das Zeichen '.', '*', '[', ']', '+' bzw. '?'
+      </td>
+     </tr>
+     <tr>
+      <td>
+( ) | { }
+      </td>
+     <td>
+\( \) \| \{ \}
+      </td>
+     <td>
+Jeweils das Zeichen '(', ')', '|', '{' bzw. '}'
+      </td>
+     </tr>
+    </table>
+
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Ein paar Beispiele
+   </heading>
+
+   <textblock>
+Zum Abschluss noch ein paar Beispiele zum besseren Verständnis:
+   </textblock>
+
+   <section>
+    <heading>
+Ab geht die Post
+    </heading>
+
+    <textblock>
+<strong>\&lt;[0-9]{5}\&gt;</strong><br/>
+Dieser Ausdruck sucht nach fünfstelligen Zahlen, wie
+zum Beispiel Postleitzahlen.
+<strong>[0-9]</strong> findet eine Ziffer zwischen 0 und 9.
+Durch die <strong>{5}</strong> dahinter muss etwas Derartiges
+fünfmal hintereinander gefunden werden.
+<strong>\&lt;</strong> und <strong>\&gt;</strong> sorgen schließlich dafür, dass
+um diese 5 Ziffern nichts herum stehen
+darf.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Mail me!
+    </heading>
+
+    <textblock>
+<strong>[^\b]\@[^\b]</strong><br/>
+Dies ist ein simpler Ausdruck zum Aufspüren von E-Mail-Adressen.
+<strong>\b</strong> bedeutet Wortanfang oder -ende. Durch das <strong>^</strong> zu Beginn der
+eckigen Klammerung wird es verneint.<br/>
+So wird von obigem Ausdruck alles gefunden, was aus einem <strong>@</strong> besteht,
+das links und rechts von mindestens einem Wortzeichen umrahmt wird.
+(der <strong>\</strong> vor dem <strong>@</strong> ist übrigens nicht Pflicht, aber in vielen
+Programmen hat das <strong>@</strong> eine Sonderbedeutung, und quoten schadet
+nicht)
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+IP-Adressen
+    </heading>
+
+    <textblock>
+<strong>([0-9]{3}.){3}[0-9]{3}</strong><br/>
+Hierbei handelt es sich um einen einfachen IP-Adressen-Finder.
+Er sucht dreistellige Zahlen, die durch drei Punkte getrennt sind.
+Zur Verbesserung wäre noch eine Begrenzung auf ein Wort per
+<strong>\&lt;</strong> und <strong>\&gt;</strong> möglich.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Das IPerium schlägt zurück
+    </heading>
+
+    <textblock>
+<strong>\&lt;(([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-5]).){3}([01]?[0-9]{1,2}|2[0-4][0-9]|25[0-
+      5])\&gt;</strong><br/>
+Dieser doch schon recht komplexe IP-Finder ist eine ausgebaute Version
+des vorhergehenden Ausdrucks. Für eine schnelle Suche in
+Texten ist er natürlich viel zu lang. Er könnte vielleicht eher
+in einem Skript eingesetzt werden, um Benutzereingaben zu
+überprüfen.
+    </textblock>
+
+    <textblock>
+Der Ausdruck lässt nämlich nur gültige IPv4-Adressen zu.<br/>
+Ausnahme: 0.0.0.0 ist keine gültige IP-Adresse, wird aber
+trotzdem anerkannt.<br/>
+Auch Sonderadressen (z.B. für Broadcasts) werden zunächst
+erkannt. Um dies zu verhindern kann der Ausdruck entsprechend
+angepasst werden.
+    </textblock>
+
+    <textblock>
+Zum besseren Verständnis: Grundsätzlich ist der Ausdruck aufgebaut
+wie unser erster IP-Finder. Es wurden <strong>\&lt;</strong> und <strong>\&gt;</strong> ergänzt, damit
+beispielsweise <strong>ag1234.122.33.4.012sd9</strong> nicht gefunden wird.
+Anschließend wurde das <strong>[0-9]{3}</strong> durch eine präzisere Variante
+ersetzt. Sie besteht aus drei Alternativen:
+    </textblock>
+
+    <textblock>
+<strong>[01]?[0-9}{1,2}</strong> findet alle ein- und zweistelligen Zahlen
+und dreistellige, die mit 1 beginnen. Jeweils eingeschlossen sind
+auch die Entsprechungen mit
+führenden Nullen (auffüllend bis drei Stellen).
+    </textblock>
+
+    <textblock>
+Es sind jetzt also alle Zahlen von 0 bis 199 abgedeckt.
+<strong>2[0-4][0-9}</strong> findet alle Zahlen von 200 bis 249.
+<strong>25[0-5]</strong> alle von 250 bis 255.
+Damit ist die Suche komplett.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Emanzipierte Superfrauen
+    </heading>
+
+    <shell>
+     <user>
+sed -e 's/\(Super\|Spider\|Bat\)man/\1woman/g' testdatei
+     </user>
+    </shell>
+
+    <textblock>
+Dieser Befehl ersetzt in testdatei alle Wörter wie
+Spiderman, Batman und Superman durch ihre weiblichen
+Pendants.
+    </textblock>
+
+    <textblock>
+Hier wurde, da wir <command>sed</command> benutzten, auf BRE zurückgegriffen.
+Zur Erläuterung: Die Option <command>-e</command> dient dazu, <command>sed</command> ein Kommando
+zu übergeben. In diesem Falle handelt es sich um das
+Ersetzen-Kommando (gekennzeichnet durch das <command>s</command> zu Beginn).
+    </textblock>
+
+    <textblock>
+Die <strong>/</strong> dienen dazu die einzelnen Angaben voneinander
+zu trennen. Auf den ersten trennenden <strong>/</strong> folgt der zu
+suchende Ausdruck <strong>\(Super\|Spider\|Bat\)man</strong>.
+    </textblock>
+
+    <textblock>
+Hinter dem nächsten
+<strong>/</strong> ein Ausdruck, der klar macht, was an den Fundstellen
+einzusetzen ist:  <strong>\1woman</strong>. <strong>\1</strong> ist einen Rückbezug auf
+den Suchausdruck.
+Wenn beispielsweise 'Superman' ersetzt wird,  wurde im
+Klammerpaar die Alternative 'Super' gefunden.
+Diese wird nun an die Stelle von <strong>\1</strong> gesetzt, gefolgt
+von 'woman'. Also wird aus 'Superman' kurzerhand
+'Superwoman'.
+    </textblock>
+
+    <textblock>
+Das <command>g</command> am Ende sorgt übrigens dafür, dass die Ersetzungen
+global, also in der gesamten Datei, vorgenommen werden.
+    </textblock>
+
+   </section>
+  </section>
+ </split>
+</chapter>

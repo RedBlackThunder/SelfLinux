@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+<title>Lokale Netze</title>
+
+<author>
+ <name>Guido Ehlert</name>
+ <mailto>guido@ge-soft.de</mailto>
+
+ <name>Matthias Kleine</name>
+ <mailto>kleine_matthias@gmx.de</mailto>
+</author>
+
+<layout>
+ <name>Frank Börner</name>
+ <mailto>frank@frank-boerner.de</mailto>
+</layout>
+
+<license>GPL</license>
+
+<index>lokale_netze</index>
+
+<split>
+ <section>
+
+  <heading>
+Einleitung
+  </heading>
+
+  <textblock>
+Wie bereits angedeutet, gibt es eine große Anzahl von
+Technologien zum Aufbau lokaler Netze (Local Area Networks kurz LANs).
+Als wichtigste Vertreter sollen im Folgenden
+Ethernet (mit all seinen Varianten),
+<ref iref="Token Ring">Token Ring</ref>,
+<ref iref="FDDI">FDDI</ref> und
+<ref iref="ATM - Asynchronus Transfer Mode">ATM</ref>
+detailliert vorgestellt werden.
+  </textblock>
+
+  <textblock>
+Allen LAN-Typen ist gemein, dass man für den Anschluss an das
+Netzwerk natürlich über entsprechende Hardware, in den meisten
+Fällen eine
+<ref iref="Netzwerk-Interface">Netzwerkkarte</ref> des jeweiligen Typs im lokalen Rechner,
+verfügen muss.
+  </textblock>
+ </section>
+
+ <section>
+  <heading>
+Ethernet
+  </heading>
+
+  <textblock>
+Das Ethernet wurde 1973 am
+<ref lang="en" url="http://www.parc.xerox.com/">Xerox PARC</ref>
+als Teil eines umfangreichen
+Forschungsprojektes für verteilte Systeme entwickelt und sollte die
+Vorteile einer schnellen, lokalen Vernetzung mit niedrigen
+Fehlerraten und ohne Verzögerungen aufzeigen.
+  </textblock>
+
+  <textblock>
+Auf Grund seiner Einfachheit und der kostengünstigen Hardware
+hat Ethernet bis heute eine starke
+Verbreitung gefunden und ist in seinen Variationen in sehr vielen
+LANs anzutreffen.
+  </textblock>
+
+  <section>
+   <heading>
+Thick Ethernet (10Base5)
+   </heading>
+
+   <textblock>
+Das Original-Ethernet (festgelegt im <ref lang="en" url="http://grouper.ieee.org/groups/802/3/">Standard IEEE 802.3</ref>) besteht
+aus einem Koaxial-Kabel mit einem halben Zoll (1,27 cm) Durchmesser,
+an das die Rechner über sogenannte "Transceiver" angeschlossen sind.
+An jedem Ende des Kabels befindet sich ein Endwiderstand von 50 Ohm,
+der auch als "Terminator" bezeichnet wird (siehe Abbildung). Über
+ein derartiges Netzwerk lassen sich Geschwindigkeiten bis 10 Mbps
+(Megabit pro Sekunde) erreichen.
+   </textblock>
+
+   <textblock>
+Ein Kabel mit einem derartigen Durchmesser ist etwas unhandlich,
+daher wird diese Art des Ethernets auch als "Thick Ethernet" oder
+"10Base5" bezeichnet.
+   </textblock>
+
+   <image height="100">
+    <title>Thick Ethernet</title>
+    <filename>thickethernet.png</filename>
+   </image>
+
+   <textblock>
+<strong>Hinweis:</strong><br/>
+Den tatsächlich erreichbaren Übertragungswert in Megabyte pro Sekunde erhält man,
+indem man den Megabit-Wert durch die Zahl 8 dividiert. Diese maximalen
+Transferraten werden in der Praxis auch nur selten erreicht. Überhaupt ist die
+Frage nach der notwendigen Geschwindigkeit eines Netzes eng mit der Frage nach
+den tatsächlich genutzten Anwendungen verbunden.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Thin Ethernet (10Base2)
+   </heading>
+
+   <textblock>
+Das beim "Thin Ethernet" verwendete Koaxialkabel ist dünner,
+billiger und einfacher zu handhaben.  Der Anschluss an die
+Netzwerkkarte des Rechners erfolgt über ein sogenanntes "T-Stück",
+an das links und rechts ein Netzwerkkabel angeschlossen wird,
+während die `untere' Seite des T's mit der Netzwerkkarte verbunden
+ist.
+   </textblock>
+
+   <textblock>
+Am Anfang und am Ende des Kabelstrangs befinden sich auch hier
+Endwiderstände von 50 Ohm (Terminatoren). Die Steckverbindungen erfolgen über
+BNC-Anschlüsse. Mit einem Thin Ethernet kann man Geschwindigkeiten
+bis 10 MBit erreichen.
+   </textblock>
+
+   <image height="100">
+    <title>Thin Ethernet mit Koaxialverkabelung</title>
+    <filename>koaxialnetz.png</filename>
+   </image>
+  </section>
+
+  <section>
+   <heading>
+10BaseT
+   </heading>
+
+   <textblock>
+Im Gegensatz zum normalen Thin Ethernet mit seiner Busstruktur ist
+ein 10BaseT-Netz sternförmig aufgebaut. Von einem Verteiler, dem
+sogenannten "Hub", führen Twisted-Pair-Kabel zu den einzelnen
+Rechnern. Der Anschluss erfolgt über RJ45-Stecker, wie sie auch oft
+bei Telefonen verwendet werden.
+   </textblock>
+
+   <textblock>
+Diese Verkabelungsart beseitigt einen gravierenden Nachteil der
+Busstruktur. Wird der Bus nämlich an einer Stelle unterbrochen, sei
+es durch ein defektes Kabel oder eine übereifrige Reinigungskraft,
+ist das Netzwerk vollständig lahm gelegt. Bei einer sternförmigen
+Verkabelung ist bei einem Kabelschaden nur ein Rechner betroffen,
+die anderen können ganz normal im Netz weiterarbeiten.
+   </textblock>
+
+   <textblock>
+Wäre 10BaseT nicht aufwendiger und teurer als die
+Koaxialverkabelung, wäre letztere sicher schon ganz von der
+Bildfläche verschwunden.
+   </textblock>
+
+   <image height="100">
+    <title>Sternförmiges Ethernet mit Hub</title>
+    <filename>10baset-netz.png</filename>
+   </image>
+  </section>
+
+  <section>
+
+   <heading>
+Fast Ethernet (100BaseT)
+   </heading>
+
+   <textblock>
+Der Aufbau eines "Fast Ethernets" ähnelt stark dem eines
+10BaseT-Netzes. Jedoch müssen aufgrund der höheren
+Datengeschwindigkeit von 100 Mbps aufwendigere Twisted-Pair-Kabel
+der Kategorie 5 verwendet werden. Neben dem Hub müssen natürlich
+auch die eingesetzten Netzwerkkarten für eine Geschwindigkeit von
+100 Mbps vorgesehen sein.
+   </textblock>
+
+   <textblock>
+Übertragungsraten von bis zu 1000 Mbps erreicht man mit Hilfe von geschirmten
+Kabeln (Shielded Twisted Pair - STP) bzw. Glasfaserleitungen. Netzwerkkarten und
+Hubs für derartige Geschwindigkeiten müssen wesentlich aufwendiger konstruiert
+sein und sind dementsprechend teuer.  Da kaum ein Rechner einen Datenstrom von 1
+Gbps (enspricht 125 MByte pro Sekunde!) verarbeiten kann, werden
+Gigabit-Ethernets vor allem als Backbone-Leitungen verwendet, die ganze
+Netzwerke miteinander verbinden.
+   </textblock>
+
+    <textblock>
+Die folgende Tabelle zeigt noch einmal eine Übersicht über alle
+Ethernet- Varianten:
+   </textblock>
+
+   <table>
+    <pdf-column width="75"/>
+    <pdf-column width="100"/>
+    <pdf-column width="75"/>
+    <pdf-column width="50"/>
+    <pdf-column width="50"/>
+    <pdf-column/>
+
+    <tr>
+     <th>Ethernet-Typ</th>
+     <th>Geschwindigkeit</th>
+     <th>max. Länge</th>
+     <th>Struktur</th>
+     <th>Kabelart</th>
+     <th>Anschluss am Rechner</th>
+    </tr>
+    <tr>
+     <td>10Base2 (Thin Ethernet)</td>
+     <td>10Mbps</td>
+     <td>185m</td>
+     <td>Bus</td>
+     <td>Koaxial</td>
+     <td>BNC-Buchse, T-Stück, (RG58, T-Stück, Endwiderstand)</td>
+    </tr>
+    <tr>
+     <td>10Base5 (Thick Ethernet)</td>
+     <td>10Mbps</td>
+     <td>500m</td>
+     <td>Bus</td>
+     <td>Koaxial</td>
+     <td>AUI-Buchse, Transceiver</td>
+    </tr>
+    <tr>
+     <td>10BaseF</td>
+     <td>10Mbps</td>
+     <td>2000m</td>
+     <td>Bus</td>
+     <td>Glasfaser</td>
+     <td>Optokoppler</td>
+    </tr>
+    <tr>
+     <td>10BaseT</td>
+     <td>10Mbps</td>
+     <td>100m</td>
+     <td>Stern</td>
+     <td>Twisted Pair</td>
+     <td>RJ45-Anschluss Kat.3</td>
+    </tr>
+    <tr>
+     <td>100BaseT</td>
+     <td>100Mbps</td>
+     <td>100m</td>
+     <td>Stern</td>
+     <td>Twisted Pair</td>
+     <td>RJ45-Anschluss Kat.5</td>
+    </tr>
+    <tr>
+     <td>Gigabit-Eth.</td>
+     <td>1Gbps</td>
+     <td>1Gbps</td>
+     <td>Stern</td>
+     <td>STP</td>
+     <td>Spezieller Anschluss Kat. 6</td>
+    </tr>
+    <tr>
+     <td></td>
+     <td>1Gbps</td>
+     <td>500m</td>
+     <td>Stern</td>
+     <td>Glasfaser</td>
+     <td>Optokoppler</td>
+    </tr>
+   </table>
+  </section>
+
+  <section>
+
+   <heading>
+Funktionsweise
+   </heading>
+
+   <textblock>
+Neben der Verkabelung ist es natürlich interessant zu wissen, was
+auf einem Ethernet-Kabel eigentlich passiert. Jedes Gerät im
+Ethernet hat eine eindeutige Hardware-Adresse von 6 Byte Länge, die
+auch als <ref iref="Netzwerk-Interface">MAC-Adresse</ref> bezeichnet wird.
+Das Kürzel MAC steht hier für Media Access Control.
+Diese Adresse hat nichts mit
+den IP-Nummern des <ref chapter="tcpip">TCP/IP-Protokolls</ref> zu tun (zumindest nicht direkt)
+und auch nichts mit den Computern der <ref lang="de" url="http://www.apple.com/de/">Firma Apple</ref> (auch nicht
+indirekt).
+Pakete im Ethernet enthalten immer die Hardware-Adresse
+des Senders und des Empfängers.
+   </textblock>
+
+   <textblock>
+Das Versenden von Daten erfolgt über ein sogenanntes "Packet
+Broadcasting", d.h. jedes Paket wird einfach auf das Kabel gesendet.
+Alle anderen Stationen erhalten, bzw. `sehen' dieses Paket, es wird
+jedoch nur von dem festgelegten Empfänger entgegengenommen und
+verarbeitet.
+   </textblock>
+
+   <textblock>
+Wenn zwei Stationen gleichzeitig Daten senden, kommt es
+konsequenterweise zu Paketkollisionen (natürlich "rumst" es nicht im
+Kabel, sondern die elektrischen Impulse der beiden Sender
+überschneiden sich und werden damit unbrauchbar). Das Ethernet
+definiert drei Varianten, mit diesem Verhalten umzugehen:
+   </textblock>
+
+   <ul>
+    <li>
+Die Stationen `lauschen' ständig am Bus und merken so, ob auf dem Kabel
+Datenverkehr stattfindet. Eine Station sendet erst, wenn keine Signale mehr auf
+dem Kabel liegen, um die laufende Übertragung nicht zu zerschmettern.
+    </li>
+
+    <li>
+Sollten zwei Stationen genau zum selben Zeitpunkt mit dem Senden
+beginnen, kommt es trotzdem zur Kollision.  Während eine Station
+sendet, prüft sie gleichzeitig auf dem Empfangskanal, ob die Signale
+korrekt versendet wurden.  Da alle Stationen im Netz einschließlich
+der Sendenden die Signale empfangen, stellt dies kein Problem dar.
+Erkennt die sendende Station nun, dass die Daten nicht korrekt
+übertragen werden, handelt es sich wahrscheinlich um eine Kollision.
+Die sendende Station schickt ein Kollisionssignal in das Kabel, was
+bewirkt, dass alle Stationen im Netz ihre Sendetätigkeit abbrechen
+(die ja vorhanden sein muss, sonst hätte es keine Kollision
+gegeben). Nach einer zufällig bestimmten Zeit versucht die Station
+wieder zu senden. Die andere Station, mit der es zur Kollision kam,
+hat eine andere Zufallszeit ermittelt und wird dann merken, dass das
+Netz bereits belegt ist. Sollten beide Stationen trotzdem wieder zur
+selben Zeit senden, was extrem unwahrscheinlich ist, beginnt das
+Spiel eben wieder von vorn.
+    </li>
+
+    <li>
+Als Sicherungsmaßnahme wird die Prüfsumme eines Ethernet-Paketes (korrekt heißt
+es Ethernet-Frame) mit dem tatsächlichen Inhalt verglichen. Kommt es dabei zu
+Unstimmigkeiten, wird das Paket vom Empfänger abgewiesen.
+    </li>
+   </ul>
+  </section>
+ </section>
+</split>
+
+<split>
+ <section>
+  <heading>
+FDDI
+  </heading>
+
+  <textblock>
+Die Abkürzung FDDI steht für "Fiber Distributed Data Interconnect".
+Dieser Netzwerktyp überträgt seine Daten nicht über Kabel, sondern
+über Lichtimpulse auf Glasfaserleitungen. Dies hat den Vorteil, dass
+die Datenübertragung nicht durch elektromagnetische Störungen
+beeinflusst werden kann. Außerdem ist mit Lichtimpulsen eine höhere
+Datenübertragungsrate möglich als bei elektrischen Signalen.
+  </textblock>
+
+  <textblock>
+Ein FDDI-Netz ist ein <ref iref="Token Ring">Token-Ring-Netzwerk</ref> mit
+einer Bandbreite von 100 Megabit pro Sekunde. Um Störungen
+automatisch beheben zu können, besteht ein FDDI-Netz aus zwei in
+entgegengesetzte Richtungen laufenden Ringen. Der Datenverkehr
+erfolgt wie bei jedem Token-Ring-LAN über ein Token, dass ständig im
+Kreis läuft. Im normalen Betrieb wird von den zwei vorhandenen
+Ringen lediglich einer genutzt. Interessant wird das Verhalten von
+FDDI, wenn ein Hardware-Fehler im Netz auftritt. Wenn ein Gerät
+bemerkt, dass eine Kommunikation zu einem anderen Gerät im Netz
+nicht möglich ist, benutzt es automatisch den zweiten Ring, um den
+aufgetretenen Defekt zu umgehen. Wird der Ring also, aus welchen
+Gründen auch immer, an einer Stelle unterbrochen, leiten die zwei
+benachbarten Stationen den Datenverkehr automatisch auf den zweiten
+Ring um. Die Abbildung illustriert dieses Verhalten:
+  </textblock>
+
+<textblock>
+FDDI-Netz im normalen Betrieb (links) und bei einem Defekt (rechts):
+Der Netzverkehr kann trotzdem weiter durchgeführt werden.
+  </textblock>
+
+  <image height="100">
+   <filename>fddi.png</filename>
+  </image>
+ </section>
+
+ <section>
+  <heading>
+Token Ring
+  </heading>
+
+  <textblock>
+Token-Ring-Netze wurden relativ früh entwickelt, sind jedoch nicht
+so stark verbreitet wie andere LAN-Technologien. Die logische
+Struktur dieses Netztyps entspricht, wie der Name schon sagt, der
+eines geschlossenen Ringes. Die tatsächliche Struktur muss dem nicht
+entsprechen, Token-Ring-Netze sind auch mit sternförmiger
+Verkabelung möglich. Beschränken wir uns also auf die Art der
+Datenübertragung:
+  </textblock>
+
+  <textblock>
+Um die Funktionsweise von Token-Ring-Netzwerken zu verstehen, kann
+man das Beispiel eines Güterzuges heranziehen, der immer wieder eine
+Kreisstrecke befährt und regelmäßig an allen Stationen vorbeikommt.
+Die Lokomotive stellt hierbei das sogenannte "Token"-Paket
+dar. Je nachdem ob Waggons, also Daten, angehängt
+wurden, wird die Lokomotive als frei oder belegt gekennzeichnet.
+Möchte eine Station nun Daten versenden, prüft sie, ob das Token
+frei ist. Ist dies der Fall, wird das Token als belegt
+gekennzeichnet, mit der Zieladresse versehen und die Daten
+angehängt. Unser Zug fährt weiter im Kreis, bis er die festgelegte
+Zielstation erreicht hat und trennt sich dort von seinen Daten. Das
+Token wird wieder als frei gekennzeichnet und kann erneut Daten
+transportieren.
+  </textblock>
+
+  <textblock>
+So geht das Token ständig von Rechner zu Rechner. Ist der Inhalt des
+Datenpakets nicht für den jeweiligen Rechner bestimmt, sendet er das
+Token weiter. So ist gewährleistet, dass jede Station die gleichen
+Chancen hat, Daten senden zu können. Anders als beim Ethernet gibt
+es hier nicht das Problem mit den Paketkollisionen, da ja immer nur
+ein Paket unterwegs ist.
+  </textblock>
+
+  <image height="100">
+   <title>Token Ring Netzwerk</title>
+   <filename>tokenring.png</filename>
+  </image>
+ </section>
+
+ <section>
+  <heading>
+ATM - Asynchronus Transfer Mode
+  </heading>
+
+  <textblock>
+Bei ATM handelt es sich um eine verbindungsorientierte
+Hochgeschwindigkeitsnetzwerk-Technologie, die sowohl in lokalen
+Netzen als auch in Wide Area Networks  (WANs) zum Einsatz kommt. Üblicherweise meint
+"Hochgeschwindigkeit" Netzwerke mit Datentransferraten von 100 Mbps
+und höher. ATM kann je nach darunter liegender Netzwerktechnik
+Transferraten bis in den Gigabit-Bereich erreichen. Entsprechend
+teuer ist auch die für ATM erforderliche Hardware.
+  </textblock>
+
+  <textblock>
+Um derartig hohe Geschwindigkeiten erreichen zu können, verwendet
+ATM mehrere spezielle Hardware- und Software-Techniken:
+  </textblock>
+
+  <ul>
+   <li>
+Ein ATM-Netzwerk besteht aus einem oder mehreren <ref iref="Switches">ATM-Switches</ref>,
+die mit Host-Rechnern oder wiederum mit weiteren ATM-Switches
+verbunden sein können.
+   </li>
+
+   <li>
+ATM benutzt optische Medien wie Glasfaserleitungen zur
+Datenübertragung, auch als Verbindung zwischen Hosts und ATM-Switch.
+   </li>
+
+   <li>
+Pakete (sog. "Cells") in der untersten Schicht von ATM-Netzwerken
+haben eine feste Länge. Da jedes Paket exakt dieselbe Größe hat,
+können ATM-Cells sehr schnell verarbeitet werden.
+   </li>
+  </ul>
+
+  <textblock>
+ATM unterscheidet sich stark von den bisher beschriebenen
+paketorientierten Netzwerken. Im Gegensatz zu ihnen ist ATM
+verbindungsorientiert angelegt und eignet sich daher auch zur
+Übertragung von Sprache (große Teile des Telefonnetzes bauen auf
+ATM-Backbones auf). Doch bleiben wir bei Rechnernetzen: Möchte ein
+Host eine Verbindung zu einem anderen aufbauen, kontaktiert er den
+nächsten ATM-Switch und teilt ihm seinen Verbindungswunsch samt
+Adresse des Zielrechners mit.  Der Switch versucht nun, eine
+Verbindung zu diesem herzustellen. Dabei entsteht eine Art Pfad über
+weitere Switches. Ersterer Switch legt nun für diese Verbindung bzw.
+diesen Pfad eine eindeutige Nummer fest und teilt dem Host diese
+mit. Ist eine Verbindung einmal aufgebaut, sind Übertragungen mit
+garantierter Bandbreite darüber möglich. Eine Verbindung bleibt
+bestehen, bis einer der beiden Partner diese trennt, also 'auflegt'.
+  </textblock>
+
+  <textblock>
+Möchte der Host nun Daten versenden, schickt er diese samt
+Verbindungsnummer (die Verbindung besteht bereits) zum Switch.
+Dieser hat die Nummer gespeichert und weiß, an welchen Switch er die
+Daten weiterschalten und welche ID-Nummer er dort benutzen muss. Der
+nächste Switch tut genau dasselbe bis die Daten irgendwann beim
+Zielrechner angekommen sind. Dabei weiß jeder Switch nur, an wen er
+die Daten einer bestimmten Verbindung weiterleiten muss. Er hat
+keine Information über die Herkunft oder den letztendlichen
+Empfänger. Dies sorgt dafür, dass im Netz sehr wenig Overhead (Verwaltungsdaten)
+durch die Leitungen geschoben wird, was der Geschwindigkeit direkt zugute
+kommt.
+  </textblock>
+ </section>
+</split>
+
+<split>
+ <section>
+
+  <heading>
+Netzwerk-Hardware
+  </heading>
+
+  <textblock>
+Für ein funktionierendes Netzwerk, bedarf es einiger
+technischer Geräte. Für ein kleines Netzwerk sind dies im
+einfachsten Fall zwei Netzwerkkarten und ein Kabel. Bei größeren
+Netzwerken tauchen aber bereits Bezeichnungen wie
+<ref iref="Router">Router</ref>,
+<ref iref="Hubs">Hubs</ref>,
+<ref iref="Switches">Switches</ref> und ähnlich 'selbsterklärende' Begriffe in nicht geringer
+Anzahl auf, mit denen ein normaler Anwender selten etwas anzufangen
+weiß. Genau diese Bezeichnungen werden in diesem Kapitel näher
+erläutert.
+  </textblock>
+
+  <section>
+   <heading>
+Netzwerk-Interface
+   </heading>
+
+   <textblock>
+Um einen Computer an einem Netzwerk teilhaben zu lassen, benötigt er
+natürlich mindestens eine Netzwerkkarte, auch als "Network Interface
+Card (NIC)" bezeichnet. Diese Karte muss zu dem vorhandenen Netzwerk
+passen. Es gibt verschiedenste Ausführungen, vom 10MBit-Ethernet bis
+zur ultraschnellen Glasfaserübertragung ist alles dabei. Bei
+Ethernet-Netzwerkkarten ist eine Hardware-Adresse auf der Karte
+`eingebrannt', die diese Karte weltweit eindeutig im Netzwerk identifiziert.
+Diese Adresse wird auch als "<ref lang="de" url="http://de.wikipedia.org/wiki/MAC-Adresse">MAC-Adresse</ref>" (MAC für Media Access Control) bezeichnet.
+MAC-Adressen werden den Hardwareherstellern von einer <ref lang="en" url="http://standards.ieee.org/">zentralen Stelle</ref> zugewiesen.
+Anhand der Adresse lässt sich <ref lang="en" url="http://standards.ieee.org/regauth/oui/index.shtml">dort</ref> auch der Hersteller der Hardware ermitteln.
+Wenn die Karte dann noch im Betriebssystem des Rechners ordentlich eingerichtet
+wurde, steht einem Betrieb im Netz nichts mehr im Wege.
+Netzwerkkarten sind entweder aus Platzgründen bereits auf dem Motherboard
+des Rechners fest eingebaut oder werden als separate Steckkarten verkauft.
+Für ihren Betrieb ist in der Regel eine passende Treibersoftware nötig.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Repeater
+   </heading>
+
+   <textblock>
+Repeater werden vor allem in busförmigen Ethernets (sprich:
+Koaxialkabel) verwendet. Ihre einzige Funktion ist die empfangenen
+Signale zu verstärken und weiterzugeben. So ist es möglich, ein
+Koaxial-Ethernet in mehrere Segmente zu teilen, um mehr als 185
+Meter maximale Kabellänge zu erreichen. In einem Netzwerk können
+maximal drei solcher Segmente gebildet werden. Diese Segmente
+erscheinen den angeschlossenen Rechnern aber wie ein Netz, da ja
+die elektrischen Impulse von der einen Seite des Repeaters
+auf der anderen nur verstärkt werden. Repeater agieren daher im
+<ref chapter="osi" iref="Die Bitübertragungsschicht">OSI-Schichtenmodell in der Schicht 1</ref>, also rein hardwarebasiert.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Bridges
+   </heading>
+
+   <textblock>
+Im Gegensatz zu Repeatern entscheiden Bridges anhand der MAC-Adresse
+des Empfängers, ob sie ein Paket oder Frame in das nächste Segment
+weiterleiten. Bridges werden vor allem zur Segmentierung und
+Geschwindigkeitssteigerung von Netzwerken eingesetzt, da sie im
+Gegensatz zu Repeatern das Signal nicht einfach verstärken, sondern
+auch filtern. Sie arbeiten auf dem <ref chapter="osi" iref="Die Sicherungsschicht">Level 2 des OSI-Schichtenmodells</ref>.
+   </textblock>
+
+   <image height="300">
+    <filename>repeater_bridge.png</filename>
+   </image>
+
+   <textblock>
+Wirkungsweise von Routern und Bridges (als
+Abbildungstext)
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Hubs
+   </heading>
+
+   <textblock>
+Ein Hub wird auch als "Konzentrator" oder "Verteiler" bezeichnet.
+In sternförmig aufgebauten Netzwerken bildet er den zentralen Punkt.
+Kabel führen immer von einem Port des Hubs zu einem Rechner im Netz,
+so dass letztendlich eine Art Stern entsteht (siehe Abbildung im
+Abschnitt Lokale Netze).
+   </textblock>
+
+   <textblock>
+Statt eines Rechners kann man an einen Hub auch einen weiteren Hub
+anschließen, so dass weitere Anschlüsse zur Verfügung stehen. Hubs
+gibt es für Twisted-Pair-Ethernet mit üblicherweise 5 bis 24 Ports.
+Sie können entweder für Geschwindigkeiten von 10 oder 100 Mbps
+konstruiert sein. Es sind auch Dual-Speed-Hubs erhältlich (10 und
+100Mbps). Diese beinhalten aber eigentlich zwei getrennte Hubs, die
+switch-artig miteinander gekoppelt und entsprechend teurer sind.
+Auch Hubs leiten den Netzwerkverkehr lediglich von einer Station auf
+alle anderen weiter, so dass sich alle am Hub angeschlossenen
+Stationen die Bandbreite teilen müssen. Sie arbeiten nur auf dem
+untersten Hardware-Level der <ref chapter="osi" iref="Die Bitübertragungsschicht">Schicht 1 des OSI Modells</ref>.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Switches
+   </heading>
+
+   <textblock>
+Im Vergleich zu Hubs sind Switches schon etwas intelligenter.
+Äußerlich sind sie von Hubs nicht zu unterscheiden, im Inneren
+verbirgt sich allerdings eine ganz andere Technik. Im Gegensatz zu
+einem Hub, wo sich alle Rechner die gesamte Bandbreite des Netzes
+teilen müssen, kann jeder an einen Switch angeschlossene Host die
+volle Bandbreite nutzen. Dementsprechend schneller sind geswitchte
+Netze.
+   </textblock>
+
+   <textblock>
+Doch wie funktioniert dies im Einzelnen? Im Gegensatz zum Hub,
+leitet ein Switch Pakete nur an den Switch-Port weiter, an dem sich
+der Empfänger befindet. Statt also ein Paket von Rechner A zu
+Rechner B an alle Ports und damit in das gesamte Netz zu "blasen",
+wird es nur zu dem Port geschaltet, an dem Rechner B angeschlossen
+ist. Damit entsteht eine Art virtuelle Verbindung zwischen den
+beiden Kommunikationspartnern. So wird unnötige Netzlast in den
+anderen Segmenten vermieden und die Geschwindigkeit gesteigert.
+Switches sind auf der <ref chapter="osi" iref="Die Sicherungsschicht">Schicht 2 (Sicherungsschicht) des OSI-Modells</ref>
+einzuordnen.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Router
+   </heading>
+
+   <textblock>
+Der Begriff "Router" (darüber, ob man dieses Wort als `Ruter' oder
+'Rauter` ausspricht, konnte sich noch niemand so recht einigen,
+daher sind beide Varianten akzeptabel) bezeichnet Geräte, die zwei
+oder mehrere Netzwerke miteinander verbinden. Hierbei ist ein Router
+dafür zuständig, die Pakete aus einem Netz in das andere zu leiten.
+Im Gegensatz zu Bridges können sie völlig unterschiedliche
+Netzwerkmedien, z.B. Token Ring und FDDI, miteinander verbinden.
+   </textblock>
+
+   <textblock>
+Damit das Routing über mehrere Netze funktioniert, hält jeder Router
+eine Routingtabelle vor, die Einträge in Form von Netzwerkadressen enthält.
+Anhand dieser Tabelle leitet er Pakete in das korrekte Netzsegment weiter.
+Ein Router kann dabei ein Rechner sein, der mit mehreren Netzwerkkarten
+ausgestattet und mit jeder Karte an je ein Netzwerk
+angeschlossen ist. Es gibt aber auch spezielle Geräte, die für das
+Routing optimiert wurden und eine wesentlich höhere Anzahl Pakete
+routen können. Als Beispiel sei hier das Routing im Internet
+erwähnt, wo jede Anfrage durch etliche Netze geleitet werden muss.
+Um nachzuvollziehen, über welche Hosts eine Anfrage weitergeleitet
+wird, kann man das Programm traceroute (bzw. tracert unter Windows)
+verwenden.
+   </textblock>
+
+   <textblock>
+Router arbeiten auf <ref chapter="osi" iref="Die Vermittlungsschicht">Schicht 3 des OSI-Schichtenmodells</ref>, da sie bereits Entscheidungen
+anhand von konkreten Adressen treffen.
+   </textblock>
+  </section>
+ </section>
+</split>
+
+</chapter>

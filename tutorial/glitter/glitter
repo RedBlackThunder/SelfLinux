@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>glitter</title>
+
+ <author>
+  <name>Johnny Graber</name>
+  <mailto>selflinux@jgraber.ch</mailto>
+ </author>
+ <layout>
+  <name>Alexander Fischer</name>
+  <mailto>Selflinux@tbanus.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>glitter</index>
+ 
+  
+ <description>
+  <textblock>
+<command>glitter</command> ist ein Programm mit grafischer Oberfläche zum gezielten
+Download von binären Dateien wie Videos, Bilder und Musikstücken
+aus Newspostings.
+  </textblock>
+  <textblock>
+Der Text hier zeigt nach einem Vorwort zum Sinn und Unsinn von
+Binär-Postings, wie man <command>glitter</command> soweit einrichtet, dass er seine
+Arbeit sinnvoll ausführt.
+  </textblock>
+ </description>
+ <split>
+
+ <section>
+   <heading>
+Binär-Dateien in News?
+   </heading>
+
+   <textblock>
+In jeder Erklärung zu News und dem Usenet steht, das binäre
+Postings in diesem Medium nichts zu suchen haben. Warum braucht
+es dann aber <command>glitter</command>?
+   </textblock>
+
+   <textblock>
+Vorsätze und Regeln sind zwar gut, doch gibt es auch Ausnahmen.
+Die Regel, das nur Text in den News gepostet werden sollen, wäre
+an sich sehr gut. In den meisten Newsgroups ist daher der
+Austausch binärer Dateien strengstens verboten und löst jeweils
+riesige Flamewars aus.
+   </textblock>
+
+   <textblock>
+Es gibt aber auch Newsgroups, die nur von binär-Postings leben.<br/>
+Deren Namen beginnen meistens mit <command>alt.binaries.*</command> und haben häufig
+ein Transfervolumen von mehreren MB pro Tag. Der riesige
+Datentransfer ist auch der Hauptgrund, warum die meisten Newsserver
+diese Gruppen nicht führen.
+   </textblock>
+
+   <textblock>
+Bietet der eigene Provider keine entsprechenden Gruppen auf
+seinem Newsserver an, kann man sich auf <ref lang="en" url="http://www.google.com">http://www.google.com</ref>
+einen entsprechenden Anbieter suchen. Mit den Suchbegriffen
+"news server binary" findet man sehr schnell die ersten Treffer.
+   </textblock>
+
+ </section>
+ </split>
+
+ <split>
+ <section>
+  <heading>
+Wo gibt es glitter?
+  </heading>
+
+  <textblock>
+Wie im Vorwort erwähnt, ist <command>glitter</command> zum Download von Dateien aus
+Newspostings da. Mit <command>glitter</command> kann man solche Inhalte empfangen, nicht
+aber versenden.
+  </textblock>
+
+  <textblock>
+<command>glitter</command> selbst findet man auf seiner Homepage
+<ref lang="en" url="http://www.mews.org.uk/glitter/download.html">http://www.news.org.uk/glitter/download.hmtl</ref> als <command>*.rpm</command> oder als
+<command>*.tar.gz</command>. Der gewöhnliche User wird sich wohl mit dem <command>*.rpm</command> am
+Besten auskennen. Der Aufruf von
+  </textblock>
+
+  <shell>
+   <user path="~">
+rpm -ihv glitter-1.0-2.i386.rpm
+   </user>
+  </shell>
+
+  <textblock>
+als User root genügt, und <command>glitter</command> wird installiert. Möchte man
+selber den Compiler anwerfen, nimmt man das <command>*.tar.gz</command>. Es empfiehlt
+sich ein Blick in die Datei <command>INSTALL</command>, um sich über das weitere
+Vorgehen zu informieren.
+  </textblock>
+
+ </section>
+</split>
+
+<split>
+ <section>
+  <heading>
+Die Konfiguration von glitter
+  </heading>
+
+  <textblock>
+Sobald die Installation beendet ist, genügt ein
+  </textblock>
+
+  <shell>
+   <user path="~">
+glitter
+   </user>
+  </shell>
+
+  <textblock>
+zum Start des Programms. Beim ersten Start hilft einem ein
+Dialog bei der Konfiguration. Dieser fragt nach dem Server und
+falls nötig nach dem Benutzernamen und Passwort. Sobald diese
+Daten eingegeben sind, holt sich <command>glitter</command> die Liste aller
+verfügbaren Newsgroups. Je nach Netzanbindung kann dies ein wenig
+dauern, da eine solche Liste mehrere tausend Einträge umfasst.
+  </textblock>
+
+  <image height="300">
+   <title>
+Der Konfigurationsdialog von glitter
+   </title>
+   <filename>glitter-dialog.png</filename>
+  </image>
+ </section>
+</split>
+
+<split>
+ <section>
+  <heading>
+glitter verwenden und optimieren
+  </heading>
+
+  <image height="300">
+   <title>
+So präsentiert sich glitter nach dem ersten Start.
+   </title>
+   <filename>glitter.png</filename>
+  </image>
+
+  <textblock>
+Wenn <command>glitter</command> die Gruppenliste geholt hat, geht es an das
+Abonnieren. Dazu wählt man den Tab <command>Available</command> und gibt seinen
+Suchtext in das entsprechende Feld ein. Nach einem Klick auf den Knopf
+<command>Search Now</command> werden alle gefundenen Gruppen aufgelistet.<br/>
+Abonnieren kann man diese durch einen Doppelklick auf den Namen.
+Die ausgewählten Gruppen stehen danach beim Tab <command>Subscribed</command>.
+  </textblock>
+
+  <textblock>
+Wählt man eine dieser Gruppen aus, wird im Feld <command>Store Directory</command>
+der Ablageort angezeigt. Dieser wird standardmässig auf das
+Heimatverzeichnis des Benutzers gelegt.<br/>
+Man kann den Ablageort für jede Gruppe einzeln in dem Feld ändern.
+Will man aber alle Gruppen in einem anderen Verzeichnis ablegen,
+Kann man unter <command>Datei / Einstellungen</command> das Verzeichnis global ändern.
+  </textblock>
+
+  <image height="200">
+   <title>
+Das Einstellungsfenster bietet zahlreiche Möglichkeiten
+   </title>
+   <filename>glitter-einstellungen.png</filename>
+  </image>
+
+  <textblock>
+Im Tab <command>News Server</command> gibt es die praktische Option, mehrere
+Verbindungen gleichzeitig aufzubauen. So kann man die ganze
+Bandbreite seiner Leitung ausnutzen und verbracht weniger
+Online-Zeit.
+  </textblock>
+
+  <textblock>
+Wenn man zusätzliche Dateien herunterladen will, kann man deren
+Endung unter <command>Hints</command> eingeben. <command>glitter</command> wird fortan auch diesen
+Dateityp auf die Platte speichern.
+  </textblock>
+ </section>
+</split>
+
+<split>
+ <section>
+  <heading>
+Beachtenswerte Punkte
+  </heading>
+   <section>
+    <heading>
+      Speicherplatz
+    </heading>
+
+    <textblock>
+Leider prüft <command>glitter</command> vor einem Download nicht nach, ob auf dem Datenträger
+genügend Platz vorhanden. Daher muss man selber dafür sorgen, dass
+die Platte nicht überfüllt wird.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Behandlung doppelter Dateinamen
+    </heading>
+
+    <textblock>
+Bei unzähligen Postings der unterschiedlichsten Leute wird man
+über kurz oder lang etliche Dateien mit dem gleichen Namen haben.
+<command>glitter</command> überschreibt schon vorhandene Dateien aber nicht, sondern
+ergänzt deren Namen um ein <command>+</command>. Gibt es ein ein <command>bild.jpg</command> schon,
+macht <command>glitter</command> aus dem neuen Bild ein <command>bild.jpg+</command>. Mit dieser Ergänzung
+wird immer weitergemacht. Daher kann es vorkommen, dass eine Datei den
+Namen <command>bild.jpg++++++++++</command> bekommt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Dateien prüfen
+    </heading>
+
+    <textblock>
+Die durch <command>glitter</command> heruntergeladenen Dateien sollte man immer
+überprüfen. Es werden ja alle gefundenen Dateien gespeichert,
+doch wird nicht automatisch vom Programm geprüft, ob in der Datei
+auch das gewünschte enthalten ist.
+    </textblock>
+
+    <textblock>
+Hat man die Absicht, die Dateien unter Windows zu öffnen, sollte
+man eine Prüfung auf Viren durchführen. Unter Linux ist die
+Virengefahr noch nicht derart akut, dass mit einer Gefahr gerechnet
+werden muss. Dies bedeutet aber nicht, dass es immer so bleibt.
+    </textblock>
+   </section>
+ </section>
+</split>
+</chapter>

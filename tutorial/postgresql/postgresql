@@ -1,0 +1,5173 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>PostgreSQL</title>
+
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>postgresql</index>
+ 
+ <split>
+  <section>
+<!-- *. Kapitel -->   
+   <heading>
+Einleitung
+   </heading>
+   <textblock>
+Datenbanken Managementsysteme helfen, komplexe Aufgaben einfach zu
+lösen, da etliche Teilaufgaben von diesen erledigt werden.
+   </textblock>
+   
+   <textblock>
+<name>PostgreSQL</name> ist ein relationales Datenbank Managementsystem
+(RDBMS). Es ist OpenSource und verfügt über Leistungsmerkmale,
+die es für den Einsatz in Produktionsumgebungen qualifizieren.
+<name>PostgreSQL</name> gilt wohl als das zuverlässigste und
+fortschrittlichste OpenSource DBMS.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel --> 
+	<heading>
+Über dieses Dokument
+       </heading>
+
+	<textblock>
+Dieses Dokument kann nur einen kleinen Überblick über <name>PostgreSQL</name>
+geben. Viele Themen werden nur angerissen oder überhaupt nicht
+erwähnt. Da <name>PostgreSQL</name> sehr komplex ist, und ständig
+weiterentwickelt wird, kann es ebenfalls sein, dass etliche der
+hier genannte Informationen nicht mehr aktuell sind. Trotz aller
+Sorgfalt kann es dennoch sein, dass einige der Informationen aus
+diesem Dokument fehlerhaft sind.
+	</textblock>
+
+	<textblock>
+Es ist versucht worden, dieses Dokument so zu schreiben, dass man
+nur wenig Datenbankvorwissen benötigt. Grundlegende
+Linux-Administrationskenntnisse werden benötigt. So sollte
+bekannt sein, wie man Softwarepakete im Allgemeinen installiert.
+	</textblock>
+
+	<textblock>
+Dieser Text beschäftigt sich hauptsächlich mit den Besonderheiten von
+<name>PostgreSQL</name>. Um effektiv mit einem Datenbanksystem arbeiten zu
+können, sollten allgemeine Kenntnisse von relationalen
+Datenbanken vorhanden sein (Relationen, Normalformen,
+Datenmodelle, SQL usw.).
+	</textblock> 
+
+	<textblock>
+Hier wird auch nicht SQL erklärt. Interessierte finden in einer
+<name>PostgreSQL</name> Referenz oder in einem SQL Buch Informationen. Es wird jedoch
+versucht, auf <name>PostgreSQL</name> Eigenheiten einzugehen. Das SQL ist nah
+am Standard SQL92 und realisiert SQL99 teilweise.
+	</textblock>
+
+	<textblock>
+Dank gebührt <name>Mirko Zeibig</name> für die fachliche Kontrolle und
+Korrektur, insbesondere vielen Anpassungen und Aktualisierungen
+für die Version 7.3. Der Autor <name email="steffen@dett.de">Steffen Dettmer</name>
+freut sich natürlich über Kommentare und Anregungen zu diesem
+Text.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Datenbanken allgemein
+        </heading>
+
+	<textblock>
+Datenbanken sind nicht einfach nur <strong>Daten in Tabellen</strong>.
+Vielmehr bestehen sie neben den eigentlichen Daten aus
+Zugriffsbedingungen und -berechtigungen, Benutzern, Regeln,
+Funktionen und Weiterem. Sie dienen dazu, umfangreiche
+Datenmengen zu speichern und wiederzugewinnen und dies
+mehreren Anwendungen gleichzeitig zu ermöglichen.
+	</textblock>
+
+	<textblock>
+Es geht hier also nicht einfach nur um Datenspeicher, sondern
+auch um das Knüpfen von Regeln an Daten.
+So kann man beispielsweise sicherstellen, dass nur
+bestimmte Benutzer diese Daten lesen oder ändern können. Man kann
+sicherstellen, dass die Daten Konsistenzbedingungen genügen;
+beispielsweise, dass gespeicherte Adressen entweder gar keine oder
+eine fünfstellige Postleitzahl haben, die nur aus Ziffern
+besteht.
+	</textblock>
+
+	<textblock>
+Datenbanken werden von sogenannten Datenbank Mangementsystemen
+(DBMS) verwaltet. Nur das DBMS selbst kann direkt auf die
+Datenbanken zugreifen. Anwendungen greifen immer über das DBMS
+auf diese zu. Das DBMS prüft und kontrolliert dabei
+und führt komplexe Operationen im Auftrag von Anwendungen aus.
+	</textblock>
+
+	<textblock>
+Solche Systeme werden eingesetzt, um Datenredundanz zu verringern.
+In der Regel wird jedes Datum nur einmal in der Datenbank
+gespeichert. Verschiedene Repräsentationen werden vom DBMS bei
+Bedarf bereitgestellt, ohne diese Daten etwa zu kopieren.
+	</textblock>
+
+	<textblock>
+Wie bereits angedeutet, werden sie eingesetzt, um die
+Datenintegrität (Konsistenz) zu gewährleisten. Bei Veränderungen
+werden beispielsweise notwendige Folgeänderungen automatisch
+durchgeführt, das Eintragen von inkonsistenten Daten wird
+verhindert. Des weiteren werden die Daten vor unberechtigtem
+Zugriff geschützt. Auch sind die Daten unabhängiger von den
+Anwendungsprogrammen; es spielt keine Rolle, wie diese
+tatsächlich gespeichert werden. Wird hier etwas geändert, so
+müssen die Anwendungen nicht alle angepasst werden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Schnittstellen und Clients
+        </heading>
+	<textblock>
+Schnittstellen zur Datenbank sind immer Schnittstellen zum
+Datenbank Managementsystem. Da dies immer so ist, spricht man
+auch einfach von <strong>Datenbankschnittstellen</strong>.
+	</textblock>
+
+	<textblock>
+Anwendungen kommunizieren über Schnittstellen mit dem DBMS. Diese
+Schnittstellen sind fast immer in mehrere Ebenen zu unterteilen.
+Die meisten Schnittstellen sind netzwerkfähig, üblicherweise
+verwenden DBMS TCP/IP. Darüber setzen Anwendungen Befehle oder
+Kommandos in Datenbanksprachen ab. Die sicherlich bekannteste
+Datenbanksprache ist <name>SQL</name> (structured query language). Natürlich
+verfügt jede Datenbank über eine eigene Schnittstelle, dass heißt,
+der genaue Aufbau der Kommandos und vor allem die Übertragung
+über das Netzwerk unterscheiden sich erheblich - selbst bei der
+Verwendung von <name>SQL</name>.
+	</textblock>
+	
+	<textblock>
+DBMS verfügen über Dienstprogramme, die über solche
+Schnittstellen mit der Datenbank kommunizieren. Diese
+Dienstprogramme sind für bestimmte Aufgaben unumgänglich,
+beispielsweise für die erste Einrichtung. Oft bieten diese
+Zusatzfunktionen, die man für die Administration benötigt,
+beispielsweise das Anlegen von Benutzern. Zusätzlich bieten die
+meisten DBMS solche Funktionen auch über <name>SQL</name> an: die Kommandos
+sind so definiert, dass sie den <name>SQL</name> Standards genügen bzw. diesen
+nicht widersprechen. Man spricht hier von <name>SQL</name>-Erweiterungen.
+Die meisten Datenbanken verfügen über etliche Erweiterungen, die
+man nach Möglichkeit jedoch sparsam einsetzen sollte, um sich
+spätere Migrationsprobleme zu ersparen.
+	</textblock>
+
+	<textblock>
+Damit Anwendungen nicht so DBMS abhängig sind, gibt es eine
+weitere Ebene der Schnittstellen, die Programmier- oder
+Applikationsebene. Das ist in der Regel eine Reihe von
+Funktionen, die aus einer Programmiersprache aufgerufen werden
+können. Die wohl bekanntesten Schnittstellen sind hier ODBC und
+JDBC. ODBC, OpenDataBaseConnectivity, beschreibt, wie Programme
+mit DBMS kommunizieren können. ODBC selbst ist in etwa eine
+Funktionsbibliothek, die <name>SQL</name> im Prinzip voraussetzt. ODBC regelt
+aber auch den Verbindungsaufbau zu einem DBMS,
+Benutzerauthentifizierung und anderes. JDBC ist das
+Standard-Verfahren, Java-Anwendungen mit DBMS Unterstützung zu
+versehen.
+	</textblock>
+
+	<textblock>
+Auch wenn in der Theorie die Schnittstellen ODBC und JDBC
+suggerieren, dass man das DBMS problemlos transparent wechseln
+kann, ist das in der Praxis selten so. In der Praxis sind diese
+Standards nämlich selten vollständig implementiert, und es gibt
+etliche Punkte, wo sie nicht eindeutig sind. Gerade über ODBC ist
+es zudem äußerst umständlich, wirklich datenbankunabhängig zu
+arbeiten, so dass sich meistens einige ärgerliche Abhängigkeiten
+einschleichen.
+	</textblock>
+
+	<textblock>
+Beispiele für Anwendungen beziehungsweise Clients sind
+Datenbank Frontends. 
+Die wohl beliebtesten für <name>PostgreSQL</name> sind <command>psql</command>
+(eine textbasierter, interaktiver <name>SQL</name> Interpreter), <command>pgaccess</command> (ein
+graphisches Frontend, mit dem man gut Tabellen, Views, Reports
+und vieles mehr anlegen und bearbeiten kann) und <command>phpPgAdmin</command>, einem
+sehr flexiblen Webfrontend, dass man sich unbedingt anschauen
+sollte, wenn man Webfrontends mag.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+PostgreSQL
+       </heading>
+
+	<textblock>
+<name>PostgreSQL</name> ist ein relationales DBMS (RDBMS). Als
+Hauptsprache findet <name>SQL</name> Verwendung (natürlich ebenfalls mit etlichen
+Erweiterungen). Wie viele andere Datenbanken unterstützt auch
+<name>PostgreSQL</name> nicht den vollständigen <name>SQL</name> Standard. Die Funktionen
+von <name>PostgreSQL</name> sind aber sehr umfangreich, so dass man in der
+Praxis selten Beispiele findet, wo sich eine Anforderung 
+nicht realisieren läßt.
+	</textblock>
+
+	<textblock>
+<name>PostgreSQL</name> ist ein Nachfolger von <name><strong>INGRES</strong></name> und <name><strong>POSTGRES</strong></name>, ist jedoch
+in vielen Punkten stark erweitert und verbessert worden. Die
+Entwickler unternehmen große Anstrengungen, um
+möglichst standardkonform zu sein. Das DBMS ist in weiten
+Teilen <name>SQL92</name> kompatibel und unterstützt einiges aus <name>SQL99</name>. Es ist
+unter einer BSD-Style Lizenz verfügbar.
+	</textblock>
+
+	<textblock>
+Auch wenn bekannt ist, dass es mit großen Datenmengen
+umgehen kann (es sind Installationen mit mehr als 60 GB
+Datenbasis bekannt), eignet es sich wohl weniger für
+Enterprise-Class Anwendungen. Hier sollten professionelle
+Datenbanken wie IBM DB2 erwogen werden.
+	</textblock>
+
+	<textblock>
+Bei einfachen Datenbankanwendungen, beispielsweise CGI
+basierten Webanwendungen, die ein paar Adressen speichern, wird
+von vielen ein einfacheres, schnelleres DBMS vorgezogen: <command>mySQL</command>.
+<command>mySQL</command> gilt als schnell installiert und einfach bedienbar.
+	</textblock>
+
+	<textblock>
+Natürlich ist <name>PostgreSQL</name> auch in kleinen Systemen eine sehr gute
+Wahl, und da kleine Systeme zum Wachsen neigen, ergibt sich hier
+schnell ein weiterer Vorteil. <name>PostgreSQL</name> wartet dafür auch mit
+etlichen <strong>high-end</strong> Datenbankfunktionen auf.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Verfügbarkeit
+	</heading>
+
+	<textblock>
+<name>PostgreSQL</name>, JDBC und ODBC sind für verschiedene Plattformen
+verfügbar, beispielsweise für Linux, BSD und Windows. <name>PostgreSQL</name>
+kann über unixODBC und Perl::DBI verwendet werden, als
+Programmierplattformen sind C/C++, Java, PHP, Perl, TCL und viele
+andere bekannt.
+	</textblock>
+
+	<textblock>
+Auch Microsoft Windows Benutzer können Vorteile ziehen, so kann
+MS Access beispielsweise problemlos über ODBC auf das DBMS
+zugreifen. Damit kann man die Datenbank gut in die MS Office
+Anwendungen einbetten.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Vorteile und Funktionen
+	</heading>
+
+	<textblock>
+Die ISO Transaktionsmodelle <strong>read
+committed</strong> und <strong>serializable</strong> werden
+unterstützt.
+Umfangreiche Möglichkeiten für
+Benutzerberechtigungen und Datenbankregeln stehen zur Verfügung.
+JDBC und ODBC Treiber sind für verschiedene Plattformen
+verfügbar, beispielsweise für Linux, BSD und Windows. Die
+Software wird von einer stabilen, erfahrenen und weltweit
+arbeitenden Gruppe gepflegt und weiterentwickelt.
+	</textblock>
+
+	<textblock>
+<name>PostgreSQL</name> gilt nach 16 jähriger Entwicklungszeit als sehr stabil
+und zuverlässig. "Advocacy" schreibt hierzu:
+	</textblock>
+
+<!--	
+***** QA: Das hat Advocacy selbst so blöd übersetzt. Hab das
+*****     nicht korrigiert, weil ja Zitat.
+***** layout: zitat
+-->	
+	<quotation>
+Im Gegensatz zu Benutzern vieler kommerzieller Datenbanksysteme
+ist es bei Unternehmen, die <name>PostgreSQL</name> einsetzen der Normalfall,
+dass das Datenbanksystem noch kein einziges Mal abgestürzt ist.
+Auch nicht bei jahrelangem Einsatz und großem Datenaufkommen. Es
+läuft einfach.
+	</quotation>
+<!--	
+***** layout: ende zitat
+-->
+	<textblock>
+Wie bereits erwähnt, versuchen die Entwickler, nah an den
+Standards zu arbeiten. Fast alle von <name>SQL92</name> und <name>SQL99</name>
+spezifizierten Datentypen werden unterstützt, eigene Datentypen
+können erzeugt werden.  Fremdschlüssel, Trigger und Views sind
+verfügbar. Alle von <name>SQL99</name> spezifizierten <strong>joins</strong> sind
+implementiert. Internationale Zeichentabellen, Unicode und locale
+gehören ebenso dazu, wie Unterstützung von Unterabfragen (sub
+queries), GROUP BY, UNION, INTERSECT, LIMIT, LIKE und
+vollständige POSIX konforme reguläre Ausdrücke, verschiedene
+Indexverfahren. Das DBMS ist an weiten Teilen erweiterbar.
+Transaktionen werden unterstützt (ISO <strong>read commited</strong> und
+<strong>serializable</strong>), umfangreiche Sicherheitskonzepte sind
+realisierbar (Benutzer, SSL/TLS, Algorithmen). Mehrere CPUs
+können verwendet werden, eben so <strong>virtuelle hosts</strong>.
+	</textblock>
+
+	<textblock>
+Es gibt viele Erfolgsgeschichten über <name>PostgreSQL</name>; im Internet
+finden sich viele Projekte und Firmen, die erfolgreich aufwendige
+Systeme mit dieser Datenbank realisiert haben.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Grenzen von PostgreSQL
+       </heading>
+
+	<textblock>
+<name>PostgreSQL</name> verfügt wohl über keine praxisrelevanten Grenzen mehr.
+Plant man eine Anwendung, die möglicherweise in die Nähe der im
+Folgenden angegebenen Werte kommt, sollte man ernsthaft den
+Einsatz von IBM DB/2 oder anderen Enterprise Class Systemen
+erwägen.
+	</textblock>
+
+<!--	
+*************
+* layout: zweispaltige Tabelle
+* Titel "Eckdaten für PostgreSQL (ab Version 7.1)"
+************
+-->
+
+	<table>
+	 <pdf-column/>
+	 <pdf-column/>
+	 <tr>
+	  <td>
+Maximale Datenbankgröße
+	  </td>
+	  <td>
+unbegrenzt (60 GB Datenbanken existieren)
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+Maximale Tabellengröße
+	  </td>
+	  <td>
+64 TB (65536 GB) auf allen Plattformen
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+Maximale Größe einer Zeile
+	  </td>
+	  <td>
+unbegrenzt
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+Maximale Größe eines Feldes
+	  </td>
+	  <td>
+1 GB
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+Maximale Anzahl von Zeilen in einer Tabelle
+	  </td>
+	  <td>
+unbegrenzt
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+Maximale Anzahl von Spalten in einer Tabelle
+	  </td>
+	  <td>
+1600
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+Maximale Anzahl von Indizes einer Tabelle
+	  </td>
+	  <td>
+unbegrenzt
+	  </td>
+	 </tr>
+	</table>
+	 
+<!--
+*************
+* layout: ENDE zweispaltige Tabelle
+************
+-->
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel --> 
+   <heading>
+Installation
+   </heading>
+
+   <textblock>
+Die Installation gliedert sich im Wesentlichen in zwei Komplexe.
+Zum Einen muss zunächst natürlich die Software selbst installiert werden.
+Zum Anderen müssen einige Dinge eingestellt und eine erste
+Datenbank muss erzeugt werden.
+   </textblock>
+
+   <textblock>
+Die meisten Linuxdistributionen sollten <name>PostgreSQL</name> als
+Softwarepakete anbieten. Auf Grund der Größe sind es oft sogar
+mehrere. Mit der Installation solcher Pakete wird in der Regel
+auch die Grundkonfiguration durchgeführt, so dass <name>PostgreSQL</name>
+sofort nach dem Installieren gestartet und benutzt werden kann.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Installation der Software
+        </heading>
+
+	<textblock>
+Verfügt die verwendete Distribution über Softwarepakete, so
+sollten diesem im Allgemeinen vorgezogen werden und mit den
+DistributionsProgramme installiert werden. Dies spart mindestens viel
+Arbeit und Zeit. Installiert man beispielsweise die Pakete von
+SuSE, so kann man die Datenbank sofort nach der Installation
+starten.
+	</textblock>
+
+	<textblock>
+Es ist natürlich auch möglich, <name>PostgreSQL</name> als Quellpaket über
+<ref lang="en" url="http://www.postgresql.org/">http://www.postgresql.org/</ref> downzuladen und es selbst zu
+kompilieren. Dies ist insbesondere dann notwendig, wenn man ganz
+bestimmte Einstellungen benötigt, beispielsweise Unterstützung für
+bestimmte Zeichensätze. Der Rest dieses Kapitels beschäftigt sich
+mit diesem Verfahren und kann ausgelassen werden, wenn ein
+Distributionspaket verfügbar ist.
+	</textblock>
+
+	<textblock>
+<name>PostgreSQL</name> verwendet <command>./configure</command> und <command>make</command> zum Übersetzen und
+verhält sich damit sehr ähnlich zu GNU Software - jedoch sind
+einige zusätzliche Schritte nach dem Installieren notwendig. Die
+Installation unter Windows/Cygwin ist nicht Thema dieses
+Dokumentes, hier wird ausschließlich auf Linux eingegangen.
+	</textblock>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Vorbedingungen
+        </heading>
+
+	 <textblock>
+Um die Datenbanksoftware selbst übersetzen zu können, müssen etliche
+Programme verfügbar sein. Eine halbwegs aktuelle Linuxdistribution
+vorausgesetzt, sind diese aber entweder bereits installiert
+oder als Softwarepakete verfügbar.
+	 </textblock>
+
+	 <textblock>
+Neben <command>GNU-make</command> ist natürlich ein C Compiler erforderlich. Der <command>GCC</command>
+ist hier gut geeignet. <name>PostgreSQL</name> stellt also keine hohen oder
+speziellen Anforderungen an das System.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Auspacken und Vorbereiten
+         </heading>
+
+	 <textblock>
+Über <ref lang="en" url="http://www.postgresql.org/">http://www.postgresql.org/</ref> besorgt man sich ein Paket der
+Software. Im Beispiel wird die Version 7.2.1 verwendet. Die
+Schritten sollten bei neueren (und älteren) Versionen analog
+sein.
+	 </textblock>
+
+	 <textblock>
+Die erhaltenen Quellen packt man zunächst aus:
+	 </textblock>
+
+	 <shell>
+	  <root>
+tar xzf postgresql-7.2.1.tar.gz
+	  </root>
+	 </shell>
+
+	 <textblock>
+Führt man ein <command>update</command> durch, so sollte man unbedingt spätestens
+jetzt die Datenbank in eine Datei sichern. Das kann man mit dem
+<name>PostgreSQL</name> Programm <command>pg_dump</command> oder <command>pg_dumpall</command>
+erledigen:
+	 </textblock>
+
+	 <shell>
+	  <root>
+pg_dumpall > backup.sql
+	  </root>
+	 </shell>
+
+	 <textblock>
+Genaueres findet sich im Abschnitt <strong>Backup</strong>. Anschließend
+vergewissert man sich, dass das Backup erfolgreich war und stoppt
+die (alte) Datenbank. Das Datenverzeichnis der alten Datenbank
+sollte aus Sicherheitsgründen umbenannt werden:
+	 </textblock>
+
+	 <shell>
+	  <root>
+mv /usr/local/pgsql /usr/local/pgsql.old
+	  </root>
+	 </shell>
+
+	 <textblock>
+Dieser Pfad ist bei Distributionen in der Regel anders; SuSE
+und RedHat verwenden beispielsweise <command>/var/lib/pgsql/data</command>.
+	 </textblock> 
+
+	 <textblock>
+Nun führt man in dem Verzeichnis, das durch das tar Kommando
+entstanden ist, <command>configure</command> aus. Dabei kann man etliche Optionen
+angeben. Neben die üblichen GNU Optionen wie beispielsweise
+<command>--prefix</command>, gibt es auch viele <name>PostgreSQL</name> spezifische
+Optionen.
+	 </textblock>
+
+	 <textblock>
+Ist ein produktiver Einsatz geplant, so sollte die Dokumentation
+zu Rate gezogen werden, und ausführliche Tests gefahren werden.
+	 </textblock>
+
+	 <textblock>
+Einige wichtige Optionen:
+	 </textblock>
+	 
+<!--
+***********************
+* Layout: hier am besten ne Tabelle
+*
+-->	 
+	 <table>
+	  <pdf-column width="125"/>
+	  <pdf-column/>
+	  <tr>
+	   <td>
+<command>--enable-locale</command>
+	   </td>
+	   <td>
+Aktiviert locale-Unterstützung. Dies kostet etwas Performanz,
+ist aber im nicht-englischsprachigem Raum sehr sinnvoll
+	   </td>
+	  </tr>
+	  <tr>
+	   <td>
+		<command>--enable-multibyte</command>
+	   </td>
+	   <td>
+Aktiviert Multibyte Unterstüzung (unter anderem Unicode). Java
+und TCL erwarten beispielsweise Multibyte. Diese Option sollte
+daher nach Möglichkeit gesetzt werden.
+	   </td>
+	  </tr>
+	  <tr>
+	   <td>
+<command>--enable-nls</command>
+      </td>
+	   <td>
+Aktiviert Sprachunterstützungen, um Meldungen in Landessprache
+geben zu können.
+	   </td>
+	  </tr>
+	  <tr>
+	   <td>
+<command>--with-CXX</command><br/>
+<command>--with-perl</command><br/>
+<command>--with-python</command><br/>
+<command>--with-tcl</command><br/>
+<command>--with-java</command>
+	   </td>
+	   <td>
+C++, Perl, Python, TCL beziehungsweise Java (JDBC) Bibliotheken
+erzeugen. Für Java wird das Programm "ant" benötigt.
+	   </td>
+	  </tr>
+	  <tr>
+	   <td>
+<command>--enable-odbc</command><br/>
+<command>--with-iodbc</command><br/>
+<command>--with-unixodbc</command>
+	   </td>
+	   <td>
+Erzeugt ODBC Treiber. Es kann unabhängig vom DriverManger erzeugt
+werden (weder --with-iodbc noch --with-unixodbc), für die
+Verwendung mit iODBC oder unixODBC, nicht jedoch für beide.
+	   </td>
+	  </tr>
+	  <tr>
+	   <td>
+		<command>--with-openssl</command>
+	   </td>
+	   <td>
+OpenSSL SSL/TLS Unterstützung aktivieren
+	   </td>
+	  </tr>
+	  <tr>
+	   <td>
+<command>--with-pam</command>
+	   </td>
+	   <td>
+PAM Unterstützung aktivieren
+	   </td>
+	  </tr>
+	  <tr>
+	   <td>
+<command>--enable-syslog</command>
+	   </td>
+	   <td>
+Syslog Unterstützung aktivieren (kann dann bei Bedarf konfiguriert
+werden)
+	   </td>
+	  </tr>
+	 </table>
+
+<!--
+**********
+* Tabelle zu ende
+* 
+-->
+	 <textblock>
+Ein Aufruf könnte also wie folgt aussehen:
+	 </textblock>
+
+	 <shell>
+	  <root>
+./configure --enable-unicode-conversion --enable-multibyte=UNICODE \
+    --with-CXX --with-perl --with-python --with-tcl --with-java \
+    --enable-odbc --with-unixodbc \
+    --with-pam --enable-syslog \
+    --enable-locale
+	  </root>
+	 </shell>
+
+	 <textblock>
+Die Auswahl der Parameter ist kompliziert und hängt von vielen
+Faktoren ab, daher sollte auf Distributionspakete zurückgegriffen
+werden, soweit möglich.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Übersetzen und Installieren
+         </heading>
+
+	 <textblock>
+Nach dem <command>configure</command> übersetzt man wie gewohnt mit:
+	 </textblock>
+
+	 <shell>
+	  <root >
+make
+	  </root>
+	 </shell>
+
+	 <textblock>
+Optional kann man Regressionstests durchführen:
+	 </textblock>
+
+	 <shell>
+	  <root >
+make check
+	  </root>
+	 </shell> 
+
+	 <textblock>
+Die eigentliche Installation wird mit
+	 </textblock>
+	 
+	 <shell>
+	  <root>
+make install
+	  </root>
+	 </shell>
+
+	 <textblock>
+durchgeführt. Dies macht man in der Regel als <strong>root</strong>.
+	 </textblock> 
+
+	 <textblock>
+Je nach Configure-Optionen installiert <name>PostgreSQL</name> Bibliotheken
+beispielsweise in <command>/usr/local/pgsql/lib</command>. Dieser Pfad sollte dann
+in <command>/etc/ld.so.conf</command> eingetragen werden (das Ausführen von <command>ldconfig</command>
+ist danach notwendig). Gegebenenfalls fügt man den Pfad zu den
+Binärprogrammen zum Pfad hinzu, beispielsweise in dem man 
+<command>/usr/local/pgsql/bin</command> zum <command>PATH</command> in <command>/etc/profile</command> hinzufügt.
+	 </textblock>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Grundkonfiguration
+        </heading>
+
+	<textblock>
+Bevor <name>PostgreSQL</name> gestartet werden kann, müssen noch einige
+Einstellungen durchgeführt werden. Verwendet man
+Distributionspakete, so können diese Schritte in der Regel
+entfallen.
+	</textblock> 
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Datenbank Systembenutzer
+         </heading>
+
+	 <textblock>
+Das DBMS benötigt einen Systembenutzer. Darüber hinaus können
+natürlich viele Datenbankbenutzer existieren. Beide Benutzerarten
+dürfen keinesfalls verwechselt werden. Der Systembenutzer ist der
+Benutzer, dem später die Datenbankdateien gehören. Diesem
+Benutzer ist wohl nie eine Person assoziiert (im Gegensatz zu den
+Datenbankbenutzern).
+	 </textblock>
+
+	 <textblock>
+Ein gutes Beispiel für einen Systembenutzernamen ist <strong>postgres</strong>,
+wie er beispielsweise von <name>SuSE</name> und <name>RedHat</name> verwendet wird (<strong>root</strong> ist in
+keinem Fall geeignet). Den Benutzer kann man einfach erzeugen:
+	 </textblock>
+	 
+	 <shell>
+	  <root>
+useradd postgres
+	  </root>
+	 </shell>
+
+	 <textblock>
+und so sperren, dass man sich nicht einloggen kann:
+	 </textblock>
+
+	 <shell>
+	  <root>
+passwd -l postgres
+	  </root>
+	 </shell>
+
+	 <textblock>
+Nun kann nur <strong>root</strong> über das <command>su</command> Kommando auf den <strong>postgres</strong>
+Benutzer zugreifen.
+	 </textblock>
+	</section>
+
+	<section>
+	 <heading>
+Erzeugen einer initialen Datenbank
+         </heading>
+
+	 <textblock>
+Um <name>PostgreSQL</name> starten zu können, muss eine Datenbankgrundstruktur
+vorhanden sein. Hierbei handelt es sich im Wesentlichen um eine
+komplizierte Verzeichnisstruktur, die mit dem Programm <command>initdb</command>
+erzeugt werden sollte. Dieses Programm sollte auf jeden Fall mit dem
+oben genannten Benutzer durchgeführt werden. Ist das
+Datenverzeichnis beispielsweise <command>/usr/local/pgsql/data</command>, bietet
+sich folgende Kommandokette (begonnen als <strong>root</strong>!) an:
+	 </textblock>
+
+	 <shell>
+	  <root >
+mkdir /usr/local/pgsql/data
+	  </root>
+	  <root >
+chown postgres /usr/local/pgsql/data
+	  </root>
+	  <root >
+su - postgres
+	  </root>
+	  <root path="postgres">
+initdb --pwprompt -D /usr/local/pgsql/data
+	  </root>
+	 </shell>
+
+	 <textblock>
+Dieses Kommando verwendet die gerade eingestellten <command>locale</command> als
+Sortierfolge in Indizes. Diese kann später nicht mehr einfach
+geändert werden. Ein Nachteil bei der Verwendung von <command>locale</command> ist,
+dass der <command>LIKE</command> Operator und reguläre Ausdrücke diese Indizes
+nicht verwenden können - und dadurch langsam werden. Möchte man
+lieber keine (oder andere) <command>locale</command> für diesen Fall, setzt man vor
+<command>initdb</command> die Variable <command>LC_COLLATE</command>. Beispielsweise kann man die
+locale auf den Standard <command>C</command> setzen:
+	 </textblock>
+
+	 <shell>
+	  <root path="postgres">
+LC_COLLATE="C" initdb --pwprompt -D /usr/local/pgsql/data
+	  </root>
+	 </shell>
+
+	 <textblock>
+Möchte man dies später ändern, so muss ein Komplettbackup gemacht
+werden, die Datenbank heruntergefahren, <command>initdb</command> erneut ausgeführt
+und nach dem Start muss das Backup wieder eingespielt werden. Dies
+ist ja nichts überraschendes; die <command>sort order</command> kann man eben
+nicht nachträglich einstellen, dass ist wohl bei allen DBMS so.
+	 </textblock>
+
+	 <textblock>
+Durch <command>initdb</command> wird eine erste Datenbank erzeugt. Diese heißt
+<command>template1</command>. Wie der Name schon andeutet, wird diese als Vorlage
+beim Erzeugen neuer Datenbanken verwendet; daher sollte man mit
+dieser Datenbank nicht arbeiten (da dies zukünftige neue
+Datenbanken beeinflussen würde).
+	 </textblock>
+
+	 <textblock>
+Im Beispielaufruf wird auch gleich ein Passwort für den
+Datenbankadministrator gesetzt. Setzt man kein Passwort, so gibt
+es kein gültiges (das heißt, man kann sich nicht als Administrator
+verbinden, wenn ein Passwort gefordert ist). Auf dieses Verhalten
+sollte man sich jedoch nicht verlassen, und das System lieber
+korrekt konfigurieren.
+	 </textblock>
+	</section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel --> 
+   <heading>
+Administration
+   </heading>
+
+   <textblock>
+Der Abschnitt Administration wendet sich an Datenbank
+Administratoren und beschreibt Aufgaben wie Einrichtung und
+Backup. Benutzer, die eine von Anderen administrierte Datenbank
+verwenden, können diesen Abschnitt daher auslassen.
+   </textblock>
+
+   <textblock>
+Dieses Kapitel setzt voraus, dass <name>PostgreSQL</name> bereits installiert
+ist. Hat man ein Distributionspaket verwendet, so ist vermutlich
+wenig bis gar nichts an Konfiguration notwendig, wenn man keine
+besonderen Einstellungen benötigt.
+   </textblock>
+
+   <textblock>
+Es gibt zwei Hauptkonfigurationsdateien: <command>postgresql.conf</command> und
+<command>pg_hba.conf</command>. Die erstere ist die eigentliche Konfigurationsdatei,
+in der zweiten konfiguriert man Zugriffsbeschränkungen.
+   </textblock>
+
+   <textblock>
+Etliche Aktionen kann man wahlweise über externe Programme oder
+über SQL-Kommandos durchführen, beispielsweise das Anlegen neuer
+Datenbankbenutzer.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Konfiguration
+        </heading>
+
+	<textblock>
+Dieser Abschnitt richtet sich an fortgeschrittene <name>PostgreSQL</name>
+Administratoren. Für kleinere Systeme (weniger als 100.000 Datensätze)
+sind die Voreinstellungen sicherlich ausreichend. In solchen
+Fällen diesen Abschnitt einfach auslassen.
+	</textblock>
+
+	<textblock>
+Die hier genannten Optionen können auch über
+Kommandozeilenparameter gesetzt werden. Man sollte natürlich
+darauf achten, keine widersprüchlichen Optionswerte einzustellen.
+Einige Optionen kann man auf zur Laufzeit über das SQL Kommando
+<command>SET</command> einstellen.
+	</textblock>
+
+	<textblock>
+Die Konfigurationsdatei heißt <command>postgresql.conf</command>. Hier können
+viele Optionen auf bestimmte Werte gesetzt werden. In jeder Zeile
+der Datei kann eine Option stehen, die das Format
+	</textblock>
+
+	<quotation>
+	 <command>option = wert</command>
+	</quotation>
+
+	<textblock>
+hat (genau genommen kann das <command>=</command> weggelassen werden). Zeilen, die
+mit <command>#</command> beginnen, sind Kommentare.
+	</textblock>
+
+	<textblock>
+Zunächst gibt es eine Reihe von Optionen, die das Verhalten des
+Planers beeinflussen. Hier kann man die relativen Kosten für
+bestimmte Operationen einstellen. Diese Optionen enden mit
+<command>_cost</command>.
+	</textblock>
+
+	<textblock>
+Mit den Optionen <command>debug_level</command>, <command>log_connections</command> und
+<command>log_timestamp</command> kann die Protokollierung beeinflusst werden. Soll
+diese durch <command>syslog</command> erfolgen, kann man dies mit den Optionen <command>syslog</command>,
+<command>syslog_facility</command> und <command>syslog_ident</command> einstellen.
+	</textblock>
+
+	<textblock>
+Die Optionen <command>deadlock_timeout</command> und
+<command>default_transaction_isolation</command> beeinflussen das Transaktionslocking.
+Die Option <command>password_encryption</command> gibt an, ob
+Passwörter im Klartext oder verschlüsselt gespeichert werden
+sollen. Mit <command>fsync</command> kann gefordert werden, dass die Daten
+wirklich auf Festplatte geschrieben werden, wenn sie geändert
+wurden. Dies kostet zwar Performanz, sollte aber aus
+Sicherheitsgründen aktiviert werden, sonst kann es bei Abstürzen
+zu Problemen und Datenverlusten kommen.
+	</textblock>
+
+
+<!--
+****************************************************************
+*
+* Layout: datei postgresql.conf begin
+****************************************
+-->
+
+	<file>
+	 <title>postgresql.conf</title>
+	 <content>
+#Beispieldatei postgresql.conf fuer SelfLinux [c] &lt;steffen@dett.de&gt;
+# 
+#Diese Datei zeigt, wie man PostgreSQL fuer größere Server 
+#  einstellen koennte.
+
+
+#       Verbindungsoptionen
+
+#Verbindungsparameter: TCP akzeptieren
+tcpip_socket = true
+# kein SSL verwenden
+ssl = false
+
+#Anzahl gleichzeitiger Verbindungen
+max_connections = 64
+
+#TCP Port
+#port = 5432 
+#hostname_lookup = false
+#show_source_port = false
+
+#Parameter fuer Unix Domain Sockets (alternativ oder zusäztlich zu TCP)
+#unix_socket_directory = ''
+#unix_socket_group = ''
+#unix_socket_permissions = 0777
+
+#virtual_host = ''
+
+
+
+#       Groesse des Shared Memories.
+#
+#2.2er Kernel erlauben erstmal nur 32 MB, jedoch kann das 
+#   ohne Reboot erhoeht werden, beispielsweise auf 128 MB:
+#
+#$ echo 134217728 >/proc/sys/kernel/shmall
+#$ echo 134217728 >/proc/sys/kernel/shmmax
+
+shared_buffers = 128           # 2*max_connections, min 16
+max_fsm_relations = 500        # min 10, Voreinstellung 100, in pages
+max_fsm_pages = 50000          # min 1000, Voreinstellung 10000, in pages
+max_locks_per_transaction = 64 # min 10, Voreinstellung 64
+wal_buffers = 8                # min 4
+
+#Weitere Speichergroessen in KB:
+sort_mem = 1024                # min 32, Voreinstellung 512
+vacuum_mem = 8192              # min 1024, Voreinstellung 8192
+
+
+#
+#       Write-ahead log (WAL)
+#
+#wal_files = 0 # range 0-64
+#wal_sync_method = fsync  
+#wal_debug = 0                 # range 0-16
+#commit_delay = 0              # range 0-100000
+#commit_siblings = 5           # range 1-1000
+#checkpoint_segments = 3       # in logfile segments (16MB each), min 1
+#checkpoint_timeout = 300      # in seconds, range 30-3600
+fsync = true
+
+
+#
+#       Optimizer Optionen
+#
+#enable_seqscan = true
+#enable_indexscan = true
+#enable_tidscan = true
+#enable_sort = true
+#enable_nestloop = true
+#enable_mergejoin = true
+#enable_hashjoin = true
+
+#Key Set Query Optimizer: viele AND, ORs duerfen
+#  in UNIONs optimiert werden. Achtung, Resultat kann abweichen
+#  (wegen DISTINCT). 
+#  Diese Option macht eventuell Sinn, wenn hauptsaechlich ueber
+#  MS Access gearbeitet wird. Handoptimierung sollte natuerlich
+#  immer vorgezogen werden!
+ksqo = false
+
+#effective_cache_size = 1000   # Voreinstellung in 8k pages
+#random_page_cost = 4
+#cpu_tuple_cost = 0.01
+#cpu_index_tuple_cost = 0.001
+#cpu_operator_cost = 0.0025
+
+
+#
+#       Genetic Query Optimizer Optionen
+#
+#geqo = true
+#geqo_selection_bias = 2.0     # range 1.5-2.0
+#geqo_threshold = 11
+#geqo_pool_size = 0            # Voreinstellung basiert auf Anzahl der
+                           # Tabellen der Abfrage; 128-1024
+#geqo_effort = 1
+#geqo_generations = 0
+#geqo_random_seed = -1         # -1 --> auto
+
+
+#
+#       Logging und Debuganzeigen
+#
+#silent_mode = false
+
+#log_connections = false
+#log_timestamp = false
+#log_pid = false
+
+#debug_level = 0               # 0-16
+
+#debug_print_query = false
+#debug_print_parse = false
+#debug_print_rewritten = false
+#debug_print_plan = false
+#debug_pretty_print = false
+
+# requires USE_ASSERT_CHECKING
+#debug_assertions = true
+
+
+#
+#       Syslog
+#
+#(nur, wenn entsprechend uebersetzt!)
+#syslog = 0 # range 0-2
+#syslog_facility = 'LOCAL0'
+#syslog_ident = 'postgres'
+
+
+#
+#       Statistiken
+#
+#show_parser_stats = false
+#show_planner_stats = false
+#show_executor_stats = false
+#show_query_stats = false
+
+#show_btree_build_stats = false
+
+
+#
+#       Zugriffsstatistiken
+#
+#stats_start_collector = true
+#stats_reset_on_server_start = true
+#stats_command_string = false
+#stats_row_level = false
+#stats_block_level = false
+
+
+#
+#       Lock Behandlung
+#
+#trace_notify = false
+
+#(nur, wenn mit LOCK_DEBUG uebersetzt)
+#trace_locks = false
+#trace_userlocks = false
+#trace_lwlocks = false
+#debug_deadlocks = false
+#trace_lock_oidmin = 16384
+#trace_lock_table = 0
+
+
+#
+#       Allgemeines
+#
+#dynamic_library_path = '$libdir'
+#australian_timezones = false
+#authentication_timeout = 60    # min 1, max 600
+#deadlock_timeout = 1000
+#default_transaction_isolation = 'read committed'
+#max_expr_depth = 10000         # min 10
+#max_files_per_process = 1000   # min 25
+#password_encryption = false
+#sql_inheritance = true
+#transform_null_equals = false
+	 </content>
+	</file>
+<!--
+****************************************************************
+*
+* Layout: datei postgresql.conf end
+****************************************
+-->
+
+	<textblock>
+Der Bedarf an Shared Memory wird durch die Kombination der Anzahl von 
+<name>PostgreSQL</name> Instanzen (<command>max_connections</command>) und der geteilten Speicherpuffer 
+(<command>shared_buffers</command>) bestimmt. Erhöht man diese Parameter, kann es sein, dass
+sich <name>PostgreSQL</name> beschwert, es sei zu wenig Shared Memory
+vorhanden.
+	</textblock>
+
+	<textblock>
+Wie auch im Kommentar zu lesen, helfen folgende Kommandos, die
+maximale Größe des Shared Memory in Linux 2.2.x auf
+beispielsweise 128 MB zu erhöhen:
+	</textblock>
+
+	<shell>
+	 <root >
+echo 134217728 >/proc/sys/kernel/shmall
+	 </root>
+	 <root >
+echo 134217728 >/proc/sys/kernel/shmmax
+	 </root>
+	</shell>
+
+	<textblock>
+Diese Kommandos muss man natürlich so ablegen, dass sie beim
+Systemstart vor dem Start von <name>PostgreSQL</name> ausgeführt
+werden.
+	</textblock>
+
+	<textblock>
+Ist das Programm <command>sysctl</command> installiert, kann man alternativ folgendes in die
+Datei <command>/etc/sysctl.conf</command> eintragen:
+	</textblock>
+
+	<file>
+	 <title>/etc/sysctl.conf</title>
+	 <content>
+kernel.shmall = 134217728
+kernel.shmmax = 134217728
+	 </content>
+	</file>
+
+	<textblock>
+Durch Ausführen von
+	</textblock>
+
+	<shell>
+	 <root>
+sysctl -p
+	 </root>
+	</shell>
+	
+	<textblock>
+werden dann die Einträge der Datei <command>/etc/sysctl.conf</command> übernommen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Authentifizierung
+        </heading>
+
+	<textblock>
+Über die Datei <command>pg_hba.conf</command> (hba: host based access, hostbasierter
+Zugriff) kann eingestellt werden, von welchen Systemen aus welche
+Authentifizierung durchgeführt werden muss. So läßt sich
+beispielsweise einstellen, dass Verbindungen vom Webserver nur auf
+eine bestimmte Datenbank erfolgen dürfen.
+	</textblock>
+
+	<textblock>
+Eine sehr schöne Funktion ist auch das <strong>Usermapping</strong>. Es kann
+eingestellt werden, dass bestimmte Benutzer von bestimmten
+Maschinen aus nur auf ein bestimmtes Benutzerkonto zugreifen
+können (zum Beispiel, <command>www-run</command> des Webservers bekommt den Benutzer
+<command>wwwro</command>, dieser darf dann nur lesen). Diese Funktion steht leider
+nur zur Verfügung, wenn <command>ident</command> verwendet wird, eine
+Authentifizierung, von der man leider abraten sollte, da sie nur
+Sinn macht, wenn man den Administratoren dieser Server vertraut.
+	</textblock>
+
+	<textblock>
+Aus Performanzgründen wird diese Datei bei neueren <name>PostgreSQL</name> Versionen
+nur noch einmalig beim Start und nicht mehr bei jedem
+Verbindungsaufbau geladen.
+	</textblock> 
+
+	<textblock>
+Um <name>PostgreSQL</name> Änderungen an dieser Datei mitzuteilen, kann man als
+Benutzer <strong>root</strong> auch folgenden Befehl eingeben, statt das DBMS komplett 
+neu zu starten:
+	</textblock>
+
+	<shell>
+	 <root >
+su -l postgres -s /bin/sh -c "/usr/bin/pg_ctl reload -D $PGDATA -s"
+	 </root>
+	</shell>
+
+	<textblock>
+Hat man das Programmpaket der Distribution installiert, kann man auch
+einfach:
+	</textblock>
+
+	<shell>
+	 <root >
+/etc/init.d/postgresql reload
+	 </root>
+	</shell>
+
+	<textblock>
+eingeben.
+	</textblock>
+
+	<textblock>
+Jede Zeile ist eine Regel. Eine Regel besteht aus mehreren
+Teilen, die durch Leerzeichen getrennt sind. Der erste Teil gibt
+dabei den Regeltyp an.
+	</textblock>
+
+	<textblock>
+Der wichtigste Regeltyp <command>host</command> gilt für Netzwerkadressen. Er hat
+das Format:
+	</textblock>
+
+	<quotation>
+	 <command>host Datenbankname IP-Adresse Netzmaske Authentifizierung</command>
+	</quotation>
+
+	<textblock>
+Daneben gibt es beispielsweise noch den Typ <command>local</command>, der für
+Verbindungen über Unix-Domain-Sockets verwendet wird.
+	</textblock>
+
+	<textblock>
+Auf dedizierten Datenbankservern, also Servern, die nur die
+Datenbank fahren und vor allem keine lokalen Benutzerkonten
+besitzen, verwendet man hier auch oft die Authentifizierung <command>trust</command>,
+also Anmeldung ohne Passwort, da es hier nur <strong>root</strong> gibt, und der
+darf eh alles. Plant man <command>cron jobs</command>, so ist hier <command>trust</command>
+angebracht, da <command>cron</command> natürlich keine Passwörter eingibt. Dies ist
+jedoch problematisch, wenn es Benutzerkonten auf dem System gibt.
+	</textblock>
+
+	<textblock>
+Mögliche Werte für <strong>Authentifizierung</strong>:
+	</textblock>
+
+	
+<!--
+*layout: vielleicht Tabelle?
+-->
+	
+	<textblock>
+<command>trust</command>
+	</textblock>
+
+	<quotation>
+Keine Authentifizierung, der Benutzername wird akzeptiert (evtl.
+Passwort gilt als korrekt).
+	</quotation>
+
+	<textblock>
+<command>password</command>
+	</textblock>
+
+	<quotation>
+Klartext-Passwort Authentifizierung. Optional kann eine
+Passwortdatei angegeben werden.
+	</quotation>
+
+	<textblock>
+<command>crypt</command>
+	</textblock>
+	
+	<quotation>
+Verhält sich wie password, über das Netzwerk werden jedoch
+die Passwörter verschlüsselt übertragen
+	</quotation>
+
+	<textblock>
+<command>md5</command>
+	</textblock>
+	
+	<quotation>
+Neuere Versionen bieten MD5 Passwörter an. Diese Option benutzt 
+einen anderen und besseren Algorithmus zur Verschlüsselung als crypt.
+	</quotation>
+
+	<textblock>
+<command>ident</command>
+	</textblock>
+	
+	<quotation>
+Der Ident-Daemon wird gefragt. Es ist möglich, über eine Datei
+<command>pg_ident.conf</command> ein Benutzernamen-Mapping durchzuführen.
+	</quotation>
+
+	<textblock>
+<command>reject</command>
+	</textblock>
+	
+	<quotation>
+Die Verbindung wird in jedem Fall abgelehnt.
+	</quotation>
+
+<!--	
+*layout: ENDE vielleicht Tabelle?
+-->
+	<textblock>
+Eine Beispielkonfiguration:
+	</textblock>
+
+<!--	
+****************************************************************
+*
+* Layout: datei pg_hba.conf begin
+****************************************
+-->
+	<file>
+	 <title>pg_hba.conf</title>
+	 <content>
+# TYPE  DATENBANK    IP-ADRESSE         NETZMASKE          TYP
+# 
+
+#Uber Unix-Domain-Sockets darf mit Klartextpasswort verbunden werden
+#   Auf dedizierten Datenbankservern verwendet man hier auch oft
+#   trust, siehe Text
+local   all                                                password
+
+#Von localhost darf mit Klartextpasswort verbunden werden
+host    all          127.0.0.1          255.255.255.255    password
+
+#192.168.1.3 ist ein Webserver und darf nur auf wwwdb
+host    wwwdb        192.168.1.3        255.255.255.255    crypt
+
+#192.168.1.1 ist ein Router und darf gar nichts
+host    all          192.168.1.1        255.255.255.255    reject
+
+#Der Admin sitzt auf 192.168.1.4
+host    all          192.168.1.4        255.255.255.255    md5
+
+#Die Infodatenbank ist für das ganze Netz erlaubt (außer 1.1, siehe oben)
+host    info         192.168.1.0        255.255.255.0      crypt
+
+#Die Auftragsabteilung 192.168.2.x fuettert die wwwdb
+host    wwwdb        192.168.2.0        255.255.255.0      crypt
+	 </content>
+	</file>
+
+<!--
+****************************************************************
+*
+* Layout: datei pg_hba.conf end
+****************************************
+-->	
+</section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Starten und Stoppen
+        </heading>
+
+	<textblock>
+Nach der Grundkonfiguration kann man die Datenbank starten. 
+Wie man das macht, hängt davon ab, ob man ein Distributionspaket
+verwendet, oder selbst kompiliert hat.
+	</textblock>
+
+	<textblock>
+Verwendet man ein Distributionspaket, so kann die Datenbank
+vermutlich sofort gestartet werden oder läuft sogar bereits.
+	</textblock>
+
+	<textblock>
+Das DBMS-Backend von <name>PostgreSQL</name> heißt <command>postmaster</command>. Dieses nimmt
+Verbindungsanfragen an, startet für jede Verbindung einen eigenen 
+<command>postgres</command> Prozess, der die eigentliche Arbeit erledigt, und koordiniert
+die Kommunikation zwischen den einzelnen <command>postgres</command> Instanzen.
+	</textblock>
+
+	<textblock>
+Hat man selbst kompiliert, so startet man beispielsweise mit
+	</textblock>
+
+	<shell>
+	 <root >
+su -c 'pg_ctl start -D /usr/local/pgsql/data -l serverlog' postgres
+	 </root>
+	</shell>
+
+	<textblock>
+oder als Postgres-Systembenutzer mit:
+	</textblock>
+
+	<shell>
+	 <root >
+postgres$ pg_ctl start -D /usr/local/pgsql/data -l serverlog
+	 </root>
+	</shell>
+	
+	<textblock>
+In der Regel schreibt man sich ein Skript, dass beim Booten
+ausgeführt wird. Distributionen installieren in der Regel so ein
+Skript bereits. Dann startet man beispielsweise über
+	</textblock>
+	<shell>
+	 <root >
+rcpostgres start # SuSE
+	 </root>
+	</shell>
+	
+	<textblock>
+oder
+	</textblock>
+
+	<shell>
+	 <root >
+service postgresql start # RedHat
+	 </root>
+	</shell>
+
+	<textblock>
+oder
+	</textblock>
+
+	<shell>
+	 <root >
+/etc/init.d/postgres* start # generisch
+	 </root>
+	</shell>
+	
+	<textblock>
+das DBMS.
+	</textblock>
+
+	<textblock>
+Details finden sich sicherlich im Handbuch.
+	</textblock>
+
+	<textblock>
+Sollte dies der erste Start nach dem Update sein, ist dies
+vermutlich ein guter Zeitpunkt, um das Backup wieder
+einzuspielen:
+	</textblock>
+
+	<shell>
+	 <root >
+psql -d template1 -f backup.sql
+	 </root>
+	</shell>
+
+	<textblock>
+Das Herunterfahren der Datenbank erledigt man analog zum
+Starten:
+	</textblock>
+
+	<shell>
+	 <root >
+su -c 'pg_ctl stop'
+	 </root>
+	</shell>
+	
+	<textblock>
+oder einem Distributionskommando wie zum Beispiel
+	</textblock>
+
+	<shell>
+	 <root >
+rcpostgres stop
+	 </root>
+	</shell>
+
+	<textblock>
+Man kann auch Signale verwenden. Das Signal <command>SIGKILL</command> sollte hier
+unter allem Umständen vermieden werden, da in diesem Fall die
+Datenbank nicht geschlossen wird - Datenverluste sind fast
+unvermeidlich.
+	</textblock>
+
+	<textblock>
+Das Signal SIGTERM veranlasst <name>PostgreSQL</name>, so lange zu warten, bis
+alle Clients ihre Verbindungen beendet haben und ist somit die
+schonendste Methode. Das Signal <command>SIGINT</command> beendet alle
+Clientverbindungen, und fährt die Datenbank sofort sauber
+herunter. Letzlich kann man noch <command>SIGQUIT</command> verwenden, was die
+Datenbank sofort beendet, ohne sie sauber herunterzufahren.
+Dieses Signal sollte daher nicht verwendet werden. Mit einer
+automatischen Reparatur ist beim Starten anschließend zu rechnen.
+	</textblock>
+
+	<textblock>
+Ein Beispielaufruf:
+	</textblock>
+
+	<shell>
+	 <root >
+killall -INT postmaster
+	 </root>
+	</shell>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Mit der Datenbank arbeiten
+        </heading>
+
+	<textblock>
+An dieser Stelle wird nur der Vollständigkeit halber <command>psql</command>
+genannt. An späterer Stelle wird genauer darauf eingegangen.
+	</textblock>
+
+	<textblock>
+<command>psql</command> ist das <strong>Interaktive Terminal</strong>, eine Art Shell für die
+Datenbank. Hier kann man SQL Kommandos absetzen. So kann man
+Datenbanken anlegen, füllen, benutzen und administrieren.
+	</textblock>
+
+	<textblock>
+<command>psql</command> erfordert als Parameter den Namen der Datenbank, zu der
+verbunden werden soll. Es gibt meistens mindestens die Datenbank
+<command>template1</command>. Über Optionen kann man angeben, auf welchen Server
+die Datenbank läuft und welcher Benutzername verwendet werden
+soll. Möchte man beispielsweise als Administrator <command>postgres</command> zu
+der Datenbank <command>template1</command> auf <command>localhost</command> verbinden, kann man
+schreiben:
+	</textblock>
+
+<!--
+*
+* layout: erste Zeile ist Kommando, Rest ist Ausgabe
+*
+-->
+
+	<shell>
+	 <root >
+psql -h localhost -U postgres template1
+	 </root>
+	 <output>
+Password:
+Welcome to psql, the PostgreSQL interactive terminal.
+
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help on internal slash commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+
+template1=#
+	 </output>
+	</shell>
+	
+	<textblock>
+Unten sieht man das Prompt (das den Datenbanknamen beinhaltet).
+Hier kann man SQL Kommandos eingeben, beispielsweise:
+	</textblock>
+
+<!--	
+*
+* layout: das ist jetzt ein (einzeiliges) Datenbankprompt, kein Shellprompt
+*
+-->
+	<shell>
+	 <output>
+template1=# SELECT version();
+                            version
+---------------------------------------------------------------
+ PostgreSQL 7.0.2 on i686-pc-linux-gnu, compiled by gcc 2.95.2
+(1 row)
+	 </output>
+	</shell>
+
+	<textblock>
+Hier läuft also die Version 7.0.2 (welches mal ein Update vertragen
+könnte). <command>psql</command> kennt zusätzlich zu den SQL Kommandos sogenannte
+<strong>interne</strong> Kommandos. Diese beginnen mit einem <command>\</command> (backslash).
+Diese lassen sich mit <command>\?</command> auflisten.
+Mit <command>\h</command> kann man auf umfangreiche Hilfe zurückgreifen, eine SQL
+Referenz. Mit <command>\q</command> beendet man das Programm.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Datenbanken planen
+        </heading>
+
+	<textblock>
+Zunächst sollte man natürlich seine Datenbank planen. Vielleicht
+erstellt man ein paar <strong>Entity-Relationship-Diagramme</strong> (ER Modelle).
+Diese kann man dann in eine Normalform übertragen (die Tabellen
+normieren), bis man in etwa die <strong>3. Normalform</strong> erreicht hat.
+	</textblock>
+
+	<textblock>
+Dann überlegt man sich Wertebereiche, Gültigkeiten und Abhängigkeiten.
+Aus den <strong>Standard-Use-Cases</strong> kann man oft recht einfach die
+erforderlichen Berechtigungen und zu erzeugenden Views ableiten.
+	</textblock>
+
+	<textblock>
+Hat man das erledigt, kann man beginnen, die Datenbank zu
+erzeugen und die Tabellen anzulegen. Oft schreibt und testet man
+Konsistenzprüfungsfunktionen wie <strong>Trigger</strong> vor dem Anlegen der
+Tabellen. Auch die Dokumentation sollte man nicht vergessen. Im
+Internet findet man Hilfen zur Datenbankplanung (die Planung ist
+ja nicht <name>PostgreSQL</name> spezifisch).
+	</textblock>
+
+	<textblock>
+Nun sollte man Testdaten erzeugen. Diese sollten vom Umfang her
+fünf- bis zehnmal mächtiger als die zu erwartenden Daten sein,
+wenn möglich. Nun testet man das System und optimiert
+gegebenenfalls. In einem frühen Stadium ist die Optimierung oft
+noch einfach - später wird es dann kompliziert, weil man oft
+<strong>Kompatiblitätsmodus-Views</strong> und ähnliche Workarounds benötigt, da
+die Anwendungen selten alle auf einen Schlag angepasst werden
+können.
+	</textblock>
+
+	<textblock>
+Wenn man die Datenbank entwickelt und nicht ständig Skripte
+nachpflegen möchte, kann man nach dem Erzeugen des Schemas (also
+der Tabellen und was so dazugehört) mit dem Programm <command>pg_dump</command> das
+Schema in ein Skript schreiben, und dieses kommentieren:
+	</textblock>
+
+	<shell>
+	 <root >
+pg_dump --schema-only database -f schema.sql
+	 </root>
+	</shell>
+
+	<textblock>
+Das ist bei kleinen Projekten oder in frühen Stadien oft eine
+nützliche Hilfe.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Datenbanken erzeugen und löschen
+        </heading>
+
+	<textblock>
+Es gibt zwei Möglichkeiten, neue Datenbanken zu erzeugen. Man
+kann das Programm <command>createdb</command> verwenden. Dieses verwendet das SQL
+Kommando <command>CREATE DATEBASE</command>, um eine neue Datenbank zu erzeugen.
+	</textblock>
+
+	<textblock>
+<command>createdb</command> versteht etliche Optionen, die sehr ähnlich zu denen von
+<command>psql</command> sind. Man kann auch <command>psql</command> verwenden, und dann mit dem SQL
+Kommando <command>CREATE DATEBASE</command> eine Datenbank erzeugen. Als einzigen
+geforderten Parameter gibt man den Namen der zu erzeugenden
+Datenbank an. Beispiel:
+	</textblock>
+
+<!--
+* layout: zweite Zeile ist Ausgabe
+-->
+
+	<shell>
+	 <output>
+template1=# CREATE DATABASE test;
+CREATE DATABASE
+	 </output>
+	</shell>
+
+	<textblock>
+Datenbanken kann man mit <command>DROP DATABASE</command> löschen. Achtung, diese
+Kommandos sind eigentlich kein SQL Kommandos (kein Abfragekommando,
+also nicht <strong>query language</strong>), sondern ein sogenannte
+Strukturkommandos. Diese lassen sich nicht in Transaktionen
+ausführen und damit insbesondere nicht rückgängig machen!
+	</textblock>
+
+	<textblock>
+Versucht man ein <command>DROP DATABASE test;</command> in einer Transaktion, so
+wird das Kommando ignoriert.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Benutzer und Gruppen
+        </heading>
+
+	<textblock>
+Analog zu Datenbanken kann man Benutzer über das Programm <command>createuser</command>
+oder über <command>psql</command> anlegen. Das SQL (Struktur-) Kommando heißt <command>CREATE
+USER</command>. Hier gibt es eine Vielzahl von Parametern; beispielsweise,
+ob der Benutzer Datenbanken anlegen darf (<command>CREATEDB</command>) oder nicht
+(<command>NOCREATEDB</command>), ob der Benutzer weitere Benutzer anlegen darf
+(<command>CREATEUSER</command>) oder nicht (<command>NOCREATEUSER</command>), welches Passwort er
+bekommt (<command>PASSWORD</command> <strong>geheim</strong>), in welchen Gruppen er ist (<command>IN GROUP</command>
+gruppe1, gruppe2, ...) und wie lange er gültig ist (<command>VALID UNTIL</command>
+<strong>Zeitstempel</strong>).
+	</textblock> 
+
+	<textblock>
+Dieses Kommando legt einen Benutzer <strong>steffen</strong> mit einem sehr
+schlechten Passwort an:
+	</textblock>
+	
+	<shell>
+	 <output>
+template1=# CREATE USER steffen WITH PASSWORD '123' NOCREATEDB NOCREATEUSER;
+CREATE USER
+	 </output>
+	</shell>
+
+	<textblock>
+Auch hier gibt es ein <command>DROP USER</command>.
+	</textblock>
+
+	<textblock>
+Änderungen werden über das Kommando <command>ALTER USER</command>
+durchgeführt:
+	</textblock>
+
+	<shell>
+	 <output>
+template1=# ALTER USER steffen PASSWORD 'geheim';
+ALTER USER
+	 </output>
+	</shell>
+
+	<textblock>
+Gruppen werden mit <command>CREATE GROUP</command> erzeugt. Man kann die Benutzer
+aufzählen, die Mitglied werden sollen (<command>USER</command> benutzer1, benutzer2,
+...). Es gibt auch <command>DROP GROUP</command>, um Gruppen zu löschen.
+	</textblock>
+
+	<textblock>
+Alle hier genannten Kommandos sind Strukturkommandos und
+unterliegen nicht (ganz) den Transaktionsregeln. Ein Rollback auf
+ein <command>DROP USER</command> funktioniert nicht (vollständig).
+	</textblock>
+
+	<textblock>
+Zum Hinzufügen bzw. Entfernen von Benutzern zu Gruppen stehen die
+Kommandos
+	</textblock>
+
+	<shell>
+	 <output>
+template1=# ALTER GROUP gruppe1 ADD USER steffen, elvira
+template1=# ALTER GROUP gruppe1 DROP USER elvira
+	 </output>
+	</shell>
+
+	<textblock>
+zur Verfügung.
+	</textblock>
+
+	<textblock>
+Für den Datenbank Superuser oder Administrator gelten
+Sonderregeln, die im Abschnitt <ref iref="Privilegien">Privilegien</ref> kurz erklärt werden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Privilegien
+        </heading>
+
+	<textblock>
+Privilegien sind Zugriffsrechte. <name>PostgreSQL</name> unterstützt hier
+verschiedene Arten:
+	</textblock> 
+
+<!--	
+*layout: ich bin eine zweispaltige Tabelle
+-->
+
+	<table>
+	 <pdf-column width="125"/>
+	 <pdf-column/>
+	 <tr>
+	  <td><command>SELECT</command></td>
+	  <td>das Leserecht</td>
+	 </tr>
+	 <tr>
+	  <td><command>INSERT</command></td>
+	  <td>darf neue Datensätze einfügen</td>
+	 </tr>
+	 <tr>
+	  <td><command>UPDATE</command></td>
+	  <td>darf Datensätze ändern und Sequenzen verwenden</td>
+	 </tr>
+	 <tr>
+	  <td><command>DELETE</command></td>
+	  <td>darf Datensätze löschen</td>
+	 </tr>
+	 <tr>
+	  <td><command>RULE</command></td>
+	  <td>darf Regeln für Tabellen erzeugen (eine
+	  <name>PostgreSQL</name> Erweiterung)</td>
+	 </tr>
+	 <tr>
+	  <td><command>REFERENCES</command></td>
+	  <td>darf einen Schlüssel dieser Tabelle als Fremdschlüssel
+	  verwenden</td>
+	 </tr>
+	 <tr>
+	  <td><command>TRIGGER</command></td>
+	  <td>darf <command>Trigger</command> an der Tabelle erzeugen</td>
+	 </tr>
+	 <tr>
+	  <td><command>CREATE</command></td>
+	  <td>darf Objekte in Datenbank (ab 7.3 auch Schemata) 
+          anlegen</td>
+	 </tr>
+	 <tr>
+	  <td><command>TEMPORARY</command></td>
+	  <td>darf temporäre Tabelle in Datenbank anlegen</td>
+	 </tr>
+	 <tr>
+	  <td><command>EXECUTE</command></td>
+	  <td>darf Funktion ausführen</td>
+	 </tr>
+	 <tr>
+	  <td><command>USAGE</command></td>
+	  <td>darf Sprache (z.B. PL/pgSQL) oder Objekte in Schema (ab 7.3)
+	  benutzen</td>	  
+	 </tr>
+	 <tr>
+	  <td><command>ALL</command></td>
+	  <td>darf alles</td>
+	 </tr>
+	</table>
+
+	
+<!--	
+*layout: ENDE ich bin eine zweispaltige Tabelle
+-->
+	
+	<textblock>
+In SQL werden Privilegien über <command>GRANT</command> erlaubt und mit <command>REVOKE</command>
+entzogen. Das <command>Grant</command>-Kommando ist <name>SQL92</name> konform. Um sicherzugehen,
+dass nicht bereits andere Rechte gesetzt sind, führt man vor einem
+<command>GRANT</command> manchmal auch ein <command>REVOKE</command> aus, um alle Rechte erstmal zu
+löschen.
+	</textblock>
+
+	<textblock>
+Der Benutzer wwwro darf statistics nur lesen:
+	</textblock>
+
+	<shell>
+	 <output>
+template1=# REVOKE ALL ON statistics FROM wwwro;
+template1=# GRANT SELECT ON statistics TO wwwro;
+	 </output>
+	</shell>
+
+	<textblock>
+Die Gruppe stats darf alles auf dieser Tabelle:
+	</textblock>
+	
+	<shell>
+	 <output>
+template1=# GRANT ALL ON statistics TO GROUP stats;
+	 </output>
+	</shell>
+
+	<textblock>
+Der Eigentümer hat automatisch immer alle Berechtigungen. Den
+Eigentümer kann man über beispielsweise mit:
+	</textblock>
+	
+	<shell>
+	 <output>
+template1=# ALTER TABLE statistics OWNER TO steffen;
+	 </output>
+	</shell>
+
+	<textblock>
+einstellen.
+	</textblock>
+
+	<textblock>
+Es gibt einen besonderen Benutzer, den Superuser oder
+Administrator. Dieser darf jegliche Aktion immer durchführen; die
+Privilegien werden nicht ausgewertet. Der Superuser darf auch
+über ein Kommando jede andere Identität einstellen, das ist bei
+Tests sehr sinnvoll. Dieses Kommando läßt sich in etwa mit dem
+Unix-Kommando <command>su</command> vergleichen. Das geschieht wie folgt:
+	</textblock>
+
+	<shell>
+	 <output>
+template1=# SET SESSION AUTHORIZATION 'steffen';
+	 </output>
+	</shell>
+
+	<textblock>
+Einige Aktionen können nur vom Superuser durchgeführt werden,
+beispielsweise das Installieren neuer Sprachen mit
+Systemberechtigungen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Vacuum
+       </heading>
+
+	<textblock>
+Gelöschte bzw. geänderte Datensätze sind lediglich als 
+solche markiert und noch auf der Festplatte vorhanden.
+Darum ist es erforderlich, regelmäßig den Speicher
+aufzuräumen. Dies sollte man machen, wenn die Datenbank gerade
+wenig zu tun hat, beispielsweise nachts. Hierzu dient das SQL Kommando
+<command>VACUUM</command>. Dieses gibt nicht mehr benutzten
+Speicher frei. Es gibt auch ein Programm <command>vacuumdb</command>, das man als
+<command>cronjob</command> einrichten kann.
+	</textblock>
+
+	<textblock>
+Eine Option von <command>VACUUM</command> ist <command>ANALYZE</command>, die die Statistiktabellen für
+den Planer (Optimizer) aktualisiert.Da die Geschwindigkeit, mit 
+der <name>PostgreSQL</name> agiert, entscheidend von diesen Daten abhängt, sollte 
+man die Analyse häufiger, auf jeden Fall aber nach einer größeren
+Anzahl von <command>INSERTs</command> oder <command>UPDATEs</command> durchführen. Eine reine Analyse
+belastet den Rechner auch weniger und kann daher auch stündlich
+durchgeführt werden.<br/>
+Hierzu kann z.B. folgendes Skript dienen, welches vom Benutzer postgres
+ausgeführt werden muss:
+	</textblock>
+
+<!--	
+*** Layout, evtl. als separate Datei analyzedbs!
+-->
+
+	<file>
+	 <title>analyzedbs</title>
+	 <content>
+#!/bin/bash
+# analyzedbs (c) 2003 by SelfLinux.de
+# analysiert PostgreSQL-Datenbanken ohne Vacuum
+# 
+
+PSQL=/usr/bin/psql
+dbs=`$PSQL -U postgres -q -t -A -d template1 \
+        -c 'SELECT datname FROM pg_database WHERE datallowconn'`
+
+for db in $dbs ; do
+    $PSQL -q -c "SET autocommit TO 'on'; ANALYZE" -d $db
+done
+	</content>
+	</file>
+	
+	<textblock>
+	</textblock>
+<!--	
+*** Layout Dateiende
+-->
+	<shell>
+	 <root >
+su -l postgres -c analyzedbs
+	 </root>
+	</shell>
+
+	<textblock>
+Hat man keine besonderen Anforderungen, führt man die <command>ANALYZE</command> zusammen
+mit <command>VACUUM</command> aus. Ein Beispielaufruf:
+	</textblock>
+
+	<shell>
+	 <root >
+vacuumdb --all --analyze --full --username=postgres
+	 </root>
+	</shell>
+
+	<textblock>
+Seit Version 7.2 werden Tabellen während <command>VACUUM</command> nicht mehr komplett 
+gesperrt, man kann dieses aber durch die Angabe von <command>--full</command> erzwingen
+und so eine bessere Kompression des Datenbestandes erreichen.
+	</textblock>
+
+	<textblock>
+Verwendet man einen <command>cron-Job</command>, so sollte in <command>pg_hba.conf</command> für Typ
+<strong>local</strong> die Authentifizierung <strong>trust</strong> verwenden, da <command>cron</command> keine
+Passwörter eingibt.
+	</textblock>
+
+	<textblock>
+Man kann beispielsweise in die Datei <command>/etc/cron.d/postgresql</command> eintragen:
+	</textblock>
+
+<!--	
+*** Layout Dateiinhalt
+-->
+
+	<file>
+	 <title>/etc/cron.d/postgresql</title>
+	 <content>
+0 0  * * *     postgres vacuumdb --all --full --analyze
+5 *  * * *     postgres /usr/local/bin/analyzedbs
+	 </content>
+	</file>
+
+<!--
+*** Ende Datei
+-->
+
+	<textblock>
+Hier muss man beachten, dass <command>cron</command> nicht die <command>/etc/profile</command> auswertet,
+und damit <command>vacuumdb</command> nicht unbedingt im Pfad liegt. Hier sollte man
+lieber absolute Pfade angeben.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Sprachen installieren
+        </heading>
+	
+	<textblock>
+Ähnlich zu Datenbanken und Benutzern kann man Sprachen, genauer
+gesagt, prozedurale Sprachen, in die Datenbank installieren.
+Etliche Sprachen sind Lieferumfang von <name>PostgreSQL</name>. Diese Sprachen
+liegen als Systembibliotheken im <command>lib</command> Verzeichnis, also
+beispielsweise <command>/usr/local/lib</command>.
+	</textblock>
+
+	<textblock>
+Hier gibt es ein Programm <command>createlang</command>. Dieses verwendet das SQL
+Kommando <command>CREATE LANGUAGE</command>, um die Sprache zu installieren, führt
+jedoch zusätzlich etliche Prüfungen durch, und wird daher
+empfohlen.
+	</textblock>
+
+	<textblock>
+Um Beispielsweise die Sprache <name>PL/pgSQL</name> auf einem SuSE 7.0 System
+zu installieren, genügt folgendes Kommando:
+	</textblock>
+
+	<shell>
+	 <root >
+createlang --username=postgres --pglib=/usr/lib/pgsql/ plpgsql
+	 </root>
+	</shell>
+
+	<textblock>
+Der Pfad <command>/usr/lib/pgsql/</command> muss angepasst werden. Neben <name>PL/pgSQL</name> sind
+auch noch <name>PL/TCL</name> (<name>TCL</name> für <name>PostgreSQL</name>) und <name>PL/Perl</name> (Perl-Sprache)
+sehr beliebt und mit <name>PostgreSQL</name> verfügbar.
+	</textblock>
+
+	<textblock>
+Es gibt zwei Möglichkeiten, Sprachen zu installieren: <command>trusted</command> und
+<command>untrusted</command>. Da die wörtlichen Übersetzungen nicht weiterhelfen,
+folgt eine Erklärung. Eine <command>untrusted</command> Sprache darf mehr, als eine
+<command>trusted</command> Sprache. Von einer <command>trusted</command> Sprache wird erwartet, dass
+über diese keine normalerweise verbotenen Aktionen durchgeführt
+werden können. <name>PL/pgSQ</name>L ist ein Beispiel.
+	</textblock>
+
+	<textblock>
+<name>PL/Perl</name> kann auch im <command>untrusted</command> Modus installiert werden (wird
+dann oft <name>plperlu</name> genannt). Dann kann der komplette Sprachumfang
+von Perl verwendet werden. So kann z.B. eine Perlfunktion
+erstellt werden, die eine Mail verschickt. Dies gibt dem Benutzer
+damit automatisch die Berechtigungen des Unix-<name>PostgreSQL</name>
+Benutzers postgres. Daher können <command>untrusted</command> Sprachen nur vom
+Datenbank Superuser installiert werden. Die Funktionen in solchen
+Spachen müssen selbst für Sicherheit sorgen.
+	</textblock>
+
+	<textblock>
+Die <name>PostgreSQL</name> Sprachen (wie <name>PL/Perl</name>) haben natürlich
+Einschränkungen zu den normalen Versionen (wie Perl). Dies sind
+zum einen Sicherheitseinschränkungen von trusted Modus Sprachen,
+und zum anderen Dinge, die aus technischen Gründen nicht gehen
+(in<name> PL/Perl</name> kann man beispielsweise <strong>noch</strong> nicht andere <name>PL/Perl</name>
+Funktionen aufrufen).
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Backup
+        </heading>
+	
+	<textblock>
+Es gibt mehrere Arten, Backups anzufertigen. Es gibt die Programme
+<command>pg_dump</command> und <command>pg_dumpall</command>. Das erste schreibt eine Datenbank in eine
+Datei, das zweite sichert alle Datenbanken. Beide kennen
+eine Vielzahl von Parametern. So kann man sich beispielsweise
+eine Folge von <command>INSERT</command> Kommandos erzeugen lassen, was hilfreich
+ist, wenn man dieses Backup auch in anderen Datenbanken verwenden
+möchte, die nicht <name>PostgreSQL</name> basiert sind (oder wenn man zu
+anderen DBMS wechseln möchte/muss).
+	</textblock>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+pg_dump
+         </heading>
+
+	 <textblock>
+Es wird als Parameter der Datenbankname erwartet. Die Ausgabe
+(den <command>Dump</command>) schickt man in eine Datei. Man kann über Optionen
+einstellen, wie der Dump aussehen soll, ob nur bestimmte Tabellen
+ausgelesen werden sollen oder alle und vieles mehr.
+	 </textblock>
+
+	 <textblock>
+Wichtige Optionen sind:
+	 </textblock>
+
+	 <table>
+	  <pdf-column width="125"/>
+	  <pdf-column/>
+	  <tr>
+	   <td><command>--file</command>=datei, <command>-f</command> datei</td>
+	   <td>Ausgabe in Datei</td>
+	  </tr>
+	  <tr>
+	   <td><command>--inserts</command></td>
+	   <td><command>INSERT</command> im Dump verwenden</td>
+	  </tr>
+	  <tr>
+	   <td><command>--attribute-inserts</command></td>
+	   <td><command>INSERT</command> mit Attributen verwenden</td>
+	  </tr>
+	  <tr>
+	   <td><command>--host</command> servername</td>
+	   <td>Zu diesem Server verbinden</td></tr>
+	  <tr>
+	   <td><command>--quotes</command></td>
+	   <td>Viele Bezeichner quotieren</td></tr>
+	  <tr>
+	   <td><command>--schema-only</command></td>
+	   <td>Nur die Struktur, nicht die Daten</td></tr>
+	  <tr>
+	   <td><command>--table</command> tabelle</td>
+	   <td>Nur diese Tabelle tabelle</td></tr>
+	  <tr>
+	   <td><command>--no-acl</command></td>
+	   <td>Berechtigungen auslassen</td></tr>
+	 </table>
+
+	 <textblock>
+Möchte man die Datenbank wwwdb sichern, so schreibt man:
+	 </textblock>
+
+	 <shell>
+	  <root >
+pg_dump wwwdb -f backup.sql
+	  </root>
+	 </shell>
+
+	 <textblock>
+Leider werden so keine <strong>large objects</strong> (große Objecte, ein
+Datentyp) gesichert. Hier eröffnet ein Blick in die <name>PostgreSQL</name>
+Dokumentation mehrere Lösungsmöglichkeiten, die den Rahmen an
+dieser Stelle sprengen.</textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+pg_dumpall
+         </heading>
+
+	 <textblock>
+Dieses Programm ruft <command>pg_dump</command> für alle Datenbanken auf, und wird
+daher meistens für Backups verwendet. Es ist die empfohlene Art.
+Ein Backup kann man beispielsweise mit folgendem Kommando
+durchführen:
+	 </textblock>
+	 <shell>
+	  <root >
+pg_dumpall -f backup.sql
+	  </root>
+	 </shell>
+
+	 <textblock>
+Erfreulicherweise ist auf Grund des später erklärten <command>MVCC</command> die
+Datenbank während des Backups vollständig verwendbar
+(möglicherweise gibt es einige spezielle Einschränkungen, ein
+<command>DROP DATABASE</command> zum Löschen einer Datenbank wird wohl nicht
+funktionieren).
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Automatisiert
+         </heading>
+
+	 <textblock>
+Den Aufruf von <command>pg_dumpall</command> zu automatisieren, fällt nicht schwer.
+Wenn man noch den Wochentag in den Dateinamen aufnimmt, wird das
+Backup nur wöchentlich überschrieben. Falls man sich mal vertippt
+hat, kann es sehr hilfreich sein, etwas ältere Backups zu haben.
+Ein ganz einfaches Skript, dass man täglich über <command>cron</command> als
+Unix-Benutzer postgres starten kann:
+	 </textblock>
+
+	 <!--
+**********************
+* layout: Datei "backup.sh"
+************************************
+-->
+	 
+	 <file>
+	  <title>backup.sh</title>
+	  <content>
+#!/usr/bin/bash
+#muss als postgres gestartet werden
+
+#Sicherheitshalber standard locale
+export LC_ALL=C
+
+#Wohin mit den Backups
+cd /home/postgres/db_backups/
+
+#Ergibt "Sun", "Mon" usw. 
+DAY=`date +%a`
+
+#Alternativ: JJJJ-MM-TT
+#DAY=`+%Y-%m-%d`
+
+#Man kann alte Backups automatisch löschen, um Platz zu sparen,
+#   beispielsweise alles löschen, was älter als 14 Tag ist:
+#find /home/postgres/db_backups/ \
+#       -iname 'dump_all-*.sql' -mtime +14 \
+#       | xargs --no-run-if-empty rm -f
+
+#Die Pfade müssen natürlich angepasst werden.
+/usr/bin/pg_dumpall > dump_all-$DAY.sql
+
+#Damit man nicht noch einen extra cron job für Vacuum machen muss:
+/usr/bin/vacuumdb --all --analyze
+	  </content>
+	 </file>
+
+<!--
+**********************
+* layout: ENDE Datei "backup.sh"
+************************************
+-->	 
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Wiederherstellung
+         </heading>
+
+	 <textblock>
+Eine Datenbank aus einem mit
+<command>pg_dumpall</command> erstellten File
+wiederherzustellen, ist sehr einfach. Man muss dafür sorgen, dass
+die Datenbank <strong>template1</strong> vorhanden ist und das DBMS läuft. Dann
+übergibt man die Backupdatei einfach dem <command>psql</command> Interpreter als
+SQL-Programm:
+	 </textblock>
+
+	 <shell>
+	  <root >
+psql -d template1 -f backup.sql
+	  </root>
+	 </shell>
+
+	 <textblock>
+In seltenen Fällen kann man die Backupdatei auch mit einem Editor
+öffnen, und nur Teile daraus in <command>psql</command> eingeben (um Teile
+wiederherzustellen, beispielsweise). Auch kann man sich so
+Skripte erstellen, die beispielsweise neue Datenbanken anlegen
+(wenn man die Testdatenbank für ein Frontend erzeugt hat).
+	 </textblock>
+
+	 <textblock>
+Es gibt noch ein weiteres Programm, <command>pg_restore</command>, welche speziell für
+diesen Zweck entwickelt wurde. Dieses verfügt über einige
+Zusatzfunktionen, beispielsweise können so nur Teile
+wiederhergestellt werden. Man kann so einzelne Tabellen oder
+Funktionen wiederherstellen lassen. Ein Beispielaufruf:
+	 </textblock>
+	 
+	 <shell>
+	  <root >
+$ pg_restore -d template1 backup.sql
+	  </root>
+	 </shell>
+	</section>
+
+	<section>
+	 <heading>
+Dateisystem
+         </heading>
+
+	 <textblock>
+Natürlich kann man auch das Verzeichnis sichern, in dem
+<name>PostgreSQL</name> seine Daten aufbewahrt. Dazu muss die Datenbank
+unbedingt sauber heruntergefahren werden. Dann kann man das
+Verzeichnis einfach mit tar oder ähnlichem sichern. Verwendet man
+LVM, kann man die Datenbank stoppen, einen Snapshoot ziehen und
+die Datenbank wieder starten. Man sichert dann den Snapshoot, und
+die Datenbank muss nur kurz heruntergefahren werden.
+	 </textblock>
+	 
+	 <textblock>
+Dies hat den großen Nachteil, dass man unbedingt
+absolut genau die gleiche Version benötigt, um mit dem Backup
+etwas anfangen zu können. Diese ist insbesondere bei alten Bändern
+schwierig (welche Version hatte man damals eigentlich?). Ein
+weiterer Nachteil ist, dass man nicht nur einzelne Tabellen bzw. 
+Datenbanken rücksichern kann (es geht wirklich nicht, da die commit logs 
+auch benötigt werden!) oder anderes.
+	 </textblock>
+	 
+	 <textblock>
+Vor dem Wiederherstellen muss die Datenbank natürlich ebenfalls
+heruntergefahren werden.
+	 </textblock> 
+
+	 <textblock>
+Ein Backup über pg_dumpall ist in den meisten Fällen günstiger
+und sollte vorgezogen werden. Selbst wenn man über das
+Dateisystem sichert, sollte hin- und wieder ein <command>Dump</command> gezogen
+werden.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Grenzen
+         </heading>
+
+	 <textblock>
+Leider ist das Backup mit <command>pg_dump</command> nicht perfekt. <command>pg_dump</command> wertet
+nicht aus, ob Tabellen Funktionen benutzen. Es geht davon aus,
+das Funktionen Tabellen verwenden (man beachte die Reihenfolge!).
+	 </textblock>
+	 
+	 <textblock>
+Daher kommt es zu Problemen, wenn man Funktionen als
+Voreinstellung von Tabellenspalten verwendet. In solchen Fällen
+kann man die Funktion einfach per Hand anlegen (die Backupdatei
+mit einem Editor öffnen, Funktion übertragen, oder mit <command>pg_restore</command>
+diese Funktion zuerst wiederherstellen) und dann das Backup
+einspielen. Das gibt zwar eine Warnung, da die Funktion schon
+existiert, funktioniert aber.
+	 </textblock>
+	 
+	 <textblock>
+Hat man zirkuläre Abhängigkeiten, so wird es etwas komplizierter,
+hier hilft nur Handarbeit. Solche Situationen sind meistens
+jedoch Fehler und unerwünscht.
+	 </textblock>
+	 
+	 <textblock>
+<command>pg_dump</command> sichert auch keine <strong>large objects</strong> (große Objekte, ein
+Datentyp), wenn keine besonderen Optionen verwendet werden. Hier
+eröffnet ein Blick in die <name>PostgreSQL</name> Dokumentation mehrere
+Lösungsmöglichkeiten, die den Rahmen an dieser Stelle sprengen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Update von älteren Versionen
+         </heading>
+
+	 <textblock>
+Vor einem Update sollte mit pg_dumpall ein Backup erstellt
+werden. Diese kann man dann in die neue Version wiederherstellen.
+Eine Konvertierung der Daten-Dateien ist leider nicht vorgesehen.</textblock>
+	 <textblock>
+Man kann auch die alte und neue Datenbankversion parallel laufen
+lassen, und dann die Daten einfach über das Netzwerk kopieren.
+Die neue Datenbank muss dazu natürlich ein eigenes
+Datenverzeichnis verwenden.</textblock>
+	 <textblock>
+Angenommen, man startet die neue Datenbank auf Port 5433. Dann
+kann man mit folgender Kette den gesamten Datenbestand kopieren:</textblock>
+	 <shell>
+	  <root >
+pg_dumpall -p 5432 | psql -p 5433
+	  </root>
+	 </shell>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Transaktionsprotokolle
+        </heading>
+	
+	<textblock>
+Ein Transaktionsprotokoll darf keinesfalls mit Protokolldateien mit
+Textmeldungen verwechselt werden. In einem Transaktionsprotokoll stehen
+Änderungen von Daten. Wird eine Transaktion <strong>committed</strong>, also
+erfolgreich beendet, so werden diese in ein Protokoll eingetragen und
+erst bei Gelegenheit in die <command>normalen</command> Dateien gespeichert. Das
+ist ein performantes Vorgehen, was auch bei Abstürzen
+funktioniert: in solchen Fällen wird das Log durchgearbeitet, und
+die noch nicht überspielten Änderungen werden durchgeführt (siehe
+auch Abschnitt <ref iref="Datenbankreparatur">Datenbankreparatur</ref>).<br/> 
+<strong>Write ahead logging</strong> (WAL) ist ein - wenn nicht das -
+Standardverfahren für Transaktionsprotokolle und wird von <name>PostgreSQL</name>
+verwendet.</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Datenbankreparatur
+        </heading>
+
+	<textblock>
+Stellt <name>PostgreSQL</name> (genauer gesagt, das <command>postmaster</command> Programm) beim
+Start fest, dass die Datenbank nicht sauber heruntergefahren
+wurde, wird automatisch eine Reparatur begonnen. Hier wird im
+Wesentlichen das WAL (write ahead log) durchgearbeitet. Dieses
+Verhalten ist ähnlich dem Journal, über das moderne Filesysteme
+wird ext3 und Reiser-FS verfügen (diese Technik kommt aus dem
+Datenbankbereich, aber durch Diskussionen ist die Funktion bei
+Dateisystemen inzwischen scheinbar fast bekannter). <name>PostgreSQL</name>
+hat also kein separates Standard-Reparatur-Programm, sondern erledigt
+diese Aufgaben automatisch beim Start.
+	</textblock>
+
+	<textblock>
+Unter ganz seltenen Umständen kann es jedoch sein, dass dieser
+Mechanismus nicht funktioniert. Diese können entstehen, wenn
+Arbeitsspeicher defekt ist (und einzelne Bits <strong>umkippen</strong>), ein
+Sicherungsband geknittert wurde, und so kleine Teile fehlen oder
+fehlerhaft sind und möglicherweise auch durch ganz ungünstige
+Stromausfälle. Dann kann es vorkommen, dass die automatische
+Reparatur abbricht, und die Datenbank gar nicht startet.
+	</textblock>
+	
+	<textblock>
+Selbst in solchen Fällen kann man oft noch viel retten, jedoch
+muss man dazu unangenehme Sachen machen, beispielsweise das WAL
+zurücksetzen. Hat man ein solches Problem, sucht man am besten in
+Mailinglisten Hilfe, denn hier muss man sehr vorsichtig sein, um
+nicht noch mehr zu zerstören.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Migration
+        </heading>
+
+	<textblock>
+Migriert man von anderen DBMS, so erstellt man sich in der Regel
+eine SQL Kommandodatei mit einem Backup, und bearbeitet diese per
+Hand oder mit Skripten so, dass sie von den anderen DBMS gelesen
+werden kann.
+	</textblock>
+
+	<textblock>
+Portiert man ein System von anderen Datenbanken auf <name>PostgreSQL</name>,
+so ist je nach Art und Komplexität des Systems etliches an Arbeit
+zu erwarten.
+	</textblock>
+
+	<textblock>
+Grundsätzlich kann man davon ausgehen, Daten relativ
+unproblematisch übernehmen zu können. Tabellen sind oft auch gut
+handhabbar. Dann wird es aber leider schnell schwierig. Stored
+Procedures beziehungsweise Datenbankfunktionen müssen in der
+Regel neu geschrieben werden. Erschwerend kommt hinzu, dass
+<name>PostgreSQL</name> keine Stored Procedures, sondern nur Funktionen kennt,
+die jedoch die Flexiblität von ersteren haben. Zwar ist 
+<command>CREATE FUNCTION</command> Teil von <name>SQL99</name>, allerdings sind die Sprachen, 
+in denen die Funktionen geschrieben sind, nicht standardisiert.
+	</textblock>
+
+	<textblock>
+Systeme, die viel in der Datenbank machen, sind natürlich
+aufwendiger in der Portierung. Da man die Konsistenz grundsätzlich in
+der Datenbank regeln sollte, muss damit gerechnet werden, dass alle
+<command>Trigger</command>, Regeln und Stored Procedures neu implementiert werden
+müssen.
+	</textblock>
+
+	<textblock>
+Der Aufwand für die Anwendungen selbst hängt maßgeblich davon
+ab, wie nahe diese dem Standard sind. Selbst wenn diese
+Anwendungen gut standardkonform sind, kann natürlich immer noch
+nicht mit <strong>Plug'n'Play</strong> gerechnet werden. Bei Anwendungen, die
+von Fremdfirmen geschrieben wurden, sollte nach Möglichkeit
+unbedingt Unterstützung durch diese Firmen verfügbar sein.
+	</textblock>
+
+	<textblock>
+Das Migrations-Projektteam sollte über Testsysteme mit beiden
+Datenbanken verfügen und Spezialisten für alle beteiligten
+Systeme besitzen.
+	</textblock>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Umstieg von mySQL
+        </heading>
+	 
+	 <textblock>
+<name>mySQL</name> ist eine sehr verbreitete OpenSource Datenbank. Da zu
+vermuten ist, dass viele bereits mit <name>mySQL</name> Erfahrungen haben,
+ist diesen Umsteigern hier ein eigenes Kapitel gewidmet.
+	 </textblock>
+	 <textblock>
+In den sogenannten <strong>Tech Docs</strong> von <name>PostgreSQL</name> finden sich
+Informationen, wie man von <name>mySQL</name> zu <name>PostgreSQL</name> migriert. Es gibt
+Skripte, die <name>mySQL</name> SQL-Kommandodateien zu weiten Teilen
+automatisch so umwandeln, dass sie von <command>psql</command> gelesen werden können.
+	 </textblock>
+
+	 <textblock>
+In der Praxis sind allerdings einige Änderungen zu erwarten. So
+kann es beispielsweise sein, das man Probleme mit der Quotierung
+bekommt (<name>mySQL</name> verwendet beispielsweise <strong>backticks</strong>, um
+Systembezeichner zu quoten, was bei anderen Datenbanken zu
+Syntaxfehlern führt). Des weiteren ist <name>PostgreSQL</name> bei
+Zeichenketten <command>case-sensitiv</command>, dass heißt, die Groß/Kleinschreibung
+wird grundsätzlich unterschieden. Bei Tabellen und Spaltennamen
+ist <name>PostgreSQL</name> nicht <command>case-sensitiv</command>, es sei denn, man erzwingt
+dies durch die Verwendung von doppelten Anführungszeichen. Bei
+<name>mySQL</name> hängt dies von der verwendeten Plattform ab. Der Operator
+<strong>||</strong> wird in <name>PostgreSQL</name> so verwendet, wie in ANSI (<name>mySQL</name> kennt
+hier einen ANSI-Modus, der jedoch vermutlich selten verwendet
+wird). Man muss daher die <command>||</command> in <command>OR</command> und die <command>&amp;&amp;</command> in <command>AND</command>
+ändern; "<command>||</command>" ist der Konkatenierungsoperator (wie in <name>mySQL's</name>
+ANSI-Modus).
+	 </textblock>
+
+	 <textblock>
+Der Umfang von SQL ist bei <name>mySQL</name> kleiner, dafür gibt es etliche,
+nicht standardkonforme Erweiterungen. <name>mySQL</name> verwendet <command>#</command> als
+Kommentarzeichen. ANSI schreibt <command>--</command> vor.
+	 </textblock>
+
+	 <textblock>
+Steigt man auf <name>PostgreSQL</name> um, sollte man daran denken, die nun
+zur Verfügung stehenden Funktionen auch sinnvoll zu nutzen,
+beispielsweise <command>Trigger</command> und <command>Views</command>. Die Arbeit mit Transaktionen
+kann verbessert werden, da jetzt die ISO Transaktionslevel <command>read
+commited</command> und <command>serializable</command> zur Verfügung stehen.
+	 </textblock>
+
+	 <textblock>
+Ein entscheidendes Detail ist die Verwendung von Fremdschlüsseln. <name>mySQL</name>
+unterstützt diese zwar syntaktisch, jedoch ohne Funktion. Daher
+ist zu erwarten, dass Daten nicht einfach übernommen werden
+können, da vermutlich viele Fremdschlüsselintegritäten verletzt
+sind.
+	 </textblock>
+
+	 <textblock>
+Betrachtet man Vergleiche zwischen den beiden DBMS, so muss man
+diese sehr vorsichtig bewerten. So gibt es beispielsweise
+Seiten, die die nicht standardkonforme Verwendung des <command>||</command> Operators als
+Vorteil preisen, oder die Möglichkeit von stored procedures in
+<name>mySQL</name> nennen (die man dann in <command>C</command> schreiben muss, und als <strong>root</strong> zur
+Datenbank dazu linken muss). Eine andere Seite suggerierte es fast
+als Vorteil, keine Fremdschlüsselbedingungen zu prüfen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Umstieg von anderen Systemen
+         </heading>
+
+	 <textblock>
+Je nach Standard-Konformität zu SQL ist es mehr oder weniger
+aufwendig, das DBMS zu wechseln. Natürlich spielt auch eine große
+Rolle, wie viele Spezialfunktionen man verwendet, und wie
+anspruchsvoll die Anwendungen sind.
+	 </textblock>
+
+	 <textblock>
+Es gibt in den <strong>Tech Docs</strong> von <name>PostgreSQL</name> Informationen hierzu.
+Hier findet man Hilfen für die Migration von MS-SQL Server,
+Oracle und anderen zu <name>PostgreSQL</name>.
+	 </textblock>
+
+	 <textblock>
+<name>Oracle</name>-Erfahrene werden sich freuen, mit <name>PL/pgSQL</name> eine zu <name>PL/SQL</name>
+ähnliche Sprache zu finden.
+	 </textblock>
+	</section>
+   </section> 
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Hardware
+        </heading>
+	<textblock>
+Der Vollständigkeit halber ein paar Worte zur Hardware. <name>PostgreSQL</name>
+fühlt sich auf handelsüblichen PCs mit i386 Architektur wohl.
+Eine kleinere, gut geplante Datenbank mit weniger als einer
+Millionen Datensätzen läuft auf einem PC mit vielleicht 1Ghz, 256
+MB RAM und normalen Platten wohl zügig genug.
+	</textblock>
+	
+	<textblock>
+Je nach zu erwartender Last, Größe und Effizienz steigt der
+Hardwarebedarf schnell an. Abschätzungen lassen sich hier nur
+schwer treffen, zu groß ist beispielsweise der Unterschied, ob
+Indizes effizient arbeiten, oder nicht. Bei Datenbanken spielt
+oft die Geschwindigkeit der Festplatten eine große Rolle. SCSI Platten
+haben oft eine geringere Zugriffszeit und unterstützen Tagged
+Command Queuing - gerade Datenbanken profitieren von diesen
+Eigenschaften.
+	</textblock>
+	
+	<textblock>
+Ist man der Meinung, die Festplatten sind zu langsam, so kann man
+den Einsatz von RAID, beispielsweise RAID0+1, erwägen. Je nach
+Konfiguration kann man gleichzeitig auch eine erhöhte
+Ausfallsicherheit erreichen. Deshalb ist RAID0+1 beliebt: Man
+stript über einen Mirror (das ist etwas ausfallsicherer, als über
+Stripes zu spiegeln, da in letzterem Fall der zweite Plattenausfall
+weniger wahrscheinlich tötlich ist. Aufmalen!). Ein RAID0+1
+mit insgesamt vier Platten erreicht (in der Theorie) die
+doppelte Schreib- und sogar die dreifache (der Faktor drei ist
+hier ein Praxiswert) Lesegeschwindigkeit, bietet in jedem Fall
+Schutz vor einem Plattenausfall und ermöglicht es, 50% der
+Plattenkapazität zu nutzen - oft ein guter Kompromiss. In solchen
+Konfigurationen sind SCSI RAID Controller sinnvoll, jedoch stoßen
+die preiswerteren Controller schnell an Performanzgrenzen (dann
+bremst der Controller die Platten aus). Hier sollte man sich vor
+dem Kauf informieren.
+	</textblock>
+	
+	<textblock>
+Je nach Art der Daten kann auch eine Verdopplung des Hauptspeichers viel
+Performanz bringen. Hier muss man die im Abschnitt Konfiguration
+beschriebenen Änderungen durchführen und etwas mit den Werten
+spielen, bis man günstige Kombinationen gefunden hat. Hat man
+viel Speicher, so kann es sogar Sinn machen, <name>PostgreSQL</name> mehr als
+50% zu geben (auf dedizierten Systemen natürlich).
+	</textblock>
+
+	<textblock>
+Rechenleistung ist bei vielen Anwendungen weniger ein Thema. Das
+Unix-Programm <strong>top</strong> hilft einem bei der Analyse. Sollte sich
+herausstellen, dass man eine sehr rechenintensive Datenbank hat,
+oder hat man einfach genügend Hauptspeicher, um die
+Plattenaktivität in den Griff zu bekommen, hilft vielleicht eine
+weitere CPU.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel --> 
+   <heading>
+Benutzung
+   </heading>
+
+   <textblock>
+Dieser Abschnitt ersetzt keine SQL Referenz und kein <name>PostgreSQL</name>
+Handbuch. Es wird nur exemplarisch auf einige Details
+eingegangen. Dabei stehen <name>PostgreSQL</name>-spezifische Eigenschaften im
+Vordergrund.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+psql
+       </heading>
+	
+	<textblock>
+Der bereits kurz erwähnt interaktive Kommandointerpreter ist
+sicherlich das wichtigste Programm.
+	</textblock>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Kommandozeilenoptionen
+         </heading>
+	 
+	 <textblock>
+psql versteht etliche Optionen:
+	 </textblock>
+
+<!--
+*** layout: tabelle?
+-->
+	 <table>
+	  <pdf-column width="125"/>
+	  <pdf-column/>
+	  <tr>
+	   <td><command>-d</command> Datenbank</td>
+	   <td>Zu dieser Datenbank verbinden</td>
+	  </tr>
+	  <tr>
+	   <td><command>-h</command> Servername</td>
+	   <td>Über TCP/IP zu diesem Server verbinden</td>
+	  </tr>
+	  <tr>
+	   <td><command>-p</command> Port</td>
+	   <td>Diesen Port verwenden (Voreinstellung 5432)</td>
+	  </tr>
+	  <tr>
+	   <td><command>-U</command> Benutzer</td>
+	   <td>Als Benutzer anmelden</td>
+	  </tr>
+	  <tr>
+	   <td><command>-c</command> Kommando</td>
+	   <td>Dieses Kommando ausführen</td>
+	  </tr>
+	  <tr>
+	   <td><command>-f</command> Datei</td>
+	   <td>Diese SQL Datei ausführen</td>
+	  </tr>
+	  <tr>
+	   <td><command>-o</command> Datei</td>
+	   <td>Ausgaben die Datei schreiben</td>
+	  </tr>
+	  <tr>
+	   <td><command>-s</command></td>
+	   <td>Einzelschrittmodus: jedes SQL Kommando bestätigen</td>
+	  </tr>
+	  <tr>
+	   <td><command>-E</command></td>
+	   <td>zeigt das ausgeführte SQL-Kommando bei internen Befehlen (z.B. \d) an.</td>
+	  </tr>
+	 </table>
+
+<!--	 
+*** layout: ende tabelle?
+-->
+	 <textblock>
+Nach den Optionen gibt man eine Datenbank an, sofern man nicht
+<command>-d</command> verwendet. Dahinter kann man noch einen Benutzernamen
+schreiben, sofern man nicht <command>-U</command> verwendet.
+	 </textblock>
+
+	 <textblock>
+Um als Superuser postgres zur Datenbank test zu verbinden,
+schreibt man also beispielsweise:
+	 </textblock>
+
+	 <shell>
+	  <root>
+psql -U postgres -d test
+	  </root>
+	 </shell>
+
+	 <textblock>
+Je nach Einstellung der Authentifizierung wird nun nach einen
+Passwort gefragt. Es erscheint das Datenbankprompt.
+	 </textblock> 
+
+	 <textblock>
+Hat man <name>PostgreSQL</name> mit der readline-Unterstützung übersetzt, kann
+man ebenso wie in der Bash die Tabulator-Taste drücken, um Befehle
+und Objekte zu erweitern
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Interaktion
+         </heading>
+	 
+	 <textblock>
+Am Prompt kann man SQL Befehle eingeben:
+	 </textblock>
+	 
+	 <shell>
+	  <output>
+test=# CREATE TEMPORARY TABLE temp
+test-# ( feld1 int UNIQUE NOT NULL,
+test(# feld2 varchar(100000) DEFAULT NULL );
+NOTICE:  CREATE TABLE / UNIQUE will create implicit index
+'temp_feld1_key' for table 'temp'
+CREATE
+	  </output>
+	 </shell>
+	 
+	 <textblock>
+Man sieht, das SQL Kommandos mit Semikolon abgeschlossen werden
+und dann automatisch ausgeführt werden. Das Prompt zeigt
+an, ob man in einer Klammer ist, eine kleine Hilfe. Das
+Beispielkommando hat nun eine einfach Testtabelle erzeugt. Diese
+kann man nun mit Daten füllen:
+	 </textblock>
+	 
+	 <shell>
+	  <output>
+test=# INSERT INTO TEMP (feld1, feld2) VALUES (1234, 'hallo');
+INSERT 1532564 1
+	  </output>
+	 </shell>
+
+	 <textblock>
+Die Ausgabe enthält eine merkwürdige Nummer. Das ist der <command>OID</command>, der
+object identifier. Diese sollte man nicht weiter beachten (es
+handelt sich um eine Art automatisches Indexfeld, ist aber höchst
+unportabel, und wird nur intern benötigt).
+	 </textblock>
+
+	 <textblock>
+Über <command>psql</command> kann man auch in Transaktionen arbeiten:
+	 </textblock>
+
+	 <textblock>
+Die Tabelle enthält einen Datensatz:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# SELECT count(*) FROM temp;
+ count
+-------
+     1
+(1 row)
+	  </output>
+	 </shell>
+
+	 <textblock>
+Transkation beginnen:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# BEGIN;
+BEGIN
+	  </output>
+	 </shell>
+
+	 <textblock>
+Tabelle temp leermachen (alles löschen):
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# DELETE FROM temp;
+DELETE 1
+	  </output>
+	 </shell>
+
+	 <textblock>
+Die Tabelle ist jetzt auch Sicht der Transaktion leer:
+	 </textblock>
+	 
+	 <shell>
+	  <output>
+test=# SELECT count(*) FROM temp;
+ count
+-------
+     0
+(1 row)
+	  </output>
+	 </shell>
+
+	 <textblock>
+Transaktion abbrechen:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# ROLLBACK;
+ROLLBACK
+	  </output>
+	 </shell>
+
+	 <textblock>
+Es ist nichts geändert worden:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# SELECT * FROM temp;
+ feld1 | feld2
+------+-------
+ 1234  | hallo
+(1 row)
+	  </output>
+	 </shell>
+
+	 <textblock>
+Die Temporäre Tabelle verfällt automatisch, wenn man die
+Verbindung schließt.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Interne Kommandos
+         </heading>
+
+	 <textblock>
+<command>psql</command> verfügt über eine Reihe sogenannter interner Kommandos.
+Diese beginnen mit einem <command>\</command> (Backslash). Einige der wichtigesten
+internen Kommandos sind:
+	 </textblock>
+
+<!--
+**** layout: tabelle
+-->
+	 
+	 <table>
+	  <pdf-column width="125"/>
+	  <pdf-column/>
+	  <tr>
+	   <td><command>\?</command></td>
+	   <td>kurze Hilfe zu allen Backslash Kommandos</td></tr>
+	  <tr>
+	   <td><command>\d</command> Objekt</td>
+	   <td>
+		Objekt beschreiben. Ist Objekt beispielsweise eine Tabelle, so
+		werden die Spalten und Typen angezeigt. Auch definierte
+		Indizes werden aufgelistet. Wird Objekt nicht angegeben,
+		werden alle Tabellen aufgelistet, die existieren (außer
+		natürlich temporäre Tabellen).</td>
+	  </tr>
+	  <tr>
+	   <td><command>\d</command>Kürzel</td>
+
+	   <td>
+		Liste die zu Kürzel passenden Objekte: Tabellen (<command>t</command>), Indizes
+		(<command>i</command>), Sequenzen (<command>s</command>), Views (<command>v</command>), Privilegien (<command>p</command>), Systemtabellen
+		(<command>S</command>), große Objekte (<command>l</command>), Aggregatfunktionen (<command>a</command>), Kommentare (<command>d</command>;
+		Objektname muss folgen), Funktionen (<command>f</command>), Operatoren (<command>o</command>) und
+		Datentypen (<command>T</command>).<br/>
+		Durch ein Leerzeichen kann man noch ein Objekt angeben. <command>\dp
+		temp</command> zeigt beispielsweise die Privilegien für die Tabelle
+		temp an (was nur funktioniert, wenn es keine temporäre Tabelle
+		ist).</td>
+	  </tr>
+	  <tr>
+	   <td><command>\e</command> Datei</td>
+	   <td>Öffnet das letzte Kommando oder Datei im Editor. Hilfreich,
+		um lange Kommandos wie <command>CREATE TABLE</command> zu bearbeiten und zu
+		speichern.</td>
+	  </tr>
+	  <tr>
+	   <td><command>\l</command></td>
+	   <td>Listet alle Datenbanken auf.</td></tr>
+	  <tr>
+	   <td><command>\q</command></td>
+	   <td>Beendet <command>psql</command></td>
+	  </tr>
+	  <tr>
+	   <td><command>\x</command></td>
+	   <td>Erweiterte Ausgabe</td></tr>
+	  <tr>
+	   <td><command>\H</command></td> 
+	   <td>HTML Ausgabe</td></tr>
+	  <tr>
+	   <td>\c Datenbank<br/>
+            \c - Benutzer</td>
+	   <td>Verbindet zu einer neuen Datenbank oder zur aktuellen mit
+		einem neuen Benutzer. Dies ist in etwa mit dem
+		<strong>USE</strong> vergleichbar, das andere DBMS verwenden.
+	   </td>
+	  </tr>
+	 </table>
+
+<!--	 
+**** layout: ende tabelle
+-->
+
+	 <textblock>
+Es folgt ein Beispiel für das Ausgabeformat. Zunächst soll die
+Ausgabe der oben erwähnten Testtabelle nicht feld1 und feld2
+beinhalten, sondern Nummer und Textfeld. Wenn man diese
+Bezeichner <strong>case-sensitiv</strong> haben möchte (Tabellen- und Feldnamen
+sind sonst case-insensitiv, das heißt, Groß-/Kleinschreibung wird
+nicht beachtet), muss man diese quoten:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# SELECT feld1 AS "Nummer", feld2 AS "Textfeld" FROM temp;
+ Nummer | Textfeld
+--------+----------
+   1234 | hallo
+(1 row)
+	  </output>
+	 </shell>
+	 
+	 <textblock>
+Nach <command>\x</command> sieht die Ausgabe so aus:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# SELECT feld1 AS "Nummer", feld2 AS "Textfeld" FROM temp;
+-[ RECORD 1 ]---
+Nummer   | 1234
+Textfeld | hallo
+	  </output>
+	 </shell>
+
+	 <textblock>
+Dies macht bei großen Tabellen Sinn, wenn nicht mehr alle Spalten
+nebeneinander auf den Bildschirm passen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Verwendung
+         </heading>
+	 <textblock>
+Neben der interaktiven Verwendung kann man 
+<command>psql</command>  dazu verwenden,
+SQL Skripte auszuführen, beispielsweise Skripte, die
+Datenbankschemata erzeugen. Man kann 
+<command>psql</command>  sogar dazu verwenden,
+Shell-Skripte mit rudimentärer Datenbankfunktionalität zu
+versehen; hier ist die Verwendung von <command>Perl::DBI</command> oder anderen
+Methoden jedoch oft einfacher und sauberer.
+	 </textblock>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+pgaccess
+        </heading>
+
+	<textblock>
+<command>pgaccess</command> ist eine graphisches Frontend, mit dem etliche
+Standardaufgaben erledigt werden können. Das Anlegen von Tabellen
+beispielsweise macht sich mit diesem Frontend wesentlich besser,
+also mit <command>psql</command> .
+	</textblock>
+
+	<textblock>
+Über das Menü kann man zu einer Datenbank verbinden. Im folgenden
+Dialog können Server- und Datenbankname sowie ein Benutzerkonto
+angegeben werden.
+	</textblock>
+	
+	<textblock>
+Im Hauptfenster kann man rechts die anzuzeigende Objekte wählen.
+Hier kann man beispielsweise zwischen Tabellen, Views und
+Sequenzen auswählen. Im linken Teil werden dann die
+entsprechenden Objekte aufgelistet und können ausgewählt werden.
+	</textblock>
+	
+	<textblock>
+Nach einem Doppelklick auf eine Tabelle bekommt man ein Fenster,
+in dem der Inhalt dargestellt wird und geändert werden kann.
+Klickt man eine Tabelle nur einmal an, so kann man weitere
+Funktionen anwenden, beispielsweise <strong>Design</strong>. Hier öffnet sich
+ein Fenster, in dem man komfortabel Indizes hinzufügen kann oder
+neue Felder anhängen kann.
+	</textblock>
+
+	<textblock>
+Seit Version 7.3 ist pgaccess nicht mehr Bestandteil der <name>PostgreSQL</name>-
+Distribution und muss separat von <ref lang="en" url="http://www.pgaccess.org">http://www.pgaccess.org</ref> besorgt
+werden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+RedHat Database Admin
+        </heading>
+	
+	<textblock>
+<name>RedHat</name> vertreibt eine eigene Version von <name>PostgreSQL</name>. Diese entspricht 
+ungefähr der Version 7.2.3 und ist unter 
+<ref lang="en" url="http://www.redhat.com/software/database/">http://www.redhat.com/software/database/</ref> erhältlich.
+<name>RedHat</name> stellt alle Änderungen am DBMS und auch sein graphisches 
+Administrationsfrontend unter die GPL. Dieses läuft auch mit einer
+<strong>konventionellen</strong> <name>PostgreSQL</name> Installation und ist unter 
+<ref lang="en" url="http://sources.redhat.com/rhdb/">http://sources.redhat.com/rhdb/</ref> zu finden. Es ist <strong>hübscher</strong> als
+<command>pgaccess</command> und bietet im Bereich der Verwaltung mehr Optionen als dieses,
+kann dafür aber nicht zur Definition von TCL-Formularen herangezogen
+werden.
+	</textblock>
+	
+	<textblock>
+Die neuen Funktionen der Version 7.3 (Schemata) werden allerdings
+noch nicht unterstützt.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+phpPgAdmin
+        </heading>
+	
+	<textblock>
+Dies ist ein Webfrontend und setzt einen Webbrowser voraus. Dieses
+Frontend verfügt über sehr viele nützliche Funktionen.
+Tabellendaten können als HTML Tabelle betrachtet und editiert
+werden, beliebige Abfragen können erstellt und ausgeführt werden.
+	</textblock>
+
+	<textblock>
+Tabellen selbst können einfach und komfortabel bearbeitet werden,
+so können neue Felder hinzugefügt oder gelöscht werden. Weiterhin
+stehen Kopier- und Dumpfunktionen bereit. Auch Berechtigungen
+können komfortabel verwaltet werden. Die zur Verfügung stehenden
+Optionen sind sinnvoll in Auswahlfeldern aufgelistet. Bei Bedarf
+ist es auch möglich, eigene SQL Kommandos einzugeben und
+ausführen zu lassen.
+	</textblock>
+
+	<textblock>
+Eine weitere schöne Funktion ist die Verlinkung zu jeweils
+passenden Seiten der <name>PostgreSQL</name> Dokumentation.
+	</textblock>
+
+	<textblock>
+Wer Webfrontends mag, wird dieses Frontend wohl lieben. Es lohnt
+sich allemal, sich dieses zu installieren. Natürlich muss
+unbedingt darauf geachtet werden, den Zugang zu diesem Frontend
+zu schützen, da der Zugriff auf das Frontend Zugriff auf die
+Datenbank gestattet - und zwar als Superuser!
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Transaktionen
+        </heading>
+
+	<textblock>
+Dieser Abschnitt geht kurz auf Transaktionen ein. Transaktionen
+sind notwendig, um Änderungen atomar, dass heißt, ganz oder gar
+nicht, durchführen zu können.
+	</textblock> 
+
+	<textblock>
+Im Folgenden wird oft der englische Ausdruck lock verwendet.
+Wörtlich übersetzt bedeutet er in etwa <strong>sperren</strong>. Hier ist
+gemeint, ein Objekt so zu benutzen, dass es niemand anders
+gleichzeitig benutzen kann. Lock wird später noch genauer
+erklärt.
+	</textblock>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Einführung
+         </heading>
+
+	 <textblock>
+Das klassische Beispiel für den Bedarf ist das Buchungsbeispiel.
+Angenommen, es existieren zwei Kontotabellen. Möchte man nun eine
+Buchung gegen diese beiden Tabellen machen, muss in jede Tabelle
+ein neuer Datensatz angelegt werden. Dazu muss man zwei <command>INSERT
+INTO SQL</command> Kommandos ausführen lassen.
+	 </textblock>
+
+	 <textblock>
+Nun könnte es ja passieren, dass eines der beiden Kommandos
+klappt, das andere jedoch nicht. In diesem Fall würden die Konten
+nicht mehr stimmen, da die Summen nicht mehr passen. Man hätte
+inkonsistente Daten und ein Problem.
+	 </textblock>
+
+	 <textblock>
+Daher fasst man beide Kommandos zu einer Transaktion zusammen.
+Eine Transaktion klappt entweder ganz, oder gar nicht. Geht also
+eines der SQL Kommandos schief, so hat auch das andere
+automatisch keinen Effekt (es wird gegebenenfalls <strong>rückgängig
+gemacht</strong>).
+	 </textblock>
+
+	 <textblock>
+Transaktionen sind für andere erst sichtbar, wenn sie
+abgeschlossen wurden. Das bedeutet im Beispiel, dass nach dem
+Ausführen der ersten Kommandos ein anderer Client diese Änderung
+überhaupt nicht sieht. Erst wenn das andere Kommando erfolgreich
+war und die Transaktion beendet wurde, werden die Änderungen
+sichtbar. Somit stimmen die Summen zu jedem Zeitpunkt.
+	 </textblock>
+
+	 <textblock>
+Wenn innerhalb einer Transaktion Daten gelesen werden, und von
+einer anderen Transaktion in dieser Zeit geändert werden, so wird
+die Transaktion automatisch abgebrochen. Auch hier kann es nicht
+passieren, dass Daten versehentlich zurückgeschrieben werden, die
+inzwischen an anderer Stelle geändert wurden.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Multiversion Concurrency Control
+         </heading>
+
+	 <textblock>
+Implementiert wird ein sogenanntes <strong>Multiversion Concurrency
+Control</strong> (MVCC). Das bedeutet, das Abfragen einer Transaktion die
+Daten so sehen, wie sie zu einem bestimmten Zeitpunkt waren,
+unabhängig davon, ob sie inzwischen von einer anderen Transaktion
+geändert wurden. Dies verhindert, dass eine Transaktion einen Teil
+Daten vor und einen anderen nach einer nebenläufig
+abgeschlossenen Transaktion lesen kann und verhindert so
+inkonsistentes Lesen: die Transaktionen werden von einander
+isoliert. Der Hauptunterschied zu <strong>Lock</strong> Verfahren ist, dass
+MVCC Locks für das Lesen nicht mit Locks für das Schreiben in
+Konflikt stehen. Somit blockiert das Schreiben nie das Lesen und
+das Lesen nie das Schreiben.
+	 </textblock>
+	 
+	 <textblock>
+Eine wichtige Einschränkung gibt es: Transaktionen können in
+<name>PostgreSQL</name> nicht geschachtelt werden (es gibt also keine
+<command>Untertransaktionen</command>).
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Transaktionslevel
+         </heading>
+
+	 <textblock>
+<name>PostgreSQL</name> unterstützt zwei Transaktionslevel: <strong>read committed</strong>
+und <strong>serializable</strong>. Verwendet eine Transaktion <strong>read committed</strong>,
+so kann es vorkommen, dass sie Daten erneut liest,
+aber andere Daten erhält als beim ersten Lesen
+(nicht-wiederholbares Lesen, non-repeatble reads). Auch
+sogenanntes Phantom-Lesen (phantom reads) kann vorkommen. Vom
+Phantom-Lesen spricht man, wenn sich in einer Transaktion die
+Ergebnissätze von Suchbedingungen ändern können.  Sogenanntes
+<strong>schmutziges Lesen</strong> (dirty reads), also das Lesen von Änderungen
+aus anderen, nicht abgeschlossenen Transaktionen kann jedoch nicht
+auftreten.  Dieser Transaktionslevel ist die Voreinstellung. Er
+ist einfach anzuwenden, schnell und für die meisten Anwendungen
+ausreichend.
+	 </textblock>
+
+	 <textblock>
+Verwendet eine Transaktion <strong>serializable</strong>, können diese beiden
+unerwünschten Effekte nicht auftreten. Man benutzt diesen Level
+für Anwendungen, die komplexe Abfragen und Änderungen durchführen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Anwendung
+        </heading>
+
+	 <textblock>
+	  Transaktionen werden durch das SQL Kommando <command>BEGIN</command> eingeleitet.
+Dies ist nicht standardkonform; ANSI fordert, das immer
+implizit eine Transaktion begonnen wird. <name>PostgreSQL</name> bietet
+jedoch wie viele andere DBMS auch eine sogenanntes <command>auto commit</command>
+Funktion an, dies ist auch das Standardverhalten.
+Jedes SQL Kommando wird dann so aufgefasst, als wäre
+es eine einzelne Transaktion (es wird also sozusagen ein
+implizites <command>COMMIT</command> nach jedem SQL Kommando ausgeführt).
+Möchte man nun eine aus mehreren Anweisungen bestehende Transaktion
+beginnen, schreibt man einfach <command>BEGIN</command> als erstes Kommando. Dies passt auch
+gut zum eingebettetem SQL, da die SQL Kommandos dadurch in einen
+schicken <command>BEGIN</command> - <command>END</command> Block eingeschlossen sind.
+	 </textblock>
+
+	 <textblock>
+Grundsätzlich gibt es zwei Möglichkeiten, eine Transaktion zu
+beenden. Eine Anwendung kann eine Transaktion selbst abbrechen.
+Hierzu dient das Kommando <command>ROLLBACK</command>. Keine der Änderungen der
+Transaktion wird ausgeführt. Eine Anwendung kann die Transaktion
+auch positiv beenden. Dazu wird <command>END</command> oder <command>COMMIT</command> verwendet. Die
+Transaktion wird genau dann durchgeführt, wenn sie fehlerfrei war. In
+diesem Fall werden alle Änderungen (oder die eine komplexe
+Transaktionsänderung) übernommen (sichtbar). Trat in der
+Transaktion ein Fehler auf, so gibt es natürlich keine
+Möglichkeit, sie doch noch positiv zu beenden, da dies zu
+Inkonsistenzen führen würde. In solchen Fällen kann die Anwendung
+(je nach Art des Fehlers) die Transaktion wiederholen. Dies ist
+natürlich nicht sinnvoll, wenn beispielsweise ein Tabelle fehlt.
+Dann wird auch die Wiederholung fehlschlagen.
+	 </textblock>
+
+	 <textblock>
+So ist also sichergestellt, dass Transaktionen nur vollständig
+(und vollständig erfolgreich), oder überhaupt nicht durchgeführt
+werden.
+	 </textblock>
+
+	 <textblock>
+Hat man mit <command>BEGIN</command> eine Transaktion begonnen, so ist zunächst die
+Datenbankvoreinstellung des Transaktionslevel (<strong>read committed</strong>)
+aktiv. Solange die Transaktion noch nicht begonnen wurde, kann
+der Transaktionslevel noch geändert werden. Dazu wird das
+SQL Kommando <command>SET TRANSACTION ISOLATION LEVEL</command> verwendet. Als
+Parameter wird <command>READ COMMITTED</command> oder <command>SERIALIZABLE</command> angegeben. Damit
+ist der Transaktionslevel eingestellt. Ein Client kann auch einen
+eigene Voreinstellung setzen, wenn beispielsweise Transaktionen
+grundsätzlich <strong>serializable</strong> sein sollen. Das SQL Kommando lautet
+<command>SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL</command> und
+erwartet die gleichen Parameter wie das vorherige Kommando.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Mögliche Effekte
+         </heading>
+
+	 <textblock>
+Verwendet man Transaktionen, so kann es natürlich vorkommen, dass
+eine Transaktion vom DBMS beendet wird, weil eine andere
+Transaktion Daten geändert hat; insbesondere, wenn <strong>serializable</strong>
+verwendet wird. In solchen Fällen wird die Transaktion in der
+Regel einfach von vorn beginnend vollständig wiederholt (die
+Anwendung führt diese also erneut aus).
+	 </textblock>
+
+	 <textblock>
+Derartige Effekte minimiert man oft, in dem man Datensätze, von
+denen man schon weiß, dass man sie ändern muss, schon mal für
+selbiges vormerkt. Dies geschieht mit dem SQL Kommando <command>SELECT
+FOR UPDATE</command>. Nun weiß das DBMS, dass diese Datensätze <strong>der
+Transaktion gehören</strong>. Möchte eine andere Transaktion hier auch
+Daten ändern, so wartet diese automatisch, bis die erste
+Transaktion beendet wurde (also bestätigt oder abgebrochen). Dann
+erst wird die Aktion ausgeführt. Mit dem SQL Kommando <command>LOCK TABLE</command>
+können auch komplette Tabellen gesperrt werden. Verwendet man
+diese Mechanismen sorgfältig, vereinfacht sich die Handhabung;
+spätere Transaktionsabbrüche treten nicht auf, da die Daten ja
+bereits verwendet werden.
+	 </textblock>
+
+	 <textblock>
+Es kann passieren, dass sich Transaktionen gegenseitig
+ausschließen. Würde beispielsweise Transaktion A die Tabelle A 
+sperren und Transaktion B Tabelle B und anschließend Tabelle A sperrt, 
+kommt es zu einer solchen Situation, wenn Transaktion A auch versucht,
+Tabelle B zu sperren. Transaktion B kann ja Tabelle A nicht sperren,
+weil diese schon von Transaktion A bereits gesperrt ist und blockiert, bis
+Transaktion A beendet wurde. Transaktion A wiederum wartet auf
+Transaktion B, um Tabelle B sperren zu können. Man spricht von
+einem Deadlock - beide Transaktionen haben sich gegenseitig
+blockiert.
+	 </textblock>
+
+	 <textblock>
+<name>PostgreSQL</name> erkennt solche Fälle automatisch. Eine der
+beiden Transaktionen wird mit einem entsprechendem Deadlock-Fehler
+abgebrochen, woraufhin die andere durchgeführt werden kann. Auch
+hier wiederholt die Anwendung einfach die Transaktion. Da nun
+keine andere mehr läuft, wird es diesmal klappen.
+	 </textblock>
+
+	 <textblock>
+Bei der Arbeit mit komplexen Transaktionen muss man damit rechnen,
+dass eine Transaktion durch solche oder ähnliche Gründe
+abgebrochen wird. In der Software ist also vorzusehen,
+Transaktionen wiederholen zu können. Da im Falle eines
+Transaktionsabbruches ja überhaupt keine Daten geändert werden,
+geht das unproblematisch. Man beginnt einfach von vorn.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Sperren für Tabellen
+         </heading>
+
+	 <textblock>
+Sperre oder Lock bedeutet, dass der Inhaber oder Eigentümer dessen davor
+geschützt ist, dass jemand anders eine Sperre erzeugt, der dieser
+widerspricht. Es gibt verschiedene Arten von Sperren. Lese-Locks
+beispielsweise schließen sich nicht gegenseitig aus (es können ja
+problemlos mehrere Transaktionen die gleichen Daten lesen),
+jedoch schließt ein Lese-Lock einen Schreib-Lock aus. Schreib-Locks
+schließen sich und Lese-Locks aus. Letztere nennt man daher auch
+<strong>exklusiv</strong>, keine anderere Sperre kann neben einem Schreib-Lock
+ausgeführt sein.
+	 </textblock>
+	 
+	 <textblock>
+Die folgende Aufstellung ist unvollständig.
+	 </textblock>
+
+<!--	 
+**** Tabelle, zwei Spalten
+-->
+
+	 <table>
+	  <pdf-column width="125"/>
+	  <pdf-column/>
+	  <tr>
+	   <td>AccessShareLock </td>
+	   <td>
+		(lesender Zugriff) Lese-Lock, der automatisch auf Tabellen
+		gesetzt wird, aus denen gelesen wurden. Schließt
+		AccessExclusiveLock aus.</td>
+	  </tr>
+	  <tr>
+	   <td>RowShareLock</td>
+	   <td>
+		(lesender Zugriff auf Zeilen) Wird durch <command>SELECT FOR UPDATE</command> und
+		<command>LOCK TABLE IN ROW SHARE MODE</command>
+		gesetzt. Schließt ExclusiveLock und	AccessExclusiveLock Modi
+		aus.</td>
+	  </tr>
+
+	  <tr>
+	   <td>RowExclusiveLock</td>
+	   <td>
+		(exklusiver Zugriff auf Zeilen) Wird durch <command>UPDATE</command>, <command>DELETE</command>,
+		<command>INSERT</command> und <command>LOCK TABLE IN ROW
+		EXCLUSIVE MODE</command> gesetzt. Schließt ShareLock,
+		ShareRowExclusiveLock, ExclusiveLock und AccessExclusiveLock
+		Modi aus.</td>
+	  </tr>
+	  <tr>
+	   <td>AccessExclusiveLock</td>
+	   <td>
+		(exklusiver Zugriff) Gesetzt durch <command>ALTER TABLE</command>, <command>DROP TABLE</command>,
+		<command>VACUUM FULL</command> und <command>LOCK
+		TABLE</command>. Schließt alle Modi aus. Selbst
+		<command>SELECT</command> in anderen Transaktionen blockiert in diesem Fall.</td>
+	  </tr>
+	 </table>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Sperren für Datensätze
+         </heading>
+	 
+	 <textblock>
+Datensätze werden mit <command>SELECT FOR UPDATE</command> gesperrt. Dies schließt
+Änderungen an genau diesen Datensätzen aus. Wie bereits
+angedeutet, schließt dies kein Lesen aus (Schreiben blockiert
+kein Lesen).
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Transaktionsbeispiel
+         </heading>
+	 
+	 <textblock>
+Wie bereits gesagt, werden Transaktionen bei Fehlern automatisch
+abgebrochen. Alle Kommandos werden ignoriert:
+	 </textblock>
+
+	 <textblock>
+Transaktion beginnen:
+	 </textblock>
+	 
+	 <shell>
+	  <output>
+test=# BEGIN;
+BEGIN
+	  </output>
+	 </shell>
+
+	 <textblock>
+Es Kommando geht schief, zum Beispiel weil syntaktisch falsch:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# SYNTAX ERROR;
+ERROR:  parser: parse error at or near "SYNTAX"
+	  </output>
+	 </shell>
+
+	 <textblock>
+Die Transaktion ist abgebrochen worden. Alle Kommandos werden ab
+jetzt ignoriert:
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# DELETE FROM temp;
+NOTICE:  current transaction is aborted, queries ignored until
+end of transaction block
+*ABORT STATE*
+	  </output>
+	 </shell>
+
+	 <textblock>
+Selbst wenn man versucht, die Transaktion positiv zu beenden,
+wird nichts geändert (die Transaktion wird also trozdem
+abgebrochen):
+	 </textblock>
+
+	 <shell>
+	  <output>
+test=# COMMIT;
+COMMIT
+	  </output>
+	 </shell>
+
+	 <textblock>
+Die Antwort <command>COMMIT</command> heißt nicht, dass wirklich etwas committed
+wurde. Hier wurde ja ein <command>Rollback</command> durchgeführt. Dieses Verhalten
+ist bei Skripts sehr nützlich. Die Kommandos schreibt man einfach
+ein einen <command>BEGIN;</command> - <command>END;</command> Block (<command>End</command> ist das gleiche wie
+<command>Commit</command>). Bei einem Fehler wird keine Änderung ausgeführt - die
+Datenbank sieht genauso aus, wie vorher. Man kann das Skript
+korrigieren und erneut ausführen.
+	 </textblock>
+
+	 <textblock>
+An dieser Stelle sei noch einmal daran erinnert, dass
+Strukturkommandos (wie <command>CREATE</command> und <command>DROP</command>) nicht den
+den Transaktionsregeln unterliegen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Arbeiten mit Bedingungen
+         </heading>
+
+	 <textblock>
+Es ist möglich, Bedingungen (<command>CONSTRAINTS</command>) an Tabellen zu
+definieren. Beispielsweise könnte man fordern, dass die Summe über
+alle Felder einer Tabelle null sein muss. Möchte man nun zu einem
+Datensatz drei addieren, muss man also von einem anderen drei
+abziehen. Doch kurz dazwischen ist die Bedingung ja verletzt,
+denn die Summe ist ja dann nicht mehr null, sondern drei!
+	 </textblock>
+
+	 <textblock>
+Bedingungen können daher in Transaktionen aufgeschoben werden
+(<command>DEFERRED</command>). Das bedeutet, sie werden erst am Ende der Transaktion
+geprüft. Eine Bedingung kann dies aber auch verhindern.
+Bedingungen können so definiert werden, dass sie immer sofort
+geprüft werden. Bedingungen können aber auch so definiert werden,
+dass die Prüfung per Voreinstellung aufgeschoben wird, oder das
+die Bedingung explizit aufgeschoben werden kann.
+	 </textblock>
+
+	 <textblock>
+Um Bedingungen aufzuschieben, die sofort geprüft werden sollen, aber auch
+aufgeschoben werden dürfen, verwendet man das SQL Kommando <command>SET
+CONSTRAINTS ALL DEFERRED</command>. Anstatt ALL kann man auch den Namen der
+Bedingung angeben (das wird auch oft gemacht). Anstatt <command>DEFERRED</command>
+kann auch <command>IMMEDIATE</command> eingestellt werden. Damit hat das den
+Gegenteiligen Effekt. Bedingungen, die per Voreinstellung
+aufgeschoben werden, werden dennoch sofort ausgeführt.
+	 </textblock>
+
+	 <textblock>
+Schiebt man also eine Prüfung auf, so wird diese am (bisher
+positiven) Ende der Transaktion durchgeführt. Stellt sich nun
+heraus, dass die Bedingung verletzt ist, wird die Transaktion
+abgebrochen (und die Bedingung bleibt dadurch erfüllt).
+	 </textblock>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Variablen und Zeitzonen
+        </heading>
+
+	<textblock>
+Es gibt einige Variablen, die das Verhalten des DBMS (für den
+entsprechenden Clienten) beeinflussen. Über Variablen wird
+beispielsweise gesteuert, wie Datumsangaben aussehen. Dies ist
+nicht standard konform (mit Ausnahme von <command>TIME ZONE</command>, hier wurde
+der Standard erweitert).
+	</textblock>
+
+	<textblock>
+Variablen werden mit <command>SET</command> gesetzt und mit <command>SHOW</command> abgefragt. Mit <command>SET</command>
+wird eine Variable auf einen Wert gesetzt. Zwischen der Variable
+und dem Wert steht <command>TO</command> (oder ein Gleichheitszeichen).
+	</textblock>
+
+	<textblock>
+Hier werden nur zwei wichtige Variablen erwähnt. Die Variable
+<command>DATESTYLE</command> setzt die Form der Datumsrepräsentation. Mögliche
+Werte sind German, ISO und andere.
+	</textblock>
+
+	<textblock>
+Auch die Zeitzone kann man setzen. Hier verwendet man <command>SET TIME
+ZONE</command>. ANSI erlaubt als Parameter nur eine Zahl, beispielsweise
+<command>SET TIME ZONE 2</command>. Dies ist natürlich ungünstig, da die Sommer- und
+Winterzeit Unterscheidung von der Anwendung getroffen werden muss
+(Ist Berlin nun gerade -1 oder -2? Das hängt vom Datum ab!).
+<name>PostgreSQL</name> erlaubt jedoch auch <command>SET TIME ZONE
+'Europe/Berlin'</command>.
+	</textblock>
+
+	<textblock>
+An einem Beispiel wird gezeigt, wie man die aktuelle Uhrzeit mit
+Datum in Californien (Zeitzone PST8PDT) im ISO Format
+(amerikanische Notation) und in Berlin (Zone CET, Central
+European Time, deutsche Notation) ausgeben lassen kann.
+	</textblock>
+
+<!--	
+*** layout: die erste Zeile ist prompt, rest Ausgabe
+*** titel (wenn's sowas  gibt) Californien
+-->
+	<shell>
+	 <output>
+test=# SET TIME ZONE 'PST8PDT'; SET DATESTYLE TO ISO; SELECT now();
+SET VARIABLE
+SET VARIABLE
+              now
+-------------------------------
+ 2003-01-02 11:30:17.698728-08
+(1 row)
+	 </output>
+	</shell>
+
+<!--	
+*** layout: die erste Zeile ist prompt, rest Ausgabe
+*** titel (wenn's sowas  gibt) Deutschland
+-->
+	<shell>
+	 <output>
+test=# SET TIME ZONE 'CET'; SET DATESTYLE TO German; SELECT now();
+SET VARIABLE
+SET VARIABLE
+              now
+--------------------------------
+ 02.01.2003 20:32:46.387261 CET
+(1 row)
+	 </output>
+	</shell>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Datentypen
+        </heading>
+
+	<textblock>
+<name>PostgreSQL</name> unterstützt unter anderem die <name>SQL92</name> Datentypen.
+Ingesammt werden viele Typen unterstützt und eigene können
+definiert werden. Beispiele sind int (Ganzzahlen), double
+precision (8 Byte Fließkomma), serial (Autoinkrementeller int),
+varchar (variable lange Zeichenketten), bytea (Binäre
+Zeichenkette, wie ANSI BLOB), timestamp (Datum und
+Uhrzeit), boolean (Wahrheitswert) und viele andere.
+	</textblock>
+
+	<textblock>
+Typ-Umwandlungen werden durchgeführt, in dem man den 
+Zieltyp durch zwei Doppelpunkte <command>::</command> getrennt an den Typ anfügt:
+<command>'123'::int</command>.<br/>
+Dies konvertiert die Zeichenkette 123 in einen Ganzzahltyp mit
+dem Wert einhundertdreiundzwanzig.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Operatoren
+        </heading>
+
+	<textblock>
+Neben den normalen Operatoren (<command>OR</command>, <command>AND</command>, <command>+</command>, <command>-</command>, <command>*</command>, <command>||</command> usw.) gibt
+viele weitere, beispielsweise Quadratwurzel <command>(|/)</command>, <command>LIKE</command> und <command>ILIKE</command>
+(Patternmatching wie bei <command>LIKE</command>, aber case-insensitiv) auch reguläres
+Patternmatching (<command>~</command>, <command>~*</command> und andere). Die Operatoren verhalten sich
+je nach Datentyp korrekt. Addiert man mit dem Operator <command>+</command>
+beispielsweise ein timestamp und ein intervall (also <command>now() +
+intervall '2 hours'</command>), kommt das erwartete Ergebnis heraus.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Vordefinierte FunktioneN
+        </heading>
+
+	<textblock>
+<name>PostgreSQL</name> stellt viele Funktionen bereit. Viele mathematische
+Funktionen sind verfügbar (<command>sin()</command>, <command>cos()</command>,<command> abs()</command>, <command>random()</command> usw).
+Daneben gibt es viele Zeichenkettenfunktionen (<command>lower()</command>,
+<command>substring()</command>, <command>initcap()</command>, <command>translate()</command>, <command>encode()</command>, um nur einige zu
+nennen). Auch die Zeit- und Datumsfunktionen sind sehr
+interessant und leistungsfähig. Beispielsweise gibt es
+<command>current_timestamp</command> (oder auch kurz <command>now</command>, eine
+klassische <name>PostgreSQL</name>-Erweiterung), extract (liefert Datumsteile,
+<command>SELECT EXTRACT(MINUTE FROM TIMESTAMP '2001-02-16 20:38:40'</command>);
+führt also zu 38) und age (berechnet die Differenz zwischen zwei
+Zeitstempeln).
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Datenbanken
+        </heading>
+
+	<textblock>
+Das Erzeugen und Planen von Datenbanken findet sich im Abschnitt
+<ref iref="Administration">Administration</ref>.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Tabellen
+        </heading>
+
+	<textblock>
+Wie in jedem anderen RDBMS werden natürlich auch Tabellen
+unterstützt. Diese werden mit <command>CREATE TABLE</command> erzeugt. Dieses
+Kommando ist gut ANSI konform. Es gibt temporäre Tabellen, die
+automatisch gelöscht werden. Tabellen und Spalten können
+Bedingungen besitzen, das sind beispielsweise Funktionen, die es
+verhindern können, sinnlose Daten einzutragen (2 stellige
+Postleitzahlen beispielsweise). Wie bereits in 
+<ref iref="Arbeiten mit Bedingungen">Arbeiten mit Bedingungen</ref> genannt, können die Prüfungen
+gegebenenfalls auf das Transaktionsende verschoben werden.
+	</textblock>
+
+	<textblock>
+Fremdschlüssel sind Sonderformen von Bedingungen und werden auch
+unterstützt. Hiermit kann man gewährleisten, dass in eine 
+Tabellenspalte nur solche Werte eingetragen werden können, die bereits
+in der Spalte einer anderen Tabelle definiert sind. Hat man z.B. eine 
+Tabelle mit Herstellern und eine mit Teilen, in welcher der Hersteller 
+vermerkt wird, kann sichergestellt werden, dass kein ungültiger 
+Hersteller in letzterer eingetragen wird).
+Bei Fremdschlüsseln kann beispielsweise eine Aktion
+angegeben werden, die ausgeführt werden soll, falls der Fremdschlüssel
+gelöscht wird: <command>NO ACTION, RESTRICT</command> (dann ist das ein Fehler), 
+<command>CASCADE</command> (die den Schlüssel referenzierenden Datensätze auch automatisch 
+löschen, Vorsicht, dass können dann evtl. eine ganze Menge sein!), 
+<command>SET NULL</command> (Wert auf <command>NULL</command> setzen), <command>SET DEFAULT</command> (auf Voreinstellung
+setzen).
+	</textblock>
+
+<!--
+**** layout, hier am besten eine "Datei" draus machen:
+**** beispiel.sql.
+**** Titel: Beispiele ähnlich denen aus der PostgreSQL Dokumentation
+-->
+
+	<file>
+	 <title>Beispiele ähnlich denen aus der PostgreSQL Dokumentation</title>
+	 <content>
+-- Eine Tabelle mit Primärschlüssel und einfachem Aufbau
+CREATE TABLE films (
+    code             CHARACTER(5) CONSTRAINT films_pkey PRIMARY KEY,
+    title            CHARACTER VARYING(40) NOT NULL,
+    distributors_id  DECIMAL(3) NOT NULL,
+    date_prod        DATE,
+    kind             CHAR(10),
+    len              INTERVAL HOUR TO MINUTE
+);
+-- Beispieldatensatz
+INSERT INTO films (code, title, distributors_id) VALUES ('FilmA', 'Der Film A', 123);
+
+-- Eine Tabelle mit einem Autoinkrement und einer einfachen Bedingung
+CREATE TABLE distributors (
+     id     DECIMAL(3) PRIMARY KEY DEFAULT NEXTVAL('serial'),
+     name   VARCHAR(40) NOT NULL CHECK (name &lt;> '')
+);
+
+
+-- Ein Tabelle mit Bedingung (distributors_id muss größer als 100 sein, der Name 
+-- darf nicht leer sein, sonst gibt es einen Fehler
+-- Das Feld modtime wird automatisch auf "jetzt" gesetzt, wenn ein
+-- Datensatz eingefügt wird.
+CREATE OR REPLACE TABLE distributors (
+    id               DECIMAL(3) UNIQUE,
+    name             VARCHAR(40),
+    modtime          TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CONSTRAINT cst_valid_distributors_id CHECK (id > 100 AND name &lt;> '')
+);
+-- Datensatz einfügen:
+INSERT INTO distributors (id, name) VALUES (123, 'Name');
+-- Nochmal geht schief, weil id eindeutig sein muss
+
+-- Das geht auch schief:
+-- INSERT INTO distributors (id, name) VALUES (001, 'Name');
+--   denn: "ExecAppend: rejected due to CHECK constraint cst_valid_distributors_id"
+--   (muss ja > 100 sein)
+
+
+-- Eine Tabelle mit Fremdschlüssel und benannten Bedingungen.
+-- "varchar" heißt einfach: kann beliebig lang werden (also fast,
+--   bei ca 1000 MB ist Ende)
+CREATE TABLE lager (
+    id               SERIAL PRIMARY KEY,
+    films_code       CHARACTER(5),
+    distributors_id  DECIMAL(3),
+    info             VARCHAR DEFAULT NULL,
+    CONSTRAINT fk_lager_distributors_id FOREIGN KEY (distributors_id) REFERENCES distributors(id) 
+        ON DELETE RESTRICT,
+    CONSTRAINT fk_lager_films_code FOREIGN KEY (films_code) REFERENCES films(code) 
+        ON DELETE RESTRICT DEFERRABLE 
+);
+-- Datensatz einfügen
+INSERT INTO lager (id, films_code, info) VALUES (123, 'FilmA', 'hallo');
+
+-- Das geht schief:
+-- INSERT INTO lager (id, films_code, info) VALUES (124, 'FilmA', 'hallo');
+--   denn: "fk_lager_distributors_id referential integrity violation 
+--         - key referenced from lager not found in distributors"
+
+-- Das geht auch schief:
+-- DELETE FROM distributors;
+--   denn: "fk_lager_distributors_id referential integrity violation 
+--         - key in distributors still referenced from lager"</content></file>
+
+<!--	
+**** layout ENDE hier am besten eine "Datei" draus machen:
+-->
+
+	<textblock>
+Tabellen können mit dem Kommando <command>ALTER TABLE</command> geändert werden.
+Diese Kommando hat viele Formen.
+	</textblock>
+
+	<textblock>
+Einige Beispiele:
+	</textblock>
+<!--
+**** layout hier am besten auch eine "Datei" draus machen:
+-->
+
+	<file>
+	 <title>Beispiele: ALTER TABLE</title>
+	 <content>
+-- Eine Spalte anfügen:
+ALTER TABLE lager ADD COLUMN plz VARCHAR(8);
+
+-- Eine Spalte ändern:
+ALTER TABLE lager ALTER COLUMN plz SET DEFAULT 'unsortiert';
+
+-- Eine Spalte umbennen:
+ALTER TABLE lager RENAME COLUMN plz TO zipcode;
+
+-- Bedingung hinzufügen (PLZ muss fünfstellig sein)
+ALTER TABLE lager ADD CONSTRAINT cst_zipchk CHECK (char_length(zipcode) = 5);
+
+-- Bedingung entfernen
+ALTER TABLE lager DROP CONSTRAINT cst_zipchk RESTRICT;
+
+-- Tabelle umbennnen
+ALTER TABLE lager RENAME TO lagermitplz;
+ALTER TABLE lagermitplz RENAME TO lager;
+
+-- Eigentümer ändern
+ALTER TABLE lager OWNER TO steffen;
+	 </content>
+	</file>
+<!--
+**** layout ENDE hier am besten auch eine "Datei" draus machen:
+-->
+
+	<textblock>
+Ab Version 7.3 wird endlich auch <name>SQL 92</name> <command>ALTER TABLE DROP COLUMN</command>
+unterstützt. Gibt es einen Index, eine Bedingung oder einen 
+Fremdschlüssel der die zu löschende Spalte referenziert, muss die 
+Option <command>CASCADE</command> mit angegeben werden.
+	</textblock>
+
+	<textblock>
+Für ältere Versionen hat sich folgende Vorgehensweise bewährt:
+Man muss die Tabelle neu erzeugen. Diese Funktion
+wird übrigens von <command>phpPgAdmin</command> unterstützt (das heißt, es gibt
+einen DROP Knopf, der im Prinzip das tut). Im Folgenden wird ein
+Workaround gezeigt. Es werden hier gleich noch ein paar weitere
+Kommandos demonstriert.
+	</textblock>
+
+<!--
+**** layout hier am besten eine "Datei" draus machen:
+-->
+	<file>
+	 <title>Beispiele</title>
+	 <content>
+-- Workaround für fehlendes:
+-- ALTER TABLE lager DROP COLUMN zipcode;
+
+-- Daten in Temp-Tabelle:
+
+BEGIN;
+
+-- Tabelle exklusiv schützen:
+LOCK TABLE lager IN ACCESS EXCLUSIVE MODE;
+-- LOCK TABLE lager; macht das gleiche (Voreinstellung ist ACCESS EXCLUSIVE)
+
+CREATE TEMPORARY TABLE temp AS SELECT id, films_code, distributors_id, info FROM lager;
+
+-- lager Tabelle neu erstellen
+DROP TABLE lager;
+CREATE TABLE lager (
+    id               SERIAL PRIMARY KEY,
+    films_code       CHARACTER(5),
+    distributors_id  DECIMAL(3),
+    info             VARCHAR DEFAULT NULL,
+    CONSTRAINT fk_lager_distributors_id FOREIGN KEY (distributors_id) REFERENCES distributors(id) 
+        ON DELETE RESTRICT,
+    CONSTRAINT fk_lager_films_code FOREIGN KEY (films_code) REFERENCES films(code) 
+        ON DELETE RESTRICT
+        DEFERRABLE 
+);
+-- Achtung, die Berechtigungen und Bedingungen der Tabelle müssen 
+--   noch gesetzt werden!
+
+-- neue Tabelle füllen
+INSERT INTO lager SELECT * FROM temp;
+
+-- vielleicht noch prüfen
+-- SELECT * FROM lager LIMIT 100;
+
+DROP TABLE temp;
+-- nicht unbedingt notwendig, passiert sonst bei Ende der 
+--   Sitzung automatisch
+
+-- Transaktion abschließen
+END;
+	 </content>
+	</file>
+
+<!--	
+**** layout ENDE hier am besten eine "Datei" draus machen:
+-->
+
+	<textblock>
+Füllt man (beispielsweise neue) Tabellen mit sehr vielen Daten,
+so ist <command>INSERT</command> langsam. Die schnellste Möglichkeit ist das Füllen
+über <command>COPY</command>. Bei sehr vielen Datensätzen spart es auch Zeit, die
+<command>Indizes</command> zu löschen und anschließend neu zu erzeugen. Traut man
+den Daten, weil diese beispielsweise aus einem Backup kommen, so
+bringt es auch oft sehr viel Zeitersparnis, wenn man die <command>Trigger</command>
+und Bedingungen löscht und nach dem Füllen wieder neu anlegt.
+	</textblock>
+
+	<textblock>
+Eine Erweiterung ist die Möglichkeit <command>CREATE TABLE AS</command>, die eine
+Tabelle aus einer <command>SELECT</command>-Abfrage erzeugt. Das ist äquivalent zu
+einer <command>INSERT INTO</command> Erweiterung, mit der auch Tabellen erzeugt
+werden können (beides ist nicht Standard-SQL). Um standardkonform
+zu sein, muss man zunächst ein <command>CREATE TABLE</command> machen und diese dann
+über <command>INSERT ... SELECT</command> füllen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Views
+        </heading>
+
+	<textblock>
+Views sehen aus Sicht der Anwendung aus wie Tabellen. Manchmal
+werden sie sogar als <strong>virtuelle Tabellen</strong> bezeichnet. Es sind
+Sichten auf Tabellen. Eine View stellt eine Abfrage (ein <command>SELECT</command>
+Kommando) dar. Diese Abfrage kann beispielsweise nur einige der
+Spalten einer Tabelle enthalten. Die Abfrage kann auch über einen
+<command>join</command> mehrere Tabellen verbinden und so Werte aus verschiedenen
+Tabellen anzeigen.
+	</textblock>
+
+	<textblock>
+Ein großer Vorteil von Views ergibt sich, wenn man sich an die
+Privilegien erinnert. Über Views kann man es erreichen, dass nur
+bestimmte Felder sichtbar sind. In diesem Fall definiert man
+einen View über die erlaubten Felder und gibt dem entsprechenden
+Benutzer Rechte auf den View - nicht aber auf die Tabelle.
+	</textblock>
+
+	<textblock>
+Momentan können Views so erstmal nur zum Lesen von Daten, nicht
+jedoch zum Ändern benutzt werden. Möchte man Daten auch ändern
+können, so verwendet man eine <name>PostgreSQL</name> Erweiterung, eine Regel.
+Im später später folgenden Abschnitt zu Regeln wird dies
+exemplarisch erklärt.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Cursors
+        </heading>
+
+	<textblock>
+Das Cursorkonzept stammt aus eingebettetem SQL (ESQL). Eingebettet
+heißt, dass man SQL Anweisungen <strong>direkt</strong> in Programmquelltexte
+einbettet (diese Programmiertechnik wurde inzwischen durch
+Standards wie ODBC weitgehend abgelöst; ESQL wird jedoch auch
+heute noch verwendet und auch von <name>PostgreSQL</name> unterstützt). In
+<name>PostgreSQL</name> stehen Cursors unabhängig von der Verwendung von ESQL
+zur Verfügung. Man kann sie beispielsweise auch über 
+<command>psql</command> 
+interaktiv verwenden.
+	</textblock>
+
+	<textblock>
+Einem aktiven Cursor ist eine Menge von Datensätzen assoziiert,
+die über eine Abfrage, also über ein <command>SELECT</command> Kommando, ausgewählt
+wurden. Man kann nun einzelne Datensätze oder Teilmengen der
+Datensatzmenge über den Cursor holen. Der Cursor merkt sich dabei
+die Position. Holt man beispielsweise dreimal einen Datensatz aus
+einem Cursor, so erhält man automatisch die ersten drei
+Datensätze. Der Cursor zählt sozusagen mit, was auch den Namen
+erklärt. Eine Besonderheit ist, dass man über Cursors (in
+<name>PostgreSQL</name>, das gilt nicht generell) auch rückwärts gehen kann,
+also dass man Datensätze mehrfach holen kann.
+	</textblock>
+	<textblock>
+Cursors funktionieren in <name>PostgreSQL</name> nur in Transaktionen. Um einen
+Cursor zu verwenden, muss dieser zunächst deklariert werden. Man
+kann sich vorstellen, dass man einer Abfrage einen (temporären)
+Namen gibt. Dann kann man Datensätze (die Ergebnise der Abfrage)
+holen. Man kann den Cursor auch verschieben, beispielsweise, um
+Datensätze auszulassen oder erneut zu verarbeiten. Wird der
+Cursor nicht mehr benötigt, so wird er mit <command>CLOSE</command> geschlossen.
+	</textblock>
+
+	<textblock>
+Besonderheiten in <name>PostgreSQL</name> sind, dass aus einem Cursor nicht
+über absolute Positionen gelesen werden kann und das Cursordaten
+nicht geändert werden können (es gibt kein <command>DECLARE FOR UPDATE</command>).
+Ein Cursor ist also immer <command>READ ONLY</command>. Durch die
+Transaktionsforderung ist er auch immer <command>INSENSITIVE</command>, auch wenn dies
+nicht explizit mit angeben wurde. Auch <command>SCROLL</command> ist nicht notwendig, da
+ein Cursor immer <command>SCROLL</command> kann. Es muss auch kein <command>OPEN</command> auf einen
+Cursor gemacht werden.
+	</textblock>
+
+	<textblock>
+Ein einfaches Beispiel folgt.
+	</textblock>
+
+<!--	
+**** layout: hier wieder Dateimodus, cursor.sql
+-->
+	<file>
+	 <title>cursor.sql</title>
+	 <content>
+-- Die Tabelle sieht so aus:
+test=> SELECT code, title FROM films WHERE distributors_id = 124;
+ code  |      title
+-------+------------------
+ MM-dt | Mädchen, Mädchen
+ IJ1   | Indiana Jones 1
+ IJ2   | Indiana Jones 2
+ IJ3   | Indiana Jones 3
+(4 rows)
+
+-- Transaktion starten
+test=> BEGIN; 
+BEGIN 
+
+-- Einen Cursor für Indiana Jones deklarieren.
+test=> DECLARE ijfilme INSENSITIVE CURSOR FOR 
+test->   SELECT code, title FROM films 
+test->   WHERE code LIKE 'IJ%'
+test->   ORDER BY code
+test-> FOR READ ONLY; 
+DECLARE 
+
+-- Ersten Datensatz holen
+test=> FETCH NEXT FROM ijfilme;
+ code  |      title
+-------+-----------------
+ IJ1   | Indiana Jones 1
+(1 row)
+
+-- Zweiten Datensatz holen (1 ist wie NEXT)
+test=> FETCH 1 FROM ijfilme;
+ code  |      title
+-------+-----------------
+ IJ2   | Indiana Jones 2
+(1 row)
+  
+-- Einen Datensatz zurückgehen:
+test=> FETCH -1 FROM ijfilme;
+ code  |      title
+-------+-----------------
+ IJ1   | Indiana Jones 1
+(1 row)
+
+
+-- Die nächsten zwei Datensätze holen:
+test=> FETCH 2 FROM ijfilme;
+ code  |      title
+-------+-----------------
+ IJ2   | Indiana Jones 2
+ IJ3   | Indiana Jones 3
+(2 rows)
+
+-- Hier ist Ende:
+test=> FETCH 1 FROM ijfilme;
+ code | title
+------+-------
+(0 rows)
+
+-- weit Zurückspringen (an den Anfang)
+test=> MOVE -100 FROM ijfilme;
+MOVE 3
+
+-- wieder am Anfang
+test=> FETCH 1 FROM ijfilme;
+ code  |      title
+-------+-----------------
+ IJ1   | Indiana Jones 1
+(1 row)
+
+-- Rest holen
+test=> FETCH ALL FROM ijfilme;
+ code  |      title
+-------+-----------------
+ IJ2   | Indiana Jones 2
+ IJ3   | Indiana Jones 3
+(2 rows)
+
+-- Den letzten nochmal (wie -1)
+test=> FETCH PRIOR FROM ijfilme;
+ code  |      title
+-------+-----------------
+ IJ3   | Indiana Jones 3
+(1 row)
+
+-- Cursor schließen
+test=> CLOSE ijfilme;
+CLOSE
+
+-- Transaktion abbrechen
+test=> ROLLBACK;
+ROLLBACK</content></file>
+
+<!--	
+**** layout: ENDE hier wieder Dateimodus, cursor.sql
+-->	
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Indizes
+        </heading>
+	<textblock>
+Ein Index dient dazu, Datensätze mit bestimmten Eigenschaften
+schnell zu finden. Hat man beispielsweise eine Tabelle films wie
+im Beispiel <strong>Tabellen</strong> und sucht den Film mit dem code FilmA, so
+müsste ja die gesamte Tabelle durchsucht werden (und dazu vor
+allem von Festplatte geladen werden), dann müsste jeder code
+geprüft werden, ob er denn dem gesuchten entspricht.
+	</textblock>
+
+	<textblock>
+Hier verwendet man einen Index. Ein Index gilt für eine bestimmte
+Tabellenspalte, also beispielsweise für code. Er kann aber auch
+aus mehreren zusammengesetzten Spalten bestehen. Ein Index ist
+eine effiziente Speicherung aller code Werte und einem Verweis
+auf die Stelle, an der der zugehörige Datensatz gespeichert ist.
+Wie genau die Speicherung funktioniert, hängt vom Typ des Index
+ab. Es gibt beispielsweise HashIndizes und binäre Bäume.
+	</textblock>
+
+	<textblock>
+Sucht man nun FilmA, so wird nur der Index geladen, der ja viel
+kleiner ist, als die ganze Tabelle. Es wird an der entsprechenden
+Stelle nachgesehen (bei einem Hash geht das bei einer
+Gleichoperation mit einem Zugriff), dann direkt die richtige
+Stelle (oder die richtigen Stellen) der Tabelle geladen. Das ist
+dann wesentlich schneller.
+	</textblock>
+
+	<textblock>
+Indizes sind aber nicht immer günstig. Hat man beispielsweise
+viele Datensätze, beispielsweise alle, so muss eh sehr viel von
+der Tabelle geladen werden. Hier bremst es nur, zusätzlich den
+Index zu laden (der Abfrageplaner würde in solchen Fällen den
+Index aber automatisch nicht verwenden, weil er das auch weiß,
+mehr dazu später). Das gleiche Verhalten kann man auch bei
+kleinen Tabellen erwarten (wenn man beispielsweise 100 aus 1000
+Datensätzen liest, ist ein Index oft nicht günstig und wird nicht
+verwendet). Ein Index verlangsamt auch Änderungen, da nicht nur
+die Tabelle, sondern auch der Index aktualisiert werden muss.
+	</textblock>
+
+	<textblock>
+Ein Index kann auch Eindeutigkeit (<command>UNIQUE</command>) fordern. Genauer
+gesagt, wird Eindeutigkeit in Tabellen garantiert, in dem ein
+<command>UNIQUE</command> Index angelegt wird. Dies sollte man aber lieber durch ein
+sauberes <command>ALTER TABLE ... ADD CONSTRAINT</command> erledigen. Das dann ein
+Index verwendet wird, ist ein Implementierungsdetail von
+<name>PostgreSQL</name>.
+	</textblock>
+
+	<textblock>
+Die bereits kurz erwähnten Speichertypen von Indizes sind:
+BTREE (Lehman-Yao B-Baum), RTREE (R-Baum mit Guttman's "quadratic
+split" Algorithmus), HASH (Litwin's lineares hashen) und GIST
+(Generalized Index Search Trees, verallgemeinerter Index Suchbaum).
+	</textblock>
+	
+	<textblock>
+BTREE kann bei den Operationen &lt;, &lt;=, =, &gt;=, &gt; verwendet werden.
+RTREE bei den Operationen &lt;&lt;, &amp;&lt;, &amp;&gt;, &gt;&gt;, @, ~=, &amp;&amp; und ein HASH bei
+=. </textblock>
+
+	<textblock>
+Indexes kann man per Hand erzeugen. Dazu gibt es das
+nicht-standard SQL Kommando <command>CREATE INDEX</command>. Zum Löschen gibt es
+analog <command>DROP INDEX</command>. Ein Index auch hat immer einen Namen. Meistens
+setzt man diesen aus Tabellen- und Feldnamen zusammen. Ein
+Beispiel für einen Index test1_id_idx über die Spalte id der
+Tabelle test1:
+	</textblock>
+
+<!--	
+*** Layout: Kommandos bitte
+-->
+	<textblock>
+<command>CREATE UNIQUE INDEX test1_id_idx ON test1 USING BTREE (id);</command>
+	</textblock>
+	
+	<textblock>
+Es ist sogar möglich, Indizes für Funktionsergebnise zu
+definieren. Verwendet man beispielsweise oft:
+	</textblock>
+	
+	<textblock>
+<command>SELECT * FROM test1 WHERE lower(col1) = 'value';</command>
+	</textblock>
+	
+	<textblock>
+so hilft einem ein Index über col1 hier ja nichts. Man kann aber
+einen Index für lower(col1) erzeugen, der dann wieder verwendet
+wird:
+	</textblock>
+	
+	<textblock>
+<command>CREATE INDEX test1_lower_col1_idx ON test1 (lower(col1));</command>
+	</textblock>
+
+	<textblock>
+Indizes können auch nur über Teile gelegt werden, in dem man eine
+<command>WHERE</command> Bedingung hinzufügt. So kann man beispielsweise sehr
+häufige Werte ausklammern und von Geschwindigkeitsvorteilen bei
+seltenen Werten profitieren (bei häufigen Werten werden Indizes
+oft gar nicht verwendet, weil langsam). Eine genaue Diskussion
+würde diesen Rahmen hier jedoch sprengen.
+	</textblock>
+
+	<textblock>
+Eine Erweiterung ist die Möglichkeit, Indizes neu zu erstellen.
+Oft kann man diese einfach löschen und neu anlegen, was den
+Vorteil hat, dass nur die zu lesenden Datensätze gelockt werden.
+Hat man jedoch kaputte Indizes, kann man diese mit <command>REINDEX</command> neu
+erstellen lassen. Dies wird nur durchgeführt, wenn der Index als
+kaputt bekannt ist, oder man <command>FORCE</command> mit angibt.
+	</textblock>
+
+	<textblock>
+Es gibt drei Varianten des Kommandos: <command>REINDEX INDEX</command> (erzeugt den
+folgenden Index neu), <command>REINDEX TABLE</command> (erzeugt für die folgend
+genannte Tabelle alle Indizes neu) und <command>REINDEX DATABASE</command>
+(erzeugt für die folgend genannte Datenbank alle Indizes neu).
+	</textblock>
+	
+	<textblock>
+<command>REINDEX DATABASE my_database FORCE;</command>
+	</textblock>
+
+	<textblock>
+Hilft bei Problemen also (was in der Praxis jedoch im Prinzip NIE
+benötigt wird; aber wenn, dann hilft das).
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Funktionen
+        </heading>
+	<textblock>
+Man kann sich eigene Funktionen definieren. Hierzu stehen neben
+SQL noch weitere Sprachen bereit. SQL ist in manchen Punkten
+beschränkt oder umständlich. Hier hilft einem eine Sprache wie
+<name>PL/pgSQL</name> oder <name>PL/Perl</name> weiter.
+	</textblock>
+
+	<textblock>
+So kann man sich Funktionen schreiben, die beispielsweise
+komplizierte Bedingungen prüfen können (vielleicht <strong>Quersumme der
+ID muss gerade sein</strong>). Funktionen kann man auch direkt aufrufen.
+In <name>PostgreSQL</name> ruft man selbst definierte Funktionen genauso auf,
+die eingebaute: einfach über <command>SELECT</command>. Eine Funktion hallo mit
+zwei Parametern könnte man beispielsweise aufrufen:
+	</textblock>
+	
+	<textblock>
+<command>SELECT hallo(123, 'hallo parameter');</command>
+	</textblock>
+	
+	<textblock>
+Eine Erweiterung von <name>PostgreSQL</name> ist die Möglichkeit,
+Aggregatfunktionen selbst zu definieren (<command>CREATE AGGREGATE</command>).
+Aggregatfunktionen sind Funktionen wie min oder max, die
+beispielsweise in Gruppierten <command>SELECT</command> Anweisungen verwendet
+werden.</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Trigger
+        </heading>
+
+	<textblock>
+<command>Trigger</command> sind relativ <name>SQL99</name> konform (es gibt einfach zu umgehende
+Ausnahmen). <command>Trigger</command> können nicht auf einzelne Spalten
+angewendet werden. Über einen <command>Trigger</command> kann man vor oder nach den
+Ereignissen <command>INSERT</command>, <command>DELETE</command> oder <command>UPDATE</command> auf eine Tabelle eine Funkion
+aufrufen (man sagt, der <command>Trigger</command> feuert bei einem Ereignis). Diese
+Funktion kann dann die Daten prüfen, ändern oder sonst was
+unternehmen. <name>PostgreSQL</name> bietet erweitert dazu auch Regeln
+(Rules).
+	</textblock>
+
+	<textblock>
+Über <command>Trigger</command> kann man, wie auch mit Bedingungen,
+Konsistenzbedingungen realisieren. Werden beispielsweise
+Schlüssel geändert, so kann man über einen <command>Trigger</command> vielleicht
+abhängige Datensätze entsprechend anpassen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Regeln (Rules)
+        </heading>
+	
+	<textblock>
+Regeln sind eine <name>PostgreSQL</name> Erweiterung. Ähnlich wie <command>Trigger</command>
+reagieren sie auf ein Ereignis <command>SELECT</command>, <command>INSERT</command>, <command>DELETE</command> oder <command>UPDATE</command>
+auf eine Tabelle. Optional kann noch eine Bedingung angegeben
+werden, die ebenfalls erfüllt sein muss, damit die Regel greift.
+Die Regel definiert dann, ob gar nicht passieren soll (<command>NOTHING</command>),
+ob zusätzlich oder ob anstatt (<command>INSTEAD</command>) des eigentlichen
+Kommandos ein anderes ausgeführt werden soll.
+	</textblock>
+
+	<textblock>
+Über Regeln kann man, wie auch mit Bedingungen,
+Konsistenzbedingungen realisieren.
+	</textblock> 
+
+	<textblock>
+Regeln werden bei <name>PostgreSQL</name> oft in Verbindung mit Views
+verwendet. <name email="rvtol@isolution.nl">Dr.Ruud</name> postete eine
+beispielhafte <strong>Regelschablone</strong>:</textblock>
+
+<!--	
+**** layout: datei "rules-template.sql"
+-->
+
+	<file>
+	 <title>rules-template.sql</title>
+	 <content>
+CREATE VIEW &lt;virtual-table&gt; AS SELECT * FROM &lt;actual-table&gt;;
+
+CREATE RULE &lt;virtual-table&gt;_ins AS ON INSERT TO &lt;virtual-table&gt;
+DO INSTEAD 
+INSERT INTO &lt;actual-table&gt; ( &lt;field-1&gt;, &lt;field-2&gt;, ... , &lt;field-n&gt; )
+VALUES ( new.&lt;field-1&gt;, new.&lt;field-2&gt;, ... , new.&lt;field-n&gt; ); 
+
+CREATE RULE &lt;virtual-table&gt;_upd AS ON UPDATE TO &lt;virtual-table&gt;
+DO INSTEAD 
+UPDATE &lt;actual-table&gt;
+SET &lt;field-1&gt; = new.&lt;field-1&gt;, 
+&lt;field-2&gt; = new.&lt;field-2&gt;, 
+... 
+&lt;field-n&gt; = new.&lt;field-n&gt; 
+WHERE &lt;primary-key&gt; = old.&lt;primary-key&gt;; 
+
+CREATE RULE &lt;virtual-table&gt;_del AS ON DELETE TO &lt;virtual-table&gt;
+DO INSTEAD 
+DELETE FROM &lt;actual-table&gt;
+WHERE &lt;primary-key&gt; = old.&lt;primary-key&gt;;
+	 </content>
+	</file>
+
+<!--	
+**** layout: ende datei "rules-templat.sql"
+-->	
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Sequenzen
+        </heading>
+	<textblock>
+Eine Sequenz ist eine Zählfunktion, die hauptsächlich bei
+Autoinkrementfeldern angewendet werden. Bei jedem Aufruf liefert
+eine Sequenz einen größeren Wert (dies funktioniert natürlich
+auch vollständig in Transaktionen). Man kann auch den letzten
+Wert abfragen, den man in der Transaktion erhalten hat und so
+herausfinden, welchen Wert der letzte Datensatz im
+Autoinkrementfeld erhalten hat.
+	</textblock>
+	
+	<textblock>
+Sequenzen werden beim Feldern vom Typ <strong>serial</strong> automatisch
+erzeugt. Der Name wird automatisch bestimmt. Es kommt zu einem
+Fehler beim Anlegen der Tabelle, wenn der Name bereits vergeben
+ist. Man kann ein Sequenz auch für mehrere verschiedene Felder
+verwenden, und so tabellenübergreifend eindeutige Werte erzeugen.
+Daher werden automatisch erzeugte Sequenzen nicht automatisch mit
+dem Löschen von Tabellen gelöscht.
+	</textblock>
+
+	<textblock>
+Man kann Sequenzen auch explizit über <command>CREATE SEQUENCE</command> erzeugen.
+Die Funktionen <command>nextval('seq')</command> und <command>currval('seq')</command> liefern den
+nächsten bzw. aktuellen (zuletzt gelieferte nextval) zurück. Mit
+<command>setval('seq', 1234)</command> kann man den Wert eine Sequenz direkt setzen.
+	</textblock>
+
+	<textblock>
+Dies braucht man beispielsweise, wenn man IDs hat, die von der
+Sequenz noch gar nicht erzeugt wurden, weil jemand einen Wert bei
+<command>INSERT</command> direkt angegeben hat. In solchen Fällen erreicht die
+Sequenz irgendwann diesen Wert (oder den ersten dieser Werte),
+daraufhin klappt das <command>INSERT</command> nicht, weil die ID sicherlich
+eindeutig sein muss, die Sequenz wird auch nicht erhöht
+(Transaktionsabbruch) und man kommt nicht weiter. Hier hilft es,
+die Sequenz auf den höchsten verwendeten Wert zu setzen. Hat man
+eine Tabelle lager mit einem Autoinkrementfeld id, so heißt die
+automatisch erzeugte Sequenz lager_id_seq. Um diese anzupassen,
+kann man einfach schreiben:
+	</textblock>
+
+	<shell>
+	 <output>
+test=# SELECT setval('lager_id_seq', (SELECT max(id) FROM lager) );
+ setval
+--------
+      3
+(1 row)
+	 </output>
+	</shell>
+
+	<textblock>
+Danach funktioniert das Autoinkrementfeld wieder. Vor solchen
+Phänomenen kann man sich schützen, wenn man Regeln verwendet, die
+ein direktes Setzen solcher Felder verhindern.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Sprachen
+        </heading>
+
+	<textblock>
+Neben SQL unterstützt <name>PostgreSQL</name> weitere Datenbanksprachen.
+Arbeitet man mit SQL, so kann man bestimmte Dinge teils nur
+schwierig formulieren.
+	</textblock> 
+
+	<textblock>
+SQL ist eine sehr mächtige Sprache, wenn man sie beherrscht. Im
+Gegensatz zu prozeduralen Sprachen beschreibt man jedoch keine
+Algorithmen. Möchte man beispielsweise alle Werte des Feldes
+gehalt einer Tabelle mitarbeiter um 10 Prozent erhöhen, würde
+man prozedural formulieren: <strong>gehe jeden Datensatz durch, und für
+jeden Wert setze Wert gleich Wert mal 1.1</strong>. In SQL schreibt man
+das jedoch einfach so hin:
+	</textblock>
+
+<!--	
+*** layout: Kommando:
+-->
+	<textblock>
+<command>UPDATE mitarbeiter SET gehalt = gehalt * 1.1;</command>
+	</textblock>
+	
+	<textblock>
+Man beschreibt also in etwa Änderungen. Zusätzlich kann man hier
+natürlich auch Bedingungen angeben (<strong>nur, wenn gehalt kleiner als
+5000 ist</strong> beispielsweise). Diesen grundlegenden Unterschied muss
+man unbedingt verstehen, wenn man mit SQL arbeitet. In der Praxis
+sieht man manchmal Skripte, die die Datensätze einer Tabelle
+einzeln durchgehen, einen Test machen, und eine Änderung
+schreiben. So etwas macht man in der Regel einfach mit einem
+passendem SQL Kommando; das hat noch den angenehmen Nebeneffekt,
+viel schneller zu sein.
+	</textblock>
+	
+	<textblock>
+In <name>PostgreSQL</name> kann man auch Unterabfragen verwenden:
+	</textblock>
+	<file>
+	 <title>Beispiel: Unterabfrage</title>
+	 <content>
+UPDATE mitarbeiter 
+SET gehalt = gehalt + 
+        (SELECT bonus FROM bonustabelle WHERE art = 'weihnachtsgeld');
+	 </content>
+	</file>
+
+	<textblock>
+Mit derartigen Konstrukten kann man Operationen durchführen, die
+in prozeduralen Sprachen nur sehr umständlich gemacht werden
+können.
+	</textblock>
+
+
+   <section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+PL/pgSQL
+         </heading>
+	 <textblock>
+Die Sprache<name> PL/pgSQL</name> ist im <strong>Lieferumfang</strong> von <name>PostgreSQL</name>. Sie
+ähnelt <name>PL/SQL</name> von <name>Oracle</name>. Diese Sprache ist beliebt, um
+<command>Trigger</command>funktionen zu implementieren. In <name>PL/pgSQL</name> sind
+Kontrollstrukturen verfügbar (beispielsweise Schleifen). Diese
+Sprache ist an SQL angelehnt und daher sehr leicht erlernbar und
+einfach zu benutzen.
+	 </textblock>
+	 
+	 <textblock>
+Neben Zuweisungen, der Möglichkeit dynamische SQL Kommandos
+auszuführen und Bedingungen auszuwerten, stehen mehrere Schleifen
+zur Verfügung. Mit <command>FOR</command> kann gezählt oder über Datensätze
+iteriert werden, auch mit <command>LOOP</command> und <command>WHILE</command> kann man Schleifen bilden.
+Bedingungen sind flexibel (<command>IF-THEN-ELSIF-ELSE</command>). Ein Blick in die
+Dokumentation ist sicherlich interessant, <command>PL/pgSQL</command> sollte zum
+Handwerkszeug eines Datenbankbenutzers gehören.
+	 </textblock>
+
+	 <textblock>
+Als Beispiel folgt eine <command>Trigger</command>funktion. Da die gesamte Funktion 
+in einfache Anführungszeichen eingeschlossen ist, müssen innerhalb
+der Funktion alle einfachen Anführungszeichen durch zwei 
+aufeinanderfolgende ersetzt werden (leider etwas unübersichtlich).
+	 </textblock>
+
+<!--	 
+***********
+** layout: datei triggerbeispiel.sql
+-->
+	 
+	 <file>
+	  <title>Beispiel: triggerbeispiel.sql</title>
+	  <content>
+-- Eine Beispieltabelle für Angestellte
+CREATE TABLE emp (
+    empname text,               -- Name
+    salary integer,             -- Gehalt
+    last_date timestamp,        -- Letztes Datum
+    last_user text              -- Letzter Benutzer
+);
+
+-- Der Trigger. 
+-- Es ist eine Funktion, die einen Datensatz zurückliefert.
+CREATE FUNCTION emp_stamp () RETURNS OPAQUE AS '
+    -- Dieses Begin kommt von PL/pgSQL. Es startet keine
+    --   neue Transaktion!
+    BEGIN
+        -- Prüfen, ob empname und salary (Gehalt) angegeben wurde
+        IF NEW.empname ISNULL THEN
+            -- RAISE erzeugt einen Fehler (EXCEPTION)
+            -- Die Transaktion wird dadruch abgebrochen.
+            RAISE EXCEPTION ''empname darf nicht NULL sein'';
+        END IF;
+        IF NEW.salary ISNULL THEN
+            -- anstelle des % steht dann der Name
+            RAISE EXCEPTION ''% ohne Gehalt?!'', NEW.empname;
+        END IF;
+
+        -- Wer arbeitet für uns und muss dafür bezahlen?
+        IF NEW.salary &lt; 0 THEN
+            RAISE EXCEPTION ''% mit negativen Gehalt?!'', NEW.empname;
+        END IF;
+
+        -- Es wird das letzte Änderungsdatum und der Änderungsbenutzer gesetzt.
+        -- Selbst wenn bei INSERT oder UPDATE last_user angegeben wird, so
+        -- wird dennoch immer current_user verwendet. Es ist also
+        -- nicht mehr möglich, einen falschen Eintrag zu erzeugen.
+        NEW.last_user := current_user;
+        -- now sollte hier besser als Funktion und besser gegen 
+        --   den standardkonformen Namen current_timestamp ersetzt werden:
+        --   NEW.last_date := current_timestamp;
+        NEW.last_date := ''now'';
+
+        -- Den (geänderten) Datensatz zurückliefern (wird dann eingetragen)
+        RETURN NEW;
+    END;
+    -- Das END kommt - wie auch BEGIN - von PL/pgSQL und beeinflußt
+    --   die aktive Transaktion nicht
+' LANGUAGE 'plpgsql';
+
+-- Diese Funktion als Trigger setzen. Danach wird sie bei INSERT
+-- oder UPDATE automatisch gestartet.
+CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
+    FOR EACH ROW EXECUTE PROCEDURE emp_stamp();
+	  </content>
+	 </file>
+
+<!--	 
+*** layout: ende datei triggerbeispiel.sql
+-->	 
+	</section>
+
+<!-- *.*.* Kapitel -->
+	<section> 
+	 <heading>
+PL/Perl
+         </heading>
+	 <textblock>
+<name>PL/Perl</name> kann auf zwei Arten installiert werden (siehe Abschnitt
+<ref iref="Sprachen">Sprachen</ref> im administrativen Teil). Im trusted Modus kann die
+Sprache gefahrlos benutzt werden, darf jedoch nicht alles. So
+dürfen zum Beispiel keine externen Module geladen werden. Im
+untrusted Modus geht das. Man kann so beispielsweise Mails
+verschicken. Da hierdurch jeder, der eine Funktion schreiben
+und starten darf, die Unix-Rechte des Unix-Benutzers postgres
+(oder unter welchem Benutzer das DBMS läuft) erhält, muss man hier
+vorsichtig und sorgfältig arbeiten.
+	 </textblock>
+
+	 <textblock>
+Die Verwendung von <name>PL/Perl</name> ist sehr intuitiv. <command>NULL</command> Werte werden
+in Perl als <strong>undef</strong> dargestellt. Parameter werden wie gewohnt über
+<command>$_</command> erreicht. Zusammengesetzte Datentypen werden als Referenzen
+auf Hashes übergeben, was eine sehr komfortable Handhabung
+erlaubt.
+	 </textblock> 
+
+	 <textblock>
+Fehler werden durch Aufruf der Funktion elog gemeldet. elog
+verhält sich analog zu <command>RAISE</command>.
+	 </textblock>
+
+	 <textblock>
+Leider gibt es (noch?) einige Einschränkungen bei der Verwendung.
+So kann <name>PL/Perl</name> leider nicht dazu verwendet werden,
+<command>Trigger</command>funktionen zu schreiben. Es ist aber möglich, einen
+<command>Trigger</command> in <name>PL/pgSQL</name> zu schreiben, und hier einfach eine <name>PL/Perl</name>
+Funktion aufruft.
+	 </textblock>
+
+<!--	 
+*** layout: datei plperl.sql beispiel
+-->
+	 <file>
+	  <title>Beispiel: plperl.sql</title>
+	  <content>
+-- Eine Funktion, die den größeren Wert zurückliefert.
+-- Ist eine der Werte NULL, so wird der andere zurückgeben.
+-- Sind beide NULL, ergibt die Funktion auch NULL
+CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS '
+    my ($a,$b) = @_;
+    if (! defined $a) {
+        if (! defined $b) { return undef; }
+        return $b;
+    }
+    if (! defined $b) { return $a; }
+    if ($a > $b) { return $a; }
+    return $b;
+' LANGUAGE plperl;
+     
+
+-- Ein Beispiel mit einen zusammengesetzten Datentyp (hier employee)
+CREATE TABLE employee (
+    name text,
+    basesalary integer,
+    bonus integer
+);
+
+-- Als Parameter kommt ein employee, also z.B. ein Datensatz aus
+-- dieser Tabelle
+CREATE FUNCTION empcomp(employee) RETURNS integer AS '
+    my ($emp) = @_;
+    return $emp->{''basesalary''} + $emp->{''bonus''};
+' LANGUAGE plperl;
+	  </content>
+	 </file>
+
+<!--
+*** layout: ende datei plperl.sql example
+-->
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Notifikationen (Benachrichtigungen)
+        </heading>
+
+	<textblock>
+Eine <name>PostgreSQL</name> Erweiterung erlaubt es, das mehrere Clienten sich
+synchronisieren. Dazu kann ein Client über <command>LISTEN</command> ein Objekt
+beobachten. Ruft ein anderer Client <command>NOTIFY</command> auf diesem Objekt auf,
+so wird ersterer (und alle anderen <command>LISTENer</command>) benachrichtigt.
+Hat er kein Interesse mehr an Notifikationen, ruft er ein
+<command>UNLISTEN</command> auf das Objekt auf. <command>LISTEN</command> ist nicht blockierend; die
+Notifikation erfolgt asynchron.
+	</textblock>
+	
+	<textblock>
+Dies wird wohl selten verwendet und ist nicht portabel. Oft kann
+man ähnliches Verhalten auch über Datensatz-Locks über Tabellen
+erreichen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Statistiken für den Planer
+        </heading>
+	<textblock>
+Wie im Abschnitt <ref iref="Optimierung mit &quot;EXPLAIN&quot;">Optimierung mit EXPLAIN</ref> noch genauer erklärt
+wird, wird eine Abfrage vom Planer in Abfragepläne
+umgewandelt. Um sich für den richtigen (also den schnellsten)
+Abfrageplan entscheiden zu können, muss beispielsweise geschätzt
+werden, wie viele Daten von Festplatte gelesen werden müssen. Das 
+hängt von der Tabellengröße ab.
+	</textblock>
+
+	<textblock>
+Die Tabellengrößen werden von <name>PostgreSQL</name> in einer speziellen
+Tabelle <command>pg_class</command> gespeichert. Meistens werden jedoch nicht alle
+Datensätze benötigt, sondern nur ein Teil. Dieser wird oft über
+eine Bedingung definiert. Dadurch wird es schwierig zu schätzen,
+wie viele Daten geladen werden müssen, da man dazu ja wissen muss,
+wie oft die Bedingung erfüllt ist.
+	</textblock>
+
+	<textblock>
+Um diese Abschätzung durchführen zu können, werden
+Statistiktabellen geführt, beispielsweise <command>pg_stats</command>. In diesen
+Tabellen werden statistische Informationen über Tabelleninhalte
+gespeichert, beispielsweise die häufigsten Werte, die Anzahl der
+<command>NULL</command> Werte, die Anzahl der verwendeten Werte (es kann ja Tabellen
+mit 1000 Einträgen geben, die nur 4 verschiedene Werte verwenden)
+und andere. Mit diesen Informationen errechnet der Planer seine
+Abschätzungen.
+	</textblock> 
+
+	<textblock>
+Die Statistiken werden natürlich nicht ständig aktualisiert, das
+wäre ja sehr bremsend (um statistische Korrelation zu berechnen,
+muss ja in jedem Fall jeder Datensatz gelesen werden). Statt
+dessen werden die Statistiken durch das SQL Kommando <command>ANALYZE</command> oder
+<command>VACUUM ANALYZE</command> aktualisiert, dass man demzufolge regelmäßig (zum
+Beispiels nachts und nach großen Änderungen) ausführen sollte.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Optimierung mit "EXPLAIN"
+        </heading>
+	
+	<textblock>
+Natürlich ist es immer interessant, Abfragen auf Geschwindigkeit
+zu optimieren. Bei langsamen Abfragen ist es interessant, den
+Grund zu kennen. Vielleicht fehlt ja nur ein Index oder sitzt
+ungünstig?
+	</textblock>
+	
+	<textblock>
+Verarbeitet <name>PostgreSQL</name> eine Abfrage, so wird vom DBMS ein Abfrageplan
+erstellt. Dies wird durch den sogenannten Planer erledigt. Dieser
+legt fest, in welcher Reihenfolge die Daten organisiert werden
+und ob (und welche) Indizes verwendet werden. Dazu prüft er die
+verschiedenen Möglichkeiten auf Effizienz. Er erstellt also
+erstmal viel Pläne und wählt dann den Plan aus, der die geringsten
+Kosten hat, also am schnellsten geht.
+	</textblock>
+
+	<textblock>
+Es gibt das <command>EXPLAIN</command> Kommando, das den Abfrageplan für die Abfrage
+anzeigt (eine <name>PostgreSQL</name> Erweiterung). Man erhält die geschätzten
+Kosten, bis mit der Ausgabe begonnen werden könnte, und die
+gesamten Kosten. Als Einheit wird in etwa <strong>Festplattenzugriffe</strong>
+verwendet. Die anderen beiden Zahlen sind die geschätzte Anzahl an
+Datensätzen (etwas richtiger ist hier der Begriff Tupel), die
+zurückgegeben werden, und die geschätzte Größe eines Datensatzes.
+	</textblock>
+
+	<textblock>
+Eine Abfrage besteht aus mehreren Teilen. Die Kosten jedes Teiles
+schließen immer die aller nach unten folgenden Teile ein.
+	</textblock>
+	
+	<textblock>
+Ein paar Beispiele dazu.
+	</textblock>
+
+<!--	
+**** layout: die erste Zeile ist *jeweils* Prompt, Rest Ausgabe
+-->
+	<shell>
+	 <output>
+regression=# EXPLAIN SELECT * FROM tenk1;
+NOTICE:  QUERY PLAN:
+
+Seq Scan on tenk1  (cost=0.00..333.00 rows=10000 width=148)
+	 </output>
+	</shell>
+    
+	<textblock>
+Man sieht: Es ist ein vollständiges durchgehen der Tabellen tenk1
+notwendig (Seq Scan heißt sequentiell). Mit der Ausgabe kann
+sofort begonnen werden, nach 333 Zugriffen ist sie nach 10000
+Datensätzen beendet. Die 333 Zugriffe entstehen hier übrigens
+durch 233 Diskzugriffe und 10000 * cpu_tuple_cost (Voreinstellung
+ist 0.01), also 233 + 100 == 333.
+	</textblock>
+
+	<shell>
+	 <output>
+regression=# EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 1000;
+NOTICE:  QUERY PLAN:
+
+Seq Scan on tenk1  (cost=0.00..358.00 rows=1007 width=148)
+	 </output>
+	</shell>
+    
+	<textblock>
+Man sieht, das immer noch die gesamte Tabelle gelesen werden
+muss. Es werden weniger Datensätze erwartet (natürlich ist der
+Wert nur geschätzt und nicht wirklich aussagekräftig). Die Kosten
+sind durch die zusätzlich benötigte Vergleichszeit etwas
+gestiegen. Es wird immer noch kein Index verwendet, weil er sich
+nicht lohnt.
+	</textblock>
+
+	<textblock>
+Oft liefert Abfragen jedoch nicht solche Mengen an Daten:
+	</textblock>
+
+	<shell>
+	 <output>
+regression=# EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 50;
+NOTICE:  QUERY PLAN:
+
+Index Scan using tenk1_unique1 on tenk1  (cost=0.00..181.09 rows=49 width=148)
+	 </output>
+	</shell>
+
+	<textblock>
+Hier ist die Bedingung so, dass nur noch 49 Datensätze erwartet
+werden. Daher entscheidet der Planer, den Index zu verwenden.
+Da hier nur 50 Datensätze erwartet werden, ist die Verwendung
+eines Index billiger, obwohl jeder einzelne Datensatz langsamer
+geladen wird (Festplatten lesen Folgedaten schneller).
+	</textblock> 
+
+<!--	
+***layout: achtung, zwei Zeilen Prompt!
+-->
+
+	<shell>
+	 <output>
+regression=# EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50
+regression-# AND t1.unique2 = t2.unique2;
+NOTICE:  QUERY PLAN:
+
+Nested Loop  (cost=0.00..330.41 rows=49 width=296)
+  ->  Index Scan using tenk1_unique1 on tenk1 t1
+               (cost=0.00..181.09 rows=49 width=148)
+  ->  Index Scan using tenk2_unique2 on tenk2 t2
+               (cost=0.00..3.01 rows=1 width=148)
+	 </output>
+	</shell>
+    
+	<textblock>
+In diesem etwas komplizierteren Beispiel wird zusätzlich eine
+zweite Tabelle benutzt, die über einen <command>Join</command> verbunden ist. Man
+sieht, das der Planer einen <command>Indexscan</command> ausgewählt hat. Durch den
+<command>Join</command> entsteht ein <command>Loop</command> mit zwei Teilen. Zunächst wird die Tabelle
+tenk1 über den Index durchgearbeitet. Die Kosten sind natürlich
+die gleichen im Beispiel davor (gleiche Bedingung:<command> WHERE unique1
+&lt; 50</command>). Mit dem Wert unique2, der aus tenk1 gelesen wurde (genauer
+gesagt, sind das ja insgesamt 49 Werte!), wird nun ein passender
+Eintrag in tenk2 gesucht. Der Planer erwartet genau einen
+Treffer und verwendet daher wieder einen Index (der
+glücklicherweise auch verfügbar ist). Diese Teilabfrage gilt für
+einen konstanten Wert unique2 (je einen der insgesamt 49). Damit
+ist der Zugriff vergleichsweise billig (3).
+	</textblock> 
+
+	<textblock>
+Die zweite Teilabfrage wird nun für jeden der 49 Werte
+durchgeführt. Die Kosten sind also 49 * 3 == 147. Dazu kommen die
+181 des vorherigen Teils (der die 49 Werte überhaupt erstmal
+lieferte), macht zusammen 147 + 181 == 328. Dazu kommt noch etwas
+Rechenzeit für den <command>Join</command> (hier ca. 2). Macht dann zusammen 330.
+	</textblock>
+
+	<textblock>
+330 sind auch die Kosten, die der Planer für den Loop
+ausgerechnet hat. Es 49 Datensätze (es wird ja erwartet, das
+jeweils ein Datensatz passt), nur das die etwas größer sind, also
+vorher (sind ja durch einen <command>Join</command> verbunden).
+	</textblock>
+
+	<textblock>
+Der Planer hat sich entschieden, einen <command>nested-loop join</command> (etwa:
+<strong>geschachtelte Schleife</strong>) zu verwenden. Man kann über Variablen
+den Planer beeinflussen. In der Praxis bringt das so gut wie nie
+Vorteile. Beispielsweise kann man dem Planer sagen, dass er
+<command>nested-loop join</command> nicht verwenden soll:
+	</textblock>
+
+	<shell>
+	 <output>
+regression=# set enable_nestloop = off;
+SET VARIABLE
+
+***layout: achtung, zwei Zeilen Prompt!
+regression=# EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 50
+regression-# AND t1.unique2 = t2.unique2;
+NOTICE:  QUERY PLAN:
+
+Hash Join  (cost=181.22..564.83 rows=49 width=296)
+  ->  Seq Scan on tenk2 t2
+               (cost=0.00..333.00 rows=10000 width=148)
+  ->  Hash  (cost=181.09..181.09 rows=49 width=148)
+        ->  Index Scan using tenk1_unique1 on tenk1 t1
+               (cost=0.00..181.09 rows=49 width=148)
+	 </output>
+	</shell>
+    
+	<textblock>
+Der Planer kommt nun mit einem anderen Plan. Zunächst werden
+wieder die 49 Datensätze aus tenk1 mit Indexunterstützung
+geladen. Die Werte werden nun aber erst alle geladen, und in
+einem Hash gespeichert. Man sieht das gut an den Anfangskosten
+für den Hash: sie entsprechen den Gesamtkosten für den Indexscan
+(da der Hash anschließend gebaut wird, und sehr schnell fertig
+ist).
+	</textblock>
+
+	<textblock>
+Anschließend wird die Tabelle tenk2 sequentiell durchsucht, ob
+irgendwo der Wert unique2 aus der Tabelle zu einem der im Hash
+gespeicherten Werte passt. Dies muss ja nun für alle 10.000
+Datensätze gemacht werden (<command>nestloop</command> ist ja <strong>verboten</strong>).
+	</textblock>
+
+	<textblock>
+Sobald mit dem Scan über tenk2 begonnen wurde, sind die ersten
+Treffer zu erwarten. Die Anfangskosten des Joins entsprechen also
+den Kosten, die anfallen, bis mit tenk2 begonnen werden kann
+(vorher kommt ja keine Ausgabe), also den Gesamtkosten des
+ersten Indexscans. Dazu kommen die 333 für den sequentiellen Scan
+über tenk2, macht 514.09. Die restlichen 50 gehen für
+Rechenleistung drauf; schließlich muss mit jedem der 10000
+Datensätze eine Test auf den vorher gespeicherten Hash gemacht
+werden. Die erwarten Kosten sind wesentlich höher als vorhin,
+daher hat der Planer vorhin auch einen <command>nestloop</command> verwendet.
+	</textblock>
+
+	<textblock>
+Weitere Variablen, die bestimmte Pläne vermeiden, sind:
+<command>ENABLE_HASHJOIN</command>, <command>ENABLE_INDEXSCAN</command>, <command>ENABLE_MERGEJOIN</command>, <command>ENABLE_SEQSCAN</command>
+<command>ENABLE_SORT</command> und <command>ENABLE_TIDSCAN</command>. Auch diese können auf <strong>off</strong>
+gesetzt werden, um anzuzeigen, dass sie zu vermeiden sind. Wie
+bereits gesagt, lassen sich nur schwer Fälle konstruieren, wo das
+was bringt.
+	</textblock> 
+
+	<textblock>
+<command>EXPLAIN</command> kann auch um <command>ANALYZE</command> erweitert werden. Dann wird die
+Abfrage tatsächlich ausgeführt, und auch die wirklichen Werte
+werden ausgegeben.
+	</textblock>
+
+<!--	
+***layout: achtung, drei Zeilen Prompt!
+-->
+	
+	<shell>
+	 <output>
+regression=# EXPLAIN ANALYZE
+regression-# SELECT * FROM tenk1 t1, tenk2 t2
+regression-# WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
+NOTICE:  QUERY PLAN:
+
+Nested Loop  (cost=0.00..330.41 rows=49 width=296)
+             (actual time=1.31..28.90 rows=50 loops=1)
+  ->  Index Scan using tenk1_unique1 on tenk1 t1
+               (cost=0.00..181.09 rows=49 width=148) 
+               (actual time=0.69..8.84 rows=50 loops=1)
+  ->  Index Scan using tenk2_unique2 on tenk2 t2
+               (cost=0.00..3.01 rows=1 width=148) 
+               (actual time=0.28..0.31 rows=1 loops=50)
+Total runtime: 30.67 msec
+	 </output>
+	</shell>
+
+	<textblock>
+Hier wird die tatsächlich benötigte Zeit in Millisekunden
+angezeigt. Man erkennt auch, dass der Planer sich gering
+verschätzt hat, anstatt 49 Datensätzen sind es 50. Es läßt sich
+abschätzen, das ein <strong>Festplattenzugriff</strong> (die Einheit von
+EXPLAIN) hier in etwa 10 Millisekunden dauert.
+	</textblock>
+
+	<textblock>
+Dies mag als Einführung ausreichen. Das Verstehen dieser Ausgaben
+erfordert Übung. Man kann so erkennen, ob und wann Indexe
+verwendet werden, ob sie günstig sind, oder vielleicht gar nicht
+benötigt sind. Dann sollte man sie löschen, dass spart Zeit bei
+Aktualisierungen.
+	</textblock>
+   </section>
+  </section>
+ </split> 
+
+<!-- *. Kapitel -->
+ <split>
+  <section>
+   <heading>
+Ausblick
+   </heading>
+
+   <textblock>
+Es gibt etliches an Dokumentation, die mit <name>PostgreSQL</name> mitgeliefert
+wird.
+   </textblock>
+
+   <textblock>
+Die <name>PostgreSQL</name> Homepage ist <ref lang="en" url="http://www.postgresql.org/">http://www.postgresql.org/</ref>. Hier
+finden sich viele Informationen und sehr viel (englischsprachige)
+Dokumentation. Natürlich ist auch eine <strong>SQL Referenz</strong> vorhanden.
+   </textblock>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Unterschiede/Gemeinsamkeiten zwischen Windows und Linux</title>
+
+  <author>
+  <name>Alexander Fischer</name>
+  <mailto>selflinux@tbanus.org</mailto>
+ </author>
+
+ <layout>
+  <name>Torsten Hemm</name>
+  <mailto>T.Hemm@gmx.de</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>win_vs_linux</index>
+ 
+ <split>
+
+  <section>
+   <heading>
+Vorwort
+   </heading>
+  
+   <textblock>
+In diesem Dokument sollen die wesentlichen Unterschiede
+zwischen Windows und Linux gezeigt werden.
+Denn gerade die Personen, die in die Unix-Welt umsteigen wollen,
+stellen meist die Frage: Was kann Linux, das Windows nicht kann?
+Oder: Kann mir Linux den Komfort bieten, den mir Windows bietet?
+Auf all diese und weitere Fragen werden wir eingehen und dabei
+versuchen, auch für <strong>Laien</strong> verständlich zu sein.
+Wenn Sie dennoch weitere Fragen haben, zögern Sie nicht,
+eine E-Mail an den Autor oder an das SelfLinux-Team
+zu senden.
+   </textblock>
+
+   <textblock>
+Viele der hier aufgeführten Unterschiede gelten übrigens
+für Unix im allgemeinen und nicht nur für Linux. Wir werden
+daher in diesen Fällen meist auch von Unix sprechen. Linux
+als Teil der Unix-Familie ist dann immer mitgemeint. Wenn
+wir von Eigenschaften sprechen, in denen sich Linux womöglich
+von anderen Unix-Varianten unterscheidet, werden wir auch
+jeweils Linux als Bezeichnung verwenden.
+   </textblock>
+  </section>
+ 
+ <section> 
+   <heading>
+Einzel- und Mehrbenutzersysteme
+   </heading>
+
+   <textblock>
+Unix wurde von Anbeginn als ein Mehrbenutzersystem konzipiert.
+Daher benötigen Sie, bevor Sie mit dem System arbeiten können,
+einen <ref chapter="nutzer_unter_linux"  iref="Was ist ein Benutzer?">Benutzernamen</ref>, ein zugehöriges Passwort und im allgemeinen
+auch ein sogenanntes Heimatverzeichnis für Ihre persönlichen Daten.
+Benutzername und Passwort werden auch als Benutzerkonto bezeichnet.
+Anders als bei einigen Windows-Varianten kann ein gewöhnlicher
+Benutzer kein neues Benutzerkonto eröffnen. Diese Aktion ist
+unter Unix nur dem Administrator (root) erlaubt.
+   </textblock>
+   <textblock>
+Unter Unix ist es möglich, dass mehrere Benutzer <strong>gleichzeitig</strong>
+auf ein und demselben Rechner arbeiten. Zu früheren Zeiten wurde
+dies bei Unix-Systemen tatsächlich ausgenutzt, indem man mehrere
+Terminals, d.h. Monitore und Tastaturen, an einen Rechner anschloss,
+die von unterschiedlichen Benutzern verwendet werden konnten.
+Heute wird diese Funktionalität meist über Netzwerkverbindungen
+genutzt. Unterschiedliche Benutzer können sich z.B. auf einem
+besonders leistungsfähigen Rechner von ihrem lokalen und weniger
+leistungsfähigen Rechner aus über ein Netzwerk anmelden, um bestimmte
+rechenintensive Programme oder Dienste zu benutzen. Unix
+verwaltet diese unterschiedlichen Prozesse so, dass die Benutzer
+völlig unabhängig voneinander arbeiten können.
+   </textblock>
+   <textblock>
+Windows ist primär ein Einzelplatzsystem. Frühere, auf MS-DOS basierende
+Windows-Versionen wie Windows 95 / 98 / ME bieten überhaupt keine
+Mehrbenutzerfähigkeit im oben beschriebenen Sinne. Spätere, auf
+NT-Technologie basierende Versionen bieten zwar echte
+Mehrbenutzerfähigkeit auf Prozessebene, aber kaum sinnvolle
+Mechanismen, um auf einer entfernten Maschine komfortabel arbeiten zu
+können. Diese Lücke wird von den <strong>Windows Terminal Server</strong>-Varianten
+geschlossen, für die jedoch zusätzlich die Verwendung spezieller Klienten
+notwendig ist. Insgesamt bietet Windows also ebenfalls
+Mehrbenutzerfähigkeit mit der Möglichkeit der Nutzung entfernter
+Rechner, doch sind entweder die Möglichkeiten recht eingeschränkt
+oder aber die Installation spezieller Windows-Versionen auf Server-
+und Klientenseite erforderlich. Über Gegenwart und Zukunft der .NET
+Technologie wollen wir an dieser Stelle keine Aussage treffen -
+zu ungewiss ist der Ausgang dieses gerade angebrochenen Kapitels.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Das Dateisystem
+   </heading>
+  
+   <textblock>
+Windows und Unix verwenden unterschiedliche Dateisystemtypen. 
+Windows 95 bis ME arbeiten ausschließlich mit den Dateisystemen
+<ref lang="de" url="http://de.wikipedia.org/wiki/FAT16">FAT16</ref> und <ref lang="de" url="http://de.wikipedia.org/wiki/FAT32">FAT32</ref>. Windows NT / 2000 / XP verwenden primär das
+Dateisystem <ref lang="de" url="http://de.wikipedia.org/wiki/NTFS">NTFS</ref>.
+Sicherlich haben Sie diese Begriffe schon einmal gehört, sei es beim
+Partitionieren der Festplatte oder bei sonstigen Arbeiten.
+Unter Linux ist das Dateisystem <ref lang="de" url="http://de.wikipedia.org/wiki/Ext2">EXT2</ref> am weitesten verbreitet,
+aber es gibt weit mehr als ein Dutzend Alternativen. Am 
+interessantesten sind hierbei protokollierende Dateisysteme 
+(engl.: journaling filesystems), die eine größere Fehlertoleranz
+bieten und nach Systemabstürzen keinen umfangreichen Prüfdurchlauf
+durchführen müssen, was gerade bei größeren Festplatten eine
+große Zeitersparnis beim Wiederhochfahren des Systems bedeuten kann. 
+Als protokollierende Dateisysteme werden unter Linux vor allem <ref lang="de" url="http://de.wikipedia.org/wiki/Ext3">EXT3</ref>, 
+<ref lang="de" url="http://de.wikipedia.org/wiki/ReiserFS">ReiserFS</ref>, <ref lang="de" url="http://de.wikipedia.org/wiki/Xfs">XFS</ref> und <ref lang="de" url="http://de.wikipedia.org/wiki/JFS">JFS</ref> verwendet. NTFS ist ebenfalls ein protokollierendes
+Dateisystem, das zumindest für einen lesenden Zugriff auch unter Linux
+unterstützt wird. Generell gilt, dass Sie mit Linux alle unter
+Windows verwendeten Dateisysteme zumindest lesen können. Umgekehrt
+können Sie jedoch mit Windows nicht auf die Linux spezifischen
+Dateisysteme zugreifen.
+   </textblock>
+   <textblock>
+Durch das Dateisystem wird unter anderem bestimmt, wie groß eine 
+Partition sein darf. Aktuelle NTFS-Versionen sind 
+ebenso wie die meisten unter Linux verwendeten Dateisysteme in der 
+Lage, Partitionen bis zur einer Größe von mehreren Terabyte zu 
+verwalten. Die <ref chapter="kernel">Linux-Kernel</ref> der Reihe 2.4.x (oder kleiner) limitierten 
+diese Größe jedoch auf ca. ein Terabyte. Mit der Veröffentlichung 
+von Kernel 2.6 wurde durch die Einführung sogenannter <strong>Large Block 
+Devices</strong> (welche die Verwendung größerer Blöcke auf den Festplatten 
+erlauben) diese Limitierung aufgehoben. Wer extrem hohe Datenmengen
+innerhalb einer Partition verwalten möchte, sollte sich informieren,
+ob dies vom jeweiligen Kernel und Dateisystem unterstützt wird. Für
+normale Benutzer sind Datenmengen im Terabyte-Bereich freilich weit
+jenseits des Üblichen.
+   </textblock>
+   <textblock>
+Linux ist aufgrund der verwendeten Dateisysteme schon sehr viel länger in der
+Lage, lange Dateinamen zu verarbeiten. Dabei braucht man auch keine Rücksicht
+auf die Kombination 8+3 nehmen. Diese wurde vorrangig von MS-DOS eingesetzt.
+   </textblock>
+   <textblock>
+Unix unterscheidet zwischen Groß- und Kleinschreibung.
+In einem Verzeichnis könnten z.B. die Dateien <path>Text.txt</path> und <path>text.txt</path>
+liegen. Es handelt sich dann um unterschiedliche Dateien, die natürlich
+auch potentiell einen unterschiedlichen Inhalt haben.
+   </textblock>
+   <textblock>
+Unter Unix steht es Ihnen frei, wie Sie Ihre einzelnen Dateien benennen.
+Unter Windows müssen Sie häufig auf die Dateiendung achten.
+So sollte z.B. bei einem Textdokument die Endung <path>.txt</path> sein.
+Unter Unix können Sie wählen:
+<path>.txt</path>, <path>.dokument</path>, <path>.privat</path> oder auch ein Dateiname ohne Endung
+sind möglich. Der Punkt in dem Dateinamen stellt nicht eine Trennung
+sondern ein ganz neutrales Zeichen in der Benennung dar.
+Das System erkennt anhand der dateiinternen Kennzeichnungen um welchen
+Dateityp es sich handelt. Ergänzend sollte man allerdings festhalten,
+dass beispielsweise Desktop-Systeme wie <ref lang="en" url="http://www.kde.org/">KDE</ref> oder Web-Browser die
+Möglichkeit bieten, Dateien mit einer bestimmten Endung Applikationen
+zuzuordnen. Diese Zuordnungen sind vom Benutzer konfigurierbar.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Die Zugriffsrechte
+   </heading>
+   <textblock>
+Unter Windows 95/98/ME haben Sie das Problem, dass Sie jede Datei auf dem System
+ansehen, verändern, speichern oder gar löschen können.
+Egal ob es sich nun um eine Systemdatei oder um einem geheimen
+Liebesbrief handelt. Ebenso können Sie jede beliebige Software
+installieren und selbstverständlich auch wieder entfernen.
+Ihnen steht es auch frei, einfach aus Spaß die gesamte Festplatte zu formatieren.
+Das muss leider nicht immer aus bösem Willen geschehen, sondern kann auch einem
+erfahrenen Benutzer aus Unachtsamkeit passieren.
+Auch die so genannten Anmelde-Profile helfen in diesem Fall leider nicht weiter.
+Sie speichern lediglich die persönlichen Einstellungen und den eingerichteten
+Desktop. Es ist trotzdem möglich, dass einzelne Benutzer auf die Daten
+ihrer Mitbenutzer zugreifen.
+   </textblock>
+   <textblock>
+Unter Unix müssen Sie stets mit einem Benutzernamen angemeldet sein.
+Somit weiß das System immer, wer Sie sind. Entsprechend wurden Ihnen vom
+Systemadministrator gewisse Rechte oder Verbote erteilt.
+Sie können auf dem System genau so viel arbeiten, einsehen oder löschen, wie es 
+Ihnen vom Administrator erlaubt wurde.
+Die eigentlichen Systemdateien darf ein normalen Benutzer beispielsweise
+nicht ändern.
+So können Sie nicht aus Versehen das System beschädigen, Konfigurationsdateien
+löschen oder gar die Festplatte formatieren - und aus Absicht ebenso wenig.
+Sie können auch nicht (außer es wurde Ihnen erlaubt) auf die Dateien von
+anderen Benutzern zugreifen oder diese einsehen (ob lokal oder über das Netz).
+Grundsätzlich gilt folgende Regel: Es ist alles verboten, das nicht ausdrücklich
+erlaubt ist. Wundern Sie sich also nicht, wenn Sie einmal die Meldung
+<strong>Permission denied</strong> lesen.
+   </textblock>
+   <textblock>
+Zusätzlich können unter Unix auch so genannte Benutzergruppen erstellt werden.
+In diesen Gruppen können Sie mehrere Benutzer zusammenfassen und eine Datei
+für jede Gruppe individuell freigeben oder verbieten.
+Somit sparen Sie sich die Arbeit, für jeden einzelnen Benutzer eine Datei
+mit den Zugriffsrechten zu versehen.
+Das ist in großen Netzwerken mit vielen Benutzern recht hilfreich und 
+erleichtert die Verwaltung erheblich.
+   </textblock>
+   <textblock>
+Die auf NT-Technologie basierenden Windows-Systeme (NT / 2000 / XP) bieten
+ein ausgereifteres Benutzersystem an, welches viele der Möglichkeiten
+bietet, welche unter Unix bereits vor 30 Jahren üblich waren.
+   </textblock> 
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Das persönliche Verzeichnis - Heimatverzeichnis
+   </heading>
+   <textblock>
+Den Begriff Heimatverzeichnis gibt es unter Windows 95 bis ME
+eigentlich nicht. Wenn sie den Rechner starten, gehört der Computer Ihnen.
+In allen Verzeichnissen können Sie tun und lassen, was Sie wollen, und ebenso
+können Sie überall Ihre Daten speichern.<br/>
+Nehmen Sie Veränderungen an den Systemeinstellungen vor, dann werden diese
+System weit übernommen und gelten ab sofort für den gesamten PC.
+Das so genannte Family-Logon ermöglicht es Ihnen immerhin, Ihren Desktop und
+das Startmenü individuell anzupassen. Alle anderen Einstellungen haben
+globale Auswirkungen.
+   </textblock>
+   <textblock>
+In der Unix-Welt (und selbstverständlich auch unter Linux) existiert für jeden
+Benutzer ein so genanntes Heimatverzeichnis. Nach der Anmeldung befinden
+Sie sich automatisch in Ihrem persönlichen Verzeichnis.
+Dieses Heimatverzeichnis gehört Ihnen, und sie können damit (fast) alles 
+tun und lassen, was sie wollen. Hier können Sie Ihre Daten speichern,
+Ihre E-Mails archivieren und kleinere Programme installieren. Die individuellen
+Einstellungen für Ihren Desktop und für viele andere Programme werden hier ebenso
+gespeichert. Ändern Sie Ihren Desktop, die Einstellungen Ihres E-Mail-Programms
+oder die Schriftfarbe der Konsole, betrifft das die anderen Benutzer in keiner
+Weise. Auch das Betriebssystem selbst wird dadurch nicht verändert.
+Das Heimatverzeichnis ist Ihr privater Bereich, und alle Konfigurationen, die Ihre
+persönliche Arbeitsumgebung betreffen, werden hier gesammelt gespeichert. Diese Daten werden
+weder vom Betriebssystem oder einem anderen Benutzer gebraucht.
+Wenn Sie Ihr Heimatverzeichnis löschen oder zerstören, interessiert das außer
+Ihnen selbst niemanden.
+   </textblock>
+   <textblock>
+In größeren Netzwerken oder Firmen wird das Heimatverzeichnis in der Regel
+für private Dateien und Einstellungen verwendet, und die relevanten Firmendaten
+liegen gesammelt an einer anderen Stelle. Das soll gewährleisten, dass die
+privaten und die business-Dateien getrennt gehalten werden.
+Die Daten in Ihrem Verzeichnis können von keiner anderen Person gelesen,
+geschrieben oder ausgeführt werden, außer Sie erlauben es Ihr.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Der Desktop - grafische Benutzeroberfläche
+   </heading>
+   <textblock>
+Bei den heutigen modernen Betriebssystemen fällt es meist schwer, zwischen
+Kernel und grafischer Benutzeroberfläche zu unterscheiden.
+In den damaligen Zeiten vom MS-DOS war das ganze noch sehr einfach.
+Hier bildete MS-DOS das eigentliche Betriebssystem und Windows wurde
+aus dem Prompt heraus als eine grafische Benutzeroberfläche nachgeladen.
+Seit Windows 95 sind die beiden Komponenten zu einer Einheit verschmolzen.
+Die grafische Oberfläche war und ist ab diesem Zeitpunkt fester Bestandteil
+des Kernels, und lässt sich weder abschalten noch umgehen.
+Microsoft Windows ist zum Betriebssystem geworden.
+   </textblock>
+   <textblock>
+In der Unix-Welt wird nach wie vor eindeutig zwischen Kernel und
+grafischer Oberfläche unterschieden. Unix lässt sich ohne grafische
+Oberfläche betreiben, und gerade im Server-Bereich ist dies auch
+häufig der Normalfall. Über eine Textkonsole lassen sich mittels einer
+Shell alle wichtigen Konfigurationsaufgaben eines Servers komfortabel
+erledigen. Das Aussehen erinnert an MS-DOS, und tatsächlich bilden die
+DOS-Kommandos ja auch nur eine kleine Untermenge der damaligen
+Unix-Kommandos - lediglich die Namen wurden ein wenig abgeändert und
+die Optionen anstelle mittels <command>-</command> durch einen Schrägstrich <command>/</command> übergeben.
+Da eine grafische Oberfläche viele Vorteile hat,
+ist diese auch unter Unix verfügbar. Der wesentliche
+Unterschied liegt darin, dass diese Oberfläche (meist das <ref chapter="was_ist_x">X Window-System</ref>)
+kein fester Bestandteil des Betriebssystemes ist, sondern wie jedes andere
+Programm gestartet werden muss.
+   </textblock>
+   <textblock>
+Mit einem X Window-System können Sie an sich noch nicht viel anfangen.
+Es bietet lediglich eine Reihe grafischer Grundfunktionen an, die
+von anderen Programmen verwendet werden können. 
+Auf diesen Funktionen baut meist ein so genannter Window-Manager auf.
+Dieser stellt beispielsweise Titelleisten und andere Rahmenbedingungen
+für einzelne Fenster bereit und sorgt für die Verwaltung und Anordnung
+unterschiedlicher Fenster auf einer Arbeitsfläche.
+Häufig bildet der Window-Manager seinerseits die Grundlage für
+eine Desktop-Umgebung wie <ref lang="en" url="http://kde.org/">KDE</ref> oder <ref lang="en" url="http://gnome.org/">Gnome</ref>, die den Funktionsumfang
+der grafischen Oberfläche noch erweitern. Es gibt allerdings
+zahlreiche sehr brauchbare Window-Manager, die ohne eine solche 
+Desktop-Umgebung hervorragend zu verwenden sind und bereits einen
+sehr hohen Komfort bieten. Die Vielfalt der verfügbaren Window-Manager
+ermöglicht eine hohe Konfigurierbarkeit der grafischen Oberfläche. 
+All dies mag für Sie ein wenig verwirrend klingen, aber Microsoft Windows
+macht das im Prinzip nicht anders. Nachdem das Betriebssystem geladen wurde,
+startet die Windows-Umgebung (gewissermaßen X Window und der
+Window-Manager in einem). Sie haben unter Microsoft Windows allerdings nicht
+die Wahl, welches Window-System oder welchen Window-Manager Sie
+starten möchten.
+   </textblock>
+  </section>
+ </split>
+
+ <split>  
+  <section>
+   <heading>
+Die Shell
+   </heading>
+   <textblock>
+Ein wichtiger Unterschied zwischen Unix und Windows besteht in der
+Bedeutung der Shell-Verwendung. In den Zeiten von MS-DOS haben Sie Ihre
+Befehle noch am DOS-Prompt eingetippt und ausgeführt. Mit Windows hat
+sich dies grundlegend geändert. Fast alle Programme werden mittels
+Mausklick ausgeführt. Es existiert zwar noch ein DOS-Fenster, doch
+dieses hat fast keinerlei Bedeutung mehr.
+  </textblock>
+  <textblock>
+Unter Unix stellt die Shell nach wie vor ein sehr
+wichtiges Arbeitsmittel dar. Alle Programme können von dort
+gestartet werden (wobei X-Anwendungen natürlich eine X Window-Umgebung
+für den Start benötigen). Die unter Unix verfügbaren Shells sind weit mächtiger
+als die Shell des Kommandozeilenfensters unter Windows.
+  </textblock>
+  <textblock>
+Selbst wenn Sie unter der grafischen Benutzeroberfläche arbeiten, möchten
+Sie sehr oft nicht auf eine Shell verzichten. Sie können dann eine
+Konsolen-Anwendung wie beispielsweise <command>xterm</command> starten, in der Sie eine
+Shell verwenden. 
+  </textblock>
+  <textblock>
+Sie sollten sich aus diesen Gründen unbedingt mit der Funktionsweise
+einer Shell vertraut machen. 
+  </textblock>
+ </section>
+ 
+ <section>
+  <heading>
+Zeilenumbrüche
+  </heading>
+  <textblock>
+Dateien werden in <ref lang="de" url="http://de.wikipedia.org/wiki/Binärdatei">Binärdateien</ref> und <ref lang="de" url="http://de.wikipedia.org/wiki/ASCII">ASCII</ref>-Dateien unterteilt.
+ASCII-Dateien zeichnen sich durch die besondere Bedeutung von
+Zeilenumbrüchen aus: Am Ende einer Zeile wird durch eine
+spezielle Zeichenkombination der Zeilenumbruch markiert.
+Leider gibt es für die Verwendung dieser Zeichenkombination
+keinen Betriebssystem übergreifenden Standard. Und tatsächlich
+unterscheiden sich Windows und Unix in der Handhabung von 
+Zeilenumbrüchen. Unter Unix wird ein sogenannter Zeilenvorschub
+(engl.: line feed, ASCII-Zeichen <strong>LF</strong>) als Markierung eines Zeilenendes
+verwendet. Macintosh verwendet übrigens das Zeichen für Wagenrücklauf
+(engl.: carriage return, ASCII-Zeichen <strong>CR</strong>). Und Windows benutzt eine
+Kombination dieser beiden Zeichen, nämlich <strong>CR-LF</strong>. Das bedauerliche
+Ergebnis dieser Unterschiede ist, dass Textdateien, die nicht
+den für das jeweilige System typischen Zeilenumbruch verwenden,
+häufig unbrauchbar sind. Im einfachsten Fall werden sie in einem
+Editor falsch dargestellt oder enthalten Schmierzeichen. In
+schlimmeren Fällen schlägt das Parsen von Textdateien innerhalb
+einer Anwendung fehl und verursacht damit gravierendere Probleme.
+  </textblock>
+  <textblock>
+Um derartige Probleme zu beheben, kann man ein Programm zur
+Konvertierung der betreffenden Dateien einsetzen.
+Das ist eigentlich nicht weiter kompliziert, da jeweils nur
+die Zeichenkombination, welche das Zeilenende markiert, an
+das jeweilige Betriebssystem angepasst werden muss.
+  </textblock>
+  <textblock>
+Für den Datenaustausch wird meist ein <command>FTP</command>-Programm (File Transfer Protocol)
+verwendet. Aktuelle <command>FTP</command>-Programme haben eine Umschaltmöglichkeit zwischen
+ASCII- und Binärmodus. Binärdateien werden hier unverändert übertragen,
+während ASCII-Dateien vor der Abspeicherung entsprechend konvertiert werden.
+Allerdings wissen die <command>FTP</command>-Programme leider nicht, welche Ihrer Dateien in
+welchem Format gespeichert sind. Das heißt, dass Sie bei jedem Transfer angeben
+müssen, in welchem Format (ASCII oder binär) die Datei vorliegt.
+Sie können prinzipiell alle Dateien im Binär-Modus übertragen. Bei 
+Textdateien sollten Sie jedoch in den ASCII-Modus umschalten. 
+Damit wird gewährleistet, dass die Dateien konvertiert werden.
+FTP dient primär dem Datenaustausch. Die Konvertierung der Zeilenenden
+ist nur eine Nebenfunktion. Für die korrekte Verwendung müssen Sie
+selbst sorgen.
+   </textblock>
+ </section> 
+</split>
+
+<split>
+ <section>
+  <heading>
+Befehlsunterschiede MS-DOS / Linux
+  </heading>
+  <textblock>
+Es folgt eine Liste der wichtigsten Befehle von MS-DOS
+und ihr Analogon in Linux.
+Dies soll Ihnen beim Einstieg in die
+Benutzung der Shell ein wenig helfen.
+  </textblock>
+
+   <table>
+    <pdf-column width="75"/>
+    <pdf-column width="75"/>
+    <pdf-column/>
+    <tr>
+     <td width="100"><command>attrib</command></td>
+     <td width="100"><command>chmod</command></td>
+     <td>Dateiattribute (wie <strong>schreibgeschützt</strong>)
+      ändern</td>
+    </tr>
+    <tr>
+     <td><command>chkdsk</command></td>
+     <td><command>fsck</command></td>
+     <td>Den Datenträger überprüfen</td>
+    </tr>
+    <tr>
+     <td><command>cd</command></td>
+     <td><command>cd</command></td>
+     <td>Verzeichnis wechseln</td>
+    </tr>
+    <tr>
+     <td><command>cd</command></td>
+     <td><command>pwd</command></td>
+     <td>Anzeigen der Position im Verzeichnisbaum</td>
+    </tr>
+    <tr>
+     <td><command>copy</command></td>
+     <td><command>cp</command></td>
+     <td>Dateien kopieren</td>
+    </tr>
+    <tr>
+     <td><command>date, time</command></td>
+     <td><command>date</command></td>
+     <td>Zeit und Datum anzeigen / ändern</td>
+    </tr>
+    <tr>
+     <td><command>del</command></td>
+     <td><command>rm</command></td>
+     <td>Dateien löschen</td>
+    </tr>
+    <tr>
+     <td><command>deltree</command></td>
+     <td><command>rm -R</command></td>
+     <td>Einen Verzeichnisbaum löschen</td>
+    </tr>
+    <tr>
+     <td><command>diskcopy</command></td>
+     <td><command>dd</command></td>
+     <td>Eine Diskette kopieren</td>
+    </tr>
+    <tr>
+     <td><command>dir</command></td>
+     <td><command>ls</command></td>
+     <td>Den Inhalt eines Verzeichnisses anzeigen</td>
+    </tr>
+    <tr>
+     <td><command>dir</command></td>
+     <td><command>df</command></td>
+     <td>Anzeige des verwendeten Speichers von Dateisystemen</td>
+    </tr>
+    <tr>
+     <td><command>echo</command></td>
+     <td><command>echo</command></td>
+     <td>Einen Text auf dem Bildschirm ausgeben lassen</td>
+    </tr>
+    <tr>
+     <td><command>fc</command></td>
+     <td><command>diff</command></td>
+     <td>Dateien miteinander vergleichen</td>
+    </tr>
+    <tr>
+     <td><command>fdisk</command></td>
+     <td><command>fdisk</command></td>
+     <td>Festplatte partitionieren</td>
+    </tr>
+    <tr>
+     <td><command>find</command></td>
+     <td><command>grep</command></td>
+     <td>Dateien nach einem Schlüsselwort durchsuchen</td>
+    </tr>
+    <tr>
+     <td><command>find</command></td>
+     <td><command>find</command></td>
+     <td>Eine Datei suchen</td>
+    </tr>
+    <tr>
+     <td><command>format</command></td>
+     <td><command>mkfs</command></td>
+     <td>Einen Datenträger formatieren</td>
+    </tr>
+    <tr>
+     <td><command>md, mkdir</command></td>
+     <td><command>mkdir</command></td>
+     <td>Ein neues Verzeichnis erstellen</td>
+    </tr>
+    <tr>
+     <td><command>more</command></td>
+     <td><command>more, less</command></td>
+     <td>Den Inhalt einer Datei am Screen ausgeben lassen</td>
+    </tr>
+    <tr>
+     <td><command>move</command></td>
+     <td><command>mv</command></td>
+     <td>Datei oder Verzeichnis verschieben</td>
+    </tr>
+    <tr>
+     <td><command>rd, rmdir</command></td>
+     <td><command>rmdir</command></td>
+     <td>Ein Verzeichnis löschen</td>
+    </tr>
+    <tr>
+     <td><command>rename</command></td>
+     <td><command>mv</command></td>
+     <td>Datei oder Verzeichnis umbenennen</td>
+    </tr>
+    <tr>
+     <td><command>sort</command></td>
+     <td><command>sort</command></td>
+     <td>Dateien oder Verzeichnisse sortieren</td>
+    </tr>
+    <tr>
+     <td><command>type</command></td>
+     <td><command>cat</command></td>
+     <td>Den Inhalt einer Datei auf den Bildschirm ausgeben</td>
+    </tr>
+    <tr>
+     <td><command>xcopy</command></td>
+     <td><command>cp -a</command></td>
+     <td>Mehrere Dateien oder ganze Verzeichnisse kopieren</td>
+    </tr>
+   </table> 
+  </section>
+ </split> 
+</chapter>

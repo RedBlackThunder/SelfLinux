@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Was ist Unix?</title>
+
+ <author>
+  <name>Florian Fredegar Haftmann</name>
+  <mailto>florian.haftmann@stud.tu-muenchen.de</mailto>
+ </author>
+
+ <layout>
+  <name>Alexander Fischer</name>
+  <mailto>Selflinux@tbanus.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>was_ist_unix</index>
+
+ <description>
+  <textblock>
+Zwei Definitionsversuche:
+  </textblock>
+
+  <quotation>
+"Strictly, UNIX is a trademark administered by X/Open and refers to a
+computing operating system that conforms to the X/Open specification
+XPG4.2. This specification, also known as SPEC1170, defines the names
+of, interfaces to and behaviors of all UNIX operating system functions."
+  </quotation>
+
+  <textblock>
+(aus <name>Beginning Linux Programming</name>, Wrox Press 1996).
+  </textblock>
+
+  <quotation>
+"UNIX ist das Betriebssystem der Zukunft und das schon
+seit über 30 Jahren!" - so ein ironischer Spruch eines
+<name>nicht-UNIXers</name>.
+  </quotation>
+
+ </description>
+
+
+<split>
+ <section>
+  <heading>
+Die Geburt von UNIX
+  </heading>
+
+  <textblock>
+Spaß beiseite. <ref lang="en" url="http://www.unix.org/">UNIX</ref> ist die Oberbezeichnung für eine Familie
+von Betriebssystemen, die alle sehr ähnlich aufgebaut sind
+und zum großen Teil sogar vom gleichen "Urahn" abstammen.
+  </textblock>
+
+  <textblock>
+UNIX-Systeme laufen heutzutage auf jedem Rechner, vom <ref lang="de" url="http://de.wikipedia.org/wiki/Embedded_System">Embedded
+System</ref> bis zum <ref lang="de" url="http://de.wikipedia.org/wiki/Mainframe">Mainframe</ref>, was insbesondere auch ein Verdienst
+von Linux ist.
+  </textblock>
+
+  <textblock>
+Die Geschichte von UNIX liest sich stellenweise wie ein
+Heldenepos oder ein Kriminalroman, manchmal auch wie eine
+Groteske. Schon die Geburt von UNIX vollzog sich unter
+eigenartigen Umständen, denn es entsprang einem
+gescheiterten Projekt: Anfang 1969
+gab es ein Gemeinschaftsprojekt des <ref lang="en" url="http://web.mit.edu/">MIT</ref>, <name>General Electric</name>
+und den <ref lang="en" url="http://www.bell-labs.com/">Bell Labs</ref> von <ref lang="de" url="http://de.wikipedia.org/wiki/AT%26T">AT&amp;T</ref>, das Ideen für eine neue Generation
+von Betriebssystemen gesammelt hatte und daranging, diese Ideen
+unter dem Namen <ref lang="en" url="http://www.multicians.org/">Multics</ref> umzusetzen. Da weder
+Zeitplan noch Budget eingehalten werden konnten, zog sich
+<name>Bell Labs</name> sehr schnell aus dem Projekt zurück. <ref lang="de" url="http://de.wikipedia.org/wiki/Ken_Thompson">Ken Thompson</ref>
+und <ref lang="de" url="http://de.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</ref>, zwei Mitarbeiter von <name>Bell Labs</name>, die an
+<name>Multics</name> mitgearbeitet hatten, waren von den Einfällen und
+Erfahrungen, die sie mit <name>Multics</name> gesammelt hatten, so
+beeindruckt, dass sie kurzerhand eine abgespeckte Version
+des ursprünglichen <name>Multics</name> selbst schrieben und unter dem
+Namen <name><strong>Unics</strong></name>, später <name><strong>UNIX</strong></name>, in die Welt setzten.
+  </textblock>
+
+  <textblock>
+Eine der Hauptmotivationen für UNIX war jedoch ein Spiel, das Thompson in
+seiner Freizeit geschrieben hatte. Um sein Spiel <ref lang="en" url="http://www.fas.harvard.edu/~lib215/reference/history/spacetravel.html">Space Travel</ref> auf
+eine PDP-7 zu portieren, benötigte Thompson u. a. ein Dateisystem,
+um das Spiel dauerhaft auf die PDP-7 zu speichern. (Zur
+Cross-Compilierung wurden noch Lochstreifen benutzt, die vom
+GECOS-System zur PDP getragen wurden.)
+  </textblock>
+
+  <textblock>
+Übrigens:<br/>
+Unics bzw. UNIX enthält ein zweifaches Wortspiel: Zum einen
+die Vorsilbe Uni- als Gegenstück zu Multi-, zum anderen
+wird UNIX genauso gesprochen wie <name>"Eunuchs"</name> - typischer
+Programmiererhumor dieser Zeit.
+  </textblock>
+
+  <textblock>
+UNIX gewann sehr schnell eine große Verbreitung innerhalb
+der <name>Bell Labs</name>. <name>AT&amp;T</name> war es aufgrund einer kartellgerichtlichen
+Entscheidung verwehrt, beliebig im kommerziellen Feld
+tätig zu werden, so auch im Falle von UNIX. Stattdessen
+lizenzierte <name>AT&amp;T</name> UNIX gegen nominelle Gebühren an Universitäten,
+an denen UNIX seinen ersten Siegeszug antrat.
+  </textblock>
+
+  <textblock>
+Eine besondere Rolle kam dabei der <name>University of California</name> in
+Berkeley zu, die einen eigenen Zweig des UNIX-Systems hervorgebracht
+hat, die <name>Berkeley Software Distribution</name>, kurz <name>BSD</name>. Sie war eng mit
+dem Quellcode von <name>AT&amp;T</name> verwoben, zur Verwendung benötigte man
+also ebenfalls eine Lizenz von <name>AT&amp;T</name>.
+  </textblock>
+
+  <textblock>
+Auch das Interesse kommerzieller Anbieter an UNIX war geweckt worden:
+Sie erwarben Quellcode-Lizenzen von <name>AT&amp;T</name> und brachten eigene,
+meistens auf besondere Hardware abgestimmte UNIX-Varianten heraus.
+  </textblock>
+ </section>
+ </split>
+
+ <split>
+ <section>
+  <heading>
+Eigenschaften von UNIX
+  </heading>
+
+  <textblock>
+Was ist nun das Besondere, das UNIX auszeichnet?
+UNIX hatte Eigenschaften, die heute zwar selbstverständlich geworden sind,
+aber damals noch recht neu waren:
+  </textblock>
+
+  <ul>
+   <li>
+ein hierarchisches Dateisystem, d. h. die Möglichkeit, Dateien in
+Ordnern zu strukturieren - die ersten DOS-Versionen ab 1980
+beherrschten dies noch nicht.
+   </li>
+   <li>
+<ref chapter="userverwaltung" iref="Grundlagen">Multitasking</ref>, d. h. mehrere Programme (oder Prozesse) können
+gleichzeitig laufen, ohne sich zu stören. Von Anfang an war dieses
+Multitasking preemptiv, d. h. die Steuerung und Zuteilung
+des Prozessors wird direkt vom Betriebssystemkern übernommen, ohne
+dass einzelne Programme fehlerhaft oder böswillig das ganze System
+in den Abgrund ziehen können - bei <name>Windows</name> und <name>Mac</name> war man erst
+in der zweiten Hälfte der 90er Jahre auf dem Weg dorthin.
+   </li>
+   <li>
+<ref chapter="userverwaltung">Multiuser-System</ref>, d. h. mehrere Benutzer können am gleichen System
+arbeiten und ihre Daten und Ressourcen beliebig für den Zugriff
+durch andere Benutzer sperren oder freigeben. Es können auch mehrere
+Benutzer am System gleichzeitig arbeiten, wenn die Hardware es zulässt
+(z. B. zusätzliche Konsolen oder Arbeiten über Netzwerkverbindung).
+   </li>
+   <li>
+Netzwerkfähigkeit, schon sehr früh wurden die UNIX-Kernel mit
+einem TCP/IP-Stack ausgestattet und bildeten so sehr schnell
+das Rückgrat des damals noch jungen Internets.
+   </li>
+  </ul>
+
+  <textblock>
+Darüber hinaus haben UNIX-Systeme charakteristische Eigenschaften:
+  </textblock>
+
+  <ul>
+    <li>
+ UNIX war unabhängig von irgendeiner bestimmten Hardwareplattform.
+  Die meisten Betriebssysteme damals (und auch noch heute) waren auf
+  einen bestimmten Prozessortyp zugeschnitten, und diese Abhängigkeit
+  setzte sich fort in den Programmen, die für diese Systeme geschrieben
+  wurden. UNIX abstrahiert so weit von der Hardware, dass es möglich
+  wird, das System auf andere Plattformen zu portieren und dann
+  UNIX-Programme ohne große Änderungen dort laufen zu lassen.
+  Zwar gab es schon damals standardisierte Programmiersprachen,
+  die auf mehreren Plattformen verfügbar waren, aber immer in
+  leicht abgewandelter Form, so dass es praktisch unmöglich war,
+  einfach portierbare Programme zu schreiben.<br/>
+  Ein Grund für die Portabilität lag darin, dass UNIX nicht in <name>Assembler</name>
+  sondern in <name>C</name> programmiert war (eine Hochsprache, die 1972 von <name>Thompson</name>
+  und <name>Ritchie</name> entwickelt wurde). Zunächst war der UNIX-Code jedoch,
+  obwohl er zum großen Teil in <name>C</name> geschrieben war, sehr stark an die
+  Architektur der PDP gebunden. Erst mit UNIX Release 7 (1979) wurde
+  der Code wirklich portabel.
+    </li>
+    <li>
+ UNIX kommt von Hause aus mit einer Fülle an Entwicklungswerkzeugen und
+  Bibliotheken: man muss nicht erst lange
+  viel Software nachinstallieren, sondern findet das Wichtigste
+  schon vor und kann davon ausgehen, dass auf jedem entsprechenden
+  UNIX-System das gleiche vorhanden sein wird.<br/>
+  Ein legendäres Programm, das schnell zum Grundbestandteil eines
+  UNIXes wurde, war z. B. die Shell <command>sh</command>, die <name>Steve Bourne</name> schrieb. Der
+  Linuxgemeinde ist sein Name in der allseits bekannten <ref chapter="bash_basic">bash</ref> (<name>Bourne
+  Again Shell</name>) überliefert.
+    </li>
+    <li>
+ Zahlreiche Aufgaben lassen sich unter UNIX sehr einfach automatisieren.
+    </li>
+    <li>
+ UNIX verfügt über elegante Programmierkonzepte, die dem ästhetischen
+  Empfinden vieler Programmierer entgegenkommen.
+    </li>
+   </ul>
+
+   <textblock>
+Zur Schreibweise: Sowohl "UNIX" als auch "Unix" sind gültige Schreibweisen.
+UNIX (in dieser Schreibweise) ist darüber hinaus ein eingetragenes
+Warenzeichen der Open Group, was bei der Auswahl der Schreibweise ggf.
+eine Rolle spielen kann. Innerhalb von SelfLinux hat eine mögliche
+unterschiedliche Verwendung durch die Autoren keine Bedeutung.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Die Zersplitterung von UNIX und Standardisierungsbestrebungen
+   </heading>
+
+   <textblock>
+1984 trennte sich <ref lang="de" url="http://de.wikipedia.org/wiki/AT%26T">AT&amp;T</ref> von etlichen Tochterfirmen, womit
+ihr auch gestattet wurde, sich als gewöhnlicher Wettbewerber
+auf dem Computermarkt zu betätigen. Damit wurden auch
+die Lizenzgebühren für UNIX drastisch angehoben und der Zugang
+zum Quellcode mehr und mehr eingeschränkt. Die Folge war, dass die
+Kooperation zwischen den Firmen, die UNIX kommerziell vermarkteten,
+immer mehr zurückging und jeder in "seiner" UNIX-Version seine eigenen
+Erweiterungen und Verbesserungen einbaute, bis UNIX heillos in
+unterschiedliche Versionen aufgesplittert war: <name>SunOS</name> von <name>SUN</name>, <name>HP-UX</name> von
+<name>Hewlett-Packard</name>, <name>AIX</name> von <name>IBM</name>, <name>Ultrix</name> von <name>Digital</name>, <name>SINIX</name> von <name>Siemens</name>,
+auch <name>Microsoft</name> versuchte sich auf dem UNIX-Markt mit <name>Xenix</name>.
+Ein großer Vorteil, die leichte Portierbarkeit der UNIX-Programme,
+drohte mit dieser Zersplitterung zu verschwinden und viele Stimmen
+prophezeiten auch ein mittelfristiges Ende von UNIX.
+   </textblock>
+
+   <textblock>
+Als <name>AT&amp;T</name> nach der Zerschlagung als Wettbewerber auftreten durfte,
+versuchte es auch, einen Standard zu schaffen: <ref lang="en" url="http://www.caldera.com/developers/devspecs/">System V</ref>
+(wobei das V für die Zahl 5 steht und nicht für den Buchstaben,
+also "System Five" gesprochen).
+   </textblock>
+
+   <textblock>
+1985 brachte <name>AT&amp;T</name> das <name>"System V Interface Definition"</name> oder auch "lila
+Buch" heraus. Dieses Dokument stellte ein Standard für die
+UNIX-Schnittstellen dar. Zusätzlich enthielt es auch eine Menge
+Werkzeuge, die ein System auf die Konformität mit dem Standard V
+überprüfte. Diese von <name>AT&amp;T</name> 1983 freigegebene Version <name>"UNIX System V"</name>
+war zu dieser Zeit die domierende Version, dies stellte den Versuch
+dar, die Hersteller auf einen Standard zu einen. Wegen des Widerstandes,
+der unter anderem dadurch entstand, dass man sich nicht von einer
+einzigen Firma
+abhängig machen wollte, entstanden im Laufe der Zeit andere Standards,
+so z. B.
+<ref lang="en" url="http://standards.ieee.org/regauth/posix/">POSIX</ref> (Portable Operating System based on UNIX).
+Weil <name>AT&amp;T</name> alle Rechte an dem Namen UNIX hatte, wurde vom <ref lang="en" url="http://www.ieee.org/portal/index.jsp">IEEE</ref>
+(Institute of Electrical and Electronic Engineers) dieser Name für
+diesen Standard gewählt. Ein anderes Beispiel hierfür ist
+<name>X/Open</name>: Das X/Open Konsortium ist ein Zusammenschluss verschiedener
+Computerhersteller, die einen De-Facto-Standard schaffen wollten. 1988
+wurde der X/Open Portability Guide veröffentlicht.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+UNIX, GNU &amp; Linux
+   </heading>
+
+   <textblock>
+All diesen Standardisierungsversuchen blieb der Durchbruch verwehrt.
+Erfolg hatte dagegen ein Projekt, gestartet Anfang der 80er-Jahre
+am <name>MIT</name> von
+<ref lang="de" url="http://de.wikipedia.org/wiki/Richard_Stallman">Richard Matthew Stallman</ref>, dem "letzten Hacker der Altvorderenzeit",
+das <ref lang="en" url="http://www.gnu.org/">GNU-Projekt</ref>: GNU's Not UNIX. Sein Ziel war es, von Grund auf ein neues,
+UNIX-ähnliches Betriebssystem zu schreiben, das frei verfügbar sein sollte.
+Durch seinen intensiven Einsatz und Beiträge
+anderer Programmierer entstand bis Ende der 90er eine beachtliche und
+leistungsstarke <ref lang="en" url="http://www.gnu.org/directory/">Sammlung an UNIX-Werkzeugen</ref>. Auch wenn das System bislang nicht
+vollständig ist, konnten sich die GNU-Werkzeuge dennoch auf vielen UNIX-Varianten
+etablieren, unter anderem auch deshalb, da einzelne
+UNIX-Anbieter ihre Einnahmequellen noch etwas auszubauen gedachten.
+Mit dem Grundpaket wurde z. B. kein C-Compiler mitgeliefert, worauf viele
+Systembetreuer, um Geld zu sparen, auf <name>Stallmans</name> <ref lang="en" url="http://gcc.gnu.org/">GNU C-Compiler</ref>
+zurückgriffen, der ohnehin qualitativ besser war. So wurden die GNU-Werkzeuge
+ein systemübergreifender Quasi-Standard.
+Die freie Entwicklungsmethode hatte erreicht, woran die proprietären
+Standardisierungsversuche bislang gescheitert waren.
+   </textblock>
+
+   <textblock>
+Bemerkenswert: Als <name>Stallman</name> den Entschluss fasste, GNU zu starten,
+hatte er noch nie mit UNIX gearbeitet, geschweige denn eine Zeile
+C-Code programmiert. Alles, was er wusste, waren ein paar grundlegende
+Konzepte und die Tatsache, dass UNIX seine Plattformunabhängigkeit
+bereits unter Beweis gestellt hatte.
+   </textblock>
+
+   <textblock>
+Auch von akademischer Seite wurde der immer zugeknöpfteren Haltung
+der UNIX-Vertreiber begegnet: Zu Anfang wurde der Quellcode von <name>AT&amp;T</name>
+den Universitäten offen zur Verfügung gestellt und so vielerorts
+als Tutorial für die Arbeitsweise eines Betriebssystems verwendet.
+Als <name>AT&amp;T</name> den Quellcode unter Verschluss brachte, fiel diese Möglichkeit
+weg. <ref lang="de" url="http://de.wikipedia.org/wiki/Andrew_Tanenbaum">Andrew S. Tanenbaum</ref>, Informatik-Professor an der Freien Universität
+Amsterdam, entschloss sich daher, für seine Studenten eine eigene
+Version von UNIX zu schreiben, die nichts mit dem urheberrechtlich
+geschützten Code von <name>AT&amp;T</name> zu tun hatte. Nach zwei Jahren harter Arbeit
+brachte er sein System unter dem Namen <ref lang="en" url="http://www.cs.vu.nl/~ast/minix.html">Minix</ref> heraus. Es war weniger
+für die praktische Arbeit, sondern in erster Linie als Lehrobjekt gedacht.
+Dennoch wurde es von sehr vielen Studenten auch praktisch auf dem
+heimischen PC eingesetzt, da es im Gegensatz zu den kommerziellen
+UNIX-Varianten für einen moderaten Preis zu haben war. Allerdings stieß <name>Minix</name>
+in diesem Einsatzgebiet sehr schnell an seine Grenzen. Viele seiner
+Anwender machten <name>Tanenbaum</name> Vorschläge und schickten Patches für
+Erweiterungen und Verbesserungen. <name>Tanenbaum</name> allerdings war damit
+sehr zurückhaltend. Da er <name>Minix</name> in erster Linie als Tutorial sah,
+kam es ihm mehr auf eine knappe und klare Struktur als auf eine
+möglichst umfassende Funktionalität an.
+   </textblock>
+
+   <textblock>
+Ein <name>Minix</name>-Anwender mit Namen <name>Linus Torvalds</name> gab sich damit <ref chapter="linux_geschichte" iref="1991">nicht
+zufrieden</ref>. Das GNU-System war bis auf den Kernel vollständig,
+aber das Release des GNU-Kernels mit Namen <name>HURD</name> schien noch auf sich
+warten zu lassen. Um die zeitliche Lücke bis dahin zu füllen, <ref chapter="linux_geschichte" iref="1991">begann er selbst
+einen Kernel zu schreiben</ref>, der sehr rasch unter dem Namen <ref chapter="was_ist_linux">Linux</ref> Verbreitung fand
+und eine große Entwickler- und Benutzergemeinde zusammenbrachte.
+Da die meisten Entwickler auf UNIX-Varianten arbeiteten, auf denen
+die GNU-Werkzeuge liefen, lag es nahe, den <ref chapter="kernel">Linux-Kernel</ref> so einzurichten, dass
+er zusammen mit den GNU-Werkzeugen verwendet werden konnte: <ref lang="en" url="http://www.gnu.org/gnu/linux-and-gnu.html">GNU/Linux</ref>.
+Der Kernel <ref lang="en" url="http://www.gnu.org/software/hurd/hurd.html">HURD</ref> ist über "akademische" Anfänge bislang nicht
+hinausgekommen, so dass das anfänglich als "Provisorium" gedachte
+<name>Linux</name> sich an seiner Stelle etabliert hat.
+   </textblock>
+
+   <textblock>
+Zur gleichen Zeit löste sich <name>BSD</name> aus seiner ursprünglichen
+Abhängigkeit von <name>AT&amp;T</name>: Eine Gruppe von <name>BSD</name>-Entwicklern ersetzte alle
+Anweisungen im Quellcode, die noch von <name>AT&amp;T</name> beigesteuert waren,
+durch neue und erstritt in einem langwierigen Gerichtsverfahren
+für <name>BSD</name> die Freiheit. Daraus gingen die Projekte <ref lang="en" url="http://www.freebsd.org/">FreeBSD</ref>, <ref lang="en" url="http://www.netbsd.org/">NetBSD</ref>
+und <ref lang="en" url="http://www.openbsd.org/">OpenBSD</ref> hervor, die auch eine beachtliche Verbreitung gefunden
+haben und manchmal als <name>Linux</name>-Vettern bezeichnet werden (und so
+manche Linux-Distribution enthält das ein oder andere "Schmankerl"
+aus einem der drei Projekte).
+   </textblock>
+
+   <textblock>
+Seither hat sich Linux zu einem bedeutenden UNIX entwickelt:
+Kommerzielle UNIX-Anbieter haben Marktanteile an Linux verloren und
+mussten neue Strategien entwickeln. Nicht selten mündeten diese
+Überlegungen in offener Unterstützung für Linux, dessen weitere
+Verbreitung ohnehin nicht mehr zu verhindern war.
+   </textblock>
+
+   <textblock>
+UNIX (insbesondere seine freien Versionen) ist heute auf dem Servermarkt
+eine feste Größe. Ob ihm auch auf dem <ref lang="en" url="http://www.freedesktop.org">Desktop</ref> ein Durchbruch beschieden
+sein wird, ist eine der spannendsten Fragen der Gegenwart.
+   </textblock>
+  </section>
+ </split>
+</chapter>

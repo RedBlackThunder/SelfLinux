@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>xcdroast</title>
+
+ <author>
+   <name>Johnny Graber</name>
+   <mailto>linux@jgraber.ch</mailto>
+ </author>
+		       
+ <layout>
+   <name>Johnny Graber</name>
+   <mailto>linux@jgraber.ch</mailto>
+ </layout>
+
+ <license>GFDL</license>
+ <index>xcdroast</index>
+
+ <description>
+  <textblock>
+Ein weit verbreitetes Frontend für cdrecord ist <command>xcdroast</command>. Dieser
+Text soll einem ermöglichen, mit <command>xcdroast</command> umzugehen und seine
+CDs auf eine einfache Art zu brennen.
+ </textblock>
+ </description>
+
+
+<split>
+ <section>
+   <heading>
+Installation
+   </heading>
+
+   <textblock>
+<command>xcdroast</command> wird mit den meisten Distributionen mitgeliefert und
+standardmässig als Brenntool installiert. Sollte dies nicht der
+Fall sein, findet man das Paket auf <ref lang="en" url="http://www.xcdroast.org">
+http://www.xcdroast.org/</ref>.
+   </textblock>
+      
+   <textblock>
+Fürs Installieren des RPM-Paketes genügt wie immer:
+   </textblock>
+
+   <shell>
+     <root>
+rpm -ihv xcdroast-0.98alpha12-1.i386.rpm
+     </root>
+   </shell>
+
+   <image height="200">
+       <filename>xcdroast-start.png</filename>
+       <title>unscheinbar aber mächtig: xcdroast</title>
+   </image>
+
+ </section>
+</split>
+
+
+<split>
+ <section>
+    <heading>
+Einstellungen
+   </heading>
+
+
+   <image height="200">
+       <filename>xcdroast-einstellungen.png</filename>
+       <title>Komfortables auswählen der Optionen</title>
+   </image>
+
+
+   <textblock>
+Beim ersten Start von <command>xcdroast</command> als root sollte man als
+erstes die Einstellungen aufsuchen. <command>xcdroast</command> braucht einige
+Einstellungen, ohne die nichts geht. Um zu den Einstellungen
+zu kommen, genügt ein Klick auf den gleichnamigen Knopf.
+   </textblock>
+
+
+   <section>
+    <heading>
+CD Einstellungen
+    </heading>
+
+    <textblock>
+Hier erledigt man alle Einstellungen zum CD-Brenner und dem
+CD-Laufwerk. Wichtigste Anpassungen sind das Einstellen der
+Brenngeschwindigkeit und der Puffergrösse des CD-Brenners.
+    </textblock>
+   </section>
+
+
+   <section>
+    <heading>
+Platten Einstellungen
+    </heading>
+
+    <textblock>
+Wenn CDs nicht direkt erstellt werden sollen, werden die
+ISO-Images auf der Festplatte abgespeichert. Damit <command>xcdroast</command>
+weiss, wo es dies machen soll, muss man ihm das Verzeichnis
+angeben.
+    </textblock>
+      
+    <textblock>
+Man sollte dabei bedenken, das eine einzelne CD mit 650 - 800
+MB zu Buche schlägt. Wenn zu wenig Speicherplatz vorhanden
+ist, wird <command>xcdroast</command> keine Images abspeichern können.
+    </textblock>
+   </section>
+
+
+   <section>
+    <heading>
+Sprachanpassung und Lokalisierung
+    </heading>
+
+    <textblock>
+Unter "Verschiedenes" kann man die Protokollierungsstufe
+und den Ablageort des Logfiles festlegen. Dies ist vor
+allem am Anfang sinnvoll oder wenn Probleme auftauchen.
+Für den täglichen Betrieb reicht die Ausgabe von <command>xcdroast</command>
+im Brenndialog.
+    </textblock>
+      
+    <textblock>
+Standardmässig liest <command>xcdroast</command> die Systemeinstellungen, um
+die Sprache des Menüs festzulegen. Wenn eine andere Sprache
+verwendet werden soll, kann man ihm dies über die
+Internationalisierung mitteilen.
+    </textblock>
+   </section>
+
+
+   <section>
+    <heading>
+Andere Benutzer als root
+    </heading>
+
+    <textblock>
+Mit dem root-Account soll ja möglichst nicht gearbeitet werden.
+Damit auch andere Benutzer CDs brennen können, kann man ihnen
+unter "Benutzer" die entsprechenden Rechte geben.
+    </textblock>
+   </section>
+ </section>
+</split>
+
+
+<split>
+ <section>
+  <heading>
+CD erstellen / Tracks mastern
+   </heading>
+
+   <textblock>
+Wenn eine CD vor dem Brennen zusammengestellt werden muss,
+ist das Erstellen eines Tracks notwendig. Dazu klickt man
+auf dem Startbildschirm auf "CD erstellen" und danach auf
+"Tracks mastern".
+   </textblock>
+
+
+   <image height="200">
+       <filename>xcdroast-mastern.png</filename>
+       <title>Vor dem Brennen muss die CD zusammengestellt werden</title>
+   </image>
+
+   <section>
+    <heading>
+Dateien zusammenstellen
+    </heading>
+
+    <textblock>
+Im Reiter Master-Quelle gibt es 2 Fenster. In der
+"Session-Ansicht" wird einem angezeigt, was sich bisher im
+Master befindet. In der "Datei/Verzeichnis-Ansicht" hat man
+einen Datei-Browser, in dem man die Dateien auswählen kann.
+Man kann mehrere Dateien gleichzeitig auswählen und mit
+"hinzufügen" in die Session aufnehmen.
+    </textblock>
+
+    <image height="200">
+       <filename>xcdroast-neuedateien.png</filename>
+       <title>Dateien können an beliebiger Stelle auf der CD abgelegt werden</title>
+    </image>
+
+    <textblock>
+Im sich nun öffnenden Fenster muss der Ablageort auf der CD
+angegeben werden. Dabei stehen einem 3 Optionen zur Verfügung:
+    </textblock>
+
+    <ul>
+<li>die Dateien so übernehmen, wie sie auf der Festplatte liegen</li>
+<li>die übergeordneten Verzeichnisse weglassen</li>
+<li>ein beliebiger Ort angeben</li>
+    </ul>
+
+    <textblock>
+Für ein Backup sollte man die 1. Option verwenden, wenn man
+CDs fürs weitergeben erstellt, ist man meistens mit der
+Option 3 sehr zufrieden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+spezielle Optionen
+    </heading>
+
+    <textblock>
+Unter ISO9660-Optionen können die Optionen zum Dateisystem
+getroffen werden. Soll die CD sowohl unter Linux wie auch
+unter Windows laufen, sollte der Image-Typ auf
+"Rock Ridge + Joliet" stehen.
+    </textblock>
+
+    <textblock>
+Wenn die CD bootfähig sein soll, kann man dies unter
+"Boot-Optionen" festlegen. Die meisten CDs können aber auf
+diese Möglichkeit verzichten.
+    </textblock>
+
+    <textblock>
+Wenn man eine Datenträger-Bezeichnung eintragen möchte, kann
+man dies unter "ISO-Bezeichnungen" eintragen, ebenso seine
+Herausgeberkennung.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Tracks erstellen oder CD brennen
+    </heading>
+
+    <textblock>
+Unter "Session/Image erzeugen" findet man schlussendlich
+die letzten Einstellungen fürs Abschliessen des Masters.
+Als erstes sollte man bei Session-Information auf den Knopf
+"Grösse berechnen" klicken. <command>xcdroast</command> rechnet dann, wie
+nicht anders zu erwarten, den Platzbedarf des Masters aus.
+Gleichzeitig wird auch geprüft, ob das angelegte Dateisystem
+gebrannt werden kann. Sollte es zu tief verschachtelt sein
+oder ungültige Dateinamen enthalten, wird eine Meldung
+ausgegeben.
+    </textblock>
+
+    <textblock>
+Danach stellt sich die Frage, ob man die CD gleich brennen
+will (On-the-Fly) oder ob zuerst ein ISO-Image erzeugt werden
+soll.
+    </textblock>
+
+    <textblock>
+Beim ISO-Image wählt man unter "Session auf Platte erzeugen"
+beim Datei-Prefix einen sinnvollen Namen. Darunter wird das
+Image dann auf die Platte gespeichert. Sobald dies gemacht
+wurde, klickt man auf "Als Image-Datei mastern" und <command>xcdroast</command>
+legt mit der Erstellung des Image los.
+    </textblock>
+
+    <textblock>
+Wenn man die CD on-the-fly schreiben möchte, braucht man nur die
+eingetragenen Optionen zu überprüfen und kann den Brennvorgang
+durch Klick auf "Mastern und on-the-fly schreiben" starten.
+    </textblock>
+   </section>
+ </section>
+</split>
+
+
+
+<split>
+ <section>
+  <heading>
+Tracks brennen
+   </heading>
+
+   <textblock>
+Die im vorderen Kapitel erstellten Tracks müssen ja auch
+irgendwie auf die CD kommen. Dazu verwendet man den Knopf
+"Tracks schreiben".
+   </textblock>
+
+   <textblock>
+Im Reiter "Tracks zusammenstellen" wählt man alle gewünschten
+Tracks aus, fügt diese mit "Hinzufügen" in die Auswahl ein
+und betätigt danach den Knopf "Tracklayout übernehmen".
+   </textblock>
+
+   <textblock>
+<command>xcdroast</command> wechselt danach automatisch zum Reiter
+"Tracks schreiben". Hier genügt ein kurzer Blick auf die
+Optionen, danach kann man den Brennvorgang mit dem Knopf
+"Tracks schreiben" starten.
+   </textblock>
+
+   <section>
+    <heading>
+Tracks löschen
+   </heading>
+
+   <textblock>
+Nach erfolgreichem Brennvorgang können die nun nicht mehr
+benötigten Tracks komfortabel über die Schaltfläche
+"Tracks löschen" von der Festplatte entfernt werden. Dies
+geht über die Auswahl eines Tracks und dem Knopf
+"Ausgewählte Tracks löschen" oder, falls alle Tracks entfernt
+werden sollen, durch vorherige Betätigung von "Alle selektieren".
+    </textblock>
+   </section>
+ </section>
+</split>
+
+
+<split>
+ <section>
+  <heading>
+CDs kopieren
+   </heading>
+
+   <textblock>
+Nicht nur eigene CDs lassen sich mit <command>xcdroast</command> angenehm
+zusammenstellen, auch das Kopieren von CDs geht einfach
+von der Hand. Um zum entsprechenden Dialog zu kommen, wählt
+man im Hauptmenü (Startbildschirm) den Knopf "CD duplizieren"
+aus.
+   </textblock>
+
+   <textblock>
+Unter CD-Information wird einem alles wichtige zur CD
+angezeigt. Hat man eine Audio-CD im Laufwerk, kann man über
+"CDDB abfrage" eine automatische Erkennung durchführen lassen.
+Wenn die CD in der CDDB erfasst wurde, werden danach bei den
+Tracks die Namen der Lieder angezeigt.
+   </textblock>
+
+   <textblock>
+Auch hier hat man wieder die Möglichkeit, die CD vor dem
+Brennen auf die Festplatte zu kopieren oder gleich direkt zu
+brennen. Bei letzterem kann man gleich zu CD schreiben springen.
+   </textblock>
+
+   <section>
+    <heading>
+CD einlesen und verifizieren
+    </heading>
+
+    <textblock>
+Das Einlesen der CD bietet kaum Überraschungen. Auch hier
+ist es wieder wichtig, einen nachvollziehbaren Datei-Prefix
+zu vergeben. Dies erleichtert das Arbeiten nachher spürbar.
+Um den Einlesevorgang zu starten genügt ein Klick auf
+"Alle Tracks einlesen".
+    </textblock>
+
+    <textblock>
+Über die Schaltfläche "CD verifizieren" kann man die soeben
+eingelesene CD kontrollieren. Dazu stellt man sicher, das die
+CD im Laufwerk liegt und wählt bei 'TOC-Datei' die zur CD
+gehörende *.toc Datei aus. Mit "Tracks verifizieren" wird die
+Kontrolle gestartet. Sollte ein Fehler auftauchen, meldet sich
+<command>xcdroast</command> mit einer Fehlermeldung.
+   </textblock>
+  </section>
+  
+  <section>
+    <heading>
+CD schreiben
+    </heading>
+
+    <textblock>
+Will man die CD direkt kopieren, wählt man unter Geräte die
+entsprechenden Laufwerke aus. Beim Schreiben der Datei wählt
+man stattdessen die *.toc-Datei.
+Das Brennen kann auch hier über den Knopf "CD schreiben"
+gestartet werden. Nach Abschluss des Vorgangs sollte die CD
+automatisch ausgeworfen werden.
+   </textblock>
+  </section>
+ </section>
+</split>
+</chapter>

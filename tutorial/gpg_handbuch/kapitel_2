@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Grundlagen</title>
+
+ <author>
+  <name>Mike Ashley</name>
+  <mailto></mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>gpg_handbuch_kapitel_2</index>
+
+
+ <description>
+  <textblock>
+Dieses Kapitel führt in die wesentlichen Funktionen des GNU Privacy
+Guard ein. Hier lernen Sie, wie man Schlüsselpaare erzeugt,
+Schlüssel austauscht und überprüft, Dokumente verschlüsselt,
+entschlüsselt und durch digitale Unterschriften
+authentifiziert.
+  </textblock>
+
+  <textblock>
+Wie bereits in Kapitel <ref chapter="gpg_handbuch_kapitel_1">concepts</ref>
+erwähnt, bedient sich GnuPG eines Public-Key-Verfahrens, um eine
+sichere Kommunikation zu gewährleisten. In einem solchen System
+hat jeder Benutzer ein Schlüsselpaar, bestehend aus einem geheimen
+Schlüssel und einem öffentlichen Schlüssel. Der geheime Schlüssel
+darf unter keinen Umständen jemand anderem zugänglich sein. Den
+öffentlichen Schlüssel sollte man für jeden, mit dem man
+kommunizieren möchte, zugänglich machen.
+  </textblock>
+
+  <textblock>
+GnuPG benutzt ein erweitertes Schema,
+bei dem jeder Benutzer jeweils ein primäres Schlüsselpaar hat und
+optional weitere untergeordnete Schlüsselpaare haben kann. Das
+primäre und das untergeordnete Schlüsselpaar werden gebündelt, um
+die Schlüsselverwaltung zu erleichtern; das Bündel kann vereinfacht
+als ein Schlüsselpaar betrachtet werden.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Erzeugen eines neuen Schlüsselpaares
+   </heading>
+
+
+   <textblock>
+Damit Sie GnuPG zum Verschlüsseln, Entschlüsseln oder Signieren
+einsetzen können, benötigen Sie ein Schlüsselpaar, das aus einem
+geheimen und einem öffentlichen Schlüssel besteht. Mit der
+Kommandozeilen-Option<command>--gen-key</command> können Sie ein neues primäres
+Schlüsselpaar erzeugen: </textblock>
+
+   <shell>
+	<user path="~">gpg --gen-key</user>
+	<output>
+gpg (GnuPG) 1.0.1; Copyright (C) 1999 Free Software Foundation, Inc.
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions. See the file COPYING for details.
+
+Bitte wählen Sie, welche Art von Schlüssel Sie möchten:
+   (1) DSA und ElGamal (voreingestellt)
+   (2) DSA (nur signieren/beglaubigen)
+   (4) ElGamal (signieren/beglaubigen und verschlüsseln)
+Ihre Auswahl?
+	</output>
+   </shell>
+
+   <textblock>
+Mit GnuPG können Sie verschiedene Typen von Schlüsselpaaren
+erzeugen, doch muß der primäre Schlüssel Unterschriften liefern
+können. Es gibt daher nur drei Optionen. Option 1 erzeugt wirklich
+zwei Schlüsselpaare, nämlich ein DSA-Schlüsselpaar, das nur zum
+Unterschreiben geeignet ist, und außerdem noch ein untergeordnetes
+ElGamal-Schlüsselpaar für die Verschlüsselung. Option 2 erzeugt
+nur das DSA-Schlüsselpaar. Option 4 <ref iref="Fußnoten">[1]</ref> erzeugt ein einzelnes
+ElGamal-Schlüsselpaar, das sowohl zum Unterzeichnen als auch zum
+Verschlüsseln verwendbar ist. In allen Fällen ist es möglich,
+später noch weitere Unterschlüssel für die Verschlüsselung und
+Unterzeichnung hinzuzufügen. In der Regel sollten Sie hier die
+Standardoption auswählen.
+   </textblock>
+
+
+   <textblock>
+Als nächstes wählen Sie die Schlüsselgröße. Bei einem
+DSA-Schlüssel muß diese zwischen 512 und 1024 Bits liegen, ein
+ElGamal-Schlüssel dagegen kann - zumindest theoretisch - eine
+beliebige Größe haben. Der GnuPG erfordert es allerdings, dass die
+Schlüssel nicht kleiner als 768 Bits sind. Wenn Option 1 mit einer
+Schlüsselgröße von mehr als 1024 Bit gewählt wurde, hat der
+ElGamal-Schlüssel die verlangte Größe, doch der DSA-Schlüssel wird
+maximal 1024 Bits haben.
+   </textblock>
+
+   <shell>
+	<output>
+Der DSA Schlüssel wird 1024 Bits haben.
+Es wird ein neues ELG-E Schlüsselpaar erzeugt.
+              kleinste Schlüssellänge ist  768 Bit
+              standard Schlüssellänge ist 1024 Bit
+      größte sinnvolle Schlüssellänge ist 2048 Bit
+Welche Schlüssellänge wünschen Sie? (1024)
+	</output>
+   </shell>
+
+   <textblock>
+Je größer der Schlüssel ist, desto sicherer ist er gegen
+Brute-Force-Angriffe, doch sollte für die meisten Zwecke die
+Standard-Schlüsselgröße ausreichend sein, da es einfacher wäre,
+die Verschlüsselung zu umgehen, als sie zu knacken. Außerdem wird
+mit zunehmender Schlüsselgröße die Ver- und Entschlüsselung
+langsamer, und auch die Unterschrift wird länger. Einmal
+festgelegt, kann die Schlüsselgröße nicht nachträglich geändert
+werden.
+   </textblock>
+
+
+   <textblock>
+Schließlich müssen Sie noch ein Verfallsdatum wählen. Wenn Option
+1 gewählt wurde, gilt dieses Verfallsdatum sowohl für die ElGamal-
+als auch die DSA-Schlüsselpaare.
+   </textblock>
+
+   <shell>
+	<output>
+Bitte wählen Sie, wie lange der Schlüssel gültig bleiben soll.
+         0 = Schlüssel verfällt nie
+      &lt;n>  = Schlüssel verfällt nach n Tagen
+      &lt;n>w = Schlüssel verfällt nach n Wochen
+      &lt;n>m = Schlüssel verfällt nach n Monaten
+      &lt;n>y = Schlüssel verfällt nach n Jahren
+Der Schlüssel bleibt wie lange gültig? (0)
+</output>
+   </shell>
+
+   <textblock>
+Für die meisten Fälle reicht ein Schlüssel ohne Verfallsdatum
+völlig aus. Allerdings sollte man das Verfallsdatum immer
+sorgfältig auswählen; denn, obwohl es sich auch noch nachträglich
+ändern läßt, kann es umständlich sein, das geänderte Verfallsdatum
+allen Ihren Kommunikationspartnern mitzuteilen.
+   </textblock>
+
+
+   <textblock>
+Im nächsten Schritt müssen Sie eine Benutzer-ID (Benutzer-Kennung)
+angeben. Das dient dazu, den soeben erzeugten Schlüssel einer
+realen Person zuzuordnen.
+   </textblock>
+
+   <shell>
+	<output>
+Sie benötigen eine User-ID, um Ihren Schlüssel eindeutig zu machen; das
+Programm baut diese User-ID aus Ihrem echten Namen, einem Kommentar und
+Ihrer E-Mail-Adresse in dieser Form auf:
+ "Heinrich Heine (Der Dichter) &lt;heinrichh@duesseldorf.de&gt;''
+
+Ihr Name ("Vorname Nachname"):
+	</output>
+   </shell>
+
+   <textblock>
+Es wird zunächst nur eine Benutzer-ID erzeugt, doch können Sie
+später weitere Benutzer-IDs hinzufügen, wenn Sie den Schlüssel in
+verschiedenen Situationen benutzen wollen, also beispielsweise bei
+der Arbeit in Ihrer Firma oder für Ihre politische Arbeit.
+<strong>Die Benutzer-ID sollten Sie mit aller Sorgfalt wählen, da
+ Sie sie später nicht mehr ändern können.</strong>
+   </textblock>
+
+
+   <textblock>
+Damit Ihr geheimer Schlüssel nicht von anderen mißbraucht werden
+kann, wird er von GnuPG mit einem symmetrischen Verfahren
+verschlüsselt. Dazu geben Sie ein sogenanntes Mantra
+(einen Paßwort-Satz) ein, das Sie wiederum jedesmal benötigen,
+wenn Sie auf Ihren geheimen Schlüssel zugreifen.
+   </textblock>
+
+   <shell>
+	<output>
+Sie benötigen ein Mantra, um den geheimen Schlüssel zu schützen.
+	 
+Geben Sie das Mantra ein:
+	</output>
+   </shell>
+
+   <textblock>
+Die Länge des Mantra ist theoretisch unbegrenzt. Sie sollten es
+mit Sorgfalt auswählen. Unter dem Gesichtspunkt der Sicherheit ist
+das Mantra einer der schwächsten Punkte im GnuPG (wie auch in
+anderen Verschlüsselungssystemen mit öffentlichen Schlüsseln), da
+es Ihr einziger Schutz ist, falls jemand in den Besitz Ihres
+privaten Schlüssels kommt.
+   </textblock>
+
+
+   <textblock>
+Man sollte für das Mantra keine Wörter aus einem Wörterbuch oder
+Lexikon nehmen und nicht nur die Buchstaben des Alphabets, sondern
+auch Sonderzeichen verwenden. Je länger das Mantra ist, desto
+sicherer ist es, aber andererseits sollten Sie sich das Mantra
+auch gut merken können; nichts ist fataler als das Mantra auf
+einem Zettel oder in einer Datei zu notieren. Ein gut gewähltes
+Mantra ist entscheidend für Ihre Datensicherheit.
+   </textblock>
+
+
+   <textblock>
+Es ist beispielsweise keine gute Idee, einen bekannten Ausspruch
+oder ein Zitat einer bekannten Persönlichkeit als Mantra zu
+nehmen. Das würde die Chance erhöhen, das Mantra zu erraten: ein
+Angreifer könnte einfach den Computer eine Zitatenliste
+durchprobieren lassen. Am besten denkt man sich einen unsinnigen
+Satz wie z.B: <strong>Die Currywurst schmeckt nach Zimt und
+Zucker</strong> oder <strong>Helmut Kohl ist bekanntermaßen
+Vegetarier</strong> aus. Ihrer Phantasie sind hierbei keine Grenzen
+gesetzt. Wenn Sie auch noch ein paar Rechtschreibfehler und
+Sonderzeichen einbauen, ist ein Wörterbuchangriff praktisch
+unmöglich: <strong>Dat Körriwurst schmöckt nach #imt und
+#ucker</strong>. <strong>Benutzen Sie auch auf keinen Fall eines der
+ soeben aufgeführten Beispiele!!</strong>.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Erzeugen einer Widerrufurkunde
+	</heading>
+
+	<textblock>
+Nach dem Erzeugen Ihres Schlüsselpaars sollten Sie sofort mit der
+Option<command>--gen-revoke</command> eine Widerrufurkunde für
+Ihre Schlüssel erzeugen. Wenn Sie
+Ihr Mantra vergessen oder wenn Ihr privater Schlüssel
+kompromittiert oder verloren gegangen ist, können Sie mit dieser
+Widerrufurkunde andere davon in Kenntnis setzen, dass der
+dazugehörige öffentliche Schlüssel nicht mehr benutzt werden
+sollte. Ein zurückgerufener öffentlicher Schlüssel kann noch
+benutzt werden, um Unterschriften zu prüfen, die Sie vor dem
+Widerruf abgegeben haben, er kann jedoch nicht benutzt werden, um
+künftige Mitteilungen an Sie zu verschlüsseln. Vorausgesetzt, Sie
+haben noch Zugang zu Ihrem widerrufenen geheimen Schlüssel, so
+können Sie selbstverständlich noch Daten entschlüsseln, die vor
+dem Widerruf für Sie verschlüsselt worden sind.
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --output revoke.asc --gen-revoke mykey
+	 </user>
+	 <output>
+	  [...]
+	 </output>
+	</shell>
+
+	<textblock>
+wobei <command>mykey</command> entweder die Schlüssel-ID Ihres
+ersten Schlüsselpaares oder irgendein Teil einer dazugehörigen
+Benutzer-ID ist. Die erzeugte Widerrufurkunde wird in die Datei
+revoke.asc, bzw., wenn man die Option<command>--output</command>
+wegläßt, auf die Standard-Ausgabe geschrieben. Da die
+Widerrufurkunde kurz ist, ist es kein Problem, eine ausgedruckte
+Kopie der Widerrufurkunde irgendwo sicher aufzubewahren, z.B. in
+Ihrem Bankschließfach. Die Widerrufurkunde sollten Sie aber auf
+keinen Fall an Stellen aufbewahren, zu denen andere Personen
+Zugang haben, da im Prinzip jeder die Widerrufurkunde
+veröffentlichen und so den entsprechenden Schlüssel nutzlos
+machen könnte.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Austauschen von Schlüsseln
+   </heading>
+
+   <textblock>
+Um mit anderen zu kommunizieren, müssen Sie untereinander Ihre
+öffentlichen Schlüssel austauschen. Zum Auflisten der Schlüssel in
+Ihrem öffentlichen Schlüsselbund verwenden Sie die
+Kommandozeilen-Option <command>--list-keys</command>.
+   </textblock>
+
+   <shell>
+	<user path="~">
+gpg --list-keys
+	</user>
+	<output>
+/users/alice/.gnupg/pubring.gpg
+---------------------------------------
+pub  1024D/FB5797A9 2000-06-06 Alice (Rechtsanwältin) &lt;alice@cyb.org>
+sub  1024g/C8B3998F 2000-06-06
+	</output>
+   </shell>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Exportieren eines öffentlichen Schlüssels
+	</heading>
+
+
+	<textblock>
+Um jemandem Ihren öffentlichen Schlüssel zu schicken, müssen Sie
+diesen zunächst exportieren. Hierzu benutzt man die
+Kommandozeilen-Option <command>--export</command>. Zur Indentifikation des zu
+exportierenden öffentlichen Schlüssels dient entweder die
+Schlüssel-ID oder irgendein Teil der Benutzer-ID.
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --output alice.gpg --export alice@cyb.org
+	 </user>
+	</shell>
+
+	<textblock>
+Der Schlüssel wird in einem binären Format exportiert, doch kann
+dies unerwünscht sein, wenn Sie den Schlüssel per E-Mail
+verschicken oder auf einer WWW-Seite veröffentlichen wollen.
+GnuPG unterstützt daher die Kommandozeilen-Option
+<command>--armor</command> (**) die bewirkt, dass der Output im
+ASCII-Format ausgegeben wird. (Im Allgemeinen kann jeder Output
+von GnuPG - beispielsweise Schlüssel, verschlüsselte Dokumente
+oder Unterschriften - im ASCII-Format dargestellt werden, indem
+man die <command>--armor</command>-Option hinzufügt.)
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --armor --export alice@cyb.org
+	 </user>
+	 <output>
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.0.1 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+[...]
+-----END PGP PUBLIC KEY BLOCK-----
+	 </output>
+	</shell>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Importieren eines öffentlichen Schlüssels
+	</heading>
+
+
+	<textblock>
+Ein öffentlicher Schlüssel kann zu Ihrem öffentlichen
+Schlüsselbund hinzugefügt werden, und zwar mit folgender Option:
+<command>--import</command>
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --import blake.gpg
+	 </user>
+	 <output>
+gpg: Schlüssel B2690E6F: Öffentlicher Schlüssel importiert
+gpg: Anzahl insgesamt bearbeiteter Schlüssel: 1
+gpg:            importiert: 1
+	 </output>
+	 <user path="~">gpg --list-keys</user>
+	 <output>
+---------------------------------------
+pub  1024D/FB5797A9 2000-06-06 Alice (Rechtsanwältin) &lt;alice@cyb.org>
+sub  1024g/C8B3998F 2000-06-06
+
+pub  1024D/B2690E6F 2000-06-06 Blake (Staatsanwalt) &lt;blake@cyb.org>
+sub  1024g/F251B862 2000-06-06
+	 </output>
+	</shell>
+
+	<textblock>
+Wenn ein Schlüssel einmal importiert ist, sollte er auf
+Authentizität überprüft werden. GnuPG arbeitet mit einem
+wirksamen und flexiblen Vertrauensmodell, bei dem Sie nicht jeden
+Schlüssel persönlich zu authentifizieren brauchen, den Sie
+importieren. Einige Schlüssel können dies jedoch erfordern. Ein
+Schlüssel wird dadurch authentifiziert, dass Sie den Fingerabdruck
+des Schlüssels überpüfen und dann den Schlüssel unterschreiben,
+um seine Gültigkeit zu bestätigen. Der Fingerabdruck eines
+Schlüssels kann schnell mit der Befehlszeilen-Option
+<command>--fingerprint</command> geprüft werden, um aber den
+Schlüssel zu bestätigen, müssen Sie ihn editieren.
+	</textblock>
+
+	<shell>
+	 <user path="~">gpg --edit-key blake@cyb.org</user>
+	 <output>
+pub  1024D/B2690E6F  created: 2000-06-06 expires: never      trust: -/q
+sub  1024g/F251B862  created: 2000-06-06 expires: never
+(1)  Blake (Staatsanwalt) &lt;blake@cyb.org>
+	 </output>
+	 <user path="~">
+	  fpr
+	 </user>
+	 <output>
+pub  1024D/B2690E6F 2000-06-06 Blake (Staatsanwalt) &lt;blake@cyb.org>
+             Fingerprint: 6A51 852C 7491 95B5 C5F0  731C 141F C008 B269 0E6F
+	 </output>
+	</shell>
+
+	<textblock>
+Um den Fingerabdruck zu überprüfen, müssen Sie den Eigentümer des
+Schlüssels kontaktieren und die Fingerabdrücke vergleichen. Sie
+können persönlich oder per Telefon mit ihm sprechen oder auf
+beliebigem anderen Wege kommunizieren, solange nur garantiert
+ist, dass es sich um den rechtmäßigen Eigentümer handelt. Stimmen
+beide Fingerabdrücke überein, dann können Sie sicher sein, daß
+Sie eine echte Kopie des öffentlichen Schlüssels haben.
+	</textblock>
+
+
+	<textblock>
+Nach dem Prüfen des Fingerabdrucks können Sie den Schlüssel
+unterschreiben, um ihn zu authentifizieren. Da die
+Schlüsselüberprüfung ein Schwachpunkt in der Kryptographie mit
+öffentlichem Schlüssel ist, sollten Sie <strong>äußerste
+Sorgfalt</strong> walten lassen und den Fingerabdruck eines
+Schlüssels <strong>immer</strong> gemeinsam mit dem Eigentümer
+prüfen, bevor Sie den Schlüssel unterschreiben.
+	</textblock>
+
+	<shell>
+	 <user path="~">
+sign
+	 </user>
+	 <output>
+pub  1024D/B2690E6F  created: 2000-06-06 expires: never      trust: -/q
+             Fingerprint: 6A51 852C 7491 95B5 C5F0  731C 141F C008 B269 0E6F
+
+     Blake (Staatsanwalt) &lt;blake@cyb.org>
+
+Sind Sie wirklich sicher, dass Sie vorstehenden Schlüssel mit Ihrem
+Schlüssel beglaubigen wollen: "Alice (Rechtsanwältin) &lt;alice@cyb.org>"
+
+Wirklich unterschreiben?
+	 </output>
+	</shell>
+
+	<textblock>
+Sie können sich jederzeit vergewissern, welche Unterschrift Sie
+hinzugefügt haben. Jede Benutzer-ID auf dem Schlüssel hat dann
+sowohl eine oder mehrere Eigenbeglaubigungen als auch eine
+Unterschrift von jedem Benutzer, der den Schlüssel
+authentifiziert hat.
+	</textblock>
+
+	<shell>
+	 <user path="~">
+check
+	 </user>
+	 <output>
+uid  Blake (Staatsanwalt) &lt;blake@cyb.org>
+sig!       B2690E6F 2000-06-06   [Eigenbeglaubigung]
+sig!       FB5797A9 2000-06-06   Alice (Rechtsanwältin) &lt;alice@cyb.org>
+	 </output>
+	</shell>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Ver- und Entschlüsseln von Dokumenten
+   </heading>
+
+
+   <textblock>
+Der öffentliche und der geheime Schlüssel haben jeweils eine
+spezifische Aufgabe beim Ver- und Entschlüsseln von Dokumenten.
+Das Public-Key-Verfahren kann man sich wie einen offenen Safe
+vorstellen. Wenn jemand ein Dokument unter Benutzung eines
+öffentlichen Schlüssels verschlüsselt, wird dieses Dokument in den
+Safe gelegt, der Safe geschlossen und das Kombinationsschloß
+mehrmals verdreht. Der entsprechende geheime Schlüssel ist die
+Kombination, mit der man den Safe wieder öffnen und das Dokument
+wieder herausholen kann. Mit anderen Worten, es kann nur die
+Person, die den geheimen Schlüssel hat, auf ein Dokument
+zugreifen, das unter Benutzung des dazugehörigen öffentlichen
+Schlüssels verschlüsselt worden ist.
+   </textblock>
+
+
+   <textblock>
+Das Verfahren für das Ver- und Entschlüsseln von Dokumenten ist
+bei diesem Modell einfach: eine Nachricht an Alice verschlüsseln
+Sie unter Verwendung von Alices öffentlichem Schlüssel, und diese
+entschlüsselt sie mit ihrem geheimen Schlüssel. Umgekehrt geht es
+genauso: Alice verschlüsselt eine Nachricht an Sie mit Ihrem
+öffentlichen Schlüssel, welche Sie dann mit Ihrem geheimen
+Schlüssel entschlüsseln können.
+   </textblock>
+
+
+   <textblock>
+Um ein Dokument zu verschlüsseln, benutzt man die Option
+<command>--encrypt</command>. Dazu müssen Sie die öffentlichen
+Schlüssel der vorgesehenen Empfänger haben. Sollten Sie auf der
+Kommandozeile den Namen der zu verschlüsselnden Datei nicht
+angeben, werden die zu verschlüsselnden Daten von der
+Standard-Eingabe gelesen. Das verschlüsselte Resultat wird auf die
+Standard-Ausgabe oder in die Datei, die durch die Option
+<command>--output</command> spezifiziert ist, geschrieben. Das
+Dokument wird darüberhinaus auch noch komprimiert.
+   </textblock>
+
+   <shell>
+	<user path="~">
+gpg --output doc.gpg --encrypt --recipient blake@cyb.org doc
+	</user>
+   </shell>
+
+   <textblock>
+Mit der Option <command>--recipient</command> wird der öffentliche
+Schlüssel spezifiziert, mit dem das Dokument verschlüsselt werden
+soll. Entschlüsseln läßt sich das so verschlüsselte Dokument
+jedoch nur von jemandem mit dem dazugehörigen geheimen Schlüssel.
+Das bedeutet konsequenterweise aber auch, dass Sie selbst ein so
+verschlüsseltes Dokument nur wieder entschlüsseln können, wenn Sie
+Ihren eigenen öffentlichen Schlüssel in die Empfängerliste
+aufgenommen haben.
+   </textblock>
+
+
+   <textblock>
+Zum Entschlüsseln einer Nachricht wird die Option
+<command>--decrypt</command> benutzt. Sie benötigen dazu den
+geheimen Schlüssel, für den die Nachricht verschlüsselt wurde und
+das Mantra, mit dem der geheime Schlüssel geschützt ist.
+   </textblock>
+
+   <shell>
+	<user path="~">
+gpg --output doc --decrypt doc.gpg
+	</user>
+	<output>
+Sie benötigen ein Mantra, um den geheimen Schlüssel zu entsperren.
+Benutzer: "Blake (Staatsanwalt) &lt;blake@cyb.org&gt;"
+1024-Bit ELG-E Schlüssel, ID F251B862, erzeugt 2000-06-06 (Hauptschlüssel-ID B2
+690E6F)
+
+Geben Sie das Mantra ein:
+	</output>
+   </shell>
+
+   <textblock>
+Mit GnuPG können Sie aber auch ohne Anwendung eines
+Public-Key-Verfahrens Dokumente verschlüsseln und stattdessen ein
+symmetrisches Verfahren benutzen. Der Schlüssel für die
+symmetrische Verschlüsselung wird aus einem Paßwort - besser noch,
+einem Paßwort-Satz - generiert, das <strong>auf gar keinen
+Fall</strong> dem Mantra zum Schutz Ihres privaten Schlüssels
+entsprechen sollte. Je länger das gewählte Paßwort ist, desto
+sicherer ist der Schlüssel. Wenn Sie diesen symmetrischen
+Schlüssel an jemanden weitergeben, sollten Sie dazu einen sicheren
+Weg wählen. Ein Dokument läßt sich so durch Benutzung der
+Option <command>--symmetric</command> verschlüsseln. 
+   </textblock>
+
+   <shell>
+	<user path="~">
+gpg --output doc.gpg --symmetric doc
+	</user>
+	<output>
+ Geben Sie das Mantra ein:
+	</output>
+   </shell>
+
+   <textblock>
+Symmetrische Verfahren empfehlen sich beispielsweise, wenn Sie die
+verschlüsselten Daten nicht weiter geben möchten, das Problem der
+Paßwortübergabe also entfällt. Ein mögliches Anwendungsbeispiel
+wäre, dass Sie alte E-Mails oder alte Datensätze aus Ihrer
+Umsatzstatisk auf ihrer Festplatte oder einer CDROM archivieren
+und vor fremden Zugriffen schützen möchten. Oder Sie können auch
+ganze Verzeichnisse oder Festplatten verschlüsseln.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Digitale Signaturen
+   </heading>
+
+   <textblock>
+Eine digitale Unterschrift oder Signatur ist am ehesten mit einem
+Siegel zu vergleichen. Mit dem Siegel wird die Integrität eines
+Dokumentes bestätigt, das sich in einem Umschlag befindet, und
+ermöglicht, dass sich eine nachträgliche Manipulation feststellen
+läßt. Wenn das Dokument nachfolgend in irgendeiner Weise verändert
+wird, ergibt die Prüfung der Signatur ein negatives Ergebnis.
+Außerdem ermöglicht die Signatur eine zweifelsfreie Zuordnung des
+Absenders. Eine digitale Unterschrift kann so demselben Zweck wie
+eine handgeschriebene Unterschrift dienen mit dem zusätzlichen
+Vorteil, eine Handhabe gegen Verfälschung zu bieten. Die
+GnuPG-Quelltextdistribution ist [eg] so unterschrieben, dass die
+Benutzer nachprüfen können, dass der Quelltext nachträglich nicht
+verändert worden ist und auch wirklich vom GnuPG-Team stammt.
+   </textblock>
+
+
+   <textblock>
+Die rechtliche Verbindlichkeit von digitalen Unterschriften ist
+von Land zu Land verschieden. In Deutschland ist das
+Signaturgesetz augenblicklich einer Novellierung unterworfen.
+Weitere Informationen und Quellenverweise finden Sie in Kapitel 4.
+   </textblock>
+
+
+   <textblock>
+Bei der Erzeugung und Prüfung von Unterschriften benutzt man das
+öffentlich/geheime Schlüsselpaar anders als bei der Ver- und
+Entschlüsselung. Die Unterschrift wird hier mit dem geheimen
+Schlüssel des Unterzeichnenden erzeugt und dann jeweils mit dem
+entsprechenden öffentlichen Schlüssel geprüft. So würde
+beispielsweise Alice ihren geheimen Schlüssel benutzen, um ihren
+letzten Beitrag für eine Zeitschrift zu signieren. Der Redakteur,
+der Alices Artikel bearbeitet, benutzt dann ihren öffentlichen
+Schlüssel, um die Unterschrift zu prüfen und so sicherzustellen,
+daß der Beitrag wirklich von Alice selbst stammt und auch nicht
+nachträglich verändert worden ist.
+   </textblock>
+
+
+   <textblock>
+Als Konsequenz aus der Verwendung digitaler Signaturen ergibt
+sich, dass sich kaum abstreiten läßt, dass man eine digitale
+Unterschrift geleistet hat, da dies ja bedeuten würde, dass der
+geheime Schlüssel kompromittiert wurde.
+   </textblock>
+
+
+   <textblock>
+Die Kommandozeilen-Option <command>--sign</command> wird zum Erzeugen einer 
+digitalen
+Unterschrift verwendet. Mit der Option <command>--output</command>
+legen Sie fest, in welche Datei das signierte Dokument geschrieben
+wird.
+   </textblock>
+
+   <shell>
+	<user path="~">
+gpg --output doc.sig --sign doc
+	</user>
+	<output>
+Sie benötigen ein Mantra, um den geheimen Schlüssel zu entsperren.
+Benutzer: "Alice (Rechtsanwältin) &lt;alice@cyb.org&gt;"
+1024-bit DSA Schlüssel, 1024D/FB5797A9, erzeugt 2000-06-06
+
+Geben Sie das Mantra ein: 
+	</output>
+   </shell>
+
+   <textblock>
+Das Dokument wird vor dem Unterschreiben komprimiert und die
+Ausgabe erfolgt im binären Format.
+   </textblock>
+
+   <textblock>
+Haben Sie ein unterschriebenes Dokument erhalten, können Sie die
+Unterschrift prüfen, und zwar optional ohne oder mit Entnahme des
+unterschriebenen Originaldokumentes. Zur bloßen Überprüfung der
+Unterschrift benutzen Sie die Option <command>--verify</command>.
+Wenn Sie außerdem das unterzeichnete Dokument entnehmen wollen,
+verwenden Sie die Option <command>--decrypt</command>.
+   </textblock>
+
+   <shell>
+	<user path="~">
+gpg --output doc --decrypt doc.sig
+	</user>
+	<output>
+gpg: Unterschrift vom Die 06 Jun 2000 17:19:52 CEST, DSA Schlüssel ID FB5797A9
+gpg: Korrekte Unterschrift von "Alice (Rechtsanwältin) &lt;alice@cyb.org&gt;"
+	</output>
+   </shell>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Dokumente mit Klartextsignatur
+	</heading>
+
+	<textblock>
+In Fällen, in denen es unerwünscht ist, das Dokument beim
+Unterschreiben zu komprimieren, benutzt man die Option
+<command>--clearsign</command>. Das bewirkt, dass eine in ASCII
+dargestellte Signatur das Dokument wie ein Briefumschlag umgibt,
+das Dokument an sich aber nicht verändert wird. Der Vorteil
+dieses Verfahrens ist, dass der Empfänger das Dokument auch ohne
+Prüfung der Signatur lesen kann.
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --clearsign doc
+	 </user>
+	 <output>
+Sie benötigen ein Mantra, um den geheimen Schlüssel zu entsperren.
+Benutzer: "Alice (Rechtsanwältin) &lt;alice@cyb.org&gt;"
+1024-Bit DSA Schlüssel, ID FB5797A9, erzeugt 2000-06-06
+
+Geben Sie das Mantra ein:
+	 </output>
+	</shell>
+
+	<textblock>
+GnuPG markiert dann im Klartext den Anfang des signierten
+Dokuments und hängt am Ende einen Block mit der eigentlichen
+OpenPGP-Signatur an.
+	</textblock>
+
+	<shell>
+	 <output>
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hier steht irgend ein
+von GnuPG signierter Text
+[...]
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.1 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE5Pf40WyoKbftXl6kRAsWJAJ4hj7FzPX8M9MWZav9u6yjbHXWGKwCfSiKA
+wTaJ/lfY1ETv3R/uJrtGTbI=
+=BDOH
+-----END PGP SIGNATURE-----
+	 </output>
+	</shell>
+   </section>
+
+   <section>
+<!-- *. Kapitel -->
+	<heading>
+Abgetrennte Signatur
+	</heading>
+
+	<textblock>
+Der Nachteil bei signierten Dokumenten ist, dass der Empfänger das
+Originaldokument aus der unterschriebenen Version erst
+wiederherstellen muß bzw. bei einem im Klartext unterschriebenen
+Dokument dieses gegebenenfalls noch editieren muß. Deshalb gibt
+es als Drittes noch die Möglichkeit, Dokumente mit abgetrennter
+Unterschrift zu signieren. Dazu verwendet man die Option
+<command>--detach-sig</command>. Die Signatur wird dann in einer
+separaten Datei abgelegt. Das eigentliche Dokument bleibt
+unverändert.
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --output doc.sig --detach-sig doc
+	 </user>
+	 <output>
+Sie benötigen ein Mantra, um den geheimen Schlüssel zu entsperren.
+Benutzer: "Alice (Rechtsanwältin) &lt;alice@cyb.org&gt;"
+1024-Bit DSA Schlüssel, ID FB5797A9, erzeugt 2000-06-06
+
+Geben Sie das Mantra ein:
+	 </output>
+	</shell>
+
+	<textblock>
+Um die Signatur zu prüfen, benötigen Sie sowohl das eigentliche
+Dokument als auch die abgetrennte Unterschrift. Die Option
+<command>--verify</command> kann zum Prüfen der Signatur benutzt
+werden.
+	</textblock>
+
+	<shell>
+	 <user path="~">gpg --verify doc.sig doc</user>
+	 <output>
+gpg: Unterschrift vom Die 06 Jun 2000 17:34:43 CEST, DSA Schlüssel ID FB5797A9
+gpg: Korrekte Unterschrift von "Alice (Rechtsanwältin) &lt;alice@cyb.org&gt;"
+	 </output>
+	</shell>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Fußnoten
+   </heading>
+
+   <section>
+	
+	<heading>
+ Option 4
+	</heading>
+
+	<textblock name="fussnote1">
+Mit der Option 3 läßt sich ein ElGamal-Schlüsselpaar erzeugen, mit
+dem Sie keine Unterschriften leisten können.
+	</textblock>
+   </section>
+
+   <section>
+	<heading>
+Kommandozeilen-Option --armor
+	</heading>
+	<textblock name="fussnote2">
+Viele Kommandozeilen-Optionen, die häufig benutzt werden, können
+auch in einer Konfigurationsdatei definiert werden.
+	</textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>Dateien unter Linux</title>
+
+ <author>
+  <name>Frank Boerner</name>
+  <mailto>frank@frank-boerner.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>dateien_unter_linux</index>
+
+ <description>
+  <textblock>
+Im Unterschied zu Windows wird bei Linux zwischen Groß- und
+Kleinschreibung unterschieden. Daher ist die Datei test nicht identisch
+mit der Datei Test. Was am Anfang bei Umsteigern womöglich zur
+Verwirrung beiträgt, erweist sich nach einer Einarbeitungszeit häufig als eine praktische
+Eigenschaft.
+  </textblock>
+
+  <textblock>
+Ein Dateiname darf 255 Zeichen lang sein. Damit sollte es jedem
+gelingen, seine Dokumente aussagekräftig zu benennen. Wie die
+Erfahrung zeigt, sind Dateinamen in der Praxis selten auch
+nur annähernd so lang.
+  </textblock>
+
+  <textblock>
+Eine Datei hat unter Linux keine bestimmte Endung, wie dies bei
+Windows der Fall ist (beispiel.exe oder beispiel.txt). Auch dies
+verwirrt am Anfang den Umsteiger, doch gewöhnt man sich auch daran.
+  </textblock>
+
+  <textblock>
+Es folgen nun eine Reihe von Kommandos, die man im Umgang mit
+Dateien benötigt.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!-- *. Kapitel-->
+   <heading>
+touch
+   </heading>
+
+   <textblock>
+Das Kommando <command>touch</command> legt eine neue Datei mit der Größe 0 an,
+sofern
+noch keine Datei gleichen Namens existiert. Existiert die Datei
+schon, so ändert <command>touch</command> das Datum der letzten Änderung.
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+ls
+    </user>
+    <user path="~/testdir">
+touch test1
+    </user>
+    <user path="~/testdir">
+ls -l
+    </user>
+    <output>
+insgesamt 0
+-rw-r--r--    1 user     users           0 Mai 29 17:34 test1
+    </output>
+   </shell>
+
+   <shell>
+    <user path="~/testdir">
+ls -l
+    </user>
+    <output>
+insgesamt 4
+-r--r--r--    1 user     users         335 Feb 10  2001 profile
+-rw-r--r--    1 user     users           0 Mai 29 17:34 test1
+    </output>
+    <user path="~/testdir">
+touch profile
+    </user>
+    <user path="~/testdir">
+ls -l
+    </user>
+    <output>
+insgesamt 4
+-r--r--r--    1 user     users         335 Mai 29 17:36 profile
+-rw-r--r--    1 user     users           0 Mai 29 17:34 test1
+    </output>
+   </shell>
+   </section>
+
+   <section>
+<!-- *. Kapitel-->
+   <heading>
+cat
+   </heading>
+
+   <textblock>
+Das Kommando <command>cat</command> liest eine oder mehrere Dateien und gibt diese auf
+der Standardausgabe aus. Die Standardausgabe ist normalerweise
+das (evtl. virtuelle) Terminal, in welchem sich auch die aktuelle
+Shell befindet.
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+ls
+    </user>
+    <output>
+test1
+    </output>
+    <user path="~/testdir">
+cat test1
+    </user>
+    <output>
+Dies ist Testdatei 1.
+    </output>
+   </shell>
+
+
+   <textblock>
+<command>cat</command> kann aber auch Daten von der Standardeingabe (normalerweise ist dies die Tastatur) lesen
+und diese in eine Datei schreiben. Das Zeichen <command>&gt;</command> bewirkt eine
+<strong>Umlenkung des Standardausgabekanals</strong> und schreibt alles, was man
+über die Tastatur eingibt, in die Datei <path>test2</path>.
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+cat > test2
+    </user>
+    <output>
+Dies ist Testdatei 2.
+    </output>
+   </shell>
+
+   <textblock>
+(Die Eingabe wird mit <command>^D</command> beendet)
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+cat test2
+    </user>
+    <output>
+Dies ist Testdatei 2.
+    </output>
+   </shell>
+
+
+   <textblock>
+Man kann den Operator <command>></command> aber auch dazu verwenden, mehrere
+Dateien
+in eine einzige umzuleiten. Die beiden Zeilen, die von <command>cat</command>
+ausgegeben werden, erscheinen so nicht auf dem Bildschirm, sondern
+werden in die Datei <command>test3</command> geschrieben.
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+cat test1 test2 > test3
+    </user>
+    <user path="~/testdir">
+cat test3
+    </user>
+    <output>
+Dies ist Testdatei 1.
+Dies ist Testdatei 2.
+    </output>
+   </shell>
+   </section>
+
+   <section>
+<!-- *. Kapitel-->
+   <heading>
+cp
+   </heading>
+
+   <textblock>
+Das Kommando <command>cp </command>(<command>copy</command>) kopiert Dateien und
+
+Verzeichnisse.
+Wenn nur zwei Dateinamen als Parameter angegeben werden, wird die
+erstgenannte Datei in die zweite kopiert. Werden mehrere angegeben,
+nimmt <command>cp</command> an, dass die letzte Angabe der Name eines Verzeichnisses ist
+und kopiert alle angegebenen Dateien in dieses Verzeichnis, falls es
+existiert.
+   </textblock>
+
+   <textblock>
+<command>cp</command> hat eine Menge Optionen, die in der Manpage zu finden sind.
+Hier sind die wichtigsten:
+   </textblock>
+
+   <table>
+    <pdf-column width="50"/>
+    <pdf-column/>
+    <tr>
+     <td>
+<command>cp -i</command>:
+     </td>
+     <td>
+Vor dem Überschreiben von Zieldateien nachfragen.
+     </td>
+    </tr>
+
+    <tr>
+     <td>
+<command>cp -d</command>:
+     </td>
+     <td>
+Symbolische Links als solche kopieren, nicht die Dateien,
+auf die verwiesen wird.
+     </td>
+    </tr>
+
+    <tr>
+     <td>
+<command>cp -R</command>:
+     </td>
+     <td>
+Rekursiv kopieren, d. h. auch Unterverzeichnisse.
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Das folgende Beispiel kopiert die Datei <path>test1</path> nach Datei <path>test5</path>:
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+ls
+    </user>
+    <output>
+test1
+    </output>
+    <user path="~/testdir">
+cp test1 test5
+    </user>
+    <user path="~/testdir">
+ls
+    </user>
+    <output>
+test1 test5
+    </output>
+   </shell>
+
+
+   <textblock>
+Das folgende Beispiel kopiert die Dateien <path>test1</path> <path>test2</path> <path>test3</path> in
+das Verzeichnis <path>test4</path>:
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+ls -lR
+    </user>
+    <output>
+.:
+insgesamt 12
+-rw-r--r--    1 user     users          22 Mai 29 17:56 test1
+-rw-r--r--    1 user     users          22 Mai 29 17:59 test2
+-rw-r--r--    1 user     users          44 Mai 29 18:00 test3
+drwxr-xr-x    2 user     users          48 Mai 29 18:11 test4
+
+./test4:
+insgesamt 0
+    </output>
+    <user path="~/testdir">
+cp test1 test2 test3 test4
+    </user>
+    <user path="~/testdir">
+ls -lR
+    </user>
+    <output>
+.:
+insgesamt 12
+-rw-r--r--    1 user     users          22 Mai 29 17:56 test1
+-rw-r--r--    1 user     users          22 Mai 29 17:59 test2
+-rw-r--r--    1 user     users          44 Mai 29 18:00 test3
+drwxr-xr-x    2 user     users         120 Mai 29 18:11 test4
+
+./test4:
+insgesamt 12
+-rw-r--r--    1 user     users          22 Mai 29 18:11 test1
+-rw-r--r--    1 user     users          22 Mai 29 18:11 test2
+-rw-r--r--    1 user     users          44 Mai 29 18:11 test3
+    </output>
+   </shell>
+   </section>
+
+   <section>
+<!-- *. Kapitel-->
+   <heading>
+mv
+   </heading>
+
+   <textblock>
+Das Kommando <command>mv</command> (<command>move</command>) verschiebt Dateien
+und Verzeichnisse. Für
+die Behandlung der angegebenen Dateien und Verzeichnisse gilt das
+bei <command>cp</command> gesagte.  <command>mv</command> wird auch zum Umbenennen von Dateien und
+Verzeichnissen verwendet.
+   </textblock>
+
+   <table>
+    <pdf-column width="50"/>
+    <pdf-column/>
+    <tr>
+     <td>
+<command>mv -i</command>:
+     </td>
+     <td>
+Vor dem Überschreiben von Zieldateien nachfragen.
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Hierzu ein Beispiel:
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+ls
+    </user>
+    <output>
+test1
+    </output>
+    <user path="~/testdir">
+mv test1 datei1
+    </user>
+    <user path="~/testdir">
+ls
+    </user>
+    <output>
+datei1
+    </output>
+   </shell>
+
+   <textblock>
+Die Datei <command>test1</command> wurde in <command>datei1</command> umbenannt.
+   </textblock>
+   </section>
+
+   <section>
+<!-- *. Kapitel-->
+   <heading>
+rm
+   </heading>
+
+   <textblock>
+Das Kommando <command>rm</command> (<command>remove</command>) löscht eine oder
+mehrere Dateien. Um
+Dateien löschen zu können, benötigt man Schreibrechte in dem
+jeweiligen Verzeichnis. Wenn diese für das aktuelle Verzeichnis
+fehlen, muss der Löschvorgang für jede Datei mit <command>y</command> oder
+<command>n</command>
+bestätigt oder abgelehnt werden.
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+ls
+    </user>
+    <output>
+datei1
+    </output>
+    <user path="~/testdir">
+rm datei1
+    </user>
+    <user path="~/testdir">
+ls
+    </user>
+    <user path="~/testdir">
+
+    </user>
+   </shell>
+
+
+   <textblock>
+Mit der Option <command>-r</command> löscht <command>rm</command> auch
+Verzeichnisse, selbst wenn sie
+nicht leer sind.
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+ls -lR
+    </user>
+    <output>
+.:
+insgesamt 0
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei1
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei2
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei3
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei4
+drwxr-xr-x    2 user     users         144 Mai 29 19:34 dir1
+
+./dir1:
+insgesamt 0
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei1
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei2
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei3
+-rw-r--r--    1 user     users           0 Mai 29 19:34 datei4
+    </output>
+    <user path="~/testdir">
+rm -r *
+    </user>
+    <user path="~/testdir">
+    </user>
+   </shell>
+
+
+   <textblock>
+weitere nützliche Option sind:
+   </textblock>
+   <table>
+    <pdf-column width="50"/>
+    <pdf-column/>
+    <tr>
+     <td>
+<command>-i</command>:
+     </td>
+     <td>
+interaktives Löschen. Jedes Löschen muss mit <command>y</command> oder
+<command>n</command>
+bestätigt oder abgelehnt werden.
+     </td>
+    </tr>
+
+    <tr>
+     <td>
+<command>-f</command>:
+     </td>
+     <td>
+löscht auch schreibgeschützte Dateien ohne Bestätigung
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Achtung: Wenn man im Wurzelverzeichnis <path>/</path> ist und als root den Befehl
+<command>rm -r *</command> ausführt, löscht man ALLE Dateien des Systems! Daher ist
+rekursives Löschen nur mit äußerster Vorsicht anzuwenden!
+   </textblock>
+
+   <textblock>
+Eine "gefährliche" Option soll hier nicht unerwähnt bleiben:
+   </textblock>
+
+   <table>
+    <pdf-column width="50"/>
+    <pdf-column/>
+    <tr>
+     <td>
+<command>-d</command>:
+     </td>
+     <td>
+Löscht Verzeichnisse mittels eines <strong>unlink</strong> Systemaufrufes.
+Da hierbei die enthaltenen Dateien nicht mitgelöscht werden,
+ist das Dateisystem hinterher meist inkonsistent. Es
+wird dann wahrscheinlich eine Dateisystemreparatur notwendig
+sein.
+     </td>
+    </tr>
+   </table>
+   </section>
+
+   <section>
+<!-- *. Kapitel-->
+   <heading>
+Jokerzeichen
+   </heading>
+
+   <textblock>
+Um Gruppen von Dateien bearbeiten zu können, benötigt man die
+sogenannten Jokerzeichen. Diese können z.B. verwendet werden,
+um eine Dateiauswahl zu treffen.
+   </textblock>
+
+   <textblock>
+Man unterscheidet folgende Jokerzeichen:
+   </textblock>
+
+   <table>
+    <pdf-column width="50"/>
+    <pdf-column/>
+    <tr>
+     <td>
+<command>?</command>
+     </td>
+     <td>
+genau ein beliebiges Zeichen
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>*</command>
+     </td>
+     <td>
+beliebig viele Zeichen
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>[abc]</command>
+     </td>
+     <td>
+genau eines der angegebenen Zeichen
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>[a-d]</command>
+     </td>
+     <td>
+ein Zeichen aus dem angegebenen Bereich
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>[!abc]</command>
+     </td>
+     <td>
+keines des angegebenen Zeichen
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>*.html</command>
+     </td>
+     <td>
+würde alle html Dateien auswählen
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>*buch*</command>
+     </td>
+     <td>
+würde alle Dateien auswählen, in deren Namen "buch"
+vorkommt
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Durch die Angabe mit eckigen Klammern kann die Auswahl weiter
+eingeschränkt werden.
+   </textblock>
+   </section>
+
+   <section>
+<!-- *. Kapitel-->
+   <heading>
+more und less
+   </heading>
+
+   <textblock>
+<command>more</command> und <command>less</command> sind sogenannte Pager (engl. to page: weiterblättern). Sie geben den Inhalt einer
+Datei auf dem Bildschirm aus und halten jeweils nach einer
+Bildschirmseite an. <command>less</command> ist das leistungsfähigere Programm und kann
+alles, was <command>more</command> auch kann (engl. "less is more": "Weniger ist mehr.").
+   </textblock>
+
+   <textblock>
+Beide Programme können mit der Taste <command>q</command> beendet werden. Die
+<command>Leertaste</command> blättert seitenweise und die <command>Returntaste</command> zeilenweise
+vorwärts.
+   </textblock>
+
+   <textblock>
+Weitere Informationen zu diesen Programmen findet man in der
+jeweiligen Manpage.
+   </textblock>
+   </section>
+
+   <section>
+<!-- *. Kapitel-->
+   <heading>
+file
+   </heading>
+
+   <textblock>
+Das Kommando <command>file</command> stellt fest, um was für einen Dateityp es
+sich
+handelt, da unter Linux im Gegensatz zu Windows der Dateityp ja
+nicht an der Endung zu erkennen ist.
+   </textblock>
+
+   <textblock>
+Dazu ein paar Beispiele:
+   </textblock>
+
+   <shell>
+    <user path="~/testdir">
+file test
+    </user>
+    <output>
+test: empty
+    </output>
+    <user path="~/testdir">
+ls -l
+    </user>
+    <output>
+insgesamt 0
+-rw-r--r--    1 user     users           0 Mai 29 20:10 test
+     </output>
+    <user path="~">
+file testdir
+    </user>
+    <output>
+testdir: directory
+    </output>
+    <user path="~">
+file "übersicht texte"
+    </user>
+    <output>
+übersicht texte: ISO-8859 text
+    </output>
+    <user path="~/selflinux">
+file slcompile
+    </user>
+    <output>
+slcompile: Bourne-Again shell script text
+    </output>
+    <user path="~/daten1/c++">
+file BSP4
+    </user>
+    <output>
+BSP4: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV),
+dynamically linked (uses shared libs), not stripped
+    </output>
+    <user path="~/daten1/c++">
+file BSP4.cpp
+    </user>
+    <output>
+BSP4.cpp: ASCII C program text
+    </output>
+    <user path="~/daten1/c++">
+file BSP4.o
+    </user>
+    <output>
+BSP4.o: ELF 32-bit LSB relocatable, Intel 80386, version 1 (SYSV), not stripped
+    </output>
+   </shell>
+
+   <textblock>
+Diese Daten bezieht das Kommando dabei aus der Datei
+<command>/etc/magic</command>. Ausführliche Information dazu findet sich in <command>man file</command>
+und <command>man 4 magic</command>.
+   </textblock>
+  </section>
+ </split>
+</chapter>

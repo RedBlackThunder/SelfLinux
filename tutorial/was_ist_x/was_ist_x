@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Was ist X?</title>
+
+ <author>
+  <name>Erwin Dogs</name>
+  <mailto>edogs@t-online.de</mailto>
+ </author>
+
+ <author>
+  <name>Florian Fredegar Haftmann</name>
+  <mailto>florian.haftmann@stud.tum.de</mailto>
+ </author>
+
+ <layout>
+  <name>Alexander Fischer</name>
+  <mailto>Selflinux@tbanus.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>was_ist_x</index>
+
+ <split>
+  <section>
+   <heading>
+Was ist X?
+   </heading>
+
+   <textblock>
+Wenn man mit Linux arbeitet und sich damit beschäftigt, wird man
+früher oder später über den Buchstaben <strong>X</strong> stolpern - kurz für
+<strong>X Window System</strong>; dabei handelt es sich um das Kernstück der
+grafischen Oberfläche.
+   </textblock>
+
+   <textblock>
+Linux <strong>an sich</strong>, der Kernel, weiß nichts von Grafik; im Gegensatz
+zu weitverbreiteten anderen Betriebssystemen, welche die grafische
+Oberfläche fest in ihrem Kern integriert haben, ist das bei UNIXen
+nicht der Fall. Vielmehr läuft das <name>X Window System</name> völlig unabhängig vom
+Kernel, es ist sogar völlig unabhängig davon entstanden:
+   </textblock>
+
+   <textblock>
+Anfang der 80er-Jahre kam man am <ref lang="de"  url="http://de.wikipedia.org/wiki/MIT">Massachusetts Institute of Technology</ref> (MIT)
+darauf, dass es ja ein bisschen
+schade ist, wenn man ein echtes Mehrbenutzer- und Multitasking-System
+hat, darauf aber nur mit einer Konsole zugreifen kann. Die
+naheliegende Idee:<br/> <strong>Es sollten mehrere Anwendungen in unterschiedlichen,
+bewegbaren Fenstern auf dem gleichen Schirm angezeigt werden
+können.</strong> So entstand <strong>X</strong>
+als akademisches  Projekt; der Quellcode wurde von vielen
+kommerziellen UNIX-Anbietern aufgegriffen, fortentwickelt und in ihre
+UNIX-Varianten integriert. In den 90ern startete das <ref lang="en" url="http://www.xfree.org/">XFree-Projekt</ref> mit dem
+Ziel, den damaligen Quellcode auf freier Basis auf den neuesten Stand
+zu bringen und so <strong>X</strong> für Linux verfügbar zu  machen - erfolgreich.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Was leistet X und wo liegen seine Grenzen?
+   </heading>
+
+   <textblock>
+Entsprechend der UNIX-Philosophie ist <strong>X</strong> keine <strong>eierlegende
+Wollmilchsau</strong> ohne eine durchschaubare innere Struktur, sondern in
+einzelne Komponenten aufgegliedert:
+   </textblock>
+
+   <ul>
+    <li>
+Der <command>X-Server</command>; er ist das Programm, das Tastatur- und Mauseingaben
+entgegennimmt und die Resultate auf dem Bildschirm anzeigt. Er enthält
+dafür die passenden Gerätetreiber. Die Eingaben werden von ihm nicht
+ausgewertet, sondern an die betreffenden <command>X-Clients</command> (s. u.)
+weitergeleitet, die wiederum die Resultate an den <command>X-Server</command>
+zurückliefern.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Die <command>X-Clients</command>; sie sind praktisch die Anwendungen (Textverarbeitung,
+Editor, Browser, ...), welche die grafische Oberfläche benutzen wollen.
+Vom <command>X-Server</command> bekommen sie die Tastatur- und Mauseingaben mitgeteilt,
+die sie betreffen, und melden ihm zurück, was auf dem Bildschirm
+erscheinen soll. Dazu wird das so genannte X-Protokoll verwendet.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Der <command>Windowmanager</command>; er kümmert sich um das <strong>Drumherum</strong>, z.B.
+Fensterrahmen und Fenstermenüs für die Anzeigen der <command>X-Clients</command>, Menüs
+auf dem Desktop, Minimieren und Maximieren der Fenster usw.<br/>
+    </li>
+   </ul>
+
+   <textblock>
+Das Zusammenspiel lässt sich in folgender Grafik zusammenfassen
+(beachten Sie dabei, dass auch ein Window-Manager nichts anderes als ein X-Client ist):
+   </textblock>
+
+   <image height="200">
+    <title>Diagramm der Architektur</title>	   
+    <filename>xarchitecture.png</filename>
+   </image>
+
+   <textblock>
+Diese Architektur hat eine ganze Reihe von Vorteilen:<br/>
+   </textblock>
+
+   <ul>
+    <li>
+Auf Systemen, die keine grafische Oberfläche brauchen (z.B.
+Webserver), kann sie einfach weggelassen werden, das sie ja vom
+Kernel unabhängig ist; das spart Speicher- und Prozessorressourcen.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Das grafische System kann beliebig herauf- und heruntergefahren
+werden (z.B. zu Konfigurationszwecken), ohne das das System
+verändert oder angehalten werden muss.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Die Textkonsolen arbeiten unabhängig von der grafischen Oberfläche;
+mit <keycomb mode="hold"><key>Strg</key><key>Alt</key></keycomb><keycomb><key>F1</key></keycomb> bis <keycomb><key>F6</key></keycomb> kann man auf sie umschalten. Das ist z.B.
+sinnvoll, falls man schnell an der Systemkonfiguration was ändern
+will und sich somit auf einer Konsole als root einloggt. Zum
+X-Bildschirm zurück geht es mit <keycomb mode="hold"><key>Strg</key><key>Alt</key><key>F7</key></keycomb>.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Das X-Protokoll setzt auf dem <ref chapter="tcpip">Internet-Protokoll TCP/IP</ref> auf; das
+bedeutet, dass Clients und Server auf unterschiedlichen Rechnern
+laufen können(!). In einem lokalen Netzwerk, in dem z.B. eine
+rechenintensive Ingenieurberechnungssoftware nur von einem einzigen
+Rechner verkraftet werden kann, weil alle anderen zu wenig
+Hauptspeicher haben, kann man sich einfach von seinem Arbeitsplatz
+aus dort einloggen, das Programm starten, und es erscheint auf dem
+eigenen Bildschirm, ohne dass man merkt, dass es auf einem ganz
+anderen Rechner läuft.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Die einzelnen <command>X-Clients</command> müssen <strong>nur</strong> das X-Protokoll beherrschen,
+die Hardware kann ihnen relativ egal sein; das ist zwar heute
+allgemein so, aber zur Zeit der Einführung von <strong>X</strong> war diese Idee
+sehr fortschrittlich.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Der Windowmanager ist beliebig wählbar; das macht das
+Erscheinungsbild individuell konfigurierbar.
+    </li>
+   </ul>
+
+   <textblock>
+    <strong>
+</strong>X ist ein barocker Dinosaurier in jeder Linux-Distribution: barock,
+weil es sehr viele Features und Tools liefert, die man eigentlich
+(außer zum Rumspielen und sich darüber Amüsieren) nicht braucht;
+Dinosaurier, weil auf der anderen Seite seine interne Struktur auf den
+technischen Möglichkeiten aufbaut, die vor zwanzig Jahren bestanden:
+   </textblock>
+
+   <ul>
+    <li>
+Das X-Protokoll kennt nur einfache Anweisungen wie: <strong>Zeichne Linie
+von A nach B</strong>; moderne Grafikkarten haben viele Möglichkeiten, um den
+Bildschirmaufbau durch die Hardware zu beschleunigen, diese können
+aufgrund dieser <strong>Kleinkariertheit</strong> von <strong>X</strong> nicht genutzt werden und
+liegen brach. Solange <strong>X</strong> nicht durch ein neues Konzept abgelöst wird,
+wird sich daran auch nichts ändern.
+    </li>
+   </ul>
+   <ul>
+    <li>
+Die Programmierung von <strong>X</strong> ist damit auch recht umständlich;
+mittlerweile gibt es allerdings so genannte GUI-Toolkits, die auf <strong>X</strong>
+aufsetzen und dem Programmierer das Leben recht einfach machen. Als
+<strong>Altlast</strong> gibt es aber viele alte Programme für <strong>X</strong>, von denen jedes
+eine andere Bedienphilosophie verfolgt und die einen kunterbunt
+aussehenden Zoo bilden.
+    </li>
+   </ul>
+   <ul>
+    <li>
+<strong>X</strong> hat absolut nichts mit dem Drucksystem zu tun; das ist zwar nicht
+unbedingt eine Designschwäche, hat aber zur Folge, dass es zwei paar
+Stiefel sind, z.B. eine Schriftart am Bildschirm anzeigen zu können
+oder sie auch ausdrucken zu können.
+    </li>
+   </ul>
+   <ul> 
+    <li>
+<strong>X</strong> ist nur ein Verfahren, um mehrere (Text-)fenster anzuzeigen; von
+einer grafischen Oberfläche wird aber mehr verlangt. Den Anwender
+braucht dies aber wenig zu kümmern, denn im Zusammenspiel mit den
+modernen <ref iref="Was ist ein Desktop Environment?">Desktop Environments</ref> von Linux liefert <strong>X</strong> eine
+Benutzeroberfläche, die kaum Wünsche offen lässt.
+    </li>
+   </ul>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+     Was ist ein Desktop Environment?
+   </heading>
+
+   <textblock>
+Was macht ein modernes GUI (<name>Graphical User Interface</name>) aus? Funktionen
+wie Copy &amp; Paste, Kontextmenüs, einheitliches Look &amp; Feel, Drag &amp;
+Drop, Desktop Panel - alles Dinge, die <strong>X</strong> selbst nicht bereitstellt.
+Dazu wurden die Desktop Environments oder Desktopumgebungen ins Leben
+gerufen. Desktopumgebungen bringen darüberhinaus eine ganze Ansammlung
+nützlicher Anwendungssoftware bereits mit (z.B. Web-Browser,
+Office-Paket, Spiele, Editor...), und bilden somit ein ganzes
+Software-Bundle. Zudem verwenden sie einheitliche Grafikbibliotheken
+(GUI-Toolkits), mit denen diese Anwendungen programmiert sind, was
+einerseits das Aussehen für den Anwender gefällig macht, anderseits
+dem Programmierer eine Menge Arbeit abnimmt. Eine Desktopumgebung ist
+der Schlüssel zum Erfolg, um ein Betriebssystem einer breiten Masse an
+Anwendern zur Verfügung zu stellen, da kaum ein Computeranwender gerne
+auf Komfort bei der Benutzung seines Computers verzichten will. Er
+möchte
+sich im Wesentlichen auf den Kern seiner Bedürfnisse konzentrieren
+(z.B. Briefe schreiben, im Internet surfen, Mails senden und
+empfangen). Dies mit einem Mausklick schnell und bequem erledigen zu
+können, das Kopieren von Textpassagen von einer Anwendung in eine andere,
+Icons auf der Oberfläche zum vereinfachten Start häufig verwendeter
+Anwendungen - all dies und noch viel mehr gehört zu den Funktionen,
+welche ein Desktopsystem bereitstellt. Die
+beiden wohl verbreitetesten Desktopsysteme sind
+   </textblock>
+
+   <ul>
+    <li>
+     <ref lang="en" url="http://kde.org/">KDE</ref> (Kool Desktop Environment), basierend auf dem GUI-Toolkit QT
+    </li>
+    <li>
+     <ref lang="en" url="http://gnome.org/">Gnome</ref> (GNU Network Object Model Environment), basierend auf dem
+GUI-Toolkit GTK
+    </li>
+   </ul>
+
+   <textblock>
+In unseren Breiten ist durch die starke Präsenz eines Nürnberger
+Linux-Distributors KDE das am staerksten verbreitete Desktopsystem. Es
+ist so bekannt, dass KDE oft mit Linux gleichgesetzt wird.
+   </textblock>
+
+   <textblock>
+Beide Desktop Environments werden aber mit jeder größeren Distribution
+mitgeliefert und gleichen sich sehr im Funktionsumfang.
+   </textblock>
+
+   <textblock>
+Welches ist die am besten geeignete Oberfläche für mich? - Diese Frage wird
+häufig gestellt, und dem Einsteiger würden wir erstmal dazu raten, sich
+mit der vorinstallierten Oberfläche vertraut zu machen. Ansonsten gilt
+der Grundsatz: ausprobieren! Die Geschmäcker sind verschieden, und es
+gibt genug Alternativen, um die Arbeitsumgebung an die persönlichen Wünsche
+und Bedürfnisse des Anwenders anzupassen. Neben KDE und Gnome gibt es
+alternativ auch noch die Möglichkeit, einen <strong>klassischen</strong>
+Windowmanager wie FVWM zu verwenden - diese bieten zwar geringeren
+Komfort, schonen aber die Ressourcen, was z. B. auf einem Rechner, der
+überwiegend als Server eingesetzt wird, sinnvoll sein kann.
+   </textblock>
+  </section>
+ </split>
+</chapter>

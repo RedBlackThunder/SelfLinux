@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Network Address Translation</title>
+
+ <author>
+  <name>Melanie Berg</name>
+  <mailto>mel@sekurity.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GPL
+ </license>
+
+ <index>nat</index>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Willkommen, geschätzter Leser,
+   </textblock>
+
+   <textblock>
+Du bist dabei, in die faszinierende (und manchmal schreckliche) Welt
+der <strong>NAT</strong> einzutauchen: Network Address Translation, und dieses HOWTO
+wird etwas wie Dein Führer zum 2.4er Kernel und weiter sein.
+   </textblock>
+
+   <textblock>
+Mit Linux 2.4 wurde eine Infrastruktur für das Untersuchen von
+Paketen, genannt <strong>netfilter</strong>, eingeführt. Eine darauf aufbauende
+Schicht bietet <strong>NAT</strong>, komplett von den vorangegangenen Kerneln neu
+implementiert.
+   </textblock>
+  </section>
+
+
+  <section>
+   <heading>
+Wo ist die offizielle Website und Mailingliste?
+   </heading>
+
+   <textblock>
+Es gibt drei offizielle Seiten:
+   </textblock>
+
+   <ul>
+	<li>
+Dank an Penguin Computing <ref lang="en" url="http://netfilter.filewatcher.org">http://netfilter.filewatcher.org</ref>.
+	</li>
+	<li>
+Dank an The Samba Team and SGI <ref lang="en" url="http://netfilter.samba.org">http://netfilter.samba.org</ref>.
+	</li>
+	<li>
+Dank an Harald Welte <ref lang="en" url="http://netfilter.gnumonks.org">http://netfilter.gnumonks.org</ref>.
+	</li>
+   </ul>
+
+   <textblock>
+Für die offizielle Netfilter-Mailingliste siehe Sambas Listserver
+Netfilter List <ref lang="en" url="http://www.netfilter.org/contact.html#list">
+http://www.netfilter.org/contact.html#list</ref>.
+   </textblock>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Was ist Network Address Translation?
+	</heading>
+
+	<textblock>
+Gewöhnlich reisen Pakete in einem Netzwerk von ihrer Quelle (z.B.
+Dein Computer) zu ihrem Ziel (z.B. <ref lang="en" url="http://www.gnumonks.org">http://www.gnumonks.org</ref>) durch viele
+verschiedene Links: ungefähr 19 von da, wo ich in Australien bin.
+Keiner dieser Links verändert das Paket wirklich, sie schicken es
+einfach weiter.
+	</textblock>
+
+	<textblock>
+Wenn einer dieser Links <strong>NAT</strong> machen würde, dann würde er die Quelle
+oder das Ziel des Paket verändern, wenn es eintrifft. Wie Du Dir
+vorstellen kannst, wurde das System nicht entworfen, so zu arbeiten,
+also ist <strong>NAT</strong> immer etwas, was man mit Vorsicht behandeln sollte.
+Gewöhnlich wird sich der Link, der <strong>NAT</strong> macht, daran erinnern, wie er
+das Paket verändert hat, und wenn ein Antwortpaket aus der anderen
+Richtung kommt, wird er genau das Umgekehrte darauf anwenden, und so
+funktioniert es.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Warum sollte ich NAT wollen?
+	</heading>
+
+	<textblock>
+In einer perfekten Welt würdest Du das gar nicht. In der Zwischenzeit
+sind hier die Gründe:
+	</textblock>
+	<ul>
+	 <li>
+  Modemverbindungen zum Internet<br/>
+  Die meisten Internetanbieter geben Dir eine einzelne Adresse,
+  wenn Du Dich bei ihnen einwählst. Du kannst Pakete mit welcher
+  Quelladresse auch immer verschicken, aber nur Pakete mit dieser
+  Antwortadresse werden zu Dir zurückkommen. Wenn Du mehrere
+  verschiedene Maschinen (so wie ein Heim-Netzwerk) benutzen
+  willst, um Dich durch diesen Link mit dem Internet zu verbinden,
+  wirst Du <strong>NAT</strong> brauchen.<br/><br/>
+
+  Dies ist die heute am meisten verbreitete Art von <strong>NAT</strong>,
+  gewöhnlich in der Linuxwelt als <strong>Masquerading</strong> bekannt. Ich
+  nenne dies SNAT, weil die Quell- (<strong>Source</strong>) Adresse des ersten
+  Pakets verändert wird.
+	 </li>
+	 <li>
+  Mehrere Server<br/>
+  Manchmal möchtest Du ändern, wohin einkommende Pakete in
+  Deinem Netzwerk gehen sollen. Oft ist das so, weil Du (wie oben
+  erwähnt) nur eine IP-Adresse hast, Du möchtest den Leuten aber
+  die Möglichkeit geben, auch die Rechner hinter dem einen mit
+  der <strong>echten</strong> IP-Adresse zu erreichen. Du kannst das schaffen,
+  wenn Du das Ziel von einkommenden Paketen ändern kannst.<br/><br/>
+
+  Eine bekannte Variation dessen nennt sich <strong>load-sharing</strong>: Eine
+  große Anzahl von Paketen wird über eine Reihe von Maschinen
+  verändert, indem die Pakete <strong>aufgefächert</strong> werden. Diese
+  Version von <strong>NAT</strong> wurde unter früheren Linuxversionen 
+  Port-Forwarding genannt.
+	 </li>
+	 <li>
+  Transparente Proxies<br/>
+  Manchmal möchtest Du so tun, also ob jedes Paket, das durch
+  Deinen Linuxrechner geht, für ein Programm auf dem Linuxrechner
+  selbst bestimmt ist. Dies wird für transparente Proxies
+  verwendet: ein Proxy ist ein Programm, das zwischen Deinem
+  Netzwerk und der Außenwelt steht und die Kommunikation
+  dazwischen regelt. Der transparente Teil kommt daher, weil Dein
+  Netzwerk nicht einmal weiß, dass es mit mit einem Proxy redet,
+  es sei denn natürlich, der Proxy funktioniert nicht.<br/><br/>
+
+  <command>Squid</command> kann auf diese Art konfiguriert werden, unter früheren
+  Linuxversionen hieß das Umleiten (Redirection) oder auch
+  transparentes Proxying.
+	 </li>
+	</ul>
+   </section>
+  </section>
+ </split>
+
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Die zwei Formen von NAT
+   </heading>
+   
+   <textblock>
+Ich unterscheide <strong>NAT</strong> in zwei verschiedene Typen: Source Nat (SNAT) und
+Destination <strong>NAT</strong> (DNAT).
+   </textblock>
+
+   <textblock>
+Wenn Du die Quelladresse des ersten Pakets änderst, ist das Source
+<strong>NAT</strong>: Du veränderst den Ursprung der Verbindung. Source <strong>NAT</strong> ist immer
+Post-Routing, es wirkt, gerade bevor das Paket in die Leitung geht.
+Masquerading ist eine spezielle Form von SNAT.
+   </textblock>
+
+   <textblock>
+Wenn Du die Zieladresse des ersten Pakets anderst, ist das Destination
+<strong>NAT</strong>: Du veränderst das Ziel, wohin die Verbindung geht. Destination
+<strong>NAT</strong> ist immer Pre-Routing, gerade wenn das Paket aus der Leitung
+kommt.Port-Forwarding, load-sharing und transparente Proxies sind
+alles Formen von DNAT.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Schnelle Übersetzung vom 2.0er und 2.2er Kernel
+   </heading>
+
+   <textblock>
+Sorry an alle von Euch, die noch immer geschockt sind vom Übergang
+von 2.0 (<command>ipfwadm</command>) auf 2.2 (<command>ipchains</command>). Es gibt gute und schlechte
+Neuigkeiten.
+   </textblock>
+
+   <textblock>
+Zuerst einmal kannst Du <command>ipfwadm</command> und <command>ipchains</command> wie gewohnt
+weiterbenutzen.Um das zu tun, musst Du das <command>ipchains.o</command> oder
+<command>ipfwadm.o</command> Kernelmodul aus der letzten netfilter-Distribution laden
+(<command>insmod</command>). Diese beiden schließen sich gegenseitig aus (Du bist
+gewarnt) und sollten nicht mit anderen netfilter-Modulen kombiniert
+werden.
+   </textblock>
+
+   <textblock>
+Sobald eins dieser Module installiert ist, kannst Du <command>ipchains</command> und
+<command>ipfwadm</command> wie gewohnt benutzen, mit den folgenden Unterschieden:
+   </textblock>
+   
+   <ul>
+	<li>
+  Das Masquerading Timeout mit <command>ipchains -M -S</command>, oder mit <command>ipfwadm -M
+  -S</command>, zu setzen, bringt nichts. Da die neuen Timeouts der neuen 
+  NAT-Infrastruktur länger sind, sollte das aber egal sein.
+	</li>
+	<li>
+  Die init_seq, delta und previous_delta Felder in der ausführlichen
+  Masqueradingliste sind immer Null.
+	</li>
+	<li>
+  Gleichzeitig die Zähler auflisten und auf Null setzen (<command>-Z -L</command>)
+  funktioniert nicht mehr: Die Zähler werden nicht zurückgesetzt.
+	</li>
+   </ul>
+
+   <textblock>
+<strong>Für Hacker:</strong>
+   </textblock>
+
+   <ul>
+	<li>
+  Du kannst jetzt auch Ports von 61000-65095 einbinden, sogar wenn Du
+  Masquerading machst. Der Masquerading Code hatte früher
+  angenommen, dass alles im diesem Bereich freigehalten werden
+  sollte, so dass Programme ihn nicht nutzen konnten.
+	</li>
+	<li>
+  Der (undokumentierte) <strong>getsockname</strong> Hack, welchen man nutzen
+  konnte, um bei transparenten Proxies das wirkliche Ziel
+  herauszufinden, funktioniert nicht mehr.
+	</li>
+	<li>
+  Der (undokumentierte) <strong>bind-to-foreign-address</strong> Hack ist auch nicht
+  implementiert; dies wurde verwendet, um die Illusion von
+  transparenten Proxies komplett zu machen.
+	</li>
+   </ul>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Ich will nur Masquerading! Hilfe!
+	</heading>
+
+	<textblock>
+Das ist das, was die meisten Leute wollen. Wenn Du durch eine 
+PPP-Verbindung eine dynamische IP-Adresse hast (wenn Du das nicht weißt,
+dann hast Du eine), möchtest Du Deinem Rechner einfach sagen, dass
+alle Pakete, die aus Deinem internen Netzwerk kommen, so aussehen
+sollen, als ob sie von dem Rechner mit der PPP-Verbindung kommen
+würden.
+	</textblock>
+
+	<file>
+	 <content>
+# Das NAT-Modul laden (dies zieht all die anderen mit).
+  modprobe iptable_nat
+
+# In der NAT-Tabelle (-t nat) eine Regel für alle an ppp0 (-o ppp0)
+# ausgehenden Pakete hinter dem Routing (POSTROUTING), die maskiert
+# werden sollen, anhängen (-A).
+  iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+
+# IP-Forwarding aktivieren
+  echo 1 > /proc/sys/net/ipv4/ip_forward
+	 </content>
+	</file>
+
+	<textblock>
+Beachte, dass Du hier keine Pakete filterst: hierzu lese das
+Paket-Filtering-HOWTO: Kombinieren von <strong>NAT</strong> und Paketfiltern.
+	</textblock>
+   </section>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Was ist mit ipmasqadm?
+	</heading>
+
+	<textblock>
+Das ist eine verzwicktere Sache, und ich habe mir hier keine grossen
+Sorgen um die Rückwärts-Kompatibilität gemacht. Um Port-Forwarding
+zu verwenden, kannst Du einfach <command>iptables -t nat</command> benutzen. Unter
+Linux 2.2 hättest Du es zum Beispiel so machen können:
+	</textblock>
+
+	<file>
+	 <content>
+# Linux 2.2
+# TCP-Pakete, die an 1.2.3.4 Port 8080 gehen, an 192.168.1.1 Port 80
+# weiterleiten
+  ipmasqadm portfw -a -P tcp -L 1.2.3.4 8080 -R 192.168.1.1 80
+	 </content>
+	</file>
+
+	<textblock>
+Jetzt würdest Du folgendes tun:
+	</textblock>
+
+	<file>
+	 <content>
+# Linux 2.4
+# Eine Pre-Routing (PREROUTING) Regel an die NAT-Tabelle (-t nat)
+# anhängen (-A), die besagt, dass alle TCP-Pakete (-p tcp) für 1.2.3.4
+# (-d 1.2.3.4) Port 8080 (--dport) auf 192.168.1.1:80
+# (--to 192.168.1.1:80) gemappt werden (-j DNAT).
+  iptables -A PREROUTING -t nat -p tcp -d 1.2.3.4 --dport 8080 \
+  -j DNAT --to 192.168.1.1:80
+	 </content>
+	</file>
+
+	<textblock>
+Wenn Du willst, dass diese Regel auch lokale Verbindung verändert
+(ich meine, wenn sogar auf dem <strong>NAT</strong>-Rechner selbst ein Telnet auf
+1.2.3.4 Port 8080 an 192.168.1.1 Port 80 geleitet wird), kannst Du
+diese Regel in die OUTPUT-Kette (für lokal ausgehende Pakete)
+einfügen:
+	</textblock>
+
+	<file>
+	 <content>
+# Linux 2.4
+  iptables -A OUTPUT -t nat -p tcp -d 1.2.3.4 --dport 8080 \
+  -j DNAT --to 192.168.1.1:80
+	 </content>
+	</file>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Kontrollieren, worauf man NAT anwendet
+   </heading>
+
+   <textblock>
+Du musst <strong>NAT</strong>-Regeln erstellen, die dem Kernel sagen, was für
+Verbindungen er ändern soll, und wie er sie ändern soll. Um das zu
+tun, setzen wir das vielseitige <command>iptables</command> Tool ein und sagen ihm durch
+das Angeben der <command>-t nat</command> Option, dass es die <strong>NAT</strong>-Tabelle ändern soll.
+   </textblock>
+
+   <textblock>
+Die Tabelle der <strong>NAT</strong>-Regeln enthält drei Listen, die <strong>Ketten</strong> genannt
+werden: Alle Regeln werden der Reihe nach untersucht, bis eine davon
+zutrifft. Die drei Ketten heißen <command>PREROUTING</command> (für Destination <strong>NAT</strong>, da
+die Pakete hereinkommen), <command>POSTROUTING</command> (für Source <strong>NAT</strong>, da die Pakete
+ausgehen) und <command>OUTPUT</command> (für Destination <strong>NAT</strong> von lokal generierten
+Paketen).
+   </textblock>
+
+   <textblock>
+Wenn ich irgendein künstlerisches Talent hätte, würde dieses
+Diagramm es ganz gut zeigen:
+   </textblock>
+
+
+   <file>
+	<content>
+  _____                                     _____
+ /     \                                   /     \
+ PREROUTING -->[Routing ]----------------->POSTROUTING----->
+ \D-NAT/     [Entscheidung]                \S-NAT/
+                 |                            ^
+                 |                          __|__
+                 |                         /     \
+                 |                        | OUTPUT|
+                 |                         \D-NAT/
+                 |                            ^
+                 |                            |
+                 -------->Lokaler Prozess------
+	</content>
+   </file>
+
+   <textblock>
+Wenn ein Paket durchgeht, schauen wir an jedem der obigen Punkte nach,
+zu was für einer Verbindung es gehört. Wenn es eine neue Verbindung
+ist, sehen wir in der entsprechenden Kette der <strong>NAT</strong>-Tabelle nach, was
+zu tun ist. Die Antwort, die wir erhalten, wird auf alle weiteren
+Pakete dieser Verbindung angewendet.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Einfache Auswahl mit iptables
+	</heading>
+
+	<textblock>
+<command>iptables</command> benötigt eine Reihe von Standardoptionen, die weiter unten
+aufgelistet werden. Die Optionen mit einem doppelten Gedankenstrich
+können abgekürzt werden, solange <command>iptables</command> sie danach noch von den
+anderen Optionen unterscheiden kann. Wenn Dein Kernel <command>iptables</command> als
+Modul unterstützt, wirst Du das <command>iptables.o</command> Modul zuerst laden
+müssen: <command>insmod iptables.o</command>.
+	</textblock>
+
+	<textblock>
+Die wichtigste Option ist hier die, mit der man die Tabelle auswählen
+kann, <command>-t</command>. Für alle <strong>NAT</strong> Operationen wirst Du <command>-t nat</command> verwenden
+wollen, um in die <strong>NAT</strong>-Tabelle zu schreiben. Die zweitwichtigste Option
+ist das <command>-A</command>, mit dem man eine neue Regel an das Ende einer Kette
+anhängen kann (z.B. <command>-A POSTROUTING</command>), oder <command>-I</command>, um eine Regel am
+Anfang einer Kette einzufügen (z.B. <command>-I PREROUTING</command>).
+	</textblock>
+
+	<textblock>
+Du kannst die Quelle (<command>-s</command> oder
+<command>--source</command>) und das Ziel (<command>-d</command> oder
+(<command>--destination</command>) eines Pakets bestimmen, auf das Du <strong>NAT</strong> anwenden
+willst. Diesen Angaben kann eine einzelne IP-Adresse
+(z.B. 192.168.1.1), ein Name (z.B. <ref lang="en" url="http://www.gnumonks.org">http://www.gnumonks.org</ref>) oder ein
+Netzwerkadresse (z.B. 192.168.1.0/24 oder 192.168.1.0/255.255.255.0)
+folgen.
+	</textblock>
+
+	<textblock>
+Du kannst die Schnittstelle bestimmen, an der Pakete eingehen (<command>-i</command>
+oder <command>--in-interface</command>) oder ausgehen
+(<command>-o</command> oder <command>--out-interface</command>),
+aber welche von beiden hängt davon ab, in welche Kette Du diese Regel
+einfügst: Bei der <command>PREROUTING</command>-Kette kannst Du nur die eingehende
+Schnittstelle wählen, und bei der <command>POSTROUTING</command>-Schnittstelle (<command>OUTPUT</command>)
+nur die ausgehende. Wenn Du die falsche wählst, wird <command>iptables</command> Dir
+eine Fehlermeldung geben.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Genauere Auswahl der betreffenden Pakete
+	</heading>
+
+	<textblock>
+Ich habe weiter oben gesagt, dass Du eine Quell- und eine Zieladresse
+bestimmen kannst. Wenn Du die Quelladresse weglässt, wird jegliche
+Adresse zutreffend sein. Wenn Du die Zieladresse weglässt, wird
+jegliche Zieladresse zutreffend sein.
+	</textblock>
+
+	<textblock>
+Du kannst auch ein bestimmtes Protokoll (<command>-p</command> oder <command>--protocol</command>)
+angeben, so wie TCP oder UDP; nur auf Pakete dieses Typs wird die
+Regel zutreffen.Der Hauptgrund hierfür besteht darin, dass das
+Bestimmen eines Protokolls Extra-Optionen erlaubt: insbesondere die
+<command>--source-port</command> und die <command>--destination-port</command> Optionen (abgekürzt als
+<command>-sport</command> und <command>-dport</command>).
+	</textblock>
+
+	<textblock>
+Diese Optionen erlauben Dir, zu bestimmen, dass eine Regel nur auf
+Pakete mit einem bestimmten Quell- oder Zielport zutrifft. Dies ist
+nützlich für umgeleitete Web-Anfragen (TCP-Port 80 und 8080) und
+lässt andere Pakete außer Acht.
+	</textblock>
+
+	<textblock>
+Diese Optionen müssen der <command>-p</command> Option folgen (welche den Nebeneffekt
+hat, dass die Erweiterungen für die shared libraries für das
+entsprechende Protokoll geladen werden). Du kannst Portnummern verwenden
+oder Namen aus der <command>/etc/services</command> Datei.
+	</textblock>
+
+	<textblock>
+All die verschiedenen Eigenschaften, nach denen Du Pakete auswählen
+kannst, werden in schmerzhaften Einzelheiten detailliert in der 
+Man-Page beschrieben (<command>man iptables</command>).
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Wie die Pakete verändert Werden sollen
+   </heading>
+
+   <textblock>
+Jetzt wissen wir also, wie wir die Pakete, die wir verändern wollen,
+auswählen können. Um unsere Regel zu vervollständigen, müssen wir
+dem Kernel sagen, was genau er mit dem Paket tun soll.
+   </textblock>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Source NAT
+	</heading>
+
+	<textblock>
+Du möchtest Source <strong>NAT</strong> machen; verändere die Quelladresse von
+Paketen zu etwas anderem. Dies wird in der <command>POSTROUTING</command> Kette gemacht,
+kurz bevor das Paket schließlich geschickt wird; dies ist ein
+wichtiges Detail, da es bedeutet, dass alles andere auf dem
+Linuxrechner selbst (Routing, Paketfilter) das unveränderte Paket
+sehen wird. Es bedeutet auch, dass die <command>-o</command> (ausgehende Schnittstelle)
+Option verwendet werden kann.
+	</textblock>
+
+	<textblock>
+Source <strong>NAT</strong> wird durch <command>-j SNAT</command>
+bestimmt und die <command>--to-source</command> Option
+bestimmt eine IP-Adresse, eine Reihe von IP-Adressen, und einen
+optionalen Port oder eine Reihe von Ports (nur für UDP und TCP
+Protokolle).
+	</textblock>
+
+	<file>
+	 <content>
+## Quelladresse auf 1.2.3.4 ändern
+# iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to 1.2.3.4
+
+## Quelladresse auf 1.2.3.4, 1.2.3.5, oder 1.2.3.5 ändern
+# iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to 1.2.3.4-1.2.3.6
+
+## Quelladresse zu 1.2.3.4, Ports 1 - 1023, ändern
+# iptables -t nat -A POSTROUTING -p tcp -o eth0 -j SNAT --to \
+# 1.2.3.4:1-1023
+	 </content>
+	</file>
+
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Masquerading
+	 </heading>
+
+	 <textblock>
+Es gibt einen Spezialfall von Source <strong>NAT</strong>, der Masquerading genannt
+wird: es sollte nur für dynamisch zugeordnete IP-Adressen verwendet
+werden wie bei normalen Wählverbindungen (Benutze bei statischen 
+IP-Adressen SNAT weiter oben).
+	 </textblock>
+
+	 <textblock>
+Beim Masquerading musst Du die Quelladresse nicht explizit angeben: es
+wird die Quelladresse der Schnittstelle nehmen, an der das Paket
+ausgeht.Wichtiger ist, dass, wenn der Link unterbrochen wird, die
+Verbindungen (die jetzt sowieso verloren sind) vergessen werden, was
+weniger Störungen bedeutet, wenn die Verbindung mit einer neuen 
+IP-Adresse wieder aufgebaut wird.
+	 </textblock>
+
+	 <file>
+	  <content>
+## Maskiere alles, was an ppp0 ausgeht
+# iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+	  </content>
+	 </file>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Destination NAT
+	</heading>
+
+	<textblock>
+Dies wird in der <command>PREROUTING</command>-Kette erledigt, wenn das Paket gerade
+eingegangen ist; das bedeutet, dass alles andere auf dem Linuxrechner
+selbst (Routing, Paketfilter) das Paket zum <strong>wirklichen</strong> Ziel gehen
+sehen wird.Es bedeutet auch, dass die <command>-i</command> Option (eingehende
+Schnittstelle) verwendet werden kann.
+	</textblock>
+
+	<textblock>
+Um das Ziel von lokal generierten Paketen zu ändern, kann auch die
+<command>OUTPUT</command>-Kette benutzt werden, das ist aber eher ungewöhnlich.
+	</textblock>
+
+	<textblock>
+Destination <strong>NAT</strong> wird durch <command>-j DNAT</command> bestimmt und die 
+<command>--to-destination</command> Option bestimmt eine IP-Adresse, eine Reihe von 
+IP-Adressen, und einen optionalen Port oder eine Reihe von Ports (nur
+für UDP und TCP Protokolle).
+	</textblock>
+
+	<file>
+	 <content>
+## Zieladresse zu 5.6.7.8 ändern
+# iptables -t nat -A PREROUTING -i eth1 -j DNAT --to 5.6.7.8
+
+## Zieladresse zu 5.6.7.8, 5.6.7.9 oder 5.6.7.10 ändern
+# iptables -t nat -A PREROUTING -i eth1 -j DNAT --to 5.6.7.8-5.6.7.10
+
+## ändern der Zieladresse von Webtraffic auf 5.6.7.8 Port 8080
+# iptables -t nat -A PREROUTING -p tcp --dport 80 -i eth1 \
+  -j DNAT --to 5.6.7.8:8080
+
+## Lokale Pakete für 1.2.3.4 an das Loopback umleiten
+# iptables -t nat -A OUTPUT -d 1.2.3.4 -j DNAT --to 127.0.0.1
+	 </content>
+	</file>
+
+	<section>
+	 <heading>
+Umadressierung (Redirection)
+	 </heading>
+
+	 <textblock>
+Es gibt einen speziellen Fall von Destination <strong>NAT</strong>, der Redirection
+genannt wird: Es ist eine einfache Bequemlichkeit, die genau das
+gleiche tut wie <strong>NAT</strong> auf der eingehenden Schnittstelle.
+	 </textblock>
+
+	 <file>
+	  <content>
+## Eingehenden Webtraffic an Port 80 an unseren (transparenten) Squid-
+#Proxy weiterleiten
+# iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 \
+  -j REDIRECT --to-port 3128
+	  </content>
+	 </file>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Mappings genauer betrachtet
+	</heading>
+
+	<textblock>
+Es ist gibt ein paar subtile Einzelheiten bei <strong>NAT</strong>, um die sich die
+meisten Leute nie werden kümmern müssen. Für die Neugierigen sind
+sie hier dokumentiert.
+	</textblock>
+
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Auswahl von mehrere Adressen in einer Reihe
+	 </heading>
+
+	 <textblock>
+Wenn eine Reihe von IP-Adressen gegeben ist, wir diejenige
+ausgewählt, die im Moment am wenigsten für IP-Verbindungen, von
+denen die Maschine weiß, benutzt wird. Dies macht primitives <command>load-
+balancing</command> möglich.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Ein Null NAT Mapping erstellen
+	 </heading>
+
+	 <textblock>
+Du kannst das <command>-j ACCEPT</command> Ziel verwenden, um eine Verbindung
+zuzulassen, ohne dass irgendein <strong>NAT</strong> stattfindet.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Standard NAT-Verhalten
+	 </heading>
+
+	 <textblock>
+Gewöhnlich verändert man eine Verbindung so wenig wie möglich,
+entsprechend den Vorgaben einer durch den Benutzer gegebenen Regel.
+Das bedeutet, dass wir Ports nicht <command>re-mappen</command> werden, solange wir es
+nicht unbedingt tun müssen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Implizites Quellport-Mappen
+	 </heading>
+
+	 <textblock>
+Sogar, wenn für eine Verbindung kein <strong>NAT</strong> benötigt wird, kann
+Quellport- Veränderung stillschweigend auftreten, wenn eine andere
+Verbindung über die neue gemappt wurde. Stell Dir den Fall von
+Masquerading vor, der recht gewöhnlich ist:
+	 </textblock>
+
+	 <ol>
+	  <li>
+   Eine Webverbindung von einem Rechner 192.168.1.1 Port 1024 ist zu
+   www.netscape.com Port 80 aufgebaut.
+	  </li>
+	  <li>
+   Dies wird von einem Masquerading-Rechner maskiert, um 1.2.3.4 als
+   Quelle zu verwenden.
+	  </li>
+	  <li>
+   Der Masquerading-Rechner versucht, von 1.2.3.4 (die Adresse seiner
+   externen Schnittstelle) Port 1024, eine Webverbindung zu
+   www.netscape.com aufzubauen.
+	  </li>
+	  <li>
+   Damit die Verbindung sich nicht überschneidet, wird der <strong>NAT</strong>-Code
+   die Quelle der zweiten Verbindung auf 1025 ändern.
+	  </li>
+	 </ol>
+
+	 <textblock>
+Wenn dieses implizite Quell-Mapping auftaucht, werden Ports in drei
+Klassen aufgeteilt:
+	 </textblock>
+
+	 <ul>
+	  <li>
+Ports unter 512.
+	  </li>
+	  <li>
+Ports zwischen 512 und 1023.
+	  </li>
+	  <li>
+Ports ab 1024.
+	  </li>
+	 </ul>
+
+	 <textblock>
+Ports werden niemals implizit in eine andere Klasse gemappt.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *. Kapitel -->
+	 <heading>
+Was passiert, wenn NAT versagt
+	 </heading>
+
+	 <textblock>
+Wenn es keine Möglichkeit gibt, eine Verbindung einheitlich zu mappen
+wie es der Benutzer verlangt, so wird sie verworfen werden. Dies
+trifft auch auf Pakete zu, die nicht als Teil einer Verbindung
+klassifiziert werden konnten, weil sie beschädigt sind, oder der
+Rechner nicht genug Speicher hat, etc.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *. Kapitel -->
+	 <heading>
+Mehrere Mappings, Overlaps und Clashes
+	 </heading>
+
+	 <textblock>
+Du kannst <strong>NAT</strong>-Regeln haben, die Pakete in denselben Bereich mappen;
+der <strong>NAT</strong>-Code ist clever genug, um Zusammenstöße zu vermeiden. Es
+ist also okay, zwei Regeln zu haben, die die Quelladressen 192.168.1.1
+und 192.168.1.2 jeweils auf 1.2.3.4 mappen.
+	 </textblock>
+
+	 <textblock>
+Außerdem kannst Du über wirklich verwendete IP-Adressen mappen,
+solange diese Adressen auch durch den Mapping-Rechner müssen. Wenn Du
+also ein zugewiesenes Netzwerk (1.2.3.0/24) hast, aber auch ein
+internes Netzwerk, das dieselben Adressen benutzt, und eins, das
+private Internet Adressen (192.168.1.0/24) verwendet, kannst Du die
+192.168.1.0/24-er Adressen auf das 1.2.3.0/24-er Netzwerk mappen, ohne
+Dir Sorgen um Zusammenstöße machen zu müssen:
+	 </textblock>
+
+	 <file>
+	  <content>
+ # iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth1 \
+ -j SNAT --to 1.2.3.0/24
+	  </content>
+	 </file>
+
+	 <textblock>
+Dieselbe Logik kann auf Adressen angewandt werden, die der <strong>NAT</strong>-Rechner
+selbst benutzt: So funktioniert Masquerading (indem die Adressen der
+Schnittstellen von maskierten Paketen mit den <strong>wirklichen</strong> Paketen,
+die durch den Rechner gehen, geteilt werden).
+	 </textblock>
+
+	 <textblock>
+Außerdem kannst die dieselben Pakete auf viele verschiedene Ziele
+mappen, und sie werden aufgeteilt werden. Du könntest zum Beispiel,
+wenn Du nichts über 1.2.3.5 mappen willst, folgendes tun:
+	 </textblock>
+
+	 <file>
+	  <content>
+# iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth1 \
+  -j SNAT --to 1.2.3.0-1.2.3.4 --to 1.2.3.6-1.2.3.254
+	  </content>
+	 </file>
+	</section>
+
+	<section>
+	 <heading>
+Das Ziel von lokal-generierten Verbindungen verändern
+	 </heading>
+
+	 <textblock>
+Wenn das Ziel eines lokal-generierten Pakets geändert wird (ich meine
+durch die <command>OUTPUT</command>-Kette) und das bewirkt, dass das Paket durch eine
+andere Schnittstelle muss, wird die Quelladresse auch zu der Adresse
+der Schnittstelle geändert. Wenn Du zum Beispiel das Ziel eines
+Loopback-Pakets auf eth0 änderst, wird die Quelle auch von 127.0.0.1
+zur Adresse von eth0 geändert werden; im Gegensatz zu anderen Source-
+Mappings geschieht das im selben Augenblick. Natürlich wird beides
+wieder umgekehrt, wenn Antwortpakete eintreffen.
+	 </textblock>
+	</section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Spezielle Protokolle
+   </heading>
+
+   <textblock>
+Manche Protokolle werden nicht gern geNATted. Für jedes dieser
+Protokolle müssen zwei Erweiterungen geschrieben werden; eine für
+das Connection-Tracking des Protokolls, und eine für das eigentliche
+<strong>NAT</strong>.
+   </textblock>
+
+   <textblock>
+In der netfilter-Distribution gibt es zur Zeit Module für FTP:
+<command>ip_conntrack_ftp.o</command> und
+<command>ip_nat_ftp.o</command>. Wenn Du diese Module mit <command>insmod</command>
+in den Kernel lädst (oder sie permanent hineinkompilierst), sollte
+<strong>NAT</strong> auf FTP-Verbindungen funktionieren. Wenn Du das nicht tust, kannst
+Du nur passives FTP verwenden, und sogar das könnte nicht
+zuverlässig funktionieren, wenn Du mehr als einfaches Source-<strong>NAT</strong>
+machst.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->   
+   <heading>
+Einsprüche gegen NAT
+   </heading>
+
+   <textblock>
+Wenn Du <strong>NAT</strong> auf einer Verbindung machst, müssen alle Pakete in beide
+Richtungen (in und aus dem Netzwerk) durch den <strong>NAT</strong>-Rechner, sonst wird
+es nicht zuverlässig funktionieren. Im Besonderen heißt das, dass
+der connection tracking Code Fragmente wieder zusammensetzt, was
+bedeutet, dass Deine Verbindung nicht nur unzuverlässig sein wird,
+sondern könnten Pakete sogar überhaupt nicht durchkommen, da
+Fragmente zurückgehalten werden.
+   </textblock>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Installation von GnuPG</title>
+ 
+ <author>
+  <name>Mike Ashley</name>
+  <mailto></mailto>
+ </author>
+
+  <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>gpg_handbuch_anhang_c</index>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->   
+   <heading>
+Anhang C Installation von GnuPG
+   </heading>
+
+   <textblock>
+Dieses Kapitel beschreibt die Installation von GnuPG auf verschiedenen
+Plattformen. Die Beschreibung bezieht sich auf die Version 1.0.1 von
+GnuPG. Bitte lesen Sie auf jeden Fall auch die Dateien <strong>README</strong> und
+<strong>INSTALL</strong> im GnuPG Source-Verzeichnis. Wo Sie aktuelle Verionen von
+GnuPG als TAR-Archiv, RPM oder Binary für Win32 bekommen, können Sie
+im <ref chapter="gpg_handbuch_anhang_b">Anhang B</ref> nachlesen.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Unix und GNU/Linux
+	</heading>
+
+	<textblock>
+Bevor Sie mit der Installation beginnen, stellen Sie bitte sicher, daß
+Ihre Sourcefiles nicht modifiziert wurden. Das ist ein sehr wichtiger
+Schritt, denn nur so können Sie sicherstellen, dass niemand
+irgendwelche Hintertüren oder absichtlich Schwachstellen in den Code
+eingebaut hat.
+	</textblock>
+
+	<textblock>
+Wenn Sie bereits eine Version von GnuPG installiert haben, können Sie
+einfach die Signatur überprüfen. <strong>Benutzen Sie jedoch niemals die
+Version, die Sie gerade Installieren möchten, für diese Überprüfung</strong>.
+Der Schlüssel mit dem die Signatur erzeugt wurde [wohl eher der
+dazugehörige öff. Schlüssel] ist:
+	</textblock>
+
+
+	<textblock>
+pub  1024D/57548DCD 1998-07-07 Werner Koch (gnupg sig) &lt;dd9jn@gnu.org&gt;
+	</textblock>
+
+	<textblock>
+Sollten Sie diesen Schlüssel noch nicht in Ihrem öffentlichen
+Schlüsselbund haben, müssen Sie ihn zuerst aus der Datei
+<command>g10/pubring.asc</command> aus den Sourcen importieren:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --import src/gnupg-1.0.0/g10/pubring.asc
+	 </user>
+	</shell>
+
+	<textblock>
+oder von einem Key Server holen, also beispielsweise:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --keyserver blackhole.pca.dfn.de --recv-keys 0x57548DCD
+	 </user>
+	</shell>
+
+	<textblock>
+Dann können Sie die Signatur überprüfen mit
+	</textblock>
+
+	<shell>
+	 <user path="~">
+gpg --verify gnupg-1.0.1.tar.gz.asc
+	 </user>
+	</shell>
+
+	<textblock>
+Sollten Sie eine überprüfte [trusted] Version von PGP 2 oder PGP 5
+installiert haben, können Sie die PGP 2 Signatur
+<command>gnupg-1.0.1.tar.gz.sig</command> überprüfen:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+pgp gnupg-1.0.1.tar.gz.sig gnupg-1.0.1.tar.gz
+	 </user>
+	</shell>
+
+	<textblock>
+Falls Sie weder GnuPG noch PGP installiert haben, dann Benutzen Sie
+den MD5 Hashalgorithmus um eine Prüfsumme des Tar-Files zu erzeugen.
+	</textblock>
+
+	<shell>
+	 <user path="~">
+md5sum gnupg-1.0.1.tar.gz
+	 </user>
+	 <output>
+37eeae62c1823edc787996bfee70351a  gnupg-1.0.1.tar.gz
+	 </output>
+	</shell>
+
+
+	<textblock>
+Vergleichen Sie dann bitte die Checksumme mit der, die Sie unter
+<ref lang="en" url="http://www.gnupg.org/download.html">http://www.gnupg.org/download.html</ref> finden.
+	</textblock>
+
+	<textblock>
+Nehmen wir an, Sie möchten GnuPG systemweit installieren, so dass es
+für alle User nutzbar ist und nehmen wir weiterhin an, bei Ihrem
+System befinden sich die Sourcen für lokal installierte Software unter
+<command>/usr/local/src/</command>. Kopieren Sie das TAR-File nach <command>/usr/local/src</command>; dann
+wechseln Sie in das Verzeichnis und entpacken dort das TAR-File:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+cd /usr/local/src/
+	 </root>
+	 <root path="~">
+gzip -d gnupg-1.0.1.tar.gz
+	 </root>
+	 <root path="~">
+tar xvf gnupg-1.0.1.tar
+	 </root>
+	</shell>
+
+	<textblock>
+Danach wechseln Sie in das neu angelegte Unterverzeichnis <command>gnupg-1.0.1/</command>
+und führen dann nacheinander:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+./configure
+	 </root>
+	 <root path="~">
+make
+	 </root>
+	 <root path="~">
+make install
+	 </root>
+	</shell>
+
+	<textblock>
+aus. Die ausführbare Datei <strong>gpg</strong> befindet sich dann in <command>/usr/local/bin</command>.
+Für weitere Optionen von <command>configure</command> benutzen Sie die Option <command>--help</command> und
+lesen die Datei <strong>INSTALL</strong>.
+	</textblock>
+
+	<textblock>
+Um zu verhindern, dass vertrauliche Daten auf die Swap-Partition
+ausgelagert werden, empfiehlt es sich das <command>Set-User-ID Bit</command> für <strong>gpg</strong> zu
+setzen:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+chmod u+s /usr/local/bin/gpg
+	 </root>
+	</shell>
+
+	<textblock>
+GnuPG verhindert dann, dass Teile seines Speicherbereichs auf die
+Festplatte ausgelagert werden. Wenn Sie dies nicht tun möchten, können
+Sie die Option <command>no-secmem-warning</command> in die Datei <command>~/.gnupg/options</command>
+einfügen, dann bekommen Sie diesbezüglich auch keine Warnmeldungen
+mehr.
+	</textblock>
+
+	<textblock>
+Sollten Sie keine Root-Rechte auf dem System haben oder der
+Systemadministrator nicht gewillt sein, GnuPG systemweit zu
+installieren, besteht immer noch die Möglichkeit zu einer
+User-Installation. Legen Sie dazu am Besten ein Unterverzeichnis
+<command>src/</command> in Ihrem Home-Verzeichnis an, wenn Sie dies
+nicht schon haben.
+Entpacken Sie das Tar-File in <command>~/src</command> und führen dann:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+./configure --prefix=$HOME
+	 </user>
+	</shell>
+
+	<textblock>
+aus. Dann können Sie genau wie oben ein <command>make</command> und <command>make install</command>
+durchführen. <command>make install</command> legt dann die Unterverzeichnisse <command>bin/</command>
+<command>lib/</command> <command>man/</command> <command>share/</command> in Ihrem Home-Verzeichnis an. Die ausführbare
+Datei befindet sich dann unter <command>$HOME/bin/gpg</command>. <command>$HOME/bin</command> sollte
+natürlich in Ihrem Pfad liegen.
+	</textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

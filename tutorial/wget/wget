@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>wget</title>
+
+ <author>
+  <name>Johnny Graber</name>
+  <mailto>linux@jgraber.ch</mailto>
+ </author>
+ 
+ <layout>
+  <name>Torsten Hemm</name>
+  <mailto>T.Hemm@gmx.de</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>wget</index>
+
+
+  <description> 
+   <textblock>
+GNU wget ist ein praktisches Tool, um Dateien aus dem Web zu 
+holen. Über die zahlreichen Optionen kann man genau das 
+erreichen, was man will; sogar abgebrochene Downloads können
+wieder aufgenommen werden.
+   </textblock>
+  </description>
+
+<!-- 1.Chapter -->
+<split>
+ <section>
+  <heading>
+Der erste Einsatz von wget
+  </heading>
+ 
+  <textblock>
+<command>wget</command> wird mit jeder halbwegs aktuellen Distribution
+mitgeliefert. Sollte es tatsächlich nicht installiert sein, findet man 
+es auf <ref lang="en" url="http://www.gnu.org/software/wget">
+ http://www.gnu.org/software/wget/</ref> 
+  </textblock>
+  
+  <textblock>
+Der Aufruf von <command>wget</command> lautet
+  </textblock>
+  
+  <shell>
+   <user path="~">
+wget [Optionen] URL
+   </user>
+  </shell>
+
+  <textblock>
+Will man sich das Basisrelease von Selflinux besorgen, lautet 
+der Aufruf
+  </textblock>
+
+  <shell>
+   <user path="~">
+wget http://www.selflinux.de/basisrelease.tar.gz
+   </user>
+  </shell>
+
+  <textblock>
+Sollte der Download ausirgend einem Grund abbrechen, kann er 
+mit der Option <command>-c wieder</command> aufgenommen werden:
+  </textblock>
+
+  <shell>
+   <user path="~">
+wget -c http://www.selflinux.de/basisrelease.tar.gz
+    </user>
+    <output>
+--18:35:45--  http://www.selflinux.de/basisrelease.tar.gz
+           => `basisrelease.tar.gz'
+Auflösen des Hostnamen »www.selflinux.de«.... fertig.
+Verbindungsaufbau zu www.selflinux.de[134.100.212.78]:80... verbunden.
+HTTP Anforderung gesendet, warte auf Antwort... 206 Partial Content
+Länge: 696,644 (noch 122,068) [application/x-gzip]
+100%[===============================>] 696,644   63.75K/s  ETA 00:00
+18:35:47 (63.75 KB/s) - »basisrelease.tar.gz« gespeichert [696644/696644]
+    </output>
+  </shell>
+
+  <textblock>
+<command>wget</command> zeigt einem alle wichtigen Optionen auf einen 
+ Blick an. Der
+Statusbalken zeigt, wie weit man schon vorangeschritten ist, 
+danach folgt die Angabe der aktuellen Geschwindigkeit und hinter 
+ETA steht die verbleibende Zeit.
+  </textblock>
+
+  <textblock>
+Die Option <command>-c</command> ist gerade bei grossen Dateien wie
+ISO-Images sehr angenehm. Bricht der Download über einen Webbrowser
+bei 600 von 650 MB ab, ist die Datei verloren. Mit <command>wget</command>
+genügt das <command>-c</command> und schon wird dort weitergemacht, wo 
+der Unterbruch statt fand.
+  </textblock>
+ </section> 
+</split>
+
+<split>
+ <section>
+	 
+  <heading>		
+Spiegeln von Webseiten
+  </heading>
+ 
+  <textblock>
+Mit <command>wget</command> können nicht nur einzelne Dateien gespeichert, 
+sondern auch ganze Seiten gespiegelt werden. Die dafür zu verwendende 
+Option ist <command>-r</command>. Damit wird bei der angegebene Seite 
+rekursiv den Links gefolgt. Standardmässig folgt <command>-r</command>
+den Links 5 Ebenen entlang. Dabei wird nicht unterschieden, ob die Seite
+vom gewünschten Server stammt, oder nicht. 
+  </textblock>
+  
+  <textblock>
+Die Sache mit den Ebenen ist am Anfang recht mühsam zu verstehen.
+Man muss sich dies wie eine gewöhnliche Sitzung mit einem Browser
+vorstellen. Jeder Link, den man anklickt, öffnet eine neue Ebene.
+Ein <command>-r</command> bedeutet also, das man von der Startseite
+5 tiefer gelegene Seiten aufrufen kann.
+  </textblock>
+
+  <textblock>
+Weist ein Link auf der 2. Seite zu
+<ref lang="de" url="http://www.linux.de">www.linux.de</ref>, wird auch dort
+wiederum den Links gefolgt und die Dateien auf dem eigenen 
+Rechner abgelegt. Je nach Seiten kann dies sehr schnell mühsam 
+werden.
+  </textblock>
+
+  <textblock>
+Die Option <command>-l num</command> steht für "level" und passt 
+die Tiefe von <command>-r</command> an. <command>num</command> muss durch eine beliebige
+positive Zahl ersetzt werden. 
+  </textblock>
+
+  <shell>
+   <user path="~">
+wget -r -l 2 www.selflinux.de
+   </user>
+  </shell>
+  
+  <textblock>
+Speichert alle Dateien, die über eine andere Datei verlinkt sind,
+im Verzeichnis <strong>www.selflinux.de.</strong>
+Die gefundene Verzeichnisstruktur wird dabei übernommen. Allerdings wird 
+nur 2 Ebenen tief gesucht, was bei grossen Kapiteln dazu führt, das 
+nicht alle Dateien heruntergeladen werden.
+  </textblock>
+
+  <textblock>
+<command>wget</command> ist gut um sich schnell einige Seiten zu holen. Für ein 
+effektives Spiegeln eines Servers sollte man sich ein anderes 
+Tool suchen. 
+  </textblock>
+ </section>
+</split>
+
+<split>
+  <section>
+	  
+   <heading>
+Das Verhalten von wget anpassen
+   </heading>
+   
+   <section>
+    <heading>  
+Unterdrücken und Erzwingen von Ordnern
+    </heading>
+    
+    <textblock>
+Bei dem Aufruf von <command>wget -r</command> wird immer ein Ordner mit
+dem Namen der Webseite erstellt. Will man dies verhindern, lautet der 
+Aufruf <command>wget -r -nd</command>.
+Aber Vorsicht mit gleich lautenden Dateinamen: Sollte ein Name
+schon vorhanden sein, überschreibt <command>wget</command> den Inhalt 
+ohne zu fragen.
+    </textblock>
+
+    <textblock>
+Will man das Anlegen der Ordner aus irgendeinem Grund erzwingen,
+lautet die Option <command>-x</command> oder in der langen Version 
+<command>--force-directories</command>.
+Die Verzeichnisstruktur wird nun komplett übernommen.
+    </textblock>
+
+    <textblock>
+Neben diesen beiden bietet <command>wget</command> noch eine dritte 
+Möglichkeit. Hierbei wird die Verzeichnisstruktur übernommen, doch 
+wird der Ordner mit dem Domainnamen weg gelassen. Dies erreicht man 
+mit <command>-nH (--no-host-directories)</command>.
+    </textblock>
+   </section>  
+
+   <section>
+    <heading>
+Nur bestimmte Dateitypen herunterladen
+    </heading>
+    
+     <textblock> 
+Wildcards können bei <command>wget</command> nicht verwendet werden.
+Es gibt aber dennoch eine Möglichkeit, nur spezielle Dateitypen zu bekommen.
+Dafür muss man eine Liste mit <command>-A (--accept)</command> erstellen.
+     </textblock>
+
+     <shell>
+      <user path="~">
+wget -r -A jpg,png http://www.selflinux.de
+      </user>
+     </shell>
+
+     <textblock>
+Bei diesem Aufruf werden rekursiv die Dokumente nach <strong>*.jpg</strong> und 
+<strong>*.png</strong> durchsucht und abgespeichert. Da HTTP keinen List-Befehl
+kennt, muss <command>wget</command> zuerst alle HTML-Dateien herunterladen,
+um an die Links zu kommen. Sobald die Bilder gefunden sind, werden 
+die HTML-Dateien gelöscht.
+     </textblock>	
+
+     <textblock>
+Der Umkehrbefehl von <command>-A</command> ist <command>-R (--reject)</command>.
+Sollen alle Dateien, ausser <strong>*.jpg</strong> und <strong>*.png</strong> geholt
+werden, lautet der Aufruf
+     </textblock>
+     
+     <shell>
+      <user path="~">   
+wget -r -R jpg,png http://www.selflinux.de
+      </user>
+     </shell>
+    </section>
+
+    <section>
+     <heading>
+Grössenbegrenzung des Downloads
+     </heading>
+
+     <textblock>
+Auf die Grösse des Downloads kann aber nicht nur über <command>-A
+</command> und <command>-R</command> Einfluss genommen werden, sondern
+auch mittels <command>-Q (--quota)</command>. Die Grössenangabe erfolgt
+in Bytes und legt den Wert für den ganzen Download fest. 
+Da die Angabe grosser Werte in Bytes mühsam ist, kann man auch 
+andere Einheiten verwenden. Für Megabytes wird an die Zahl ein m
+angehängt, für Kilobytes dient ein k.
+     </textblock>
+     
+     <shell>
+      <user path="~">
+wget -r -nH -Q5m http://www.selflinux.de
+      </user>
+     </shell>
+     
+     <textblock>
+Damit werden maximal 5 Megabyte Daten von <ref lang="de" url="htpp://www.selflinux.de">
+www.selflinux.de</ref> geholt und im aktuellen Verzeichnis abgelegt.
+Sind weniger als 5 MB Daten vorhanden, kann <command>wget</command> ja nicht
+das ganze Quota ausnutzen.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Dateien vor Download auf Datum prüfen
+     </heading>
+     
+     <textblock>    
+Holt man sich öfters Daten vom gleichen Server, möchte man ja nur
+die neuesten Dateien herunterladen. Mit <command>-N (--timestamping)</command>
+veranlasst man <command>wget</command>, vor dem Download das Datum der Datei auf dem
+Server mit dem der lokalen Kopie zu vergleichen. Nur wenn die 
+lokale Datei veraltet ist, beginnt wget mit dem Download.
+     </textblock>
+
+     <shell>
+      <user path="~">
+wget -N http://www.selflinux.de
+      </user>
+     </shell> 
+    </section>
+
+    <section>
+     <heading>
+Verwenden eines Proxy-Servers
+     </heading>
+
+     <textblock>
+Will man einen Proxy-Server verwenden, genügt die Option 
+<command>-Y on/off</command>. Dabei wird auf die Umgebungsvariable 
+<command>$http_proxy</command> ausgelesen. Diese muss natürlich gesetzt werden:
+     </textblock>
+
+     <shell>
+      <user path="~"> 
+export http_proxy="http://meinproxy.provider.de:3128"
+      </user> 
+     </shell> 
+    </section>
+   </section> 
+  </split>
+
+  <split>
+   <section>
+    <heading>
+Die Dateien /etc/wgetrc und .wgetrc
+    </heading>
+   
+    <textblock>
+Eine grosse Anzahl der Startoptionen können in diese 
+Konfigurationsdateien eingetragen werden. Die Datei 
+<strong>/etc/wgetrc</strong> gilt für alle User, die 
+<strong>~/.wgetrc</strong> nur für den jeweiligen Benutzer.
+    </textblock>
+    
+    <textblock>
+Hier ein kleines Beispiel des Aufbaus einer solchen Datei:
+    </textblock>
+
+    <file>
+     <title>
+.wgetrc
+     </title>
+     <content>
+      <![CDATA[
+###
+### Sample Wget initialization file .wgetrc
+###
+
+# You can set retrieve quota for beginners by specifying a value
+# optionally followed by 'K' (kilobytes) or 'M' (megabytes).  The
+# default quota is unlimited.
+#quota = inf
+
+# The "wait" command below makes Wget wait between every connection.
+# If, instead, you want Wget to wait only between retries of failed
+# downloads, set waitretry to maximum number of seconds to wait (Wget
+# will use "linear backoff", waiting 1 second after the first failure
+# on a file, 2 seconds after the second failure, etc. up to this max).
+waitretry = 10
+
+# You can lower (or raise) the default number of retries when
+# downloading a file (default is 20).
+#tries = 20
+
+      ]]>
+     </content>
+    </file>
+   </section>
+  </split>
+  
+  <split>
+   <section>
+    <heading>
+Übersicht der wichtigsten Optionen
+    </heading>
+
+
+<table>
+ <pdf-column width="50"/>
+ <pdf-column/>
+ <tr>
+  <td>-V</td>
+  <td>--version</td>
+  <td>Gibt die Version an</td>
+ </tr>
+ <tr>
+  <td>-h</td>
+  <td>--help</td>
+  <td>Zeigt die Hilfe an</td>
+ </tr>
+ <tr>
+ <td>-c</td>
+  <td>--continue</td>
+  <td>Nimmt den Download wieder auf</td>
+ </tr>
+ <tr>
+  <td>-N</td>
+  <td>--timestamping</td>
+  <td>Besorgt nur neuere Dateien, als lokal vorhanden sind</td>
+ </tr>
+ <tr>
+  <td>-r</td>
+  <td>--recursive</td>
+  <td>Lädt Dateien rekursiv herunter</td>
+ </tr>
+ <tr>
+  <td>-o</td>
+  <td>--output-file=datei</td>
+  <td>Speicher die Ausgabe in datei</td>
+ </tr>
+ <tr>
+  <td>-i</td>
+  <td>--input-file=datei</td>
+  <td>Liest URLs aus datei</td>
+ </tr>
+ <tr>  
+  <td>-q</td>
+  <td>--quiet</td>
+  <td>Unterdrückt die Ausgabe</td>
+ </tr>
+ <tr>
+  <td>-v</td>
+  <td>--verbose</td>
+  <td>Zeigt ausführlicher an, was wget macht</td>
+ </tr>
+ <tr>
+  <td>-Y on/off</td>
+  <td>--proxy=on/off</td>
+  <td>Proxy ein- oder ausschalten</td>
+ </tr>
+ <tr>
+  <td>-Q2m</td>
+  <td>--quota=2m</td>
+  <td>Beschränkt den Download auf 2 MB</td>
+ </tr>
+ <tr>
+  <td>-nd</td>
+  <td>--no-directories</td>
+  <td>Erstellt keine Verzeichnisse</td>
+ </tr>
+ <tr>
+  <td>-nH</td>
+  <td>--no-host-directories</td>
+  <td>Erstellt Ordner, lässt aber das Hostverzeichnis weg</td>
+ </tr>
+</table> 	
+
+
+ <textblock>
+Für die ganze Liste siehe <command>man wget</command>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>	   
+Grafische Frontends
+    </heading>
+ 
+   <textblock>
+Bei all seinen Optionen ist <command>wget</command> ein idealer 
+Kandidat für ein Frontend. Mit <command>gtm</command> und 
+<command>kwebget</command> gibt es zwei bekanntere Programme. 
+Da die Bedienung mit grundlegenden Kenntnissen von <command>wget
+</command> problemlos möglich ist, wird hier auf eine detaillierte 
+Einführung verzichtet. Für programmspezifische Infos schaut man sich
+am besten die den Tools beigelegte Hilfe an.
+   </textblock>
+
+   <ul>
+    <li>
+gtm: <ref lang="en" url="http://gtm.sourceforge.net/">
+http://gtm.sourceforge.net/</ref>
+   </li>
+   <li>
+kwebget: <ref lang="de" url="http://www.kpage.de/de/">
+http://www.kpage.de/de/</ref>
+   </li>
+  </ul> 
+ </section>
+
+ </split>
+</chapter> 
+

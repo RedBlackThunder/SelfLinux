@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+<title>Praxisorientiertes vim-Tutorial</title>
+
+<author>
+ <name>Johnny Graber</name>
+ <mailto>selflinux@jgraber.ch</mailto>
+</author>
+
+<layout>
+ <name>Frank Börner</name>
+ <mailto>frank@frank-boerner.de</mailto>
+</layout>
+
+<license>GFDL</license>
+<index>vim</index>
+
+
+<description>
+ <textblock>
+Dieser Text ist eine Zusammenstellung von Johnny Graber aus der Arbeit von Wolfgang Jährling 
+(Praxisorientiertes VI-Tutorial von <ref lang="de" url="http://www.pro-linux.de">Pro-Linux</ref>)
+und der von Martin "Herbert" Dietze (Vi-Kommandos <ref lang="de" url="http://www.fh-wedel.de/~herbert/html/vi/">http://www.fh-wedel.de/~herbert/html/vi/</ref>).
+ </textblock>
+
+ <textblock>
+Daher an dieser Stelle ein grosses Danke dafür, das wir auf die beiden Texte zurückgreifen
+konnten.
+ </textblock>
+</description>
+
+<split>
+ <section>
+
+  <heading>
+Warum vi(m)?
+
+  </heading>
+  <textblock>
+Der Editor vi ist seit sehr langer Zeit ein Grundbestandteil von UNIX-Systemen.
+Damit ist er vermutlich eines der ältesten Programme, die noch verbreitet sind.
+Man mag sich fragen, warum man sich mit diesem Urgestein beschäftigen soll. Die
+Gründe sind wohl hauptsächlich die folgenden:
+  </textblock>
+
+  <ul>
+   <li>
+vi ist auf wohl jedem UNIX-System anzutreffen (und auch auf vielen
+nicht-Unix-Systemen).
+   </li>
+   <li>
+vi ist ein extrem mächtiger Editor, aber dennoch klein und schnell.
+   </li>
+   <li>
+vi zu benutzen ist "cool" B-)
+   </li>
+   </ul>
+
+  <textblock>
+Es gibt viele vi-Varianten. Die zweifellos beliebteste ist der "Vi IMproved"
+(vim). Daher bezieht sich dieser Artikel zum Teil speziell auf diesen
+(selbstverständlich wurde dieser Artikel auch damit geschrieben).
+  </textblock>
+ </section>
+ <section>
+  <heading>
+Eine Datei erstellen
+  </heading>
+
+  <textblock>
+Als erstes werden wir uns anschauen, wie man in vim eine Datei erstellt und
+speichert. Starten Sie vim durch Eingabe von <command>vi</command> oder
+<command>vim</command>.
+  </textblock>
+
+  <textblock>
+Im vi(m) gibt es 3 Modi. Nach dem Start befinden wir uns im Kommandomodus. Um einen
+Text einzugeben, müssen wir in den Eingabemodus wechseln. Dazu gibt es mehrere
+Möglichkeiten. Um den Eingabemodus am Ende der aktuellen Zeile zu beginnen (d.h.
+mit dem Cursor ans Ende springen und dort den Eingabemodus starten), können wir
+<command>A</command> (großes a; "Append" = "anhängen") drücken. Um ihn an der
+aktuellen Cursorposition zu beginnen, drücken Sie nun <command>i</command>
+("insert" = "einfügen").   </textblock>
+
+  <textblock>
+Jetzt können Sie einen beliebigen Text tippen. Zuletzt wollen wir die Änderungen
+speichern. Verlassen Sie dazu den Eingabemodus über die <keycomb
+mode="sequence"><key>ESC</key></keycomb> Taste. Nun sind wir wieder im
+Kommandomodus.   </textblock>
+
+  <textblock>
+Für viele Dinge, darunter auch das Öffnen und Speichern von Dateien, müssen wir
+in den "ex-Modus" wechseln. Das machen wir durch die Taste <command>:</command>.
+Nun kann ein ex-Kommando eingegeben werden.
+  </textblock>
+
+  <textblock>
+Um den Text in die Datei "test01.txt" zu schreiben, geben Sie <command>:w
+test01.txt</command> ein, gefolgt von <keycomb
+mode="sequence"><key>ENTER</key></keycomb>. Abbrechen können Sie ein im
+ex-Modus eingegebenes Kommando mit <keycomb
+mode="sequence"><key>ESC</key></keycomb>. In beiden Fällen befinden Sie sich
+danach wieder im Kommandomodus.
+  </textblock>
+</section>
+
+<section>
+  <heading>
+Verlassen des vi
+  </heading>
+
+  <textblock>
+Um vi(m) zu beenden, brauchen wir wieder ein ex-Kommando. Geben Sie, wenn Sie im
+Kommandomodus sind, <command>:q</command> ein. Dadurch wird vi unter der
+Bedingung verlassen, dass die aktuelle Datei gespeichert wurde.
+  </textblock>
+
+  <textblock>
+Sollten Sie einmal Ihre Änderungen verwerfen wollen, verlassen Sie vi mit
+<command>:q!</command>.
+  </textblock>
+</section>
+
+<section>
+  <heading>
+Eine Datei öffnen
+  </heading>
+
+  <textblock>
+Sie können vi beim Aufruf von der Shell einen Dateinamen übergeben. Dadurch wird
+diese Datei geöffnet. Geben Sie dazu beispielsweise <command>vi
+test01.txt</command> in der Shell ein.
+  </textblock>
+
+  <textblock>
+Alternativ können Sie auch im vi mit dem ex-Kommando <command>:e
+test01.txt</command> eine Datei öffnen.
+  </textblock>
+
+  <textblock>
+Wenn Sie eine Datei auf eine dieser Weisen geöffnet oder beim Speichern
+einen Dateinamen angegeben haben, brauchen Sie nun beim nächsten Speichern nicht
+mehr den Dateinamen eingeben. Es genügt das ex-Kommando <command>:w</command>.
+Um zu speichern und den Editor zu verlassen genügt <command>:wq</command>.
+  </textblock>
+</section>
+
+<section>
+  <heading>
+Mehrere Dateien öffnen
+  </heading>
+
+  <textblock>
+Sie können vim beim Starten auch mehrere Dateinamen übergeben: <command>vi *.cpp
+*.h</command>. Dabei wird die zuerst genannte Datei direkt geöffnet und kann
+bearbeitet werden. Wenn Sie mit der Bearbeitung der nächsten beginnen wollen,
+erreichen Sie dies über den ex-Befehl <command>:next</command>. Zur vorherigen
+Datei gelangen Sie entsprechend mit <command>:prev</command>.
+  </textblock>
+</section>
+
+</split>
+
+
+<split>
+<section>
+  <heading>
+Bestimmte Stellen wiederfinden
+  </heading>
+
+  <textblock>
+Beim Editieren einer langen Datei, insbesondere eines Quellcodes, ist es sehr
+praktisch, wenn man Markierungen setzen kann, um später schnell diese Stellen
+wiederzufinden.
+  </textblock>
+
+  <textblock>
+Um eine Markierung zu setzen, drücken Sie (im Kommandomodus) die Zeichenfolge
+<command>mx</command>, wobei x ein beliebiger Kleinbuchstabe ist. Um später zu
+dieser Markierung zu springen, genügt ein (wieder im Kommandomodus) eingegebenes
+<command>'x</command>, wobei x wieder der gleiche Buchstabe ist. Sie können
+für Markierungen entweder Buchstaben (a-z und A-Z) oder ganze Wörter verwenden.
+Diese Markierungen können auch überall dort
+verwendet werden, wo Zeilenangaben auftreten.
+  </textblock>
+</section>
+
+<section>
+  <heading>
+Kopieren und Einfügen
+  </heading>
+
+  <textblock>
+Sie haben in vi nicht nur die Möglichkeit, 26 Markierungen zu setzen, Sie können
+auch 26 Puffer zum Kopieren und Einfügen verwenden (was ein großer Vorteil von
+vi gegenüber anderen Editoren ist).
+  </textblock>
+
+  <textblock>
+Drücken Sie <command>v</command> um den Anfang des Bereiches zu markieren den
+Sie kopieren wollen. Bewegen Sie den Cursor zum Ende. Dabei wird der markierte
+Bereich hervorgehoben. Um den markierten Bereich z.B. in den Puffer h zu
+kopieren genügt nun ein <command>"hy</command> (Das Anführungszeichen steht für
+"Puffer", das "y" steht für "yank", also kopieren). Einfügen können Sie den
+Puffer bei Bedarf mit <command>"hp</command> ("p" für "paste, einfügen).
+  </textblock>
+
+  <textblock>
+Anstatt einen Puffer über einen Buchstaben anzusprechen, können Sie auch einfach
+einen Standardpuffer verwenden. Dazu lassen Sie jeweils das Anführungszeichen
+und den Puffernamen weg.
+  </textblock>
+</section>
+
+<section>
+  <heading>
+Schnelles Navigieren durch den Text
+  </heading>
+
+  <textblock>
+Im Kommandomodus können Sie sich mit den Cursortasten durch den Text navigieren.
+Sie können dabei auch eine Zahl voranstellen. Wenn Sie z.B.
+<command>30</command> eingeben und danach die <keycomb
+mode="sequence"><key>NACH-LINKS</key></keycomb> -Taste drücken,
+bewegt sich der Cursor um 30 Zeichen nach links.
+  </textblock>
+
+  <textblock>
+Das Voranstellen von Zahlen als Wiederholungsfaktor funktioniert bei fast allen
+Befehlen.
+  </textblock>
+
+  <textblock>
+Mit <command>b</command> können Sie ein Wort zurück und mit w eines nach vorne.
+Einen Satz zurück kommen Sie mit <command>(</command> und einen vor entsprechend
+mit <command>)</command>. Auch hier geben vorangestellte Zahlen den
+Wiederholungsfaktor an: <command>5(</command> bewegt den Cursor 5 Sätze zurück
+und mit <command>4w</command> gelangen Sie 4 Wörter nach vorn.
+  </textblock>
+</section>
+
+<section>
+  <heading>
+Löschen von Text
+  </heading>
+
+  <textblock>
+Im Eingabemodus ist es relativ umständlich, Text zu löschen. Wenn Sie eine
+komplette Zeile entfernen wollen, stehen Sie sogar vor einem sehr schwierigen
+Problem. Daran merkt man schon, dass der Eingabemodus wirklich nur zum Eingeben
+von Text gedacht ist und nicht zum Editieren.
+  </textblock>
+
+  <textblock>
+Im Kommandomodus steht uns zum Löschen von Text das Kommando
+<command>d</command> zur Verfügung. Danach folgt ein Buchstabe, der
+kennzeichnet, auf was für eine Texteinheit wir uns beziehen (Wort, Satz, Zeile,
+...). Der gelöschte Text wird zusätzlich in die Standard-Zwischenablage
+eingefügt.
+  </textblock>
+
+  <textblock>
+Um ein Wort zu löschen, drücken Sie <command>dw</command>. Das Wort hinter dem
+Cursor löschen Sie entsprechend mit <command>db</command>. Auch hier ist es
+wieder möglich, eine Zahl voranzustellen. So löschen Sie mit
+<command>3dd</command> 3 Zeilen und mit <command>5dw</command> 5 Wörter.
+  </textblock>
+
+  <textblock>
+Bis zum Anfang des aktuellen Satzes löschen Sie mit <command>d(</command>, bis
+zum Ende mit <command>d)</command>.
+  </textblock>
+
+  <textblock>
+Bis zum Anfang der aktuellen Zeile kann man mit <command>d^</command> oder auch
+mit <command>d0</command> löschen und bis zum Ende mit <command>d$</command>.
+  </textblock>
+
+  <textblock>
+Bei einigen Kommandos kann man auch einen Bereich voranstellen, auf den sie sich
+beziehen sollen. So entfernen Sie mit <command>1,5d</command> die ersten fünf
+Zeilen einer Datei. Statt Zeilennummern können Sie auch Markierungen verwenden:
+<command>'a,'bd</command>.
+  </textblock>
+</section>
+
+<section>
+  <heading>
+Suchen und Ersetzen allgemein
+  </heading>
+
+  <textblock>
+Suchen und Ersetzen können Sie in vi mit regulären Ausdrücken. Hier eine
+Einführung in reguläre Ausdrücke zu geben würde den Rahmen dieser
+Kurz-Einführung sprengen.
+  </textblock>
+
+  <textblock>
+Wenn Sie nur nach einem Wort suchen, können Sie das mit
+<command>/suchbegriff/</command> machen. Wenn Groß-/Kleinschreibung ignoriert
+werden soll, verwenden Sie <command>/wort/i</command>.
+  </textblock>
+
+  <textblock>
+Um Text zu ersetzen, müssen Sie in den ex-Modus wechseln. Folgendes Kommando
+ersetzt alle Vorkommen von "Unix" mit "Linux":
+<command>:1,$s/Unix/Linux/g</command> (Bereich: 1,$, also vom Anfang bis zum
+Ende der Datei "s" für "substitude", "ersetzen". Das "g" am Ende steht für
+"global". Wird das g weggelassen, wird bei jeder Zeile bloss das erste 
+Vorkommen von Unix ersetzt. Sehr nett ist es, dass man eben auch innerhalb 
+eines bestimmten
+Bereiches die Ersetzung durchführen lassen kann, d.h. man markiert z.B. per
+<command>ma</command> und <command>mb</command> zwei Zeilen und verwendet dann
+<command>:'a,'bs/foo/bar/g</command>.
+  </textblock>
+
+  <textblock>
+Hängt man am Ende des Suchtextes noch ein /c an, fragt vi vor dem Ersetzen
+nach. Dies funktioniert auch in der Kombination mit /g. Somit lautet das
+vorherige Kommando, ergänzt um das Nachfragen, <command>:'a,'bs/foo/bar/gc</command>.
+  </textblock>
+
+</section>
+
+</split>
+
+
+<split>
+
+<section>
+  <heading>
+Praktische Tips
+  </heading>
+
+  <textblock>
+Wenn Sie in vi zwei Zeilen zusammenfügen wollen, können Sie das leider nicht so
+machen, wie Sie es von anderen Editoren gewohnt sind. In vi ist eine Zeile eine
+Einheit und das Newline-Zeichen am Ende ist kein Zeichen, das gelöscht werden
+kann (Moderne vi-Klone bieten diese Möglichkeit im Eingabemodus). Stattdessen
+müssen sie im Kommandomodus <command>J</command> drücken, wodurch die nächste
+Zeile an die aktuelle angefügt wird. Der Cursor braucht dabei nicht am Ende
+einer Zeile zu sein.
+  </textblock>
+
+  <textblock>
+Recht praktisch ist auch die Möglichkeit, die Ausgabe eines Unix-Kommandos in
+den Text einzufügen. Wollen Sie z.B. die aktuelle Uhrzeit in den Text einfügen,
+verwenden Sie <command>:r !date</command>. Das Einfügen einer Datei geht
+hingegen per <command>:r datei</command>.
+  </textblock>
+
+  <textblock>
+Buchstabendreher kann man per <command>xp</command> korrigieren, zwei Zeilen
+vertauschen können Sie per <command>ddp</command>. Probieren Sie es aus!
+  </textblock>
+
+
+  <section>
+   <heading>
+Rechtschreibprüfung mit aspell
+   </heading>
+
+   <textblock>
+Mit <command>GNU aspell</command> (<ref lang="en" url="http://aspell.net/">http://aspell.net/</ref>) gibt es eine gute
+und freie Rechtschreibprüfung. Da auf ein grafisches Frontend
+verzichtet wurde, kann man <command>aspell</command> direkt im <command>vim</command> benutzen. Dafür
+müssen Sie ihre <command>.vimrc</command> lediglich um die untenstehende Zeile
+ergänzen:
+   </textblock>
+
+   <file>
+    <title>
+.vimrc
+    </title>
+    <content><![CDATA[
+:map <F12> :w!<CR>:!aspell --lang=german check %<CR>:e! %<CR>
+    ]]></content>
+   </file>
+
+   <textblock>
+Wenn Sie nun auf die Taste <command><keycomb mode="hold"><key>F12</key></keycomb></command>
+drücken, wird <command>aspell</command> gestartet
+und beginnt mit der Prüfung des geladenen Textes. An der Stelle
+von <command><keycomb mode="hold"><key>F12</key></keycomb></command> kann man auch andere Tasten verwenden, doch muss man
+darauf achten, nicht eine häufig gebrauchte Funktion zu
+überlagern.
+   </textblock>
+  </section>
+
+  
+  <section>
+   <heading>
+Mit vim Verzeichnisse durchsehen
+   </heading>
+
+   <shell>
+    <user path="~">
+vim .
+    </user>
+   </shell>
+
+   <textblock>
+Mit diesem Befehl starten Sie bei den neueren Klonen <command>vim</command> 
+im <strong>mc</strong>-Modus. <command>vim</command> präsentiert nun keine neue Datei, sondern den Inhalt
+des aktuellen Ordners.
+   </textblock>
+
+   <textblock>
+Mit <command>?</command> bekommen Sie eine Liste mit speziellen Befehlen, die in
+diesem Modus verwendet werden können. Sie können den Cursor auf
+das gewünschte Verzeichnis verschieben und dieses durch betätigen
+von <command><keycomb mode="hold"><key>ENTER</key></keycomb></command> betreten.<br/>
+Wenn Sie dies bei einer Datei machen, wird diese in <command>vim</command> geöffnet
+und kann wie gewöhnlich bearbeitet werden.
+   </textblock>
+
+   <textblock>
+Zum Verlassen des <strong>mc</strong>-Modus dient das bekannte Kommando <command>:q</command>
+   </textblock>
+  </section>
+</section>
+
+
+
+<section>
+  <heading>
+vim-Konfiguration
+  </heading>
+
+  <textblock>
+Der <command>vim</command> besitzt eine Konfigurationsdatei mit dem Namen $HOME/.vimrc. Hier können
+ganz normale Befehle eingetragen werden, die beim Starten dann abgearbeitet
+werden. Während man Syntax-Highlighting für alle möglichen Programmiersprachen
+mit <command>:syntax on</command> direkt beim Arbeiten einschaltet, kann man
+entsprechend in die .vimrc einfach <command>syntax on</command> eintragen. Vim
+beherrscht über 120 verschiedene Programmier- und Beschreibungssprachen.
+Natürlich kann man auch Hervorhebungsregeln selbst zusammenstellen.
+  </textblock>
+
+  <textblock>
+Das Kommando <command>syntax on</command> funktioniert nur, wenn vim
+entsprechend compiliert wurde. Die meisten Distributionen enthalten mehrere
+vim-Pakete (z.B. vim-enhanced und vim-minimal), wobei <command>syntax
+on</command> nur in der ersten Version funktioniert.
+  </textblock>
+
+  <textblock>
+Wer noch nie mit <command>vi</command> gearbeitet hat, wird nicht daran gewöhnt sein, dass die
+Backspace- und die Entf-Tasten Zeilenumbrüche nicht wie normale Zeichen
+behandelt (sie also nicht löschen können). Dieses Verhalten kann man durch
+Eintragen von <command>set bs=2</command> in die .vimrc ändern.
+  </textblock>
+
+  <textblock>
+Wenn Sie beim Editieren automatische Einrückung bevorzugen, versuchen Sie mal
+<command>set ai</command>.
+  </textblock>
+</section>
+</split>
+
+
+<split>
+
+<section>
+  <heading>
+Wichtige vi-Kommandos
+  </heading>
+
+  <textblock>
+Konvention
+Im folgenden werden einige oft benutzte vim-Kommandos aufgelistet. Fast alle
+diese Kommandos sind für den Kommandomodus. ex-Kommandos werden durch das
+<command>:</command> am Anfang gekennzeichnet. Manche Kommandos haben noch ein
+[Count] vorangestellt. Das heißt, dass das Kommando normalerweise einmal, bei 
+einer vorher gedrückten Zahl n aber n-mal ausgeführt wird.
+  </textblock>
+
+<section>
+  <heading>
+Starten
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>vi</command></td>
+    <td>Aufruf von vi mit leerem Text-Puffer.</td>
+   </tr>
+
+   <tr>
+    <td><command>vi Dateiname</command></td>
+    <td>Datei wird geladen und der Cursor bei der ersten Zeile platziert.</td>
+   </tr>
+
+   <tr>
+    <td><command>vi + Dateiname</command></td>
+    <td>Datei wird geladen und der Cursor bei der letzten Zeile platziert.</td>
+   </tr>
+
+   <tr>
+    <td><command>vi +n</command></td>
+    <td>Dateiname Datei wird geladen und der Cursor bei der n-ten Zeile
+platziert.
+    </td>
+   </tr>
+
+   <tr>
+    <td><command>vi +/Zeichenkette Dateiname</command></td>
+    <td>Datei wird geladen, der Cursor bei der Zeile mit Zeichenkette
+plaziert.
+    </td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Beenden
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>:wq</command></td>
+    <td>Speichern und vi verlassen.</td>
+   </tr>
+
+   <tr>
+    <td><command>:q</command></td>
+    <td>vi verlassen, falls Datei unverändert.</td>
+   </tr>
+
+   <tr>
+    <td><command>:q!</command></td>
+    <td>vi verlassen, egal ob Datei verändert oder nicht.</td>
+   </tr>
+
+   <tr>
+    <td><command>:w</command></td>
+    <td>Datei speichern.</td>
+   </tr>
+  </table>
+</section>
+
+<section>
+  <heading>
+Dateien laden
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>e Datei</command></td>
+    <td>Datei wird geladen, wenn sie existiert, ansonsten erzeugt.</td>
+   </tr>
+
+   <tr>
+    <td><command>:next</command></td>
+    <td>Die nächste Datei wird geladen, falls vi mit mehreren Dateien aufgerufen
+wurde.
+    </td>
+   </tr>
+
+   <tr>
+    <td><command>:prev</command></td>
+    <td>Die vorherige Datei wird geladen, falls vi mit mehreren Dateien
+aufgerufen wurde.
+    </td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Cursorbewegungen
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>[Count]j</command></td>
+    <td>Den Cursor um eine (bzw. Count) Zeile runter u.s.w.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]k</command></td>
+    <td>Den Cursor um eine (bzw. Count) Zeile rauf u.s.w.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]l</command></td>
+    <td>Den Cursor um ein (bzw. Count) Zeichen rechts u.s.w.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]h</command></td>
+    <td>Den Cursor um ein (bzw. Count) Zeichen links.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]w</command></td>
+    <td>Den Cursor um ein (bzw. Count) Wort rechts.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]b</command></td>
+    <td>Den Cursor um ein (bzw. Count) Wort links.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]h</command></td>
+    <td>Den Cursor um ein (bzw. Count) Zeichen links.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]G</command></td>
+    <td>Springe zum Ende der Datei oder, falls Count gegeben, zu Zeile
+Count.
+    </td>
+   </tr>
+
+   <tr>
+    <td><command>Ctrl-f</command></td>
+    <td>Page-Down.</td>
+   </tr>
+
+   <tr>
+    <td><command>Ctrl-b</command></td>
+    <td>Page-Up.</td>
+   </tr>
+
+   <tr>
+    <td><command>^</command></td>
+    <td>Springe zum Anfang der aktuellen Zeile.</td>
+   </tr>
+
+   <tr>
+    <td><command>$</command></td>
+    <td>Springe zum Ende der aktuellen Zeile.</td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Text eingeben
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>i</command></td>
+    <td>(insert), Eingabe vor dem aktuellen Zeichen.</td>
+   </tr>
+
+   <tr>
+    <td><command>a</command></td>
+    <td>(append), Eingabe nach dem aktuellen Zeichen.</td>
+   </tr>
+
+   <tr>
+    <td><command>I</command></td>
+    <td>(Insert), Eingabe am Anfang der aktuellen Zeile.</td>
+   </tr>
+
+   <tr>
+    <td><command>A</command></td>
+    <td>(Append), Eingabe am Ende der aktuellen Zeile.</td>
+   </tr>
+
+   <tr>
+    <td><command>o</command></td>
+    <td>neue Zeile und Eingabe nach der aktuellen Zeile.</td>
+   </tr>
+
+   <tr>
+    <td><command>O</command></td>
+    <td>neue Zeile und Eingabe vor der aktuellen Zeile.</td>
+   </tr>
+
+   <tr>
+    <td><command>Ctrl-v</command></td>
+    <td>Eingabe eines Steuerzeichens.</td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Text ändern
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>[Count]rZeichen</command></td>
+    <td>(replace), Änderung des aktuellen Buchstaben in Zeichen.</td>
+   </tr>
+
+   <tr>
+    <td><command>R</command></td>
+    <td>(Replace), Überschreibmodus vom aktuellen Buchstaben aus.</td>
+   </tr>
+
+   <tr>
+    <td><command>cwWort</command></td>
+    <td>ersetzt das Wort vor dem Cursor durch Wort.</td>
+   </tr>
+
+   <tr>
+    <td><command>ccZeichenkette</command></td>
+    <td>ersetzt die aktuelle oder nächste Zeile durch Zeichenkette.</td>
+   </tr>
+
+   <tr>
+    <td><command>J</command></td>
+    <td>hängt die der aktuellen folgende Zeile an die aktuelle an.</td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Text löschen
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>[Count]x</command></td>
+    <td>1 (bzw. Count) Zeichen unter dem Cursor (rechts) wird gelöscht.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]X</command></td>
+    <td>1 (bzw. Count) Zeichen links vom dem Cursor wird gelöscht.</td>
+   </tr>
+
+   <tr>
+    <td><command>D</command></td>
+    <td>löscht von der Cursorposition bis zum Zeilenende.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]dd</command></td>
+    <td>1 (bzw. Count) Zeilen werden gelöscht.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]d[Richtung]</command></td>
+    <td>1 (bzw. Count) mal wird in Richtung [Richtung] gelöscht.</td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Die Zwischenablagen
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>"1..0, a..z</command></td>
+    <td>Die Ablage 1..0 bzw. a..z für die nächste Aktion auswählen.</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]y[Richtung]</command></td>
+    <td>1 (bzw. Count) Bewegungen in [Richtung].</td>
+   </tr>
+
+   <tr>
+    <td><command>[Count]yy</command></td>
+    <td>1 (bzw. Count) Zeilen werden in die aktuelle Zwischenablage
+kopiert.
+    </td>
+   </tr>
+
+   <tr>
+    <td><command>Beliebige Löschaktion</command></td>
+    <td>Gelöschter Text wird in die aktuelle Zwischenablage kopiert.</td>
+   </tr>
+
+   <tr>
+    <td><command>p</command></td>
+    <td>Inhalt der Zwischenablage wird hinter dem Cursor eingefügt.</td>
+   </tr>
+
+   <tr>
+    <td><command>P</command></td>
+    <td>Inhalt der Zwischenablage wird vor dem Cursor eingefügt.</td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Suchen und Ersetzen
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>/Regex</command></td>
+    <td>Suche vorwärts nach dem regulären Ausdruck Regex.</td>
+   </tr>
+
+   <tr>
+    <td><command>?Regex</command></td>
+    <td>Suche rückwärts nach dem regulären Ausdruck Regex.</td>
+   </tr>
+
+   <tr>
+    <td><command>n</command></td>
+    <td>Wiederholt das letzte Suchkommando.</td>
+   </tr>
+
+   <tr>
+    <td><command>N</command></td>
+    <td>Wiederholt das letzte Suchkommando in die jeweils andere Richtung.</td>
+   </tr>
+
+   <tr>
+    <td><command>fZeichen</command></td>
+    <td>Sucht nach Zeichen in der aktuellen Zeile vorwärts.</td>
+   </tr>
+
+   <tr>
+    <td><command>FZeichen</command></td>
+    <td>Sucht nach Zeichen in der aktuellen Zeile rückwärts.</td>
+   </tr>
+
+   <tr>
+    <td><command>:%s/Quelle/Ziel/</command></td>
+    <td>Ersetzt Quelle textweit beim 1. Vorkommen in der Zeile durch Ziel.</td>
+   </tr>
+
+   <tr>
+    <td><command>:%s/Quelle/Ziel/g</command></td>
+    <td>Ersetzt Quelle im Text überall durch Ziel.</td>
+   </tr>
+
+   <tr>
+    <td><command>:%s/Quelle/Ziel/gc</command></td>
+    <td>Ersetzt Quelle im Text überall durch Ziel, fragt aber vorher nach.</td>
+   </tr>
+		      
+  </table>
+</section>
+
+<section>
+  <heading>
+Bookmarks
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>mKey</command></td>
+    <td>Setzt eine Marke an der aktuellen Stelle unter dem Namen der Taste
+Key.
+    </td>
+   </tr>
+
+   <tr>
+    <td><command>'Key</command></td>
+    <td>Springt zu der Zeile mit der Marke Key.</td>
+   </tr>
+
+   <tr>
+    <td><command>`Key</command></td>
+    <td>Springt zu der Stelle mit der Marke Key.</td>
+   </tr>
+
+  </table>
+</section>
+
+<section>
+  <heading>
+Sonstige Goodies
+  </heading>
+
+  <table>
+   <pdf-column width="175"/>
+   <pdf-column/>
+   <tr>
+    <th>Komando</th>
+    <th>Beschreibung</th>
+   </tr>
+
+   <tr>
+    <td><command>...</command></td>
+    <td>Wiederholt die letzte Editieraktion,</td>
+   </tr>
+
+   <tr>
+    <td><command>%</command></td>
+    <td>(über einer Klammer)  Springt auf die korrespondierende
+Klammer\end{center}.
+    </td>
+   </tr>
+
+   <tr>
+    <td><command>:u</command></td>
+    <td>(undo) Rückgängig.</td>
+   </tr>
+
+   <tr>
+    <td><command>:r</command></td>
+    <td>(redo) Wieder herstellen.</td>
+   </tr>
+
+  </table>
+
+</section>
+</section>
+</split>
+</chapter>
+

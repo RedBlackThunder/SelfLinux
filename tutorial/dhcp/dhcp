@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Dynamic Host Configuration Protocol</title>
+
+ <author>
+  <name>Andreas Schockenhoff</name>
+  <mailto>asc@gmx.li</mailto>
+ </author>
+
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>dhcp</index>
+
+ <description>
+  <textblock>
+Die Automatisierung der
+TCP/IP-Netzwerkadministration lässt sich mit dem
+DHCP-Protokoll recht erfolgreich durchführen.
+In diesem Text werden die Grundzüge des
+Protokolls erklärt. Außerdem werden einige
+einfache Beispielkonfigurationen
+besprochen.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!--1. Kapitel -->
+   <heading>
+DHCP
+   </heading>
+
+   <textblock>
+Über das Dynamic Host Configuration Protocol (DHCP)
+werden einem Client-Rechner alle nötigen
+Netzparameter übermittelt.
+   </textblock>
+
+   <textblock>
+Siehe DHCP RFC-2131 und andere.
+   </textblock>
+  </section>
+
+  <section>
+<!--2. Kapitel -->
+   <heading>
+Leistungsmerkmale
+   </heading>
+
+   <textblock>
+DHCP dient der einfachen Zuteilung von Netzwerkinformationen
+in lokalen TCP/IP-Netzen. Zu diesen Informationen gehören
+z.B. <strong>IP-Nummer</strong>,
+<strong>Domainname</strong>, <strong>Routing</strong> und <strong>DNS-Server</strong>.
+   </textblock>
+
+   <textblock>
+Bei Diskless-Workstations bilden <strong>DHCP</strong> oder <strong>BOOTP</strong>
+die Grundlage.
+   </textblock>
+  </section>
+
+  <section>
+<!--3. Kapitel -->
+   <heading>
+Kurzbeschreibung der Arbeitsweise
+   </heading>
+
+   <textblock>
+Beim Booten kennt der Rechner nur die <strong>MAC-Adresse</strong>
+seiner Netzwerkkarte.<br/>
+Diese ist meistens in der Netzwerkhardware
+(Ethernet, FDDI, Firewire, Wireless
+LAN) programmiert. Bereiche für MAC-Adressen werden nach einem
+internationalen Standard von einem Gremium (siehe
+<ref lang="en" url="http://standards.ieee.org/regauth/oui/index.shtml">http://standards.ieee.org/regauth/oui/index.shtml</ref>)
+an die Hersteller der Hardware vergeben. Diese
+wiederum teilen jedem Netzwerkport eine eindeutige
+<strong>MAC-Adresse</strong> zu.
+   </textblock>
+
+   <textblock>
+Mit der <strong>MAC-Adresse</strong> sendet der Rechner eine
+Rundfrage (Broadcast) ins Netz mit der Bitte, ihm
+eine Netzwerkkonfiguration mitzuteilen.
+   </textblock>
+
+   <textblock>
+Der <strong>DHCP-Server</strong> wartet auf solche Rundfragen und
+teilt dem anfragenden Rechner die entsprechenden Daten mit.
+   </textblock>
+
+   <image height="150">
+    <filename>dhcp.png</filename>
+   </image>
+
+   <textblock>
+Außerdem speichert der Server sowohl die <strong>MAC-Adresse</strong>
+des Clients als auch die ihm zugeteilte <strong>IP-Adresse</strong>
+in einer Datei. (<path>dhcp.leases</path>)
+   </textblock>
+
+   <textblock>
+Diese <strong>IP-Adresse</strong> wird für eine bestimmte Laufzeit
+(<command>Lease Time</command>) für diesen Client reserviert.
+Nach einiger Zeit versucht der Client,
+seine Adresse beim Server zu erneuern
+(<command>renewing</command>).
+Gelingt ihm dies nicht, so fragt er
+etwas später alle Server nach seiner
+Adresse (<command>rebinding</command>).
+   </textblock>
+
+   <textblock>
+Wird seine Adresse auch nach dieser Anfrage nicht erneuert,
+muss er alle Netzwerkaktivitäten beenden.
+Allerdings darf er das
+<strong>DHCP-Protokoll</strong> neu beginnen.
+   </textblock>
+  </section>
+
+  <section>
+<!--4. Kapitel -->
+   <heading>
+Arten der Zuteilung von IP-Adressen
+   </heading>
+
+   <section>
+<!--4.1 Kapitel -->
+    <heading>
+Feste IP-Adresse aufgrund der MAC-Adresse
+    </heading>
+
+    <textblock>
+<strong>MAC-Adressen</strong> und <strong>IP-Adresse</strong> werden fest
+in die <path>dhcp.conf</path> eingetragen.
+    </textblock>
+
+    <file>
+     <title>
+Ausschnitt dhcp.conf
+     </title>
+     <content>
+     <![CDATA[
+host test{
+  hardware ethernet 00:00:c0:5d:bd:95;
+  fixed-address 192.168.0.121;
+# Bei laufenden Nameservice ist auch
+# fixed-address test.local.invalid;
+# möglich
+}
+     ]]>
+     </content>
+    </file>
+
+   </section>
+
+   <section>
+<!--4.2 Kapitel -->
+    <heading>
+1.1 Feste IP-Adresse, automatisch zugeteilt, mit Zeitbegrenzung
+    </heading>
+
+    <textblock>
+Hierbei wird die IP-Adresse für eine unbegrenzte
+(schlecht) oder eine lange
+Laufzeit zugeteilt.
+    </textblock>
+
+    <textblock>
+Hier sollte man die Laufzeit (<command>lease-time</command>) auf einen höheren Wert setzen:
+    </textblock>
+
+    <file>
+     <title>
+Ausschnitt dhcp.conf file
+     </title>
+     <content>
+     <![CDATA[
+max-lease-time 432000;
+# 24*60*60*5 -> 5 Tage
+subnet 192.168.0.0 netmask 255.255.255.0 {
+  range dynamic-bootp 192.168.0.32 192.168.0.40;
+}
+     ]]>
+     </content>
+    </file>
+
+   </section>
+
+   <section>
+<!--4.3 Kapitel -->
+    <heading>
+Dynamische Zuteilung
+    </heading>
+
+    <textblock>
+Die Vorgehensweise ist hier dieselbe wie oben,
+allerdings wird die Laufzeit auf einen niedrigeren
+Wert gesetzt.
+    </textblock>
+   </section>
+  </section>
+
+  <section>
+<!--5. Kapitel -->
+   <heading>
+Konfiguration der Clients
+   </heading>
+
+   <textblock>
+Heute sind die meisten Rechner mit
+Client-seitiger DHCP-Unterstützung
+vorkonfiguriert.
+Das <strong>DHCP-Protokoll</strong> vereinfacht die
+Netzwerkonfiguration erheblich.
+   </textblock>
+
+   <textblock>
+Beim Client müssen keinerlei rechnerspezifische
+Netzwerkeinstellungen mehr vorgenommen werden.
+Im Prinzip muss man den Rechnern nur mitteilen, dass <strong>DHCP</strong>
+verwendet werden soll.
+   </textblock>
+
+   <section>
+<!--5.1 Kapitel -->
+    <heading>
+DHCP-Client
+    </heading>
+
+    <section>
+<!--5.1.1 Kapitel -->
+     <heading>
+Linux
+     </heading>
+
+     <textblock>
+<command>pump</command>, <command>dhcpclient</command>, <command>dhcpcd</command>, <command>dhclient</command>. .......
+     </textblock>
+
+     <textblock>
+Auch <strong>DHCP-Clients</strong> können umfangreich konfiguriert
+werden, siehe <path>/etc/dhcpc/config</path> im Paket
+<strong>dhcpcd</strong>. So kann man zum Beispiel verhindern, dass
+vom <strong>DHCP-Server</strong> Daten übernommen werden, die eine
+spezielle Netzwerkkonfiguration überschreiben würden.
+     </textblock>
+    </section>
+
+    <section>
+<!--5.1.2 Kapitel -->
+     <heading>
+BSD
+     </heading>
+
+     <textblock>
+Ebenso wie Linux unterstützen auch BSD-Varianten <strong>DHCP</strong>
+als Client und Server.
+     </textblock>
+    </section>
+
+    <section>
+<!--5.1.3 Kapitel -->
+     <heading>
+Windows
+     </heading>
+
+     <textblock>
+Auch neuere Windows-Systeme bieten
+direkt nach der Installation <strong>DHCP-Unterstützung</strong>.
+     </textblock>
+    </section>
+
+    <section>
+<!--5.1.4 Kapitel -->
+     <heading>
+Mac
+     </heading>
+
+     <textblock>
+Sofort nach der Installation ist die Unterstützung vorhanden,
+ob man will oder nicht.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!--6. Kapitel -->
+   <heading>
+DHCP-Server (www.isc.org)
+   </heading>
+
+   <textblock>
+Die Installation des Servers sollte in den
+gängigen Distributionen kein Problem sein.
+Bei <name>Debian</name> z.B. sieht sie folgendermaßen aus:
+   </textblock>
+
+   <shell>
+    <root path="">
+apt-get install dhcp3-server
+    </root>
+   </shell>
+
+   <textblock>
+Bei Debian befindet sich nach der Installation
+die Konfigurationsdatei <path>/etc/dhcp3/dhcpd.conf</path>
+auf dem System.
+   </textblock>
+
+   <textblock>
+Die Datei ist gut kommentiert, und man sollte
+sie den eigenen Bedürfnissen anpassen (<strong>Domain-Name</strong>,
+<strong>IP-Adressen</strong> usw.)
+   </textblock>
+
+   <textblock>
+Falls man den Server in der Testphase nur von
+Hand starten möchte, sollte man die Links in
+den entsprechenden Runleveln löschen.<br/>
+<name>Debian</name>:
+   </textblock>
+
+   <shell>
+    <root path="">
+update-rc.d -f dhcp3-server remove
+    </root>
+   </shell>
+
+   <textblock>
+Nach der Testphase kann man diese wieder
+aktivieren, bei <name>Debian</name> z.B. folgendermaßen:
+   </textblock>
+
+   <shell>
+    <root path="">
+update-rc.d dhcp3-server defaults
+    </root>
+   </shell>
+
+   <section>
+<!--6.1 Kapitel -->
+    <heading>
+Eine erste Konfigurationsdatei
+    </heading>
+
+    <textblock>
+Alles, was man nicht versteht, kommentiert man
+zunächst einmal aus. Ich habe das meiste der Übersichtlichkeit
+halber gelöscht.
+    </textblock>
+
+    <file>
+     <title>
+minimal dhcp.conf file
+     </title>
+     <content>
+     <![CDATA[
+#
+# Beispielkonfigurationsdatei für ISC dhcpd3
+# Debian 3.0 Woody
+#
+
+# Optionsdefinitionen für alle unterstützten
+# Netzwerke...
+# option domain-name "local.invalid";
+
+subnet 192.168.0.0 netmask 255.255.255.0 {
+  range dynamic-bootp 192.168.0.31 192.168.0.40;
+}
+     ]]>
+     </content>
+    </file>
+
+    <textblock>
+Nun kann der <strong>DHCP-Server</strong>
+den <strong>DHCP-Clients</strong> zehn Adressen dynamisch zuweisen.
+    </textblock>
+   </section>
+
+   <section>
+<!--6.2 Kapitel -->
+    <heading>
+Testen des Servers
+    </heading>
+
+    <textblock>
+Auf einem Debian-System sollte nochmals geprüft werden, ob in
+<path>/etc/default/dhcp3-server</path>
+das richtige Interface angegeben ist (z.B. <command>eth0</command>).
+    </textblock>
+
+    <textblock>
+Danach kann man zum Testen (Debuggen) übergehen.
+    </textblock>
+
+    <textblock>
+Starten des Servers:
+    </textblock>
+
+    <shell>
+     <root path="">
+/etc/init.d/dhcp start
+     </root>
+    </shell>
+
+    <textblock>
+bzw.
+    </textblock>
+
+    <shell>
+     <root path="">
+/etc/init.d/dhcp3-server start
+     </root>
+    </shell>
+
+    <textblock>
+Es empfiehlt sich, mit <command>tail -f /var/log/syslog den Startvorgang</command>
+zu verfolgen, um zu sehen, ob der Server korrekt läuft. "<command>ps ax</command>"
+bzw. "<command>pidof dhcpd3</command>"
+    </textblock>
+
+    <textblock>
+Der folgende Aufruf ist zum Debuggen besser geeignet:
+    </textblock>
+
+    <shell>
+     <root path="">
+dhcpd3 -d -f
+     </root>
+    </shell>
+
+    <textblock>
+Bitte unbedingt die Fehlermeldungen beachten!
+    </textblock>
+
+    <textblock>
+Auch ein Blick in die Dateien unter <path>/var/log</path> lohnt sich!
+    </textblock>
+
+    <textblock>
+Wird auf einem zweitem Rechner, z.B.
+<ref lang="de" url="http://www.knopper.net/knoppix/">Knoppix</ref> (<name>Debian</name> von CD), getestet, so verwendet man <command>pump</command>:
+    </textblock>
+
+    <shell>
+     <root path="">
+pump -s
+     </root>
+    </shell>
+
+    <textblock>
+Auf dem Server kann die Anfrage mit
+    </textblock>
+
+    <shell>
+     <root path="">
+tcpdump -e
+     </root>
+    </shell>
+
+    <textblock>
+verfolgt werden.
+    </textblock>
+
+    <textblock>
+Dabei muss der Client eine Anfrage absetzen, die
+vom Server beantwortet wird.
+    </textblock>
+
+    <file>
+     <title>
+tcpdump Ausgabe
+     </title>
+     <content>
+     <![CDATA[
+(ist leider eine lange Zeile mit \ getrennt)
+09:47:32.690249 0:48:54:12:4c:df Broadcast ip 342: \
+0.0.0.0.bootpc > 255.255.255.255.bootps:  \
+xid:0x1c97abed [|bootp] [tos 0x10]
+
+09:47:32.700021 8:0:46:49:60:8d 0:48:54:12:4c:df \
+ip 62: lapwoody.local.invalid > 192.168.0.40: \
+icmp: echo request (DF)
+     ]]>
+     </content>
+    </file>
+
+    <textblock>
+Der erste Abschnitt ist die <strong>Broadcast-Anfrage</strong> des Clients.
+Danach folgt die Antwort des Servers, in der dieser
+dem Client eine <strong>IP-Adresse</strong> mitteilt.
+    </textblock>
+
+    <textblock>
+Anmerkung: Wer die Pakete mit ganzem Inhalt sehen
+möchte, kann für die Aufzeichnung auch <command>ngrep</command> verwenden.
+    </textblock>
+
+    <textblock>
+Nun sollte ein einfacher <strong>DHCP-Server</strong> laufen.
+    </textblock>
+   </section>
+
+   <section>
+<!--6.3 Kapitel -->
+    <heading>
+Der Server bekommt weitere Fähigkeiten
+    </heading>
+
+    <textblock>
+Als Nächstes sollten die sinnvollen
+Standard-Angaben wieder aktiviert werden. Die Optionen, die
+nicht "ausgeklammert" sind, gelten als Vorgaben für
+alle späteren Angaben.
+    </textblock>
+
+    <file>
+     <title>
+config-datei
+     </title>
+     <content>
+     <![CDATA[
+ddns-update-style none;
+# Wir haben unseren DHCP- nicht mit einem
+# DNS-Server kombiniert.
+
+option domain-name "local.invalid";
+option domain-name-servers 192.168.0.1;
+# Unsere Domain und die Nameserver
+
+default-lease-time 600;
+max-lease-time 7200;
+# Wann müssen die Adressen, die wir verteilt haben,
+# erneuert werden? Die Laufzeit ist in Sekunden angegeben,
+# d.h. alle DHCP-Rechner sollten nach 10 min anfangen,
+# sich neue Adressen zu holen. Falls die Adresse innerhalb
+# von 2 Stunden nicht erneuert werden konnte, liegt
+# irgendein Fehler vor und der Client-Rechner sollte
+# seine IP-Adressen nicht mehr benutzen.
+
+authoritative;
+# Regelt, welcher DHCP-Server Priorität hat. :-)
+# Aktivieren, sobald wir fertig sind.
+     ]]>
+     </content>
+    </file>
+   </section>
+
+   <section>
+<!--6.4 Kapitel -->
+    <heading>
+Weitere Möglichkeiten mit DHCP
+    </heading>
+
+    <textblock>
+Es gibt globale Angaben, die von lokalen Angaben
+überschrieben werden können.
+    </textblock>
+
+    <textblock>
+Einige Optionen aus:
+"<command>man dhcpd.conf</command>" und "<command>man dhcp-conf</command>"
+(offizielle Optionen sind in RFC 2132 beschrieben):
+    </textblock>
+
+    <file>
+     <title>
+config-datei
+     </title>
+     <content>
+     <![CDATA[
+option domain-name "local.invalid";
+option domain-name-servers 192.168.0.1, 192.168.0.2;
+     ]]>
+     </content>
+    </file>
+
+
+    <textblock>
+Übertragung des <strong>Domain-Namens</strong> und der <strong>DNS-Server</strong>.
+    </textblock>
+
+    <file>
+     <title>
+config-datei
+     </title>
+     <content>
+     <![CDATA[
+option routers 192.168.0.1;
+     ]]>
+     </content>
+    </file>
+
+    <textblock>
+Angabe des <strong>Default-Gateway</strong>.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!--7. Kapitel -->
+   <heading>
+Links
+   </heading>
+
+   <textblock>
+<ref lang="en" url="http://www.isc.org/products/DHCP/">http://www.isc.org/products/DHCP/</ref><br/>
+<ref lang="en" url="http://standards.ieee.org/regauth/oui/index.shtml">http://standards.ieee.org/regauth/oui/index.shtml</ref><br/>
+<ref lang="en" url="http://www.phystech.com/download/dhcpcd.html">http://www.phystech.com/download/dhcpcd.html</ref>
+   </textblock>
+
+   <textblock>
+<ref url="http://www.rfc-editor.org/">http://www.rfc-editor.org/</ref><br/>
+Bitte dort die Suchmaschine benutzen.
+   </textblock>
+
+   <textblock>
+Andere Quellen:<br/>
+<ref lang="de" url="http://www.linux-praxis.de/linux3/dhcp.html">http://www.linux-praxis.de/linux3/dhcp.html</ref><br/>
+<ref lang="de" url="http://www.linux-fuer-alle.de/doc_show.php?docid=8">http://www.linux-fuer-alle.de/doc_show.php?docid=8</ref><br/>
+<ref lang="de" url="http://www.linuxwiki.de/DHCP">http://www.linuxwiki.de/DHCP</ref>
+   </textblock>
+  </section>
+ </split>
+</chapter>

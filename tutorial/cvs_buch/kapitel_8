@@ -1,0 +1,1624 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>Tipps und Troubleshooting</title>
+
+ <author>
+  <name>Karl Fogel</name>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GPL</license>
+ <index>cvs_buch_kapitel_8</index>
+<!-- 8. Kapitel -->
+ <description>
+  <textblock>
+Der folgende Text enthält das Kapitel 8 der
+deutschen Übersetzung des Buches "Open Source Development with CVS",
+welche unter der GNU Public License veröffentlicht wurden.
+  </textblock>
+
+  <textblock>
+Das SelfLinux-Team
+  </textblock>
+ </description>
+
+	
+ <split>
+  <section>
+<!-- 8.1 Kapitel -->
+   <heading>
+Wenn mal was schief läuft
+   </heading>
+
+   <textblock>
+Ich habe schon in den vorangegangenen Kapiteln betont, dass CVS keine
+<strong>Blackbox</strong>-Software ist. In eine <strong>Blackbox</strong> kann man nicht
+hineinschauen, sie bietet keinen Zugriff auf die inneren Vorgänge,
+sodass man nichts bereinigen kann (aber auch nichts durcheinander
+bringen). Die Prämisse ist die, dass bei einer <strong>Blackbox</strong>
+normalerweise nichts bereinigt werden muss. Die Software sollte die
+meiste Zeit über perfekt laufen, daher brauchen sich die Anwender
+nicht um die inneren Vorgänge zu kümmern. Wenn eine <strong>Blackbox</strong>
+ausfällt, so geschieht das jedoch meist gründlich. Jedes Problem
+bedeutet den Totalausfall, da man nicht viele Möglichkeiten hat,
+etwas zu reparieren.
+   </textblock>
+
+   <textblock>
+CVS ist eher eine völlig transparente Box - nur ohne die Box. Die
+beweglichen Teile sind der Umwelt direkt ausgesetzt - nicht etwa
+hermetisch abgeschlossen -, und Teile der Umwelt (unerwartete
+Dateizugriffs echte, abgebrochene Kommandos, konkurrierende Prozesse,
+was auch immer) können manchmal in den Mechanismus gelangen und
+sozusagen das Uhrwerk blockieren. Aber selbst wenn CVS nicht immer
+perfekt läuft, so fällt es auch fast nie komplett aus. Es hat den
+Vorteil des kontrollierten Leistungsrückgangs, und der Grad, zu dem es
+nicht perfekt läuft, ist für gewöhnlich proportional zur Anzahl und
+Schwere der in seiner Umgebung auftretenden Probleme. Wenn man genug
+darüber weiß, was CVS zu tun versucht - und wie es das versucht -,
+wird man wissen, was im Problemfall zu tun ist.
+   </textblock>
+
+   <textblock>
+Obwohl ich hier natürlich nicht alle Probleme aufzählen kann, an die
+Sie geraten können, so habe ich doch versucht, die häufigsten hier
+abzudecken. Das Kapitel ist in zwei Teile aufgeteilt: Der erste
+beschreibt die Umgebungseinflüsse, auf die CVS am empfindlichsten
+reagiert (hauptsächlich Zugriffsrechte im Archiv und die der
+Verwaltung dienenden Teile der Arbeitskopie), und der zweite Teil
+behandelt einige der am häufigsten anzutreffenden Probleme und deren
+Lösung. Indem Sie sich damit befassen, wie man diese
+Standardsituationen meistert, werden Sie auch ein Gefühl dafür
+bekommen, wie man an unerwartete Probleme im CVS herangeht.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 8.2 Kapitel -->
+   <heading>
+Die üblichen Verdächtigen
+   </heading>
+
+   <textblock>
+Als CVS-Administrator (oder Notarzt) merkt man schnell, dass 90
+Prozent der Probleme, welche die Anwender haben, durch Inkonsistenzen
+in deren Arbeitskopien und die übrigen 90 Prozent durch falsche
+Zugriffsrechte im Archiv verursacht werden. Deshalb werde ich, bevor
+wir uns den einzelnen Situationen widmen, einen kurzen Überblick über
+den administrativen Teil der Arbeitskopien geben und einige wichtige
+Tatsachen über die Zugriffsrechte ansprechen
+   </textblock>
+
+   <section>
+<!-- 8.2.1 Kapitel -->
+    <heading>
+Der administrative Teil der Arbeitskopie
+    </heading>
+
+    <textblock>
+In <ref chapter="cvs_buch_kapitel_2">Kapitel 2</ref> haben Sie schon die Grundlagen des Aufbaus einer
+Arbeitskopie kennen gelernt; in diesem Abschnitt werden wir ein wenig
+mehr ins Detail gehen. Dabei geht es hauptsächlich um die Dateien in
+den administrativen Unterverzeichnissen, die den Namen <command>CVS/</command> tragen.
+<command>Entries</command>, <command>Root</command> und <command>Repository</command> haben Sie bereits kennen gelernt, doch in
+<command>CVS/</command> können sich auch noch andere, von der Situation abhängige
+Dateien befinden. Diese Dateien werde ich jetzt beschreiben, teils,
+damit sie Sie nicht überraschen, wenn Sie sie antreffen, teils, damit
+Sie von ihnen verursachte Probleme lösen können.
+    </textblock>  
+
+    <textblock>  
+<command>CVS/Entries.Log</command>
+    </textblock>  
+
+    <textblock>  
+Gelegentlich wird eine Datei namens <command>CVS/Entries.Log</command> auf mysteriöse
+Weise erscheinen. Der einzige Zweck dieser Datei ist es, kurzzeitig
+kleinere Änderungen an <command>CVS/Entries</command> zwischenzuspeichern, und zwar so
+lange, bis eine Operation ansteht, die so wichtig ist, dass es sich
+lohnt, die gesamte Datei <command>Entries</command> neu zu schreiben. CVS kann
+Änderungen in der Datei Entries nicht an Ort und Stelle vornehmen,
+sondern muss, um eine Änderung vorzunehmen, die ganze Datei einlesen
+und wieder zurück schreiben. Um das zu vermeiden, vermerkt CVS
+manchmal kleine Änderungen in <command>Entries.Log</command>, bis es <command>Entries</command> das nächste
+Mal neu schreiben muss.
+    </textblock>  
+
+    <textblock>  
+Das Format von <command>Entries.Log</command> ist das gleiche wie das von <command>Entries</command>, bis
+auf einen zusätzlichen Buchstaben am Anfang jeder Zeile. <strong>A</strong> bedeutet,
+dass die Zeile der Datei <command>Entries</command> hinzuzufügen ist, und <strong>R</strong> heißt,
+dass die Zeile entfernt werden muss.
+    </textblock>  
+
+    <textblock>  
+Sie können <command>Entries.Log</command> fast immer ignorieren, es kommt sehr selten
+vor, dass ein menschliches Wesen deren Inhalt verstehen muss. Wenn Sie
+jedoch <command>Entries</command> durchgehen, um ein Problem in der Arbeitskopie zu
+beheben, dann sollten Sie auch <command>Entries.Log</command> untersuchen.
+    </textblock>  
+
+
+    <textblock>  
+<command>CVS/Entries.Backup</command> 
+    </textblock>  
+
+    <textblock>  
+Die Datei <command>CVS/Entries.Backup</command> ist der Ort, wohin CVS die neue
+<command>Entries</command>-Datei schreibt, bevor es sie in <command>Entries</command> umbenennt. (Ähnlich
+wie es erst temporäre <command>RCS</command>-Dateien in das Archiv schreibt und sie
+erst, wenn sie fertig gestellt sind, an den vorgesehenen Ort
+verschiebt und umbenennt.) Da die Datei <command>Entries.Backup</command> zu <command>Entries</command>
+wird, werden Sie selten eine Datei namens <command>Entries.Backup</command> zu Gesicht
+bekommen; wenn doch, dann bedeutet das vermutlich, dass CVS inmitten
+einer Operation abgebrochen wurde.
+    </textblock>  
+
+
+    <textblock>  
+<command>CVS/Entries.Static</command>
+    </textblock>  
+
+    <textblock>  
+Wenn eine Datei <command>CVS/Entries.Static</command> existiert, dann heißt das, dass
+nicht das ganze Verzeichnis aus dem Archiv geholt wurde. (Wenn CVS
+weiß, dass die Arbeitskopie in einem unvollständigen Zustand ist,
+wird es keine zusätzlichen Dateien in das Verzeichnis bringen.)
+    </textblock>  
+
+    <textblock>  
+Die Datei <command>Entries.Static</command> ist während eines <command>Checkout</command>  oder eines <command>Update</command>
+vorhanden und wird sofort entfernt, wenn die Operation abgeschlossen
+ist. Wenn Sie also eine Datei <command>Entries.Static</command> sehen, dann heißt das,
+dass CVS unterbrochen wurde und dass deren Vorhandensein CVS vom
+Anlegen neuer Dateien in der Arbeitskopie abhält. (Oftmals löst der
+Aufruf von <command>cvs update -d</command> das Problem und entfernt <command>Entries.Static</command>.)
+    </textblock>  
+
+
+    <textblock>  
+Bemerkung
+    </textblock>  
+
+    <hint>
+Das Nichtvorhandensein von <command>Entries.Static</command> bedeutet nicht automatisch,
+dass die Arbeitskopie alle Dateien des Projektes enthält. Jedes Mal,
+wenn ein neues Verzeichnis im Archiv des Projekts angelegt wird und
+jemand seine Arbeitskopie aktualisiert, ohne <command>-d</command> bei <command>update</command> anzugeben,
+wird das neue Verzeichnis nicht in der Arbeitskopie angelegt werden.
+Lokal betrachtet weiß CVS nichts davon, dass es ein neues Verzeichnis
+im Archiv gibt, und wird die Datei <command>Entries.Static</command> entfernen, wenn das
+<command>Update</command> gelaufen ist, selbst wenn das neue Verzeichnis nicht in der
+Arbeitskopie vorhanden ist.
+    </hint>
+
+   <textblock>  
+<command>CVS/Tag</command>
+   </textblock>  
+
+   <textblock>  
+Wenn die Datei <command>CVS/Tag</command> vorhanden ist, so benennt sie eine Marke, die
+sozusagen dem Verzeichnis zugeordnet ist. Ich sage bewusst
+<strong>sozusagen</strong>, da, wie Sie ja wissen, CVS keinerlei Revisionshistorie
+für Verzeichnisse vorhält und streng genommen auch keine Marken an
+ihnen anbringen kann. Marken werden nur an normale Dateien
+angebracht, oder, genauer gesagt, bestimmten Revisionen einer normalen
+Datei zugeordnet.
+   </textblock>  
+
+   <textblock>  
+Wenn jedoch jede Datei in einem Verzeichnis einer bestimmten Marke
+zugeordnet ist, dann stellt sich CVS die Marke als auch an dem ganzen
+Verzeichnis angebracht vor. Wenn Sie zum Beispiel eine Arbeitskopie
+aus einem bestimmten Zweig per <command>Checkout</command> holen
+   </textblock>  
+
+   <shell>
+    <user path="~"> 
+cvs co -r Bugfix_Branch_1
+    </user>
+   </shell>
+
+   <textblock>
+und dann eine Datei hinzufügen, so ist es wünschenswert, dass die
+Anfangsrevision der Datei auch diesem Entwicklungszweig zugeordnet
+ist. Aus ähnlichen Gründen muss CVS wissen, ob das Verzeichnis eine
+sonstige bindende Marke 2 oder einen Datumsstempel aufweist.
+   </textblock>
+
+   <textblock>  
+Die für die Marken zuständigen Dateien (<command>CVS/Tag</command>) enthalten nur eine
+Zeile. Das erste Zeichen dieser Zeile ist ein einbuchstabiges Kürzel,
+das aussagt, um was für eine Marke es sich handelt; der Rest der
+Zeile ist der Name der Marke. Zurzeit verwendet CVS nur diese drei
+einbuchstabigen Kürzel:
+   </textblock>
+
+   <textblock>  
+<strong>T</strong>-Die Marke eines Zweiges
+   </textblock>  
+
+   <textblock>  
+<strong>N</strong>-eine normale Marke (also nicht die Marke eines Zweiges)
+   </textblock>  
+
+   <textblock>  
+<strong>D</strong>-ein bindendes Datum. So etwas tritt auf, wenn ein Kommando wie
+   </textblock>  
+
+   <shell>
+    <user path="~"> 
+cvs checkout -D 1999-05-15 myproj
+    </user>
+   </shell>
+
+   <textblock>  
+oder
+   </textblock>  
+
+   <shell>
+    <user path="~"> 
+cvs update -D 1999-05-15 myproj
+    </user>
+   </shell>
+
+   <textblock>  
+gestartet wird.
+   </textblock>  
+
+   <textblock>  
+(Wenn Sie noch andere einbuchstabige Kürzel entdecken, dann heißt das,
+dass CVS neue Markenarten eingeführt hat, seitdem dieses Kapitel
+geschrieben wurde.)
+   </textblock>  
+
+   <textblock>  
+Sie sollten die Datei <command>Tag</command> nicht von Hand entfernen; verwenden Sie
+besser <command>cvs update -A</command>.
+   </textblock>  
+
+   <textblock>  
+<strong>Echte Seltenheiten</strong> 
+   </textblock>  
+
+   <textblock>  
+Es gibt noch andere Dateien, die Sie gelegentlich im
+<command>CVS/</command>-Unterverzeichnis vorfinden können:
+   </textblock>
+
+   <textblock>  
+<command>CVS/Checkin.prog, CVS/Update.prog
+CVS/Notify, CVS/Notify.tmp
+CVS/Base/, CVS/Baserev, CVS/Baserev.tmp
+CVS/Template</command>
+   </textblock>  
+
+   <textblock>  
+Diese Dateien verursachen normalerweise keine Probleme, daher führe
+ich sie hier nur der Vollständigkeit halber auf (siehe <ref chapter="cvs_buch_kapitel_9">Kapitel 9</ref> für
+deren vollständige Beschreibung).
+   </textblock>  
+
+
+   <textblock>  
+<strong>Portabilität und zukünftige Erweiterungen</strong>
+   </textblock>  
+
+   <textblock>  
+Jedes Mal, wenn CVS neue Features hinzugefügt werden, können neue
+Dateien (die ier nicht aufgeführt sind) in den administrativen
+Abteilungen der Arbeitskopien auftreten. Wenn es neue Dateien gibt,
+so werden sie wahrscheinlich im <name>Cederqvist</name> unter <strong>Working Directory
+Storage</strong> dokumentiert. Wenn Sie es vorziehen, aus dem Quelltext zu
+lernen, können Sie auch in <command>src/cvs.h</command> aus der Quelltextdistribution
+nachlesen.
+   </textblock>  
+
+   <textblock>  
+Bedenken Sie, dass alle <command>CVS/*</command>-Dateien - aktuelle und zukünftige -
+jeweils die Zeilenendekennung verwenden, die für das lokale System der
+Arbeitskopie (zum Beispiel LF unter UNIX, CRLF unter Windows)
+angebracht ist. Das bedeutet, dass wenn Sie eine Arbeitskopie von
+einer Maschine auf eine andere verfrachten, CVS sie nicht mehr
+verarbeiten können wird. (Sie haben dann aber noch ganz andere
+Probleme, da die unter Revisionskontrolle stehenden Dateien selbst
+die für ihre neue Heimat falsche Zeilenendekennung haben werden.)
+   </textblock>
+  </section> 
+
+   <section>
+<!-- 8.2.2 Kapitel -->
+    <heading>
+Zugriffsrechte im Archiv
+    </heading>
+
+    <textblock>  
+CVS setzt nicht ein bestimmtes Schema bei der Vergabe der
+Zugriffsrechte im Archiv voraus - es kommt mit einem breiten Spektrum
+davon aus. Um allerdings einem verwirrenden Verhalten vorzubeugen,
+sollten Sie sicherstellen, dass Sie sich beim Einrichten des Archivs
+an die folgenden Kriterien halten:
+    </textblock>  
+
+    <textblock>  
+Wenn ein Benutzer irgendeine Form des Zugriffs auf ein
+Unterverzeichnis im Archiv wünscht - und sei es nur lesender Zugriff -
+benötigt er für gewöhnlich auf Systemebene Schreibzugriff auf das
+Unterverzeichnis. Das ist nötig, weil CVS temporäre Lockfiles im
+Archiv erzeugt, um die Datenkonsistenz gewährleisten zu können. Auch
+reine Leseoperationen (wie <command>checkout</command> oder <command>update</command>) erzeugen Lockfiles,
+die anzeigen, dass die Daten, bis sie fertig sind, in ein und
+demselben Zustand zu bleiben haben.
+    </textblock>  
+
+    <textblock>  
+Wie schon in <ref chapter="cvs_buch_kapitel_4">Kapitel 4</ref> besprochen, kann man die Notwendigkeit der
+Schreibberechtigung umgehen, indem man in <command>CVS/config</command> den Parameter
+LockDir wie folgt setzt:
+    </textblock>  
+
+    <file>
+     <title>
+CVS/config
+     </title>
+     <content>
+     <![CDATA[
+LockDir=/usr/local/cvslocks
+     ]]>
+     </content>
+    </file>
+
+    <textblock>  
+Natürlich müssen Sie dann dafür sorgen, dass das Verzeichnis
+<command>/usr/local/cvslocks</command> für alle Benutzer von CVS schreibbar ist. In jedem
+Fall benötigen die meisten CVS-Operationen, auch die rein lesenden,
+irgendwo ein beschreibbares Verzeichnis. Als Vorgabe ist dieses
+Verzeichnis das des Archivs; wenn Sie sehr sicherheitsbewusst sind,
+dann lenken Sie es woandershin um.
+    </textblock>
+
+    <textblock>  
+Stellen Sie sicher, dass die Datei <command>CVSROOT/history</command> (wenn sie
+existiert) world-writeable3 ist. Wenn die History-Datei existiert,
+dann versuchen die meisten CVS-Operationen ihr einen Eintrag
+hinzuzufügen, und wenn dieser Versuch fehlschlägt, schlägt die ganze
+Operation mit einer Fehlermeldung fehl. Leider (und
+unerklärlicherweise) ist die History-Datei nicht von Geburt an
+world-writeable, wenn Sie ein neues Archiv mit <command>cvs init</command> erzeugen.
+Zumindest bei der derzeit aktuellen CVS-Version sollten Sie deren
+Zugriffsrechte direkt nach dem Erzeugen des neuen Archivs ändern (oder
+die Datei einfach entfernen, wenn Sie das Speichern der
+Projekthistorie gänzlich unterbinden wollen).
+    </textblock>  
+
+
+    <textblock>  
+Bemerkung
+    </textblock>  
+
+    <hint>
+Dieses Problem könnte sich von alleine lösen - ich habe den Betreuern
+von CVS einen Patch zukommen lassen, durch den die History-Datei
+world-writeable wird, wenn ein neues Archiv angelegt wird. Wenn Sie
+also eine neuere Version von CVS beziehen, als gerade erhältlich ist
+(Stand: September 1999), könnte das Problem Sie nicht mehr betreffen.
+    </hint>
+
+    <textblock>  
+Aus Sicherheitsgründen sollten Sie dafür sorgen, dass die meisten
+Benutzer von CVS auf Unix-Ebene keinen Schreibzugriff auf das
+<command>CVSROOT</command>-Verzeichnis haben. Wenn jemand Checkin-Zugriff auf <command>CVSROOT</command>
+hat, dann kann er <command>commitinfo</command>, <command>loginfo</command> oder beliebige andere triggernde
+Dateien so anpassen, dass beliebige Programme seiner Wahl aufgerufen
+werden, er könnte sogar ein neues Programm mit einem <command>Commit</command> in das
+System bringen, wenn das, was er haben möchte, sich noch nicht dort
+befindet. Sie sollten daher davon ausgehen, dass jeder, der <command>Commit</command>-
+Zugang zu <command>CVSROOT</command> hat, in der Lage ist, beliebige Kommandos im System
+abzusetzen.
+    </textblock>  
+   </section> 
+  </section>
+ </split>
+ 
+<split>
+  <section>
+<!-- 8.3 Kapitel -->
+   <heading>
+Häufige Probleme und deren Lösung
+   </heading>
+
+   <textblock>
+Der Rest dieses Kapitels ist in einer Folge von Fragen und Antworten
+organisiert, ähnlich den FAQ (Frequently Asked Questions 4) aus dem
+Internet. Sie alle stammen aus wirklichen Erfahrungen mit CVS. Aber
+bevor wir uns die einzelnen Fälle ansehen, wollen wir uns noch einen
+Moment Zeit nehmen und uns die CVS Fehlerbehebung allgemein ansehen.
+   </textblock>
+
+   <textblock>
+Der erste Schritt bei der Behebung eines CVS-Problems ist
+üblicherweise der, festzustellen, ob es sich um ein Problem in der
+Arbeitskopie oder im Archiv handelt. Die beste Technik dafür - und
+das wird niemanden überraschen -, ist zu überprüfen, ob das Problem
+auch in anderen Arbeitskopien, als in der, bei der es erstmals
+festgestellt wurde, auftritt. Wenn das der Fall ist, dann ist es
+vermutlich ein Problem im Archiv, ansonsten wohl ein lokales Problem
+der betroffenen Arbeitskopie.
+   </textblock>
+
+   <textblock>
+Probleme in den Arbeitskopien treten häufiger auf. Nicht etwa, weil
+Arbeitskopien irgendwie weniger zuverlässig sind als das Archiv,
+sondern weil jedes Archiv normalerweise mehrere Arbeitskopien hat.
+Obwohl die meisten <strong>Verknotungen</strong> in einer Arbeitskopie mit genügend
+Geduld aufgelöst werden können, ist es häufig effizienter von der
+Zeit her, einfach die Arbeitskopie zu löschen und mittels <command>Checkout</command> neu
+anzulegen.
+   </textblock>
+
+   <textblock>
+Wenn natürlich das Auschecken zu lange dauert oder sich noch
+wesentliche Änderungen, die Sie noch nicht per <command>Commit</command> in das Archiv
+gespeichert haben und die Sie nicht verlieren wollen, in der
+Arbeitskopie befinden, oder Sie einfach wissen wollen, was denn nun
+schief gelaufen ist, dann lohnt es sich, etwas herum zu stochern und
+die Ursache des Problems herauszufinden. Beim Herumstochern sind die
+ersten Orte, an denen man suchen sollte, die <command>CVS/</command>-Unterverzeichnisse.
+Prüfen Sie die Dateiinhalte und die Dateizugriffsrechte. Ganz
+vereinzelt kann es vorkommen, dass die Zugriffsrechte auf einmal <strong>nur
+lesbar</strong> oder sogar noch nicht einmal lesbar werden. (Ich vermute,
+dass das eher daran liegt, dass sich ein Benutzer bei einem
+Unix-Kommando vertippt hat, statt dass ein Fehler aufseiten von CVS
+vorliegt.)
+   </textblock>
+
+   <textblock>
+Probleme im Archiv werden fast immer von falsche Datei- oder
+Verzeichniszugriffsrechten verursacht. Wenn Sie vermuten, dass ein
+Problem an falschen Zugriffsrechten im Archiv liegt, sollten sie erst
+einmal die effektive Benutzerkennung5 derjenigen Person, die das
+Problem hat, herausfinden. Bei allen lokalen und bei den meisten
+nicht lokalen Benutzer ist das entweder der normale Benutzername oder
+der Benutzername, den sie beim Auschecken ihrer Arbeitskopie
+angegeben haben. Wenn Sie die pserver-Methode zusammen mit
+user-aliasing verwenden (siehe Abschnitt <strong>Der
+Passwortauthentisierungs-Server</strong> in <ref chapter="cvs_buch_kapitel_4">Kapitel 4</ref>), dann ist die
+Benutzerkennung diejenige, die in der Datei <command>CVSROOT/passwd</command> steht.
+Wenn Sie das nicht gleich bemerken, können Sie eine Menge Zeit damit
+verschwenden, den Fehler an der falschen Stelle zu suchen.
+   </textblock>
+
+   <textblock>
+Doch jetzt, ohne weitere Umschweife ...
+   </textblock>
+
+   <section>
+<!-- 8.3.1 Kapitel -->
+    <heading>
+Alltägliche Probleme und ihre Lösung
+    </heading>
+
+    <textblock>  
+Die folgenden Situationen habe ich erlebt, als ich anderen bei ihren
+Abenteuern mit CVS zur Seite gestanden habe. Dazu kommen noch einige
+Punkte, die keine echten Probleme sind, sondern lediglich Fragen, die
+mir schon einmal gestellt wurden und die ich hier beantworten möchte.
+Ich halte diese Liste für ziemlich umfassend, und manches, was Sie
+schon in früheren Kapiteln gelesen haben, kann sich hier wiederholen.
+    </textblock>  
+
+    <textblock>  
+Die Situationen sind entsprechend der Häufigkeit ihres Auftretens
+angeordnet, die häufigsten dabei zuerst.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Ich bekomme dauernd die Meldung 'Waiting for Locks'. Was soll das?</strong>
+    </textblock>  
+
+    <textblock>  
+Wenn Sie eine Meldung wie
+    </textblock>  
+
+    <shell>
+     <output>
+cvs update: [22:58:26] waiting for qsmith's lock in /usr/local/newrepos/myproj
+     </output>
+    </shell>
+
+    <textblock>  
+erhalten, dann bedeutet das, dass Sie versuchen, auf ein
+Unterverzeichnis im Archiv zuzugreifen, das momentan von irgendeinem
+anderen CVS-Prozess belegt wird. Da ein Prozeß in diesem Verzeichnis
+abläuft, befindet es sich möglicherweise nicht in einem Zustand, der
+es erlaubt, dass andere CVS-Prozesse darauf zugreifen.
+    </textblock>  
+
+    <textblock>  
+Wenn allerdings diese Wartemeldung lange Zeit bestehen bleibt, dann
+heißt das, dass ein CVS-Prozess - aus welchem Grund auch immer - dabei
+gescheitert ist, textblocker sich aufzuräumen. So etwas kann auftreten,
+wenn CVS plötzlich und unerwartet stirbt, beispielsweise durch
+Stromausfall bei dem Rechner, der das Archiv beherbergt.
+    </textblock>  
+
+    <textblock>  
+Die Lösung liegt darin, die Lock-Dateien von Hand aus dem fraglichen
+Verzeichnis im Archiv zu entfernen. Wechseln Sie in das entsprechende
+Verzeichnis im Archiv, und suchen Sie nach Dateien namens <command>#cvs.lock</command>
+oder solchen, die mit <command>#cvs.wfl</command> oder <command>#cvs.rfl</command> beginnen. Vergleichen
+Sie die Zeitstempel der Dateien mit den Startzeiten aller gerade
+laufenden CVS-Prozesse. Wenn ausgeschlossen ist, dass die Dateien von
+einem noch laufenden Prozess angelegt worden sind, dann ist es
+ungefährlich, sie zu löschen. Der wartende CVS-Prozess wird
+irgendwann merken, dass die <command>Lock</command>-Dateien verschwunden sind - das
+sollte ungefähr 30 Sekunden dauern -, und wird dann der angeforderten
+Operation gestatten, fortzufahren.
+    </textblock>  
+
+    <textblock>  
+Wenn Sie an mehr Details interessiert sind, dann lesen Sie unter
+<strong>Locks</strong> im <name>Cederqvist</name> nach.
+    </textblock>  
+
+
+    <textblock>  
+<strong>CVS behauptet, dass bei einer Datei der »Up-to-Date Check« fehlschlägt.</strong>
+    </textblock>  
+
+    <textblock>  
+<strong>Was mache ich bloß?</strong>
+    </textblock>  
+
+    <textblock>  
+Keine Panik - das bedeutet einfach, dass sich die Datei, seit Sie sie
+das letzte Mal ausgecheckt oder ein Update gemacht haben, geändert
+hat.
+    </textblock>  
+
+    <textblock>  
+Starten Sie <command>cvs update</command> auf der Datei, um die Änderungen aus dem Archiv
+einzuarbeiten. Wenn die Änderungen mit Ihren lokalen Änderungen
+kollidieren, dann editieren Sie die Datei, um den Konflikt zu
+beheben. Versuchen Sie danach erneut den <command>commit</command> - er wird nicht
+fehlschlagen -, wenn man einmal die Möglichkeit ausschließt, dass
+jemand eine weitere Revision per <command>Commit</command> veröffentlicht hat, während
+Sie damit beschäftigt waren, die letzten Änderungen einzuarbeiten.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Ich schaffe es nicht, die pserver-Zugangsmethode ans Laufen zu kriegen.</strong>
+    </textblock>  
+
+    <textblock>  
+Der häufigste, aber am wenigsten offensichtliche Grund für dieses
+Problem ist, dass Sie vergessen haben, das Archiv mit der Option
+<command>--allow-root</command> in Ihrer <command>inetd</command>-Konfigurationsdatei aufzulisten.
+    </textblock>
+
+    <textblock>  
+Erinnern Sie sich an die Beispiel-<command>/etc/inetd.conf</command>-Datei aus <ref chapter="cvs_buch_kapitel_4">Kapitel 4</ref>:
+    </textblock>  
+
+    <file>
+     <title>
+/etc/inetd.conf
+     </title>
+     <content>
+     <![CDATA[  
+cvspserver stream tcp nowait root /usr/local/bin/cvs cvs \
+--allow-root=/usr/local/newrepos pserver
+     ]]>
+     </content>
+    </file>
+
+    <textblock>  
+(In der eigentlichen Datei ist das eine einzige lange Zeile, ohne den
+Backslash.)
+    </textblock>  
+
+    <textblock>  
+Der Teil <command>--allow-root=/usr/local/newrepos</command> ist eine
+Sicherheitsmaßnahme, die dafür sorgt, dass niemand CVS dazu
+missbraucht, um <command>pserver</command>-Zugang zu Archiven zu erhalten, auf die nur
+lokal zugegriffen werden soll. Jedes Archiv, auf das pserver-Zugriff
+möglich sein soll, benötigt einen <command>--allow-root</command>-Eintrag. Sie können so
+viele <command>--allow-root</command>-Optionen, wie Sie für alle Archive im System
+benötigen, haben (oder so viele, wie Sie wollen, solange Sie nicht an
+die Längenbeschränkung der Argumente für inetd stoßen).
+    </textblock>  
+
+    <textblock>  
+Lesen Sie in <ref chapter="cvs_buch_kapitel_4">Kapitel 4</ref> nach, wenn Sie genauere Informationen zur
+Einrichtung eines Passwort authentisierten Servers wünschen.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Die pserver-Zugriffsmethode funktioniert IMMER noch nicht!</strong>
+    </textblock>  
+
+    <textblock>  
+O.K., wenn es nicht an einem fehlenden <command>--allow-root</command> liegt, gibt es
+noch andere Möglichkeiten:
+    </textblock>  
+
+    <textblock>  
+Der Benutzer hat keinen Eintrag in der Datei <command>CVSROOT/passwd</command>, und die
+Datei <command>CVSROOT/config</command> enthält <command>SystemAuth=no</command>, sodass CVS nicht auf die
+System-<command>passwd</command>-Datei zurückfällt (oder sie enthält <command>SystemAuth=yes</command>,
+aber die System-<command>passwd</command>-Datei enthält auch keinen Eintrag für diesen
+Benutzer).
+    </textblock>  
+
+    <textblock>  
+Der Benutzer hat zwar einen Eintrag in <command>CVSROOT/passwd</command>, aber es gibt
+keinen entsprechenden Benutzer im System, und <command>CVSROOT/passwd</command> bildet
+den Benutzer nicht auf einen im System gültigen Benutzernamen ab.
+    </textblock>  
+
+    <textblock>  
+Das Passwort ist falsch. (CVS ist aber gut darin, den Benutzer darauf
+hinzuweisen, also ist das wahrscheinlich nicht die richtige Antwort.)
+    </textblock>  
+
+    <textblock>  
+Die Passwortdateien und <command>/etc/inetd.conf</command> sind richtig eingerichtet,
+aber Sie haben einen Eintrag wie diesen in <command>/etc/services</command> vergessen:
+    </textblock>  
+
+    <file>
+     <title>
+etc/services
+     </title>
+     <content>
+     <![CDATA[  
+cvspserver 2401/tcp
+     ]]>
+     </content>
+    </file>
+
+    <textblock>  
+und so lauscht <command>inetd</command> gar nicht auf dem Port und kann die Verbindung
+auch nicht an CVS weiter reichen.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Meine Commits geschehen stückweise, nicht atomar.</strong>
+    </textblock>  
+
+    <textblock>  
+Das liegt daran, dass CVS-<command>Commits</command> stückweise geschehen und nicht atomar. :-)
+    </textblock>  
+
+    <textblock>  
+Genauer gesagt laufen sie verzeichnisweise ab. Wenn Sie einen <command>commit</command> 
+(oder ein <command>update</command> oder irgendetwas anderes) ausführen, der mehrere
+Verzeichnisse betrifft, dann wird CVS jedes korrespondierende
+Verzeichnis im Archiv nacheinander sperren, während es die Operation
+darin durchführt.
+    </textblock>
+
+    <textblock>  
+Bei kleinen bis mittleren Projekten ist das selten ein Problem - CVS
+erledigt seine Aufgaben in jedem Verzeichnis so schnell, dass es gar
+nicht auffällt, dass es nicht atomar geschieht. Bei großen Projekten
+kann es aber leider zu Szenarios wie folgendem kommen. (Stellen Sie
+sich vor, dass das bei einem Projekt geschieht, das mindestens zwei
+Unterverzeichnisse (A und B) enthält, die beide viele Dateien
+enthalten.):
+    </textblock>  
+
+    <textblock>  
+Der Benutzer qsmith startet einen <command>commit</command>, der Dateien aus beiden
+Unterverzeichnissen betrifft. CVS führt den <command>Commit</command> zuerst mit den
+Dateien in Verzeichnis B aus (möglicherweise weil qsmith die
+Verzeichnisse in seiner Kommandozeile in dieser Reihenfolge angegeben
+hat).
+    </textblock>  
+
+    <textblock>  
+Die Benutzerin jrandom startet <command>cvs update</command>. Aus welchem Grund auch
+immer startet der <command>Update</command>-Prozess in dem Verzeichnis A in der
+Arbeitskopie. (CVS gibt keine Garantien, in welcher Reihenfolge es
+Verzeichnisse oder Dateien bearbeitet, wenn man es nicht dazu zwingt.)
+Beachten Sie, dass es keinen Konflikt mit den Sperren gibt, da ja
+qsmith in Verzeichnis A noch gar nicht aktiv ist.
+    </textblock>  
+
+    <textblock>  
+Der <command>commit</command> von qsmith wird mit B fertig und macht bei A weiter und
+wird auch dort fertig.
+    </textblock>  
+
+    <textblock>  
+Zum Schluss wechselt der <command>update</command>-Prozess von qsmith zu Verzeichnis B
+und wird auch dort fertig.
+    </textblock>  
+
+    <textblock>
+Es ist klar, dass, wenn alles vorüber ist, die Arbeitskopie von
+jrandom die Änderungen von qsmith an Verzeichnis B enthält, nicht
+jedoch die in Verzeichnis A. Obwohl qsmith vorhatte, dass die
+Änderungen als Einheit vorgenommen werden, ist es nicht so gekommen.
+Jetzt ist die Arbeitskopie von jrandom in einem Zustand, den qsmith
+nie vorhergesehen hätte.
+    </textblock>  
+
+    <textblock>  
+Die Lösung ist natürlich, dass jrandom einen weiteren cvs <command>update</command>-Lauf
+durchführt, der die noch unberücksichtigten Änderungen aus dem <command>Commit</command>
+von qsmith nachholt. Das setzt natürlich voraus, dass jrandom
+überhaupt die Möglichkeit hat, herauszufinden, dass sie nur einen Teil
+von qsmiths Änderungen mitbekommen hat.
+    </textblock>  
+
+    <textblock>  
+Es gibt für dieses Dilemma keine einfache Lösung. Sie müssen einfach
+hoffen, dass der inkonsistente Zustand der Arbeitskopie irgendwie
+auffällt. (Vielleicht lässt sich die Software nicht übersetzen, oder
+jrandom und qsmith haben eine für beide verwirrende Unterhaltung, bis
+ihnen auffällt, was passiert sein muss.)
+    </textblock>  
+
+    <textblock>  
+Dass CVS keine <strong>atomaren</strong> Transaktionen bereitstellt, wird allgemein
+als Manko gesehen. Der alleinige Grund dafür, dass keine
+Sperrmechanismen im Hauptverzeichnis des Archivs eingeführt werden,
+ist der, dass sich dann bei großen Projekten mit vielen Benutzern
+häufig Verklemmungen dieser Sperren ergeben würden. CVS hat also das
+kleinere Übel gewählt, das die Häufigkeit dieser Verklemmungen
+verringert, aber eben diese versetzten Lese- und Schreiboperationen
+zulässt. Eines Tages wird jemand CVS anpassen (also die Operationen
+des Archivs beschleunigen), sodass man nicht mehr zwischen zwei Übeln
+wählen muss; bis dahin müssen wir uns mit den nicht atomaren
+Vorgängen abfinden.
+    </textblock>  
+
+    <textblock>  
+Für weitere Informationen empfehle ich die Sektion <strong>Concurrency</strong> im <name>Cederqvist</name>.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Warum verändert CVS dauernd die Zugriffsrechte meiner Dateien?</strong>
+    </textblock>  
+
+    <textblock>  
+CVS ist allgemein nicht gut darin, die Zugriffsrechte von Dateien zu
+bewahren. Wenn man ein Projekt importiert und dann auscheckt, gibt es
+keine Garantie, dass die Zugriffsrechte der Dateien in der neuen
+Arbeitskopie dieselben sind wie beim Importieren des Projekts.
+Wahrscheinlicher ist, dass die Dateien der Arbeitskopie mit denselben
+Standardzugriffsrechten erzeugt werden, mit denen neue Dateien
+normalerweise angelegt werden.
+    </textblock>  
+
+    <textblock>  
+Es gibt aber mindestens eine Ausnahme. Wenn Sie ausführbare
+Shell-Skripten im Projekt speichern wollen, können Sie sie in jeder
+Arbeitskopie ausführbar machen, indem Sie die korrespondierende Datei
+im Archiv ausführbar machen:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+ls -l /usr/local/newrepos/someproj
+     </user>
+     <output>
+total 6
+-r--r--r-- 1 jrandom users 630 Aug 17 01:10 README.txt,v
+-r-xr-xr-x 1 jrandom users 1041 Aug 17 01:10 scrub.pl,v*
+-r--r--r-- 1 jrandom users 750 Aug 17 01:10 hello.c,v
+     </output>
+    </shell>
+
+    <textblock>  
+Beachten Sie, dass, obwohl die Datei ausführbar ist, sie immer noch
+read-only ist, wie es alle Dateien im Archiv sein sollten. (Wie schon
+gesagt macht CVS erst eine temporäre Kopie der <command>RCS</command>-Datei, führt alle
+Operationen auf der Kopie durch und ersetzt, wenn es fertig ist, das
+Original mit der Kopie.)
+    </textblock>  
+
+    <textblock>  
+Wenn Sie eine ausführbare Datei importieren oder hinzufügen, dann
+erhält CVS die <strong>Executable Flags</strong> (diese machen sie ausführbar); wenn
+also die Rechte von Anfang an richtig gesetzt waren, haben Sie nichts
+zu befürchten. Wenn Sie allerdings aus Versehen die Datei hinzufügen,
+bevor Sie sie ausführbar gemacht haben, dann müssen Sie manuell die
+<command>RCS</command>-Datei im Archiv ausführbar machen.
+    </textblock>  
+
+
+    <textblock>  
+Bemerkung
+    </textblock>  
+
+    <hint>
+Die Zugriffsrechte im Archiv behalten immer die Oberhand. Wenn also
+eine Datei im Archiv nicht ausführbar ist, in der Arbeitskopie aber
+schon, dann wird die Datei in der Arbeitskopie nach einem <command>Update</command>
+nicht mehr ausführbar sein. Die Tatsache, dass sich die Zugriffsrechte
+der Dateien still und heimlich ändern können, kann ziemlich
+frustrierend sein. Wenn das geschieht, sollten Sie als Erstes das
+Archiv überprüfen, um zu sehen, ob Sie das Problem lösen können,
+indem Sie dort die Zugriffsrechte der entsprechenden <command>RCS</command>-Dateien
+setzen.
+    </hint>
+
+    <textblock>  
+Ein Feature namens <strong>PreservePermissions</strong> wurde CVS hinzugefügt, dass
+manche dieser Probleme erträglicher machen könnte. Durch dessen
+Nutzung können aber andere unerwartete Ereignisse auftreten (weshalb
+ich es hier nicht uneingeschränkt empfehle). Machen Sie sich mit den
+Punkten <strong>config</strong> und <strong>Special Files</strong> im <name>Cederqvist</name> vertraut, bevor
+Sie <command>PreservePermissions=yes</command> in <command>CVSROOT/config</command> hinein schreiben.
+    </textblock>  
+
+
+    <textblock>  
+<strong>CVS kann unter Windows meine .cvspass-Datei nicht finden. Warum?</strong>
+    </textblock>  
+
+    <textblock>  
+Für <command>pserver</command>-Verbindungen sucht CVS auf der Client-Seite in Ihrem
+Home-Verzeichnis nach der Datei <command>.cvspass</command>. Windows-Maschinen kennen
+aber kein natürliches Home-Verzeichnis, weswegen CVS in der
+Umgebungsvariablen <command>%HOME%</command> nachschaut. Man muss aber bei der
+Einrichtung von HOME sehr vorsichtig sein. Folgendes funktioniert:
+    </textblock>  
+
+    <file>
+     <title>
+Datei .cvspass
+     </title>
+     <content>
+     <![CDATA[  
+set HOME=C:
+     ]]>
+     </content>
+    </file>
+  
+    <textblock>  
+Das aber nicht:
+    </textblock>  
+
+    <file>
+     <title>
+Datei .cvspass
+     </title>
+     <content>
+     <![CDATA[  
+set HOME=C:\
+     ]]>
+     </content>
+    </file>
+
+    <textblock>  
+Der abschließende Backslash reicht aus, um CVS zu verwirren; es wird
+<command>C:\.cvspass</command> nicht öffnen können.
+    </textblock>  
+
+    <textblock>  
+Die schnelle und dauerhafte Lösung ist also
+    </textblock>  
+
+    <file>
+     <title>
+Datei .cvspass
+     </title>
+     <content>
+     <![CDATA[  
+set HOME=C:
+     ]]>
+     </content>
+    </file>
+
+    <textblock>  
+in Ihre <command>autoexec.bat</command> zu schreiben und Windows neu zu starten. Danach
+sollte CVS-<command>pserver</command> richtig funktionieren.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Meine Arbeitskopie ist auf verschiedene Zweige verteilt. Hilfe!</strong>
+    </textblock>  
+
+    <textblock>  
+Sie haben festgestellt, dass verschiedene Unterverzeichnisse Ihrer
+Arbeitskopie irgendwie in verschiedenen Zweigen gelandet sind? Das
+liegt vermutlich daran, dass Sie <command>Updates</command> mit der Option <command>-r</command>
+durchgeführt haben, jedoch nicht vom Hauptverzeichnis Ihrer
+Arbeitskopie aus.
+    </textblock>  
+
+    <textblock>  
+Kein Problem. Wenn Sie zur Hauptentwicklungslinie zurückkehren wollen,
+führen Sie einfach
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs update -r HEAD
+     </user>
+    </shell>
+
+    <textblock>
+oder
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs update -A
+     </user>
+    </shell>
+
+    <textblock>  
+aus dem Hauptverzeichnis aus. Wenn Sie hingegen Ihre ganze
+Arbeitskopie auf eine bestimmte Entwicklungslinie setzen wollen,
+führen Sie Folgendes aus:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs update -r Name_des_Zweiges
+     </user>
+    </shell>
+
+    <textblock>  
+Es ist an sich nichts Falsches daran, ein oder zwei Unterverzeichnisse
+Ihrer Arbeitskopie auf einem anderen Zweig zu haben als den Rest, wenn
+Sie beispielsweise einige kurze Arbeiten in diesem Zweig und nur in
+diesen bestimmten Verzeichnissen durchführen wollen. Es ist aber
+generell eine gute Idee zurückzukehren, sobald Sie fertig sind - das
+Leben ist viel weniger verwirrend, wenn Ihre ganze Arbeitskopie
+derselben Entwicklungslinie folgt.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Wenn ich export -D durchführe, scheint es manchmal die neusten
+Änderungen zu missachten!</strong>
+    </textblock>  
+
+    <textblock>  
+Das liegt an den unterschiedlich laufenden Uhren auf der lokalen
+Maschine und im Archiv. Sie können das Problem lösen, indem Sie eine
+oder beide Uhren neu stellen oder indem Sie ein anderes Datum als
+Argument zu <command>-D</command> angeben. Es ist durchaus akzeptabel, ein in der Zukunft
+liegendes Datum (wie zum Beispiel <command>-D tomorrow</command>) anzugeben, wenn das
+nötig ist, um den Zeitunterschied zu kompensieren.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Ich kann export -r nicht ausführen wegen irgendwelcher 'val-tags'. Was soll das?</strong>
+    </textblock>  
+
+    <textblock>
+Siehe nächste Frage.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Tag-Operationen schlagen wegen irgendwelcher 'val-tags' fehl. Was soll das?</strong>
+    </textblock>  
+
+    <textblock>  
+Wenn Sie einen ähnlichen Fehler wie diesen
+    </textblock>  
+
+    <shell>
+     <output>
+cvs [export aborted]: cannot write /usr/local/myproj/CVSROOT/val-tags: \
+Operation not permitted
+     </output>
+    </shell>
+
+    <textblock>  
+erhalten, dann bedeutet das, dass der Benutzer, unter dem CVS läuft,
+nicht die Berechtigung hat, in die Datei <command>CVSROOT/val-tags</command> zu
+schreiben. In dieser Datei werden gültige Namen von Marken
+gespeichert, damit CVS schnell feststellen kann, welche Marken gültig
+sind. Leider verändert CVS diese Datei selbst für Operationen, die
+auf das Archiv bezogen eigentlich nur lesend sind, wie beispielsweise
+das Auschecken eines Projektes.
+    </textblock>  
+
+    <textblock>  
+Dieser Fehler in CVS könnte zurzeit, da Sie dies lesen, schon behoben
+sein. Bis es so weit ist, liegt die Lösung entweder darin, die Datei
+<command>val-tags world-writeable</command> zu machen oder, wenn das nicht hilft, sie zu
+löschen oder ihren Eigentümer auf den abzuändern, der CVS laufen
+lässt. (Man sollte denken, dass das Ändern der Zugriffsrechte genügen
+sollte, ich habe aber schon mehrere Situationen erlebt, bei denen ich
+auch den Eigentümer ändern musste.)
+    </textblock>  
+
+
+    <textblock>  
+<strong>Ich habe Probleme mit bindenden Marken, ich möchte sie loswerden.</strong>
+    </textblock>  
+
+    <textblock>  
+Verschiedene CVS-Operationen ziehen mit sich, dass die Arbeitskopie
+eine bindenden Marke, ein so genanntes <strong>Sticky Tag</strong>, erhält, also eine
+einzige Marke, der jeder Revision jeder Datei zugeordnet ist. (Im
+Falle einer verzweigten Version wird die bindende Marke auf jede
+Datei, die der Arbeitskopie hinzugefügt wird, angewendet.) Ihre
+Arbeitskopie erhält jedes Mal eine bindende Marke, wenn sie abhängig
+von einer Marke oder von einem Datum auschecken oder ein <command>Update</command>
+durchführen.
+    </textblock>  
+
+    <textblock>  
+Zum Beispiel:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs update -r Name_der_Marke
+     </user>
+    </shell>
+
+    <textblock>  
+oder
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs checkout -D "1999-08-16"
+     </user>
+    </shell>
+
+    <textblock>  
+Wenn ein Datum oder der Name einer normalen Marke (nicht die eines
+Zweiges) verwendet wird, dann wird die Arbeitskopie zu einem
+<strong>eingefrorenen</strong> Abbild dieses Augenblicks in der Geschichte des
+Projektes - so werden Sie natürlich nicht in der Lage sein,
+irgendwelche Änderungen daraus per <command>Commit</command> im Archiv abzulegen.
+    </textblock>  
+
+    <textblock>  
+Um die bindende Marke zu entfernen, lassen Sie <command>update</command> mit der Option <command>-A</command> laufen
+    </textblock>  
+ 
+    <shell>
+     <user path="~">
+cvs update -A
+     </user>
+    </shell>
+
+    <textblock>  
+wodurch die bindende Marke aufgelöst wird und jede Datei auf den
+neusten Stand der Hauptentwicklungslinie gebracht wird.
+    </textblock>  
+
+    <textblock>  
+<strong>CVS Checkout/Update schlägt mit einer Fehlermeldung fehl, die 'cannot
+expand modules' lautet.</strong>
+    </textblock>  
+
+    <textblock>
+Das ist ein Fall einer falschen Fehlermeldung in CVS; wahrscheinlich
+wird früher oder später jemand sie korrigieren, in der Zwischenzeit
+kann sie Sie aber erwischen.
+    </textblock>  
+
+    <textblock>  
+Die Fehlermeldung sieht etwa so aus:
+    </textblock>  
+ 
+    <shell>
+     <user path="~">
+cvs co -d bwf-misc user-space/bwf/writings/misc
+     </user>
+     <output>
+cvs server: cannot find module 'user-space/bwf/writings/misc' - ignored
+cvs [checkout aborted]: cannot expand modules
+     </output>
+    </shell>
+
+    <textblock>  
+CVS scheint zu sagen, dass etwas mit der Datei <command>CVSROOT/modules</command> nicht
+stimmt. In Wahrheit handelt es sich aber um ein Problem mit den
+Zugriffsrechten im Archiv. Entweder ist das Verzeichnis, das ich
+auschecken möchte, nicht lesbar, oder eines seiner übergeordneten
+Verzeichnisse ist nicht lesbar. In diesem Fall war eines der
+übergeordneten Verzeichnisse schuld:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+ls -ld /usr/local/cvs/user-space/bwf
+     </user>
+     <output>
+drwx------ 19 bwf users 1024 Aug 17 01:24 bwf/
+     </output>
+    </shell>
+
+    <textblock>  
+Lassen Sie sich nicht von dieser offensichtlich falschen Fehlermeldung
+täuschen - es ist ein Problem mit den Zugriffsrechten im Archiv.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Irgendwie kann ich die Watches nicht abschalten!</strong>
+    </textblock>  
+
+    <textblock>  
+Sie haben wahrscheinlich
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs watch remove
+     </user>
+    </shell>
+
+    <textblock>  
+für alle Dateien aufgerufen, aber vergessen, ebenfalls
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs watch off
+     </user>
+    </shell>
+
+    <textblock>  
+aufzurufen. Ein kleiner Hinweis, wie man Probleme mit <command>Watches</command>
+(Beobachtungslisten) diagnostiziert: Manchmal ist es immens erhellend,
+wenn man einfach in das Archiv geht und die <command>CVS/fileattr</command>-Dateien
+direkt untersucht. Siehe <ref chapter="cvs_buch_kapitel_4">Kapitel 4</ref> für weitere Informationen darüber.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Meine Binärdateien werden verunstaltet.</strong>
+    </textblock>  
+
+    <textblock>  
+Haben Sie daran gedacht, <command>-kb</command> anzugeben, als Sie sie dem Archiv
+hinzugefügt haben? Wenn nicht, dann könnte CVS
+Zeilenendekonvertierungen oder <command>RCS</command>-Schlüsselwortersetzungen
+durchgeführt haben. Die einfachste Lösung ist normalerweise, sie als
+Binärdatei zu kennzeichnen:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs admin -kb foo.gif
+     </user>
+    </shell>
+
+    <textblock>  
+und es dann nach Korrektur der Datei dem Archiv per <command>Commit</command>
+mitzuteilen. CVS wird sie bei dem neuen <command>Commit</command> nicht wieder verändern
+und bei späteren <command>Commits</command> auch nicht, da es ja jetzt weiß, dass es
+sich um eine Binärdatei handelt.
+    </textblock>  
+
+
+    <textblock>  
+<strong>CVS macht die Zeilenendekonvertierung nicht richtig.</strong>
+    </textblock>
+
+    <textblock>  
+Wenn Sie CVS auf einer Nicht-Unix-Plattform laufen haben und bei
+manchen Arbeitskopien nicht die gewünschte Zeilenendekennung erhalten,
+dann liegt das normalerweise daran, dass die Dateien aus Versehen mit
+der Option <command>-kb</command> hinzugefügt wurden. Im Archiv wird das, ob man es
+glaubt oder nicht, mit dem Kommando
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs admin -kkv DATEI
+     </user>
+    </shell>
+
+    <textblock>  
+behoben. Die Option <command>-kkv</command> besagt, dass normale Schlüsselwortersetzung
+durchgeführt werden soll, und impliziert auch die normale
+Zeilenendekonvertierung. (CVS ist intern betrachtet ein wenig wirr,
+wenn es um die Unterscheidung zwischen Schlüsselwortersetzung und
+Zeilenendekonvertierung geht. Das zeigt sich darin, dass man mit den
+<command>-k</command>-Optionen nicht beide Parameter festlegen kann.)
+    </textblock>  
+
+    <textblock>  
+Leider behebt das <command>admin</command>-Kommando das Problem mit der Datei nur im
+Archiv - Ihre Arbeitskopie denkt immer noch, dass es sich um eine
+Binärdatei handelt. Sie können zwar die Zeile für diese Datei in
+<command>CVS/Entries</command> anpassen, sodass sie <command>-kb</command> nicht mehr enthält, aber das löst
+das Problem nicht in den anderen Arbeitskopien, die es sonst noch
+gibt.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Ich muss ein Unterverzeichnis aus meinem Projekt löschen. Wie stelle ich das an?</strong>
+    </textblock>  
+
+    <textblock>  
+Tja, richtig löschen können Sie das Unterverzeichnis nicht, aber Sie
+können alle Dateien darin entfernen (indem Sie sie erst löschen, dann
+<command>cvs remove</command> und <command>commit</command> ausführen). Sobald das Verzeichnis leer ist,
+kann jeder es automatisch aus seiner Arbeitskopie heraus schneiden,
+indem er die Option <command>-P</command> beim <command>update</command> mit angibt.
+    </textblock>  
+
+
+    <textblock>  
+<strong>Kann ich .cvspass-Dateien oder Teile davon kopieren?</strong>
+    </textblock>  
+
+    <textblock>
+Ja, das ist möglich. Man kann <command>.cvspass</command>-Dateien von Rechner zu Rechner
+kopieren, und man kann auch einzelne Zeilen aus einer <command>.cvspass</command>-Datei
+zur anderen kopieren. Bei Servern mit hoher Latenz kann das schneller
+gehen, als sich mittels <command>cvs login</command> bei jedem Rechner, der eine
+Arbeitskopie beheimatet, anzumelden.
+    </textblock>  
+
+    <textblock>  
+Denken Sie daran, dass es vermutlich nicht funktionieren wird, wenn
+Sie eine <command>.cvspass</command>-Datei zwischen zwei Rechnern mit unterschiedlicher
+Zeilenendekennung transferieren. (Natürlich können Sie die
+Konvertierung wahrscheinlich ohne große Mühe manuell durchführen.)
+    </textblock>
+
+
+    <textblock>  
+<strong>Ich habe gerade einige Dateien mit der falschen Log-Nachricht committed.</strong>
+    </textblock>  
+
+    <textblock>  
+Sie müssen nichts im Archiv von Hand editieren, um das zu korrigieren.
+Lassen Sie einfach <command>admin</command> mit der Option <command>-m</command> laufen. Bedenken Sie, dass
+Sie kein Leerzeichen zwischen die Option <command>-m</command> und ihr Argument setzen
+dürfen und dass Sie die Ersatzlog-Nachricht genau wie jede normale mit
+Anführungszeichen kapseln müssen:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+cvs admin -m1.17:"I take back what I said about the customer." hello.c
+     </user>
+    </shell>
+
+
+    <textblock>  
+<strong>Ich möchte Dateien verschieben, ohne die Revisionshistorie zu verlieren.</strong>
+    </textblock>  
+
+    <textblock>  
+Kopieren Sie (nicht verschieben) die <command>RCS</command>-Dateien an den gewünschten
+neuen Platz im Projekt. Sie müssen zusätzlich an der alten Stelle
+verbleiben.
+    </textblock>  
+
+    <textblock>  
+Führen Sie dann aus einer Arbeitskopie Folgendes aus:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+rm alte_Datei_1 alte_Datei_2 ...
+     </user>
+     <user path="~">
+cvs remove alte_Datei_1 alte_Datei_2 ...
+     </user>
+     <user path="~">
+cvs commit -m "removed from here" alte_Datei_1 alte_Datei_2 ...
+     </user>
+    </shell>
+
+    <textblock>  
+Wenn jetzt jemand ein <command>Update</command> durchführt, dann wird CVS die alten
+Dateien richtigerweise entfernen und die neuen Dateien in die
+Arbeitskopie hineinbringen, so als ob sie ganz normal dem Archiv
+hinzugefügt worden wären (abgesehen davon, dass Sie für angeblich neue
+Dateien ungewöhnlich hohe Revisionsnummern haben).
+    </textblock>  
+
+
+    <textblock>  
+<strong>Wie bekomme ich eine Liste aller Marken in einem Projekt?</strong>
+    </textblock>  
+
+    <textblock>  
+Dafür gibt es in CVS momentan keine bequeme Möglichkeit. Alle Benutzer
+bekommen diesen Mangel schmerzlich zu spüren, und ich glaube, dass
+daran gearbeitet wird, diese Funktion verfügbar zu machen. Wenn Sie
+dies lesen, gibt es vielleicht schon ein Kommando <command>cvs tags</command> oder so
+ähnlich.
+    </textblock>  
+
+    <textblock>  
+Bis es soweit ist, können Sie die Liste auch über Umwege erhalten.
+Führen Sie <command>cvs log -h</command> aus, und lesen Sie den Teil der Ausgabe, welcher
+der Kopfzeile symbolic names: folgt. Oder, falls Sie sich auf dem
+Rechner, auf dem das Archiv liegt, befinden, können Sie sich einfach
+den Anfang einiger der <command>RCS</command>-Dateien direkt im Archiv ansehen. Alle
+Marken (solche, die sich auf Entwicklungszweige beziehen, wie auch
+solche, die das nicht tun) sind im Feld symbols aufgeführt:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+head /usr/local/newrepos/hello.c,v
+     </user>
+     <output>
+head 2.0;
+access;
+symbols
+Release_1_0:1.22
+Exotic_Greetings-2:1.21
+merged-Exotic_Greetings-1:1.21
+Exotic_Greetings-1:1.21
+merged-Exotic_Greetings:1.21
+Exotic_Greetings-branch:1.21.0.2
+Root-of-Exotic_Greetings:1.21
+start:1.1.1.1
+jrandom:1.1.1;
+locks; strict;
+comment @ * @;
+     </output>
+    </shell>
+
+
+    <textblock>  
+<strong>Wie bekomme ich eine Liste aller Projekte im Archiv?</strong>
+    </textblock>
+
+    <textblock>  
+Wie auch das Auflisten aller Marken, so ist diese Funktion in der
+aktuellen Version von CVS nicht implementiert, aber es ist sehr
+wahrscheinlich, dass es bald implementiert wird. Ich glaube, dass das
+Kommando <command>cvs list</command> oder kurz <command>cvs ls</command> genannt werden wird und dass es
+sowohl die Datei modules parsen wird, als auch die Unterverzeichnisse
+im Archiv auflisten wird.
+    </textblock>  
+
+    <textblock>  
+In der Zwischenzeit fahren Sie wahrscheinlich am besten damit, sich
+die Datei <command>CVSROOT/modules</command> (entweder direkt oder mit <command>checkout -c</command>)
+anzusehen. Wenn allerdings noch niemand ein Modul für ein bestimmtes
+Projekt angelegt hat, wird es da auch nicht aufgeführt werden.
+    </textblock>  
+
+    <textblock>  
+<strong>Manche Kommandos schlagen fehl, wenn sie remote ausgeführt werden,
+nicht aber lokal. Wie kann ich das Problem eingrenzen und beheben?</strong>
+    </textblock>  
+
+    <textblock>  
+Es gibt hin und wieder Probleme mit der Kommunikation zwischen Client
+und Server. Wenn das der Fall ist, so handelt es sich um einen Fehler
+in CVS, aber wie soll man so etwas aufspüren?
+    </textblock>  
+
+    <textblock>  
+CVS ermöglicht es, das Protokoll zwischen Client und Server
+mitzulesen. Bevor Sie das Kommando auf dem lokalen Rechner (mit der
+Arbeitskopie) ausführen, setzen Sie die Umgebungsvariable
+<command>CVS_CLIENT_LOG</command>. Die Bourne-Shell-Syntax dafür lautet so:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+CVS_CLIENT_LOG=clog; export CVS_CLIENT_LOG
+     </user>
+    </shell>
+
+    <textblock>  
+Sobald diese Variable gesetzt wurde, zeichnet CVS die gesamte
+Kommunikation zwischen Client und Server in zwei Dateien auf, deren
+Namen auf dem Namen in der Variablen basieren:
+    </textblock>  
+
+    <shell>
+     <user path="~">
+ls
+     </user>
+     <output>
+CVS/ README.txt a-subdir/ b-subdir/ foo.gif hello.c
+cvs update
+? clog.in
+? clog.out
+cvs server: Updating .
+cvs server: Updating a-subdir
+cvs server: Updating a-subdir/subsubdir
+cvs server: Updating b-subdir
+     </output>
+     <user path="~">
+ls
+     </user>
+     <output>
+CVS/ a-subdir/ clog.in foo.gif
+README.txt b-subdir/ clog.out hello.c
+     </output>
+     <user path="~">
+     </user>
+    </shell>
+
+    <textblock>  
+Die Datei <command>clog.in</command> enthält alles, was der Client zum Server geschickt
+hat, und <command>clog.out</command> enthält all das, was der Server zurück zum Client
+gesendet hat. Hier der Inhalt von <command>clog.out</command>, damit Sie eine
+Vorstellung von dem Protokoll erhalten:
+    </textblock>  
+
+
+    <file>
+     <title>
+clog.out
+     </title>
+     <content>
+     <![CDATA[
+Valid-requests Root Valid-responses valid-requests Repository \
+Directory Max-dotdot Static-directory Sticky Checkin-prog Update-prog
+\ Entry Kopt Checkin-time Modified Is-modified UseUnchanged Unchanged
+\ Notify Questionable Case Argument Argumentx Global_option
+Gzip-stream \ wrapper-sendme-rcsOptions Set expand-modules ci co
+update diff log add \ remove update-patches gzip-file-contents status
+rdiff tag rtag import \ admin export history release watch-on
+watch-off watch-add watch-remove \ watchers editors init annotate noop
+ok M ? clog.in M ? clog.out E cvs server: Updating .
+E cvs server: Updating a-subdir
+E cvs server: Updating a-subdir/subsubdir
+E cvs server: Updating b-subdir
+ok
+     ]]>
+     </content>
+    </file>
+
+    <textblock>
+Die Datei <command>clog.in</command> ist sogar noch komplizierter aufgebaut, da
+Revisionsnummern und andere dateibezogene Informationen zum Server
+geschickt werden müssen.
+    </textblock>
+
+    <textblock>
+Ich habe hier nicht genug Platz, um das Client/Server-Protokoll zu
+dokumentieren, aber Sie können, wenn Sie eine vollständige
+Beschreibung wünschen, die Info-Seiten namens <strong>cvsclient</strong> lesen, die
+bei CVS mitgeliefert werden. Man kann wahrscheinlich eine Menge über
+das Protokoll herausfinden, wenn man es einfach roh liest. Wenngleich
+Sie wohl kaum anfangen werden, die Client/Server-Kommunikation zu
+untersuchen, bevor Sie nicht alle anderen möglichen Ursachen für ein
+Problem ausgeschlossen haben, ist es doch ein unschätzbar wertvolles
+Hilfsmittel, um herauszufinden, was wirklich zwischen den beiden
+vorgeht.
+    </textblock>
+
+
+    <textblock>
+<strong>Ich konnte mein Problem nicht in diesem Kapitel beschrieben finden.</strong>
+    </textblock>
+
+    <textblock>
+Mailen Sie eine vollständige und genaue Beschreibung Ihres Problems an
+<ref url="mailto:info-cvs@gnu.org">info-cvs@gnu.org</ref>, das ist die Diskussions-Mailingliste von CVS. Ihre
+Mitglieder sind über viele Zeitzonen verteilt, und ich habe
+normalerweise innerhalb von ein bis zwei Stunden eine Antwort
+erhalten. Treten Sie der Liste bei, indem Sie eine E-Mail an
+info-cvs-request@gnu.org schicken, dann können auch Sie dabei helfen,
+Fragen zu beantworten.
+    </textblock>  
+
+
+    <textblock>
+<strong>Ich glaube, ich habe einen Fehler in CVS gefunden. Was mache ich?</strong>
+    </textblock>
+
+    <textblock>
+CVS ist weit davon entfernt, perfekt zu sein - wenn Sie die
+Dokumentation schon gelesen und auch die Frage auf der Mailingliste
+erörtert haben und immer noch glauben, dass Sie einen Fehler vor sich
+haben, dann ist das vermutlich auch der Fall.
+    </textblock>
+
+    <textblock>
+Schicken Sie eine so komplette Beschreibung wie möglich an
+<ref url="mailto:bug-cvs@gnu.org">bug-cvs@gnu.org</ref>. (Sie können auch dieser Liste beitreten, verwenden
+Sie einfach stattdessen bug-cvs-request.) Stellen Sie sicher, dass
+Sie Ihre Versionsnummer von CVS beifügen (sowohl die Client- als auch
+die Serverversion, falls von Bedeutung) sowie ein Rezept, wie der
+Fehler reproduziert werden kann.
+    </textblock>
+
+    <textblock>  
+Wenn Sie einen Patch geschrieben haben, der den Fehler behebt, dann
+fügen Sie ihn bei und erwähnen das auch im Betreff der E-Mail. Die
+Betreuer werden Ihnen sehr dankbar sein.
+    </textblock>  
+
+    <textblock>  
+(Weitere Details über diese Vorgänge sind unter BUGS im Cederqvist und
+in der Datei <command>HACKING</command> in der Quelltextdistribution von CVS umrissen.)
+    </textblock>  
+
+
+    <textblock>  
+<strong>Ich habe ein neues Feature für CVS implementiert, wem schicke ich das?</strong>
+    </textblock>  
+
+    <textblock>  
+Gleiche Vorgehensweise wie bei einem Fehler: Schicken Sie den Patch an
+<ref url="mailto:bugs-cvs@gnu.org">bugs-cvs@gnu.org</ref>. Lesen Sie aber zuerst die Datei <command>HACKING</command>.
+    </textblock>
+
+   </section>
+
+   <section>
+<!-- 8.3.2 Kapitel -->
+    <heading>
+Die Dinge ändern sich
+    </heading>
+
+    <textblock>
+Die Techniken der Fehlerbeseitigung und die bekannten Fehler, die in
+diesem Kapitel beschrieben worden sind, waren (ungefähr) zu Zeiten von
+CVS Version 1.10.7 zutreffend. In der Welt von CVS bewegt sich aber
+alles sehr schnell. Als ich die letzten paar Kapitel geschrieben
+habe, ist der inoffizielle Mantel der CVS-Betreuung von Cyclic
+Software auf SourceGear, Inc. (<ref lang="en" url="http://www.sourcegear.com">www.sourcegear.com</ref>) übergegangen, denn
+diese haben Cyclic aufgekauft. SourceGear hat öffentlich verkündet,
+dass sie beabsichtigen, eine aktive Rolle bei der CVS-Betreuung zu
+übernehmen, und hat die Zustimmung von Cyclic erhalten, was (mehr oder
+weniger) ausreicht, um sie zu den derzeitigen »Hauptbetreuern« von
+CVS zu machen. (Die Adresse <ref lang="en" url="http://www.cyclic.com">www.cyclic.com</ref> bleibt aber erhalten,
+sodass alle URLs, die vorher in diesem Buch angegeben wurden, ihre
+Gültigkeit behalten.)
+    </textblock>
+
+    <textblock>
+SourceGear ist momentan damit beschäftigt, die verschiedenen Patches,
+die noch herumfliegen, zu bereinigen und zu organisieren, mit der
+Absicht, viele davon in CVS zu integrieren. Manche dieser Patches
+werden wahrscheinlich Fehler beheben, die ich schon aufgelistet habe,
+und manche werden den Anwendern von CVS neue Mittel zur
+Fehlerbehebung bieten.
+    </textblock>  
+
+    <textblock name="Anm">  
+Die beste Möglichkeit, um up-to-date mit dem, was da vorgeht, zu
+bleiben, ist die Datei NEWS in Ihrer CVS-Distribution zu lesen, die
+Mailinglisten zu beobachten und Änderungen im Cederqvist und in der
+Online-Version einiger der Kapitel aus diesem Buch zu verfolgen.
+    </textblock>  
+
+
+
+	<ol>
+	 <li>Anm. d. Übers.: Schwarze (geschlossene) Kiste</li>
+	 <li>Anm. d. Übers.: »Nonbranch Sticky Tag«</li>
+	 <li>Anm. d. Übers.: Von jederman beschreibbar</li>
+	 <li>Anm. d. Übers.: Häufig gestellte Fragen</li>
+	 <li>Anm. d. Übers.: User ID</li>
+	 <li>Anm. d. Übers.: Im Deutschen auch Rückstrich genannt: »\«.</li>
+	 <li>Anm. d. Übers.: Batch-Dateien, um ein anderes »deutsches«
+	 Wort zu bemühen. Stapelverarbeitungsdateien, wenn's denn
+	 unbedingt sein muss.</li>
+	</ol> 
+   
+   </section>
+  </section>
+ </split>
+</chapter> 

@@ -1,0 +1,3009 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>HOWTO für den Emacs Einsteiger</title>
+
+ <author>
+  <name>Jeremy D. Zawodn</name>
+  <mailto>Jeremy@Zawodny.com</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GPL
+ </license>
+
+ <index>emacs</index>
+
+ <description>
+
+  <textblock>
+<strong>HOWTO für den Emacs Einsteiger</strong>
+  </textblock>
+
+  <textblock>
+Von <name email="Jeremy@Zawodny.com">Jeremy D. Zawodny</name> und <name 
+email="christelweyrauch@gmx.de">Christel Weyrauch</name> - 
+v1.12, 20. Januar 2002
+  </textblock>
+
+  <textblock>
+Dieses Dokument führt Linux-Anwender in den Emacs-Editor ein. Es geht
+von einer geringen Vertrautheit mit dem vi oder einem ähnlichen Editor
+aus.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!-- 1. Kapitel-->
+   <heading>
+Einführung
+   </heading>
+<!-- 1.1 Kapitel-->
+   <section>
+    <heading>
+Copyright
+    </heading>
+
+    <textblock>
+ Dieses Dokument ist urheberrechtlich geschützt. Das Copyright für die
+ englische HOWTO, auf der dieses Dokument basiert, liegt bei <name>Jeremy D.
+ Zawodny</name> (Copyright © 1998 - 2001 <name>Jeremy D. Zawodny</name>). Das 
+Copyright für
+ die deutsche Version liegt bei <name>Christel Weyrauch</name> und <name>Marco 
+Budde</name>.
+    </textblock>
+
+
+    <textblock>
+ Das Dokument darf gemäß der GNU General Public License verbreitet
+ werden. Insbesondere bedeutet dies, dass der Text sowohl über
+ elektronische wie auch physikalische Medien ohne die Zahlung von
+ Lizenzgebühren verbreitet werden darf, solange dieser Copyright
+ Hinweis nicht entfernt wird. Eine kommerzielle Verbreitung ist erlaubt
+ und ausdrücklich erwünscht. Bei einer Publikation in Papierform ist
+ das Deutsche Linux HOWTO Projekt hierüber zu informieren.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 1.2 Kapitel -->
+    <heading>
+Bezugsquellen
+    </heading>
+
+    <textblock>
+ Die aktuellste englische Version dieses Dokuments ist gewöhnlich unter
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.wcnet.org/jzawodn/emacs/">http://www.wcnet.org/jzawodn/emacs/</ref>
+    </quotation>
+
+    <textblock>
+ verfügbar.   Die deutsche Version findet man beim DLHP:
+    </textblock>
+
+    <quotation>
+<ref lang="de" url="http://www.tu-harburg.de/dlhp/">http://www.tu-harburg.de/dlhp/</ref>
+    </quotation>
+   </section>
+
+   <section>
+<!-- 1.3 Kapitel -->
+    <heading>
+Leserkreis und Ziel
+    </heading>
+
+    <textblock>
+ Dieses Dokument richtet sich an den Linux-Anwender, der daran
+ interessiert ist, ein bisschen über den Emacs zu lernen und ihn
+ auszuprobieren. Es entstand eigentlich  als Entwurf für ein kurzes
+ Tutorial, das ich bei einem Treffen der <name>Toledo Area Linux User 
+Group</name>
+ geben musste:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.talug.org/">http://www.talug.org/</ref>
+    </quotation>
+
+    <textblock>
+ Dank des hilfreichen Feedbacks, das ich von der Gruppe bekam, ist es
+ seitdem etwas gewachsen. Näheres dazu finden Sie bei den Danksagungen.
+    </textblock>
+
+    <textblock>
+ Ich habe gesagt, dass sich dieses Dokument an den Linux-Anwender
+ richtet, doch gibt es in diesem Dokument praktisch nichts
+ Linux-spezifisches.  Es ist auf alle Unix-Varianten und selbst auf dem Emacs
+ unter Microsoft Windows anwendbar. Doch da dieses Dokument Teil des
+ Linux-Dokumentationsprojektes ist, möchte ich noch einmal festhalten,
+ dass es für Linux-Anwender entwickelt wurde, weil es das eben wurde.
+ Und zum Schluss noch ein Hinweis für diejenigen von Ihnen, die die
+ Bezeichnung <strong>GNU/Linux</strong> dem ganz einfachen 
+<strong>Linux</strong> vorziehen: Sie
+ können gerne in Gedanken bei jedem Vorkommen von <strong>Linux</strong> in 
+diesem
+ Dokument dieses durch <strong>GNU/Linux</strong> ersetzen. Lesen sie hierzu 
+auch
+ folgendes Dokument:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.gnu.org/gnu/linux-and-gnu.html">http://www.gnu.org/gnu/linux-and-gnu.html</ref>
+    </quotation>
+
+    <textblock>
+ Zwar bin ich mit der Argumentation und dem Geist hinter der Idee nicht
+ uneins, doch fühle ich mich nicht gezwungen, GNU/Linux zu schreiben.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 1.4 Kapitel -->
+    <heading>
+Was ist der Emacs?
+    </heading>
+
+    <textblock>
+ Der Emacs ist Unterschiedliches für unterschiedliche Menschen.
+ Abhängig davon, wen man fragt, könnte man irgendeine der folgenden
+ Antworten bekommen:
+    </textblock>
+
+    <ul>
+     <li>
+ein Text-Editor
+     </li>
+     <li>
+ein Mail Client
+     </li>
+     <li>
+ein News Reader
+     </li>
+     <li>
+ein Word-Prozessor
+     </li>
+     <li>
+eine Religion
+     </li>
+     <li>
+eine integrierte Entwicklungsumgebung
+     </li>
+     <li>
+Was immer Sie wollen, das er ist!
+     </li>
+    </ul>
+
+
+    <textblock>
+ Doch für unsere Zwecke lassen Sie uns einfach so tun, als wäre er ein
+ Text-Editor - ein erstaunlich flexibler Text-Editor. Wir werden später
+ tiefer in die Frage einsteigen. Der Emacs wurde von <name>Richard 
+Stallman</name>
+ geschrieben (Gründer der <name>Free Software Foundation</name>:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.fsf.org/">http://www.fsf.org/</ref>
+    </quotation>
+
+    <textblock>
+ und des GNU Projektes),
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.gnu.org/">http://www.gnu.org/</ref>
+    </quotation>
+
+    <textblock>
+ und er pflegt ihn noch heute.
+    </textblock>
+
+
+    <textblock>
+ Der Emacs ist einer der populärsten und leistungsfähigsten
+ Text-Editoren für Linux (und Unix). In Popularität steht er an zweiter
+ Stelle nur hinter dem <name>vi</name>. Er ist bekannt für sein umfangreiches 
+Bündel
+ an Leistungsmerkmalen, seine Fähigkeit, leicht angepasst werden zu
+ können und seinen Mangel an Fehlern. Sein enormes Bündel an
+ Leistungsmerkmalen und seine Fähigkeit, leicht angepasst werden zu
+ können, sind im Grunde das Resultat davon, wie der Emacs entwickelt
+ und implementiert wurde. Ohne auf alle Details einzugehen, weise ich
+ einfach darauf hin, dass der Emacs nicht <strong>nur ein Editor</strong> ist. 
+Es ist
+ ein Editor, der hauptsächlich in der Programmiersprache Lisp
+ geschrieben wurde. Im Kern des Emacs befindet sich ein kompletter Lisp
+ Interpreter, der in C geschrieben wurde. Nur die grundlegendsten und
+ elementarsten Teile vom Emacs sind in C geschrieben. So hat der Emacs, in
+ gewissem Sinne, eine ganze Programmiersprache <strong>in sich 
+eingebaut</strong>, die
+ Sie benutzen können, um ihn anzupassen, zu erweitern und sein
+ Verhalten zu verändern.
+    </textblock>
+
+    <textblock>
+ Der Emacs ist außerdem einer der ältesten Editoren, die es so gibt.
+ Die Tatsache, dass er über die letzten 20 (?) Jahre hinweg von
+ Tausenden von Programmierern benutzt wurde, bedeutet, dass es viele
+ Zusatzpakete gibt. Diese Zusätze erlauben es Ihnen, den Emacs Dinge
+ tun zu lassen, die <name>Stallman</name> wahrscheinlich niemals für möglich
+ gehalten hätte, als er erstmals die Arbeit am Emacs begann. Mehr davon
+ in einem späteren Abschnitt.
+    </textblock>
+
+    <textblock>
+ Es gibt viele andere Dokumente und Websites, die einen besseren
+ Überblick über den Emacs, seine Geschichte und damit zusammenhängende
+ Themen bieten. Anstatt zu versuchen, an dieser Stelle davon viel zu
+ reproduzieren, schlage ich vor, Sie testen einige der Angaben, die im
+ Abschnitt <ref iref="Andere Quellen">Andere Quellen</ref> in diesem Dokument 
+aufgeführt werden.
+    </textblock>
+
+    <section>
+<!-- 1.4.1 Kapitel -->
+     <heading>
+Portierungen und Versionen
+     </heading>
+
+     <textblock>
+  Es ist wichtig drauf hinzuweisen, dass es eigentlich zwei
+  unterschiedliche Emacs-Editoren gibt: <name>GNU Emacs</name> und 
+<name>Xemacs</name>. Beide
+  haben den gleichen Ursprung und verfügen im Wesentlichen über die
+  gleichen Eigenschaften. Dieses Dokument basiert auf dem GNU Emacs
+  (insbesondere Version 20.3), aber viel von dem, was Sie hier lesen
+  werden, trifft ebenso gut auf den Xemacs und ältere Versionen des GNU
+  Emacs zu. In dem ganzen Dokument werde ich einfach vom <strong>Emacs</strong>
+  sprechen. Wenn ich das tue, haben Sie dies bitte im Hinterkopf.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 1.4.2 Kapitel -->
+     <heading>
+Wie Sie den Emacs bekommen können
+     </heading>
+
+     <textblock>
+  Den Emacs zu bekommen, ist einfach. Wenn Sie eine bekannte
+  Linux-Distribution benutzen, wie <name>Debian</name>, <name>RedHat</name>, 
+<name>Slackware</name>, <name>SuSE</name> oder
+  irgendeine der anderen, ist der Emacs wahrscheinlich ein Zusatzpaket,
+  das Sie von Ihrem Distributionsmedium aus installieren können. Wenn
+  nicht, können Sie sich den Emacs Source Code holen und ihn selbst
+  kompilieren. Besuchen Sie die GNU Website, um die genaue Adresse zu
+  bekommen:
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.gnu.org/software/emacs/emacs.html">http://www.gnu.org/software/emacs/emacs.html</ref>
+     </quotation>
+    </section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 2. Kapitel -->
+   <heading>
+Mit dem Emacs arbeiten
+   </heading>
+
+   <section>
+<!-- 2.1 Kapitel -->
+    <heading>
+Den Emacs starten und beenden
+    </heading>
+
+    <textblock>
+ Wenn Sie ein neuer Anwender sind, werden Sie wahrscheinlich den Emacs
+ starten, um damit herumzuspielen und ihn auszuprobieren. Ist der Emacs
+ erst einmal gestartet und Sie wollen ihn schließen, wissen Sie
+ vielleicht nicht, was zu tun ist. Wenn Sie also vorher noch nie mit
+ dem Emacs gearbeitet haben, versuchen Sie es jetzt gleich einmal.
+ Tippen Sie emacs an Ihrem Shellprompt und drücken Sie die
+ <strong>Return</strong>-Taste. Der Emacs sollte dann starten. Wenn nicht, ist
+er
+ entweder nicht installiert oder nicht in Ihrem Pfad.
+    </textblock>
+
+    <textblock>
+ Wenn Sie sich den Emacs angesehen haben, müssen Sie wissen, wie er
+ beendet wird. Mit der Tastenkombination
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+ wird er verlassen.
+ Die
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+ Schreibweise bedeutet: halten Sie die
+     <keycomb mode="hold">
+      <key>Ctrl</key>
+     </keycomb>
+ -Taste (auf
+ einer deutschen Tastatur ersetzen Sie bei Befehlen die Control-Taste
+ bitte immer durch die Steuerungs-Taste,
+     <keycomb mode="hold">
+      <key>Strg</key>
+     </keycomb>
+ ) gedrückt und drücken
+ Sie
+     <keycomb mode="hold">
+      <key>x</key>
+     </keycomb>
+ . In diesem Fall, müssen Sie dann die
+     <keycomb mode="hold">
+      <key>Ctrl</key>
+     </keycomb>
+ -Taste gedrückt
+ halten und auf
+     <keycomb mode="hold">
+      <key>c</key>
+     </keycomb>
+ drücken, um den Befehl zu vollenden.
+    </textblock>
+
+    <textblock>
+ Die beim Emacs benutzten Tastenkombinationen erscheinen Ihnen
+ vielleicht zuerst etwas komisch, fremd und wahrscheinlich sogar
+ unbequem - besonders dann, wenn Sie ein <name>vi</name>-Anwender sind. Anders 
+als
+ der <name>vi</name> hat der Emacs keine besonderen Modi, um Text zu editieren 
+und
+ Befehle auszuführen.
+    </textblock>
+
+    <textblock>
+ Zur Erinnerung: emacs startet den Emacs. Mit
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>c</key>
+     </keycomb>
+ wird er geschlossen.
+    </textblock>
+
+    <section>
+<!-- 2.1.1 Kapitel -->
+     <heading>
+Was Sie sehen werden
+     </heading>
+
+     <textblock>
+  Wenn der Emacs gestartet wird, nimmt er ein ganzes X Fenster ein (oder
+  den gesamten Bildschirm, wenn Sie von einer Konsole aus arbeiten,
+  anstelle des X Window Systems). Entlang des oberen Randes sehen Sie
+  ein Menue, etwas Text im Hauptteil des Bildschirms, und ein paar
+  Zeilen am unteren Rand.
+     </textblock>
+
+     <textblock>
+  Es wird in etwa so aussehen wie diese ASCII-Skizze:
+     </textblock>
+
+     <file>
+      <title>
+ASCII-Skizze
+      </title>
+      <content>
+       <![CDATA[
+       +----------------------------------------------------------------------+
+       |Buffers Files Tools Edit Search Mule Help                             |
+       |                                                                      |
+       |Welcome to GNU Emacs, one component of a Linux-based GNU system.      |
+       |                                                                      |
+       |                                                                      |
+       |                                                                      |
+       | ...                                                                  |
+       |                                                                      |
+       |---1:---F1  *scratch*         (Lisp Interaction)--L1--All-------------|
+       |For information about the GNU Project and its goals, type C-h C-p.    |
+       +----------------------------------------------------------------------+
+       ]]>
+      </content>
+     </file>
+
+     <textblock>
+  Beachten Sie: der Emacs wird normalerweise den gesamten Bildschirm
+  oder das ganze Fenster ausfüllen. Ich habe das obige Beispiel kleiner
+  dargestellt, um hier Platz zu sparen. Sie werden auch einen
+  Begrüßungstext im Emacs sehen, wenn Sie ihn das erste Mal starten. Ich
+  habe ihn auch ausgelassen und anstatt dessen durch <strong>...</strong> 
+ersetzt. Der
+  Begrüßungstext gibt lediglich die genaue Emacs-Version an, die Sie
+  benutzen und verweist Sie auf die Online-Hilfe und damit verwandte
+  Themen.
+     </textblock>
+
+     <section>
+<!-- 2.1.1.1 Kapitel -->
+      <heading>
+Die Menueleiste
+      </heading>
+
+      <textblock>
+   Die allererste Zeile der Emacs-Oberfläche ist ein Menue. Wenn Sie mit
+   X arbeiten, werden Sie sie als die üblichen Pull-Down-Menues
+   wahrnehmen, auf die Sie mit Ihrer Maus zugreifen können. Wenn nicht,
+   müssen Sie Tastenkürzel verwenden (werden hier nicht behandelt), um
+   auf die Menues zugreifen zu können.
+      </textblock>
+     </section>
+
+     <section>
+<!-- 2.1.1.2 Kapitel -->
+      <heading>
+Die Statuszeile und der Mini-Puffer
+      </heading>
+
+      <textblock>
+   Von den letzten zwei Zeilen der Emacs-Oberfläche ist die oberste im
+   Wesentlichen eine Statuszeile. Sie beinhaltet Informationen über den
+   Puffer in dem Sie arbeiten, in welchem Modus sich der Emacs befindet,
+   und verschiedene andere Dinge. Merken Sie sich für den Moment einfach,
+   dass sie da ist.
+      </textblock>
+
+      <textblock>
+   Die unterste Zeile wird Mini-Puffer genannt.  Er wird vom Hauptpuffer
+   durch die Statuszeile getrennt, die wir gerade besprochen haben. Sie
+   können den Mini-Puffer als die <strong>Kommandozeile</strong> des Emacs 
+betrachten.
+   Hier werden Befehle angezeigt, die Sie dem Emacs erteilen und hier
+   werden - je nach dem, was Sie tun - Statusmeldungen ausgegeben.
+      </textblock>
+
+      <textblock>
+   Das, was ich die Statuszeile genannt habe, wird in Dokumentationen zum
+   Emacs normalerweise als Moduszeile bezeichnet. Hier zeigt der Emacs
+   Informationen über den/die augenblicklichen Modus/Modi, die Sie
+   vielleicht benutzen, aber auch Dinge wie das aktuelle Datum und die
+   Zeit, die Zeilennummer, Dateigröße und fast alles, was Sie dort
+   möglicherweise sehen möchten.
+      </textblock>
+     </section>
+    </section>
+   </section>
+
+   <section>
+<!-- 2.2 Kapitel -->
+    <heading>
+Einige Fachausdrücke
+    </heading>
+
+    <textblock>
+  Dieser Abschnitt behandelt die grundlegendsten Emacs-Fachausdrücke,
+  denen Sie bei der Benutzung des Emacs und dem Lesen über den Emacs
+  begegnen werden.
+    </textblock>
+
+    <section>
+<!-- 2.2.1 Kapitel -->
+     <heading>
+Puffer &amp; Dateien
+     </heading>
+
+     <textblock>
+  Anders als bei einigen Editoren, bleibt beim Emacs eine Datei an der
+  Sie arbeiten, nicht die ganze Zeit <strong>geöffnet</strong>. Anstatt dessen, 
+liest
+  der Emacs die Datei in einen Speicherpuffer ein. Während Sie den
+  Puffer editieren und mit den Daten arbeiten, ändert sich nichts auf
+  der Festplatte. Nur wenn Sie wirklich den Puffer speichern, wird die
+  Datei auf der Festplatte aktualisiert. Es gibt bei diesem Verfahren
+  Vor- und Nachteile, es ist aber nur wichtig, dass Sie verstehen, dass
+  es so funktioniert.
+     </textblock>
+
+     <textblock>
+  Aus diesem Grund trifft man in der Emacs-Dokumentation bei Modi,
+  Paketen und so weiter auf den Begriff <strong>Puffer</strong>.  Machen Sie 
+sich
+  einfach klar, dass Puffer <strong>eine Kopie der Datei, die gerade im
+  Speicher ist</strong> bedeutet. Oh, es ist noch wichtig, darauf hinzuweisen,
+  dass ein Puffer sich nicht immer auf eine bestimmte Datei auf der
+  Festplatte bezieht. Der Emacs erzeugt oft Puffer aufgrund der Befehle,
+  die Sie eingeben. Diese Puffer können das Ergebnis eines Befehls, eine
+  Auswahlliste etc. beinhalten.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 2.2.2 Kapitel -->
+     <heading>
+Point &amp; Region
+     </heading>
+
+     <textblock>
+  Im Emacs-Jargon werden Sie oft Hinweise auf den sogenannten 
+<strong>Point</strong>
+  (Eingabepunkt) hören oder sehen. Im allgemeinen ist der Point der
+  Cursor. Der eigentliche Unterschied zwischen Point und Cursor ist
+  wahrscheinlich nicht wichtig, wenn man gerade angefangen hat, sich mit
+  dem Emacs zu beschäftigen. Aber wenn Sie neugierig sind, sollten Sie
+  es so betrachten: der Cursor ist die visuelle Darstellung des Points.
+  Der Cursor ist immer <strong>auf</strong> einer bestimmten Buchstabenposition 
+im
+  aktuellen Puffer. Der Point, andererseits, ist im Raum <strong>zwischen den
+  Buchstaben</strong>. Man könnte also sagen, dass wenn der Cursor sich auf dem
+  Buchstaben <strong>h</strong> im Wort <strong>the</strong> befindet, der Point 
+
+
+
+zwischen <strong>t</strong> und <strong>h</strong>
+  ist.
+     </textblock>
+
+     <textblock>
+  Wie viele moderne Editoren kann der Emacs auf einen Abschnitt des
+  aktuellen Puffers begrenzt Aktionen ausführen: Texteinzug,
+  Rechtschreibprüfung, neu Formatieren, Ausschneiden, Kopieren, Einfügen
+  usw.. Mit der Tastatur oder Maus können Sie einen Textblock
+  hervorheben (oder <strong>markieren</strong>) und dann Aktionen nur in diesem 
+Block
+  oder Textabschnitt ausführen. Beim Emacs wird dieser Textblock
+  <strong>Region</strong> genannt.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 2.2.3 Kapitel -->
+     <heading>
+Fenster
+     </heading>
+
+     <textblock>
+  Okay, das Folgende wird für alle, die irgendwann einmal mit einem GUI
+  Interface gearbeitet haben, etwas verwirrend sein. Erinnern Sie sich
+  einfach daran, dass der Emacs, lange bevor GUI Interfaces und Window
+  Manager populär waren, entwickelt wurde.
+     </textblock>
+
+     <textblock>
+  Beim Emacs ist ein <strong>Fenster</strong> ein Teil des Bildschirmes, auf dem 
+
+
+
+ein
+  Puffer dargestellt wird. Wenn der Emacs gerade erst gestartet wurde,
+  hat man ein Fenster auf dem Bildschirm. Einige Emacs-Funktionen (wie
+  die Hilfe und die Dokumentation) öffnen oft vorübergehend zusätzliche
+  Fenster in Ihrem Emacs-Bildschirm.
+     </textblock>
+
+
+     <textblock>
+  Emacs-Fenster haben im GUI Sinn nichts mit X Window Fenstern gemein.
+  Man kann zusätzliche X Window Fenster öffnen, um Emacs-Puffer
+  darzustellen, vielleicht um zwei Dateien nebeneinander zu vergleichen.
+  Diese neuen X Window Fenster werden im Emacs-Jargon <strong>Rahmen</strong> 
+(Frames)
+  genannt; lesen Sie dazu weiter.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 2.2.4 Kapitel -->
+     <heading>
+Rahmen
+     </heading>
+
+     <textblock>
+  Beim Emacs ist ein <strong>Rahmen</strong> ein separates X Window Fenster, in 
+dem ein
+  Emacs-Puffer dargestellt wird. Beide sind jedoch Teil der gleichen
+  Emacs-Session. Das Verhalten ähnelt etwas (aber nicht allzu sehr)
+  dem, was passiert, wenn Sie
+      <keycomb mode="hold">
+       <key>Alt</key>
+       <key>N</key>
+      </keycomb>
+ im Netscape Naviagator drücken.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- 2.3 Kapitel -->
+    <heading>
+Grundlagen der Tastaturbedienung
+    </heading>
+
+    <textblock>
+ Dieser Abschnitt behandelt die Grundlagen der Tastaturbedienung des
+ Emacs. Wie bei jedem leistungsfähigen Editor ist alles, was man mit
+ dem Emacs machen kann, nur wenige Tastenkombinationen entfernt.
+    </textblock>
+
+    <textblock>
+ Wenn Sie ein <name>vi</name>-Anwender sind, brauchten Sie wahrscheinlich etwas, 
+
+
+
+um
+ sich an die Vorstellung zu gewöhnen, <strong>k</strong>-, <strong>j</strong>-, 
+<strong>l</strong>-, <strong>h</strong>-Tasten zu
+ benutzten, um sich eine Zeile höher, tiefer, einen Buchstaben vor und
+ zurück zu bewegen. Es wird in der Tat wahrscheinlich einige Stunden
+ oder sogar Wochen gedauert haben, bevor Sie sich beim Benutzen der
+ unterschiedlichen Tastenkombinationen, die es beim <name>vi</name> gibt,
+mühelos in
+ einem Dokument bewegen konnten.
+    </textblock>
+
+    <textblock>
+ Der Emacs ist da nicht anders. Man muss andere Tastenkombinationen und
+ Befehle lernen. Genau wie beim <name>vi</name> muss man nur die Grundlagen
+ beherrschen, um viel Arbeit erledigt zu bekommen. Dann, mit der Zeit,
+ kann man langsam sein Wissen erweitern und schnellere Wege finden, wie
+ man Dinge tut.
+    </textblock>
+
+    <section>
+<!-- 2.3.1 Kapitel -->
+     <heading>
+Befehlstasten (Meta, Esc, Steuerung und Alt)
+     </heading>
+
+     <textblock>
+  Wie Sie schnell lernen werden, macht der Emacs viel Gebrauch von
+  Mehrfach-Tastenkombinationen. Da er kein Modal-Editor  wie der <name>vi</name>
+
+
+
+ist,
+  muss man nicht darüber nachdenken, ob man sich im 
+<strong>Befehlsmodus</strong> oder
+  <strong>Editiermodus</strong> befindet, bevor man den Cursor bewegen oder 
+einen
+  Befehl ausführen kann. Anstatt dessen drückt man die richtige
+  Tastenkombination und der Emacs tut gewöhnlich, was er soll.
+     </textblock>
+
+     <textblock>
+  Die Tasten, die man im Emacs am meisten benutzt, werden in der
+  Dokumentation normalerweise mit
+     <keycomb mode="hold">
+      <key>C</key>
+     </keycomb>
+  (für Control,
+     <keycomb mode="hold">
+      <key>Ctrl</key>
+     </keycomb>
+  - auf einer
+  deutschen Tastatur ist
+     <keycomb mode="hold">
+      <key>C</key>
+     </keycomb>
+  durch die Steuerungs-Taste,
+     <keycomb mode="hold">
+      <key>Strg</key>
+     </keycomb>
+  , zu
+  ersetzen) und
+     <keycomb mode="hold">
+      <key>M</key>
+     </keycomb>
+  für (
+     <keycomb mode="hold">
+      <key>Meta</key>
+     </keycomb>
+  ) abgekürzt. Während die meisten modernen
+  PC-Tastaturen eine oder mehrere Tasten für
+     <keycomb mode="hold">
+      <key>Ctrl</key>
+     </keycomb>
+  haben, haben wenige
+  eine für
+     <keycomb mode="hold">
+      <key>Meta</key>
+      <key>x</key>
+     </keycomb>
+  . Sie müssen in Gedanken entweder
+     <keycomb mode="hold">
+      <key>Esc</key>
+     </keycomb>
+  oder
+     <keycomb mode="hold">
+      <key>Alt</key>
+     </keycomb>
+  durch die
+     <keycomb mode="hold">
+      <key>Meta</key>
+     </keycomb>
+  -Taste ersetzen. Bei den meisten
+  Standardkonfigurationen machen
+     <keycomb mode="hold">
+      <key>Esc</key>
+     </keycomb>
+  und
+     <keycomb mode="hold">
+      <key>Alt</key>
+     </keycomb>
+  im Wesentlichen das
+  Selbe.
+     </textblock>
+
+     <textblock>
+  Wenn Sie also in irgendeiner Dokumentation, die sich auf den Emacs
+  bezieht, einen Verweis auf
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>f</key>
+     </keycomb>
+  sehen, bedeutet dies: drücken Sie
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+  und dann
+     <keycomb mode="hold">
+      <key>f</key>
+     </keycomb>
+  (
+     <keycomb mode="hold">
+      <key>Strg</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>f</key>
+     </keycomb>
+  dann natürlich auf einer deutschen
+  Tastatur). Und wenn Sie einen Hinweis auf etwas wie
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>shell</key>
+     </keycomb>
+  sehen,
+  bedeutet dies: drücken Sie
+     <keycomb mode="hold">
+      <key>Alt</key>
+      <key>x</key>
+     </keycomb>
+  und tippen Sie das Wort
+     <keycomb mode="hold">
+      <key>shell</key>
+     </keycomb>
+  .
+     </textblock>
+
+     <textblock>
+  Ein sehr nützlicher Befehl für Anfänger ist
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>apropos</key>
+     </keycomb>
+  oder
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>h</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>a</key>
+     </keycomb>
+  . Apropos durchsucht die Emacs Online-Dokumentation nach allen
+  Funktionen und regulären Ausdrücken, die Sie eingeben. Dies ist eine
+  fantastische Möglichkeit, alle Kommandos zu entdecken, die mit Frames
+  zu tun haben. Geben Sie einfach
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>h</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>a</key>
+     </keycomb>
+  und dann
+     <keycomb mode="hold">
+      <key>frame</key>
+     </keycomb>
+  ein.
+     </textblock>
+
+    </section>
+
+    <section>
+<!-- 2.3.2 Kapitel -->
+     <heading>
+Sich in einem Puffer bewegen
+     </heading>
+
+     <textblock>
+   Da sie nun wissen, was alle diese tollen Abkürzungen bedeuten, folgt
+   jetzt eine Liste mit den gebräuchlichsten Tastenkombinationen, um sich
+   innerhalb eines Puffers zu bewegen:
+     </textblock>
+
+     <table>
+      <pdf-column width="125"/>
+      <pdf-column/>
+      <tr>
+       <th>
+   Tastenkombination
+       </th>
+       <th>
+   Aktion
+       </th>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>p</key>
+       </keycomb>
+       </td>
+       <td>
+    eine Zeile hoch
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>n</key>
+       </keycomb>
+       </td>
+       <td>
+    eine Zeile runter
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>f</key>
+       </keycomb>
+       </td>
+       <td>
+    einen Buchstaben vorwärts
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>b</key>
+       </keycomb>
+       </td>
+       <td>
+    einen Buchstaben zurück
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>a</key>
+       </keycomb>
+       </td>
+       <td>
+    Zeilenanfang
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>e</key>
+       </keycomb>
+       </td>
+       <td>
+    Zeilenende
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>v</key>
+       </keycomb>
+       </td>
+       <td>
+    eine Seite runter
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>M</key>
+        <key>v</key>
+       </keycomb>
+       </td>
+       <td>
+    eine Seite hoch
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>M</key>
+        <key>f</key>
+       </keycomb>
+       </td>
+       <td>
+    ein Wort weiter
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>M</key>
+        <key>b</key>
+       </keycomb>
+       </td>
+       <td>
+    ein Wort zurück
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>M</key>
+        <key>&lt;</key>
+       </keycomb>
+       </td>
+       <td>
+    Beginn des Puffers
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>M</key>
+        <key>&gt;</key>
+       </keycomb>
+       </td>
+       <td>
+    Ende des Puffers
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>g</key>
+       </keycomb>
+       </td>
+       <td>
+    aktuellen Arbeitsvorgang beenden
+       </td>
+      </tr>
+     </table>
+
+
+     <textblock>
+  Und Sie haben es vielleicht erwartet, die Cursor-Tasten (oder
+  Pfeiltasten) funktionieren genau, wie Sie erwartet haben. Ihre
+  Backspace-Taste möglicherweise nicht. Das ist eine andere Geschichte.
+  :-(
+     </textblock>
+    </section>
+
+    <section>
+<!-- 2.3.3 Kapitel -->
+     <heading>
+Wesentliche Befehle
+     </heading>
+
+     <textblock>
+  Okay, da Sie nun wissen, wie man sich in einem Puffer bewegt, wie ist
+  es mit dem Öffnen und Speichern von Dateien oder der Suchefunktion?
+  Hier kommen einige grundlegende Befehle.
+     </textblock>
+
+     <textblock>
+  Bevor wir uns direkt auf diese Befehle stürzen, muss ich kurz
+  darstellen, wie das funktioniert.
+     </textblock>
+
+     <textblock>
+  Alle <strong>Befehlstasten</strong> im Emacs (die, die
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>irgendwas</key>
+      <key>h</key>
+     </keycomb>
+  oder
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>irgendwas</key>
+     </keycomb>
+  sind), sind nur Kürzel für Funktionen, die Teil des Emacs
+  sind. Man kann alle diese Funktionen durch Eintippen von
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>Funktionsnamen</key>
+     </keycomb>
+  und Drücken der <command>Return</command>-Taste aufrufen. Man kann auch
+  die Tastaturkürzel für diese Funktion benutzen (wenn sie eine hat).
+     </textblock>
+
+     <textblock>
+  Zum Beispiel heißt die Emacs-Funktion, die einen Puffer auf Festplatte
+  speichert, <command>save-buffer</command>. Sie ist standardmäßig auch mit
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>s</key>
+     </keycomb>
+  belegt. Man kann also entweder das Kürzel benutzen, um den aktuellen
+  Puffer zu speichern oder man könnte
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>save-buffer</key>
+     </keycomb>
+  eintippen, um
+  das gleiche Resultat zu erzielen.
+     </textblock>
+
+     <textblock>
+  Die gebräuchlichsten Funktionen haben standardmäßig zusätzliche
+  Tastenkürzel. Einige von ihnen sind unten aufgelistet.
+     </textblock>
+
+     <table>
+      <pdf-column width="100"/>
+      <pdf-column width="100"/>
+      <pdf-column/>
+      <tr>
+       <th>
+  Tastenkürzel
+       </th>
+       <th>
+  Funktion
+       </th>
+       <th>
+  Beschreibung
+       </th>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>x</key>
+       </keycomb>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>s</key>
+       </keycomb>
+       </td>
+       <td>
+  save-buffer
+       </td>
+       <td>
+  Speichere den aktuellen Puffer auf Festplatte
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>x</key>
+       </keycomb>
+       <keycomb mode="hold">
+        <key>u</key>
+       </keycomb>
+       </td>
+       <td>
+  undo
+       </td>
+       <td>
+  Mache den letzten Arbeitsvorgang rückgängig
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>x</key>
+       </keycomb>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>f</key>
+       </keycomb>
+       </td>
+       <td>
+  find-file
+       </td>
+       <td>
+  Öffne eine Datei von Festplatte
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>s</key>
+       </keycomb>
+       </td>
+       <td>
+  isearch-forward
+       </td>
+       <td>
+  Inkrementelle Suche vorwärts
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>r</key>
+       </keycomb>
+       </td>
+       <td>
+  isearch-backward
+       </td>
+       <td>
+  Inkrementelle Suche rückwärts
+       </td>
+      </tr>
+      <tr>
+       <td>
+
+       </td>
+       <td>
+  replace-string
+       </td>
+       <td>
+  Suchen &amp; Ersetzen einer Zeichenkette
+       </td>
+      </tr>
+      <tr>
+       <td>
+
+       </td>
+       <td>
+  replace-regexp
+       </td>
+       <td>
+  Suchen &amp;amp; Ersetzen bei regulären Ausdrücken
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>h</key>
+       </keycomb>
+       <keycomb mode="hold">
+        <key>t</key>
+       </keycomb>
+       </td>
+       <td>
+  help-with-tutorial
+       </td>
+       <td>
+  Benutze das interaktive Emacs-Tutorial
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>h</key>
+       </keycomb>
+       <keycomb mode="hold">
+        <key>f</key>
+       </keycomb>
+       </td>
+       <td>
+  describe-function
+       </td>
+       <td>
+  Zeige den Hilfetext für eine Funktion an
+       </td>
+      </tr>
+      <tr>
+       <td>
+       <keycomb mode="hold">
+        <key>C</key>
+        <key>h</key>
+       </keycomb>
+       <keycomb mode="hold">
+        <key>v</key>
+       </keycomb>
+       </td>
+       <td>
+  describe-variable
+       </td>
+       <td>
+  Zeige den Hilfetext für eine Variable an
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <keycomb mode="hold">
+         <key>C</key>
+         <key>h</key>
+        </keycomb>
+        <keycomb mode="hold">
+         <key>x</key>
+        </keycomb>
+       </td>
+       <td>
+  describe-key
+       </td>
+       <td>
+  Zeige an, was eine Tastenfolge macht
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <keycomb mode="hold">
+         <key>C</key>
+         <key>h</key>
+        </keycomb>
+        <keycomb mode="hold">
+         <key>a</key>
+        </keycomb>
+       </td>
+       <td>
+  apropos
+       </td>
+       <td>
+  Zeige den Hilfetext für einen (regulären) Ausdruck an
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <keycomb mode="hold">
+         <key>C</key>
+         <key>h</key>
+        </keycomb>
+        <keycomb mode="hold">
+         <key>F</key>
+        </keycomb>
+       </td>
+       <td>
+  view-emacs-FAQ
+       </td>
+       <td>
+  Zeige die Emacs-FAQ an
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <keycomb mode="hold">
+         <key>C</key>
+         <key>h</key>
+        </keycomb>
+        <keycomb mode="hold">
+         <key>i</key>
+        </keycomb>
+       </td>
+       <td>
+  info
+       </td>
+       <td>
+  Lese die Emacs Dokumentation
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <keycomb mode="hold">
+         <key>C</key>
+         <key>x</key>
+        </keycomb>
+        <keycomb mode="hold">
+         <key>r</key>
+         <key>m</key>
+        </keycomb>
+       </td>
+       <td>
+  bookmark-set
+       </td>
+       <td>
+  Setze ein Lesezeichen. Nützlich bei Suchen
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <keycomb mode="hold">
+         <key>C</key>
+         <key>x</key>
+        </keycomb>
+        <keycomb mode="hold">
+         <key>r</key>
+         <key>b</key>
+        </keycomb>
+       </td>
+       <td>
+  bookmark-jump
+       </td>
+       <td>
+  Springe zu einem Lesezeichen
+       </td>
+      </tr>
+     </table>
+
+     <textblock>
+  Beim Ausprobieren vieler dieser Funktionen werden Sie feststellen,
+  dass Sie viele zu einer Eingabe auffordern. Das wird immer im
+  Mini-Puffer erfolgen.  Dies ähnelt dem Gebrauch der <command>:</command>-Kommandos im <name>vi</name>
+  oder den meisten Kommandos, die Sie in Ihrer bevorzugten Unix Shell
+  benutzen würden.
+     </textblock>
+
+     <textblock>
+  Der Emacs verfügt buchstäblich über Hunderte von eingebauten
+  Funktionen. Die obige Liste ist ein kleines Beispiel all derer, die
+  ich regelmäßig benutze. Für eine vollständigere Auflistung der
+  verfügbaren Funktionen und eine ausführlichere Dokumentation zu denen,
+  die ich oben erwähne, sehen Sie sich die Online-Hilfe an.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 2.3.4 Kapitel -->
+     <heading>
+Tab-Ergänzung
+     </heading>
+
+     <textblock>
+  Wie viele populäre Unix Shells (bash, csh, tcsh usw.) kann der Emacs
+  Befehle über die
+     <keycomb mode="hold">
+      <key>Tab</key>
+     </keycomb>
+  -Taste ergänzen.  Es ist sogar so, dass die
+  Befehlsergänzung in der <name>bash</name>, der im Emacs nachgebildet wurde. Wenn
+  Sie dieses Leistungsmerkmal in der <name>bash</name> benutzen, werden Sie sich also
+  ganz zu Hause fühlen.
+     </textblock>
+
+     <textblock>
+  Versuchen Sie zum Beispiel
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>search</key>
+     </keycomb>
+  und drücken dann
+     <keycomb mode="hold">
+      <key>Tab</key>
+     </keycomb>
+  .  Der Emacs wird einen Bindestrich anfügen, um anzuzeigen, dass es diverse
+  Vervollständigungsmöglichkeiten gibt, die aber alle einen Bindestrich
+  als nächsten Buchstaben haben. Wenn die
+     <keycomb mode="hold">
+      <key>Tab</key>
+     </keycomb>
+  -Taste ein weiteres Mal
+  betätigt wird, wird Emacs Ihnen eine Liste aller Möglichkeiten
+  anzeigen, aus denen Sie auswählen können. Sie werden feststellen, dass
+  er dies in einem <strong>neuen Fenster</strong> tut.  Er unterteilt Ihr Display
+  zeitweise in zwei Fenster: eines, das den Puffer enthält, den Sie
+  gerade editieren und ein weiteres, das die Liste aller möglichen
+  Ergänzungen für <command>search</command> enthält.  Sie können
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>g</key>
+     </keycomb>
+  tippen, um den
+  Selektionsprozess zu verlassen und das neue Fenster zu schließen.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- 2.4 Kapitel -->
+    <heading>
+Tutorial, Hilfe &amp; Info
+    </heading>
+
+    <textblock>
+ Der Emacs hat ein Online-Tutorial, das Sie durch die grundlegenden
+ Editiereigenschaften und -funktionen führt, die jeder kennen sollte.
+ Es erklärt auch, wie die anderen Hilfefunktionen im Emacs genutzt
+ werden können.
+    </textblock>
+
+    <textblock>
+ Ich empfehle dringend, dass Sie etwas Zeit darauf verwenden, das
+ Tutorial durchzugehen, wenn Sie planen, sich ernsthaft mit dem Emacs
+ zu beschäftigen. Wie in der Tabelle oben dargestellt wurde, können Sie
+ das Tutorial durch
+    <keycomb mode="hold">
+     <key>C</key>
+     <key>h</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>t</key>
+    </keycomb>
+ aufrufen. Das Tutorial ist selbsterklärend
+ und zielt auf Leute ab, die gerade mit dem Emacs anfangen.
+    </textblock>
+
+    <textblock>
+ Wenn Sie den Emacs im X laufen haben, werden Sie sehen, dass das Menue
+ ganz rechts auf der Menuezeile <strong>Help</strong> heißt. Wenn Sie das Hilfemenue
+ erforschen, beachten Sie, dass einige Unterpunkte Tastenkürzel haben
+ und diese genau in dem Menue aufgelistet werden.
+    </textblock>
+
+    <textblock>
+ Und um schließlich das mit dem Emacs verfügbare Volumen an
+ Dokumentation einsehen zu können, sollten Sie
+      <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>info</key>
+     </keycomb>
+ oder
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>h</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>i</key>
+     </keycomb>
+ ausprobieren; dadurch wird Info aufgerufen, der Emacs
+ Dokumentationsbrowser.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 3. Kapitel -->
+   <heading>
+Emacs-Modi
+   </heading>
+
+   <textblock>
+Emacs-Modi sind unterschiedliche Verhaltensformen und Charakteristika,
+die für unterschiedliche Zwecke an- und ausgeschaltet (oder natürlich
+auch angepasst) werden können. Es sind Modi, die einen Editor (Emacs)
+gleichermaßen gut verwendbar machen, sowohl Dokumentationen zu
+schreiben, in einer Vielzahl von Sprachen (C, C++, Perl, Python, Java
+und viele mehr) zu programmieren, eine Homepage zu erstellen, E-Mails
+zu verschicken, Usenet News zu lesen, über die eigenen Termine auf dem
+Laufenden zu bleiben und sogar Spiele zu spielen.
+   </textblock>
+
+   <textblock>
+Emacs-Modi sind einfach Lisp-Code-Bibliotheken, die den Emacs auf
+irgendeine Art und Weise erweitern, verändern oder optimieren.
+   </textblock>
+
+   <section>
+<!-- 3.1 Kapitel -->
+    <heading>
+Haupt- vs. Untermodi
+    </heading>
+
+    <textblock>
+ Es gibt im Wesentlichen zwei Moditypen: Haupt- und Untermodi (Major
+ und Minor Modes). Der Unterschied ist nicht ganz einfach zu begreifen,
+ wenn man noch nicht hin und wieder mit einigen von ihnen gearbeitet
+ hat, aber versuchen wir es mal.
+    </textblock>
+
+    <textblock>
+ Zu einer bestimmten Zeit kann nur ein Hauptmodus aktiv sein. Es können
+ aber viele Untermodi zu einer bestimmten Zeit aktiv sein. Hauptmodi
+ tendieren dazu, sprach- oder funktionsspezifisch zu sein, während es
+ sich bei Untermodi um kleinere und weniger spezifische Einrichtungen
+ handelt, die funktionsübergreifend sind.
+    </textblock>
+
+    <textblock>
+ Klingt ein bisschen abstrakt, versuchen wir also ein Beispiel. Es gibt
+ einen Modus, den ich ziemlich oft benutze, um ganz normale Textdateien
+ zu schreiben. Er heißt <command>text-mode</command>. Dieser Modus wurde zum Schreiben
+ von freiem, unformatiertem Text entwickelt, wie einer README Datei. Er
+ kann Wörter und Absätze identifizieren und stellt im Allgemeinen
+ sicher, dass das passiert, was ich erwarte, wenn ich die normalen
+ Navigationstasten verwende.
+    </textblock>
+
+    <textblock>
+ Wenn ich einen Text als Lesefutter für den menschlichen Konsum
+ schreibe, will ich natürlich, dass er gut aussieht. Er sollte einen
+ passenden Zeilenumbruch haben - nach einer angemessenen Anzahl von
+ Zeichen und so weiter. Um Zeilenumbrüche zu ermöglichen, rufe ich
+ einfach den Untermodus <command>auto-fill</command> auf. Dieser Untermodus versucht,
+ das Richtige zu tun, während ich vor mich hintippe und das Ende der
+ Zeile erreiche. Die Tatsache, dass es ein Untermodus ist, bedeutet,
+ dass er mit einigen unterschiedlichen Hauptmodi arbeiten kann. Meine
+ Vorstellung davon, was das Richtige ist, wenn ich am Zeilenende bin,
+ ist eine andere, wenn ich in einem <command>text-mode</command>
+ bin oder zum Beispiel im <command>java-mode</command>.
+ Ich will nicht, dass mein Java-Code umgebrochen wird,
+ als wäre er ein englischer Text. Aber ich will meine Kommentarblöcke
+ in meinem Java-Code umgebrochen haben. Der <command>auto-fill</command>
+ Modus ist smart genug, das herauszukriegen
+    </textblock>
+
+    <textblock>
+ Die Entwickler verschiedener Emacs-Modi haben gute Arbeit geleistet,
+ in dem sie sicher gestellt haben, dass Dinge, die als Untermodi
+ arbeiten sollten, auch Untermodi sind.
+    </textblock>
+
+    <textblock>
+ Wenn Sie sich noch einmal die ASCII-Skizze eines Emacs-Bildschirmes
+ ansehen, werden Sie feststellen, dass die Moduszeile den/die
+ Modus/Modi anzeigt in dem/denen der Emacs sich befindet. In diesem
+ Fall hieß der Modus <command>Lisp Interaction</command>, der der Default-Modus ist. Er
+ ist wirklich nur sinnvoll, wenn man Lisp-Code schreiben will. Aber da
+ fast alles vom Emacs in Lisp geschrieben ist, warum nicht?
+    </textblock>
+   </section>
+
+   <section>
+<!-- 3.2 Kapitel -->
+    <heading>
+Programmier-Modi
+    </heading>
+
+    <textblock>
+ Zuallererst: der Emacs wurde von einem Programmierer für Programmierer
+ entwickelt. Es gibt hochwertige Modi für fast jede populäre
+ Programmiersprache, die man sich denken kann (und sogar einige nicht
+ ganz so populäre). Ich beschreibe nur wenige von ihnen kurz hier.
+    </textblock>
+
+    <textblock>
+ Die meisten Programmier-Modi teilen einige gemeinsame Charakteristika.
+ Normalerweise machen sie das Folgende ganz oder teilweise:
+    </textblock>
+
+    <ul>
+     <li>
+ stellen eine farbliche Hervorhebung der Syntax für die Sprache zur Verfügung,
+     </li>
+     <li>
+ stellen automatischen Texteinzug und Code-Formatierung für die Sprache zur Verfügung,
+     </li>
+     <li>
+ verfügen über eine kontext- (sprach-)sensitive Hilfefunktion,
+     </li>
+     <li>
+ verfügen über ein automatisches Interface mit Ihrem Debugger,
+     </li>
+     <li>
+ ergänzen die Menuezeile durch sprachspezifische Menues.
+     </li>
+    </ul>
+
+    <textblock>
+ Zusätzlich gibt es einige nicht-sprachspezifische Modi, die Funktionen
+ unterstützen, die beim Programmieren in vielen Sprachen häufig
+ vorkommen:  Dinge wie eine Schnittstelle zu Ihrer
+ Versionskontrollsoftware, automatisches Anfügen von Kommentaren an
+ Ihren Code, Erstellen von Makefiles, Aktualisieren von Change Logs und
+ so weiter.
+    </textblock>
+
+    <textblock>
+ Wenn man all diese Modi zusammen nimmt und die Reife und Stabilität
+ des Emacs-Codes berücksichtigt, fällt der Vergleich mit kommerziellen
+ Integrated Development Environments (IDEs) für Sprachen wie C++ und
+ Java doch ziemlich gut aus. Und er ist natürlich frei verfügbar.
+    </textblock>
+
+    <section>
+<!-- 3.2.1 Kapitel -->
+     <heading>
+C/C++/Java
+     </heading>
+
+     <textblock>
+  Da die Syntax von C, C++ und Java ziemlich ähnlich ist, gibt es einen
+  Emacs-Modus für alle drei Sprachen (aber auch für Objective-C und
+  IDL). Es ist ein sehr ausgereiftes und vollständiges Paket und in der
+  Emacs-Distribution enthalten. Dieser Modus wird entweder <command>cc-mode</command>
+  oder <command>CC Mode</command> genannt.
+     </textblock>
+
+     <textblock>
+  Für weitere Details oder den Download einer neueren Version, besuchen
+  Sie:
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.python.org/emacs/">http://www.python.org/emacs/</ref>
+     </quotation>
+    </section>
+
+    <section>
+<!-- 3.2.2 Kapitel -->
+     <heading>
+Perl
+     </heading>
+
+     <textblock>
+  Es gibt eigentlich zwei Modi, um Perl-Code im Emacs zu editieren. Der
+  erste heißt <command>perl-mode</command> (wie wohl zu erwarten war) und der zweite
+  <command>cperl-mode</command>. Ich kenne mich in dieser Geschichte nicht gut aus und
+  weiß nicht, warum es zwei Modi gibt (steht nicht in der Doku), aber es
+  scheint so, als ob <command>perl-mode</command> der Original-Modus war, um Perl-Code im
+  Emacs zu editieren. Er scheint über weniger Merkmale als <command>cperl-mode</command>
+  zu verfügen und es mangelt ihm an der Fähigkeit, einige von Perls
+  ausgefalleneren Sprachkonstrukten zu erkennen.
+     </textblock>
+
+     <textblock>
+  Ich persönlich benutze und empfehle <command>cperl-mode</command>, der anscheinend
+  ziemlich aktiv gepflegt wird und genau all die Charakteristika hat,
+  die ich mir überhaupt nur wünschen kann.  Die neueste Version findet
+  man hier:
+     </textblock>
+
+     <quotation>
+<ref url="ftp://ftp.math.ohio-state.edu/pub/users/ilya/emacs">ftp://ftp.math.ohio-state.edu/pub/users/ilya/emacs</ref>
+     </quotation>
+
+     <textblock>
+  Aber nehmen Sie mich nicht beim Wort. Probieren Sie beide aus und
+  nehmen Sie den, der am meisten Ihren Bedürfnissen entspricht.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.2.3 Kapitel -->
+     <heading>
+Python
+     </heading>
+
+     <textblock>
+  Für Python (eine weitere sehr populäre Skript-Sprache) gibt es auch
+  einen Emacs-Modus. So weit ich weiß, ist er nicht in der GNU Emacs,
+  sondern in der XEmacs-Distribution enthalten. Er funktioniert aber
+  recht gut in beiden Editoren.
+     </textblock>
+
+     <textblock>
+  Sie können den <command>python-mode</command> von der offiziellen Python-Website
+  beziehen:
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.python.org/emacs/python-mode/">http://www.python.org/emacs/python-mode/</ref>
+     </quotation>
+
+    </section>
+
+    <section>
+<!-- 3.2.4 Kapitel -->
+     <heading>
+Weitere
+     </heading>
+
+     <textblock>
+  Es gibt viele, viele andere Editier-Modi zur Unterstützung von
+  Programmierern. Diese Modi helfen bei Dingen wie:
+     </textblock>
+
+     <ul>
+      <li>
+  Shell Skripte (bash, sh, ksh, csh usw)
+      </li>
+      <li>
+  awk, sed, tcl usw.
+      </li>
+      <li>
+  Makefiles
+      </li>
+      <li>
+  Change Logs
+      </li>
+      <li>
+  Dokumentation
+      </li>
+      <li>
+  Debugging
+      </li>
+     </ul>
+
+     <textblock>
+  und vielen weiteren Dingen. Wenn Sie mehr Informationen dazu möchten,
+  wie man an Modi und Add-Ins kommt, gehen Sie zum letzten Abschnitt
+  dieses Dokuments.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- 3.3 Kapitel -->
+    <heading>
+Arbeiten als Autor
+    </heading>
+
+    <textblock>
+ Stellen Sie sich vor, Emacs-Modi sind nicht nur auf die beschränkt,
+ die Code schreiben. Leute die Dokumentationen jeglicher Art schreiben,
+ können auch von einer breiten Auswahl an Emacs-Modi profitieren.
+    </textblock>
+
+    <section>
+<!-- 3.3.1 Kapitel -->
+     <heading>
+Rechtschreibprüfung (ispell Modus)
+     </heading>
+
+     <textblock>
+  Autoren vieler Arten von Dokumenten brauchen immer wieder mal eine
+  Hilfe bei der  Rechtschreibprüfung. Wenn sie GNU ispell installiert
+  haben, können Sie
+	  <command>
+	   <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>ispell</key>
+     </keycomb>
+	 </command>
+  eintippen und den aktuellen Puffer auf
+  seine Rechtschreibung hin überprüfen lassen. Wenn ispell Wörter
+  findet, die er nicht kennt, bekommt man eine Liste möglicher Varianten
+  und kann sich eine oder keine aussuchen.  Die Funktion entspricht in
+  etwa der Rechtschreibkorrektur vieler anderer nicht kostenloser
+  Softwarepakete.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.3.2 Kapitel -->
+     <heading>
+HTML (html-helper-mode)
+     </heading>
+
+     <textblock>
+  Wenn Sie immer wieder mal oder sogar oft HTML-Dateien schreiben,
+  möchten Sie vielleicht den <command>html-helper-mode</command> ausprobieren. Man bekommt
+  ihn unter
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.santafe.edu/~nelson/tools/">http://www.santafe.edu/~nelson/tools/</ref>
+     </quotation>
+
+     <textblock>
+  wie auch die Dokumentation und was damit zu tun hat.
+     </textblock>
+
+
+     <textblock>
+  Wie der Namen schon andeutet, kann der <command>html-helper-mode</command> viel für die
+  Leute tun, die noch HTML mit der Hand schreiben, auf die altmodische
+  Art.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.3.3 Kapitel -->
+     <heading>
+TeX (tex-mode)
+     </heading>
+
+     <textblock>
+  Wenn man Dokumente in TeX schreibt, ist es oft hilfreich, sich den
+  Emacs zu besorgen, um etwas Farbe hinzuzufügen, um die Backslashes,
+  Klammern und andere Buchstaben hervorzuheben. Der <command>tex-mode</command> macht das
+  für Sie.
+     </textblock>
+
+     <textblock>
+  Obwohl ich nicht mehr viel direkt in TeX schreibe, hat er sich, als
+  ich es noch tat, als ziemlich hilfreich dabei erwiesen, meinen
+  TeX-Code etwas lesbarer zu machen.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.3.4 Kapitel -->
+     <heading>
+SGML (sgml-mode)
+     </heading>
+
+     <textblock>
+  Das Dokument, das sie gerade lesen, wurde in SGML geschrieben und in
+  das Format konvertiert, in dem sie es lesen. Der <command>sgml-mode</command> hat alle
+  Grundlagen für SGML Dokumente: Validierung, Hervorhebung, Forward-Tag,
+  Backward-Tag, und vieles mehr. Er ist ein Standardbestandteil des
+  Emacs.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- 3.4 Kapitel -->
+    <heading>
+Andere Modi
+    </heading>
+
+    <textblock>
+ Natürlich gibt es noch viele andere praktische Modi, die das Leben
+ einfacher machen. Hier folgt nur eine kleine Auswahl der populären:
+    </textblock>
+
+    <section>
+<!-- 3.4.1 Kapitel -->
+     <heading>
+Versionskontrolle (vc Modus)
+     </heading>
+
+     <textblock>
+  Der <command>vc</command> Modus hat Schnittstellen zu den meisten der populären
+  Versionskontrollsysteme (RCS, SCCS, CVS). Dies macht es sehr leicht,
+  Dateien ein- und auszuchecken, Releases zu managen etc. Er ist ein
+  Standardbestandteil des Emacs und wird in der Emacs-Dokumentation
+  beschrieben.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.4.2 Kapitel -->
+     <heading>
+Shell Modus (shell)
+     </heading>
+
+     <textblock>
+  Warum zu einem anderen X Window Fenster oder einer virtuellen Konsole
+  wechseln, nur um ein paar Shell-Kommandos auszuführen?  Machen Sie es
+  vom Emacs aus und ersparen Sie sich die Mühe :-).
+     </textblock>
+
+     <textblock>
+	  <command>
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>shell</key>
+     </keycomb>
+	 </command>
+  ruft eine Shell innerhalb eines Emacs-Puffers auf. Mit
+  diesem Puffer kann man die meisten Sachen machen, die man auch mit
+  einem normalen Shell tun könnte (außer dem Betrieb von Programmen, die
+  den ganzen Bildschirm einnehmen, wie <name>vi</name> oder <name>pine</name>), weil der Emacs
+  hinter den Kulissen mit der wirklichen Shell kommuniziert.
+     </textblock>
+
+     <textblock>
+  Auch dies ist ein Standardbestandteil des Emacs, so dass man ihn in
+  der Emacs-Dokumentation dokumentiert findet.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.4.3 Kapitel -->
+     <heading>
+Telnet und FTP (telnet und ftp Modi)
+     </heading>
+
+     <textblock>
+  Warum zu einem anderen X Window Fenster oder einer virtuellen Konsole
+  wechseln, nur um Telnet und FTP auszuführen?  Machen Sie es vom Emacs
+  aus und ersparen Sie sich die Mühe.(Erkennen Sie schon das Muster ;-)?
+     </textblock>
+
+     <textblock>
+  Genau wie eine Shell im Emacs zu betreiben, kann man von ihm aus mit
+  Telnet und FTP arbeiten. Versuchen Sie
+	  <command>
+	   <keycomb mode="hold">
+		<key>M</key>
+		<key>x</key>
+	   </keycomb>
+	  <keycomb mode="hold">
+	   <key>telnet</key>
+	  </keycomb>
+	 </command>
+  oder
+	  <command>
+	   <keycomb mode="hold">
+		<key>M</key>
+		<key>x</key>
+	   </keycomb>
+	  <keycomb mode="hold">
+	   <key>ftp</key>
+	  </keycomb>
+	 </command>
+  , um
+  es selbst auszuprobieren. Lesen Sie die Dokumentation wegen all der
+  blutrünstigen Details.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.4.4 Kapitel -->
+     <heading>
+Handbuch (man Modus)
+     </heading>
+
+     <textblock>
+  Warum zu einem anderen X Window Fenster oder einer virtuellen Konsole
+  wechseln, nur um eine Manual Page zu lesen? Machen Sie es vom Emacs
+  aus und ersparen Sie sich die Mühe. Ich verspreche, ich höre jetzt
+  auf.
+  Genau wie beim Betreiben der Shell innerhalb des Emacs, kann man vom
+  Emacs aus Manual Pages lesen. Versuchen Sie
+	  <command>
+	   <keycomb mode="hold">
+		<key>M</key>
+		<key>x</key>
+	   </keycomb>
+      <keycomb mode="hold">
+	   <key>man</key>
+	  </keycomb>
+	 </command>
+  um es selbst
+  auszuprobieren. Lesen Sie die Dokumentation, wenn Sie weitere
+  Informationen möchten.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 3.4.5 Kapitel -->
+     <heading>
+Ange-FTP
+     </heading>
+
+     <textblock>
+  Um die ange-ftp Dokumentation zu zitieren:
+     </textblock>
+
+     <quotation>
+       Dieses Paket will den Zugang zu Dateien und Verzeichnissen
+       für die Nutzung von FTP vom GNU Emacs aus so einfach und
+       transparent wie möglich machen. Ein Teil der gebräuchlichen
+       Dateiarbeitsvorgänge ist für die Interaktion mit FTP
+       erweitert worden.
+     </quotation>
+
+     <textblock>
+  Dies bedeutet, dass man Dateien auf weit entfernten Rechnern behandeln
+  kann, als wären sie lokal. Will man also eine Datei auf einem anderen
+  Computer editieren, muss man nur den Emacs anweisen, sie zu öffnen (in
+  dem man eine etwas andere Pfadsyntax benutzt) und er kümmert sich um
+  alle Details beim Login und dem Holen der Datei. Dann, wenn die Datei
+  mit
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>s</key>
+     </keycomb>
+  gespeichert wird, nimmt <command>ange-ftp</command> die Speicherung vor und
+  schreibt die Datei zurück auf den weit entfernten Rechner.
+     </textblock>
+
+     <textblock>
+  Die etwas andere Pfadsyntax geht so: Eine <command>myfile</command> benannte Datei in
+  einem user Verzeichnis auf einem <command>my.host.org</command> benannten Rechner kann
+  durch
+	  <command>
+	   <keycomb mode="hold">
+		<key>C</key>
+		<key>x</key>
+	   </keycomb>
+	  <keycomb mode="hold">
+	   <key>f</key>
+	  </keycomb>
+	 </command>
+  geöffnet werden:
+     </textblock>
+
+     <quotation>
+       <command>/user@my.host.org:~user/myfile</command>
+     </quotation>
+
+     <textblock>
+  Auch dies ist ein Standardbestandteil der Emacs-Distribution, sodass
+  man es in der Emacs Dokumentation dokumentiert findet.
+     </textblock>
+
+     <textblock>
+  Meinen Dank an <name email="etienne@anonimo.isr.ist.utl.pt">Etienne
+Grossman</name> für das obige Beispiel.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 4. Kapitel -->
+   <heading>
+Den Emacs anpassen
+   </heading>
+
+   <textblock>
+Praktisch die gesamte Emacs-Anpassung geschieht über den Lisp-Code.
+Man kann Variablen verändern, die Einfluss darauf nehmen, wie der
+Emacs arbeitet oder man kann dem Emacs neue Funktionen hinzufügen oder
+bereits existierende Funktionen aufheben und durch eigene ersetzen.
+   </textblock>
+
+   <section>
+<!-- 4.1 Kapitel -->
+    <heading>
+Temporäre Anpassung
+    </heading>
+
+    <textblock>
+ Das Experimentieren mit der Emacs-Anpassung möchten Sie wahrscheinlich
+ so gestalten, dass sie temporär bleibt. Wenn man was ganz schrecklich
+ Falsches macht, braucht man nur
+    <keycomb mode="hold">
+     <key>C</key>
+     <key>x</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>C</key>
+     <key>c</key>
+    </keycomb>
+ einzugeben, um den Emacs zu
+ schließen und wieder zu starten. Sobald Sie herausgefunden haben,
+ welche der Veränderungen Sie gerne für immer hätten, können Sie sie
+ zur eigenen <command>.emacs</command>-Datei hinzufügen, so dass sie bei jedem Start von
+ Emacs geladen werden. Dies wird im nächsten Abschnitt besprochen.
+    </textblock>
+
+    <section>
+<!-- 4.1.1 Kapitel -->
+     <heading>
+Variablen-Zuweisung
+     </heading>
+
+     <textblock>
+  Die einfachsten Anpassungen erreicht man durch das Ändern des Wertes
+  einer Variablen im Emacs.  Der Lisp-Code, um dies zu tun, sieht so
+  aus:
+     </textblock>
+
+     <quotation>
+       <command>(setq variable-name new-value)</command>
+     </quotation>
+
+     <textblock>
+  Wobei <command>variable-name</command> der Name der Variablen ist und <command>new-value</command> der
+  Wert, den Sie der Variablen  übergeben möchten. Im Lisp-Jargon bindet
+  man eine Variable an einen Wert. Die <command>setq</command> Funktion in Lisp
+  entspricht den Bestimmungsoperatoren (meist <strong>=</strong>) in anderen
+  Programmiersprachen.
+     </textblock>
+
+     <textblock>
+  Beachten Sie: Ich gehe hier - um der Einfachheit willen -  über viele
+  Details hinweg. Es kann auch sein, dass man mich oder andere beim
+  Benutzen der Lisp-Funktionen <command>set</command> und sogar <command>setq-default</command> sieht. Wer
+  wirklich neugierig ist, sollte sie einfach in einer Emacs Lisp
+  Referenz nachsehen.
+     </textblock>
+
+     <textblock>
+  Betrachten wir eine Zeile aus meiner <command>.emacs</command>-Datei:
+     </textblock>
+
+
+     <quotation>
+       <command>(setq-default transient-mark-mode t)</command>
+     </quotation>
+
+     <textblock>
+  Die Variable <command>transient-mark-mode</command> steuert, ob eine Region
+  hervorgehoben wird, wenn ich sie markiere oder nicht. Bei vielen GUI
+  Applikationen wird sie invertiert oder einer anderen Farbe
+  hervorgehoben, wenn man klickt und die Maus zieht, um einen
+  Textbereich auszuwählen. Der Emacs macht das gleiche, wenn die
+  Variable des <command>transient-mark-mode</command> auf einen nicht-<command>nil</command> Wert gesetzt
+  wurde.
+     </textblock>
+
+     <textblock>
+  Was für einen Wert?
+     </textblock>
+
+     <textblock>
+  Okay. Kurzer Exkurs. Die meisten Programmiersprachen unterscheiden
+  zwischen wahr/falsch Werten. In C/C++ wird ein Wert als wahr
+  betrachtet, wenn er ein Wert ungleich Null ist. In Perl ist ein
+  non-null oder non-zero Wert wahr. In Lisp, existiert die gleiche Idee,
+  aber die Namen und Symbole sind andere.
+     </textblock>
+
+     <textblock>
+  Wahr wird gewöhnlich als <command>t</command> geschrieben und falsch (oder Null) als
+  <command>nil</command>. Wie in anderen Sprachen, wird jedoch jeder nicht-<command>nil</command> Wert als
+  wahr betrachtet.
+     </textblock>
+
+     <textblock>
+  Für die vollständige Beschreibung dessen, was <command>transient-mark-mode</command>
+  tut, kann man die Online-Hilfe benutzen. Tippen Sie
+	  <command><keycomb mode="hold">
+      <key>C</key>
+      <key>h</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>v</key>
+     </keycomb></command>
+  oder
+	  <command> <keycomb mode="hold">
+     <key>M</key>
+     <key>x</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>describe-variable</key>
+    </keycomb></command>
+  und dann <command>transient-mark-mode</command>. Wenn man faul ist
+  wie ich, kann man sich durch Gebrauch der
+	  <command><keycomb mode="hold">
+     <key>Tab</key>
+    </keycomb></command>
+  -Taste die
+  Variablennamen-Ergänzung zu Nutze machen. Tippen Sie einen Teil des
+  Variablennamens ein und schlagen Sie die
+	  <command><keycomb mode="hold">
+     <key>Tab</key>
+    </keycomb></command>
+  -Taste an. Wenn genug
+  eingetippt wurde, sodass der Emacs es eindeutig identifizieren kann,
+  wird der vollständige Name für Sie ergänzt.
+     </textblock>
+
+     <textblock>
+  Eine weitere Variable, die oft gesetzt wird, ist <command>fill-column</command>. Sie
+  sagt dem Emacs, wie weit der Bildschirm beim Zeilenumbruch (und der
+  <command>auto-fill-mode</command> respektiert diesen Wert) sein sollte. Um mal einen
+  absurden Wert einzugeben, könnte man eintippen:
+     </textblock>
+
+
+     <quotation>
+       <command>(setq fill-column 20)</command>
+     </quotation>
+
+     <textblock>
+  Aber dann passiert eigentlich nichts. Man muss den Emacs anweisen, den
+  Ausdruck, den man eingetippt hat, auszuwerten. Um das zu tun, stellen
+  Sie den Cursor an das Ende des Ausdrucks und tippen
+	  <command><keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>e</key>
+     </keycomb></command>
+  , dies
+  ruft die Funktion <command>eval-last-sexp</command> auf (für den Fall, dass es Sie
+  interessiert). Wenn Sie das tun, werden sie feststellen, dass <strong>20</strong>
+  (oder welchen Wert auch immer sie genommen haben) im Mini-Puffer am
+  unteren Rand des Bildschirms wiedergegeben wird. Dies ist nur der
+  Rückgabewert des Ausdrucks, den Sie ausgewertet haben.
+     </textblock>
+
+     <textblock>
+  Nur um zu zeigen, dass es funktioniert - tippen Sie einen oder zwei
+  Sätze ein. Wenn Sie den <command>auto-fill-mode</command> eingeschaltet haben (haben
+  sie wahrscheinlich nicht), werden Sie den Zeilenumbruch nach dem 20.
+  Zeichen erleben. Oder, wenn Sie irgend etwas eingegeben haben, tippen
+  Sie
+	  <command><keycomb mode="hold">
+      <key>M</key>
+      <key>q</key>
+     </keycomb></command>
+  , es ruft die Funktion <command>fill-paragraph</command> auf. Sie wird dann
+  den Zeilenumbruch ausführen.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 4.1.2 Kapitel -->
+     <heading>
+Zuordnung von Dateinamen
+     </heading>
+
+     <textblock>
+  Sie können den Emacs so konfigurieren, dass er automatisch etwas tut,
+  wenn Sie eine Datei eines bestimmten Typs öffnen (so wie einige GUIs
+  automatisch eine bestimmte Applikation starten, wenn man auf das Icon
+  klickt). Zum Beispiel, möchte ich vielleicht, dass der Emacs jedes Mal
+  automatisch zum Textmodus wechselt, wenn ich eine Datei mit einer
+  <command>.txt</command>-Endung öffne. Nun, das passiert bereits :-). Sagen wir also dem
+  Emacs, dass er in den Textmodus geht, wenn Sie eine Datei namens
+  README öffnen.
+     </textblock>
+
+
+     <quotation>
+       <command>(setq auto-mode-alist (cons '("README" . text-mode) auto-mode-alist))</command>
+     </quotation>
+
+     <textblock>
+  Huh?
+     </textblock>
+
+     <textblock>
+  Ohne tief in die Lisp-Programmierung einzutauchen, die Sie wirklich
+  nicht kennen müssen (es würde Ihnen aber nicht weh tun, sie zu
+  lernen), lassen Sie mich einfach sagen, dass die Variable
+  <command>auto-mode-alist</command> eine Liste von Paaren enthält. Jedes Paar enthält einen
+  regulären Ausdruck und einen Emacs-Modus-Namen. Wenn eine Datei, die
+  Sie öffnen, dem regulären Ausdruck entspricht (in diesem Fall, die
+  Zeichenkette <strong>README</strong>), startet der Emacs den Modus, den Sie
+  festgelegt haben.
+     </textblock>
+
+     <textblock>
+  Die merkwürdige Syntax oben ergibt sich deshalb, weil man im Grunde
+  genommen ein weiteres Paar an die Modusliste anfügt. Sie würden nicht
+  wollen, etwas der <command>auto-mode-alist</command> zuzuordnen, ohne sicher zu
+  stellen, dass die Werte, die sie bereit hält, nicht verloren gehen.
+     </textblock>
+
+     <textblock>
+  Und wenn ich wollte, dass der Emacs jedes Mal automatisch zum
+  (html-helper-mode wechselt, wenn ich eine Datei öffne, die auf .html oder
+  .htm endet, würde ich folgendes meiner .emacs Datei hinzufügen:
+     </textblock>
+
+
+     <quotation>
+       <command>(setq auto-mode-alist (cons '("\\.html$" . html-helper-mode)auto-mode-alist))</command>
+     </quotation>
+
+     <quotation>
+       <command>(setq auto-mode-alist (cons '("\\.htm$" . html-helper-mode)auto-mode-alist))</command>
+     </quotation>
+
+     <textblock>
+  Die Möglichkeiten sind wirklich unbegrenzt.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- 4.2 Kapitel -->
+    <heading>
+Der Umgang mit der .emacs-Datei
+    </heading>
+
+    <textblock>
+ Wenn man etwas Zeit mit dem Emacs verbracht hat und eine grundlegende
+ Vorstellung davon hat, welche Vorteile eine Anpassung hätte, möchte
+ man wahrscheinlich ein paar Dinge dauerhaft anpassen (oder mindestens
+ so lange, bis man seine Meinung geändert hat). Wenn Sie täglich mit
+ dem Emacs arbeiten, werden Sie auch feststellen, das die <command>.emacs</command>-Datei
+ mit der Zeit immer größer wird. Das ist eine gute Sache, denn es
+ bedeutet, das Sie herausgefunden haben, wie Sie den Emacs dazu bringen
+ so zu arbeiten, wie Sie wollen. Es ist eine Schande, dass viele
+ Softwareprodukte Sie das nicht tun lassen.
+    </textblock>
+
+    <textblock>
+ Für den Fall, das Sie es noch nicht erraten haben, jedes Mal, wenn der
+ Emacs gestartet wird, sucht er eine <command>.emacs</command> benannte Datei in Ihrem
+ Homeverzeichnis. Sie sollten Lisp-Code, den Sie automatisch laufen
+ lassen möchten, in Ihre <command>.emacs</command>-Datei schreiben und das schließt die
+ Art von Anpassung  ein, die hier gerade behandelt wurde.
+    </textblock>
+
+
+
+    <textblock>
+ Ein weiteres Beispiel aus meiner <command>.emacs</command>-Datei:
+    </textblock>
+
+     <quotation>
+      <command>(setq inhibit-startup-message t)</command>
+     </quotation>
+
+    <textblock>
+ Die Variable <command>inhibit-startup-message</command> steuert, ob der Emacs die
+ Willkommensmeldung anzeigt, wenn er startet. Nach einer Weile war ich
+ es leid, sie zu betrachten (da ich wußte, wie ich Hilfe finden konnte
+ und was weiß ich). Deshalb suchte ich nach einem Weg, sie
+ auszuschalten.
+    </textblock>
+
+    <textblock>
+ Zur Übung versuchen Sie eine eigene <command>.emacs</command>-Datei zu erstellen und
+ fügen Sie diese Zeile an. Dann schließen Sie den Emacs und starten ihn
+ wieder. Die Willkommensmeldung sollte nicht mehr erscheinen.
+    </textblock>
+
+    <textblock>
+ Oft, wenn Sie etwas über einen Emacs-Modus (oder ein Paket) lesen,
+ wird in der Dokumentation vorgeschlagen, einen Code an die eigene
+ <command>.emacs</command>-Datei anzuhängen, um den Modus oder das Paket auf eine
+ bestimmte Art und Weise arbeiten zu lassen.
+    </textblock>
+
+    <textblock>
+ Die GNU Emacs FAQ (
+	 <command><keycomb mode="hold">
+     <key>C</key>
+     <key>h</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>F</key>
+    </keycomb></command>
+ ) enthält einige Themen, die sich auf
+ .emacs-Dateien beziehen und die Sie möglicherweise nützlich finden.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 4.3 Kapitel -->
+    <heading>
+Das customize-Paket
+    </heading>
+
+    <textblock>
+ Als der Emacs populärer wurde und sich kontinuierlich entwickelt hat,
+ hat vielleicht irgendwer einmal gesagt: <strong>es muß für Einsteiger einen
+ besseren Weg geben, um ihren Emacs anzupassen</strong>. Und customize wurde
+ geboren.
+    </textblock>
+
+    <textblock>
+ Mit customize gibt es eine intuitivere Möglichkeit, Teile des Emacs
+ anzupassen. Um es auszuprobieren, sehen Sie sich entweder das
+ Customize-Untermenue in Ihrem Help Menue an, oder tippen
+	 <command><keycomb mode="hold">
+     <key>M</key>
+     <key>x</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>customize</key>
+    </keycomb></command>
+ .
+    </textblock>
+
+    <textblock>
+ Customize unterteilt die Anpassung in sinnvolle Gruppen wie
+ <strong>Editieren</strong>, <strong>Programmieren</strong>, <strong>Dateien</strong> und so weiter. Einige Gruppen
+ enthalten Untergruppen.
+    </textblock>
+
+    <textblock>
+ Wenn Sie Veränderungen vornehmen, in dem Sie <command>customize</command> benutzen,
+ speichert der Emacs diese Veränderungen in Ihrer <command>.emacs</command>-Datei. Das ist
+ ziemlich praktisch, weil Sie leicht die Veränderungen einsehen und
+ verändern können, die er für Sie gemacht hat.
+    </textblock>
+
+    <textblock>
+ Ich benutze das Customize Interface nicht, deshalb kann ich nicht viel
+ mehr darüber sagen.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 4.4 Kapitel -->
+    <heading>
+X Window
+    </heading>
+
+    <textblock>
+ Wie jede gut erzogene X Applikation respektiert der Emacs Ihre X
+ Ressourcen. Das bedeutet, Sie können die ursprünglichen Farben,
+ Geometrie und andere X-spezifischen Dinge steuern, genau wie bei
+ xterm, nxterm oder was auch immer.
+    </textblock>
+
+    <textblock>
+ Hier ist der relevante Teil meiner <command>~/.Xdefaults</command> Datei:
+    </textblock>
+
+    <file>
+     <title>
+~/.Xdefaults Datei:
+     </title>
+     <content>
+      <![CDATA[
+       emacs*Background: DarkSlateGray
+       emacs*Foreground: Wheat
+       emacs*pointerColor: Orchid
+       emacs*cursorColor: Orchid
+       emacs*bitmapIcon: on
+       emacs*font: fixed
+       emacs.geometry: 80x25
+      ]]>
+     </content>
+    </file>
+
+    <textblock>
+  Lesen Sie die Manual Page zu X, um mehr Einzelheiten über X Ressourcen
+  zu erfahren.
+    </textblock>
+
+    <textblock>
+<name email="cgray4@po-box.mcgill.ca">Chris Gray</name>) stellt auch fest:
+    </textblock>
+
+    <quotation>
+       Debian benutzt anscheinend die <command>~/.Xdefaults</command> nicht. Wie dem
+       auch sei, Debian-Leute können das, was sie gerade eingegeben
+       haben, in <command>/etc/X11/Xresources/emacs</command> schreiben und bekommen
+       dann die gleichen schönen Farben, die sie bekommen hätten,
+       wenn Sie <name>RedHat</name> benutzen würden.
+    </quotation>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 5. Kapitel -->
+   <heading>
+Populäre Pakete
+   </heading>
+
+   <textblock>
+Zusätzlich zu den vielen unterschiedlichen Modi für den Emacs gibt es
+auch viele Zusatzpakete. Ich nenne sie Pakete, weil sie mehr als nur
+neue Modi sind. Sie beinhalten oft zusätzliche Utilities oder sind so
+groß, dass sie Modi zu nennen, ihnen einfach nicht gerecht wird. In
+anderen Fällen handelt es sich um Software, die andere Emacs-Modi und
+Pakete erweitert oder integriert. Der Unterschied ist nicht ganz klar,
+aber das ist okay.
+   </textblock>
+
+   <section>
+<!-- 5.1 Kapitel -->
+    <heading>
+VM (Mail)
+    </heading>
+
+    <textblock>
+ Um die <name>VM</name> FAQ zu zitieren:
+    </textblock>
+
+    <quotation>
+      <name>VM</name> (View Mail) ist ein Emacs Untersystem, das es ermöglicht,
+      im Emacs Mails zu lesen und zu verschicken. Mit den
+      bestehenden Befehlen kann man die normalen Dinge tun, die man von
+      einem Mail User Agent erwartet, wie etwa Antworten
+      schreiben, Mails in Ordnern speichern, Mails löschen und so
+      weiter. Es gibt andere komplexere Befehle, die Aufgaben
+      ausführen, wie das Erstellen von Digests, Mail Forwarding
+      und der Darstellung von Mails nach verschiedenen Kriterien.
+    </quotation>
+
+    <textblock>
+ Als ich mit dem Emacs begann, habe ich mit <name>VM</name> eine Weile
+ herumexperimentiert. Ich hielt es für einen tollen Ersatz für <name>Pine</name>,
+ <name>Elm</name> oder die meisten anderen Mail-Programme. Aber ich wollte nicht
+ unterschiedliche Programme benutzen, um Mail und News zu lesen. <name>VM</name>
+ wird ständig weiterentwickelt und gut gepflegt.
+    </textblock>
+
+
+
+    <textblock>
+ Man bekommt es hier:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.wonderworks.com/vm/">http://www.wonderworks.com/vm/</ref>
+    </quotation>
+
+   </section>
+
+   <section>
+<!-- 5.2 Kapitel -->
+    <heading>
+Gnus (Mail und News)
+    </heading>
+
+
+
+
+    <textblock>
+ Um das <name>GNUS</name>-Handbuch zu zitieren:
+    </textblock>
+
+    <quotation>
+      <name>Gnus</name> ist ein Mail-Lese-Labor. Es lässt Sie praktisch alles
+      ansehen, als wäre es eine Newsgroup. Sie können damit Mail
+      lesen, Sie können Verzeichnisse durchsehen, Sie können damit
+      FTP betreiben - sie können sogar News damit lesen!
+    </quotation>
+
+    <quotation>
+      <name>Gnus</name> versucht Menschen, die News lesen auf die gleiche Art
+      und Weise mit Vollmachten auszustatten, wie es der Emacs mit
+      Leuten versucht, die Text editieren. Gnus setzt dem
+      Anwender, in dem was er tun darf, keine Grenzen. Anwender werden
+      ermutigt, <name>Gnus</name> zu erweitern, damit es so funktioniert, wie
+      sie es möchten. Ein Programm sollte nicht Menschen
+      kontrollieren; die Menschen sollten tun können, was sie möchten,
+      wenn sie das Programm benutzen (oder missbrauchen).
+    </quotation>
+
+
+    <textblock>
+ Ich benutze z.Zt. <name>GNUS</name> für meine Mail und News (wie oben angedeutet).
+ <name>GNUS</name> wird auch aktiv weiterentwickelt und gut gepflegt.
+    </textblock>
+
+    <textblock>
+ Man bekommt es hier:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.gnus.org/">http://www.gnus.org/</ref>
+    </quotation>
+   </section>
+
+   <section>
+<!-- 5.3 Kapitel -->
+    <heading>
+BBDB (eine Art Rolodex)
+    </heading>
+
+    <textblock>
+ <name>BBDB</name> ist eine heimtückische Big Brother Datenbank, ein Rolodex-artiges
+ Programm für den Emacs, das mit den meisten der populären
+ Emacs-Mail-Pakete (<name>VM</name> und <name>GNUS</name> eingeschlossen) arbeitet.
+    </textblock>
+
+    <textblock>
+ Man bekommt es hier:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://bbdb.sourceforge.net">http://bbdb.sourceforge.net</ref>
+    </quotation>
+   </section>
+
+   <section>
+<!-- 5.4 Kapitel -->
+    <heading>
+AucTeX (ein weiterer TeX Modus)
+    </heading>
+
+    <textblock>
+ <name>AucTeX</name> ist ein weiterer Modus zum Editieren von <name>TeX</name>-Dateien.
+    </textblock>
+
+    <textblock>
+ Um die <name>AucTeX</name> Website zu zitieren:
+    </textblock>
+
+    <quotation>
+      <name>AucTeX</name> ist ein erweiterbares Paket, das das Schreiben und
+      Formatieren von <name>TeX</name>-Dateien für die meisten GNU Emacs
+      Varianten unterstützt. Viele unterschiedliche Makro-Pakete
+      werden unterstützt, einschließlich <name>AMSTeX</name>, <name>LaTeX</name> und <name>TeXinfo</name>.
+    </quotation>
+
+
+    <textblock>
+ Man bekommt es hier:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://sunsite.auc.dk/auctex/">http://sunsite.auc.dk/auctex/</ref>
+    </quotation>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 6. Kapitel -->
+   <heading>
+Andere Quellen
+   </heading>
+
+   <textblock>
+Dieser Abschnitt behandelt Bücher, Websites, Newsgruppen,
+Mailinglisten und andere Orte, an denen man mehr Informationen über
+den Emacs findet.
+   </textblock>
+
+   <section>
+<!-- 6.1 Kapitel -->
+    <heading>
+Bücher
+    </heading>
+
+    <textblock>
+ Es gibt einige wenige wirklich gute Bücher zum Erlernen des Emacs.
+ Zusätzlich zu diesen werden Sie feststellen, dass viele Linux- und
+ Unix-Bücher auch ein oder zwei Kapitel über den Emacs (und vi)
+ beinhalten.
+    </textblock>
+
+    <section>
+<!-- 6.1.1 Kapitel -->
+     <heading>
+Learning GNU Emacs
+     </heading>
+
+     <textblock>
+  Autoren: <name>Debra Cameron</name>, <name>Bill Rosenblatt</name>, <name>Eric S. Raymond</name>
+     </textblock>
+
+     <textblock>
+  Verlag: O'Reilly &amp; Associates
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.ora.com/">http://www.ora.com</ref>
+     </quotation>
+
+     <textblock>
+  Kommentar: Dieses Buch ist wahrscheinlich das beste, wenn man anfängt.
+  Nachdem Sie die HOWTO gelesen und die FAQ durchgesehen haben, dient
+  dieses Buch als ein umfassendes und sehr leicht zugängliches Tutorial.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 6.1.2 Kapitel -->
+     <heading>
+Writing GNU Emacs Extensions
+     </heading>
+
+     <textblock>
+  Autor: Bob Glickstein
+     </textblock>
+
+
+     <textblock>
+  Verlag: O'Reilly &amp; Associates
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.ora.com/">http://www.ora.com/</ref>
+     </quotation>
+
+     <textblock>
+  Kommentar: Wenn Sie mit dem Emacs eine Zeit gearbeitet und beschlossen
+  haben, dass Sie gern Ihren eigenen Modus schreiben oder vielleicht
+  einige kompliziertere Anpassungen ausprobieren würden, ist dies Ihr
+  Buch. Es versucht zwar nicht Lisp zu lehren, doch enthält es eine
+  kurze Einführung in die Sprache.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 6.1.3 Kapitel -->
+     <heading>
+Programming in Emacs Lisp: An Introduction
+     </heading>
+
+     <textblock>
+  Autor: Robert J. Chassell
+     </textblock>
+
+
+     <textblock>
+  Aus der README-Datei:
+     </textblock>
+
+
+     <quotation>
+       Dies ist eine grundlegende Einführung in die Programmierung
+       in Emacs Lisp für Menschen, die keine Programmierer sind und
+       nicht unbedingt am Programmieren Interesse haben, aber ihre
+       Computerumgebung anpassen oder erweitern wollen.
+     </quotation>
+
+     <textblock>
+  Man bekommt das vollständige Handbuch über Anonymous-FTP vom GNU FTP
+  Server:
+     </textblock>
+
+     <quotation>
+<ref url="ftp://prep.ai.mit.edu/gnu/emacs/">ftp://prep.ai.mit.edu/gnu/emacs/</ref>
+     </quotation>
+
+     <textblock>
+  Kommentar:  Dies ist ein gutes Einführungshandbuch für Emacs Lisp,
+  selbst wenn man kein Hochleistungsprogrammierer ist.
+     </textblock>
+    </section>
+
+    <section>
+<!-- 6.1.4 Kapitel -->
+     <heading>
+The GNU Emacs Lisp Reference Manual
+     </heading>
+
+     <textblock>
+  Autor: Richard Stallman
+     </textblock>
+
+
+     <textblock>
+  Verlag: The Free Software Foundation
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.fsf.org/">http://www.fsf.org/</ref>
+     </quotation>
+
+     <textblock>
+  Man bekommt das vollständige Handbuch über Anonymous-FTP vom GNU FTP
+  Server:
+     </textblock>
+
+     <quotation>
+<ref url="ftp://prep.ai.mit.edu/gnu/emacs/">ftp://prep.ai.mit.edu/gnu/emacs/</ref>
+     </quotation>
+
+
+     <textblock>
+  Kommentar: Dies ist das ultimative Handbuch für das Programmieren in
+  Emacs Lisp.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- 6.2 Kapitel -->
+    <heading>
+Websites
+    </heading>
+
+    <section>
+<!-- 6.2.1 Kapitel -->
+     <heading>
+EMACSulation
+     </heading>
+
+     <textblock>
+  <name>EMACSulation</name> ist eine von Eric Marsden geschriebene Kolumne, die im
+  Online-Magazin Linux Gazette erscheint unter:
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.linuxgazette.com/">http://www.linuxgazette.com/</ref>
+     </quotation>
+
+     <textblock>
+  Die aktuellste Kolumne erscheint unter:
+     </textblock>
+
+     <quotation>
+<ref lang="en" url="http://www.linuxgazette.com/issue39/marsden.html">http://www.linuxgazette.com/issue39/marsden.html</ref>
+     </quotation>
+
+     <textblock>
+  Links zu den vorher erschienenen Artikeln finden Sie, wenn Sie zum
+  Ende des Artikels blättern.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- 6.3 Kapitel -->
+    <heading>
+Newsgruppen
+    </heading>
+
+    <textblock>
+ Wenn Sie Ihren lokalen News Feed nach Newsgruppen mit der Zeichenkette
+ <strong>emacs</strong> durchsuchen, finden Sie wahrscheinlich viele. Auf meinem
+ Server sind es:
+    </textblock>
+
+    <ul>
+     <li>
+ comp.emacs
+     </li>
+     <li>
+ comp.emacs.sources
+     </li>
+     <li>
+ gnu.emacs
+     </li>
+     <li>
+ gnu.emacs.bug
+     </li>
+     <li>
+ gnu.emacs.help
+     </li>
+     <li>
+ gnu.emacs.sources
+     </li>
+    </ul>
+
+    <textblock>
+  Zwei Beispiele für deutsche Newsgruppen sind:
+    </textblock>
+
+    <ul>
+     <li>
+ de.comp.gnu
+     </li>
+     <li>
+ de.comp.editoren
+     </li>
+    </ul>
+   </section>
+
+   <section>
+<!-- 6.4 Kapitel -->
+    <heading>
+Mailinglisten
+    </heading>
+
+    <textblock>
+ Es gibt eine Mailingliste für den GNU Emacs bei der Free Software
+ Foundation. Sehen Sie sich die Website an, wenn Sie weitere
+ Informationen möchten:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://mail.gnu.org/mailman/listinfo/help-gnu-emacs">http://mail.gnu.org/mailman/listinfo/help-gnu-emacs</ref>
+    </quotation>
+
+    <textblock>
+ Die einzige  dem Emacs gewidmete Mailingliste, die ich im Moment
+ kenne, ist die NT-Emacs-Liste. Es ist eine Liste für Leute, die die
+ Emacs Microsoft Windows Version benutzen. Wenn Sie mehr Informationen
+ dazu wollen, sehen Sie sich die NT-Emacs-FAQ an:
+    </textblock>
+
+    <quotation>
+<ref lang="en" url="http://www.cs.washington.edu/homes/voelker/ntemacs.html">http://www.cs.washington.edu/homes/voelker/ntemacs.html</ref>
+    </quotation>
+   </section>
+
+   <section>
+<!-- 6.5 Kapitel -->
+    <heading>
+Das Emacs-Lisp-Archiv
+    </heading>
+
+    <textblock>
+ Aus dem Emacs-Lisp-Archiv-README:
+    </textblock>
+
+    <quotation>
+      Die Emacs-Lisp-Archive bei <ref url="ftp://ftp.cis.ohio-state.edu">ftp://ftp.cis.ohio-state.edu</ref> enthalten
+      diverse Teile und Pakete des Emacs Lisp Code. Mit der
+      Sprache Emacs Lisp kann man den von der <name>Free Software
+      Foundation</name> herausgegebenen Editor GNU Emacs erweitern. Obwohl in
+      der GNU Emacs Distribution viel Emacs Lisp Code enthalten
+      ist, haben viele Menschen Pakete geschrieben, um mit anderen
+      Systemen interagieren zu können, um die Programmiersprache,
+      die sie benutzen beim Editieren besser zu unterstützen, um
+      neue Funktionen hinzuzufügen, um das Standardverhalten des
+      Emacs zu verändern. Der größte Teil des Archivs ist von
+      Einzelnen geschrieben worden und über das Internet durch die
+      <command>info-emacs</command> oder die <command>info-gnu-emacs</command> Mailingliste oder den
+      <name>comp.emacs</name>, <name>gnu.emacs</name> oder <name>gnu.emacs.sources</name> Newsgruppen
+      öffentlich verbreitet worden.
+    </quotation>
+
+    <textblock>
+ Auf die Archive kann über Anonymous-FTP von
+    </textblock>
+
+    <quotation>
+<ref url="ftp://ftp.cis.ohio-state.edu/pub/emacs-lisp/">ftp://ftp.cis.ohio-state.edu/pub/emacs-lisp/</ref>
+    </quotation>
+
+    <textblock>
+ zugegriffen werden.
+    </textblock>
+
+    <textblock>
+ Beachten Sie: Soweit ich sagen kann, verliert das Emacs-Lisp-Archiv
+ langsam an Aktualität. Ich sehe, dass dort wenige neue (oder
+ aktualisierte) Pakete erscheinen, obwohl ich weiß, dass es sie gibt.
+ Sie werden an die <name>comp.emacs.sources</name> Newsgruppe gepostet. (Zögern Sie
+ nicht, mich zu korrigieren, falls das nicht stimmt).
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 7. Kapitel -->
+   <heading>
+Danksagungen
+   </heading>
+
+   <textblock>
+Die folgenden Menschen haben zum Erfolg des Dokumentes beigetragen.
+   </textblock>
+
+   <ul>
+    <li>
+<name email="Craig.Lyons@compaq.com">Craig Lyons</name>
+    </li>
+    <li>
+<name email="rvollmer@gmx.net">Robert Vollmert</name>
+    </li>
+    <li>
+<name email="larrybr@seanet.com">Larry Brasfield</name>
+    </li>
+    <li>
+<name email="etienne@anonimo.isr.ist.utl.pt">Etienne Grossmann</name>
+   </li>
+    <li>
+<name email="kf6mli@amsat.org">Thomas Weinell</name>
+    </li>
+    <li>
+<name email="adam@bigbro.biophys.cornell.edu">Adam C. Finnefrock</name>
+    </li>
+    <li>
+<name email="cgray4@po-box.mcgill.ca">Chris Gray</name>
+    </li>
+    <li>
+<name email="bob@rattlesnake.com">Robert J. Chassell</name>
+    </li>
+    <li>
+<name email="kkto@csis.hku.hk">Isaac To</name>
+    </li>
+    <li>
+<name email="valsasna@elet.polimi.it">Matteo Valsasna</name>
+    </li>
+    <li>
+<name email="smoke@casema.net">Tijs van Bakel</name>
+    </li>
+   </ul>
+
+   <textblock>
+Bei der deutschen Übersetzung hat mich unterstützt:
+   </textblock>
+
+   <ul>
+    <li>
+<name email="michael.weyrauch@gmx.net">Michael Weyrauch</name>
+    </li>
+   </ul>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,1548 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>Das Lightweight Directory Access Protocol</title>
+
+ <author>
+  <name>Thomas Bendler</name>
+  <mailto>project@bendler-net.de</mailto>
+ </author>
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+ <layout>
+  <name>Torsten Hemm</name>
+  <mailto>T.Hemm@gmx.de</mailto>
+ </layout>
+ <layout>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </layout>
+
+ <license>
+GFDL
+ </license>
+
+<index>ldap</index>
+
+<description>
+ <textblock>
+Dieses Dokument beschreibt die Basis Installation und Konfiguration
+des "OpenLDAP" Paketes, welches einen objektorientierten Verzeichnisdienst
+bereitstellt.
+ </textblock>
+</description>
+
+<split>
+  <section>
+    <heading>
+Prolog
+    </heading>
+    <textblock>
+Die von mir beschriebene Installation bezieht sich auf die aktuelle
+Debian-Distribution Version 2.2 (Potato). Um eine möglichst
+distributionsunabhängige Installation zu beschreiben, beziehe ich mich
+auf die Installation des Tarballs unter
+<command>/usr/local</command>. Sollte ein
+distributionsabhängiges Binär-Paket verwendet werden, sind ggf. die
+Pfade anzupassen.
+    </textblock>
+    <section>
+      <heading>
+Lizenz
+      </heading>
+      <textblock>
+Dieses Dokument ist urheberrechtlich geschützt. Das Copyright liegt bei
+Thomas Bendler.<br/>
+Das Dokument darf gemäß der GNU General Public License
+verbreitet werden. Insbesondere bedeutet dies, dass der Text sowohl über
+elektronische wie auch physikalische Medien ohne die Zahlung von
+Lizenzgebühren verbreitet werden darf, solange dieser Copyright-Hinweis
+nicht entfernt wird. Eine kommerzielle Verbreitung ist erlaubt und
+ausdrücklich erwünscht. Bei einer Publikation in Papierform ist der
+Autor hierüber zu informieren.
+      </textblock>
+    </section>
+  <section>
+    <heading>
+Bezugsquellen
+    </heading>
+    <textblock>
+Die aktuelle Version des "OpenLDAP"-Paketes findet sich unter
+<ref  url="ftp://www.openldap.org/pub/OpenLDAP/">ftp://www.openldap.org/pub/OpenLDAP/</ref>
+Distributionsabhängige Pakete finden sich in der Regel auf den
+beigelegten CDs respektive auf den FTP-Servern des jeweiligen
+Distributors.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Literatur
+    </heading>
+    <textblock>
+Da ich weder Lust noch Zeit habe, das "OpenLDAP"-Paket bis ins letzte
+Detail zu beschreiben, verweise ich bei weiterführenden Fragen auf die
+gelistete Literatur.
+    </textblock>
+    <section>
+      <heading>
+Bücher
+      </heading>
+        <ul>
+          <li>
+Jens Banning, "LDAP unter Linux - Netzwerkinformationen in
+Verzeichnisdiensten verwalten", Addison-Wesley,
+geb., 250Seiten, DEM 79,90, ISBN 3-8273-1813-0
+          </li>
+          <li>
+"Implementing LDAP" by Mark Wilcox
+          </li>
+          <li>
+"Programming Directory-Enabled Applications with
+Lightweight Directory Access Protocol" by Howes and Smith
+          </li>
+          <li>
+"Understanding and Deploying LDAP Directory Servers" by
+Howes, Smith and Good
+          </li>
+        </ul>
+    </section>
+    <section>
+      <heading>
+RFC's
+      </heading>
+        <ul>
+          <li>
+RFC 1558: A String Representation of LDAP Search Filters
+          </li>
+          <li>
+RFC 1777: Lightweight Directory Access Protocol
+          </li>
+          <li>
+RFC 1778: The String Representation of Standard Attribute Syntaxes
+          </li>
+          <li>
+RFC 1779: A String Representation of Distinguished Names
+          </li>
+          <li>
+RFC 1781: Using the OSI Directory to Achieve User Friendly Naming
+          </li>
+          <li>
+RFC 1798: Connectionless LDAP
+          </li>
+          <li>
+RFC 1823: The LDAP Application Programming Interface
+          </li>
+          <li>
+RFC 1959: An LDAP URL Format
+          </li>
+          <li>
+RFC 1960: A String Representation of LDAP Search Filters
+          </li>
+          <li>
+RFC 2251: Lightweight Directory Access Protocol (v3)
+          </li>
+          <li>
+RFC 2307: LDAP as a Network Information Service
+          </li>
+        </ul>
+    </section>
+    <section>
+      <heading>
+Adressen im Internet
+      </heading>
+          <ul>
+            <li>
+OpenLDAP HomePage <br/>
+              <ref lang="en" url="http://www.openldap.org">
+http://www.openldap.org
+              </ref>
+            </li>
+            <li>
+Einführung im Linux Magazin<br/>
+               <ref lang="de" url="http://www.linux-magazin.de/ausgabe/1998/09/LDAP/ldap.html">
+http://www.linux-magazin.de/ausgabe/1998/09/LDAP/ldap.html
+              </ref>
+            </li>
+            <li>
+slapd und slurpd Administrator's Guide<br/>
+              <ref lang="en" url="http://www.umich.edu/~dirsvcs/ldap/doc/guides">
+http://www.umich.edu/~dirsvcs/ldap/doc/guides
+              </ref>
+            </li>
+            <li>
+Introducing to Directory Service (X.500)<br/>
+              <ref lang="en" url="http://www.nic.surfnet.nl/surfnet/projects/x500/introducing">
+http://www.nic.surfnet.nl/surfnet/projects/x500/introducing
+              </ref>
+            </li>
+            <li>
+Linux Directory Service unter<br/>
+              <ref lang="en" url="http://www.rage.net/ldap/">
+http://www.rage.net/ldap/
+              </ref>
+            </li>
+          </ul>
+      </section>
+    </section>
+    <section>
+      <heading>
+Haftung
+      </heading>
+      <textblock>
+Für die hier vorgestellten Verfahren übernehme ich keine Haftung.
+Sollten sich Fehler eingeschlichen haben oder Verfahren nicht funktionieren,
+bitte ich um Feedback (Adresse siehe unten).
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Feedback
+    </heading>
+    <textblock>
+Bei Fragen und Kommentaren zu diesem Dokument sowie bei Anregungen
+und Verbesserungsvorschlägen wenden Sie sich bitte an
+den Maintainer <name email="steffen@dett.de">Steffen Dettmer</name>
+    </textblock>
+  </section>
+</section>
+</split>
+
+<split>
+<section>
+  <heading>
+Eine kleine Einführung in LDAP
+  </heading>
+  <section>
+    <heading>
+Was ist LDAP?
+    </heading>
+    <textblock>
+<strong>LDAP</strong> ist die Abkürzung von
+"<strong>L</strong>ightweight <strong>D</strong>irectory
+<strong>A</strong>ccess <strong>P</strong>rotocol".
+Das LDAP entstand ursprünglich als Front-End für den 
+X.500-Verzeichnisdienst. Da X.500 als kompletter OSI-Stack 
+implementiert ist, war
+es nicht möglich, diesen Verzeichnisdienst flächendeckend zu
+implementieren. LDAP ist ein Verzeichnisdienst, der auf dem TCP/IP-Protokoll
+basiert und somit ressourcenschonender für die Netzwerk-Infrastruktur ist.
+Obwohl LDAP nur einen Teil der Funktionen des DAP zur Verfügung stellt,
+reicht es aus, um die fehlenden Funktionen vollständig zu emulieren. Basis
+für LDAP sind die im Abschnitt <strong>Literatur</strong> aufgeführten RFC's.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Welche Informationen kann LDAP zur Verfügung stellen?
+    </heading>
+    <textblock>
+LDAP speichert seine Informationen in einer Baumhierarchie. Diese
+Hierarchie kann diverse Informationen enthalten. Einen Überblick
+verschafft RFC 2307, in dem mögliche Inhalte der LDAP Hierarchie
+spezifiziert sind:
+    </textblock>
+      <ul>
+        <li>Benutzer
+        </li>
+        <li>
+Gruppen
+        </li>
+        <li>
+IP-Dienste
+        </li>
+        <li>
+IP-Protokolle
+        </li>
+        <li>
+RPC's
+        </li>
+        <li>
+NIS-Netzwerkgruppen
+        </li>
+        <li>
+Boot-Informationen
+        </li>
+        <li>
+Einhängepunkte für Dateisysteme
+        </li>
+        <li>
+IP-Hosts und Netzwerke
+        </li>
+        <li>
+RFC 822 konforme Mail-Aliase
+        </li>
+      </ul>
+  </section>
+  <section>
+    <heading>
+Strukturierung der Informationen
+    </heading>
+    <textblock>
+Hat man Daten in Datenbanken, so ist es wichtig, diese
+Informationen zu strukturieren. Besonders, wenn viele
+verschiedene Clients auf die Datenbank zugreifen wollen, zum
+
+Beispiel Netscape, Outlook und andere, muss die Struktur genau
+definiert sein. Wenn ein Mailclient eine eMail-Adresse braucht,
+muss er wissen, wie er diese bekommt.
+    </textblock>
+    <textblock>
+Es gibt viele Definitionen, an die man sich halten muss, soll am
+Ende auch etwas funktionieren. Bei LDAP werden Objekte mit
+Eigenschaften verwendet. Jedes Objekt hat zunächst einen
+eindeutigen Namen, an dem es von allen anderen unterschieden
+werden kann ("distinguished name", kurz: DN). Die Eigenschaften
+eines Objekts hängen davon ab, zu welcher Klasse es gehört (es
+kann sogar zu mehreren Klassen gehören).
+    </textblock>
+    <section>
+      <heading>
+Klassen von Objekten
+      </heading>
+      <textblock>
+Es sind nun Klassen für Personen definiert. Zu einer Person
+("person") gehören zwingend <command>objectClass</command> (die Objektklasse
+selbst), <command>sn</command> (der Nachname) und
+<command>cn</command> (commonName, etwa: üblicher
+Name, hier wird üblicherweise Vor- und Nachname verwendet).
+Zusätzlich gibt es optionale Attribute, die nicht unbedingt
+angegeben werden müssen.  Diese sind hier
+<command>description</command> (beliebige
+Beschreibung), <command>seeAlso</command> (verweist auf ein anderes Objekt),
+<command>telephoneNumber</command> (Telefonnummer),
+<command>userPassword</command> (ein Password). Da
+häufig noch mehr Attribute mit einer Person verknüpft sind, gibt
+es auch eine Objektklasse organizationalPerson. Diese hat die
+gleichen geforderten Eigenschaften wie Person, aber erlaubt viele
+optionale Eigenschaften, wie zum Beispiel Felder der Adresse und
+eine FAX-Nummer. Es gibt noch mehr Klassen, zum Beispiel
+<command>newPilotPerson</command> (die als optionale Eigenschaft 
+eine eMail-Adresse
+<command>mail</command> einführt) und natürlich Klassen für 
+Organisationen/Firmen,
+Abteilungen, Bilder, Dokumente, Geräte und so weiter.
+      </textblock>
+    </section>
+    <section>
+      <heading>
+Eigenschaften von Klassen
+      </heading>
+      <textblock>
+Wenn man also irgendwo eine Person im Verzeichnis hat, ist klar,
+dass diese ein <command>cn</command>" haben muss, und eine Telefonnummer haben kann
+(und dass diese genau <command>telephoneNumber</command> heißt). Soll ein Programm
+eine eMail-Adresse suchen, muss es nur nachschauen, ob es ein
+Attribut <command>mail</command> gibt. Es kann eben nicht sein, dass diese
+Eigenschaft <command>email</command> oder anders heißt. <command>mail</command> ist vorgeschrieben,
+und nichts anderes.
+      </textblock>
+      <textblock>
+An diesem Beispiel kann man zeigen, dass eine natürliche Person zu
+mehreren Klassen gehört: <command>person</command>,
+<command>organizationalPerson</command> und
+<command>newPilotPerson</command>. Eine weitere Klasse ist
+<command>top</command>. Im Prinzip gehört
+so ziemlich jedes Objekt auch zur Klasse <command>top</command>, die lediglich
+vorschreibt, dass die Eigenschaft <command>objectClass</command> gesetzt sein muss
+(was bei allen Personenklassen ohnehin gefordert ist).
+      </textblock>
+      <textblock>
+
+Durch das Verwenden der Klassen definiert man, welche
+Eigenschaften vorhanden sein müssen, und welche vorhanden sein
+können. Eine Person darf zum Beispiel keine Farbtiefe haben, ein Bild
+hingegen schon. Verwendet man mehrere Klassen, so muss das
+entsprechende Objekt alle von mindestens einer Klasse geforderten
+Eigenschaften haben, und kann alle insgesamt erlaubten
+Eigenschaften haben. 
+      </textblock>
+    </section>
+    <section>
+      <heading>
+Typen von Eigenschaften
+      </heading>
+      <textblock>
+Den Eigenschaften sind Typen zugeordnet. Es gibt Typen, die eine
+Zeichenkette enthalten, und andere, die eine Telefonnummer
+enthalten. Diese Typen definieren weiterhin, wie Werte verglichen
+(und damit sortiert und gesucht) werden. Zeichenketten
+beispielsweise kann man abhängig von Groß- und Kleinschreibung
+vergleichen oder auch nicht. Bei Telefonnummer spielen gewisse
+Füllzeichen möglicherweise keine Rolle. Passwörter hingegen
+müssen genau übereinstimmen.
+      </textblock>
+      <textblock>
+Es gibt nun also Objekte (die zu bestimmten Klassen gehören).
+Diese werden nun anderen Objekten untergeordnet (beziehungsweise
+werden anderen Objekte viele zugeordnet, dies ist die richtige
+Reihenfolge). Diese baumartige Struktur kann man (mit etwas
+Phantasie) auch in der Realität finden: In Ländern gibt es
+Firmen, in Firmen gibt es Abteilungen und in Abteilungen letztlich
+Personen. So wird das in LDAP auch gesehen.  Die Baumstruktur
+wird hier "Directory Information Tree" genannt, kurz
+<strong>DIT</strong>.  Es gibt
+Länder (also Objekte der Klasse <command>country</command> [Land]) mit u.A. der
+Eigenschaft <command>c</command> (kurz für country), 
+Firmen (<command>organisation</command>s mit der
+Eigenschaft <command>o</command>), Abteilungen (Organisations Einheit,
+<command>organisationalUnit</command> mit der Eigenschaft
+<command>ou</command>). Hierbei enthalten
+diese Objekte normalerweise viele weitere Eigenschaften; eine
+Firma hat zum Beispiel eine Postanschrift.
+      </textblock>
+    </section>
+    <section>
+      <heading>
+Schema
+      </heading>
+      <textblock>
+Ein Schema ist eine Sammlung von Strukturdefinitionen. Dazu
+gehören die Schreibungen vieler Klassen und der verwendeten
+Typen. Es gibt verschiedene Schemata, und es ist möglich, eigene
+zu definieren (oder bestehende zu erweitern) was jedoch nicht
+interoperabel mit anderen Diensten sein muss. Das ist außerhalb
+der Betrachtungen dieses Dokumentes.
+      </textblock>
+    </section>
+    <section>
+      <heading>
+Zusammenfassung
+      </heading>
+      <textblock>
+Der LDAP-Server speichert seine Informationen in einer
+baumartigen Struktur.  Diese wird auch "Directory Information Tree"
+genannt, kurz <strong>DIT</strong>.
+      </textblock>
+      <textblock>
+Zum Speichern benutzt der LDAP-Server Objekte, die er mit
+Attributen versehen kann. Dadurch kann man die Struktur flexibel
+an die eigenen Bedürfnisse anpassen. Das RFC 2256 spezifiziert
+die Standard-Objekte des LDAP-Servers. Man wird zwar von
+niemandem gezwungen, diese Vorgaben auch zu benutzen. Um aber
+eine möglichst große Konformität zu erzielen, sollte man diese
+Vorgaben einhalten.
+      </textblock>
+    </section>
+  </section>
+</section>
+
+<section>
+  <heading>
+Technische Daten des LDAP Server
+  </heading>
+  <textblock>
+Der Zugriff auf den LDAP-Server erfolgt über das LDAP-Protokoll
+via TCP/IP.  Per Default lauscht der <command>slapd</command> ("Stand-alone LDAP
+Daemon": Der LDAP-Dienst) auf dem Port 389. Dies ist im RFC 1777
+spezifiziert.
+  </textblock>
+</section>
+</split>
+
+<split>
+<section>
+  <heading>
+Installation des OpenLDAP
+  </heading>
+  <textblock>
+Beschrieben wird im folgenden die Installation des OpenLDAP in
+der Version 1.2.1. Die Installation zukünftiger Releases sollte
+nicht grundlegend von der hier vorgestellten Methode
+abweichen. Sollte dies trotzdem der Fall sein, werde ich das in
+zukünftigen Versionen dieses Dokumentes berücksichtigen.
+  </textblock>
+  <section>
+    <heading>
+Quellen für den OpenLDAP-Server
+    </heading>
+    <textblock>
+Der Quellcode der aktuellen Version des OpenLDAP-Servers in einem
+komprimierten Archiv findet sich auf der Homepage der OpenLDAP Foundation.
+Die aktuellen Quellen können von
+      <ref url="ftp://ftp.OpenLDAP.org/pub/OpenLDAP/openldap-release.tgz">
+ftp://ftp.OpenLDAP.org/pub/OpenLDAP/openldap-release.tgz bezogen
+      </ref>
+werden.<br/>
+Eine einfachere Möglichkeit der Installation bieten sogenannte
+rpm/deb-Archive. Dies sind bereits kompilierte Pakete, die auf die
+Besonderheiten der jeweils eingesetzten Distribution zugeschnitten sind.
+Die jeweilige Installationsprozedur entnehmen Sie bitte Ihrem Handbuch.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Installation des OpenLDAP-Servers
+    </heading>
+    <textblock>
+Haben Sie den OpenLDAP mit Hilfe der distributionseigenen rpm/deb-Archive
+installiert, können Sie diesen Abschnitt auslassen. 
+    </textblock>
+    <textblock>
+Wenn Sie sich die Quellen des OpenLDAP-Servers gezogen haben,
+müssen Sie diese noch installieren. Zu diesem Zweck kopieren
+sie die Quellen nach "/usr/local/src/" und entpacken sie die
+Quellen mit dem Befehl <command>tar xvfz ./openldap-release.tgz</command>
+    </textblock>
+    <textblock>
+Anschließend müssen Sie mit <command>cd ldap</command> in das
+Installationsverzeichnis wechseln. Dort befindet sich die Datei
+<command>include/ldapconfig.h.edit</command>.
+In ihr kann man den LDAP an die eigenen Bedürfnisse anpassen.
+In der Regel sollten aber die voreingestellten Werte
+in Ordnung sein. Das "OpenLDAP" Paket wird per Default nach
+<command>/usr/local/</command>
+installiert.<br/>
+Nun geht es ans Übersezten und Installieren des Programmpaketes. Führen
+Sie dazu folgende Befehle aus:
+    </textblock>
+    <shell>
+      <user>
+configure
+      </user>
+      <user>
+make depend
+      </user>
+      <user>
+make
+      </user>
+    </shell>
+    <textblock>
+Um die Kompilation zu testen, können noch folgende Anweisungen
+ausgeführt werden:
+    </textblock>
+    <shell>
+      <user>
+cd test
+      </user>
+      <user>
+make
+      </user>
+    </shell>
+    <textblock>
+Die Installation des Paketes muss als Superuser (root) mit folgendem
+Befehl erfolgen:
+    </textblock>
+    <shell>
+      <user>
+su
+      </user>
+      <root>
+make install
+      </root>
+    </shell>
+    <textblock>
+That's it. <br/>
+Nun sollte der OpenLDAP-Server installiert sein.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Besonderheiten von RPM-Packeten
+    </heading>
+    <textblock>
+Es gibt Unterschiede zwischen dem Original-OpenLDAP-Paket und den
+rpm-Archiven (hier am Beispiel von SuSE).
+    </textblock>
+    <textblock>
+Die beiden Pakete sind zwar nach der Installation inhaltlich fast identisch,
+unterscheiden sich aber gravierend in den verwendeten Pfaden. Folgende
+Übersicht soll die Unterschiede verdeutlichen:
+    </textblock>
+    <textblock>
+OpenLDAP-Original in der Default-Konfiguration:
+    </textblock>
+      <ul>
+        <li>
+<command>/usr/local/etc/openldap/</command> Konfigurationsdateien
+        </li>
+        <li>
+<command>/usr/local/bin/</command> Hilfsdateien
+        </li>
+        <li>
+<command>/usr/local/sbin/</command> Server
+        </li>
+        <li>
+<command>/usr/local/src/ldap/doc/</command> Dokumentation
+        </li>
+        <li>
+<command>/usr/local/include/</command> Include-Dateien
+        </li>
+        <li>
+<command>/usr/local/lib/</command> Bibliotheken
+        </li>
+        <li>
+<command>/usr/local/share/</command> Dateien für X.500 Gateway
+        </li>
+        <li>
+<command>/usr/local/var/openldap-ldbm/</command> Datenbankdateien
+        </li>
+      </ul>
+    <textblock>
+SuSE rpm-Archive Konfiguration:
+    </textblock>
+     <ul>
+      <li>
+<command>/etc/openldap/</command> Konfigurationsdateien
+      </li>
+      <li>
+<command>/usr/bin/</command> Hilfsdateien
+      </li>
+      <li>
+<command>/usr/libexec/openldap/</command> Server
+      </li>
+      <li>
+<command>/sbin/init.d/ldap</command> Startskript
+      </li>
+      <li>
+<command>/usr/doc/packages/openldap/</command> Dokumentation, zusätzliche Tools
+      </li>
+      <li>
+<command>/usr/include/</command> Include-Dateien
+      </li>
+      <li>
+<command>/usr/lib/</command> Bibliotheken
+      </li>
+      <li>
+<command>/usr/share/openldap/</command> Dateien für X.500 Gateway
+      </li>
+    </ul>
+  </section>
+</section>
+</split>
+
+<split>
+  <section>
+    <heading>
+Anpassen der Konfigurationsdateien
+    </heading>
+    <textblock>
+Mit dem OpenLDAP-Server werden mehrere Konfigurationsdateien ausgeliefert,
+die teilweise noch an die lokalen Gegebenheiten angepasst werden müssen.
+    </textblock>
+    <section>
+      <heading>
+Liste der Konfigurationsdateien
+      </heading>
+        <ul>
+            <li>
+<command>ldap.conf</command> -- Client Konfiguration
+             </li>
+            <li>
+<command>ldapfilter.conf</command> -- Filterregeln
+            </li>
+            <li>
+<command>ldapsearchprefs.conf</command> -- Bevorzugte Suchkriterien
+            </li>
+            <li>
+<command>ldaptemplates.conf</command> -- Templates für Formulare
+            </li>
+            <li>
+<command>slapd.conf</command> -- Server Konfiguration
+            </li>
+            <li>
+<command>slapd.at.conf</command> -- Beschreibung der Attribute
+            </li>
+            <li>
+<command>slapd.oc.conf</command> -- Beschreibung der Objektklassen
+            </li>
+            <li>
+<command>*.schema</command> -- neue Beschreibung der Attribute und Objektklassen
+            </li>
+           </ul>
+          <textblock>
+Zusätzlich zu den dem Paket beiliegenden Konfigurationsdateien gibt
+es nochmal denselben Satz mit der Endung "*.default". Diese kann
+man getrost löschen oder sich in ein extra Verzeichnis kopieren um evtl.
+nochmal die möglichen Einstellungen überprüfen zu können.
+        </textblock>
+      </section>
+      <section>
+        <heading>
+Konfigurieren der ldap.conf
+        </heading>
+        <textblock>
+In der Datei ldap.conf wird die Basis-Domain für den LDAP-Client
+festgelegt. Für das folgende Beispiel im Abschnitt "Erstellen eines
+Beispielverzeichnisses" wird die Basisadresse mit der Domain gleichgesetzt.
+Das weicht von dem vielleicht intuitiveren
+"Land-Organisation-Organisationseinheit"-Schema ab, schafft dafür
+aber "private" Namensräume. Dies löst folgendes Problem: Wenn
+Firma A Firma B in Ihrem LDAP listet, kann es Herrn Meier aus B
+im LDAP von Firma A und dem von Firma B geben. Beide Meiers sind
+der gleiche, haben den gleichen eindeutigen Namen (DN); jedoch
+sind es verschiedene Objekte (in Firma B kann Herr Meier ein
+Passwort haben, das Firma A nicht kennt!).
+        </textblock>
+        <textblock>
+Deshalb hat man sich überlegt, dass Firmen einfach ihren
+Internet-Domainnamen verwenden können, um ihre Namen zu bilden.
+Diese werden <command>dc</command> (Domain Component, Domainkomponente) genannt.
+<command>selflinux.de</command> besteht zum Beispiel aus den Komponenten
+<command>selflinux</command> und <command>de</command>, also
+<command>dc=selflinux,dc=de</command> (Ansonsten
+würde man <command>c=DE,o=Bendler Projekte</command> 
+oder sowas verwenden, was jedoch
+eigentlich international vergeben werden müßte).
+        </textblock>
+        <file>
+        <title>/usr/local/etc/openldap/ldap.conf</title>
+        <content>
+          <![CDATA[
+# /usr/local/etc/openldap/ldap.conf
+#
+# Thomas Bendler, 19.06.2000, 17:05:06
+#
+# Bitte beachten Sie auch ldap.conf(5)
+# Diese Datei sollte fuer alle lesbar sein
+#
+BASE dc=selflinux,dc=de
+HOST voyager.bendler.net
+            ]]>
+         </content>
+        </file>
+        <textblock>
+Was bewirkt die hier vorgestellte <command>ldap.conf</command>? Mit der Variable
+BASE wird der standardmäßig abgefragte Teilbaum festgelegt. Hier
+bedeutet das, alle Anfragen sind unterhalb von
+<command>dc=selflinux,dc=de</command> durchzuführen. Dies wird häufig
+"Suchbasis" (Searchbase) genannt. Die Variable
+<command>HOST</command> gibt den
+Server an, der standardmäßig abgefragt wird. Über die Variable
+PORT kann alternativ auch ein anderer Default Port eingestellt
+werden.
+        </textblock>
+      </section>
+      <section>
+        <heading>
+Konfiguration der slapd.conf
+        </heading>
+        <textblock>
+Die Datei <command>slapd.conf</command> enthält die Einträge für die
+Konfiguration des slapd Standalone-Server. Der slapd
+beantwortet die LDAP Anfragen der Clients - es ist der
+LDAP-Server oder Verzeichnis-Server. Für das folgende Beispiel
+bekommt die Datei folgenden Inhalt:
+        </textblock>
+        <file>
+          <title>
+/usr/local/etc/openldap/slapd.conf
+          </title>
+            <content>
+              <![CDATA[
+# /usr/local/etc/openldap/slapd.conf
+#
+# Thomas Bendler, 27.06.2000, 15:37:02
+# überarbeitet von Steffen Dettmer, 2001
+#
+# Bitte beachten Sie auch sldapd.conf(5)
+#
+# Modifizierte Version der slapd.conf aus
+# dem Debian OpenLDAP Packetes
+# http://www.debian.org/
+#
+
+#
+# -- Einzubindende Dateien --
+#
+# Schema und ObjectClass Definitionen
+include/usr/local/etc/openldap/slapd.at.conf
+include/usr/local/etc/openldap/slapd.oc.conf
+
+# Schema und ObjectClass Definitionen fuer Netscape Roaming
+include/usr/local/etc/openldap/netscape_roaming.at.conf
+include/usr/local/etc/openldap/netscape_roaming.oc.conf
+
+# Schema for supporting Debian Package Directory entries
+#include/usr/local/etc/openldap/debian.at.conf
+#include/usr/local/etc/openldap/debian.oc.conf
+
+# Neuere Versionen verwenden nicht mehr Attribut und objectclass
+# Dateien, sondern stattdessen Schemata:
+# include /usr/local/etc/openldap/schema/core.schema
+# include /usr/local/etc/openldap/schema/cosine.schema
+# include /usr/local/etc/openldap/schema/inetorgperson.schema
+
+#
+# -- Servereinstellungen --
+#
+# Wenn Schemacheck auf ";on" gesetzt wird, wird bei der Modifizierung
+# mit Hilfe von "ldapadd" ueberprueft, ob die Eintraege in Objektklassen
+# spezifizert sind.
+# In Produktion sollte dies auf "on" gesetzt werden, um zu
+# vermeiden, dass "falsche" Eigenschaften (zum Beispiel
+# Nachname eines Landes) gesetzt werden können.
+schemacheck off
+
+# Wenn lokal nichts gefunden wird frage folgenden Rechner
+# Dieser gilt nur bei eingetragener Domain
+referral ldap://root.openldap.org
+
+# Prozess ID und Log Level, siehe auch man slapd.conf
+pidfile /var/run/slapd.pid
+argsfile /var/run/slapd.args
+loglevel 256
+
+#
+# -- Datenbankeinstellungen --
+#
+# Welche Datenbank wird benutzt und wo ist sie gespeichert
+
+database ldbm
+directory "/usr/local/var/openldap-ldbm"
+
+# Basis Domain (unser "root")
+suffix "dc=selflinux,dc=de"
+
+# Aenderungen werden mit Datum versehen
+# Achtung, erfordert bestimmte Klassen!
+lastmod on
+
+#
+# -- Indizierung --
+#
+# Art der Indizierung in der Datenbank
+index cn pres,eq,approx,sub
+index objectclass pres,eq
+index default none
+
+#
+# -- Zugriffskontrolllisten --
+#
+#Man kann hier einen Manager global definieren. Das ist zum
+#  Beispiel zum Anlegen der initialen Daten sinnvoll
+#rootdn          "cn=Manager,dc=selflinux,dc=DE"
+#rootpw         geheim>
+
+# Standardrechte gibts nicht
+defaultaccess none
+
+# Die Manager (Administratoren) bekommen Zugriff auf das gesamte
+# Verzeichnis:
+
+access to *
+by group/organizationalRole/roleOccupant="cn=Manager,
+  dc=selflinux, dc=de" write
+by group/organizationalRole/roleOccupant="cn=Manager,
+  dc=selflinux, dc=de" read
+by group/organizationalRole/roleOccupant="cn=Manager,
+  dc=selflinux, dc=de" search
+
+# Das eigene userPassword kann von einem Benutzer geaendert
+# werden. Die anderen Nutzer koennen es vergleichen (d.h. prüfen)
+access to attr=userpassword
+by self write
+by group="cn=Manager,dc=selflinux,dc=de" write
+by * compare
+
+# Jeder eingetragene Benutzer darf lesen, der Rest
+# darf nichts
+access to *
+by self write
+by dn=".+" read
+by * none
+          ]]>
+         </content>
+        </file>
+        <textblock>
+Was bewirkt die hier vorgestellte slapd.conf?
+      </textblock>
+      <textblock>
+Die include-Anweisungen bewirken ein Einbinden
+der angegebenen Dateien. In diesem Fall
+werden Objektklassen (oc) und deren Attribute (at)
+beziehungsweise die SChemata-Dateien eingelesen. Die
+"Netscape Roaming"-Dateien gehören nicht zum Standard-Umfang des
+LDAP-Tarballs.
+      </textblock>
+      <textblock>
+Mit dem schemacheck wird überprüft, ob
+modifizierte oder neu installierte Daten den Regeln der Objektklassen
+entsprechen. In produktiven Systemem sollte das immer auf "on"
+stehen. Dabei werden leider nur Objektklassen geprüft, die LDAP
+in einer Konfigurationsdatei wie zum Beispiel slapd.oc.conf
+bekannt sind. Bei allen anderen Klassen akzeptiert der Server
+leider alle Attribute.
+      </textblock>
+      <textblock>
+Ist der LDAP-Server nicht in der Lage, eine Anfrage zu
+beantworten, fragt er den unter <command>referral</command> angegebenden LDAP-Server.
+      </textblock>
+      <textblock>
+Die Zeilen <command>pidfile</command> und
+<command>argsfile</command> sind für den laufenden Betrieb
+(pid=prozess id, args=argumente).
+      </textblock>
+      <textblock>
+Mit dem Schlüsselwort <command>database</command> wird festgelegt, welches
+Datenbankformat bzw. welche Datenbank benutzt wird. Es sind auch Abfragen
+von anderen Datenbanken möglich. Im <command>directory</command> wird spezifiziert,
+wo die Datenbankdateien zu finden sind bzw. angelegt werden sollen. Unter
+Umständen muss dieses Verzeichnis noch nachträglich angelegt werden wenn
+z.B. ein kompiliertes Paket installiert wird, in dem das Verzeichnis nicht
+angelegt wird (war bei SuSE  6.2 der Fall, das hat sich
+mittlerweile jedoch geändert).
+      </textblock>
+      <textblock>
+Die unter <command>suffix</command> angegebene Struktur legt fest, welche Anfragen
+über die lokale Datenbank beantwortet werden können. Der Suffix
+legt sozusagen den Namensraum des Verzeichnisses fest - hiermit
+wird also die "Wurzel" / "Root" festgelegt.
+      </textblock>
+      <textblock>
+Mit Hilfe der <command>index</command>-Anweisung wird der Datenbank mitgeteilt, wie
+sie ihre Indizes anlegen soll.
+      </textblock>
+      <textblock>
+Zum Schluß werden noch die Zugriffsrechte auf
+dem LDAP-Server festgelegt. Standardmäßig erhält jeder Benutzer Lesezugriff.
+Die einzelnen Zugriffskontrolllisten (ACL, "Access Control List") entnehmen
+Sie bitte der Konfigurationsdatei.
+      </textblock>
+    </section>
+    <section>
+      <heading>
+Attribute und Objektklassen
+      </heading>
+      <textblock>
+Wie man bereits in der Konfigurationsdatei slapd.conf sehen kann,
+werden mehrere Konfigurationsdateien eingebunden, unter anderem
+<command>slapd.at.conf</command> und <command>slapd.oc.conf</command> beziehungsweise die
+<command>*.schema-Dateien</command> bei neuren Versionen (mehr dazu im nächsten
+Abschnitt). Diese Dateien sollten
+nicht geändert werden. Möchte man eigene Definitionen einbinden sollte das
+über gesonderte Dateien geschehen, z.B.
+<command>slapd.local.at.conf</command> und <command>slapd.local.oc.conf</command>.
+Die Dateien enthalten die Standard-Objektklassen
+und die Attribute für die Objektklassen. Die
+standardmäßig gegebenen Dateien sind für die meisten Anwendungen
+(Ausnahmen bestätigen die Regel, siehe auch "Netscape Roaming") ausreichend.
+Für weitere Informationen konsultieren Sie bitte die entsprechenden
+Manual-Pages.<br/>
+Sollen die Benutzer ihre Einträge selbst verändern können, so empfielt
+sich noch eine Anpassung der ldaptemplates.conf an die eigenen
+Bedürfnisse. Sie stellt die Voreinstellungen
+zur Verfügung, die Programme
+geliefert bekommen, die auf den LDAP-Server zugreifen.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Schemata
+    </heading>
+    <textblock>
+Neuere Versionen verwenden Schemata, um Objektklassen und deren
+Attribute zu definieren. Ein Schemata-Element wird über einen
+OID, einen Object Identifier, eindeutig bestimmt. Das ist im
+Westentlichen eine Ziffernfolge, die man in etwa mit der
+Kapitel-Gliederung eines sehr großen Buches vergleichen kann: Es
+gibt 1.1 und 1.2, unterhalb von 1.1 dann 1.1.1 und 1.1.2. Es kann
+dann auch 1.1.2.1.19.241.243.4 geben und so weiter.
+    </textblock>
+    <textblock>
+Über OIDs kann man - vereinfacht gesprochen - allen möglichen
+Dingen eine eindeutige Nummer geben. Das sind nicht nur
+Objektklassen, sondern auch Datentypen und Syntaxregeln. Die
+Syntax eines DNs ist zum Beispiel im OID
+1.3.6.1.4.1.1466.115.121.1.12 definiert, ein "directoryString"
+(das ist eine Zeichenkette im UTF-8 Zeichensatz) ist definiert als
+1.3.6.1.4.1.1466.115.121.1.15.
+    </textblock>
+    <textblock>
+In einem Schema definiert man sich zunächst Attributtypen. Dazu
+gibt es die Direktive attributeType. Ein Beispiel für die
+Verwendung:
+    </textblock>
+      <file>
+      <title>
+/usr/local/etc/openldap/schema/core.schema (Auszug)
+      </title>
+        <content>
+          <![CDATA[
+        attributeType ( 2.5.4.41 NAME 'name'
+                DESC 'name(s) associated with the object'
+                EQUALITY caseIgnoreMatch
+                SUBSTR caseIgnoreSubstringsMatch
+                SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )
+
+        attributeType ( 2.5.4.3 NAME ( 'cn' 'commonName' )
+                DESC 'common name(s) assciated with the object'
+                SUP name )
+      ]]>
+     </content>
+    </file>
+    <textblock>
+So ist "name" und "cn" oder "commonName" definiert, die uns
+bereits begegnet sind. Sie haben den OID  2.5.4.41 bzw. 2.5.4.3.
+    </textblock>
+    <textblock>
+Es gibt also "name". Der muß im Format "Zeichenkette im
+UTF-8 Zeichensatz" sein (SYNTAX) und bei Vergleichen ist die
+Groß-/Kleinschreibung egal (EQUALITY caseIgnoreMatch). So kann
+man sich eigene Attribute sehr flexibel definieren.
+    </textblock>
+    <textblock>
+Der OID muß eindeutig sein - es muß also zu jeder Nummer genau
+ein Attribut oder eine Objektklasse zugeornet sein. Alles, was
+mit 1.1 beginnt, kann man privat verwenden, das ist sozusagen
+reserviert, da es offiziell nicht verwendet wird.
+    </textblock>
+    <textblock>
+Man kann zum Beispiel (für sich selbst) festlegen: 1.1.2 für LDAP
+OIDs (weil die Netzwerker 1.1.1 schon für ihre SNMP OIDs
+verwenden).  Darunter dann 1.1.2.1 als Prefix für Attribute und
+1.1.2.2 für Objektklassen.
+    </textblock>
+    <textblock>
+Die erste neue, eigene Klasse bekäme damit dann 1.1.2.2.1.
+Definiert man mehrere Klassen, muß man natürlich verschiedene
+OIDs verwenden, der nächste könnte 1.1.2.2.2 sein.
+    </textblock>
+    <textblock>
+Meistens möchte man eigene Objektklassen definieren, wenn man
+spezialle Anforderungen hat. So möchte man vielleicht keine
+"gewöhnliche" inetOrgPerson-Klasse verwenden, sondern zusätzliche
+Attribute erlauben. Eigene Definitionen schreibt man natürlich am
+Besten in eine eigene Datei, die man zusätzlich mit "include"
+einbindet (so muß man bei Software-Updates nur ein include
+hinzufügen).
+    </textblock>
+    <textblock>
+Als Beispiel fügen wir optional (MAY) das Attribut "myPhoto" zu
+einer Ableitung (SUP) der Klasse inetOrgPerson hinzu:
+    </textblock>
+    <file>
+      <title>
+/usr/local/etc/openldap/schema/local.schema
+      </title>
+        <content>
+          <![CDATA[
+        objectclass ( 1.1.2.2.1 NAME 'myPerson'
+                DESC 'my person'
+                SUP inetOrgPerson
+                MUST ( myUniqueName $ givenName )
+                MAY myPhoto )
+      ]]>
+     </content>
+    </file>
+    <textblock>
+Damit man nicht immer die langen Nummern schreiben muß, kann man
+sich Macros definieren:
+    </textblock>
+    <file>
+      <title>
+/usr/local/etc/openldap/schema/local.schema
+      </title>
+        <content>
+          <![CDATA[
+        objectIdentifier myOID  		1.1
+        objectIdentifier mySNMP 		myOID:1
+        objectIdentifier myLDAP 		myOID:2
+        objectIdentifier myAttributeType        myLDAP:1
+        objectIdentifier myObjectClass  	myLDAP:2
+
+        objectclass ( myObjectClass:1 NAME 'myPerson'
+                DESC 'my person'
+                SUP inetOrgPerson
+                MUST ( myUniqueName $ givenName )
+                MAY myPhoto )
+        ]]>
+     </content>
+    </file>
+    <textblock>
+Danach käme dann myObjectClass:2, was sicherlich viel klarer ist
+als 1.1.2.2.2. 1.1.1 taucht als "mySNMP" in dem Beispiel auch
+wieder auf, so sieht man gleich, warum 1.1.1 hier nicht verwendet
+wird - es "gehört" ja im Beispiel den Netzwerkern für SNMP.
+    </textblock>
+  </section>
+</section>
+</split>
+
+<split>
+  <section>
+    <heading>
+Erstellen eines Beispielverzeichnisses
+    </heading>
+      <section>
+        <heading>
+Erstellen der LDIF Dateien
+        </heading>
+        <textblock>
+Nach der Installation und Konfiguration des LDAP-Servers muss dieser mit
+Daten gefüttert werden. Das folgende Beispiel erklärt einen "Directory
+Information Tree" anhand einer Firma mit mehreren Abteilungen. Die einzelnen
+Felder müssen den lokalen Gegebenheiten nur angepaßt werden, um eine simple
+Konfiguration aufzusetzen.<br/>
+Für das folgende Beispiel wird im Verzeichnis
+<command>/usr/local/etc/openldap</command> das Unterverzeichnis
+<command>ldif/</command>
+angelegt. In diesem Verzeichnis kann mit jedem x-beliebigen Editor, der
+ASCII unterstützt, eine Datei mit dem Namen struktur.ldif erstellt
+werden. Der Name und das Verzeichnis für die Beispiel-LDIF-Dateien sind
+beliebig. Es müssen für den Fall, dass andere Namen oder Pfade verwendet
+werden, diese nur an die lokalen Gegebenheiten angepaßt werden.
+    </textblock>
+    <textblock>
+Kommen wir aber nun zu der LDIF-Datei. Wir definieren einen neuen
+"Namensraum" <command>selflinux.de</command>. In LDAP-"Sprache" heißt das<command>
+dc=selflinux,dc=de</command>.
+Alles, was definiert wird, spielt sich
+unter diesem Punkt ab, damit gibt es keine Konflikte mit anderen
+Verzeichnissen.
+    </textblock>
+    <textblock>
+Das Verzeichnis besteht zunächst aus einer Firma (bzw. Organisation) 
+SelfLinux. Neben dieser Firma wird noch ein separater Eintrag
+eingerichtet, in dem die Administratoren (Manager) referenziert
+werden. Verzeichnis-Manager gehören also zu keiner Organisation
+oder Abteilung. Logisch gesehen ist das ja so auch korrekt.
+    </textblock>
+    <textblock>
+Die Firma Selflinux bekommt drei Abteilungen
+("Unterorganisationen") spendiert: Development, Sales und
+Support.  Die Mitarbeiter werden dann mit den Abteilungen
+referenziert. Daraus ergibt sich folgende Struktur:
+    </textblock>
+    <file>
+      <title>
+      Struktur der Firma Selflinux
+       </title>
+       <content>
+        <![CDATA[
+selflinux.de:
+|
++-- Manager
+|
++-- Selflinux
+|
+|
++-- Development
+|   |
+|   +-- Mitarbeiter 1 (Thomas Bendler)
+|   |
+|   +-- Mitarbeiter 2 (Steffen Dettmer)
+|
++-- Sales
+|   |
+|   +-- Mitarbeiter 4 (Sonja Essler)
+|
++-- Support
+|
++-- Mitarbeiter 3 (Thomas Lippert)
+        ]]>
+       </content>
+     </file>
+
+    <textblock>
+Hat man keinen <command>rootdn</command>-Eintrag in der
+<command>slapd.conf</command>, sollte unbedingt
+
+ein Manager-Account in dieser Struktur mit angegeben werden, da
+ansonsten kein Schreib-Zugriff auf das Verzeichnis möglich wäre.
+    </textblock>
+    </section>
+    <section>
+      <heading>
+Beispiel LDIF struktur.ldif
+      </heading>
+
+        <file>
+          <title>
+          Beispiel LDIF: struktur.ldif
+          </title>
+            <content>
+              <![CDATA[
+dn: cn=Manager, dc=selflinux, dc=de
+cn: Manager
+description: Directory Manager
+description: Verzeichnis-Manager
+objectClass: organizationalRole
+objectclass: top
+roleOccupant: cn=Thomas Bendler,ou=Development,dc=selflinux,dc=de
+roleOccupant: cn=Steffen Dettmer,ou=Development,dc=selflinux,dc=de
+
+dn: o=Selflinux,dc=selflinux,dc=de
+objectclass: top
+objectclass: domain
+objectclass: organization
+o: Selflinux
+l: Hamburg
+postalcode: 21033
+streetadress: Billwiese 22
+
+dn: ou=Development,o=Selflinux,dc=selflinux,dc=de
+objectclass: top
+objectclass: organizationalunit
+ou: Development
+
+dn: ou=Sales,o=Selflinux,dc=selflinux,dc=de
+objectclass: top
+objectclass: organizationalunit
+ou: Sales
+
+dn: ou=Support,o=Selflinux,dc=selflinux,dc=de
+objectclass: top
+objectclass: organizationalunit
+ou: Linux
+
+dn: cn=Thomas Bendler,ou=Development,o=selflinux,dc=selflinux,dc=de
+objectclass: top
+objectclass: person
+objectclass: organizationalperson
+objectclass: inetorgperson
+cn: Thomas Bendler
+sn: Bendler
+ou: Development
+mail:project@selflinux.de
+l: Hamburg
+postalcode: 21033
+streetadress: billwiese 22
+telephonenumber: 040-7654321
+facsmiletelephonenumber: 040-7654321
+userpassword: {CRYPT}saHW9GdxihkGQ
+
+dn: cn=Steffen Dettmer,ou=Development,o=Selflinux,dc=selflinux,dc=de
+cn: Steffen Dettmer
+sn: Dettmer
+ou: Development
+mail: steffen@dett.de
+telephoneNumber: +49 (30) 1234567
+objectClass: person
+
+dn: cn=Sonja Essler,ou=Sales,o=Selflinux,dc=selflinux,dc=de
+cn: Sonja Essler
+sn: Essler
+ou: Sales
+mail: sonja@bendler-net.de
+telephoneNumber: +49 (30) 1234568
+objectClass: person
+
+dn: cn=Thomas Lippert,ou=Support,o=Selflinux,dc=selflinux,dc=de
+cn: Thomas Lippert
+sn: Lippert
+ou: Support
+mail: tom@bendler-net.de
+telephoneNumber: +49 (30) 1234569
+objectClass: person
+         ]]>
+      </content>
+     </file>
+    <textblock>
+Das in diesem Beispiel eingesetzte Passwort
+<command>{CRYPT}saHW9GdxihkGQ</command> wurde mit Hilfe
+von Perl erzeugt. Dazu muss in der Shell folgender Befehl eingegeben werden.
+Das Ergebnis wird auf dem Bildschirm angezeigt und muss 1:1 in die LDIF
+Datei übertragen werden. Dieser Aufruf ist exemplarisch und nur
+zum Testen geeignet, da "salt" konstant und nicht zufällig ist!
+      <command>
+perl -e 'print("{CRYPT}".crypt("secret","salt")."\n");'
+      </command>
+    </textblock>
+    <textblock>
+Damit wird das Passwort in ein für den Server verständliches
+Format gebracht. Möchten sie ein anderes Passwort verwenden, müssen sie
+stattdessen das gewünschte einsetzen. Sie können es nachträglich mit dem
+Befehl <command>ldappasswd</command> ändern.
+    </textblock>
+    <textblock>
+Es ist in der Praxis einfacher, sofort das Passwort mit
+ldappasswd zu setzen (es beim Erstellen der Ursprungsdatei
+erstmal wegzulassen, wie im Beispiel bei den anderen Personen).
+    </textblock>
+    <textblock>
+Falls man nicht über Rollen sondern Gruppen arbeiten möchte, kann
+man beispielsweise auch folgenden Manager-Eintrag benutzen:
+    </textblock>
+
+    <file>
+      <title>
+        Auszug LDIF struktur.ldif
+      </title>
+      <content> <![CDATA[
+dn: cn=Manager,dc=selflinux,dc=de
+cn=Manager
+objectclass: top
+objectclass: groupofnames
+member: cn=Thomas Bendler,ou=People,dc=selflinux,dc=de
+      ]]> </content>
+     </file>
+
+    <textblock>
+Das Rollen-Modell ist jedoch üblicher und natürlicher, denn es
+ist hier klar, dass die Mitglieder bestimmte Rollen oder Aufgaben
+erfüllen. Der Begriff "Gruppe" hingegen suggeriert jedoch eher eine
+Personenaufteilung, technisch gesehen können natürlich Personen
+in mehreren Gruppen sein. Wenn die Gruppe jedoch eine bestimmte
+abstrakte Aufgabe hat, sollte man hier jedoch eher eine Rolle
+definieren. Dies wird oben im Beispiel so verwendet. Die Rolle
+"Manager" hat hier zwei "Mitglieder".
+    </textblock>
+    </section>
+    <section>
+      <heading>
+Umwandeln der LDIF-Datei in das LDBM-Format
+      </heading>
+      <textblock>
+Als nächstes muss die LDIF-Datei ins LDBM-Format konvertiert werden. Dazu
+dient der Befehl <command>ldif2ldbm</command>.
+Dieser ist unter "/usr/local/sbin/" zu finden.<br/>
+Der Aufruf lautet:<br/>
+          <command>
+ldif2ldbm -i /usr/local/etc/openldap/ldif/struktur.ldif -f 
+/usr/local/etc/openldap/slapd.conf
+          </command>
+        </textblock>
+        <textblock>
+Sollten sich irgendwelche Dateien nicht in den Standardpfaden befinden, so
+kann man so nach den Dateien suchen lassen:<br/>
+<command>locate "Dateiname"</command>
+        </textblock>
+        <textblock>
+oder, falls das nichts hilft, über das jedoch sehr langsame
+Kommando: <br/>
+<command>find / -name "Dateiname"</command>
+      </textblock>
+      <textblock>
+Ist die LDIF-Datei konvertiert, muss der LDAP-Server gestartet werden. Die
+meisten Distributionen stellen dafür ein Skript zur Verfügung welches
+sich unter <command>/etc/init.d/</command>,
+<command>/etc/rc.d/init.d/</command> oder unter
+<command>/sbin/init.d</command> befindet. Für gewöhnlich schimpft sich dieses
+<command>ldap</command> und kann mit diversen Parametern aufgerufen werden. Unter
+SuSE z.B. würde man mit folgendem init-Script den Server starten:<br/>
+<command>/sbin/init.d/ldap start</command>
+      </textblock>
+      <textblock>
+Ist kein Startskript vorhanden, wird der LDAP-Server mit folgendem Kommando
+gestartet:<br/>
+<command>/usr/local/libexec/slapd -f
+/usr/local/etc/openldap/slapd.conf</command>
+      </textblock>
+      <textblock>
+Damit der slapd beim Hochfahren automatisch gestartet wird, muss man
+ein Skript im <command>initd/</command>
+Verzeichnis anlegen. Das befindet sich je nach
+Distribution an einer anderen Stelle, so dass dem Leser nichts übrig bleibt
+als ein bisschen zu suchen. Normalerweise bieten die Distributionen ein
+Skeleton an, das an die jeweiligen Bedürfnisse angepasst werden
+muss. Ausführliche Informationen entnehmen Sie bitte der Dokumentation
+über das "Sys V System" Ihrer Distribution. Wahlweise hilft
+meistens auch ein <command>man init</command>, um etwas mehr über selbiges zu erfahren.
+      </textblock>
+    </section>
+    <section>
+      <heading>
+Testen des LDAP-Servers
+      </heading>
+      <textblock>
+Um den LDAP-Server zu testen, kann man jetzt eine Anfrage an selbigen
+schicken. Dies geschieht mit folgendem Befehl:
+<command>ldapsearch \</command><br/>
+<command>-D "cn=Thomas Bendler,ou=Develpoment,o=Support,dc=selflinux,dc=de" \</command><br/>
+<command>-W objectclass=\*</command>
+      </textblock>
+      <textblock>
+Der Server sollte nun eine Struktur, wie in der Datei 
+beschrieben, als Antwort übergeben.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Hinzufügen von Datensätzen
+    </heading>
+    <textblock>
+Nun geht es an das Hinzufügen von Datensätzen. Dazu werden die bereits
+erstellten LDIF-Dateien benutzt. Das Hinzufügen geschieht mit Hilfe des
+Befehls <command>ldapadd</command> entsprechend der Syntax für die zwei erstellten
+LDIF-Dateien:<br/>
+<!--
+#########################################################
+# 	Bessere Formatierung durchführen!		#
+#########################################################
+-->
+
+<command>ldapadd -v \</command><br/>
+<command>-D "cn=Thomas Bendler,ou=Develpoment,o=Support,dc=selflinux,dc=de" \</command><br/>
+<command>-W \</command><br/>
+<command>-f /usr/local/etc/openldap/ldif/people.ldif</command><br/>
+<command>ldapadd -v \</command><br/>
+<command>-D "cn=Thomas Bendler,ou=Develpoment,o=Support,dc=selflinux,dc=de" \</command><br/>
+<command>-W \</command><br/>
+<command>-f /usr/local/etc/openldap/ldif/zuordnung.ldif</command>
+      </textblock>
+      <textblock>
+Auf diese Weise können auch weitere Einträge hinzugefügt werden.. Neben
+der reinen Kommandozeile gibt es auch Tools, die eine ``komfortablere''
+Eingabe zulassen (auch wenn's meiner Meinung nach nichts komfortableres als
+die Kommandozeile gibt). Diese werden in der zweiten LDAP-Serie beschrieben.
+      </textblock>
+    </section>
+    <section>
+      <heading>
+Bilder im Verzeichnis
+    </heading>
+    <textblock>
+Man kann Bilder im JPEG-Format ebenfalls in das Verzeichnis
+aufnehmen. Das folgende Beispiel zeigt, wie man zu einem
+Personeneintrag ein "Paßfoto" hinzufügt.
+    </textblock>
+    <textblock>
+Angenommen, das Bild heißt "/tmp/pic.jpg". Nun muss der DN der
+betreffenden Person natürlich bekannt sein und man benötigt
+selbstverständlich Schreibzugriff auf das Verzeichnis.
+    </textblock>
+    <textblock>
+Man erzeugt eine Datei, in der der DN und der Bild-Eintrag stehen.
+Diese "pic.datei" könnte wie folgt aussehen:
+    </textblock>
+
+    <file>
+     <title>
+       pic.datei
+     </title>
+     <content> <![CDATA[
+dn: cn=Thomas Bendler,ou=People,dc=selflinux,dc=de
+jpegphoto: /tmp/pic.jpg
+     ]]> </content>
+     </file>
+
+    <textblock>
+Nun kann man mit dem Kommando <command>ldapmodify</command> den Eintrag dieses
+DNs
+ändern (indem man das Attribut jpegphoto hinzufügt). Damit
+nicht der Bildpfad, sondern dessen Dateiinhalt in das Verzeichnis
+aufgenommen wird, muss dem ldapmodify der Parameter "-b"
+mitgegeben werden. Diese Option veranlaßt die ldap*-Werkzeuge,
+absolute Pfade als Binärdaten zu betrachten. Der Beispielaufruf:
+    </textblock>
+    <textblock>
+<command>ldapmodify \</command><br/>
+<command>-D "cn=Thomas Bendler,ou=Develpoment,o=Support,dc=selflinux,dc=de" \</command><br/>
+<command>-W -b &lt; pic.datei</command>
+    </textblock>
+    <textblock>
+Noch ein Hinweis zur Arbeitserleichterung. Da gerade beim ersten
+Aufsetzen in der Regel nur ein Manager benötigt wird, empfielt es
+sich, diesen Account über die Parameter "rootdn" und "rootpw" in
+der slapd.conf einzustellen. Man bindet in diesem Fall über:
+    </textblock>
+    <textblock>
+    ...<br/>
+	<command>-D "cn=Manager,dc=selflinux,dc=de"</command><br/>
+    ... <br/>
+    </textblock>
+    <textblock>
+und spart etliches an Tipparbeit. In der Produktion ist dies dann
+jedoch unzulänglich, da ein Manager ja auch mal Urlaub macht, und
+auch in dieser Zeit jemand beispielsweise vergessene Paßwörter
+ändern können muss. Man benötigt hier also immer mehrere Manager.
+Die Parameter "rootdn" und "rootpw" sollte man dann
+auskommentieren und den slapd neustarten.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Ändern von Indizes
+    </heading>
+    <textblock>
+Werden in der slapd.conf neue Indizes konfiguriert, so gelten die
+Einstellungen natürlich sofort für neue Einträge. Die bereits
+vorhandenen Einträge sind in diesen neuen Indizes aber nicht
+enthalten. Suchanfragen führen in diesem Fall zu merkwürdig
+aussehenden Resultaten: Alle neuen Datensätze werden gefunden,
+jedoch nie alte. In solchen Fällen müssen die Indizes neu erzeugt
+werden. Dazu stoppt man den slapd, erzeugt sich eine LDIF-Kopie
+der Datenbank und indiziert diese (der Indexer kann nur LDIFs
+indizieren). Letztlich startet man den slapd neu.
+    </textblock>
+
+    <textblock>
+Hier die Kommandos (ohne start/stop):
+    </textblock>
+
+    <shell>
+       <user>
+ldbmcat /var/lib/ldap/id2entry.gdbm &gt; id2entry.dump
+       </user>
+       <user>
+ldif2ldbm -i id2entry.dump
+       </user>
+    </shell>
+
+    <textblock>
+Dieser Vorgang kann einige Zeit in Anspruch nehmen, wenn man
+große Datenbestände hat. Technisch gesehen exportiert man die
+gesamte Datenbank und importiert sie anschließend.
+    </textblock>
+  </section>
+  <section>
+    <heading>
+Datensicherung
+    </heading>
+    <textblock>
+Es gibt mehrere Möglichkeiten, Daten zu sichern. Die eleganteste
+Lösung ist, mehrere sich untereinander replizierende LDAP-Server
+zu verwenden. Für kleine Installationen ist dies jedoch zu
+aufwendig. Leichter ist es, sich einfach mit ldapsearch alle
+Datensätze ausgeben zu lassen, und in einer Datei zu speichern.
+Ein besserer Weg ist, das Werkzeug <command>ldbmcat</command> zu verwenden, um
+sicherzugehen, wirklich alle Einträge zu erhalten. Um
+Inkonsistenzen zu vermeiden, sollte der slapd unbedingt gestoppt
+werden. Um die Ausfallzeit gering zu halten, kopiert man einfach
+die Datenbankdatei. Unter SuSE-Distributionen könnte man folgende
+Kommandofolge verwenden:
+    </textblock>
+<!--
+#########################################################
+# 	Bessere Formatierung durchführen!		#
+#########################################################
+
+	rcldap stop \
+	&& cp /var/lib/ldap/id2entry.gdbm id2entry-snap.gdbm ; \
+	rcldap start \
+	id2entry-snap.gdbm > id2entry-snap
+-->
+    <textblock>
+<command>rcldap stop \</command><br/>
+<command>&amp;&amp; cp /var/lib/ldap/id2entry.gdbm id2entry-snap.gdbm ; \</command><br/>
+<command>rcldap start \</command><br/>
+<command>id2entry-snap.gdbm &gt; id2entry-snap</command><br/>
+    </textblock>
+
+    <textblock>
+Man erhält id2entry-snap.gdbm im Datenbankformat und eine 
+LDIF-Datei id2entry-snap. Es empfielt sich letztere zu sichern, da
+über diese Datei notfalls auch in andere Verzeichnisserver
+zurückgesichert werden kann. Das GDBM-Format hingegen ist
+versions- und plattformabhänig.
+    </textblock>
+    <textblock>
+Der Backup-Vorgang muss vorher unbedingt durchgetestet werden, um
+vor Überraschungen sicher zu sein. Dieser Test muss auch eine
+Rücksicherung einschließen, denn nur so kann man sicher sein, dass
+alles funktioniert. In der Praxis kann es sonst zu bösen
+Überraschungen kommen, denn das Verzeichnis wird schnell zu einem
+wichtigen Dienst in der Organisation werden!
+    </textblock>
+  </section>
+</section>
+
+<section>
+ <heading>
+Tuning des LDAP-Servers
+ </heading>
+<textblock>
+Es gibt unterschiedliche Möglichkeiten, den LDAP-Server zu tunen. 
+Diese Möglichkeiten beziehen sich in erster Linie auf
+die LDBM-Datenbank. Deutliche Performancegewinne lassen sich aber erst in
+Verbindung mit großen Datenbeständen erzielen. Der "The SLAPD and
+SLURPD Administration Guide" bietet einen Überblick der Möglichkeiten zum
+Tunen des LDAP-Servers. Weitere Informationen finden sich im FAQ-O-MATIC auf
+der Homepage des OpenLDAP Projekt.
+</textblock>
+</section>
+</split>
+</chapter>

@@ -1,0 +1,1391 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Mutt</title>
+
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>mutt</index>
+
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Mutt ist ein Programm zum Lesen, Verwalten und Versenden von
+E-Mail. Es verfügt über keine vollgrafikfähige Oberfläche; es ist
+eine Konsole-basierte Anwendung und läuft im Textmodus.
+Insbesondere gibt es überhaupt keine Mausunterstützung.
+Auch "Pull-Down" Menüs sucht man vergeblich.
+   </textblock>
+
+   <textblock>
+Vermutlich ist Mutt weniger geeignet, wenn man einfach nur ein
+paar E-Mails pro Woche liest und schreibt, da die
+Einarbeitungszeit im Vergleich zu anderen Programmen größer ist.
+Die Stärke von Mutt liegt in den tiefgreifenden
+Anpassungsmöglichkeiten, die eine effiziente Verwaltung von
+größeren Mengen an E-Mail ermöglichen. In einem geschickt
+konfigurierten System arbeitet Mutt beispielsweise problemlos mit
+<command>fetchmail</command> und <command>procmail</command> zusammen.
+   </textblock>
+
+   <textblock>
+Mutt ermöglicht es, Teilaufgaben zu automatisieren. Dabei können
+automatisierte Abläufe oder Einstellungsänderung an bestimmte
+Ereignisse (beispielsweise das Öffnen einer bestimmten Mailbox)
+geknüpft werden. Im Zusammenspiel mit einem leistungsfähigen
+Editor kann das Verfahren so optimiert und auf die persönlichen
+Bedürfnisse angepaßt werden, dass man bei jeder E-Mail einige
+Sekunden spart. Verarbeitet man viele E-Mails, wird der
+Konfigurationsaufwand schnell mehr als ausgeglichen.
+   </textblock>
+
+   <section>
+    <heading>
+Über dieses Dokument
+    </heading>
+
+    <textblock>
+Dieses Dokument kann nur einen kleinen Überblick über Mutt geben.
+Viele Themen werden nur angerissen oder überhaupt nicht erwähnt.
+Da Mutt sehr komplex ist, und ständig weiterentwickelt wird, kann
+es ebenfalls sein, dass etliche der hier genannte Informationen
+nicht mehr aktuell sind und trotz aller Sorgfalt kann es dennoch
+sein, dass einige der Informationen aus diesem Dokument
+fehlerhaft sind.
+    </textblock>
+
+    <textblock>
+Der Autor <name email="steffen@dett.de">Steffen Dettmer</name> freut sich natürlich
+über Kommentare und Anregungen zu diesem Text.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Funktionsüberblick
+    </heading>
+
+    <textblock>
+Mutt bietet eine Vielzahl von Funktionen, die das Leben
+erleichtern. Einige der Funktionen werden nur von wenigen anderen
+E-Mail-Programmen geboten.
+    </textblock>
+
+    <textblock>
+Neben umfangreichen Einstellungsmöglichkeiten der Ausgabefarben
+(sogar spezielle Wörter in den Mailtexten können farblich
+hervorgehoben werden!) erlaubt es Mutt, die Nachrichten einer
+Mailbox so darzustellen, dass erkennbar ist, ob die Nachricht
+eine Antwort auf eine andere ist. So werden Diskussionsfäden
+dargestellt, eine Funktion, die von vielen Newsprogrammen, jedoch
+kaum von E-Mail-Programmen geboten wird. Im Zusammenspiel mit
+speziellen Funktionen für die Arbeit mit mailling-Listen zeigt
+sich hier eine deutliche Stärke.
+    </textblock>
+
+    <textblock>
+Mutt implementiert viele MIME Funktionalitäten standardkonform.
+Es bietet IMAP und POP3 Unterstützung neben der Möglichkeit,
+viele Mailboxformate direkt lesen zu können. Durch die
+Möglichkeit E-Mail Header zu bearbeiten, erhält man sogar
+hierrüber Kontrolle. Das Programm ist schnell und effizient.
+    </textblock>
+
+    <textblock>
+Mutt ist sehr weitgehend konfigurierbar. So kann man
+Einstellungen ändern, wenn man E-Mail an bestimmte Empfänger
+verschickt und Makros (das sind Kommandoabfolgen) können
+definiert werden. Die Tastenbelegung kann komplett eingestellt
+werden. Auch die Verwendung regulärer Ausdrücke ist möglich.
+    </textblock>
+
+    <textblock>
+Innerhalb von Mailboxen und Foldern können Funktionen auf mehrere
+Nachrichten gleichzeitig angewendet werden. Es ist sogar möglich,
+gespeicherte E-Mails zu bearbeiten.
+    </textblock>
+
+    <textblock>
+Mutt ermöglicht es, E-Mail auf vielfältige Weise zu bearbeiten.
+Allerdings mag man auf den ersten Blick einige Funktionen
+vermissen, die man von anderen E-Mail-Programmen gewohnt ist. Mutt
+hat beispielsweise keinen eingebauten Nachrichteneditor und
+verfügt über keine E-Mail Filter- und Einsortierfunktionen. Der
+Grund dafür ist, dass es für diese Funktionen bereits eine
+
+Vielzahl leistungsfähiger Programme gibt, die hierfür in Verbindung
+mit Mutt verwendet werden können. Die großen Editoren <ref chapter="vim">vim</ref>
+und <ref chapter="editoren" iref="emacs">Emacs</ref> beispielsweise arbeiten sehr gut mit Mutt zusammen,
+E-Mail kann man mit <command>procmail</command> filtern und sortieren. Mutt wartet
+dann mit weiteren Funktionen auf, beispielsweise das <strong>"Scoring"</strong>
+von Mails (sortieren nach Prioritäten) und Ansichten-Filter
+(beispielsweise: nur E-Mails anzeigen, die im Text <strong>"mutt"</strong>
+enthalten).
+    </textblock>
+
+    <textblock>
+Man kann auch LDAP als Adressbucherweiterung verwenden, da auch
+Adressanforderungen über Kommandos durchgeführt werden. Hier gibt
+es fertige Skripte im Internet, beispielsweise
+mutt_ldap_query2.pl (siehe <ref lang="de" url="http://www.google.de">
+http://www.google.de</ref> oder
+<ref lang="de" url="http://www.pmnet.uni-oldenburg.de/mutt_ldap.html">
+http://www.pmnet.uni-oldenburg.de/mutt_ldap.html</ref>).
+    </textblock>
+
+    <textblock>
+Im Zusammenspiel mit externen Werkzeugen ergibt sich so eine
+Funktionsvielfalt, die kaum von integrierten Mailumgebungen
+geboten werden kann.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Installation
+    </heading>
+
+    <textblock>
+Dieser Text erklärt nicht ausführlich, wie man Mutt installiert,
+da es in den großen Distributionen verfügbar ist und hier auf die
+gleiche Weise wie andere Softwarepakete einfach installiert
+werden kann. Hier verwendet man den Paketmanager oder das
+Distributionsspezifische Installationswerkzeug, um das Mutt-Paket
+zu installieren.
+    </textblock>
+
+    <textblock>
+Natürlich ist es möglich, den Mutt Quellcode downzuladen und
+selbst zu kompilieren. Diese Prozedur basiert auf GNU autoconf
+und ist daher sehr ähnlich zu anderen Softwarepaketen, die GNU
+autoconf verwenden.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Grundkonfiguration
+   </heading>
+
+   <textblock>
+Startet man Mutt direkt nach der Installation, so wird eine
+Voreinstellungskonfiguration verwendet. Diese paßt vermutlich
+nicht zu den persönlichen Bedürfnissen, daher sind wahrscheinlich
+etliche Benutzer beim ersten Start von Mutt verwirrt oder gar
+abgeschreckt.
+   </textblock>
+
+   <textblock>
+Dieser Abschnitt beschreibt einige elementare
+Konfigurationsoptionen. In diesem Abschnitt erstellen wir eine
+Grundkonfigurationsdatei mit den wichtigsten Einstellungen, um
+mit Mutt loslegen zu können.
+   </textblock>
+
+   <section>
+    <heading>
+**Einleitung**
+    </heading>
+
+    <textblock>
+Mutt wird über eine Konfigurationsdatei konfiguriert. Zur
+Konfiguration passt man in der Regel die Datei <path>~/.muttrc</path> an
+seine Bedürfnisse an. Auf Mehrbenutzersystemen kann es zusätzlich
+eine systemweite <path>muttrc</path> geben, die etliche lokale
+Grundeinstellungen vorgibt.
+    </textblock>
+
+    <textblock>
+In der Konfigurationsdatei trägt man eine Reihe von sogenannten
+Kommandos ein. Meistens schreibt man eines je Zeile, mehrere
+kann man aber auch durch Semikolon trennen.
+    </textblock>
+
+    <textblock>
+Kommandodefinitionen sind sehr mächtig, man kann sogar andere
+Programme aufrufen und so beliebige Dynamik in die Konfiguration
+stecken. Man kann auch andere Konfigurationsdateien je nach
+bestimmten Ereignissen "nachladen", beispielsweise, um
+spezial-Einstellungen für einzelne Folder (das sind meist
+Dateien, in denen die ganzen Mails liegen) zu aktivieren.
+    </textblock>
+
+    <textblock>
+Es gibt das Kommando <command>set</command>, das eine Mutt-Variable auf einen Wert
+setzt. Das schreibt man dann so:
+    </textblock>
+
+    <textblock>
+<command>set variable=wert</command>
+    </textblock>
+
+    <textblock>
+Manche Variablen setzt man aber einfach nur (zum Beispile <command>set
+fast_reply</command>). Mit <command>unset</command> kann man
+diese ausschalten. Dies entspricht den Werten "ja" (gesetzt)
+und "nein" (nicht gesetzt).
+    </textblock>
+
+    <textblock>
+Hier findet man viele Konzepte, die man von Shells her kennt. In
+den folgenden Abschnitten folgen noch viele Beispiele dazu.
+Kommentare stehen hinter dem Rautezeichen <command>#</command>.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Einkommende Mail finden
+    </heading>
+
+    <textblock>
+In den meisten Fällen muß man einige Basisoptionen auf jeden Fall
+setzen. Zunächst muß Mutt natürlich die eingegangenen Mails
+finden. Oft werden einkommende Mails in einem sogenannten
+<path>spoolfile</path> nach <command>$MAIL</command> abgelegt, bei Verwendung von <command>sendmail</command> ist
+das üblicherweise eine Datei in <path>/var/mail</path> oder
+<path>/var/spool/mail</path>, die so heißt, wie der Benutzername. Dies ist bei
+Mutt Voreinstellung. Man kann diese Einstellung mit dem <command>set
+Kommando</command> ändern, indem man ein anderes <path>spoolfile</path> setzt. Das
+Kommando wäre beispielsweise:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set spoolfile=/var/mail/steffen
+     </content>
+    </file>
+
+    <textblock>
+Diese Zeile schreibt man einfach so in die Datei <path>~/.muttrc</path>. Die
+Möglichkeiten der Konfiguration sind sehr mächtig. So kann man
+hier auch auf Shellvariablen zugreifen:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set spoolfile=$MAIL
+     </content>
+    </file>
+
+    <textblock>
+oder sogar Kommandosubsitution verwenden:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set spoolfile=/var/mail/`whoami`
+     </content>
+    </file>
+
+   </section>
+
+   <section>
+    <heading>
+E-Mail Informationen einstellen
+    </heading>
+
+    <textblock>
+Wenn man Mails verschickt, so sollten diese im Absender den
+richtigen Namen des Absenders (<command>realname</command>) enthalten, um nicht als
+unhöflich zu gelten. Mutt verwendet automatisch das GCOS Feld des
+Benutzers, was leider oft nicht korrekt eingestellt ist. Der
+Administrator root kann diese Informationen für beliebige
+Benutzer mit dem Dienstprogramm <command>chfn</command> einstellen, ein Benutzer
+darf meistens seine eigenen Einstellungen setzen. Mutt ist jedoch
+nicht zwingend auf diese Einstellungen angewiesen.
+    </textblock>
+
+    <textblock>
+Den Namen kann man beispielsweise über die Variable <command>realname</command>
+einstellen:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set realname="Steffen Dettmer"
+     </content>
+    </file>
+
+    <textblock>
+Mutt baut nun aus dem Realnamen, dem Benutzernamen und Namen des
+Hosts die Absenderadresse zusammen. Heute ist das oft nicht mehr
+erwünscht, da viele Dailup-Systeme Hostnamen verwenden, die im
+Internet gar nicht bekannt sind - würde man an ein solches System
+eine Antwort-Mail schicken, so könnte diese nicht ausgeliefert
+werden. Daher kann man mit mutt auch die komplette
+Absenderadresse einstellen:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set from="\"Steffen Dettmer\" &lt;steffen@dett.de&gt;"
+set envelope_from=yes
+     </content>
+    </file>
+
+    <textblock>
+Das from sollte immer auf eine erreichbare Adresse zeigen.
+In diesem Beispiel sieht man auch gleich, dass man Sonderzeichen,
+wie Anführungszeichen, mit einem Backslash escapen kann. Dies
+funktioniert im Prinzip wie bei einer Shell. Die Option
+<command>envelope_from</command> stellt ein, dass die <command>from</command> Adresse an <command>sendmail</command>
+über <command>-f</command> weitergereicht wird. Ob diese Option funktioniert,
+hängt natürlich von dem verwendeten <command>sendmail</command> ab.
+    </textblock>
+
+    <textblock>
+Möchte man weitere Felder im Header einer Mail einstellen, so
+kann man das Kommando <command>my_hdr</command> verwenden. Beispielsweise kann man
+folgende drei Kommandos eintragen:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+my_hdr Reply-To: "Steffen Dettmer" &lt;steffen@dett.de&gt;
+my_hdr X-Editor: Vim http://www.vim.org/
+my_hdr X-Mailer: Mutt http://www.mutt.org/
+     </content>
+    </file>
+
+    <textblock>
+Die setzen dann eine Reply-To Adresse (sollte man natürlich nur
+machen, wenn diese vom <strong>"from"</strong> abweicht). Weiterhin verraten wir
+der Welt meinen Lieblingseditor und welch tolles E-Mail-Programm
+wir gerade verwenden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Weitere Optionen
+    </heading>
+
+    <textblock>
+Es folgen ein paar Optionen, die wichtige persönliche Vorlieben
+einstellen.
+    </textblock>
+
+    <textblock>
+Mutt fragt, ob gelesene Mails in einen extra Folder gespeichert
+werden soll. Wenn man dies nicht möchte, schaltet man diese
+Funktion einfach mit dem Kommando <command>set move=no</command> ab.
+    </textblock>
+
+    <textblock>
+Möchte man Mails speichern, legt mutt diese in Foldern ab. Per
+Voreinstellung werden diese im Verzeichnis <path>~/Mail/</path> erzeugt. Die
+verwendete Variable heißt <command>folder</command> und kann natürlich auf einen
+anderen Wert gesetzt werden. Diese Variable kann bei Dateinamen
+kurz als <command>+</command> oder <command>=</command> geschrieben werden. Dies ist nützlich, um
+beispielsweise die Datei einzustellen, in der versendete Mails
+gespeichert werden:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set folder=~/Mail/
+set record=+sent-mail
+set postponed=+postponed-msgs
+     </content>
+    </file>
+
+    <textblock>
+<command>postponed</command> ist englisch für "aufgeschoben" oder "vertagt": Hier
+werden Mailentwürfe gespeichert, die man später verschicken möchte
+(dazu später mehr).
+    </textblock>
+
+    <textblock>
+Große Flexiblität gewinnt man, wenn man sich die Mailheader auch
+vom Editor anzeigen läßt: so kann man nach Belieben Felder
+hinzufügen oder ändern. Normalerweise fragt mutt beim Antworten
+beispielsweise nach Zieladresse und Subject (Betreff). Dabei
+werden passende Werte aus der alten Mail übernommen. Möchte man
+die Felder aber lieber im Editor ändern, kann man schreiben:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set fast_reply
+set edit_headers
+set include
+     </content>
+    </file>
+
+    <textblock>
+Die letzte Anweisung sorgt dafür, dass mutt nicht fragt, ob
+zitiert werden soll, sondern dies immer automatisch macht.
+    </textblock>
+
+    <textblock>
+Viele finden es ungewöhnlich, beim Betrachten von Mails mit der
+Leertaste scrollen zu müssen. Per Voreinstellung wählt
+Cursor-Unten und Cursor-Hoch die nächste beziehungsweise
+vorherige Mail aus. Das finden viele sehr verwirrend, aber
+natürlich kann man das ändern:
+    </textblock>
+
+     <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+bind pager      &lt;up&gt;            previous-line
+bind pager      &lt;down&gt;          next-line
+     </content>
+    </file>
+
+    <textblock>
+Das Kommando <command>bind</command> ändert eine Tastenbelegung, hier für den
+Pager. Der Pager ist die Anzeige einer Mail. Man sieht, dass die
+Cursor-Taste Hoch (&lt;up&gt;) ab jetzt eine Zeile zurück und die Taste
+Runter (&lt;down&gt;) eine Zeile weiterspringt. Zum Navigieren durch
+die einzelnen Mails stehen jetzt im Pager noch die Tasten Rechts
+und Links (nächste und vorherige Mail) zur Verfügung. Die
+Indexansicht, in der die Nachrichten zur Auswahl angezeigt wird,
+verwendet weiterhin diese Tasten wie vorher.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Editor Einstellungen
+    </heading>
+
+    <textblock>
+Setzt man keine speiziellen Editoreinstellungen, so wird
+automatisch der <command>$EDITOR</command> verwendet, wie man das von anderen
+Unix-Programmen gewohnt ist.
+    </textblock>
+
+    <textblock>
+Man kann aber die Variable <command>editor</command> setzen, und dabei auch
+Optionen angeben. In diesem Abschnitt wird erklärt,
+wie man den Editor <ref chapter="vim">vim</ref> verwenden kann.
+Benutzer anderer Editoren
+müssen hier natürlich die Einstellung anpassen.
+    </textblock>
+
+    <textblock>
+Beispielsweise möchte man sicherlich eine farbige,
+syntaxabhängige Darstellung, die man mit dem
+<command>vim</command>-Kommandos "<command>set t_Co=8</command>" und
+<command>syntax on</command> erreichen kann.
+Stehen diese nicht in der
+<path>~/.vimrc</path>, so kann man diese jetzt setzen. Verwendet man
+beispielsweise <command>edit_headers</command>, so ist es störend, dass man erst
+einige Zeilen nach unten gehen muss, um den Anfang der
+eigentlichen Nachricht zu erreichen. Man kann den <command>vim</command> aber auch
+anweisen, gleich auf die erste Leerzeile zu springen. So kann man
+schreiben:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+set editor='vim -c "set t_Co=8" -c "syntax on" -c "/^$"'
+     </content>
+    </file>
+   </section>
+
+   <section>
+    <heading>
+Adressbuch
+    </heading>
+
+    <textblock>
+Mutt ermöglicht es, E-Mail-Adressen in einer sogenannten
+<strong>"Aliasdatei"</strong> zu speichern. Dies ist per Voreinstellung die
+normale Konfigurationsdatei <path>~/.muttrc</path>. Übersichtlichkeit erhält
+man, speichert man die Adressdaten in einer eigenen Datei,
+beispielsweise <path>~/.mutt_alias</path>. Dies erreicht man mit den folgenden
+Einstellungen:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+#eigene Aliasdatei verwenden:
+set alias_file=~/.mutt_alias
+
+#Aliasdatei einlesen, damit die Adressen gleich bekannt sind:
+source ~/.mutt_alias
+
+#Namen zu Adressen über die Aliasliste suchen und anzeigen
+set reverse_alias
+     </content>
+    </file>
+
+    <textblock>
+Die letzte Option ist sehr interessant. Hat man eine E-Mail-Adresse
+mit vollständigem Namen in der Aliasdatei eingetragen, so wird
+dieser anzeigt, auch wenn er in der E-Mail selbst nicht enthalten
+war. Das ist hilfreich, wenn man E-Mail von Adressen ohne
+Realnamen erhält, die man sich nur schwer merken kann.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+PGP oder GnuPG verwenden
+    </heading>
+
+    <textblock>
+Es gibt sehr viele Einstellungen, die das Verhalten von PGP oder
+GnuPG steuern. Glücklicherweise werden mit mutt sinnvolle
+Voreinstellungspakete mitgeliefert. Diese Einstellungen muß man
+nur laden. Die Einstellungen für GnuPG sind in der Datei <path>gpg.rc</path>
+zusammengefasst. Um herauszufinden, wo die Distribution diese
+Datei abgelegt hat, kann man das Kommando <command>locate</command> verwenden:
+    </textblock>
+
+<!--
+********
+* LAYOUT: kommando und Ausgabe
+********
+-->
+
+    <shell>
+     <user>
+locate gpg.rc
+     </user>
+     <output>
+/usr/share/doc/packages/mutt/gpg.rc
+     </output>
+    </shell>
+
+    <textblock>
+Hier wurde die Datei also in <path>/usr/share/doc/packages/mutt/gpg.rc</path>
+abgelegt (es handelt sich in diesem Fall um eine ältere
+SuSE-Version). Diese Datei lädt man nun in der <path>.muttrc</path>:
+    </textblock>
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+source /usr/share/doc/packages/mutt/gpg.rc
+     </content>
+    </file>
+
+    <textblock>
+Der genaue Pfad wird natürlich abweichen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Farben einstellen
+    </heading>
+
+    <textblock>
+Für etwas Übersicht sorgen Farben. Hier gibt es vielfältige
+Einstellungsmöglichkeiten.
+    </textblock>
+
+    <textblock>
+Farben stellt man mit dem Kommando <command>color</command> ein. Dahinter stehen
+mindestens drei Angaben. Die erste zusätzliche Angabe zeigt, was
+gefärbt werden soll (beispielsweise die Nachricht, englisch:
+message). Es folgt die Vorder- und dann die Hintergrundfarbe.
+Beispiele sind white (weiss), black (schwarz) und default
+(Voreinstellung). Verwendet man ein Terminalfenster mit
+transparentem Hintergrund oder einem Hintergrundbild, so bedeutet
+die Voreinstellung "durchsichtig".
+    </textblock>
+
+    <textblock>
+Alle bisher genannten Optionen zusammen mit ein paar
+Farbeinstellungen bilden eine Grundkonfiguration. Der
+Übersichtlichkeit halber hier ein vollständiges Beispiel einer
+Konfiguration gegeben, um mit Mutt beginnen zu können.
+Kurze Erklärungen sind als Kommentare vorhanden.
+    </textblock>
+
+<!--
+*****************
+* Layout: Datei "~./muttrc"
+******************
+-->
+
+    <file>
+     <title>
+~/.muttrc
+     </title>
+     <content>
+#Das spoolfile /var/mail/$USER bzw. $MAIL ist Voreinstellung:
+set spoolfile=/var/mail/$USER
+
+#Realnamen und Absenderadresse einstellen
+set from="\"Steffen Dettmer\" &lt;steffen@dett.de&gt;"
+set envelope_from=yes
+
+#Editor und Mailer im Header einstellen:
+my_hdr X-Editor: Vim http://www.vim.org/
+my_hdr X-Mailer: Mutt http://www.mutt.org/
+
+#Dorthin mit gespeicherter Mail
+set folder=~/Mail/
+#Dorthin mit verschickter Mail
+set record=+sent-mail
+#Dorthin angefangenen Nachrichten
+set postponed=+postponed-msgs
+
+#Gelesene Mail nicht in einen Extrafolder verschieben
+set move=no
+
+#Nicht fragen, antworten :-)
+set fast_reply
+#Header mit Editor bearbeiten können
+set edit_headers
+#immer zitieren
+set include
+
+#Editor vim, bunt, und gleich auf erste Leerzeile springen:
+set editor='vim -c "set t_Co=8" -c "syntax on" -c "/^$"'
+
+#GnuPG verwenden. Achtung: Pfad anpassen!
+#source /usr/share/doc/packages/mutt/gpg.rc
+
+#eigene Aliasdatei verwenen:
+set alias_file=~/.mutt_alias
+#Aliasdatei einlesen, damit die Adressen gleich bekannt sind:
+source ~/.mutt_alias
+#Namen/Adressen über die Aliasliste suchen und anzeigen
+set reverse_alias
+
+#Im Pager auch einen Teil Index anzeigen:
+set pager_index_lines=5
+
+#Im Pager mit Cursortasten scrollen können
+bind pager      &lt;up&gt;            previous-line
+bind pager      &lt;down&gt;          next-line
+
+#Attachments lila
+color   attachment      magenta         default
+#Fehler rot
+color   error           red             default
+
+#Der Header Gelb, Subject (Betreff) leuchtend, das To in weiß
+color   header          brightyellow    default   "^Subject: "
+color   header          white           default   "^To:"
+color   hdrdefault      yellow          default
+
+#Der "Leuchtbalken"
+color   indicator       black           white
+color   markers         brightblue      default
+
+#Die Nachricht selbst auch bunt machen; dabei je Quotingebene
+#eine andere Farbe --> bringt Übersicht
+color   message         white           default
+color   normal          white           default
+color   quoted          yellow          default
+color   quoted1         green           default
+color   quoted2         cyan            default
+color   quoted3         red             default
+
+#die Signatur nicht so hell anzeigen
+color   signature       brightblack     default
+#Statuszeile in blau-gelb
+color   status          brightyellow    blue
+     </content>
+    </file>
+
+<!--
+*****************
+* Layout: ENDE Datei "~./muttrc"
+******************
+-->
+
+    <textblock>
+Diese Datei kann man nun seinen Bedürfnissen anpassen und hat
+eine Anfangskonfiguration. Mit der Zeit kann man diese dann
+weiterentwickeln und Mutt mehr und mehr auf seine Bedürfnisse anpassen.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Benutzung
+   </heading>
+
+   <textblock>
+Dieser Abschnitt beschreibt, wie man Mutt startet, beendet und
+bedient.
+   </textblock>
+
+   <section>
+    <heading>
+Starten
+    </heading>
+
+    <textblock>
+Fast immer startet man Mutt einfach durch diese Eingabe:
+    </textblock>
+
+    <shell>
+     <user>
+mutt
+     </user>
+    </shell>
+
+    <textblock>
+und verwendet dann die Menüfunktionen. Mutt versteht zusätzlich
+jedoch viele Parameter, die man beispielsweise von Skripten aus
+verwenden kann. So kann man mit Mutt eine Datei als Anhang zu
+einer Mail verschicken (eine Funktion, die das Unix-Standard
+Kommando <command>mail</command> leider nicht bietet).
+    </textblock>
+
+    <textblock>
+Wichtige Kommandozeilenparameter:
+    </textblock>
+
+<!--
+********************
+* LAYOUT: Tabellenform?
+********************
+-->
+
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>-h</command>
+      </td>
+      <td>
+(help: Hilfe)<br/>
+Hilfe über Kommandozeilenoptionen anzeigen
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>-e &lt;Kommando&gt;</command>
+      </td>
+      <td>
+(execute: ausführen)<br/>
+Das angegebene Kommando wird ausgeführt.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>-a &lt;Datei&gt;</command>
+      </td>
+      <td>
+(attach: anhängen)<br/>
+Angegebene Datei anhängen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>-s &lt;Betreff&gt;</command>
+      </td>
+      <td>
+(subject: Betreff)<br/>
+Betreff der neuen E-Mail einstellen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>&lt;Adresse&gt;</command>
+      </td>
+      <td>
+Diese Adresse verwenden. Wird hier eine angeben, arbeitet Mutt nicht im interaktiven Modus, sondern beendet sich nach Bearbeitung dieser Mail.
+      </td>
+     </tr>
+    </table>
+
+<!--
+********************
+* LAYOUT: ENDE Tabellenform
+********************
+-->
+
+    <textblock>
+Wie bereits angedeutet, ist es mit Kommandozeilenoptionen
+möglich, eine Mail mit Dateianhängen automatisch und
+skriptgesteuert zu versenden. So könnte man schreiben:
+    </textblock>
+
+    <shell>
+     <user>
+echo "siehe Dateianhang für die Beispielkonfiguration" | mutt -s "test datei" -a .muttrc empfaenger@domain.de
+     </user>
+    </shell>
+
+    <textblock>
+um die Datei <path>.muttrc</path> mit einer kurzen Nachricht an
+empfaenger@domain.de zu schicken.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Bedienung
+    </heading>
+
+    <textblock>
+Wie bereits einleitend erwähnt, verfügt Mutt über keine
+vollgrafikfähige Oberfläche. Es ist eine Konsolen-Anwendung, die
+also im Textmodus arbeitet. Insbesondere gibt es überhaupt
+keine Mausunterstützung. Auch "Pull-Down" Menüs oder Dialogboxen
+sucht man vergeblich.
+    </textblock>
+
+    <textblock>
+Man bedient das Programm über Tasten, die man sich frei belegen
+kann. Dabei kann eine Taste unterschiedliche Bedeutung besitzen,
+je nach dem, wo man sich gerade befindet.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Ansichten
+    </heading>
+
+    <textblock>
+Mutt kennt verschiedene Ansichten, die auch Menüs genannt werden.
+Alle Ansichten haben in der ersten Zeile eine kleine Hilfe mit
+den wichtigsten Tastenbelegungen, und eine Statuszeile ganz
+unten. Die Taste <command>?</command> gibt als Hilfe eine vollständige Liste aller
+Tastenbelegungen aus. Die meisten Tasten beziehungsweise
+Funktionen sind in vielen Menüs verfügbar, also gleich oder
+ähnlich belegt. So kann man mit der Taste <command>/</command> nach Wörtern oder
+regulären Ausdrücken suchen.
+    </textblock>
+
+    <textblock>
+Startet man Mutt, so befindet man sich normalerweise in der
+Index-Ansicht der empfangenen Mails. Hier kann man mit den
+Cursortasten eine Mail auswählen und mit Enter auswählen. Diese
+Mail wird dann angezeigt. Diese Mail-Ansicht nennt sich Pager.
+    </textblock>
+
+    <textblock>
+Mit den Tasten <command>q</command> oder <command>i</command> gelangt man zurück zur Index-Ansicht
+und kann eine andere Mail auswählen. Es ist möglich, in der
+Pageransicht den oberen Teil des Bildschirmes für den Index
+verwenden zu lassen, so dass man auch in der Pageransicht (also
+beim Lesen einer E-Mail) immer genau weiß, wo man ist. Ein
+Beispiel gibt die Abbildung:
+    </textblock>
+
+<!--
+****************************
+* LAYOUT: mutt_pager.gif
+****************************
+-->
+
+    <image height="550">
+     <title>
+mutt_pager.png
+     </title>
+     <filename>
+mutt_pager.png
+     </filename>
+    </image>
+
+    <textblock>
+Im Index und im Pager kann man mit <command>m</command> eine neue Mail schreiben
+oder mit <command>r</command> auf eine Mail antworten. Es öffnet sich der Editor.
+Nach dem Schreiben der Nachricht speichert und beendet man
+(mit Vim mittel &lt;Esc&gt; :wq). Man
+gelangt in die "compose" Ansicht. Hier besteht die Möglichkeitn,
+die Mail-Einstellungen zu ändern, Dateien anzuhängen oder PGP
+Verschlüsselung auszuwählen. Dies wird später noch genauer
+ausgeführt.
+    </textblock>
+
+    <textblock>
+Es gibt noch weitere Ansichten beziehungsweise Menüs, darunter
+die Ansicht des Adressbuches und der Browser, den man öffnen
+kann, wenn man beispielsweise eine Datei anhängen möchte.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Der Index
+    </heading>
+
+    <textblock>
+Im Index werden die Mails eines Folders als Liste dargestellt.
+Es werden Absendedatum, Absender und Subject (Betreff) angezeigt.
+Natürlich ist es auch möglich, ganz andere Informationen
+anzeigen zu lassen, Mutt ist hier sehr flexibel.
+    </textblock>
+
+    <textblock>
+Mit den Cursortasten bewegt man den Leuchtbalken und kann dann eine
+Mail auswählen. Mit der Enter-Taste öffnet sich der Pager,
+und man kann die Mail betrachten. Pager und Index können viele
+Funktionen auf die ausgewählte Mail anwenden: mit der Taste <command>d</command>
+kann man sie löschen und mit <command>s</command> speichern. Mit <command>m</command> kann man eine
+neue Mail schreiben. Antworten kann man mit <command>r</command> oder <command>g</command>, wobei
+<command>g</command> an alle Empfänger der Mail antwortet. Mit der Taste <command>o</command>
+stellt man die Sortierreihenfolge ein.
+    </textblock>
+
+    <textblock>
+Sehr interessant ist die Sortierreihenfolge "Faden": Hier werden
+Antwort-Mails automatisch korrekt den Ursprungs-Mails zugeordnet.
+Diese sogenannte Threadingfunktion ist von Newsreadern her
+bekannt, bei E-Mail-Programmen aber leider selten zu finden.
+    </textblock>
+
+    <textblock>
+Es stehen natürlich viele weitere Funktionen unter verschiedenen
+Tasten zur Verfügung. Wie erwartet, funktionieren hier
+insbesondere <command>?</command> als Hilfe und <command>/</command> zum Suchen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Der Pager
+    </heading>
+
+    <textblock>
+Der Pager öffnet sich, wenn im Index eine Mail ausgewählt wird.
+In dieser Ansicht kann man die Mail lesen und beantworten. Die
+Funktionen und Tastenbelegung des Pagers sind sehr ähnlich zu
+denen des Index (jedenfalls per Voreinstellung).
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Der Browser
+    </heading>
+
+    <textblock>
+Den Datei-Browser erreicht man, wenn man einen Dateinamen
+eingeben soll, aber die Tabulatortaste zur automatischen
+Vervollständigung drückt. Den Browser erreicht mal also sowohl
+beim Abspeichern von Mails als auch beim Hinzufügen von
+Dateianhängen.
+    </textblock>
+
+    <textblock>
+In der Auswahl kann man mit dem Leuchtbalken die Datei suchen und
+mit der Enter-Taste übernehmen. Wählt man ein Verzeichnis aus, so
+wird dieses geöffnet. Einige Browser können auch mehrere Dateien
+auswählen, beispielsweise beim Anhängen von Dateien an eine Mail.
+In diesen Fällen kann man mehrere Dateien mit <command>t</command> markieren und
+dann mit Enter übernehmen. Über die Space-Taste kann man
+die aktuelle Datei betrachten.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Das Adressbuch
+    </heading>
+
+    <textblock>
+Das Adressbuch (Aliasliste) erreicht man, wenn man eine
+E-Mail-Adresse eingeben soll, aber die Tabulatortaste zur
+automatischen Vervollständigung drückt. Hier kann eine Adresse
+mit dem Leuchtbalken auswählen und mit Enter übernehmen. Man kann
+auch mehrere Adressen mit <command>t</command> oder der Leertaste markieren und
+mit Enter übernehmen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Voreingestellte Tasten
+    </heading>
+
+    <textblock>
+Die Tastenbelegung kann man natürlich beliebig verändern. Es
+folgt eine Übersicht der wichtigsten Tastenvoreinstellungen. In
+Klammern steht ein Kürzel, das es erleichtern soll, sich die
+Bedeutung zu merken.
+    </textblock>
+
+<!--
+********************
+* LAYOUT: Tabellenform?
+********************
+-->
+
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>?</command>
+      </td>
+      <td>
+(?: Fragen)<br/>
+Zeigt eine Liste aller Tastenbelegungen an, die momentan verfügbar sind. Funktioniert so ziemlich überall.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>F1</command>
+      </td>
+      <td>
+(Hilfetaste)<br/>
+Die Taste F1 öffnet das Handbuch, leider in englischer Sprache.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>m</command>
+      </td>
+      <td>
+(mail)<br/>
+Neue Mail schreiben beziehungsweise erstellen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>r</command>
+      </td>
+      <td>
+(reply: antworten)<br/>
+Auf die aktuell markierte Mail antworten.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>g</command>
+      </td>
+      <td>
+(group-reply: an Gruppe antworten)<br/>
+Die aktuelle markierte Mail beantworten, dabei alle ursprünglichen Empfänger in Kopie setzen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>s</command>
+      </td>
+      <td>
+(save: speichern)<br/>
+Die ausgewählte Nachricht in einen anderen Folder verschieben (abspeichern).
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>d</command>
+      </td>
+     <td>
+(delete: löschen)<br/>
+Die ausgewählte Nachricht löschen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>D</command>
+      </td>
+      <td>
+(DELETE pattern: nach muster löschen)<br/>
+Löscht viele Mails, die einem bestimmten Muster genügen. Hier
+kann man alle neuen (ungelesenen) Mails löschen oder alle von einem bestimmten Absender.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>u</command>
+      </td>
+      <td>
+(undelete: nicht löschen)<br/>
+Als gelöscht markierte Mails doch nicht löschen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+       <command>o</command>
+      </td>
+      <td>
+(order: Reihenfolge)<br/>
+Sortierreihenfolge der Nachrichten im Index auswählen. Folgende Optionen stehen danach zur Auswahl: (<command>D</command>)atum, (<command>A</command>)bsender, Ei(<command>n</command>)gang, (<command>B</command>)etreff, (<command>E</command>)mpfänger, (<command>F</command>)aden, (<command>u</command>)nsortiert, (<command>G</command>)röße, Be(<command>w</command>)ertung (Scoring/Punkte).
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>O</command>
+      </td>
+     <td>
+(reverseOrder: Rückwärts) Sortiert wie "o" (order), nur in umgekehrter Reihenfolge.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>l</command>
+      </td>
+      <td>
+(limit: Begrenzung)<br/>
+Es werden nur Nachtichten angezeigt, die ein bestimmtes Muster beinhalten.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>t</command>
+      </td>
+      <td>
+(tag: Markierung)<br/>
+Markiert die ausgewählte Nachricht. Es können viele Nachrichten auf diese Art markiert werden.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>T</command>
+      </td>
+      <td>
+(TAG pattern: Markierung nach Muster)<br/>
+Markiert Nachrichten, die auf ein bestimmtes Muster passen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>;</command>
+      </td>
+      <td>
+Das folgende Kommando bezieht sich nicht auf die Nachricht,
+die mit dem Leuchtbalken markiert ist, sondern auf alle
+momentan markierten Nachrichen.<br/>
+So kann man beispielsweise viele Mails mit einem Mal abspeichern oder löschen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>Tabulator</command>
+      </td>
+      <td>
+(automatische Vervollständigung, wie in einer Shell)<br/>
+Mit der Tabulatortaste wird auf der Eingabeaufforderungen eine
+automatische Vervollständigung durchgeführt, wie man das von
+Shells gewohnt ist.<br/>
+In der Index und der Pager Ansicht springt man mit der
+Tabulatortaste zur nächsten neuen (noch nicht gelesenen) Mail.
+Diese Taste funktioniert sogar bei der Abfrage nach
+E-Mail-Empfängern (und benutzt hier die Aliasliste).
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+       <command>c</command>
+      </td>
+      <td>
+(change: wechseln)<br/>
+In eine andere Mailbox (Folder) wechseln. Man wird nach dem Pfad
+gefragt. Mit "?" bekommt man eine Liste angezeigt.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+       <command>a</command>
+      </td>
+      <td>
+(add: hinzufügen)<br/>
+Absenderadresse der E-Mail zum Adressbuch (Aliasdatei) hinzufügen.
+Die Werte kann man vor dem Speichern noch bearbeiten.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>
+ <keycomb>
+  <key>STRG</key>
+  <key>g</key>
+ </keycomb>
+</command>
+      </td>
+      <td>
+Die aktuelle Funktion wird abgebrochen. Anschließend kann man
+eine neue Funktion per Knopfdruck ausführen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="top" nowrap="nowrap">
+<command>q</command>
+      </td>
+      <td>
+(quit: Beenden)<br/>
+Beendet das Programm
+      </td>
+     </tr>
+    </table>
+
+<!--
+********************
+* LAYOUT: ENDE Tabellenform?
+********************
+-->
+
+   </section>
+
+   <section>
+    <heading>
+Eine neue Mail schreiben
+    </heading>
+
+    <textblock>
+Zunächst drückt man im Index oder Pager die Taste <command>m</command>. Man wird
+nach dem Empfänger gefragt. Hier kann man die E-Mail-Adresse oder
+einen Kurznamen aus dem Adressbuch verwenden. Die Tabulatortaste
+dient der automatischen Vervollständigung. Drückt man diese
+sofort, so öffenen sich alle Einträge des Adressbuches. Hier kann
+man mit den Cursortasten eine Adresse auswählen und mit Enter
+übernehmen.  Es ist auch möglich, mit der Taste <command>t</command> mehrere
+Adressen auszuwählen. Anschließend wird man nach dem Betreff
+gefragt.
+    </textblock>
+
+    <textblock>
+Nun öffnet sich der Editor. Man bearbeitet die Nachricht. Hier
+kann man die volle Leistungsfähigkeit seines Editors verwenden.
+Letztendlich speichert man die Datei und beendet den Editor.
+    </textblock>
+
+    <textblock>
+Es öffnet sich jetzt eine Ansicht, in der man die wichtigesten
+Einstellungen noch einmal betrachten und gegebenfalls ändern kann.
+Diese Ansicht nennt sich compose Ansicht.
+    </textblock>
+
+    <textblock>
+Vielleicht möchte man mit <command>c</command> oder <command>b</command> jemand in das Cc: (Kopie)
+oder Bcc: ("blinde" Kopie) setzen. Mit <command>a</command> kann man Dateien
+anhängen. Man wird nach dem Dateinamen gefragt. Auch hier kann
+man selbstverständlich die Tabulatortaste verwenden. Drückt man
+diese sofort oder doppelt, öffnet sich ein Dateibrowser, in dem
+man bequem die zu versendende Datei auswählen kann. Unter Fcc:
+steht, in welchen Folder eine Kopie der Nachricht gespeichert
+werden soll (beispielsweise "sent-mail" oder "gesendetemails".
+Dies kann man natürlich auch ändern, in dem man die <command>f</command> Taste
+verwendet.
+    </textblock>
+
+    <textblock>
+Die Taste <command>p</command> ändert die Verschlüsselungseinstellungen. Man kann
+beispielsweise PGP oder GnuPG verwenden. Man wird gefragt, ob man
+die Mail verschlüsseln und/oder signieren möchte. Dies setzt
+natürlich eine funktionierende PGP/GnuPG Konfiguration voraus.
+Hierzu muß nicht nur Mutt korrekt eingerichtet sein, sondern man
+muß natürlich auch über die benötigten Schlüssel verfügen.
+Details können beispielsweise dem <ref chapter="gpg_handbuch_vorwort">GnuPG Handbuch</ref> entnommen
+werden.
+<!--
+***********
+* LAYOUT: link zum GnuPG Handbuch möglich?
+***********
+-->
+    </textblock>
+
+    <textblock>
+Mit der Taste <command>P</command> (also ein grosses P,
+<keycomb>
+ <key>Shift</key>
+ <key>P</key>
+</keycomb>
+) kann man die
+Nachricht zurückstellen, um sie später weiterzubearbeiten. Die
+Mail wird beispielsweise in den Folder postponed-msgs verschoben.
+    </textblock>
+
+    <textblock>
+Drückt man später <command>m</command>, um eine neue Mail zu schreiben, wird man
+in diesem Fall gefragt, ob man die zurückgestellte Nachricht
+weiterbearbeiten möchte. Gibt es mehrere, kann man eine davon
+auswählen.
+    </textblock>
+
+    <textblock>
+Mit der Taste <command>y</command> (yes: Ja!) wird die Mail dann gesendet.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Zusammenfassung und Ausblick
+   </heading>
+
+   <textblock>
+Es erfordert etwas Zeit und Geschick, sich eine auf die eigenen
+Bedürfnisse zugeschnittene Konfiguration zu erstellen und sich in
+die vielfältigen Funktionen von mutt einzuarbeiten. Danach jedoch
+wird man mit sehr effizienter Arbeitsweise belohnt.
+   </textblock>
+
+   <textblock>
+Weitere Informationen findet man auf der mutt Homepage:
+   </textblock>
+
+   <quotation>
+<ref lang="en" url="http://www.mutt.org/">http://www.mutt.org/</ref>
+   </quotation>
+
+   <textblock>
+Sven Guckes pflegt eine Homepage über mutt:
+   </textblock>
+
+   <quotation>
+<ref lang="de" url="http://www.guckes.net/mutt/">http://www.guckes.net/mutt/</ref>
+   </quotation>
+
+   <textblock>
+Hier findet man eine vielzahl nützlicher Hinweise und Hilfen,
+beispielsweise eine sehr ausführliche mutt Konfigurationsdatei.
+   </textblock>
+  </section>
+ </split>
+</chapter>

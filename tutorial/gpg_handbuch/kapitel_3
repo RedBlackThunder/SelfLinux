@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Schlüsselverwaltung</title>
+
+ <author>
+  <name>Mike Ashley</name>
+  <mailto></mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>gpg_handbuch_kapitel_3</index>
+
+ <description>
+  <textblock>
+  Schlüsselverfälschungen sind ein nicht zu unterschätzender
+  Unsicherheitsfaktor bei der Public-Key-Kryptographie. Ein Angreifer
+  kann beispielsweise die Schlüsselbunde eines Benutzers manipulieren
+  oder sich einen öffentlichen Schlüssel mit einer vorgetäuschten
+  Identität erzeugen und ihn an andere zum Herunterladen und Benutzen
+  schicken. Wenn z.B. Chloe unbemerkt die Nachrichten, welche Alice an
+  Blake sendet, lesen will, dann könnte sie folgendermaßen vorgehen:
+  zuerst erzeugt sie ein neues Schlüsselpaar mit einer gefälschten
+  Benutzer-ID. Dann ersetzt sie Alices Kopie von Blakes öffentlichem
+  Schlüssel durch den neuen Schlüssel. Anschließend fängt sie die
+  Nachrichten ab, die Alice an Blake sendet. Diese Nachrichten kann
+  sie dann mit dem neuen geheimen Schlüssel entschlüsseln. Dann
+  verschlüsselt sie die Nachricht wieder, aber diesmal mit dem echten
+  öffentlichen Schlüssel von Blake und schickt sie weiter an Blake.
+  Chloe kann jetzt - ohne dass jemand etwas bemerkt - alle von Alice an
+  Blake geschickten Nachrichten mitlesen.
+  </textblock>
+
+  <textblock>
+  Eine gute Schlüsselverwaltung ist entscheidend für die Integrität Ihrer
+  eigenen Schlüsselbunde, wie auch der Schlüsselbunde anderer
+  Benutzer. Der Kern der Schlüsselverwaltung von GnuPG ist das
+  <strong>Signieren von Schlüsseln</strong> und verfolgt zwei
+  Hauptzwecke: es erlaubt Ihnen, Verfälschungen an Ihrem Schlüsselbund
+  zu entdecken, und es ermöglicht Ihnen, die Zugehörigkeit eines
+  Schlüssels zu der von der jeweiligen Benutzer-ID genannten Person zu
+  überprüfen. Schlüsselunterschriften werden in einem <strong>Web of
+   Trust</strong> genannten Schema benutzt, um die Authentisierung
+  auch auf Schlüssel auszudehnen, die nicht direkt von Ihnen selbst,
+  sondern von anderen Personen, denen Sie zutrauen, Schlüssel nur nach
+  sorgfältiger Prüfung zu signieren, signiert worden sind. Durch eine
+  gewissenhafte Schlüsselverwaltung können Sie Schlüsselverfälschungen
+  als einen praktischen Angriff auf ihre sichere und vertrauliche
+  Kommunikation abwehren.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+	Verwaltung Ihres Schlüsselpaares
+   </heading>
+
+
+   <textblock>
+	Ein Schlüsselpaar besteht aus einem öffentlichen und einem
+	geheimen Schlüssel und einem Satz von Benutzer-IDs, um die
+	Schlüssel einer realen Person zuzuordnen. Jeder dieser
+	Bestandteile enthält Informationen über sich selbst. Bei einem
+	öffentlichen Schlüssel sind dies seine ID sowie Angaben darüber,
+	wann er erzeugt worden ist, wann seine Gültigkeit abläuft usw. Bei
+	der Benutzer-ID sind das der Name der realen Person, die durch die
+	ID identifiziert wird, eine optionale Bemerkung sowie eine
+	E-mail-Adresse. Der geheime Schlüssel enthält dagegen keine
+	Informationen über die Benutzer-ID.
+   </textblock>
+
+
+   <textblock>
+	Wenn Sie Informationen über ein Schlüsselpaar sehen möchten, dann
+	rufen Sie am besten mit der Kommandozeilen-Option
+	<command>--edit-key</command>> den Schlüsseleditor auf. Zum
+	Beispiel:
+   </textblock>
+
+   <shell>
+	<user path="~">gpg --edit-key chloe@cyb.org</user>
+	<output>
+Geheimer Schlüssel ist vorhanden.
+
+pub  1024D/1B087D04  created: 2000-06-07 expires: never      trust: -/u
+sub  2048g/6A3E902A  created: 2000-06-07 expires: never
+sub  1792G/7D5D4DAE  created: 2000-06-07 expires: 2002-06-07
+sub   960D/C0A27DBE  created: 2000-06-07 expires: 2002-06-07
+(1)  Chloe (Journalistin) &lt;chloe@cyb.org>
+(2)  Chloe (Freie Autorin) &lt;chloe@tel.net>
+
+	</output>
+	<input>
+Befehl>
+	</input>
+   </shell>
+
+   <textblock>
+	Zusammen mit dem öffentlichen Schlüssel wird angezeigt, ob der
+	geheime Schlüssel verfügbar ist oder nicht. Alle Informationen
+	über die Bestandteile des öffentlichen Schlüssels werden dann
+	aufgelistet. Die erste Spalte gibt den Typ des Schlüssels an. Das
+	Schlüsselwort <command>pub</command> identifiziert den
+	öffentlichen Hauptschlüssel und das Schlüsselwort
+	<command>sub</command> identifiziert einen untergeordneten
+	öffentlichen Schlüssel (Subkey). Die zweite Spalte gibt Länge, Typ
+	und ID des Schlüssels an. Dabei steht <command>D</command> für
+	DSA-Schlüssel, <command>g</command> für einen nur zur
+	Verschlüsselung geeigneten ElGamal-Schlüssel und
+	<command>G</command> für einen ElGamal-Schlüssel, der sowohl zur
+	Verschlüsselung als auch zum Unterschreiben verwendet werden kann.
+	Das Datum der Erzeugung und das Verfallsdatum wird in den Spalten
+	drei und vier angegeben. Die Benutzer-IDs werden nach den
+	Schlüsseln angegeben.
+   </textblock>
+
+   <textblock>
+	Es stehen noch weitere Befehle zu Verfügung, um zusätzliche
+	Informationen über die Schlüssel zu erhalten. Der Befehl
+	<command>toggle</command> schaltet zwischen den öffentlichen und
+	den geheimen Komponenten eines Schlüsselpaares um, wenn
+	tatsächlich beides zur Verfügung steht.
+   </textblock>
+
+   <shell>
+	<user path="~">toggle</user>
+	<output>
+sec  1024D/1B087D04  created: 2000-06-07 expires: never
+sbb  2048g/6A3E902A  created: 2000-06-07 expires: never
+sbb  1792G/7D5D4DAE  created: 2000-06-07 expires: 2002-06-07
+sbb   960D/C0A27DBE  created: 2000-06-07 expires: 2002-06-07
+(1)  Chloe (Journalistin) &lt;chloe@cyb.org>
+(2)  Chloe (Freie Autorin) &lt;chloe@tel.net>
+	</output>
+   </shell>
+
+   <textblock>
+	Die Information ist ähnlich der Auflistung für die Komponente des
+	öffentlichen Schlüssels. Das Schlüsselwort <command>sec</command>
+	identifiziert den geheimen Hauptschlüssel und das Schlüsselwort
+	<command>ssb</command> identifiziert die geheimen Subkeys. Die
+	Benutzer-IDs vom öffentlichen Schlüssel werden der Bequemlichkeit
+	halber auch aufgelistet.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Schlüssel-Integrität
+	</heading>
+
+
+	<textblock>
+	 Wenn Sie Ihren öffentlichen Schlüssel weitergeben, so geben Sie
+	 damit die öffentlichen Komponenten Ihres Hauptschlüssels und
+	 Ihrer Subkeys ebenso wie Ihre Benutzer-IDs weiter. Wenn Sie diese
+	 Informationen jedoch ungeschützt weitergeben, so besteht ein
+	 Sicherheitsrisiko, da es für einen potentiellen Angreifer möglich
+	 ist, den Schlüssel zu verfälschen. Der öffentliche Schlüssel kann
+	 durch Hinzufügen oder Ersetzen von Schlüsseln oder von
+	 Benutzer-IDs modifiziert werden. Der Angreifer könnte
+	 beispielsweise durch Verfälschen der E-Mail-Adresse einer
+	 Benutzer-ID die E-Mail an sich selbst umleiten. Durch Veränderung
+	 der öffentlichen Schlüssel wäre der Angreifer auch in der Lage,
+	 die zu ihm umgeleiteten Nachrichten zu entschlüsseln.
+	</textblock>
+
+
+	<textblock>
+	 Die Benutzung digitaler Signaturen ist die Lösung für dieses
+	 Problem. Indem man den öffentlichen Schlüssel sowie die
+	 Benutzer-IDs mit seinem geheimen Schlüssel unterzeichnet, lassen
+	 sich Verfälschungen daran leicht feststellen. Dieser Vorgang wird
+	 Eigenbeglaubigung genannt; ein öffentlicher Schlüssel, der
+	 eigenbeglaubigte Benutzer-IDs enthält, wird
+	 <command>Zertifikat</command> genannt.
+	</textblock>
+
+
+
+
+	<textblock>
+	 Ein Beispiel: Chloe hat zwei Benutzer-IDs und drei untergeordnete
+	 öffentliche Schlüssel bzw. Subkeys. Die Unterschriften auf den
+	 Benutzer-IDs können mit dem Befehl <command>check</command> im
+	 Schlüsseleditior geprüft werden.
+	</textblock>
+
+	<shell>
+	 <user path="~">gpg --edit-key chloe</user>
+	 <output>
+geheimer Schlüssel ist vorhanden.
+
+pub  1024D/1B087D04  created: 2000-06-07 expires: never      trust: -/u
+sub  2048g/6A3E902A  created: 2000-06-07 expires: never
+sub  1792G/7D5D4DAE  created: 2000-06-07 expires: 2002-06-07
+sub   960D/C0A27DBE  created: 2000-06-07 expires: 2002-06-07
+(1)  Chloe (Journalistin) &lt;chloe@cyb.org>
+(2)  Chloe (Freie Autorin) &lt;chloe@tel.net>
+
+	 </output>
+	 <input>
+Befehl> check
+	 </input>
+	 <output>
+uid  Chloe (Journalistin) &lt;chloe@cyb.org>
+sig!       1B087D04 2000-06-07   [Eigenbeglaubigung]
+uid  Chloe (Freie Autorin) &lt;chloe@tel.net>
+sig!       1B087D04 2000-06-07   [Eigenbeglaubigung]
+	 </output>
+	</shell>
+
+	<textblock>
+	 Wie erwartet, wird für jede Unterschrift der primäre Schlüssel
+	 mit der Schlüssel-ID <command>0x26B6AAE1</command> genommen. Die
+	 Eigenbeglaubigungen auf den Subkeys sind in dem öffentlichen
+	 Schlüssel enthalten, doch werden sie vom Schlüsseleditor nicht
+	 gezeigt.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Editieren von Schlüsseln
+	</heading>
+
+	<textblock>
+	 Zu Ihrem ursprünglichen Schlüsselpaar können Sie später sowohl
+	 neue Subkeys als auch neue Benutzer-IDs hinzufügen. Eine neue
+	 Benutzer-ID wird durch Verwendung des Befehls <command>
+	  adduid</command> erzeugt. Dabei werden Sie wieder nach Ihrem
+	 wirklichem Namen, E-Mail-Adresse und einer optionalen Bemerkung
+	 gefragt. Ein Subkey wird durch Verwendung des Befehls
+	 <command>addkey</command> hinzugefügt und kann von beliebigem Typ
+	 sein. Das ist so ähnlich, wie Sie es vom Erzeugen Ihres
+	 anfänglichen Schlüsselpaares kennen. Wenn Sie einen neuen Subkey
+	 oder eine neue Benutzer-ID erzeugen, so werden diese mit Ihrem
+	 geheimen Schlüssel eigenbeglaubigt; deshalb müssen Sie auch Ihr
+	 Mantra eingeben, wenn der Schlüssel erzeugt wird. 
+	</textblock>
+
+	<textblock>
+	 Zusätzliche Benutzer-IDs sind nützlich, wenn Sie für verschiedene
+	 Zwecke verschiedene IDs benötigen. So wollen Sie vielleicht eine
+	 Benutzer-ID für Ihre Arbeit, eine für Ihre politische Tätigkeit
+	 und eine weitere für private Korrespondenz haben. Ihre
+	 Mitarbeiter und Geschäftspartner, Politische Mitstreiter und
+	 Freunde werden Sie dann jeweils unter einer anderen ID kennen.
+	</textblock>
+
+	<textblock>
+	 Zusätzliche Subkeys sind ebenfalls nützlich. Die zu Ihrem
+	 primären öffentlichen Schlüssel gehörigen Benutzer-IDs werden von
+	 den Leuten, mit denen Sie kommunizieren, authentisiert, deshalb
+	 erfordert eine Änderung des primären Schlüssels eine nochmalige
+	 Bestätigung. Wenn Sie mit vielen Leuten kommunizieren, kann dies
+	 schwierig und zeitaufwendig sein. Andererseits ist es gut, von
+	 Zeit zu Zeit die Subkeys für die Verschlüsselung zu ändern. Wenn
+	 ein Schlüssel kompromittiert wurde, ist die Sicherheit aller mit
+	 diesem Schlüssel verschlüsselten Daten gefährdet. Durch das
+	 Ändern der Schlüssel erreichen Sie jedoch, dass in der Zukunft zu
+	 verschlüsselnde Daten nicht auch noch gefährdet werden.
+	</textblock>
+
+	<textblock>
+	 Subkeys und Benutzer-IDs können auch gelöscht werden. Dazu müssen
+	 Sie diese zunächst im Schlüsseleditor auswählen, indem Sie die
+	 Befehle <command>key</command> bzw. <command>uid</command>
+	 benutzen. So wählt beispielsweise der Befehl key 2 den zweiten
+	 Subkey aus; ein nochmaliger Aufruf des Befehls key 2 macht diese
+	 Auswahl wieder rückgängig. Wird key ohne Argument aufgerufen,
+	 wird die komplette Auswahl an Subkeys wieder aufgehoben. Das
+	 gleiche gilt für den Befehl uid. Wenn Sie die zu löschenden
+	 Benutzer-IDs ausgewählt haben, werden diese mit dem Befehl
+	 <command>deluid</command> aus Ihrem Schlüssel entfernt. Ebenso
+	 löscht der Befehl <command>delkey</command> alle ausgewählten
+	 Subkeys aus Ihren öffentlichen und geheimen Schlüsseln.
+	</textblock>
+
+
+	<textblock>
+	 Für die lokale Schlüsselverwaltung ist das Löschen von
+	 Schlüssel-Komponenten ein geeignetes Mittel, um die öffentlichen
+	 Schlüssel anderer von unnötigem Ballast frei zu halten. Hingegen
+	 sollten Sie normalerweise keine Benutzer-IDs und Subkeys von
+	 Ihrem eigenen Schlüssel entfernen, da Sie so die
+	 Weiterverbreitung dieses Schlüssels verkomplizieren. Wenn ein
+	 anderer GnuPG-Benutzer Ihren aktuellen öffentlichen Schlüssel
+	 importiert, wird dieser standardmäßig mit dessen alter Kopie
+	 Ihres öffentlichen Schlüssels zusammengeführt. Dadurch werden
+	 effektiv alle Komponenten wieder hergestellt, die Sie gelöscht
+	 haben. Um den Schlüssel wirklich zu aktualisieren, müßte der
+	 Benutzer zuerst die alte Version Ihres Schlüssels löschen und
+	 dann die neue Version importieren. Dies bringt eine zusätzliche
+	 Belastung für Ihre Kommunikationspartner mit sich. Es ist daher
+	 auch keine gute Idee, Ihren aktualisierten Schlüssel zu einem
+	 Key-Server zu schicken. Zum Aktualisieren Ihres eigenen
+	 Schlüssels ist es folglich besser, die jeweiligen
+	 Schlüsselkomponenten zu widerrufen, statt sie zu löschen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Widerrufen von Schlüssel-Komponenten
+	</heading>
+
+
+	<textblock>
+	 Um einen Subkey zu widerrufen, wählen Sie ihn im Schlüsseleditor
+	 aus, dann können Sie ihn mit dem Befehl <command>revkey</command>
+	 widerrufen. Der Schlüssel wird dadurch widerrufen, dass man dem
+	 Schlüssel eine Widerruf-Unterschrift hinzufügt. Anders als bei
+	 der Kommandozeilen-Option <command>--gen-revoke</command> tritt
+	 der Widerruf sofort in Kraft.
+	</textblock>
+
+	<shell>
+	 <input>
+key 2
+	 </input>
+	 <output>
+
+pub  1024D/1B087D04  created: 2000-06-07 expires: never      trust: -/u
+sub  2048g/6A3E902A  created: 2000-06-07 expires: never
+sub* 1792G/7D5D4DAE  created: 2000-06-07 expires: 2002-06-07
+sub   960D/6E82436B  created: 2000-06-07 expires: 2002-06-07
+(1)  Chloe (Journalistin) &lt;chloe@cyb.org>
+(2)  Chloe (Freie Autorin) &lt;chloe@tel.net>
+		
+	 </output>
+	 <input>
+Befehl> revkey
+	 </input>
+	 <output>
+Möchten Sie diesen Schlüssel wirklich wiederrufen? j
+
+Sie benötigen ein Mantra, um den geheimen Schlüssel zu entsperren.
+Benutzer: "Chloe (Journalistin) &lt;chloe@cyb.org>"
+1024-Bit DSA Schlüssel, ID 1B087D04, erzeugt 2000-06-07
+
+
+pub  1024D/1B087D04  created: 2000-06-07 expires: never      trust: -/u
+sub  2048g/6A3E902A  created: 2000-06-07 expires: never
+sub  1792G/7D5D4DAE  created: 2000-06-07 expires: 2002-06-07
+rev! subkey has been revoked: 2000-06-07
+sub   960D/6E82436B  created: 2000-06-07 expires: 2002-06-07
+(1)  Chloe (Journalistin) &lt;chloe@cyb.org>
+(2)  Chloe (Freie Autorin) &lt;chloe@tel.net>
+	 </output>
+	</shell>
+
+	<textblock>
+	 Beim Widerrufen einer Benutzer-ID wird anders verfahren. Durch
+	 Unterschriften auf einer Benutzer-ID wird bestätigt, dass der
+	 Eigentümer des Schlüssels tatsächlich identisch mit der in der
+	 Benutzer-ID genannten Person ist. In der Theorie beschreibt eine
+	 Benutzer-ID eine Person für immer, da diese Person sich nie
+	 ändert. In der Praxis können sich jedoch Elemente der
+	 Benutzer-ID, so z.B. die E-Mail-Adresse oder eine Bemerkung, mit
+	 der Zeit verändern und so die Benutzer-ID unbrauchbar machen.
+	</textblock>
+
+
+	<textblock>
+	 Die Spezifikation von OpenPGP unterstützt den Widerruf einer
+	 Benutzer-ID nicht. Man kann sich aber dadurch helfen, dass man
+	 seine Eigenbeglaubigung für die entsprechende Benutzer-ID
+	 widerruft. Aus den <strong>zuvor</strong>
+	 beschriebenen Sicherheitsgründen werden die Korrespondenzpartner
+	 keiner Benutzer-ID ohne gültige Eigenbeglaubigung trauen, GnuPG
+	 lehnt den Import eines solchen Schlüssels sogar gänzlich ab.
+	</textblock>
+
+
+	<textblock>
+	 Eine Unterschrift wird unter Verwendung des Befehls
+	 <command>revsig</command>. widerrufen. Da Sie eine beliebige Zahl
+	 von Benutzer-IDs unterschrieben haben können, verlangt der
+	 Schlüsseleditor von Ihnen für jede Unterschrift eine
+	 Entscheidung, ob sie widerrufen werden soll oder nicht.
+	</textblock>
+
+	<shell>
+	 <input>
+Befehl> revsig
+	 </input>
+	 <output>
+Sie haben folgende User-IDs beglaubigt:
+     Chloe (Journalistin) &lt;chloe@cyb.org>
+   beglaubigt durch 1B087D04 um 2000-06-07
+   beglaubigt durch 1B087D04 um 2000-06-07
+User-ID: ``Chloe (Journalistin) &lt;chloe@cyb.org>''
+unterschrieben mit Ihrem Schlüssel 1B087D04 um 2000-06-07
+Ein Widerrufszertifikat für diese Unterschrift erzeugen (j/N)n
+User-ID: ``Chloe (Freie Autorin) &lt;chloe@tel.net>''
+unterschrieben mit Ihrem Schlüssel 1B087D04 um 2000-06-07
+Ein Widerrufszertifikat für diese Unterschrift erzeugen (j/N)j
+Es werden nun folgende Beglaubigungen entfernt:
+     Chloe (Freie Autorin) &lt;chloe@tel.net>
+   beglaubiigt durch 1B087D04 um 2000-06-07
+Wirklich ein Unterschrift-Widerrufszertifikat erzeugen? (j/N) j
+
+Sie benötigen ein Mantra, um den geheimen Schlüssel zu entsperren.
+Benutzer: ``Chloe (Journalistin) &lt;chloe@cyb.org>''
+1024-Bit DSA Schlüssel, ID 1B087D04, erzeugt 2000-06-07
+
+
+pub  1024D/1B087D04  created: 2000-06-07 expires: never      trust: -/u
+sub  2048g/6A3E902A  created: 2000-06-07 expires: never
+sub  1792G/7D5D4DAE  created: 2000-06-07 expires: 2002-06-07
+rev! subkey has been revoked: 2000-06-07
+sub   960D/6E82436B  created: 2000-06-07 expires: 2002-06-07
+(1)  Chloe (Journalistin) &lt;chloe@cyb.org>
+(2)  Chloe (Freie Autorin) &lt;chloe@tel.net>
+	 </output>
+	</shell>
+
+	<textblock>
+	 Eine widerrufene Benutzer-ID wird durch die Widerrufs-Signatur
+	 auf der Benutzer-ID angezeigt, wenn die Unterschriften auf den
+	 Benutzer-IDs des Schlüssels aufgelistet werden.
+	</textblock>
+
+	<shell>
+	 <input>
+Befehl check
+	 </input>
+	 <output>
+
+uid  Chloe (Journalistin) &lt;chloe@cyb.org>
+sig!       1B087D04 2000-06-07   [Eigenbeglaubigung]
+uid  Chloe (Freie Autorin) &lt;chloe@tel.net>
+rev!       1B087D04 2000-06-07   [Widerruf]
+sig!       1B087D04 2000-06-07   [Eigenbeglaubigung]
+	 </output>
+	</shell>
+
+	<textblock>
+	 Ein Widerruf sowohl der Subkeys als auch der Eigenbeglaubigung
+	 auf Benutzer-IDs fügt dem Schlüssel eine Widerrufs-Signatur
+	 hinzu. Da also nur etwas hinzugefügt und nichts gelöscht wird,
+	 ist ein Widerruf für andere stets sichtbar, wenn Ihr aktueller
+	 öffentlicher Schlüssel weitergegeben und mit anderen älteren
+	 Kopien davon zusammengeführt wird. Der Widerruf garantiert
+	 deshalb, dass jeder die aktuelle Kopie Ihres öffentlichen
+	 Schlüssels haben kann.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Aktualisieren des Verfallsdatums
+	</heading>
+
+	<textblock>
+	 Das Verfallsdatum eines Schlüssels kann mit dem Befehl
+	 <command>expire</command> im Schlüsseleditor aktualisiert werden.
+	 Wenn kein Schlüssel ausgewählt ist, wird das Verfallsdatum des
+	 primären Schlüssels aktualisiert, ansonsten das des jeweils
+	 ausgewählten Subkeys.
+	</textblock>
+
+
+	<textblock>
+	 Das Verfallsdatum eines Schlüssels ist mit der Eigenbeglaubigung
+	 des Schlüssels verbunden. Es wird dadurch aktualisiert, dass man
+	 die alte Eigenbeglaubigung löscht und eine neue hinzufügt. Da die
+	 Korrespondenzpartner die alte Eigenbeglaubigung noch nicht
+	 gelöscht haben, werden sie eine zusätzliche Eigenbeglaubigung auf
+	 dem Schlüssel sehen, wenn sie ihre Kopie Ihres Schlüssels
+	 aktualisieren. Die jüngste Eigenbeglaubigung hat jedoch jeweils
+	 Vorrang, und so werden alle Korrespondenzpartner unzweideutig die
+	 Verfallsdaten Ihrer Schlüssel kennen.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+	Authentisieren anderer Schlüssel
+   </heading>
+
+   <textblock>
+	Wie in Kapitel <ref chapter="gpg_handbuch_kapitel_2">intro</ref> bereits bereits
+	ausführlich besprochen, wird der öffentliche Schlüssel eines
+	Korrespondenzpartners dadurch authentisiert, dass Sie persönlich
+	den Fingerabdruck seines Schlüssels prüfen und dann seinen
+	öffentlichen Schlüssel mit Ihrem geheimen Schlüssel
+	unterschreiben. Durch das persönliche Prüfen des Fingerabdrucks
+	können Sie sicher sein, dass der Schlüssel wirklich ihm gehört. Da
+	Sie den Schlüssel unterschrieben haben, können Sie sicher sein,
+	jede Verfälschung an ihm in der Zukunft zu entdecken. Leider ist
+	dieses Verfahren umständlich, wenn Sie entweder eine große Zahl
+	von Schlüsseln authentisieren müssen oder wenn Sie mit Leuten
+	kommunizieren, welche Sie nicht persönlich kennen.
+   </textblock>
+
+
+   <textblock>
+	GnuPG geht dieses Problem mit einem Mechanismus an, der allgemein
+	als <strong>Web of Trust</strong> bezeichnet wird. Im Web of
+	Trust wird die Verantwortlichkeit für das Authentisieren
+	öffentlicher Schlüssel an Personen übertragen, denen Sie zutrauen,
+	bei der Authentisierung von Schlüsseln die nötige Sorgfalt walten
+	zu lassen. Nehmen Sie zum Beispiel folgendes an:
+   </textblock>
+   
+   <ul>
+	<li>
+ Alice hat Blakes Schlüssel unterschrieben und
+	</li>
+	<li>
+	 Blake hat Chloes Schlüssel und Dharmas Schlüssel unterschrieben.
+	</li>
+   </ul>
+
+   <textblock>
+	Wenn Alice Blake hinsichtlich der ordnungsgemäßen Authentisierung
+	von Schlüsseln vertraut, dann kann sie davon ausgehen, dass Chloes
+	und Dharmas Schlüssel gültig sind, ohne dass sie diese persönlich
+	prüfen muß. Sie benutzt einfach ihre authentisierte Kopie von
+	Blakes öffentlichem Schlüssel, um zu prüfen, dass Blakes
+	Unterschriften auf den öffentlichen Schlüsseln von Chloe und
+	Dharma echt sind. Im allgemeinen wird, wenn Alice bei allen
+	Partnern völlig darauf vertraut, dass diese die von ihnen
+	unterschriebenen Schlüssel richtig authentisieren, auch jeder mit
+	einem gültigen Schlüssel unterschriebene Schlüssel als gültig
+	betrachtet. Der Ausgangspunkt ist Alices Schlüssel, dessen
+	Gültigkeit vorausgesetzt wird.
+   </textblock>
+
+   
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Vertrauen in den Eigentümer eines Schlüssels
+	</heading>
+
+	<textblock>
+	 Vertrauen ist in der Praxis natürlich immer subjektiv. So ist
+	 beispielsweise Blakes Schlüssel für Alice gültig, da sie ihn
+	 selbst unterschrieben hat, aber vielleicht traut sie Blake kein
+	 richtiges Authentisieren der von ihm unterschriebenen Schlüssel
+	 zu. In diesem Fall könnte sie die Gültigkeit von Chloes und
+	 Dharmas Schlüssel bezweifeln, da sich diese nur auf Blakes
+	 Unterschrift stützt. Das Web of Trust trägt diesem Umstand
+	 Rechnung, indem es jedem öffentlichen Schlüssel in Ihrem
+	 Schlüsselbund eine Angabe darüber zuordnet, inwieweit Sie dem
+	 Eigentümer des Schlüssels dahingehend vertrauen, dass er Schlüssel
+	 erst nach gründlicher Prüfung authentisiert. Es gibt vier
+	 Vertrauensstufen:
+	</textblock>
+
+	<textblock>
+	 <strong>Unbekannt</strong>
+	</textblock>
+
+	<quotation>
+	 Es ist nichts über die Fähigkeit des Eigentümers bekannt,
+	 Schlüssel vor dem Signieren zu authentisieren. Alle Schlüssel in
+	 Ihrem öffentlichen Schlüsselbund, die Ihnen nicht gehören, fallen
+	 zunächst unter diese Vertrauensstufe.
+	</quotation>
+	
+	<textblock>
+	 <strong>Kein Vertrauen</strong>
+	</textblock>
+
+	<quotation>
+	 Der Eigentümer ist dafür bekannt, andere Schlüssel nicht korrekt
+	 zu unterschreiben.
+	</quotation>
+
+	<textblock>
+	 <strong>Teilweises Vertrauen</strong>
+	</textblock>
+
+	<quotation>
+	 Der Eigentümer versteht die Implikationen des Unterschreibens von
+	 Schlüsseln und authentisiert Schlüssel richtig, bevor er sie
+	 unterschreibt.
+	</quotation>
+	
+	<textblock>
+	 <strong>Volles Vertrauen</strong>
+	</textblock>
+
+	<quotation>
+	 Der Eigentümer hat ein ausgezeichnetes Verständnis hinsichtlich
+	 des Unterschreibens von Schlüsseln, und seine Unterschrift auf
+	 einem Schlüssel wäre so gut wie Ihre eigene.
+	</quotation>
+
+
+	<textblock>
+	 Das Vertrauensmaß eines Schlüssels ist etwas, das Sie alleine dem
+	 Schlüssel zuordnen, und es wird als private Information
+	 betrachtet. Es wird nicht mit dem Schlüssel verpackt, wenn dieser
+	 exportiert wird; es wird sogar getrennt von Ihren Schlüsselbunden
+	 in einer gesonderten Trustdatenbank (trustdb.gpg) gespeichert.
+	</textblock>
+
+
+	<textblock>
+	 Der GnuPG-Schlüsseleditor kann benutzt werden, um das Maß Ihres
+	 Vertrauens in den Eigentümer eines Schlüssels anzugeben. Der
+	 Befehl lautet <command> trust</command> (Andererseits
+	 fragt GnuPG auch nach, wenn es die Information braucht und noch
+	 kein Vertrauensmaß angegeben wurde). In diesem Beispiel gibt
+	 Alice das Maß ihres Vertrauens zu Blake an und aktualisiert dann
+	 entsprechend die Trustdatenbank, um neu zu ermitteln, welche
+	 Schlüssel auf der Basis ihrer neuen Einstufung von Blake gültig
+	 sind.
+	</textblock>
+
+	<shell>
+	 <user path="~">gpg --edit-key blake</user>
+	 <output>
+pub  1024D/B2690E6F  created: 2000-06-06 expires: never      trust: -/f
+sub  1024g/F251B862  created: 2000-06-06 expires: never
+(1)  Blake (Staatsanwalt) &lt;blake@cyb.org>
+
+	 </output>
+	 <input>
+Befehl> trust
+	 </input>
+	 <output>
+pub  1024D/B2690E6F  created: 2000-06-06 expires: never      trust: -/f
+sub  1024g/F251B862  created: 2000-06-06 expires: never
+(1)  Blake (Staatsanwalt) &lt;blake@cyb.org>
+	   
+Bitte entscheiden Sie, inwieweit Sie diesem User zutrauen,
+den Schlüssel eines anderen Users korrekt zu prüfen (Vergleich mit
+Lichtbildausweisen, Vergleich der Fingerabdrücke aus unterschiedlichen
+Quellen ...)?
+
+ 1 = Weiß nicht so recht
+ 2 = Kein Vertrauen
+ 3 = Ich vertraue ihm normalerweise
+ 4 = Ich vertraue ihm vollständig
+ s = Bitte weitere Informationen anzeigen
+ m = Zurück zum Menü
+
+	 </output>
+	 <input>
+Ihre Auswahl? 3	  
+	 </input>
+	 <output>
+
+pub  1024D/B2690E6F  created: 2000-06-06 expires: never      trust: m/f
+sub  1024g/F251B862  created: 2000-06-06 expires: never
+(1)  Blake (Staatsanwalt) &lt;blake@cyb.org>
+
+	 </output>
+	 <input>
+Befehl> quit
+	 </input>
+	</shell>
+	
+	<textblock>
+	 Das Vertrauen in den Schlüssel-Eigentümer und in die Gültigkeit
+	 des Schlüssels wird rechts neben dem Schlüssel angezeigt. An
+	 erster Stelle wird das Vertrauen in den Eigentümer angezeigt,
+	 dann das Vertrauen in die Gültigkeit des Schlüssels. Die vier
+	 Vertrauensstufen werden folgendermaßen abgekürzt:
+	</textblock>
+
+	<ul>
+	 <li>
+	  Unbekannt (<command>q</command>),
+	 </li>
+	 <li>
+	  kein Vertrauen (<command>n</command>),
+	 </li>
+	 <li>
+	  teilweises Vertrauen (<command>m</command>) und
+	 </li>
+	 <li>
+	  volles Vertrauen (<command>f</command>)
+	 </li>
+	</ul>
+
+	<textblock>
+	 In diesem Fall ist Blakes Schlüssel voll gültig, da Alice ihn
+	 selbst unterschrieben hat. Anfangs fallen Blakes Schlüssel für
+	 sie unter die Vertrauensstufe <strong>Unbekannt</strong>, doch sie
+	  entscheidet sich dafür, ihn unter <strong>Teilweises
+	  Vertrauen</strong> einzustufen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Authentisieren von Schlüsseln im Web of Trust
+	</heading>
+
+	<textblock>
+	 Das Web of Trust ist ein flexibleres und komfortableres Verfahren
+	 zur Authentisierung eines Schlüssels. Früher wurde ein Schlüssel
+	 nur dann als gültig betrachtet, wenn er von Ihnen persönlich
+	 unterzeichnet war. Nach diesem Verfahren wird jetzt auch ein
+	 Schlüssel <strong>K</strong> als gültig betrachtet, wenn er die
+	 folgenden zwei Bedingungen erfüllt:
+	</textblock>
+
+	<ol>
+	 <li>
+	 Schlüssel <strong>K</strong> ist von genügend gültigen Schlüsseln
+	 unterschrieben, das heißt, dass er entweder
+	 <ul>
+	 <li>
+	  von <strong>Ihnen persönlich</strong> oder
+	 </li>
+	 <li>
+	  von <strong>einem Schlüssel vollen Vertrauens </strong> oder
+	 </li>
+	 <li>	  von <strong>drei Schlüsseln teilweisen Vertrauens</strong>
+	  unterschrieben wurde.
+	 </li>
+	 </ul>
+	 </li>
+
+	 <li>
+	 Der Pfad unterschriebener Schlüssel, der vom Schlüssel
+	 <strong>K</strong> zurück zu Ihrem eigenen Schlüssel führt,
+	 besteht aus <strong> maximal fünf Schritten</strong>.
+	 </li>
+	</ol>
+
+	<textblock>
+	 Die Pfadlänge, die Anzahl der erforderlichen Schlüssel Ihres
+	 teilweisen Vertrauens und die erforderliche Anzahl der Schlüssel
+	 Ihres vollen Vertrauens können Ihrer jeweiligen Vertrauensstufe
+	 angepaßt werden. Die oben angegebenen Zahlen sind die von GnuPG
+	 benutzten Standardwerte.
+	</textblock>
+
+	<textblock>
+	 <command>wot-examples</command> zeigt ein Web of Trust, das
+	 seinen Ausgangspunkt bei Alice hat. Das Diagramm zeigt
+	 anschaulich, wer wessen Schlüssel unterschrieben hat und welche
+	 Schlüssel Alice aufgrund ihres Vertrauens in die anderen
+	 Mitglieder des Web of Trust als gültig betrachtet. In diesem
+	 Beispiel wird angenommen, dass zwei Schlüssel teilweisen
+	 Vertrauens oder ein Schlüssel vollen Vertrauens benötigt werden,
+	 um einen anderen Schlüssel zu authentisieren. Die maximale
+	 Pfadlänge beträgt drei Schritte.
+	</textblock>
+	
+	<textblock>
+	 Übersicht, wer wessen Schlüssel unterschrieben hat
+	</textblock>
+
+	<table>
+	 <pdf-column/>
+	 <pdf-column/>
+	 <pdf-column/>
+	 <pdf-column/>
+	 <tr>
+	  <th>Vertrauen</th>
+	  <th></th>
+	  <th>Gültigkeit</th>
+	  <th></th>
+	 </tr>
+	 <tr>
+	  <td>teilweise</td>
+	  <td>völlig</td>
+	  <td>teilweise</td>
+	  <td>völlig</td>
+	 </tr>
+	 <tr>
+	  <td></td>
+	  <td>Dharma</td>
+	  <td></td>
+	  <td>Blake, Chloe, Dharma, Francis</td>
+	 </tr>
+	 <tr>
+	  <td>Blake, Dharma</td>
+	  <td>Francis</td>
+	  <td></td>
+	  <td>Blake, Chloe, Dharma</td>
+	 </tr>
+	 <tr>
+	  <td>Chloe, Dharma</td>
+	  <td></td>
+	  <td>Chloe, Francis</td>
+	  <td>Blake, Dharma</td>
+	 </tr>
+	 <tr>
+	  <td></td>
+	  <td>Blake, Chloe,Elena</td>
+	  <td></td>
+	  <td>Blake, Chloe, Elena, Francis</td>
+	 </tr>
+	</table>
+
+  
+ 
+	<textblock>
+	 Beim Berechnen der gültigen Schlüssel in dem Beispiel gilt
+	 folgendes: Blakes und Dharmas Schlüssel werden immer als voll
+	 gültig betrachtet, da sie direkt von Alice unterschrieben worden
+	 sind. Die Gültigkeit der anderen Schlüssel hängt vom Vertrauen
+	 ab. Im ersten Fall genießt Dharma volles Vertrauen, woraufhin die
+	 Schlüssel von Chloe und Francis als gültig betrachtet werden. Im
+	 zweiten Beispiel genießen Blake und Dharma nur teilweises
+	 Vertrauen. Da nun zwei Schlüssel teilweisen Vertrauens nötig
+	 sind, um einen Schlüssel voll zu authentisieren, wird der
+	 Schlüssel von Chloe als voll gültig, der von Francis aber nur als
+	 teilweise gültig betrachtet. Falls Chloe und Dharma nur
+	 teilweises Vertrauen genießen, wird Chloes Schlüssel nur
+	 teilweise gültig sein, wähend Dharmas Schlüssel voll gültig ist.
+	 Der Schlüssel von Francis jedoch wird ebenfalls nur als teilweise
+	 gültig betrachtet, da nur ein voll gültiger Schlüssel zur
+	 Authentisierung anderer Schlüssel benutzt werden kann, und
+	 Dharmas Schlüssel der einzige voll gültige Schlüssel ist, der zum
+	 Unterschreiben des Schlüssels von Francis benutzt worden ist.
+	 Wenn teilweises Vertrauen in Blakes Schlüssel hinzukommt, kann
+	 Chloes Schlüssel voll gültig werden und kann dann zur vollen
+	 Authentisierung des Schlüssels von Francis und zur teilweisen
+	 Authentisierung des Schlüssels von Elena benutzt werden. Wenn
+	 schließlich Blake, Chloe und Elena volles Vertrauen genießen,
+	 reicht dies noch nicht aus, um den Schlüssel von Geoff zu
+	 authentisieren, da die maximal zulässige Länge des
+	 Zertifizierungspfades aus drei Schritten bestehen soll, die
+	 Pfadlänge von Geoff zurück zu Alice jedoch vier Schritte beträgt.
+	</textblock>
+
+
+	<textblock>
+	 Das Web of Trust ermöglicht es Ihnen, GnuPG genau Ihren
+	 Vorstellungen von Sicherheit anzupassen. Sie könnten
+	 beispielsweise auf mehreren kurzen Pfaden von Ihrem Schlüssel aus
+	 zu einem anderen Schlüssel <strong>K</strong> bestehen, um diesem
+	 zu vertrauen. Vielleicht entscheiden Sie sich aber auch für
+	 längere Pfade oder sogar nur einen Pfad von Ihrem Schlüssel zu
+	 dem anderen Schlüssel <strong>K</strong>. Wenn Sie mehrfache
+	 kurze Pfade voraussetzen, so ist das eine starke Garantie dafür,
+	 dass Schlüssel <strong>K</strong> demjenigen gehört, von dem Sie
+	 dies annehmen. Der Preis dafür ist natürlich, dass die
+	 Authentisierung von Schlüsseln schwieriger ist, da Sie persönlich
+	 mehr Schlüssel unterschreiben müssen, als wenn Sie weniger und
+	 dafür längere Pfade akzeptieren.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+	Weitergabe von Schlüsseln
+   </heading>
+
+   <textblock>
+	Im Idealfall wird ein Schlüssel durch persönliche Übergabe an Ihre
+	Korrespondenzpartner weitergegeben. In der Praxis werden jedoch
+	Schlüssel oft per E-Mail oder irgendein anderes elektronisches
+	Kommunikationsmittel weitergegeben. Die Weitergabe per E-Mail ist
+	durchaus annehmbar, wenn Sie nur einige wenige
+	Korrespondenzpartner haben. Wenn Sie viele Korrespondenzpartner
+	haben, könnten Sie beispielsweise Ihre(n) öffentlichen Schlüssel
+	auf Ihrer Homepage im Web publizieren. Das setzt jedoch voraus,
+	daß Ihre Korrespondenzpartner auch wissen, wo sie Ihre(n)
+	Schlüssel finden können.
+   </textblock>
+
+   <textblock>
+	Um dieses Problem zu lösen, gibt es Key-Server, die öffentliche
+	Schlüssel sammeln und weitergeben. Ein bei dem Server
+	eingegangener öffentlicher Schlüssel wird entweder der Datenbank
+	des Servers hinzugefügt oder mit Ihrem eventuell schon vorhandenen
+	Schlüssel zusammengeführt. Wenn eine Anfrage nach einem Schlüssel
+	beim Server eingeht, durchsucht dieser seine Datenbank und sendet
+	den angeforderten öffentlichen Schlüssel zurück, wenn er ihn
+	gefunden hat.
+   </textblock>
+
+   <textblock>
+	Ein Schlüssel-Server ist auch sinnvoll, wenn viele Leute häufig
+	die Schlüssel anderer Leute unterschreiben. Ohne einen
+	Schlüssel-Server würde Blake, wenn er Alices Schlüssel
+	unterschreibt, an Alice eine Kopie ihres von ihm unterschriebenen
+	Schlüssels schicken, so dass Alice den so aktualisierten Schlüssel
+	ihrem Schlüsselbund hinzufügen und ihn auch an alle ihre
+	Korrespondenzpartner weitergeben könnte. Mit dieser Mühe genügen
+	Alice und Blake weitgehend ihrer Verantwortung gegenüber der
+	Allgemeinheit durch den Aufbau engmaschiger Vertrauensnetze und
+	helfen so, die Sicherheit von GPG zu verbessern. Dies ist jedoch
+	sehr lästig, wenn das Unterschreiben von Schlüsseln häufig
+	vorkommt.
+   </textblock>
+
+   <textblock>
+	Durch die Benutzung eines Schlüssel-Servers wird das etwas
+	leichter. Wenn nun Blake Alices Schlüssel unterschreibt, so
+	schickt er den unterschriebenen Schlüssel an den Schlüssel-Server,
+	welcher dann Blakes Unterschrift seiner Kopie von Alices Schlüssel
+	hinzufügt. Personen, die daran interessiert sind, ihre Kopie von
+	Alices Schlüssel zu aktualisieren, wenden sich dann selbständig an
+	den Schlüssel-Server, um sich den aktualisierten Schlüssel zu
+	holen. Alice braucht sich mit der Weitergabe überhaupt nicht zu
+	befassen und kann Unterschriften auf ihrem Schlüssel wie jeder
+	andere auch einfach durch Anfrage bei einem Schlüssel-Server
+	holen.
+   </textblock>
+
+   <textblock>
+	Ein oder mehr Schlüssel können unter Verwendung der
+	Kommandozeilen-Option <command>--send-keys</command> an den Key-Server geschickt
+	werden. Die Option erwartet eine Schlüssel-ID oder Benutzer-ID als
+	Argument und schickt die so spezifizierten Schlüssel an den
+	Key-Server. Der Key-Server, an den die Schlüssel geschickt werden
+	sollen, wird durch die Kommandozeilen-Option
+	<command>--keyserver</command> spezifiziert. In ähnlicher Weise
+	wird die Option <command>--recv-keys</command> benutzt, um
+	Schlüssel von einem Key-Server zu holen, doch müssen Sie hier den
+	Schlüssel mit einer Schlüssel-ID spezifizieren. Im folgenden
+	Beispiel aktualisiert Alice ihren öffentlichen Schlüssel mit neuen
+	Unterschriften vom Key-Server blackhole.pca.dfn.de und schickt
+	dann ihre Kopie von Blakes öffentlichem Schlüssel ebenfalls
+	dorthin, um alle neuen Unterschriften, die sie hinzugefügt hat,
+	weiterzugeben.
+   </textblock>
+
+   <shell>
+	<user path="~">gpg --keyserver wwwkeys.de.pgp.net --recv-key
+	 FB5797A9</user>
+	<output>
+gpg: Schlüssels FB5797A9 von wwwkeys.de.pgp.net wird angefordert ...
+gpg: Schlüssel FB5797A9: 1 neue Signatur
+gpg: Anzahl insgesamt bearbeiteter Schlüssel: 1
+gpg:         neue Signaturen: 1
+	</output>
+	<user path="~">gpg --keyserver wwwkeys.de.pgp.net --send-key
+	 blake@cyb.org</user>
+	<output>
+gpg: Senden an `wwwkeys.de.pgp.net' erfolgreich (status=200)
+	</output>
+   </shell>
+
+   <textblock>
+	Weltweit gibt es eine Vielzahl bekannter Key-Server. Die größeren
+	Key-Server synchronisieren sich wechselseitig. Am Besten benutzen
+	Sie einen gut erreichbaren Key-Server im Internet und tauschen
+	dann regelmäßig über diesen Schlüssel aus. Eine kleine Auswahl
+	gängiger Key-Server finden Sie im Anhang
+	<ref chapter="gpg_handbuch_anhang_b">app-netres</ref> des Buches.
+   </textblock>
+  </section>
+
+
+  <section>
+   <heading>
+	Fußnoten
+   </heading>
+
+   <textblock name="fussnote1">
+	 GnuPG überfrachtet das Wort <strong>Vertrauen</strong>, indem
+	 sowohl <strong>Vertrauen in einen Eigentümer</strong> als auch
+	 <strong>Vertrauen in einen Schlüssel</strong> gemeint sein kann.
+	 Dies kann Verwirrung stiften. Manchmal wird das Vertrauen in
+	 einen Eigentümer zur klareren Unterscheidung als
+	 <strong>Ownertrust</strong> bezeichnet. In diesem Handbuch ist
+	 jedoch der Begriff <strong>Vertrauen</strong> durchweg in der
+	 Bedeutung <strong>Vertrauen in den Eigentümer eines
+	 Schlüssels</strong> benutzt worden, und der Begriff
+	 <strong>Gültigkeit</strong> bezieht sich darauf, dass ein Schlüssel
+	 der mit der Schlüssel-ID verknüpften Person gehört.
+   </textblock>
+  </section>
+ </split>
+</chapter>

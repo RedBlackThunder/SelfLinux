@@ -1,0 +1,1294 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>ISDN unter Linux</title>
+
+ <author>
+  <name>Rolf Schmidt</name>
+  <mailto>rolf.frogs@t-online.de</mailto>
+ </author>
+
+ <author>
+  <name>Alexander Fischer</name>
+  <mailto>selflinux@tbanus.org</mailto>
+ </author>
+
+ <author>
+  <name>Klaus Franken</name>
+  <mailto>i4l@klaus.franken.de</mailto>
+ </author>
+
+ <layout>
+  <name>Alexander Fischer</name>
+  <mailto>Selflinux@tbanus.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>isdn</index>
+
+ <split>
+ <section>
+<!-- Kapitel 1 -->
+  <heading>
+ISDN, wofür brauch' ich das?
+  </heading>
+
+   <section>
+<!-- Kapitel 1.1 -->
+    <heading>
+Schnelle Datenverbindung
+    </heading>
+     <textblock>
+ISDN bietet die Möglichkeit, die Daten schnell und
+digital zu übertragen. Es
+entfällt also der <name>Modulator</name>/<name>Demodulator</name> (Modem).
+ISDN-Modems sind Geräte, die der Computer wie Modems
+über die serielle Schnittstelle anspricht.
+Prinzipiell ist es auch möglich, die beiden Übertragungskanäle
+zusammenzuschalten und damit die Übertragungsgeschwindigkeit zu
+verdoppeln.
+     </textblock>
+
+     <textblock>
+ISDN hat eine sogenannte Dienstekennung, mit der man Daten-, Fax- und
+Sprachübertragung unterscheiden kann.
+     </textblock>
+   </section>
+<!-- Kapitel 1.1 -->
+   <section>
+    <heading>
+Schnelle Verbindung ins Internet
+    </heading>
+     <textblock>
+Nicht nur die Datenübertragung ist recht schnell.
+Auch der Aufbau der Verbindung erfolgt deutlich
+schneller als bei Modems.
+     </textblock>
+   </section>
+<!--Kapitel 1.1 -->
+   <section>
+    <heading>
+Transparente Netzwerkverbindung
+    </heading>
+     <textblock>
+Unter Linux ist es mit ISDN möglich, die Verbindung als Netzwerk
+einzurichten, so dass alle Zugriffe, die den eigenen Bereich
+verlassen über das ISDN-Gerät
+z.B. ins Internet weitergeleitet werden.<br/>
+Es lassen sich auch private Netze mittels ISDN erstellen und
+koppeln. Diese Kopplung muss nicht über das Internet erfolgen.
+So lässt sich beispielsweise ein Freundes- oder Vereinsnetz
+aufbauen.
+     </textblock>
+   </section>
+<!-- Kapitel 1.1 -->
+   <section>
+    <heading>
+Anrufbeantworter
+    </heading>
+     <textblock>
+ISDN unter Linux ermöglicht es, einen Anrufbeantworter für
+jede Mehrfachrufnummer (<name>MSN</name>) einzurichten und Ansagen
+abhängig von der anrufenden oder angerufenen Telefonnummer
+abzuspielen.
+     </textblock>
+
+     <textblock>
+Die Einrichtung des Anrufbeantworters <command>vbox</command> wird in einem
+anderen Dokument beschrieben.
+     </textblock>
+   </section>
+ </section>
+<!-- Kapitel 1 -->
+ <section>
+  <heading>
+Installation
+  </heading>
+   <textblock>
+Die Installation von ISDN unter Linux wird von immer mehr
+Distributionen unterstützt. Bei SuSE wird ISDN in YAST(1)
+unter "<command>Administration des Systems | Hardware ins System
+integrieren | ISDN Hardware konfigurieren</command>" vorgenommen.
+Danach sind zwei Masken auszufüllen, die eine für die
+Hardware, die zweite für die Software.  Auch YAST(2) bietet
+die Möglichkeit ISDN einzurichten, allerdings in der Gruppe
+"<command>Netzwerk/Basis -> Konfiguration von ISDN</command>"
+   </textblock>
+<!-- Kapitel 1.1 -->
+    <section>
+     <heading>
+Welche Parameter werden benötigt?
+     </heading>
+      <textblock>
+Wenn PCI-ISDN-Karten verwendet werden, kann das BIOS den Typ,
+die Adresse und den benötigten Interrupt an das System melden.
+Bei älteren Karten, muss man selbst etwas Hand anlegen.
+Ist die Karte eine ältere ISA-Plug-and-Play-Karte, so muss
+zuerst das Plug-and-Play-System konfiguriert werden, damit
+auf die Karte zugegriffen werden kann.
+      </textblock>
+<!-- Kapitel 1.1.1 -->
+       <section>
+        <heading>
+Kartentyp
+        </heading>
+	 <textblock>
+Es sollte bekannt sein, welche Karte eingebaut ist bzw.
+eingebaut wird, denn die verschiedenen Typen benötigen
+unterschiedliche Parameter. Bei
+ISA-(oder Plug-and-Play-)Karten muss man die IO-Adresse
+und den Interrupt in Erfahrung bringen. Dies geschieht
+am besten durch Studium der Dokumentation und evtl.
+Jumper-Einstellungen auf der Karte.<br/>
+Einige Karten benötigen noch weitere Werte, die ebenfalls
+durch Studium der Dokumentation in Erfahrung zu bringen sind.
+         </textblock>
+
+	 <textblock>
+Wenn Sie eine aktive ISDN-Karte einbinden wollen/müssen, so
+sollten Sie die spezielle Dokumentation der Distribution für
+diese Karten zuerst lesen. Bei den aktiven Karten von AVM
+muss beispielsweise noch zusätzlich Software auf die
+ISDN-Karte geladen werden, bevor sie angesprochen werden kann.
+Diese Software muss ebenfalls vorhanden sein, sei es über die
+Installationsroutinen der Distribution oder über einen
+Download bzw. von Diskette/CD des Herstellers.
+         </textblock>
+       </section>
+<!-- Kapitel 1.1.1 -->
+       <section>
+        <heading>
+IP-Adressen
+        </heading>
+	 <textblock>
+Da ISDN  als Netzwerkgerät (Device) eingerichtet wird,
+muss man der Karte eine IP-Adresse zuweisen.  Diese
+wird zwar beim Verbindungsaufbau geändert, muss aber
+zu Anfang angegeben werden, damit das Gerät als
+Netzwerkgerät angesehen wird.
+         </textblock>
+
+	 <textblock>
+Wenn man eine IP-Adresse aus einem anderen freien Netzwerk
+verwendet wird automatisch eine Route darauf gesetzt. Dann
+kann man angeben, dass
+alle Datenpakete über diese IP-Adresse ins Internet
+geschickt werden sollen (default-Route).
+         </textblock>
+
+	 <textblock>
+Es wird noch eine zweite IP-Adresse benötigt, die dem
+anderen Ende der ISDN-Verbindung zugewiesen wird. Am
+besten unterscheiden sich die beiden Adressen nur im
+letzten Byte um 1 (Bsp.: lokale IP-Adresse der ISDN-Karte:
+192.168.100.100 und 2. IP-Adresse 192.168.100.101). Die
+zweite Adresse wird auch als <name>Point-to-Point-Adresse</name>
+bezeichnet.
+         </textblock>
+       </section>
+<!-- Kapitel 1.1.1 -->
+       <section>
+        <heading>
+MSN
+        </heading>
+         <textblock>
+Man muss in aller Regel dem ISDN-Gerät eine
+Multi-Subscriber-Number (MSN) zuweisen. Diese wird sowohl
+als Kennung an die Gegenstation gesendet als auch für die
+Annahme eines Anrufes benötigt. Standardmäßig enthält jeder
+ISDN-Anschluss 3 Nummern (bei der Telekom können noch 7
+weitere kostenlos geordert werden). Eine davon muss man
+dem ISDN-Gerät zuweisen.
+         </textblock>
+       </section>
+<!-- Kapitel 1.1.1 -->
+       <section>
+        <heading>
+Protokoll
+        </heading>
+	 <textblock>
+Wenn ISDN über eine ISDN-Nebenstellenanlage angeschlossen 
+ist oder ein älterer ISDN-Anschluss (vor 1995) vorliegt, 
+kann es sein, dass noch die nationale ISDN-Variante (1TR6) 
+verwendet wird. Im Regelfall wird das Protokoll
+jedoch Euro-ISDN (EDSS1) sein.
+         </textblock>
+       </section>
+<!-- Kapitel 1.1.1 -->
+       <section>
+        <heading>
+Zugangsdaten für Provider
+        </heading>
+	 <textblock>
+Um einen Internetzugang zu bekommen muss man eine Telefonnummer,
+ein Konto (Account) und ein Passwort bei einem Service-Provider
+haben. Es gibt aber auch sogenannte Call-by-Call-Zugänge, wobei
+das Konto und das zugehörige Passwort allgemein bekannt und
+zugänglich sind. So kann man z.B. eine Verbindung über <name>Arcor</name>
+mit dem Kontonamen <command>arcor</command>, dem Passwort 
+<command>internet</command>
+und der Telefonnummer <command>010700192070</command> aufbauen. Dies ist für
+Testzwecke sehr nützlich.
+         </textblock>
+
+	 <textblock>
+Allerdings kann man dann noch nicht richtig surfen, da der 
+Rechner nicht weiß, unter welcher IP-Adresse er die gewünschten 
+Webseiten finden kann. Dazu muss noch die Adresse eines 
+Nameservers eingetragen werden. Prinzipiell kann man die 
+Adresse eines beliebigen Nameservers eintragen, jedoch kennt
+man üblicherweise nicht soviele, sondern bekommt vom
+Serviceprovider eine Adresse genannt.
+         </textblock>
+       </section>
+    </section>
+<!-- Kapitel 1.1 -->
+    <section>
+     <heading>
+Installation für Internetanschluss
+     </heading>
+<!-- Kapitel 1.1.1 -->
+      <section>
+       <heading>
+Installationsroutinen der Distribution
+       </heading>
+        <textblock>
+Mit den angegebenen Parametern können Sie sich an die
+Installation machen. Jede Distribution hat entsprechende
+Programme und erfragt die Parameter. Wenn die Hardware
+nicht exotisch ist und Sie alle gewünschten Parameter
+richtig eingegeben haben funktioniert ISDN üblicherweise.
+Ein Reboot ist zwar nicht unbedingt notwendig aber trotzdem
+empfehlenswert um sicherzustellen, dass das ISDN-Subsystem
+richtig gestartet wird. Achten Sie auf entsprechende
+Meldungen beim Systemstart.
+        </textblock>
+      </section>
+<!-- Kapitel 1.1.1 -->
+      <section>
+       <heading>
+Eintragen eines Nameservers
+       </heading>
+        <textblock>
+Auch dafür haben Distributionen ein Hilfsprogramm. Die
+<name>Hardcore-Linuxer</name> schreiben mit ihrem Lieblingseditor
+den benötigten Eintrag in die Datei
+<command>/etc/resolv.conf</command>. Darin muss (mindestens) folgender
+Eintrag stehen: "nameserver IP-ADRESSE_DES_SERVERS",
+wobei die Anführungszeichen nicht geschrieben werden
+und die IP-Adresse eingetragen werden muss, die der
+Serviceprovider mitgeteilt hat.
+        </textblock>
+      </section>
+<!-- Kapitel 1.1.1 -->
+      <section>
+       <heading>
+Besonderheiten beim Zugang über T-Online
+       </heading>
+        <textblock>
+Das Einrichten eines ISDN-Zugangs für T-Online ist auch
+kein Hexenwerk. Die Zugangsdaten sind ein großer Zahlenwust,
+der fehlerfrei eingegeben werden muss.
+        </textblock>
+
+	<textblock>
+Der Loginname setzt sich zusammen aus der Zugangsnummer
+(wird auch häufig als Anschlusskennung bezeichnet), die
+in der Regel 12-stellig ist, der Abrechnungsnummer (oder
+früher auch der Telefonnummer, ebenfalls 12-stellig,
+beginnt jetzt häufig mit 32) und der Mitbenutzernummer,
+die einem Hash-Zeichen ("#") folgt und 4-stellig sein muss.
+        </textblock>
+
+	<textblock>
+Beispiel:<br/>
+Zugangsnummer: 123456789098<br/>
+Rechnungsnummer: 320012345678<br/>
+Mitbenutzernummer: 0001<br/>
+        </textblock>
+
+	<textblock>
+Daraus ergibt sich der Loginname als: "123456789098320012345678#0001"
+        </textblock>
+
+	<textblock>
+Das Passwort muss entsprechend angegeben werden. Man sollte es auf
+der Hompage der Telekom  
+<ref lang="de" url="https://webmbv.t-online.de/">https://webmbv.t-online.de/</ref> abändern.
+        </textblock>
+      </section>
+<!-- Kapitel 1.1.1 -->
+      <section>
+       <heading>
+Sicherheitsaspekte
+       </heading>
+        <textblock>
+Die Zugangsdaten werden in der Datei <command>/etc/ppp/pap-secrets</command>
+abgelegt, und zwar im Klartext! Deshalb darf diese Datei
+nur von root gelesen und geschrieben werden dürfen!
+        </textblock>
+
+	<textblock>
+Der Befehl 
+        </textblock>
+	
+	 <shell>
+	  <user>
+ls -l /etc/ppp/pap-secrets
+          </user>
+	 </shell>
+
+	<textblock>
+muss folgende Rechte anzeigen:
+        </textblock>
+
+	 <shell>
+	  <output>
+-rw-------    1 root     root          397 Apr  6  2001 pap-secrets
+          </output>
+	 </shell>
+
+	<textblock>
+Wenn das nicht so ist, so geben Sie als Administrator
+(root-user) folgenden Befehl ein:
+        </textblock>
+
+	 <shell>
+	  <root>
+chmod 600 /etc/ppp/pap-secrets
+          </root>
+	 </shell>
+
+	<textblock>
+Denken Sie daran, dass
+jeder, der unberechtigterweise an diese Datei kommen kann,
+auf Ihre Kosten surfen kann. Deshalb wird spätestens jetzt
+ein gutes root-Passwort benötigt.
+        </textblock>
+      </section>
+   </section>
+ </section>
+ </split>
+<!-- Seite 2 -->
+ <split>
+<!-- Kapitel 1 -->
+ <section>
+  <heading>
+Hilfe bei Problemen
+  </heading>
+   <textblock>
+Wenn die Einrichtung von ISDN nicht geklappt hat, sollten Sie
+zuerst die Logdatei <command>/var/log/messages</command> auf Fehlermeldungen des
+ISDN-Systems untersuchen. Hilfreich ist es, sich bei den weiteren
+Versuchen die Datei in einem eigenen Terminalfenster mit dem
+Befehl
+   </textblock>
+   
+    <shell>
+     <root>
+tail -f /var/log/messages
+     </root>
+    </shell>
+
+   <textblock>
+ständig anzeigen zu lassen.
+Eine Ansicht der kompletten messages-Datei kann mittels des
+Befehles
+   </textblock>
+   
+    <shell>
+     <root>
+less /var/log/messages
+     </root>
+    </shell>
+
+   <textblock>
+erfolgen. <strong>Achtung</strong>: Die
+Datei kann mehrere tausend Seiten beinhalten!
+   </textblock>
+<!-- Kapitel 1.1 -->
+   <section>
+    <heading>
+Was kann schief gehen?
+    </heading>
+     <textblock>
+Laut Murphys Gesetzen geht - wenn was schief geht - alles schief,
+was möglich ist. Aber mit etwas Systematik kann man die Probleme
+analysieren und beheben.
+     </textblock>
+
+<!-- Kapitel 1.1.1 -->
+
+      <section>
+       <heading>
+Als Erstes muss der Zugriff auf das ISDN-Gerät funktionieren
+       </heading>
+        <textblock>
+Dies geschieht üblicherweise mittels Kernel-Modulen
+(mehrere Module sind dafür nötig). Man kann ISDN auch direkt
+in den Kernel einkompilieren lassen, ist aber bei den
+Standardinstallationen praktisch nicht der Fall!
+        </textblock>
+
+	<textblock>
+Dazu muss der Kernel Modulsupport unterstützen und die
+ISDN-Module müssen vorhanden sein.<br/>
+Wenn der Befehl <command>lsmod</command> eine Tabelle ausgibt, sind Module 
+geladen,
+also Modulsupport vorhanden.
+        </textblock>
+
+	<textblock>
+Nun sollte man sich auf die Suche nach den benötigten
+Modulen machen. Diese liegen üblicherweise in
+<command>/lib/modules/KERNELVERSION/drivers/isdn/</command>.
+Wenn dieses Verzeichnis nicht vorhanden oder leer ist,
+müssen die Module erst im Rahmen einer Kernelkompilierung
+erstellt werden. Die Verzeichnisnamen im ISDN-Modulverzeichnis
+geben ja schon Hinweise auf die unterstützten Karten.
+Ausgenommen das Modul <command>Hisax</command> - eine Karte mit diesem Namen
+ist mir nicht bekannt. Die Aussage ist so korrekt, allerdings
+ist das <command>HiSax</command>-Modul für sehr viele passive ISDN-Karten
+zuständig, die den ISDN-Chip von <name>Siemens</name> verwenden. Dazu
+zählen folgende passive Karten:
+        </textblock>
+
+	 <table>
+	  <pdf-column width="50"/>
+	  <pdf-column/>
+	  <tr>
+	   <th>
+TypNr
+           </th>
+	   <th>
+Name der Karte
+           </th>
+	  </tr>
+	  <tr>
+	   <td>
+1
+           </td>
+	   <td>
+Teles 16.0
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+2
+           </td>
+	   <td>
+Teles  8.0
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+3
+           </td>
+	   <td>
+Teles 16.3 (non PnP)
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+4
+           </td>
+	   <td>
+Creatix/Teles PnP
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+5
+           </td>
+	   <td>
+AVM A1 (Fritz)
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+6
+           </td>
+	   <td>
+ELSA PCC/PCF cards
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+7
+           </td>
+	   <td>
+ELSA Quickstep 1000
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+8
+           </td>
+	   <td>
+Teles 16.3 PCMCIA
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+9
+           </td>
+	   <td>
+ITK ix1-micro Rev. 2
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+10
+           </td>
+	   <td>
+ELSA PCMCIA
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+11
+           </td>
+	   <td>
+Eicon.Diehl Diva ISA PnP
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+11
+           </td>
+	   <td>
+Eicon.Diehl Diva PCI
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+12
+           </td>
+	   <td>
+ASUS COM ISDNLink
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+13
+           </td>
+	   <td>
+HFC-2BS0 based cards
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+14
+           </td>
+	   <td>
+Teles 16.3c
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+15
+           </td>
+	   <td>
+Sedlbauer Speed Card (=Teledat 100)
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+15
+           </td>
+	   <td>
+Sedlbauer PC/104
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+16
+           </td>
+	   <td>
+USR Sportster internal
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+17
+           </td>
+	   <td>
+MIC card
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+18
+           </td>
+	   <td>
+ELSA Quickstep 1000PCI
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+19
+           </td>
+	   <td>
+Compaq ISDN S0 ISA card
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+20
+           </td>
+	   <td>
+NETjet PCI card
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+21
+           </td>
+	   <td>
+Teles PCI
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+22
+           </td>
+	   <td>
+Sedlbauer Speed Star (PCMCIA)
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+24
+           </td>
+	   <td>
+Dr. Neuhaus Niccy PnP
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+24
+           </td>
+	   <td>
+Dr. Neuhaus Niccy PCI
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+25
+           </td>
+	   <td>
+AVM A1 PCMCIA (Fritz!)
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+26
+           </td>
+	   <td>
+Teles S0Box
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+27
+           </td>
+	   <td>
+Fritz PCI
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+27
+           </td>
+	   <td>
+AVM PnP
+           </td>
+	  </tr>
+	  <tr>
+	   <td>
+28
+           </td>
+	   <td>
+Sedlbauer Speedfax
+           </td>
+          </tr>
+	 </table>
+
+	<textblock>
+Versuchen Sie als Erstes die Treiber (= Kernelmodul) für
+Ihre ISDN-Karte zu laden. Verwenden Sie dazu den
+<command>modprobe</command>-Befehl, da dieser evtl. zusätzlich
+benötigte Module automatisch mit lädt.<br/>
+Sie müssen dem Modul Parameter mitgeben, z.B.
+<name>TypNummer</name> (vgl. obige Tabelle), die <name>IO-Adresse</name>
+oder die Nummer des Interrupts, den Namen (<name>id</name>),
+unter dem die Karte angesprochen und das ISDN-Protokoll
+(1 = 1TR6, 2 =EDSS1 ) das verwendet werden soll. Ein
+entsprechender Aufruf könnte wie folgt lauten:
+        </textblock>
+
+	 <shell>
+	  <root>
+modprobe hisax  typ=5 io=0x200 irq=7 id=ippp0 protocol=2
+          </root>
+	 </shell>
+
+	<textblock>
+...um den Treiber für eine Fritz-Karte zu laden. Wenn es
+keine Fehlermeldung gibt, sollte das <command>hisax</command>-, 
+<command>isdn</command>- und
+ein <command>shlc</command>-Modul zusätzlich in der Ausgabe von 
+<command>lsmod</command> zu
+sehen sein. Ist dies nicht der Fall müssen Sie entweder
+die Parameter ändern, einen anderen Treiber ausprobieren
+oder den Support der Distribution anrufen.
+Weitergehende Informationen z.B. über Kartentypen,
+benötigte Parameter und Modulnamen finden Sie auch
+in der Dokumentation des Kernels.
+        </textblock>
+
+	<textblock>
+Wenn das Laden des Treibers erfolgreich war, sollte
+sich der Schnittstelle eine IP-Adresse zuweisen
+lassen. Den Namen der Schnittstelle haben Sie ja
+beim Laden des Moduls dem Treiber zugewiesen.
+        </textblock>
+
+	 <shell>
+	  <root>
+ifconfig ippp0 192.168.99.99
+          </root>
+	 </shell>
+
+	<textblock>
+sollte nun funktionieren,
+was Sie durch die erneute Eingabe von
+        </textblock>
+
+	 <shell>
+	  <root>
+ifconfig
+          </root>
+	 </shell>
+
+	<textblock>
+(ohne Parameter) kontrollieren können.
+        </textblock>
+
+	<textblock>
+Wenn auch der Befehl
+        </textblock>
+
+         <shell>
+	  <root>
+isdnctrl list ippp0
+          </root>
+	 </shell>
+
+	<textblock>
+(bzw. mit dem von Ihnen vergebenen Namen) keine Fehlermeldung (wie z.B.
+<command>no such device</command> o.ä) bringt, läuft die Schnittstelle.
+        </textblock>
+
+	<textblock>
+Am besten konfigurieren Sie die ISDN-Schnittstelle nun
+nochmals mit den neuen Erkenntnissen und dem Werkzeug
+der Distribution.
+        </textblock>
+      </section>
+<!-- Kapitel 1.1.1 -->
+      <section>
+       <heading>
+Kein Login beim Provider
+       </heading>
+        <textblock>
+Wenn die Karte erfolgreich konfiguriert wurde sollte auch
+ein Zugang zum Provider möglich sein. Wenn das nicht der
+Fall ist kommen folgende Ursachen in Frage:
+        </textblock>
+
+	 <ul>
+<li>Das ISDN-Gerät ist nicht mit der ISDN-Leitung verbunden
+  (NTBA), oder das Verbindungskabel ist defekt.</li>
+<li>Die angewählte Nummer ist falsch.</li>
+<li>Der Loginname ist falsch.<br/>
+  Besonders der lange nummerische Zugangsname von T-Online
+  beherbergt viele Möglichkeiten für Zahlendreher. Wichtig
+  ist auch, dass die Mitbenutzernummer (nach dem
+  Hash-Zeichen - <command>#</command>) vierstellig und größer 0 ist.</li>
+<li>Das Passwort ist falsch.</li>
+         </ul>
+
+	<textblock>
+Die Datei <command>/var/log/messages</command> gibt viele Hinweise zu den
+Fehlerquellen. Das ISDN-Protokoll gibt sogenannte <name>Cause-Codes</name>
+zurück, die den Fehler angeben. Die folgenden Tabelle listet
+einige der Fehlercodes auf und gibt Hinweise für
+die Behebung:
+        </textblock>
+
+	 <table>
+	  <pdf-column/>
+	  <pdf-column/>
+	  <tr>
+	   <th>
+Fehler-Code
+           </th>
+	   <th>
+Problem/Lösung
+           </th>
+	  </tr>
+	  <tr>
+	   <td valign="top">
+E0066: Recovery on timer expiry
+           </td>
+	   <td>
+Your peer doesn't handle a part of the DSS1
+protocol correctly - its reactions upon sending
+-complete-requests are faulty; solution:
+Recompile your kernel with the option "Disable
+sending complete"<br/>
+
+Partner kann mit Teilen des DSS1-Protokolls
+nichts anfangen  - Reaktion auf sending-
+complete-requests sind fehlerhaft;
+Lösung: Kernel neu kompilieren mit "Disable
+sending complete"
+	   </td>
+	  </tr>
+	  <tr>
+	   <td valign="top">
+E0058: Incompatible destination
+           </td>
+	   <td>
+It is true that you chose the right telephone
+number, but your peer has not loaded his ISDN-
+subsystem correctly or even not at all; this
+can happen even if the peer has misconfigured
+the incoming telephone numbers.
+Mind: addphone out 123456 or addphone out
+089123456
+BUT: addphone in 89123456 - this is the ONLY
+possibility: Include area code even for local
+calls, but without leading zero.<br/>
+
+Sicher haben Sie die richtige Telefonnummer
+gewählt, aber das ISDN-Subsystem beim Partner
+ist falsch oder nicht konfiguriert; dies
+passiert auch wenn die anrufende Telefonnummer
+beim Partner eingerichtet wurde.
+ACHTUNG: "addphone out 123456" oder "addphone
+out 089123456"
+RICHTIG: "addphone in 89123456" - ist nur SO
+möglich: Immer mit Vorwahl aber ohne
+führende Null.
+	   </td>
+	  </tr>
+	  <tr>
+	   <td valign="top">
+E0201: Unassigned number
+           </td>
+	   <td>
+Your dial out telephone number is wrong; if an
+areacode is necessary you must include a
+leading zero. Check out the telephone number
+syntax described under E0058.<br/>
+
+Die gewählte Nummer ist falsch: Wenn eine Vor-
+wahl nötig ist, muss die führende Null dabei
+sein. Die Schreibweise der Telefonnummer
+prüfen vgl. auch E0058)
+	   </td>
+	  </tr>
+	  <tr>
+	   <td valign="top">
+E0222: No circuit or channel available (public network)
+           </td>
+	   <td>
+This is what you usually call "BUSY".<br/>
+
+Im Volksmund: "Besetzt"
+	   </td>
+	  </tr>
+	  <tr>
+	   <td valign="top">
+E0022: No circuit or channel available (user)
+           </td>
+	   <td>
+This may occur, when the physical connection
+to the peer is broken; it happened to me that
+the peer's telephone lines got broken, so I
+didnt get an answer from the telephone company
+but instead my own ISDN card refused to put my
+call through to the peer.<br/>
+
+Dies kann passieren, wenn die physikalische
+Verbindung zum Partner zusammenbricht. Es
+passierte, dass die Leitung des Gegenübers
+zusammenbrach, ohne das es eine Rückmeldung
+von der Telefongesellschaft gab. Die lokale
+ISDN-Karte weigerte sich den Anruf abzusetzen.
+	   </td>
+	  </tr>
+	  <tr>
+	   <td valign="top">
+E023f: Service or option not available
+           </td>
+	   <td>
+The server you want to connect to is down. This
+one I got only one time when I tried to connect
+to SUSE's ISDN server.<br/>
+
+Der anzurufende Server ist nicht eingeschaltet
+oder nicht erreichbar.
+	   </td>
+	  </tr>
+	  <tr>
+	   <td valign="top">
+E0211: User Busy
+           </td>
+	   <td>
+The peer is busy; this is the 'normal' message
+everybody expects if the peer is actually busy.
+But unfortunately a different cause code is
+possible for exactly the same situation: For
+example E0222.<br/>
+
+Der Telefonanschluss ist besetzt; dies ist die
+'normale' Meldung.
+Leider ist auch eine andere Meldung für diese
+Situation möglich: Siehe auch E0222.
+	   </td>
+	  </tr>
+	 </table>
+
+	<textblock>
+Diese Tabelle wurde, mit freundlicher Genehmigung des Autors
+<name email="juergen.leising@hamburg.de">Jürgen Leising</name>
+dessen Webseite
+<ref lang="de" url="http://homepage.hamburg.de/c98d93/isdn.html">http://homepage.hamburg.de/c98d93/isdn.html</ref> entnommen.
+        </textblock>
+      </section>
+<!-- Kapitel 1.1.1 -->
+      <section>
+       <heading>
+Kein Zugriff auf Webseiten
+       </heading>
+        <textblock>
+Wenn die Einwahl klappt sieht man dies in der Datei
+<command>/var/log/messages</command>, wenn sinngemäß folgende Einträge auftauchen:
+<command>remote IP xx.xx.xx.xx</command> und <command>local IP yy.yy.yy.yy</command>. Wenn trotzdem
+keine Webseiten mit Name aufgerufen werden können, so kann das
+2 Ursachen haben:
+        </textblock>
+
+	 <ul>
+<li>keine defaultroute auf das ISDN-Device gesetzt</li>
+<li>kein Nameserver bekannt.</li>
+         </ul>
+
+	<textblock>
+Es kommt vor, dass das Script <command>/etc/ppp/ip-up</command>, welches vom
+<name>ippp-Daemon</name> aufgerufen wird, die Einträge nicht richtig setzt.
+Das <name>Script</name> ruft <command>ifconfig</command> mit der zugewiesenen IP-Adresse auf
+und setzt das default-Gateway auf das ISDN-Gerät.
+Prüfen Sie als erstes mit dem Befehl 
+        </textblock>
+	
+	 <shell>
+	  <root>
+route -n
+          </root>
+	 </shell>
+
+	<textblock>
+ob ein
+default-Gateway gesetzt wurde (möglicher Eintrag
+<command>0.0.0.0      yy.yy.yy.yy       ippp0</command>, wobei <name>yy.yy.yy.yy</name>
+der IP-Adresse am anderen Ende der Verbindung, also beim
+Provider entspricht. Sollten die Adressen in Ordnung sein,
+sollte ein <name>Ping</name> auf eine bekannte Adresse funktionieren.
+Unter der <name>IP 193.99.144.71</name> kann man z.B. den Server des
+<name>Heise-Verlages</name> erreichen. Wenn der <name>Ping</name> durchkommt, liegt
+das Problem am Nameservereintrag.
+        </textblock>
+
+	<textblock>
+Grundsätzlich hilft einem jeder Nameserver weiter, man
+sollte aber dem seines Providers den Vorzug geben. Deshalb
+kann man (evtl. zu Testzwecken den von
+<name>T-Online</name> verwenden. Tragen Sie in die Datei <command>/etc/resolv.conf</command>
+"<name>nameserver 212.185.252.71</name>"
+ein (sicherheitshalber mit einer Leerzeile am Ende). Nun
+sollte man auch die Adressen mit Namen aufrufen können und
+der <command>ping www.heise.de</command> funktionieren.
+        </textblock>
+      </section>
+   </section>
+ </section>
+ </split>
+<!-- Seite 3 -->
+ <split>
+<!-- Kapitel 1 -->
+ <section>
+  <heading>
+Technik
+  </heading>
+<!-- Kapitel 1.1 -->
+   <section>
+    <heading>
+ISDN
+    </heading>
+     <textblock>
+ISDN steht für <name>Integrated Services Digital Network</name>.
+     </textblock>
+
+     <textblock>
+Fangen wir von hinten an: Es handelt sich um ein Netzwerk.
+Über die beiden Kupferdrähte wird also z.B. nicht nur eine
+<name>Point-To-Point-Verbindung</name> aufgebaut, sondern es können
+mehrere Verbindungen gleichzeitig bestehen.
+     </textblock>
+
+     <textblock>
+Die Daten werden alle digital ausgetauscht.
+Analogdienste wie z.B: Fax sind hierüber daher potentiell
+schwieriger zu handhaben. Normalerweise werden Analogdienste
+über Spezialgeräte wie <ref iref="zitat">a/b-Wandler</ref> oder TK-Anlagen gefahren.
+     </textblock>
+     
+      <table>
+       <pdf-column width="100"/>
+       <pdf-column/>
+       <tr>
+        <td>
+a/b-Wandler
+        </td>
+	<td>
+Wandelt analoge in digitale Signale um.
+        </td>
+       </tr>
+       <tr>
+        <td>
+TK-Anlage
+        </td>
+	<td>
+Sind Telefonanlagen
+        </td>
+       </tr>
+      </table>
+<!-- //->***LAYOUT: Bitte Link setzen auf das Zitat weiter unten***<-\\ -->
+
+     <textblock>
+Integrated Services deutet an, dass verschiedene Dienste über
+dieses Netzwerk genutzt werden können. Typische Services sind
+Analog-Sprache (<command>SI=0</command>) oder ISDN-Daten (<command>SI=7</command>), was uns hier
+interessiert.
+     </textblock>
+
+     <textblock>
+Der Endpunkt der Telekom-Leitung in einem Haushalt oder einem
+Büro ist der NTBA (kurz auch NT),
+der <name>Network Terminator Basis-Anschluss</name>. Das ist der kleine Kasten,
+bis zu dem sich der Netzanbieter zuständig fühlt.
+     </textblock>
+
+     <textblock>
+An einem NTBA können (normalerweise) 2 Kabel herausgeführt werden,
+diese bilden gemeinsam ein <name>Bus-System</name>, den sogenannten <command>S0-Bus</command>.
+     </textblock>
+
+     <textblock>
+An den <command>S0-Bus</command> können 8 Endgeräte angeschlossen werden.
+Typische Endgeräte sind ISDN-Telefone, TK-Anlagen, G4-Fax-Geräte,
+ISDN-Terminaladapter und ISDN-Karten.
+     </textblock>
+
+     <textblock>
+Der <command>S0-Bus</command> bietet 3 Kanäle: einen Steuerkanal, genannt D-Kanal.
+Weiterhin stehen zwei Datenkanäle, genannt Nutzkanal oder B-Kanal,
+mit je 64 kbit/s zur Verfügung, die jeweils zu unterschiedlichen
+Partnern führen und mit unterschiedlichen Diensten genutzt werden
+können.
+     </textblock>
+
+     <textblock name="zitat">
+Die Bezeichnung der Kanäle
+(laut Technik der Netze von Gerd Siegmund, 3. Aufl. S. 316):
+     </textblock>
+
+
+<!-- //->***LAYOUT: Der folgende Absatz ist ein Zitat:*** -->
+
+
+      <quotation>
+Die Bezeichnungen für die Kanaltypen (B- und D-Kanal) sind
+ursprünglich keine Abkürzungen mit tieferen Bedeutungen. In
+der Anfangszeit der ISDN-Standardisierung wurden Kanaltypen
+mit verschiedenen Aufgaben und Eigenschaften betrachtet, die
+fortlaufend als A-, B-, C-, D- und E-Kanal bezeichnet wurden
+(A- Analog, B- 64 kbits digital,
+C- Komprimiert, D- Signalisierungskanal).
+      </quotation>
+
+<!-- ***LAYOUT: Ende des Zitates***<-\\ -->
+     <textblock>
+Auf dem D-Kanal können verschiedene Protokolle gefahren werden.
+Üblich sind <command>1TR6</command> (altes nationales ISDN), <command>DSS1</command> (Euro-ISDN,
+der Quasi-Standard in 24 Ländern) und <command>N1</command> in den USA.
+Der D-Kanal dient u.a. zur Übermittlung des Wunsches
+eines Verbindungsauf- und abbaus, der Übermittlung der
+Telefonnummern und der Gebühren. Bei einem falsch
+eingestellten Protokoll klappt also sehr wenig...
+     </textblock>
+
+     <textblock>
+Die Art und Weise, wie die Telefonnummer gemeldet und
+genannt wird, hängt vom D-Kanal-Protokoll ab:
+     </textblock>
+
+      <table>
+       <pdf-column width="100"/>
+       <pdf-column/>
+       <tr>
+        <td valign="top">
+1TR1
+        </td>
+	<td>
+EAZ (<name>Endgeräte-Auswahl-Ziffer</name>). Es handelt sich also
+nur um eine Ziffer. Die Rufnummer des Basisanschlusses
+wird nicht betrachtet.
+        </td>
+       </tr>
+       <tr>
+        <td valign="top">
+DSS1
+        </td>
+	<td>
+MSN (<name>Multiple-Subscribe-Number</name>). Hier ist eine komplette
+Rufnummer gemeint, also alles hinter der Vorwahl.
+        </td>
+       </tr>
+      </table>
+
+     <textblock>
+Die Bezeichnungen <name>EAZ</name> und <name>MSN</name> sind bei <name>I4L</name> (ISDN for Linux)
+ansonsten synonym zu benutzen (wenn das richtige Protokoll
+angegeben wurde). Bei einem einkommenden Call wird
+(hoffentlich) die Zielrufnummer übertragen, genannt <name>CPN</name>
+(called party number). Ist sie nicht bekannt, setzt sie <name>I4L</name> auf 0.
+     </textblock>
+
+     <textblock>
+Bekanntlich können für einen Anschluss mehrere Telefonnummern
+vergeben werden. Diese signalisiert die Vermittlungsstelle
+(kurz <name>VSt</name>) auf dem D-Kanal (<name>CPN</name>) zusammen mit dem
+Service-Indikator (<name>SI</name>).<br/>
+Mehr passiert bei einem ankommenden Call (Anruf) erst mal
+nicht! Es ist danach Aufgabe der Endgeräte, sich entsprechend
+zu verhalten: ignorieren, abweisen, oder den Anruf annehmen.
+     </textblock>
+
+     <textblock>
+Da der <name>SI</name> zusammen mit der Nummer auf dem D-Kanal übermittelt
+wird, kann dieselbe Telefonnummer mehrfach genutzt werden.
+Beispiel: das Telefon reagiert nur auf SI=0, der PC reagiert
+nur auf SI=7.
+     </textblock>
+
+     <textblock>
+Bei einem ausgehenden Anruf muss das Endgerät die <name>MSN</name> angeben;
+diese wird dann auch dem Partner übermittelt. Wird keine <name>MSN</name>
+gesetzt (was <name>I4L</name> nicht zulässt), setzt die <name>VSt</name> die Nummer ein.
+Wird eine falsche <name>MSN</name> gesetzt, bekommt man keine Verbindung
+(Erfahrungswerte).
+     </textblock>
+   </section>
+<!-- Kapitel 1.1 -->
+   <section>
+    <heading>
+TK-Anlagen
+    </heading>
+     <textblock>
+Worum geht es: Wer die Wahl hat zwischen einem direkten Anschluss
+am NTBA und einem internen <command>S0-Bus</command> an einer TK-Anlage,
+sollte sich für den direkten Anschluss entscheiden!
+Der Betrieb über TK-Anlagen birgt immer gewisse Überraschungen.
+     </textblock>
+
+     <textblock>
+Worum geht es nicht: Wenn man eine TK-Anlage am selben NTBA (<command>S0 Bus</command>)
+wie die ISDN-Karte angeschlossen hat, gibt es keine Probleme.
+Die TK-Anlage ist hier nur ein normales ISDN-Endgerät, was dieses
+hinten macht (Anschluss von Analog-Geräten) spielt hier keine Rolle.
+     </textblock>
+
+     <textblock>
+Das Verhalten der TK-Anlage hängt unter anderem vom Typ, von der
+installierten Software und vor allem von deren Konfiguration
+(und damit vom entsprechenden Service-Techniker) ab.
+     </textblock>
+
+     <textblock>
+Bei älteren Anlagen wird oft entgegen allen Aussagen <command>1TR6</command>
+anstatt <command>DSS1</command> gefahren. Die Verbindungstypen können abhängig
+vom Service-Indikator konfiguriert werden, wobei oft nur
+<name>Voice-Calls</name> konfiguriert sind. Weiterhin besteht die
+Schwierigkeit herauszufinden, welche MSN/EAZ man zu
+benutzen hat.
+     </textblock>
+
+     <textblock>
+Ein wesentlicher Unterschied ist der, dass man nicht mit
+allen anderen lokalen Teilnehmern an einem Bus angeschlossen
+ist, sondern die TK-Anlage für jeden einzelnen Anschluss
+einen eigenen <command>S0-Bus</command> nach außen führt, an den meist nur
+ein Endgerät angeschlossen wird. Dieser Anschluss bekommt
+eine eigene Durchwahl zugewiesen, oft 2-stellig.
+     </textblock>
+
+     <textblock>
+Die beste Veranschaulichung ist, sich eine TK-Anlage als
+eigene Vermittlungsstelle vorzustellen.
+     </textblock>
+
+     <textblock>
+Beispiel: In Ortsnetz 321 ist eine TK-Anlage mit der Rufnummer
+654 an einem Primärmultiplex-Anlagenanschluss installiert (es
+gibt also mehr als 2 Amtsleitungen, alternativ könnte dies
+auch ein Bündelanschluss sein - spielt aus dieser Sicht
+keine Rolle). Es sind 20 interne Leitungen vorhanden, wobei
+die ersten 10 für Telefone und die zweiten 10 für
+ISDN-Karten vorgesehen sind. Die Durchwahlnummern seien
+10-19 für die Telefon und 20-29 für die ISDN-Karten. Die
+S0-Busse für die ISDN-Karten seien auf <command>DSS1</command> konfiguriert.
+     </textblock>
+
+     <textblock>
+Dann ist als MSN jeweils 20 bis 29 zu benutzen, denn das
+sind die MSNs im Ortsnetz Firma (=321654). Weiterhin ist
+zu beachten, dass man zusätzlich eine 0 wählen muss, um
+aus dem Ortsnetz Firma erst mal herauszukommen.
+     </textblock>
+
+     <textblock>
+Um z.B. die Nummer 987 im Ortsnetz 321 anzurufen, muss
+man 0987 wählen, wobei der Gegenstelle als Rufnummer
+65420 angezeigt wird. Will man in Berlin anrufen,
+wählt man selbst die 0030.... an und dort wird
+32165420 übermittelt.
+     </textblock>
+
+     <textblock>
+Will man selber User-Authentication beim Dial-In über die
+Telefonnummer machen, gibt es nur eine sinnvolle
+Vorgehensweise: anrufen lassen.
+Die in <command>/var/log/messages</command> angezeigte Nummer dann in
+die entsprechende Konfigurationsdatei übernehmen.
+     </textblock>
+   </section>
+ </section>
+ </split>
+</chapter>

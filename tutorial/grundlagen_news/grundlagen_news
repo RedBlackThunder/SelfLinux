@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+
+ <title>Grundlagen zur Arbeit mit Newsgroups</title>
+
+ <author>
+  <name>Kim Kulling</name>
+  <mailto>sir_kimmi@gmx.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>herbert-kw@t-online.de</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>grundlagen_news</index>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Historisches
+   </heading>
+
+   <textblock>
+Es gibt verschiedene Services im Internet. Neben E-Mails und WWW gehört
+das Usenet wohl zu den wichtigsten. Es ist eine Sammlung verschiedener
+Diskussionsgruppen zu allen möglichen Themen auf verschiedenen
+Servern, die dezentral diese Informationen untereinander austauschen.
+Dabei benutzen sie das NNTP-Protokoll (Network News Transport
+Protocoll). Genaueres findet man in der
+<ref lang="en" url="http://www.ietf.org/rfc/rfc0977.txt">RFC 977</ref>.
+   </textblock>
+
+   <textblock>
+Im Jahre <strong>1979</strong> erfanden die beiden Studenten <name>Tom Truscott</name> und <name>Jim
+Ellis</name>, seinerzeit eingeschrieben an der <name>Duke University in North
+Carolina</name> das <strong>Unix User Network</strong>. Dieses stellte einen Verbund von
+Rechnern dar, die über Dialup-Verbindungen (sprich Modems)
+miteinander verbunden waren. Sie nutzten dabei das UUCP (Unix to Unix
+Copy). Da Standleitungen zur damaligen Zeit selten (weil teuer) waren,
+konnten die verschiedenen Rechner nur gelegentlich die jeweiligen
+Themen untereinander austauschen. Bis eine Nachricht auf allen Servern
+angekommen war, konnte einige Zeit verstreichen.
+   </textblock>
+
+   <textblock>
+<strong>1986</strong> wurde aufgrund des wachsenden Bekanntheitsgrades eine
+Neuorganisation des Usenet fällig. Die Big Acht wurden eingeführt,
+Oberkategorien zu verschiedenen Themen (wie z.B. Kunst). Neue Gruppen
+wurden in langwierigen Diskussionen diesen Oberthemen zugeordnet
+(brauchen wir diese Gruppe?). 1987 entwickelte sich aus diesen
+Diskussionen die Alt-Hierarchie, in denen jeder seine eigene Gruppe
+erzeugen kann. Je nach Bekannheitsgrad bzw. Relevanz des
+Themengebietes nehmen die anderen Server dann diese in ihre Sammlung
+mit auf.<br/>
+Mittlerweile hat sich das Usenet als unerlässliche Informationsquelle
+herauskristallisiert. Zu jedem sinnigen wie unsinnigen Themenbereich
+findet man Informationen. Sogar die <name>Warez-Szene</name> nutzt das Usenet zum
+Tauschen. Probleme ergeben sich allerdings, wenn man nach speziellen
+Themen recherchiert. Aus diesem Grund hat die Suchmaschine
+<ref lang="de" url="http://www.google.de">Google</ref>
+einen Großteil der katalogisierten Beiträge in ihr Suchverzeichnis
+aufgenommen.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Client und Server
+   </heading>
+
+   <textblock>
+Wie bei den E-Mails, beruht das Usenet auf einer
+Client-Server-Architektur. Die Clients werden zum Lesen der
+Beiträge genutzt, die Server kümmern sich um die interne Verwaltung
+sowie den Datenaustausch untereinander. Anders als bei Web-Servern
+tauschen die Usenet-Server untereinander auch die Inhalte aus.
+Es gibt keinen zentralen Server, auf den die Clients zugreifen.
+Vielmehr tauschen die Server untereinander die Beiträge, wie schon
+erwähnt, über das NNTP-Protokol aus. Auf diese Weise gelangen
+geschriebene Beiträge mit der Zeit auf jeden Server, der diese Gruppe
+in seinem Sortiment hat. Allerdings können zeitliche Verzögerungen in
+der Verfügbarkeit dieser Beiträge entstehen (teilweise kann dieser
+Vorgang Tage dauern).
+   </textblock>
+
+   <textblock>
+Der Nutzer braucht nun einen News-Client bzw. einen Server, um diese
+Beiträge lesen zu können. Aber dazu mehr in den
+<ref iref="Abonnieren von Newsgruppen">nächsten Kapiteln</ref>.
+   </textblock>
+
+   <textblock>
+Beiträge werden von den Servern mit der Zeit gelöscht. Findet man
+einen interessanten Beitrag, macht es Sinn, diesen lokoal zu
+speichern, da er sonst irgendwann gelöscht werden könnte.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Abonnieren von Newsgruppen
+   </heading>
+
+   <textblock>
+Auf den jeweiligen Newsservern wird eine Vielzahl von Newsgruppen
+verwaltet. Um schnell nur die Beiräge zu finden, die von Interesse
+sind, kann man einzelne Gruppen abonnieren. Dann werden im Newsreader
+nur die Gruppen dargestellt, die den werten Leser interessieren.
+Komfortables Arbeiten sollte nun möglich sein.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Threading
+   </heading>
+
+   <textblock>
+Entsteht eine Diskussion, d. h. jemand findet eine Lösung,
+bzw. vertritt eine ganz andere Meinung, so muss die Zugehörigkeit des
+Beitrags möglich sein. Diese wird durch eine hierachische Darstellung
+kenntlich gemacht:
+   </textblock>
+
+
+   <file>
+    <title>Beispiel hierachische Darstellung</title>
+    <content>
+Susanne: Warum geht das nicht????
+  Bob: Darum!!!!!!!!!!!!!!!!!
+    Susanne: Vielen Dank, geht mir gleich viel besser!
+  Kimmi: Stimmt!!!!!!!!!!
+    Susanne: Wichtiges grosses Posting!
+      Kimmi: Ich weiss!
+    </content>
+   </file>
+
+   <textblock>
+In diesem Fall fragt die Person unter dem Nick Susanne etwas,
+die beiden anderen Personen mit den Nicks Bob und Kimmi antworten mehr
+oder minder hilfreich. Diese Darstellung kennen viele sicherlich
+bereits aus den verschiedenen Online-Foren (zum Beispiel unter
+<ref lang="de" url="http://www.linuxforen.de">www.linuxforen.de</ref>). Die meisten News-Clients zeigen vor dem
+jeweiligen Posting ein <strong>+</strong> an, um darauf hinzuweisen, dass bereits eine
+Diskussion zustande gekommen ist. Um die Übersicht zu behalten,
+kann man mit diesem Plus den Beitrag aufklappen, um den Verlauf der
+Unterhaltungen verfolgen zu können.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Online- und Offline-Betrieb
+   </heading>
+
+   <section>
+<!-- *.*. Kapitel -->
+    <heading>
+Online-Betrieb
+    </heading>
+
+    <textblock>
+Um News im Usenet lesen zu können, gibt es im Prinzip zwei
+Möglichkeiten. Der einfachere Weg ist es, einfach online zu gehen,
+um dann die jeweilig interessanten News vom Server zu holen.
+Es werden dabei zunächst nur die Kopfzeilen der Beiträge vom Server
+geholt. Wenn man sich einen Beitrag näher ansehen möchte, wird dieser
+vom Server heruntergeladen. Da das Studium der einzelnen Themen
+durchaus einige Zeit in Anspruch nehmen kann, kann dies für
+Call-by-Call Nutzer teuer werden.<br/>
+Aus diesem Grund kann der Offline-Betrieb eine sinnvolle Alternative
+bieten.
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.*. Kapitel -->
+    <heading>
+Offline-Betrieb
+    </heading>
+
+    <textblock>
+Um den Offline-Betrieb zu ermöglichen, muss ein lokaler Newsserver
+auf dem Rechner installiert werden. Dieser lädt die neuesten Posts vom
+entsprechenden Server herunter. Nun können die jeweiligen Beiträge
+ohne die tickende Preisbombe im Rücken studiert werden. Die selbst
+verfassten Beiträge werden dann beim nächsten Onlinegang auf den
+Newsserver übertragen. Der On- bzw. Offlinebetrieb wird später
+noch näher erläutert.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+ <!-- *. Kapitel -->
+   <heading>
+Regeln zum Verfassen von Beiträgen
+   </heading>
+
+   <textblock>
+Will man im On- oder Offline- Betrieb eigene Beiträge verfassen,
+sollte man auf <strong>einige Verhaltensregeln</strong> achten:
+   </textblock>
+
+   <ul>
+    <li>
+<strong>Posting in die richtige Gruppe:</strong><br/>
+Wenn man eine Linux-Frage in
+einer Microsoft-Gruppe postet, können Flamings aufkommen (andere
+Leser, die den Verfasser des Postings meist recht unhöflich auf den
+gemachten Fehler hinweisen).
+    </li>
+    <li>
+<strong>Testen der Einstellungen:</strong><br/>
+Meistens gibt es Test-Newsgroups,
+in denen man seine Signatur und das Aussehen seiner Postings testen
+kann. Die eigene E-Mail und der Name sollten immer in der Nachricht
+enthalten sein.
+    </li>
+    <li>
+<strong>Vermeidung von Reposts:</strong><br/>
+Es macht Sinn, den FAQ einer Gruppe zu
+studieren, bevor man eine Frage oder einen Beitrag postet. Wurde diese
+Frage schon sehr sehr oft gepostet, kann sogar der geistig stabilste
+Leser zum Flamer werden.
+    </li>
+    <li>
+<strong>Höflich bleiben:</strong><br/>
+Man sollte immer höflich bleiben. Dabei sollte
+man die anderen Poster immer so behandeln, wie man auch selbst
+behandelt werden möchte. Auch wenn man das Gefühl hat, anonym zu sein,
+ist das noch lange kein Freibrief zum Pöbeln. Auch sollte man nicht
+jedes Flaming persönlich nehmen. Macht man das, hat man in der Regel
+nicht besonders viel Freude.
+    </li>
+    <li>
+<strong>Kleine Signaturen:</strong><br/>
+Man kann standardmässig jedem Posting eine
+Signatur (kurzer Text, Spruch, etc., ähnlich einer Unterschrift)
+anhängen. Diese sollte möglichst kurz bleiben. Die Leser
+interessieren sich in der Regel nicht für irgendwelche persönlichen
+Ergüsse, die man jedem Beitrag anhängt. Ein Posting mit 3 Seiten
+Signatur und 1 Zeile Frage sind einfach nur unhöflich und vor allem
+für Modembesitzer sehr lästig.
+    </li>
+    <li>
+<strong>Richtigs Zitieren:</strong><br/>
+Will man zu einer Zeile eines alten Postings
+Stellung nehmen, so wächst das Verständnis von Drittlesern, wenn sie
+die Frage noch einmal im Posting vorfinden. Meistens werden diese
+Zitate durch ein <strong>></strong> eingeleitet.<br/>
+Allerdings macht es keinen Sinn, alles (einschließlich der Signatur)
+zu zitieren, wenn man nur auf eine Zeile antworten will.
+    </li>
+   </ul>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Namen von Newsgruppen
+   </heading>
+
+   <textblock>
+Einige Beispiele für die normale Namensgebung (definitiv nicht
+vollständig):
+   </textblock>
+
+   <ul>
+    <li>
+<strong>comp.lang</strong>:  Diskussionen rund um Programmiersprachen
+    </li>
+    <li>
+<strong>comp.os.linux</strong>: Gespräche rund um Linux und die auftretenden
+Probleme
+    </li>
+    <li>
+<strong>gnu</strong>: Alles rund um GNU-Software
+    </li>
+    <li>
+<strong>de.*</strong>: Diskussionen auf Deutsch
+    </li>
+   </ul>
+
+   <textblock>
+Da viele Fragen bereits beantwortet wurden, die Newsserver diese
+allerdings nicht ewig speichern, lohnt sich ein Abstecher zu:
+   </textblock>
+
+   <quotation>
+<ref lang="en" url="http://groups.google.com">http://groups.google.com</ref>
+   </quotation>
+
+   <textblock>
+Oft findet man bereits dort alles, was man benötigt.
+   </textblock>
+
+   <textblock>
+Für viele User gehört das morgendliche Studium der verschiedenen
+Newsgroups zum alltäglichen Ritus. Zwar findet man viel Unnützes,
+oft allerdings auch den gesuchten Hinweis, der einem das Leben
+leichter macht.
+   </textblock>
+  </section>
+ </split>
+</chapter>

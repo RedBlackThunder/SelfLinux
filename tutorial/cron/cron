@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>cron</title>
+
+ <author>
+  <name>JC Pollman</name>
+  <mailto>jpollman@bigfoot.com</mailto>
+  <name>Christian Richter</name>
+  <mailto>crichter@users.sourceforge.net</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GPL
+ </license>
+
+ <index>cron</index>
+
+ <description>
+  <textblock>
+Linux bietet zwei verwandte Programme für das Automatisieren von
+Aufgaben: <command>cron</command> und <command>at</command>. Beide starten beim Booten und laufen als
+Daemons, so werden sie niemals beendet.
+  </textblock>
+
+  <textblock>
+<command>Cron</command> ist für sich wiederholende Aufgaben zuständig, <command>at</command> für einmalig
+ablaufende. 
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+   <heading>
+Der cron Batchdaemon
+   </heading>
+   
+   <textblock>
+Linux bietet etliche Programme für das Automatisieren von
+Aufgaben. Ein Beispiel ist <command>cron</command>. Der Batchdaemon
+<command>cron</command> ist für Aufgaben zuständig, die
+automatisch zu festgelegten Zeiten stattfinden sollen.
+Er wird beim <ref chapter="starten_und_herunterfahren">Booten</ref>
+gestartet und im Normalbetrieb nicht beendet.
+Ein Daemon ist ein Prozess, der im Hintergrund des Systems läuft und
+von dem man normalerweise keine Ausgabe sieht.
+   </textblock>
+
+   <textblock>
+<command>cron</command> liest eine sogenannte <path>crontab</path>-Datei, um Informationen für seine Arbeit zu erhalten.
+Es gibt eine systemweite und eventuell einige benutzerspezifische
+<path>crontab</path>-Dateien. 
+Die Datei des Systems befindet sich unter <path>/etc/crontab</path>.
+Verändern Sie diese Datei auf keinen Fall, wenn Sie nicht
+genau wissen, was Sie tun. Selbst der Benutzer 
+<ref chapter="nutzer_unter_linux" iref="root">root</ref> sollte 
+seine eigene Datei erzeugen.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Erzeugen der crontab-Datei
+   </heading>
+   
+   <textblock>
+Prüfen Sie zunächst, ob für den Benutzer, dessen <path>crontab</path>-Datei Sie
+erzeugen möchten (in unserem Fall root), noch keine solche Datei
+existiert. Dies können Sie mittels
+   </textblock>
+
+   <shell>
+    <root path="~">
+crontab -l
+    </root>
+   </shell>
+   
+   <textblock>
+tun. Es sollte die Ausgabe <strong>no crontab for root</strong> erscheinen.
+Andernfalls würde das folgende Kommando die alte <path>crontab</path>-Datei
+überschreiben. Geben Sie dann Folgendes ein:
+   </textblock>
+
+   <shell>
+    <root path="~">
+crontab /etc/crontab
+    </root>
+   </shell>
+
+   <textblock>
+Das Kommando wird eine <path>crontab</path>-Datei für Sie erzeugen, die eine Kopie
+der systemweiten <path>crontab</path>-Datei ist. Editieren Sie nun ihre Datei mittels
+   </textblock>
+
+   <shell>
+    <root path="~">
+crontab -e
+    </root>
+   </shell>
+
+   <textblock>
+Beachten Sie, dass <command>crontab</command> sowohl der Name der Datei als auch der Name
+des ausführbaren Programmes ist, ähnlich wie im Falle des Kommandos 
+<ref chapter="anmelden_und_abmelden" iref="Einen Standardbenutzer anlegen">passwd</ref>. 
+Die erzeugte Datei wird in etwa wie diese Konfiguration aussehen
+(dies ist ein Beispiel einer RedHat-Datei):
+   </textblock>
+
+   <file>
+    <title>
+     Konfiguration RedHat-Datei
+    </title>
+    <content>
+SHELL=/bin/bash
+PATH=/sbin:/bin/:/usr/sbin/:/usr/bin
+MAILTO=root
+HOME=/
+
+#run-parts
+01 * * * * root run-parts /etc/cron.hourly
+01 4 * * * root run-parts /etc/cron.daily
+22 4 * * 0 root run-parts /etc/cron.weekly
+42 4 1 * * root run-parts /etc/cron.monthly
+    </content>
+   </file>
+
+   <textblock>
+Löschen Sie alle Zeilen nach der Zeile <command>HOME=/</command>. Dies sind nicht die Aktionen
+die Sie ausführen wollen. Ändern Sie außerdem die Variable PATH so,
+dass sie das Verzeichnis enthält, in dem Sie Ihre Skripte oder Programme
+speichern, die zeitgesteuert ablaufen sollen.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+cron Konfiguration
+   </heading>
+   
+   <textblock>
+Jede Zeile in der crontab-Datei führt ein eigenes Programm aus. Die Zeilen
+haben ein spezielles Format:
+   </textblock>
+
+   <textblock>
+Fünf Zeitfelder, gefolgt von dem auszuführenden Programm.
+Beachten Sie:
+In der systemweiten <path>crontab</path>-Datei ist ein weiteres Feld, das den Daemon anweist, das
+Programm als einen bestimmten 
+<ref chapter="nutzer_unter_linux">Benutzer</ref>
+auszuführen (z. B. root). In einer
+benutzerspezifischen crontab-Datei wird dieses Feld ignoriert.
+   </textblock>
+   
+   <textblock>
+Die fünf Zeitfelder sind:
+   </textblock>
+
+   <textblock>
+Minuten  Stunden  Tag-des-Monats  Monat  Wochentag
+   </textblock>
+
+   <file>
+    <title>
+Auszug aus der Manpage
+    </title>
+    <content>
+Die Zeit- und Datumsfelder sind:
+
+Minute           0-59
+Stunde           0-23
+Tag-des-Monats   1-31
+Monat            1-12 (oder Namen, siehe unten)
+Wochentag        0-7 (0 oder 7 ist Sonntag oder Namen)
+
+Ein Feld kann ein Stern (*) sein, was immer für
+"Erster-Letzter" steht.
+
+Zahlenbereiche sind erlaubt. Bereiche sind zwei Zahlen,
+getrennt durch einen Bindestrich. Die angegebenen Grenzen sind
+inklusive.
+Beispielsweise: 8-11 in "Stunde" bewirkt die Ausführung um 8,
+9, 10, 11 Uhr.
+
+Listen sind erlaubt. Eine Liste ist eine Menge von Nummern
+(oder Bereichen), getrennt durch Kommata.
+Beispiele: "1,2,5,9", "0-4,8-2". (Die Hochkommata nicht mit
+in die Datei übernehmen, Anmerkung des Übersetzers)
+
+Schrittweiten können in Verbindung mit Bereichen genutzt
+werden. Hinter einem Bereich mit "/&lt;Schrittweite&gt;" angegeben,
+bestimmt die Schrittweite, ob Werte innerhalb des Bereiches
+übersprungen werden.
+Beispiel: "0-23/2" kann unter Stunden benutzt werden, um ein
+spezielles Kommando alle zwei Stunden auszuführen. Die
+Alternative wäre:
+"0,2,4,6,8,10,12,14,16,18,20,22". Schrittweiten sind auch nach
+Sternen (*) erlaubt, "alle zwei Stunden" lässt sich auch durch
+"*/2" beschreiben.
+
+Namen können für "Monat" und "Wochentag" benutzt
+werden. Benutzen Sie die ersten drei Buchstaben des
+entsprechenden Tages oder Monats (Groß-/Kleinschreibung wird
+nicht beachtet). Bereiche oder Listen sind mit Namen nicht
+erlaubt.
+    </content>
+   </file>
+  </section>
+  
+  <section>
+   <heading>
+Ein praktisches Beispiel
+   </heading>
+   
+   <textblock>
+Für ein Backup-Skript zur <ref chapter="backups">Datensicherung</ref>, das um 5 Minuten nach 1 Uhr
+morgens jeden Tag laufen soll, würde die zugehörige <path>crontab</path>-Datei
+folgendermaßen aussehen:
+   </textblock>
+
+   <file>
+    <title>
+Backup-Skript
+    </title>
+    <content>
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+MAILTO=root
+HOME=/
+
+5 1 * * * /usr/local/bin/run-backup
+    </content>
+   </file>
+
+   <textblock>
+Durch die Angabe <command>MAILTO=root</command> teilt <command>cron</command> die Beendigung der Aufgabe dem
+Benutzer <strong>root</strong> per E-Mail mit.
+Ist man mit dem Ablauf des Skriptes run-backup zufrieden und
+der Benachrichtigungen überdrüssig, ändern man die <command>MAILTO</command>-Zeile
+folgendermaßen:
+   </textblock>
+
+   <file>
+    <title>
+run-backup
+    </title>
+    <content>
+MAILTO=""
+    </content>
+   </file>
+  </section>
+  
+  <section>
+   <heading>
+Mehr Information
+   </heading>
+   
+   <textblock>
+Weitere Information findet sich in folgenden Manual-Seiten:
+   </textblock>
+   
+   <ul>
+    <li>
+man crontab
+    </li>
+    <li>
+man 5 crontab
+    </li>
+    <li>
+man cron
+    </li>
+   </ul>
+  </section>
+ </split>
+</chapter>

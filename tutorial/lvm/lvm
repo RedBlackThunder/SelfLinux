@@ -1,0 +1,1940 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Linux LVM-HOWTO</title>
+
+ <author>
+  <name>Markus Hoffmann</name>
+  <mailto>mar.hoff@gmx.net</mailto>
+ </author>
+
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
+
+ <license>
+  GPL
+ </license>
+
+ <index>lvm</index>
+
+ <description>
+  <textblock>
+Dieses HOWTO beschreibt die Nutzung der LVM-Funktion, die seit dem
+Standard-Kernel 2.4 in Linux implementiert ist.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+   <heading>
+Grundlagen
+   </heading>
+   <section>
+    <heading>
+Was ist LVM?
+    </heading>
+
+    <textblock>
+LVM ist die Abkürzung für <strong>"Logical Volume Manager"</strong> und bezeichnet
+eine Funktion, die seit der Version 2.4 im Standard-Kernel integriert
+ist. Für Windows-Anhänger entspricht dies in etwa den "Dynamischen
+Datenträgern" bei Microsoft Windows 2000 oder XP Pro. Mittels LVM
+lässt sich eine logische Schicht zwischen Dateisystem und der
+Partition einer physikalischen Festplatte schieben. So ist es
+möglich, ein Dateisystem über mehrere Partitionen und Festplatten zu
+strecken, wohlgemerkt auch nach dem Anlegen eines Dateisystems,
+sogar wenn schon Daten darin abgespeichert wurden. Dazu wird
+das Dateisystem auf einer virtuellen Partition, einem so genannten
+Logical Volume, angelegt. Dies ist auch der eigentliche Clou von LVM:
+Man kann einer zu kleinen Partition oder Festplatte, die mit LVM
+verwaltet wird, nachträglich freien Speicherplatz hinzufügen.
+Voraussetzung ist allerdings, dass die betreffenden Partitionen im
+Voraus von LVM verwaltet wurden. LVM kann nicht auf bestehende
+Datenpartitionen angewandt werden. Eine zusätzliche und praktische
+Eigenschaft von LVM ist dessen Backup-Funktion. Mittels so
+genannten Snapshots kann man sehr einfach eine identische Kopie
+seiner von LVM verwalteten Partition erstellen. Ein weiterer Vorteil
+besteht darin, dass LVM die Geschwindigkeit bei Schreib- und
+Lesezugriffen nicht merklich beeinträchtigt, und auch die CPU-Belastung
+steigt kaum. Jedoch steigt analog zu RAID 0 die
+Ausfallwahrscheinlichkeit, wenn sich das Dateisystem und die darunter
+befindliche virtuelle Partition über mehrere Festplatten erstreckt,
+da nur eine Festplatte ausfallen muss, um die ganzen
+Daten zu verlieren.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Warnung
+    </heading>
+
+    <textblock>
+Der Autor übernimmt keine Garantie auf die hier beschriebenen Verfahren
+und übernimmt keine Haftung für eventuelle Hardwareschäden und/oder
+Datenverluste oder sonstige Schäden. LVM ist zwar inzwischen sehr
+stabil und ausgereift, dennoch sollte man Arbeiten am Dateisystem
+nie ohne Backup vornehmen. Sichern Sie bevor Sie fortfahren Ihre Daten
+auf einen gesonderten Datenträger, um Datenverluste zu vermeiden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Copyright
+    </heading>
+
+    <textblock>
+Dieses Dokument ist urheberrechtlich geschützt. Das Copyright für
+dieses Dokument liegt bei <name email="mar.hoff@gmx.net">Markus Hoffmann</name>.
+    </textblock>
+
+    <textblock>
+Das Dokument darf gemäß der <ref chapter="gpl_en">GNU General Public License</ref> verbreitet
+werden. Insbesondere bedeutet dieses, dass der Text sowohl über
+elektronische wie auch physikalische Medien ohne die Zahlung von
+Lizenzgebühren verbreitet werden darf, solange dieser Copyright-Hinweis
+nicht entfernt wird. Eine kommerzielle Verbreitung ist erlaubt und
+ausdrücklich erwünscht. Bei einer Publikation in Papierform ist das
+<ref lang="de" url="http://www.tu-harburg.de/dlhp/">Deutsche Linux HOWTO Projekt</ref> hierüber zu informieren.
+    </textblock>
+   </section>
+  </section>
+
+  <section>
+   <heading>
+Voraussetzungen
+   </heading>
+
+   <textblock>
+Um LVM nutzen zu können müssen Sie feststellen, ob Ihr Kernel diese
+Funktion unterstützt, was gewöhnlich ab dem Standard-Kernel 2.4 der
+Fall ist. Dazu dient das Modul lvm-mod. Führen Sie als Benutzer root
+den Befehl lsmod aus, um zu überprüfen, ob es in der Liste der geladenen
+Module schon enthalten ist, gegebenenfalls führen Sie vorher noch
+modprobe lvm-mod aus. Zusätzlich dazu können Sie auch überprüfen,
+ob das Verzeichnis <path>/proc/lvm</path> existiert, welches nur bei einem aktivem
+LVM-System vorhanden ist. Ist das Modul nicht vorhanden, müssen Sie den
+Kernel mit der LVM-Funktion neu kompilieren. Sehen Sie auch dazu das
+Kapitel über die <ref chapter="kernel">Neukompilierung eines Kernels</ref> von SelfLinux. Zusätzlich
+zur Kernel-Funktion ist noch das Programmpaket lvm für die LVM-Kommandos
+notwendig, das sich, falls es nicht installiert sein sollte, meistens
+auf einer der CDs Ihrer Linux-Distribution befindet.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Einführung
+   </heading>
+   <section>
+    <heading>
+LVM-System starten
+    </heading>
+
+    <textblock>
+Um die LVM-Funktion des Kernels nutzen zu können, ist es notwendig,
+das Modul lvm-mod zu laden. Dies geschieht mit folgendem Befehl.
+    </textblock>
+
+    <shell>
+     <root path="~">
+modprobe lvm-mod
+     </root>
+    </shell>
+
+    <textblock>
+Die LVM-Kommandos setzen die Datei <path>/etc/lvmtab</path> und das Verzeichnis
+<path>/etc/lvmtab.d</path> voraus, die man vorher mit dem Befehl <command>vgscan</command>
+erstellen kann. Die beiden Dateien beinhalten Informationen über die
+vorhandene LVM-Konfiguration. Mit dem Befehl <command>vgchange</command> werden
+eventuelle Volume Groups aktiviert. Bei vielen Distributionen werden die beiden
+folgenden Befehle während des Systemstarts ausgeführt und sind damit
+nicht unbedingt notwendig. Sehen Sie dazu auch den Abschnitt
+<ref iref="LVM beim Booten und Shutdown">"LVM beim Booten und Shutdown"</ref>.
+    </textblock>
+
+    <shell>
+     <root path="~">
+vgscan -v
+     </root>
+     <root path="~">
+vgchange -a y
+     </root>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+LVM-System einrichten
+    </heading>
+    <section>
+     <heading>
+Physical Volume einrichten
+     </heading>
+
+     <textblock>
+Das LVM-System basiert auf drei Stufen: dem Physical Volume, der
+Volume Group und dem Logical Volume. Genauere Beschreibungen dieser und
+anderer Begriffe finden sie im Anhang unter <ref iref="Fachbegriffe">"Fachbegriffe"</ref> erläutert.
+     </textblock>
+
+     <textblock>
+Als erstes müssen Sie eine bestehende Partition mit der Partitions-ID 8e
+für LVM kennzeichnen. Dazu führen Sie als Benutzer root <command>cfdisk</command> gefolgt
+mit der Angabe der betreffenden Festplatte aus. <command>cfdisk</command> ist eine
+komfortablere Variante von <command>fdisk</command>.
+     </textblock>
+
+     <shell>
+      <root path="~">
+cfdisk /dev/hdb
+      </root>
+     </shell>
+
+     <textblock>
+Danach wählt man mit den Cursortasten vertikal die gewünschte Partition
+(zum Beispiel <path>/dev/hdb5</path>) und danach horizontal die Option <command>"Type"</command> um die
+Partitions-ID 8e festzulegen. Mit der Option <command>"Write"</command> werden die
+Änderungen in der Partitionstabelle eingetragen.
+     </textblock>
+
+     <textblock>
+Danach kann man auf dieser Partition ein Physical Volume einrichten.
+Die LVM-Kommandos setzen die Dateien <path>/etc/lvmtab</path> und <path>/etc/lvmtab.d</path>
+voraus, die man gegebenenfalls mit dem Befehl
+     </textblock>
+
+     <shell>
+      <root path="~">
+vgscan -v
+      </root>
+     </shell>
+
+     <textblock>
+erstellen kann. Mit dem Befehl
+     </textblock>
+
+     <shell>
+      <root path="~">
+pvcreate /dev/hdb5
+      </root>
+     </shell>
+
+     <textblock>
+kann dann das Physical Volume erstellt werden. Theoretisch wäre eine
+Volume Group auch mit nur einem Physical Volume möglich, hier erstellen
+wir jedoch noch eine zweite, die wir später in der Volume Group
+zusammenfügen.
+     </textblock>
+
+     <shell>
+      <root path="~">
+pvcreate /dev/hdb6
+      </root>
+     </shell>
+
+     <textblock>
+Voraussetzung ist natürlich wieder, dass diese Partition die ID 8e hat.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Volume Group einrichten
+     </heading>
+
+     <textblock>
+Die Volume Group stellt eine Art Speicherpool dar, aus der man eine oder
+mehrere Logical Volumes, also virtuelle Partitionen, erstellen kann.
+Zusätzlich zum Kommando <command>vgcreate</command> und den Physical Volumes muss der
+gewünschte Name, hier <path>volg1</path>, der Volume Group angegeben werden.
+     </textblock>
+
+     <shell>
+      <root path="~">
+vgcreate volg1 /dev/hdb5 /dev/hdb6
+      </root>
+     </shell>
+
+     <textblock>
+Danach befindet sich im Verzeichnis <path>/dev</path> das neue Unterverzeichnis <path>volg1</path>
+für die betreffende Volume Group.
+     </textblock>
+    </section>
+    <section>
+     <heading>
+Logical Volume einrichten
+     </heading>
+
+     <textblock>
+Nun kann man mit der gesamten Volume Group <path>volg1</path>, oder auch nur mit einem
+Teil davon ein Logical Volume erstellen. Zum Kommando <command>lvcreate</command> muss man
+die gewünschte Größe, den Namen des Logical Volume und die
+Volume Group angeben. Hier wird der Name <path>logv1</path> und die Größe
+1000 Megabyte verwendet.
+     </textblock>
+
+     <shell>
+      <root path="~">
+lvcreate -n logv1 -L 1000M volg1
+      </root>
+     </shell>
+
+     <textblock>
+Damit wird die neue Device-Datei <path>/dev/volg1/logv1</path> erstellt, über diese
+man auf die virtuelle Partition zugreifen kann. Genau nach dem gleichen
+Verfahren wie etwa auf die gewöhnliche Partition <path>/dev/hda1</path>.
+     </textblock>
+
+     <textblock>
+Um auf dieser Partition auch Daten abspeichern zu können, ist auch
+hier ein Dateisystem wie ext2 oder reiserfs erforderlich.
+     </textblock>
+
+     <shell>
+      <root path="~">
+mkfs -t ext2 /dev/volg1/logv1
+      </root>
+     </shell>
+
+     <textblock>
+Das Dateisystem wird dann über ein Verzeichnis in den Verzeichnisbaum
+eingehängt.
+     </textblock>
+
+     <shell>
+      <root path="~">
+mkdir /lvm-test
+      </root>
+      <root path="~">
+mount -t ext2 /dev/volg1/logv1 /lvm-test
+      </root>
+     </shell>
+
+     <textblock>
+Nun können Sie im neu erstellten Verzeichnis <path>/lvm-test</path> Daten abspeichern.
+Bei Bedarf können sie mit <command>umount</command> die Partition auch wieder aus dem
+Verzeichnisbaum aushängen.
+     </textblock>
+
+     <shell>
+      <root path="~">
+umount /lvm-test
+      </root>
+     </shell>
+    </section>
+   </section>
+
+   <section>
+    <heading>
+LVM-System vergrößern und verkleinern
+    </heading>
+    <section>
+     <heading>
+Logical Volume vergrößern und verkleinern
+     </heading>
+
+     <textblock>
+Wie schon gesagt lässt sich mit LVM eine Partition nachträglich
+vergrößern und auch verkleinern. Möchte man das zuvor angelegte
+Logical Volume mit der Größe von 1000 Megabyte vergrößern, kann
+man dies mit <command>lvextend</command> erledigen. Dazu gibt man einfach die neue
+Größe mit der Option <command>-L</command> direkt an. Alternativ könnte man auch mit
+<command>-L+300M</command> die neue Größe relativ zur bestehenden Größe angeben.
+Aufgrund der Größe von 4 Megabyte der Physical Extents, können
+die tatsächlisch erzeugten Größen der Logical Volumes etwas
+abweichen, da die erzeugten Logical Volumes damit immer nur ein
+Vielfaches von 4 MB groß sein können. Um diese Abweichung zu
+umgehen, können Sie beim Anlegen einer Volume Group die Größe
+der Physical Extents explizit kleiner angeben. Sehen Sie dazu
+auch den Abschnitt <ref iref="Volume Group mit spezieller PE-Größe">"Volume Group mit spezieller PE-Größe"</ref>.
+     </textblock>
+
+     <shell>
+      <root path="~">
+lvextend -L 1300M /dev/volg1/logv1
+      </root>
+     </shell>
+
+     <textblock>
+Jetzt wurde erst die virtuelle Partition, also das Logical Volume
+vergrößert. Zusätzlich muss man nun auch das darin enthaltene
+Dateisystem vergrößern. Zuvor muss es allerdings mit <command>umount</command> aus dem
+Verzeichnisbaum entfernt und noch mit <command>e2fsck</command> auf Fehler überprüft
+werden.
+     </textblock>
+
+     <shell>
+      <root path="~">
+umount /lvm-test
+      </root>
+      <root path="~">
+e2fsck -f /dev/volg1/logv1
+      </root>
+      <root path="~">
+resize2fs /dev/volg1/logv1
+      </root>
+      <root path="~">
+mount -t ext2 /dev/volg1/logv1 /lvm-test
+      </root>
+     </shell>
+
+     <textblock>
+Umgekehrt können Sie mit <command>resize2fs</command> das Dateisystem auch verkleinern,
+indem Sie die neue Größe in Blöcken (per Default 1024 Byte) angeben. Im
+Beispiel wird das Logical Volume auf 500 Megabyte verkleinert. Beachten
+Sie unbedingt, dass Sie erst das Dateisystem und danach das Logical Volume
+mit <command>lvreduce</command> verkleinern. Würden Sie erst das Logical Volume mit <command>lvreduce</command>
+verkleinern, gehen die darin enthaltenen Daten verloren!
+     </textblock>
+
+     <shell>
+      <root path="~">
+umount /lvm-test
+      </root>
+      <root path="~">
+e2fsck -f /dev/volg1/logv1
+      </root>
+      <root path="~">
+resize2fs /dev/volg1/logv1 512000
+      </root>
+      <root path="~">
+lvreduce -L-800M /dev/volg1/logv1
+      </root>
+      <root path="~">
+mount -t ext2 /dev/volg1/logv1 /lvm-test
+      </root>
+     </shell>
+
+     <textblock>
+Um komfortabler zu arbeiten, gibt es das Kommando <command>e2fsadm</command>, das alle vorher
+beschriebenen Schritte wie <command>lvextend</command>, <command>lvreduce</command>, <command>e2fsck</command> und <command>resize2fs</command> zusammen
+ausführt. Wie der Name schon andeutet, funktioniert das Programm nur bei
+dem Dateisystem ext2. Falls das Programm nicht in Ihrer Distribution
+enthalten ist, können Sie es unter <ref lang="en" url="http://e2fsprogs.sourceforge.net/">http://e2fsprogs.sourceforge.net/</ref>
+downloaden. Das folgende Kommando vergrößert zum Beispiel das Logical
+Volume auf 800 Megabyte. Zuvor muss es allerdings wieder mit <command>umount</command>
+ausgehängt werden.
+     </textblock>
+
+     <shell>
+      <root path="~">
+umount /lvm-test
+      </root>
+      <root path="~">
+e2fsadm -L 800M /dev/volg1/logv1
+      </root>
+      <root path="~">
+mount -t ext2 /dev/volg1/logv1 /lvm-test
+      </root>
+     </shell>
+
+     <textblock>
+Bei der Verkleinerung verfährt man in gleicher Weise.
+     </textblock>
+
+     <shell>
+      <root path="~">
+umount /lvm-test
+      </root>
+      <root path="~">
+e2fsadm -L 500M /dev/volg1/logv1
+      </root>
+      <root path="~">
+mount -t ext2 /dev/volg1/logv1 /lvm-test
+      </root>
+     </shell>
+    </section>
+
+    <section>
+     <heading>
+Volume Group vergrößern und verkleinern
+     </heading>
+
+     <textblock>
+Da auch der Speicherplatz der Volume Group irgendwann belegt ist und man
+damit kein Logical Volume mehr anlegen oder vergrößern kann, ist es möglich,
+auch eine Volume Group mit dem Befehl <command>vgextend</command> zu vergrößern. Man muss nur
+eine beliebige freie Partition wie in Abschnitt
+<ref iref="Physical Volume einrichten">"Physical Volume einrichten"</ref> als Physical Volume einrichten und es der
+Volume Group zufügen.
+     </textblock>
+
+     <shell>
+      <root path="~">
+pvcreate /dev/hdb7
+      </root>
+      <root path="~">
+vgextend volg1 /dev/hdb7
+      </root>
+     </shell>
+
+     <textblock>
+Mit <command>vgdisplay</command> kann man sich dann die neue Größe ansehen.
+     </textblock>
+
+     <shell>
+      <root path="~">
+vgdisplay /dev/volg1
+      </root>
+     </shell>
+
+     <textblock>
+Möchte man eine Volume Group verkleinern, kann man mit dem Befehl
+     </textblock>
+
+     <shell>
+      <root path="~">
+vgreduce -a volg1
+      </root>
+     </shell>
+
+     <textblock>
+alle freien Physical Volumes aus der Volume Group entfernen. Um ein
+bestimmtes Physical Volume zu entfernen, muss man den genauen Pfad dessen
+angeben. Vorher kann man, falls erwünscht, mit dem Befehl <command>pvdisplay -v</command>
+überprüfen, ob das betreffende Physical Volume Daten enthält oder nicht.
+     </textblock>
+
+     <shell>
+      <root path="~">
+pvdisplay -v /dev/hdb7
+      </root>
+      <root path="~">
+vgreduce volg1 /dev/hdb7
+      </root>
+     </shell>
+
+     <textblock>
+Voraussetzung ist immer, dass auf dem betreffenden Physical Volume keine
+Daten enthalten sind. Mit dem Kommando <command>pvmove</command> kann man vorher gegebenenfalls
+die Daten auf ein anderes Physical Volume verschieben. Sehen Sie dazu
+auch den Abschnitt <ref iref="Daten von einem PV zum anderen PV verschieben">"Daten von einem PV zum anderen PV verschieben"</ref>.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+    <heading>
+LVM-System beenden
+    </heading>
+
+    <textblock>
+Um das LVM-System ordungsgemäß zu beenden, müssen Sie alle Logical Volumes
+mit <command>umount</command> aus dem Verzeichnisbaum aushängen und danach <command>vgchange</command> ausführen.
+    </textblock>
+
+    <shell>
+     <root path="~">
+umount /lvm-test
+     </root>
+     <root path="~">
+vgchange -a n
+     </root>
+    </shell>
+
+    <textblock>
+Am komfortabelsten ist es, die Befehle für das Starten und Beenden des
+LVM-Systems innerhalb des Init-V-Prozesses einzubinden, um nicht immer
+manuell nach dem Systemstart das LVM-System zu aktivieren. Sehen Sie dazu
+auch den Abschnitt <ref iref="LVM beim Booten und Shutdown">"LVM beim Booten und Shutdown"</ref>.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Weiterführung
+   </heading>
+   <section>
+    <heading>
+LVM beim Booten und Shutdown
+    </heading>
+
+    <textblock>
+Um LVM gleich nach dem Systemstart zur Verfügung zu haben, muss dies
+innerhalb des Init-V-Prozesses gestartet werden. Bei SuSE ist der
+Befehl <command>vgchange -a y</command> bereits in <path>/etc/init.d/boot</path> enthalten. Um das
+LVM-System ordnungsgemäß zu beenden, ist noch <command>vgchange -a n</command> in der
+Datei <path>/etc/init.d/halt</path> enthalten, die beim Herunterfahren ausgeführt wird.
+Auch bei Mandrake sind in den aktuellen Versionen die entsprechenden
+Befehle integriert. Bei Red Hat muss unter Umständen noch nachgebessert
+werden. Sehen Sie dazu auch das <ref lang="en" url="http://tldp.org/HOWTO/LVM-HOWTO/">LVM-HOWTO</ref> auf der <ref lang="en" url="http://www.sistina.com/products_lvm.htm">LVM-Website</ref>, aufgelistet
+im Literaturverzeichnis. Um zu überprüfen, ob Ihre Distribution
+ebenfalls schon beim Start LVM aktiviert, führen Sie als root lsmod aus.
+Ist in der aufgeführten Liste das Modul lvm-mod enthalten, ist dies der
+Fall. Alternativ können Sie auch das Verzeichnis <path>/proc/lvm</path>, das nur bei
+aktiviertem LVM existiert, aufrufen.
+    </textblock>
+
+    <textblock>
+Danach können Logical Volumes genauso wie herkömmliche Partitionen mit Hilfe
+eines beliebigen Editors in <path>/etc/fstab</path> eingefügt werden, damit diese automatisch
+beim Booten in den Verzeichnisbaum eingehängt werden. Gehen Sie dabei sehr
+vorsichtig vor, bei eventuellen Fehleintragungen könnte es sonst sein, dass Ihr
+System nicht mehr startet.
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+/dev/volg1/logv1  /lvm-test   ext2   defaults   0  2
+     </content>
+    </file>
+
+    <textblock>
+Danach stehen die Partitionen wie bei dem oben genannten Beispiel unter
+dem Verzeichnis <path>/lvm-test</path> zur Verfügung.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Daten von einem PV zum anderen PV verschieben
+    </heading>
+
+    <textblock>
+Um Daten von einem Physical Volume zu einem anderen Physical Volume
+zu verschieben, um zum Beispiel die betreffende Partition danach aus
+der Volume Group zu entfernen, gibt es das Kommando <command>pvmove</command>. Mit dem
+folgenden Befehl werden alle Daten vom Physical Volume <path>/dev/hdb6</path> auf
+den freien, noch zur Verfügung stehenden Platz der anderen Physical
+Volumes der gleichen Volume Group verschoben. Voraussetzung ist
+allerdings, dass die restlichen Physical Volumes der Volume Group
+noch genügend Speicherplatz zur Verfügung stellen, um diese Daten
+aufnehmen zu können.
+    </textblock>
+
+    <shell>
+     <root path="~">
+pvmove -v /dev/hdb6
+     </root>
+    </shell>
+
+    <textblock>
+Danach könnte man mit
+    </textblock>
+
+    <shell>
+     <root path="~">
+vgreduce volg1 /dev/hdb6
+     </root>
+    </shell>
+
+    <textblock>
+die Partition aus der Volume Group entfernen und anderweitig benutzen.
+Um die Daten auf ein bestimmtes Physical Volume zu verschieben, gibt
+man dieses als zweites Physical Volume an.
+    </textblock>
+
+    <shell>
+     <root path="~">
+pvmove -v /dev/hdb6 /dev/hdb7
+     </root>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+VG und LV umbenennen
+    </heading>
+
+    <textblock>
+Um eine Volume Group oder ein Logical Volume umzubenennen, gibt es die
+beiden Kommandos <command>vgrename</command> und <command>lvrename</command>.
+    </textblock>
+
+    <shell>
+     <root path="~">
+vgrename /dev/volg1 /dev/volgroup1
+     </root>
+     <root path="~">
+lvrename /dev/volgroup1/logv1 /dev/volgroup1/logvol1
+     </root>
+    </shell>
+
+    <textblock>
+Danach müssen Sie eventuell den Eintrag in der Datei <path>/etc/fstab</path> ändern.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Volume Group mit spezieller PE-Größe
+    </heading>
+
+    <textblock>
+Beim Anlegen einer Volume Group besteht die Möglichkeit die Größe
+der Physical Extents vorzugeben. Standardmäßig ist die Größe von
+4 Megabyte eingestellt. Um eine selbst definierte Größe zu erhalten,
+kann man dies beim Erstellen einer Volume Group mit der
+Option <command>-s</command> angeben. Es sind Größen von 8 Kilobyte bis 16 Gigabyte
+möglich.
+    </textblock>
+
+    <shell>
+     <root path="~">
+vgcreate -s 8k volg2 /dev/hdb7
+     </root>
+    </shell>
+
+    <textblock>
+Nachträglich lässt sich die Größe der Physical Extents nicht ändern. Da
+je Logical Volume nur 65563 Physical Extents verwaltet werden können,
+beschränkt die Größe der Physical Extents auch die Größe der Logical
+Volumes.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Informationen abrufen über PV, VG, LV
+    </heading>
+
+    <textblock>
+Um nähere Details zu Physical Volumes, Volume Groups oder Logical
+Volumes zu erhalten, gibt es die Kommandos <command>pvdisplay</command>, <command>vgdisplay</command> und
+<command>lvdisplay</command>.
+    </textblock>
+
+    <shell>
+     <root path="~">
+pvdisplay /dev/hdb5
+     </root>
+     <root path="~">
+vgdisplay /dev/volg1
+     </root>
+     <root path="~">
+lvdisplay /dev/volg1/logv1
+     </root>
+    </shell>
+
+    <textblock>
+Ergänzend gibt es noch Scan-Kommandos, um das System nach LVM-Volumes
+etc. abzusuchen und aufzulisten.
+    </textblock>
+
+    <shell>
+     <root path="~">
+pvscan
+     </root>
+    </shell>
+
+    <textblock>
+Dieser Befehl erstellt eine Liste über alle Physical
+Volumes.
+    </textblock>
+
+    <shell>
+     <root path="~">
+vgscan
+     </root>
+    </shell>
+
+    <textblock>
+Dieser Befehl erstellt eine Liste aller Volume Groups. Daneben werden
+die notwendigen Dateien <path>/etc/lvmtab</path> und <path>/etc/lvmtab.d</path> erzeugt.
+    </textblock>
+
+    <shell>
+     <root path="~">
+lvscan
+     </root>
+    </shell>
+
+    <textblock>
+Dieser Befehl erstellt eine Liste aller Logical Volumes.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+LV oder VG löschen
+    </heading>
+
+    <textblock>
+Mit den beiden Kommandos <command>lvremove</command> und <command>vgremove</command> lassen sich Logical
+Volumes beziehungsweise Volume Groups aus dem System entfernen. Zu
+beachten ist, dass nur ausgehängte Logical Volumes entfernt werden
+können. Führen Sie dazu folgende Befehle aus. Dabei muss die
+entsprechende Volume Group noch aktiv sein. Dieses Beispiel geht
+davon aus, dass das Logical Volume über das Verzeichnis <path>/lvm-test</path>
+gemountet ist.
+    </textblock>
+
+    <shell>
+     <root path="~">
+umount /lvm-test
+     </root>
+     <root path="~">
+lvremove /dev/volg1/logv1
+     </root>
+    </shell>
+
+     <textblock>
+Nach dem Deaktivieren der Volume Group, können Sie dann schließlich
+auch mit dem Befehl <command>vgremove</command> die Volume Group löschen, vorausgesetzt
+es existieren keine weiteren Logical Volumes innerhalb dieser Volume
+Group mehr.
+    </textblock>
+
+    <shell>
+     <root path="~">
+vgchange -a n /dev/volg1
+     </root>
+     <root path="~">
+vgremove /dev/volg1
+     </root>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+LVM für die Root-Partition
+    </heading>
+
+    <textblock>
+Um auch LVM für die Root-Partition nutzen zu können, ist es notwendig,
+dass der Kernel das Modul lvm-mod schon vor dem Zugriff auf die Root-
+Partition geladen hat, sonst ist ein Zugriff darauf nicht möglich. Dafür
+ist ein Kernel mit fest integriertem LVM-Modul oder eine
+Initial-RAM-Disk erforderlich. Die aktuellen Versionen der
+SuSE-Distribution bieten bei der Installation die Möglichkeit, auch eine
+LVM-Partition für die Root-Partition zu erstellen.
+    </textblock>
+
+    <textblock>
+LVM auch für die Root-Partition zu verwenden, birgt einige Gefahren in
+sich und kann Ihr ganzes System unbrauchbar machen. Außerdem kann es
+bei späteren Distributions-Updates zu Komplikationen kommen. Zusätzlich
+kann es bei einer Beschädigung des Dateisystems der Root-Partition
+aufwändiger sein, dieses wiederherzustellen. Eine Umstellung der
+Root-Partition auf LVM ist deshalb nur erfahrenen Linux-Anwendern zu
+empfehlen. Daher rate ich in der Regel davon ab. Des Weiteren übernehme
+ich keine Garantie für die hier beschriebene Vorgehensweise. Wollen Sie
+dennoch Ihre Root-Partition auf LVM aufsetzen und sind sich der Gefahren
+bewusst, sollten Sie vorher unbedingt zur Sicherheit ein Backup Ihrer
+Daten und der Systempartition anlegen.
+    </textblock>
+
+    <textblock>
+Eine der einfachsten und sichersten Möglichkeiten LVM für die
+Root-Partition einzurichten, ist die Verwendung einer so genannten
+Live-Distribution. Dies ist eine Linux-Distribution, die komplett von einer
+CD läuft und die keiner Installation bedarf und damit vollkommen ohne
+Festplatte auskommt. Dies ermöglicht ein komfortables Arbeiten an der
+inaktiven Root-Partition. Bei anderen Verfahren wären Komplikationen mit
+der gemounteten Root-Partition nicht auszuschließen, da die meisten
+Programme, wie zum Beispiel <command>resize2fs</command>, ein ausgehängtes Dateisystem
+voraussetzen, und ein <command>umount</command> kann man nicht einfach auch für die
+Systempartition anwenden.
+    </textblock>
+
+    <textblock>
+Eine weit verbreitete und sehr empfehlenswerte Distribution dieser Art
+ist Knoppix, das Sie unter <ref lang="de" url="http://www.knopper.net/knoppix/">http://www.knopper.net/knoppix/</ref> beziehen können. Das
+hier beschriebene Verfahren bezieht sich ausschließlich auf die Verwendung
+einer Live-Distribution. Um Knoppix zu starten, booten Sie von der
+Knoppix-CD. Mit der Eingabetaste am Bootprompt gelangen Sie zum
+KDE-Desktop, mit der Eingabe von <command>knoppix 2</command> in eine Textkonsole. Da Knoppix
+ein vollständiges Linux-Betriebssystem ist, bringt es eine vielfältige
+Auswahl an Tools mit, unter anderem das Programm <ref lang="en" url="http://www.partimage.org/">Partition Image</ref>, das Sie
+mit <command>partimage</command> in einer Shell starten. Damit können Sie gleich die dringend
+zu empfehlende Sicherung Ihrer Root-Partition durchführen, in dem Sie ein
+Abbild dieser Partition in eine Image-Datei speichern. Diese Image-Datei
+speichern Sie dann am besten auf einen gesonderten Datenträger. Falls etwas
+schief gehen sollte, können Sie den Zustand der Root-Partition zum Zeitpunkt
+der Sicherung wiederherstellen, indem Sie die Image-Datei wieder
+zurückspielen. Sichern Sie zusätzlich noch Ihre Datenpartitionen.
+    </textblock>
+
+    <textblock>
+Das hier beschriebene Verfahren geht von folgender Systemkonfiguration
+auf einer 1,6 GB großen Festplatte aus:
+    </textblock>
+
+    <shell>
+     <output>
+/dev/hda1     swap   (Swap-Partition)    192 MB
+/dev/hda2       /    (Root-Partition)    1,5 GB
+/dev/hda3     boot   (Boot-Partition)    20  MB
+     </output>
+    </shell>
+
+    <textblock>
+Haben Sie noch eine freie Partition inklusive entsprechendem Speicherplatz,
+entfällt die folgende Verkleinerung der Root-Partition. Sie können auf der
+entsprechenden Partition dann gleich ein Logical Volume für die
+Root-Partition anlegen.
+    </textblock>
+
+    <textblock>
+Damit die Root-Partition auf LVM aufsetzen kann, ist es erforderlich, erst ein
+neues Logical Volume zu erstellen und dann die komplette Root-Partition darauf
+zu kopieren. In diesem Falle wird dazu die Root-Partition verkleinert, um
+neuen Speicherplatz frei zu machen. Aus diesem Speicherplatz wird dann eine
+neue Partition erstellt, die später die Root-Partition aufnehmen wird. Daher
+darf hier die aktuelle Root-Partition nicht einmal die Hälfte der Partition in
+Anspruch nehmen. Zum Verkleinern der Partition nehmen Sie am besten das
+Programm <ref lang="en" url="http://www.gnu.org/software/parted/">GNU Parted</ref>. Gestartet wird es auf der Kommandozeile mit <command>parted</command> gefolgt
+von dem jeweiligen Device.
+    </textblock>
+
+    <shell>
+     <root path="~">
+parted /dev/hda
+     </root>
+     <input>
+   (parted) p      # zeigt die aktuelle Partitionstabelle an
+     </input>
+     <output>
+Minor   Start     End       Type       Filesystem       Flags
+
+1       0,031    192,137    primary     linux-swap
+3      192,938   214,539    primary         ext2          boot
+2      252,000  1549,406    primary         ext2
+     </output>
+    </shell>
+
+    <textblock>
+Um die Root-Partition zu verkleinern, gibt man in Parted die Partitionsnummer,
+hier zum Beispiel die Nummer zwei, und den Start sowie das Ende der Partition
+in Megabyte an. Achten Sie darauf, dass der freiwerdende Speicherplatz etwas
+größer wird als die Root-Partition, damit alle Daten später von der
+Systempartition dorthin kopiert werden können.
+    </textblock>
+
+    <shell>
+     <output>
+   (parted) resize 2 252.000 850
+     </output>
+    </shell>
+
+    <textblock>
+Danach muss aus dem freigewordenen Speicherplatz eine neue Partition angelegt
+werden. Das folgende Kommando erstellt eine neue primäre Partition aus dem
+restlichen Plattenplatz nach der Root-Partition.
+    </textblock>
+
+    <shell>
+     <input>
+   (parted) mkpart primary 851 1550
+     </input>
+     <input>
+   (parted) p
+     </input>
+     <output>
+Minor   Start     End       Type       Filesystem       Flags
+
+1       0,031    192,137    primary     linux-swap
+3      192,938   214,539    primary         ext2         boot
+2      252,000   850,000    primary         ext2
+4      850,500   1549,406   primary                      lvm
+     </output>
+     <input>
+   (parted) q
+     </input>
+    </shell>
+
+    <textblock>
+Nach dem Verlassen von <ref lang="en" url="http://www.gnu.org/software/parted/">GNU Parted</ref> starten Sie Ihr altes System neu.
+    </textblock>
+
+    <shell>
+     <root path="~">
+reboot
+     </root>
+    </shell>
+
+    <textblock>
+Nach dem Neustart erstellen Sie ein Logical Volume ohne Dateisystem aus
+der gesamten Größe der neuen Partition <path>/dev/hda4</path>. Sehen Sie dazu
+gegebenenfalls den Abschnitt <ref iref="LVM-System einrichten">"LVM-System einrichten"</ref>. Nun müssen Sie
+die komplette Root-Partition auf das neue Logical Volume kopieren. Dazu
+booten Sie erneut Knoppix. In diesem Beispiel wurde das Logical Volume
+<path>rootlv</path> genannt, dieses befindet sich in der Volume Group <path>rootvg</path>.
+    </textblock>
+
+    <shell>
+     <root path="¯">
+root@linux # vgscan
+     </root>
+     <root path="~">
+vgchange -a y
+     </root>
+     <root path="~">
+dd if=/dev/hda2 of=/dev/rootvg/rootlv
+     </root>
+     <root path="~">
+sync
+     </root>
+    </shell>
+
+    <textblock>
+Nach dem Kopiervorgang, der einige Zeit in Anspruch nehmen kann, mounten Sie
+das Logical Volume unter dem Verzeichnis <path>/root-lvm</path> und ändern eine Zeile in
+der Datei <path>/root-lvm/etc/fstab</path> mit dem Editor <ref chapter="emacs">Emacs</ref>.
+    </textblock>
+
+    <shell>
+     <root path="~">
+mkdir /root-lvm
+     </root>
+     <root path="~">
+mount /dev/rootvg/rootlv /root-lvm
+     </root>
+     <root path="~">
+emacs /root-lvm/etc/fstab
+     </root>
+    </shell>
+
+    <textblock>
+Diese Zeile
+    </textblock>
+
+    <file>
+     <title>
+/root-lvm/etc/fstab
+     </title>
+     <content>
+/dev/hda2              /        ext2       defaults     1  1
+     </content>
+    </file>
+
+    <textblock>
+wird geändert zu dieser
+    </textblock>
+
+    <file>
+     <title>
+/root-lvm/etc/fstab
+     </title>
+     <content>
+/dev/rootvg/rootlv     /        ext2       defaults     1  1
+     </content>
+    </file>
+
+    <textblock>
+Danach booten Sie wieder Ihr altes System. Falls der Kernel Ihrer Distribution
+ohne fest integrieter LVM-Funktion besteht, müssen Sie noch eine Initial-RAM-Disk
+erstellen, aus der beim Systemstart das LVM-Modul geladen wird. Beachten Sie,
+dass das folgende Kommando nur eine Initial-RAM-Disk mit einem LVM-Modul erstellt.
+Bei manchen Distributionen ist es erforderlich, vorher noch das Programmpaket
+<strong>binutils</strong> zu installieren.
+    </textblock>
+
+    <shell>
+     <root path="~">
+lvmcreate_initrd
+     </root>
+    </shell>
+
+    <textblock>
+Danach sollte sich die Initial-RAM-Disk im Verzeichnis <path>/boot</path> befinden. Als
+nächstes müssen Sie Ihren Boot-Manager wie zum Beispiel <command>Lilo</command> anpassen. Fügen Sie
+dazu etwa folgenden Eintrag in die Datei <path>/etc/lilo.conf</path> hinzu.
+    </textblock>
+
+    <file>
+     <title>
+/etc/lilo.conf
+     </title>
+     <content>
+image   = /boot/vmlinuz
+label   = lvm
+root    = /dev/rootvg/rootlv
+initrd  = /boot/initrd.gz
+ramdisk = 8192
+     </content>
+    </file>
+
+    <textblock>
+Kopieren Sie anschließend am besten gleich diese Datei auch in die neue Root-Partition.
+Danach können Sie <command>lilo</command> ausführen.
+    </textblock>
+
+    <shell>
+     <root path="~">
+mkdir /root-lvm
+     </root>
+     <root path="~">
+mount /dev/rootvg/rootlv /root-lvm
+     </root>
+     <root path="~">
+cp /etc/lilo.conf /root-lvm/etc/lilo.conf
+     </root>
+     <root path="~">
+lilo
+     </root>
+    </shell>
+
+    <textblock>
+Danach starten Sie Ihr System neu und booten unter der Angabe von <command>lvm</command> am
+Lilo-Bootprompt von der neuen Root-Partition. Wenn das Booten von dem neuen
+Logical Volume, auf der sich nun die Root-Partition befindet, gelingt und alles
+einwandfrei funktioniert, können Sie die alte Root-Partition als Physical Volume
+definieren und der Volume Group rootvg hinzufügen. Vorher sollten Sie jedoch Ihr
+neues System gründlich prüfen. Wollen Sie die Root-Partition mittels LVM
+nachträglich vergrößern, können Sie mit dem Befehl <command>lvextend</command> unter Ihrem neuen
+System die Partition vergrößern. Um danach auch das darin befindliche Dateisystem
+fehlerfrei vergrößern zu können, müssen Sie wieder Knoppix booten und <command>resize2fs</command>
+dann dort für die inaktive Root-Partition ausführen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+LVM kombiniert mit RAID
+    </heading>
+    <section>
+     <heading>
+LVM im RAID-Level 0
+     </heading>
+
+     <textblock>
+LVM unterstützt den RAID-Level 0, auch Stripe-Set genannt, bei dem die
+Daten alternierend auf verschiedene Festplatten in geteilte Datenblöcke
+gespeichert werden. Dies führt zu einem ernormen Geschwindigkeitszuwachs,
+vor allem beim Lesezugriff, bei dem sich die Datenrate fast verdoppeln
+kann. Sehen Sie dazu auch das <ref chapter="software_raid">RAID-HOWTO von SelfLinux</ref>. Um RAID 0 unter
+LVM nutzen zu können, muss auf zwei oder mehr Festplatten jeweils ein
+Physical Volume eingerichtet werden. Danach fasst man diese als eine
+Volume Group zusammen und erstellt mit folgendem Kommando daraus ein
+Logical Volume.
+     </textblock>
+
+     <shell>
+      <root path="~">
+lvcreate -n lvstriped -L 1000M -i 2 volg1
+      </root>
+     </shell>
+
+     <textblock>
+Die Option <command>-i 2</command> bewirkt, dass das Logical Volume aus zwei Physical
+Volumes erstellt wird. Um keine Geschwindigkeitseinbußen zu bekommen,
+müssen Sie darauf achten, dass alle Physical Volumes immer auf
+verschiedene Festplatten liegen.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+LVM und höhere RAID-Level
+     </heading>
+
+     <textblock>
+LVM kann man auch mit anderen RAID-Leveln kombinieren. Hierzu richtet
+man auf dem betreffenden <path>/dev/md*</path>-Device ein Physical Volume ein
+und benutzt dieses wie gewohnt.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+    <heading>
+LVM basierend auf Loopback-Devices
+    </heading>
+
+    <textblock>
+Wie schon erwähnt lasst sich LVM alternativ zu Partitionen auch
+mit Loopback-Devices verwenden. Dies hat den Vorteil die
+Festplatte nicht umpartitionieren zu müssen, und eignet sich somit ideal
+um LVM erst einmal zu testen. Jedoch sollte man wegen der Datensicherheit
+und Performance bei späteren ernsthaften Verwendungen von LVM, wenn
+möglich, richtige Partitionen verwenden. Denn mit Loopback-Devices werden
+die Daten innerhalb einer Datei abgelegt, die wiederum in einem Dateisystem
+einer gewöhnlichen Partition liegt. Ein löschen dieser Datei würde dann
+zum Verlust aller Daten führen. Zu beachten ist, dass eine Volume Group
+eine <strong>Mindestgröße von 20 Megabyte</strong> haben muss.
+    </textblock>
+
+    <textblock>
+Als erstes ist es notwendig die erforderliche Datei als Container für die
+Daten zu erstellen. Dies geschieht mit dem folgenden Befehl.
+    </textblock>
+
+    <shell>
+     <root path="~">
+dd if=/dev/zero of=/lvm-test/.lvmcontainer bs=1024 count=51200
+     </root>
+    </shell>
+
+    <textblock>
+Dieser Befehl erstellt eine 50 Megabyte große Datei im Verzeichnis
+<path>/lvm-test</path>. Optional habe ich diese Datei mit einem Punkt am Anfang
+versehen, damit sie als versteckte Datei in der Normalansicht nicht zu
+sehen ist. Als nächstes muss nun diese Datei mit einem Loopback-Device
+verbunden werden.
+    </textblock>
+
+    <shell>
+     <root path="~">
+losetup /dev/loop1 /lvm-test/.lvmcontainer
+     </root>
+    </shell>
+
+    <textblock>
+Danach kann auf diese Datei über <path>/dev/loop1</path> als gewöhnliches
+Block-Device zugegriffen werden, und darauf wie auf einer herkömmlichen
+Partition ein Physical Volume erstellt werden. Falls das Loopback-Device
+nicht mehr benötigt wird kann es mit
+    </textblock>
+
+    <shell>
+     <root path="~">
+losetup -d /dev/loop1
+     </root>
+    </shell>
+
+    <textblock>
+wieder von der Datei gelöst werden.
+    </textblock>
+
+    <textblock>
+Dieser Eintrag in der Datei <path>/etc/fstab</path> würde schon beim Systemstart
+automatisch die Datei <path>/lvm-test/.lvmcontainer</path> per Loopback-Device
+über das Verzeichnis <path>/lvm-test</path> mounten.
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+/lvm-test/.container    /lvm-test   ext2    defaults,loop    0    0
+     </content>
+    </file>
+   </section>
+
+   <section>
+    <heading>
+Logical Volume für Swap-Partition
+    </heading>
+
+    <textblock>
+Man kann ein Logical Volume auch als Swap-Partition benutzen. Dazu
+muss man lediglich das betreffende Logical Volume mit mkswap formatieren
+und mit <command>swapon</command> aktivieren. Falls jedoch die Volume Group, innerhalb der
+das Logical Volume erstellt wurde, aus mehreren Partitionen besteht, ist
+es möglich, dass damit auch die LVM-Swap-Partition über mehrere Partitionen
+verteilt ist, was den Zugriff auf die Swap-Partition verlangsamt.
+    </textblock>
+
+    <shell>
+     <root path="~">
+lvcreate -n swaplv -L 500M volg1
+     </root>
+     <root path="~">
+mkswap /dev/volg1/swaplv
+     </root>
+     <root path="~">
+swapon /dev/volg1/swaplv
+     </root>
+    </shell>
+
+    <textblock>
+Damit die Swap-Partition automatisch beim Systemstart aktiviert wird, tragen
+Sie folgende Zeile in die Datei <path>/etc/fstab</path> ein.
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+/dev/volg1/swaplv      swap      swap     defaults     0   0
+     </content>
+    </file>
+
+    <textblock>
+Existiert bereits eine Swap-Partition, und wollen Sie diese Swap-Partition
+noch zusätzlich weiter verwenden, können Sie mit der unten angegebenen
+Option pri=1 bewirken, dass beide Swap-Partitionen gleichwertig behandelt
+werden. Dies kann zu einer Performancesteigerung nach dem Prinzip von
+RAID 0 führen, falls beide Partitionen auf verschiedenen Festplatten
+liegen. Zwei Swap-Partitionen auf einer Festplatte sollte man vermeiden,
+da sich dann beide gegenseitig ausbremsen würden.
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+/dev/volg1/swaplv      swap       swap     defaults,pri=1     0   0
+/dev/hda8              swap       swap     defaults,pri=1     0   0
+     </content>
+    </file>
+   </section>
+
+   <section>
+    <heading>
+Snapshot eines Logical Volume
+    </heading>
+
+    <textblock>
+Ein Snapshot ist eine Kopie, die man von einem Logical Volume als
+Backup anlegen kann. Dazu dient wiederum der Befehl <command>lvcreate</command> mit der
+speziellen Option -s oder --snapshot.
+    </textblock>
+
+    <shell>
+     <root path="~">
+lvcreate -L 500M --snapshot -n mysnap /dev/volg1/logv1
+     </root>
+    </shell>
+
+    <textblock>
+Danach steht der identische Inhalt des Logical Volume <path>/dev/volg1/logv1</path>
+unter <path>/dev/volg1/mysnap</path> bereit. Dabei ist zu beachten, dass der
+Snapshot einen Teil des Speicherplatzes der Volume Group belegt.
+Die Option <command>-L 500M</command> gibt nicht etwa die eigentliche Größe des Snapshot
+an, sondern wie viel sich am Original ändern darf, bevor der Snapshot
+ungültig wird.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+VG auf anderen Rechner transferieren
+    </heading>
+
+    <textblock>
+Es besteht die Möglichkeit, vorhandene lokale Volume Groups auf einen
+anderen Computer weiterzubenutzen, falls man die lokale Festplatte, auf
+der sich die betreffenden Physical Volumes einer Volume Group befinden,
+in den anderen Rechner einbauen will. Vorher muss man allerdings die
+entsprechende Volume Group aus dem System entfernen. Um dies zu
+bewirken, gibt es den Befehl <command>vgexport</command>, der, nachdem man die
+entsprechende Volume Group deaktiviert hat, diese ordnungsgemäß aus dem
+System entfernt. Man kann zudem gegebenenfalls noch mit <command>pvscan</command>
+überprüfen, welche Physical Volumes zu welcher Volume Group gehören.
+    </textblock>
+
+    <shell>
+     <root path="~">
+pvscan
+     </root>
+     <root path="~">
+umount /lvm-test
+     </root>
+     <root path="~">
+vgchange -a n /dev/volg1
+     </root>
+     <root path="~">
+vgexport /dev/volg1
+     </root>
+    </shell>
+
+    <textblock>
+Ist die Festplatte in den anderen Rechner eingebaut, kann man analog dazu
+mit <command>vgimport</command>, der Angabe eines Namens und der Physical
+Volumes die Volume Group auf diesem Computer wieder weiterverwenden.
+Voraussetzung ist natürlich, dass auch dort ein funktionierendes LVM-System
+vorhanden ist.
+    </textblock>
+
+    <shell>
+     <root path="~">
+vgimport newvg /dev/hdb5 /dev/hdb6
+     </root>
+     <root path="~">
+vgchange -a y /dev/newvg
+     </root>
+     <root path="~">
+mkdir /lvm-test
+     </root>
+     <root path="~">
+mount -t ext2 /dev/newvg/logv1 /lvm-test
+     </root>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+Dateisystem im Betrieb vergrößern
+    </heading>
+
+    <textblock>
+Die Möglichkeit ein Dateisystem im laufendem Zustand zu vergrößern ist
+vor allem im Server-Betrieb sehr praktisch, da man die Downtime dieses
+Servers sehr gering halten kann, und dieser sehr schnell wieder zur
+Verfügung steht. Das Programm <command>resize2fs</command> ist nur in der Lage die
+Größe eines Dateisystems zu verändern, wenn dieses gerade nicht im
+Verzeichnisbaum gemountet ist. Daneben gibt es noch zusätzlich das
+Programm <command>ext2online</command>, das ext2-Dateisysteme auch im gemountetem Zustand
+verändern kann. Dafür ist jedoch zur Zeit noch ein Kernel-Patch
+erforderlich, den man inklusive dem Programm unter
+<ref lang="en" url="http://sourceforge.net/projects/ext2resize/">http://sourceforge.net/projects/ext2resize/</ref> downloaden kann.
+Veränderungen am Kernel sind jedoch mit Vorsicht auszuführen.
+Aktuell gibt es diese Möglichkeit auch für ext3. Alternativ kann
+man das Dateisystem reiserfs verwenden, das man auch im gemountetem
+Zustand vergrößern kann. Eine Verkleinerung dieses Dateisystems ist
+jedoch auch hier nur möglich, wenn es vorher mit <command>umount</command>
+ausgehängt wurde. Diese Funktion ist allerdings noch relativ neu,
+eventuelle Bugs sind deswegen nicht auszuschließen.
+    </textblock>
+
+    <shell>
+     <root path="~">
+lvcreate -n logv2 -L 500M volg1
+     </root>
+     <root path="~">
+mkfs -t reiserfs /dev/volg1/logv2
+     </root>
+     <root path="~">
+mount -t reiserfs /dev/volg1/logv2 /lvm-test
+     </root>
+     <root path="~">
+lvextend -L 1000M /dev/volg1/logv2
+     </root>
+     <root path="~">
+resize_reiserfs /dev/volg1/volg2
+     </root>
+    </shell>
+
+    <textblock>
+Um das Dateisystem wieder zu verkleinern, muss es vorher mit
+<command>umount</command> ausgehängt werden.
+    </textblock>
+
+    <shell>
+     <root path="~">
+lvreduce -L 500M /dev/volg1/logv2
+     </root>
+     <root path="~">
+umount /lvm-test
+     </root>
+     <root path="~">
+resize_reiserfs /dev/volg1/logv2
+     </root>
+     <root path="~">
+mount -t reiserfs /dev/volg1/logv2 /lvm-test
+     </root>
+    </shell>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Grafische Benutzeroberflächen für LVM
+   </heading>
+
+   <textblock>
+Bei den aktuellen großen Distributionen ist bereits bei den
+mitgelieferten Konfigurationstools ein grafischer Partitionseditor
+enthalten, mit dem sich ein LVM-System komfortabler einrichten lässt.
+Bei SuSE ist dies beispielsweise das LVM-Modul von YaST. Des Weiteren
+bietet <strong>Webmin</strong> unter <ref lang="en" url="http://www.webmin.com">http://www.webmin.com</ref> noch ein LVM-Feature,
+das ich jedoch nicht getestet habe. Ein weiteres, sehr gutes GUI für
+LVM ist das so genannte <strong>Enterprise Volume Management System EVMS</strong> unter
+<ref lang="en" url="http://evms.sourceforge.net/">http://evms.sourceforge.net/</ref>. Es bietet eine einfache und
+übersichtliche Benutzeroberfläche, um Volume Groups, Logical Volumes
+etc. anzulegen. Das Programm unterstützt nicht nur das LVM-System
+unter Linux, sondern auch den LVM vom Unix-Derivat AIX von IBM. Allen
+hier beschriebenen Tools ist gemeinsam, dass man das Grundprinzip von
+LVM verstanden haben sollte. Erfahrene Anwender bevorzugen aber
+eher die Kommandozeile, auch wegen eventueller Bugs der Programme.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Anhang
+   </heading>
+   <section>
+    <heading>
+Kommandoreferenz
+    </heading>
+
+    <textblock>
+Hier sind die wichtigsten, in diesem Kapitel behandelten Kommandos
+noch einmal zusammengefasst. Es gibt zahlreiche Befehle bezüglich
+LVM. Für weitere Informationen sehen Sie in den betreffenden
+Manpages nach.
+    </textblock>
+
+    <textblock>
+<command><strong>vgscan</strong></command>
+    </textblock>
+
+    <definition>
+Sucht alle Festplatten nach Volume Groups ab und erzeugt die für
+LVM-Kommandos benötigten Dateien <path>/etc/lvmtab</path> und <path>/etc/lvmtab.d</path>, in
+denen wichtige Informationen über das LVM-System auf Ihrem
+Computer abgespeichert werden.
+    </definition>
+
+    <textblock>
+<command><strong>pvscan</strong></command>
+    </textblock>
+
+    <definition>
+Sucht alle Festplatten nach Physical Volumes ab und listet diese
+inklusive Größenangabe auf.
+    </definition>
+
+    <textblock>
+<command><strong>pvcreate</strong></command>
+    </textblock>
+
+    <definition>
+Erstellt ein Physical Volume aus einer Partition, die vorher mit
+der Partitions-ID 8e gekennzeichnet wurde.
+    </definition>
+
+    <textblock>
+<command><strong>vgcreate</strong></command>
+    </textblock>
+
+    <definition>
+Erzeugt aus einem oder mehreren Physical Volumes eine Volume Group.
+    </definition>
+
+    <textblock>
+<command><strong>lvcreate</strong></command>
+    </textblock>
+
+    <definition>
+Erzeugt ein Logical Volume, also eine virtuelle Partition, aus
+einer Volume Group. Diese ist somit ein Teil einer Volume Group.
+    </definition>
+
+    <textblock>
+<command><strong>lvextend</strong></command>
+    </textblock>
+
+    <definition>
+Vergrößert ein Logical Volume auf die angegebene Größe.
+    </definition>
+
+    <textblock>
+<command><strong>lvreduce</strong></command>
+    </textblock>
+
+    <definition>
+Verkleinert ein Logical Volume auf die angegebene Größe. Vorher
+muss allerdings das Dateisystem ebenfalls auf die gewünschte
+Größe verkleinert werden, sonst gehen die darin enthaltenen
+Daten verloren.
+    </definition>
+
+    <textblock>
+<command><strong>e2fsadm</strong></command>
+    </textblock>
+
+    <definition>
+Dieses Kommando fasst die Befehle <command>lvextend</command>, <command>lvreduce</command>, <command>e2fsck</command> und
+<command>resize2fs</command> zusammen. Um etwa ein Logical Volume zu
+vergrößern, müssen Sie nur noch den Befehl, die gewünschte Größe
+und das Logical Volume angeben.
+    </definition>
+
+    <textblock>
+<command><strong>pvmove</strong></command>
+    </textblock>
+
+    <definition>
+Mit <command>pvmove</command> können Sie die Daten von einem Physical Volume zu einem
+anderen Physical Volume innerhalb einer Volume Group verschieben, um
+beispielshalber ein damit leeres Physical Volume aus der Volume Group zu
+entfernen.
+    </definition>
+
+    <textblock>
+<command><strong>vgreduce</strong></command>
+    </textblock>
+
+    <definition>
+Mit vgreduce können Sie eine Volume Group verkleinern, indem Sie ein
+leeres Physical Volume angeben, das aus der Volume Group entfernt werden
+kann.
+    </definition>
+
+    <textblock>
+<strong><command>vgrename</command>, <command>lvrename</command></strong>
+    </textblock>
+
+    <definition>
+Mit diesen Befehlen kann man, wie der Name schon sagt, eine Volume Group
+oder ein Logical Volume umbenennen.
+    </definition>
+
+    <textblock>
+<strong><command>lvremove</command>, <command>vgremove</command></strong>
+    </textblock>
+
+    <definition>
+Mit diesen Befehlen löschen Sie ein Logical Volume beziehungsweise eine
+Volume Group.
+    </definition>
+
+    <textblock>
+<strong><command>vgdisplay</command>, <command>pvdisplay</command>, <command>lvdisplay</command></strong>
+    </textblock>
+
+    <definition>
+Zeigen nähere Informationen zu einer Volume Group, einem Physical Volume
+oder einem Logical Volume an.
+    </definition>
+
+    <textblock>
+<command><strong>vgchange</strong></command>
+    </textblock>
+
+    <definition>
+Mit <command>vgchange</command> aktivieren beziehungsweise deaktivieren Sie alle
+oder einzelne Volume Groups.
+    </definition>
+   </section>
+
+   <section>
+    <heading>
+Fachbegriffe
+    </heading>
+
+    <textblock>
+<strong>LVM</strong>
+    </textblock>
+
+    <definition>
+Steht für "Logical Volume Manager".
+    </definition>
+
+    <textblock>
+<strong>PV</strong>
+    </textblock>
+
+    <definition>
+Steht für "Physical Volume" und ist eine gewöhnliche Partition, die
+von LVM verwaltet wird. Außer Partitionen kann man auch noch
+Loopback-Devices oder Partitionen, die schon von RAID verwaltet
+werden, benutzen.
+    </definition>
+
+    <textblock>
+<strong>VG</strong>
+    </textblock>
+
+    <definition>
+Steht für "Volume Group" und bezeichnet den logischen Zusammenschluss
+mehrerer "Physical Volumes" zu einem großen Speicherpool. Eine Volume
+Group kann auch nachträglich noch mit neu angelegten Physical Volumes
+erweitert werden.
+    </definition>
+
+    <textblock>
+<strong>LV</strong>
+    </textblock>
+
+    <definition>
+Steht für "Logical Volume" und bezeichnet eine virtuelle Partition,
+die Teil einer "Volume Group" ist. Ein Logical Volume kann daher aus
+mehreren gewöhnlichen Partitionen bestehen. Ergänzend zu der
+Erweiterbarkeit einer Volume Group, kann auch ein Logical Volume
+nachträglich vergrößert werden. Das Problem mangeldem Speicherplatzes
+innerhalb einer Partition besteht damit in der Regel unter LVM nicht.
+    </definition>
+
+    <textblock>
+<strong>PE</strong>
+    </textblock>
+
+    <definition>
+Steht für "Physical Extent" und ist die kleinste verwaltbare Dateneinheit
+unter LVM. Per Default beträgt die Größe eines "Physical Extent" 4 MB.
+Jedes Physical Volume besteht aus einer bestimmten Anzahl von diesen
+Dateneinheiten.
+    </definition>
+
+    <textblock>
+<strong>Kernel</strong>
+    </textblock>
+
+    <definition>
+Der Kernel bezeichnet den innersten Teil eines Betriebssystems. Dieser
+hat elementare Aufgaben wie der Speicherverwaltung, Steuerung der
+Hardware oder der Verwaltung der Prozesse. Vor allem den Linux-Kernel
+gibt es in sehr vielen unterschielichen Versionen, die sich bei der
+unterstützten Funktionsvielfalt unterscheiden. Um nachträglich eine
+Funktion dem Kernel hinzuzufügen, gibt es so genannte Kernel-Patches.
+    </definition>
+
+    <textblock>
+<strong>Partition</strong>
+    </textblock>
+
+    <definition>
+Der Speicherplatz einer Festplatte lässt sich in mehrere logische Bereiche
+aufteilen, den so genannten Partitionen.
+    </definition>
+
+    <textblock>
+<strong>Partitions-ID</strong>
+    </textblock>
+
+    <definition>
+Legt den Typ einer Partition fest (83 für gewöhnliche Linux-Datenpartition,
+82 für eine Linux-Swappartition, 8e für LVM-Partition).
+    </definition>
+
+    <textblock>
+<strong>Root-Partition</strong>
+    </textblock>
+
+    <definition>
+Dies ist das Wurzelverzeichnis <path>/</path> und entspricht der Systempartition bei
+Linux (bei Windows ist dies c:\).
+    </definition>
+
+    <textblock>
+<strong>Swap-Partition</strong>
+    </textblock>
+
+    <definition>
+Linux sieht anders als Windows eine separate Partition für die
+Auslagerungsdatei vor, in der Daten ausgelagert werden, wenn der
+RAM-Speicher zu klein wird, zudem ermöglicht dies einen Performancegewinn.
+    </definition>
+
+    <textblock>
+<strong>Dateisysteme unter Linux</strong>
+    </textblock>
+
+    <definition>
+Das am meisten genutzte Dateisystem unter Linux ist das second extended
+filesystem, kurz ext2. Eine Weiterentwicklung von ext2 ist ext3, das um
+eine Journaling-Funktion ergänzt wurde, die alle Änderungen am Dateisystem
+protokolliert, damit sich bei einem Systemcrash schnellstmöglich ein
+konsistenter Zustand der Daten wiederherstellen lässt. Daneben gibt es
+noch zahlreiche andere, die sich unter anderem im Umgang mit kleinen und
+großen Dateien, sowie in der Geschwindigkeit bei Dateioperationen
+unterscheiden. Ein weiteres häufig verwendetes Dateisystem ist reiserfs,
+das kleine Dateien platzsparender speichert und zudem eine
+Journaling-Funktion besitzt.
+    </definition>
+
+    <textblock>
+<strong>Loopback-Device</strong>
+    </textblock>
+
+    <definition>
+Mittels so genannter Loopback-Devices ist es möglich Dateien wie
+gewöhnliche Block-Devices anzusprechen. Damit ist es möglich innerhalb
+einer Datei ein Dateisystem anzulegen und diese wie eine Partition
+zu nutzen. LVM kann anstatt auf herkömmliche Partitionen auch auf
+Loopback-Devices aufbauen.
+    </definition>
+
+    <textblock>
+<strong>RAID</strong>
+    </textblock>
+
+    <definition>
+Steht für "Redundant Array of Independent Disks" und dient zur Erhöhung
+der Datensicherheit und/oder der Performance, indem mehrere Festplatten zu
+logischen Einheiten zusammengefasst werden. LVM unterstützt den
+RAID-Level 0. Außerdem ist es möglich LVM mit RAID zu kombinieren. Sehen
+Sie dazu auch das <ref chapter="software_raid">RAID-HOWTO</ref> von SelfLinux.
+    </definition>
+
+    <textblock>
+<strong>root</strong>
+    </textblock>
+
+    <definition>
+Unter Linux ist es manchmal notwendig, als Systembenutzer root bestimmte
+Befehle auszuführen, da nur dieser uneingeschränkte Nutzungsrechte hat
+und alle Befehle ausführen darf. Unter Windows NT/2000/XP entspricht dies
+dem Administrator. Bei systemnahen Aufgaben, wie der Einrichtung von einem
+Logical Volume Manager, sind in der Regel root-Rechte erforderlich.
+    </definition>
+
+    <textblock>
+<strong>mounten</strong>
+    </textblock>
+
+    <definition>
+Mit dem Befehl <command>mount</command> hängt man externe Datenträger (Partition,
+CD-ROM etc.) in den Verzeichnisbaum ein, über die man mittels eines
+gewählten Verzeichnisses zugreifen kann. Der Befehl <command>umount</command> hängt dieses
+dann wieder aus.
+Beispiel:
+    </definition>
+
+    <shell>
+     <root path="~">
+mount -t ext2 /dev/hda5 /verzeichnis
+     </root>
+     <root path="~">
+umount /verzeichnis
+     </root>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+Verzeichnisstruktur unter Linux
+    </heading>
+
+    <textblock>
+Linux kennt wie alle anderen Unix-Derivate keine Laufwerksbuchstaben wie
+Windows. Festplatten und Partitionen werden direkt durch einfache
+Verzeichnisse ins Dateisystem eingehängt. Bei Windows 2000 und XP gibt es
+diese Möglichkeit mit der NTFS-Funktion "Bereitgestellte Laufwerke" auch.
+Unter DOS gab es dazu den Befehl <command>"join"</command>. Der Verzeichnisbaum ist
+hierarchisch aufgebaut und beginnt mit dem Wurzelverzeichnis <path>/</path>,
+an dem die Systempartition eingehängt ist (entspricht bei Windows c:\).
+Für weiterführende Informationen bezüglich der <ref chapter="verzeichnisse_unter_linux">Verzeichnisstruktur unter
+Linux</ref>, sehen Sie auch dazu das gleichnamige Kapitel von SelfLinux.
+Wichtige Verzeichnisse sind zum Beispiel:
+    </textblock>
+
+    <textblock>
+<path>/mnt</path> (enthält die Unterverzeichnisse über die externe Dateisysteme wie
+Festplatten oder das CD-ROM eingebunden werden)
+    </textblock>
+
+    <textblock>
+<path>/etc</path> (enthält die wichtigsten Konfigurationsdateien)
+    </textblock>
+
+    <textblock>
+<path>/dev</path> (enthält die Device-Dateien für den Zugriff auf Hardware-Komponenten)
+    </textblock>
+
+    <textblock>
+<strong>Laufwerke und Partitionen unter Linux</strong>
+    </textblock>
+
+    <textblock>
+Auf Hardware-Komponenten, wie zum Beispiel einer Festplatte,
+wird unter Linux über Device-Dateien, die im Verzeichnis <path>/dev</path> liegen,
+zugegriffen.
+    </textblock>
+
+    <textblock>
+<strong>IDE-Laufwerke</strong>
+    </textblock>
+
+    <ul>
+     <li>
+<path>/dev/hda</path> Master am 1. IDE-Kanal
+     </li>
+     <li>
+<path>/dev/hdb</path> Slave  am 1. IDE-Kanal
+     </li>
+     <li>
+<path>/dev/hdc</path> Master am 2. IDE-Kanal
+     </li>
+     <li>
+<path>/dev/hdd</path> Slave  am 2. IDE-Kanal
+     </li>
+    </ul>
+
+    <textblock>
+<strong>SCSI-Laufwerke</strong>
+    </textblock>
+
+    <ul>
+     <li>
+<path>/dev/sda</path>  erste  SCSI-Festplatte
+     </li>
+     <li>
+<path>/dev/sdb</path>  zweite SCSI-Festplatte
+     </li>
+     <li>
+<path>/dev/scd0</path> erstes SCSI-CD-ROM
+     </li>
+    </ul>
+
+    <textblock>
+<strong>Floppy-Laufwerke</strong>
+    </textblock>
+
+    <ul>
+     <li>
+<path>/dev/fd0</path>  erstes Diskettenlaufwerk
+     </li>
+    </ul>
+
+    <textblock>
+Die Zahlen nach den Device-Dateien für Festplatten, wie beispielsweise
+<path>/dev/hda1</path>, geben die Partition der jeweiligen Festplatte an. Die Zahlen
+eins bis vier sind für primäre und erweiterte Partitionen reserviert.
+    </textblock>
+
+    <ul>
+     <li>
+<path>/dev/hda1</path>  primäre Partition (entspricht c:\ bei Windows)
+     </li>
+     <li>
+<path>/dev/hda2</path>  erweiterte Partition
+     </li>
+     <li>
+<path>/dev/hda5</path>  logisches Laufwerk (entspricht d:\ bei Windows)
+     </li>
+     <li>
+<path>/dev/hda6</path>  logisches Laufwerk (entspricht e:\ bei Windows)
+     </li>
+    </ul>
+
+    <textblock>
+Die einzelnen Partitionen werden dann mit dem Befehl <command>mount</command> über
+ein beliebiges Verzeichnis eingehängt und mit <command>umount</command> gegebenenfalls
+ausgehängt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Literaturverzeichnis
+    </heading>
+
+    <ul>
+     <li>
+Michael Kofler: Linux - Installation, Konfiguration, Anwendung
+                (6. Auflage), Addison-Wesley 2002
+     </li>
+     <li>
+Jochen Hein: Linux Systemadministration - Einrichtung, Verwaltung,
+             Netzwerkbetrieb (4. Auflage), Addison-Wesley 2002
+     </li>
+     <li>
+Richard Heider: LVM Howto - deutsche Version,
+        <ref lang="de" url="http://www.linuxhaven.de/dlhp/HOWTO-test/DE-LVM-HOWTO.html">http://www.linuxhaven.de/dlhp/HOWTO-test/DE-LVM-HOWTO.html</ref>
+     </li>
+     <li>
+AJ Lewis: LVM HOWTO,  <ref lang="en" url="http://www.tldp.org/HOWTO/LVM-HOWTO.html">http://www.tldp.org/HOWTO/LVM-HOWTO.html</ref>
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Kontakt und Feedback
+    </heading>
+
+    <textblock>
+Wenn Sie irgendwelche Fragen, Anregungen, Kritik oder Ideen bezüglich
+dieses HOWTO haben, würde ich mich über eine <ref url="mailto:mar.hoff@gmx.net">E-Mail</ref> freuen.
+    </textblock>
+
+    <textblock>
+<name email="mar.hoff@gmx.net">Markus Hoffmann</name>
+    </textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,5189 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Linux Software-RAID HOWTO</title>
+ 
+ <author>
+  <name>Niels Happel</name>
+  <mailto>happel@resultings.de</mailto>
+ </author>
+ 
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+ 
+ <license>
+GPL
+ </license>
+
+ <index>software_raid</index>
+
+ <description>
+  <textblock>
+  Diese <name>HOWTO</name> beschreibt die Benutzung der RAID-Kernelerweiterungen,
+  welche unter Linux den Linear Modus, RAID-0, 1, 4 und 5 als
+  Software-RAID implementieren.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Einführung
+   </heading>
+
+   <textblock>
+  Ziel dieses Dokumentes ist es, das grundlegende Verständnis der
+  unterschiedlichen RAID-Möglichkeiten und das Erstellen von RAID-
+  Verbunden anhand der - teilweise - neuen Möglichkeiten des <name>2.2er
+  Kernels</name> zu erklären.  Des weiteren wird auf die Besonderheiten mehrerer
+  RAID-Verbunde, die Nutzung dieser als Root-Partition und deren
+  Verhalten bei Fehlern eingegangen. Zu guter Letzt finden Sie noch
+  einige Tipps &amp; Tricks rund um Linux allgemein sowie Software-RAID im
+  speziellen.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Warnung
+	</heading>
+		
+	<textblock>
+  Dieses Dokument beinhaltet keine Garantie für das Gelingen der hier
+  beschriebenen Sachverhalte. Obwohl alle Anstrengungen unternommen
+  wurden, um die Genauigkeit der hier dokumentierten Informationen
+  sicherzustellen, übernimmt der Autor keine Verantwortung für Fehler
+  jeglicher Art oder für irgendwelche Schäden, welche direkt oder als
+  Konsequenz durch die Benutzung der hier dokumentierten Informationen
+  hervorgerufen werden.
+	</textblock>
+
+	<textblock>
+  RAID, obwohl es dafür entwickelt wurde, die Zuverlässigkeit des
+  Systems zu steigern, indem es Redundanz gewährleistet, kann auch zu
+  einem falschen Gefühl der Sicherheit führen, wenn es unsachgemäß
+  benutzt wird. Dieses falsche Vertrauen kann dann zu wesentlich
+  größeren Desastern führen. Im einzelnen sollte man beachten, dass RAID
+  konstruiert wurde, um vor Festplattenfehlern zu schützen und nicht vor
+  Stromunterbrechungen oder Benutzerfehlern.  Stromunterbrechungen,
+  instabile Entwicklerkernel oder Benutzerfehler können zu
+  unwiederbringlichen Datenverlusten führen! RAID ist kein Ersatz für
+  ein Backup Ihres Systems.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Begrifflichkeiten
+	</heading>
+
+	<textblock>
+  Auf den folgenden Seiten werden Sie mit vielen Ausdrücken rund um
+  Software-RAID, Festplatten, Partitionen, Tools, Patches und Devices
+  bombardiert. Um als RAID-Einsteiger mit den oft gebrauchten Ausdrücken
+  nicht ins Schleudern zu geraten, erhalten Sie hier eine Einführung in
+  die Begrifflichkeiten.
+	</textblock>
+
+	<textblock>
+	 <strong>Chunk-Size</strong>
+	</textblock>
+		
+	<quotation>
+        Eine genaue Beschreibung, was die Chunk-Size ist, ist im
+		  Abschnitt <ref iref="Spezielle Optionen der RAID-Devices
+		  Version 0.9x">Spezielle Optionen der RAID-Devices</ref> zu finden.
+	</quotation>
+
+	<textblock>
+	 <strong>Devices</strong>
+	</textblock>
+
+	<quotation>
+		<strong>Devices</strong> sind unter Linux Stellvertreter für Geräte
+		aller Art, um sie <strong>beim Namen</strong> nennen zu können. Sie
+	    liegen alle unter <command>/dev/</command> in Ihrem Linux-Verzeichnisbaum.
+		Beispiel dafür sind <command>/dev/hda</command>
+		für die erste (E)IDE-Festplatte im System (analog <command>/dev/hdb</command>,
+		<command>/dev/hdc</command>), <command>/dev/sda</command>
+		für die erste SCSI-Festplatte oder <command>/dev/fd0</command>
+        für das erste Diskettenlaufwerk.
+	</quotation>
+
+	<textblock>
+	 <strong> Festplatten</strong>
+	</textblock>
+
+	<quotation>
+		<strong>Festplatten</strong> sollten Ihnen bekannt sein. RAID nutzt mehrere
+        Festplatten, um entweder deren Gesamtgeschwindigkeit, deren
+        Sicherheit oder beides zu erhöhen.
+	</quotation>
+
+	<textblock>
+	 <strong>Hot Plugging</strong>
+	</textblock>
+
+	<quotation>
+        <strong>Hot Plugging</strong> bezeichnet die Möglichkeit, einzelne Festplatten
+        ohne ein Abschalten oder Herunterfahren des Rechners innerhalb
+        eines redundanten RAID-Verbundes abzuschalten, auszutauschen und
+        wieder einzufügen. Im günstigsten Fall bietet einem Hot Plugging
+        also die Möglichkeit, eine defekte Festplatte auszutauschen,
+        ohne den Rechner neu starten zu müssen und ohne die
+        Verfügbarkeit Ihres Servers zu beeinträchtigen. Für die Benutzer
+        würde ein Austausch einer defekten Festplatte absolut
+        transparent erfolgen.
+	</quotation>
+
+	<textblock>
+	 <strong>MD-Device</strong>
+	</textblock>
+
+	<quotation>
+		<strong>MD</strong> steht für Multiple-Disk oder Multiple-Device und bedeutet
+        dasselbe wie ein RAID-Device. Um Sie nicht weiter in die Irre zu
+        führen, wird im folgenden auf die Bezeichnung MD-Device bewusst
+        verzichtet.
+	</quotation>
+
+	<textblock>
+	 <strong>MD-Tools</strong>
+	</textblock>
+
+	<quotation>
+		Die <strong>MD-Tools</strong> sind Hilfsprogramme, die Ihnen die Möglichkeit zur
+        Einrichtung oder änderung von RAID-Verbunden zur Verfügung
+        stellen, welche mit denen im Standardkernel Version 2.0.x oder
+        2.2.x enthaltenen RAID-Treibern erstellt wurden. Sie beinhalten
+		als <strong>MD-Tools</strong> bis einschließlich Version 0.4x für ältere
+        RAID-Verbunde dieselbe Grundfunktionalität wie die RAID-Tools
+        Version 0.9x für die aktuellen RAID-Treiber. Ihre Entwicklung
+        ist zwar eingestellt worden, dennoch sind sie auf vielen älteren
+        Linux-Distributionen vertreten. Die einzelnen Programme dieses
+		<strong>MD-Tools</strong> Paketes zur Verwaltung von älteren RAID-Verbunden der
+        Version 0.4x werden im entsprechenden Abschnitten abgehandelt.
+	</quotation>
+
+	<textblock>
+	 <strong> md0</strong>
+	</textblock>
+
+	<quotation>
+		<strong>/dev/md0</strong> ist ein Stellvertreter für den erste RAID-Verbund in
+		Ihrem System.  Das Verzeichnis <command>/dev/</command> zeigt an, dass es sich um
+        ein Device handelt, md meint ein Multiple-Disk oder
+        Multiple-Device und damit einen Verbund aus mehreren Partitionen
+        Ihrer Festplatte(n). Das erste Device jeglicher Art ist immer
+        entweder mit einer 0 gekennzeichnet und wird weiter aufsteigend
+		nummeriert (also <command>/dev/md0</command>, <command>/dev/md1</command>, usw.) oder beginnt mit
+		<command>/dev/hda</command> und wird alphabetisch aufsteigend durchgezählt
+		(<command>/dev/hdb</command>, <command>/dev/hdc</command>, usw.).
+	</quotation>
+
+	<textblock>
+	 <strong> Partitionen</strong>
+	</textblock>
+
+	<quotation>
+		<strong>Partitionen</strong> bezeichnen die Einteilung Ihrer Festplatte in
+        mehrere Segmente.  RAID-Verbunde können aus mehreren Partitionen
+        derselben Festplatte oder aus mehrere Partitionen verschiedener
+        Festplatten bestehen.
+	</quotation>
+
+	<textblock>
+	 <strong>Persistent-Superblock</strong>
+	</textblock>
+
+	<quotation>
+		Eine Beschreibung, was ein <strong>Persistent-Superblock</strong> ist, ist im
+		Abschnitt <ref iref="Weitere Optionen des neuen RAID-Patches">
+		Weitere Optionen des neuen RAID-Patches</ref>
+        nachzulesen.
+	</quotation>
+
+	<textblock>
+	 <strong>RAID-Device</strong>
+	</textblock>
+
+	<quotation>
+		<strong>RAID-Device</strong> ist die Bezeichnung für einen neu erstellten
+        RAID-Verbund, der jetzt unter einem eigenen Namen anzusprechen ist.
+        Unter Linux entspricht jedes Gerät letztendlich einem Device.
+		Die RAID-Devices sind im Linux-Verzeichnisbaum unter <command>/dev/</command>
+	 	abgelegt und heißen <command>md0-15</command>.
+	</quotation>
+
+	<textblock>
+	 <strong>RAID-Partition</strong>
+	</textblock>
+
+	<quotation>
+		<strong>RAID-Partition</strong> bezeichnet eine einzelne Festplattenpartition,
+        die für die Verwendung in einem RAID-Verbund genutzt werden
+        soll.
+	</quotation>
+
+	<textblock>
+	 <strong>RAID-Patch</strong>
+	</textblock>
+
+	<quotation>
+		Der <strong>RAID-Patch</strong> bezeichnet ein Paket aktueller RAID-Treiber, die
+        neuer als die im Standardkernel enthaltenen sind. Sie weisen in
+        ihrem Namen eine Zeichenfolge auf, die sich mit der von Ihnen
+        verwendeten Kernel-Version decken sollte. Z.B.  braucht der
+        Kernel 2.2.10 den RAID-Patch für den 2.2.10er Kernel. Dieser
+        RAID-Patch aktualisiert also im Endeffekt die originalen
+        RAID-Treiber in Ihrem Kernel-Sourcetree.
+	</quotation>
+
+	<textblock>
+	 <strong>RAID-Tools</strong>
+	</textblock>
+
+	<quotation>
+		Die <strong>RAID-Tools</strong> sind Hilfsprogramme, um den Umgang mit
+        RAID-Verbunden in Form von Einrichtung, Wartung und änderung
+        überhaupt zu ermöglichen. Sie existieren für die im
+        Standardkernel 2.0.x und 2.2.x vorhandenen RAID-Treiber als
+		<strong>MD-Tools</strong> in der Version 0.4x, für die aktuellen RAID-Treiber als
+		<strong>RAID-Tools</strong> mit der Versionsnummer 0.9x. Der Funktionsumfang der
+		<strong>RAID-Tools</strong> Version 0.9x überwiegt gegenüber dem der <strong>MD-Tools</strong> und
+        erlaubt einen einfacheren Umgang mit den RAID-Systemen. Sie
+		sollten bei der Verwendung der <strong>RAID-Tools</strong> prüfen, ob sie auch
+        die passende Version haben.
+	</quotation>
+
+	<textblock>
+	 <strong>RAID-Verbund</strong>
+	</textblock>
+
+	<quotation>
+		<strong>RAID-Verbund</strong>, oder synonym RAID-Array ist die Bezeichnung für
+        eine Zusammenfügung von mehrerer Partitionen einzelner
+        Festplatten, um sie nachher als eine Einheit ansprechen zu
+        können. Ein anschauliches Beispiel wären zwei Partitionen
+        jeweils einer Festplatte, welche als eine komplett neue
+        Partition und damit als ein neuer RAID-Verbund zur Verfügung
+		stehen würden. über den Stellvertreter <command>/dev/md0</command> würde dieser
+        RAID-Verbund auf Linux Ebene als ein RAID-Device angesprochen
+        werden, der als eine einzelne Zuweisung für zwei
+        darunterliegende Partitionen fungiert.
+	</quotation>
+
+	<textblock>
+	 <strong>Redundanz</strong>
+	</textblock>
+
+	<quotation>
+		<strong>Redundanz</strong> kommt aus dem Lateinischen, bedeutet überfülle und
+        meint auf einen RAID-Verbund bezogen das Vorhandensein
+        zusätzlicher Kapazitäten, die keine neuen Daten enthalten, also
+        speziell das ein Datenträger ausfallen kann, ohne den
+        vorhandenen Datenbestand zu beeinträchtigen.
+	</quotation>
+
+	<textblock>
+	 <strong>Spare-Disk</strong>
+	</textblock>
+
+	<quotation>
+		Informationen hierzu sind im Abschnitt <ref iref="Weitere
+		Optionen des neuen RAID-Patches">
+		Weitere Optionen des neuen RAID-Patches</ref> zu finden.
+	</quotation>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Literatur
+	</heading>
+		
+	<textblock>
+  Obwohl in dieser <name>HOWTO</name> alles nötige Wissen zum Erstellen von
+  Software-RAID Verbunden unter Linux vermittelt werden sollte, sei hier
+  Trotzdem zum besseren Verständnis und als weiterführende Texte auf folgende
+  <name>HOWTO</name>s und entsprechende Fachliteratur verwiesen:
+	</textblock>
+
+	<ul>
+	 <li>
+BootPrompt <name>HOWTO</name>
+	 </li>
+	 <li>
+Kernel <name>HOWTO</name>
+	 </li>
+	 <li>
+Root-RAID <name>HOWTO</name>
+	 </li>
+	 <li>
+Software-RAID mini-<name>HOWTO</name>
+	 </li>
+	 <li>
+The Software RAID <name>HOWTO</name>
+	 </li>
+	</ul>
+
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Wer hat dieses Dokument zu verantworten?
+	</heading>
+
+	<textblock>
+  <name>Niels Happel</name> hat zwar die Informationen zusammengetragen, getestet und
+  neu geschrieben, jedoch beruht der größte Teil des Erfolgs dieser
+  <name>HOWTO</name> natürlich auf der Arbeit der Programmierer der
+  RAID-Kernelerweiterungen. Mein besonderer Dank gilt denen, die mir
+  teilweise mit vielen Anregungen, Tipps, Texten und Unermüdlichkeit
+  weitergeholfen haben und allen anderen, die mich dahingehend
+  unterstützt haben. Die fleißigsten waren:
+	</textblock>
+
+	<ul>
+	 <li>
+	  <name email="ubeck@debis.com">Uwe Beck</name>
+	 </li>
+	 <li>
+	  <name email="robert.dahlem@gmx.net">Robert Dahlem</name>
+	 </li>
+	 <li>
+	  <name email="ulrich.herbst@debis.com">Ulrich Herbst</name> 
+	 </li>
+	 <li>
+	  <name email="modenbach@alc.de">Werner Modenbach</name> 
+	 </li>
+	</ul>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Copyright
+	</heading>
+
+	<textblock>
+  Dieses Dokument ist urheberrechtlich geschützt. Das Copyright für
+  dieses Dokument liegt bei <name>Niels Happel</name> und
+  <name>Marco Budde</name>.
+	</textblock>
+
+	<textblock>
+  Das Dokument darf gemäß der <name>GNU General Public License</name> verbreitet
+  werden.  Insbesondere bedeutet dieses, dass der Text sowohl über
+  elektronische wie auch physikalische Medien ohne die Zahlung von
+  Lizenzgebühren verbreitet werden darf, solange dieser
+  Copyright-Hinweis nicht entfernt wird. Eine kommerzielle Verbreitung 
+  ist erlaubt und ausdrücklich erwünscht. Bei einer Publikation in Papierform
+  ist das Deutsche Linux <name>HOWTO</name> Projekt hierüber zu informieren.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Info
+	</heading>
+
+	<textblock>
+  Wenn Sie irgendwelche Ideen zu dieser <name>HOWTO</name> haben, positive wie
+  negative Kritiken, Korrekturen, oder Wünsche für die nächste Version
+  ... eine E-Mail ist wirklich schnell geschrieben.
+	</textblock>
+
+	<quotation>
+	  <name>Niels Happel</name><br/>
+	  E-Mail: <name email="happel@resultings.de"></name>
+	</quotation>
+
+	<textblock>
+  Die jeweils aktuellste Version finden Sie unter:
+	</textblock>
+
+	<ul>
+	 <li>
+	  <ref lang="en" url="http://www.resultings.de/linux/">http://www.resultings.de/linux/</ref>
+	 </li>
+	 <li>
+	  <ref lang="de" url="http://www.tu-harburg.de/dlhp/">http://www.tu-harburg.de/dlhp/</ref>
+	 </li>
+	</ul>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+   Was bedeutet RAID?
+   </heading>
+
+   <textblock>
+  <strong>RAID</strong> steht entweder für <strong>Redundant Array of Independent Disks</strong> oder
+  für <strong>Redundant Array of Inexpensive Disks</strong> und bezeichnet eine
+  Technik, um mehrere Partitionen miteinander zu verbinden. Die beiden
+  verschiedenen Bezeichnungen und teilweise auch die Grundidee von
+  RAID-Systemen rühren daher, dass Festplattenkapazität zu besitzen früher
+  eine durchaus enorm kostspielige Angelegenheit werden konnte. Kleine
+  Festplatten waren recht günstig, große Festplatten aber unangemessen
+  teuer. Man suchte also eine Möglichkeit, mehrere Festplatten
+  kostengünstig zu einer großen zu verbinden.  Aufgrund der plötzlichen
+  sprunghaften Erweiterung der erreichbaren Festplattenkapazitäten und
+  der unaufhaltsam sinkenden Preise pro Megabyte Festplattenplatz hat
+  sich das Erreichen des damaligen wichtigsten Zieles eines
+  RAID-Verbundes von selbst erledigt. Dennoch war man gewillt, den bis dahin
+  erzielten Entwicklungsstand eines RAID-Systems auch anderweitig zu
+  nutzen.
+   </textblock>
+	  
+   <textblock>
+  Das Ziel eines RAID-Verbundes ist heutzutage deshalb entweder eine
+  Performancesteigerung, eine Steigerung der Datensicherheit oder eine
+  Kombination aus beidem. RAID kann vor Festplattenfehlern schützen und
+  kann auch die Gesamtleistung im Gegensatz zu einzelnen Festplatten
+  steigern.
+   </textblock>
+	  
+   <textblock>
+  Dieses Dokument ist eine Anleitung zur Benutzung der Linux
+  RAID-Kernelerweiterungen und den dazugehörigen Programmen. Die
+  RAID-Erweiterungen implementieren den <strong>Linear (Append) Modus</strong>, <strong>RAID-0
+  (Striping)</strong>, <strong>RAID-1 (Mirroring)</strong>, <strong>RAID-4 (Striping &amp; Dedicated Parity)</strong>
+  und <strong>RAID-5 (Striping &amp; Distributed Parity)</strong> als Software-RAID. Daher
+  braucht man mit Linux Software RAID keinen speziellen Hardware- oder
+  Festplattenkontroller, um viele Vorteile von RAID nutzen zu können.
+  Manches lässt sich mit Hilfe der RAID-Kernelerweiterungen sogar
+  flexibler lösen, als es mit Hardwarekontrollern möglich wäre.
+   </textblock>
+
+   <textblock>
+  Folgende RAID Typen werden unterschieden:
+   </textblock>
+
+   <textblock>
+	<strong>Linear (Append) Mode</strong>
+   </textblock>
+
+   <quotation>
+  Hierbei werden Partitionen unterschiedlicher Größe über mehrere
+  Festplatten hinweg zu einer großen Partition zusammengefügt und linear
+  beschrieben. Hier ist kein Geschwindigkeitsvorteil zu erwarten. Fällt
+  eine Festplatte aus, so sind alle Daten verloren.
+   </quotation>
+	  
+   <textblock>
+	<strong>RAID-0 (Striping) Mode</strong>
+   </textblock>
+ 
+   <quotation>
+  Auch hier werden zwei oder mehr Partitionen zu einer großen
+  zusammengefügt, allerdings erfolgt hier der Schreibzugriff nicht
+  linear (erst die 1.Platte bis sie voll ist, dann die 2.Platte usw.),
+  sondern parallel. Dadurch wird ein deutlicher Zuwachs der Datenrate
+  insbesondere bei SCSI-Festplatten erzielt, welche sich für die Dauer
+  des Schreibvorgangs kurzfristig vom SCSI Bus abmelden können und ihn
+  somit für die nächste Festplatte freigeben. Die erzielten
+  Geschwindigkeitsvorteile gehen allerdings zu Lasten der CPU Leistung.
+  Bei einer Hardware RAID Lösung würde der Kontroller diese Arbeit
+  übernehmen. Allerdings steht der Preis eines guten RAID Kontrollern in
+  keinem Verhältnis zur verbrauchten CPU Leistung eines
+  durchschnittlichen Computers mit Software-RAID.
+   </quotation>
+	  
+   <textblock>
+	<strong>RAID-1 (Mirroring) Mode</strong>
+   </textblock>
+	  
+   <quotation>
+  Der <strong>Mirroring Mode</strong> erlaubt es, eine Festplatte auf eine weitere
+  gleichgroße Festplatte oder Partition zu duplizieren. Dieses Verfahren
+  wird auch als Festplattenspiegelung bezeichnet. Hierdurch wird eine
+  erhöhte Ausfallsicherheit erreicht - streckt die eine Festplatte die
+  Flügel, funktioniert die andere noch. Allerdings ergibt das auch
+  wieder nur Sinn, wenn die gespiegelten Partitionen auf
+  unterschiedlichen Festplatten liegen. Die zur Verfügung stehende
+  Festplattenkapazität wird durch dieses Verfahren halbiert. Ein
+  Geschwindigkeitsgewinn ist hierbei nur beim Lesezugriff zu erwarten,
+  jedoch erbringt der aktuelle Stand der RAID-Treiber für Linux nur beim
+  nicht sequentiellen Lesen vom <strong>RAID-1</strong> Geschwindigkeitsvorteile.
+   </quotation>
+	  
+   <textblock>
+	<strong>RAID-4 (Striping &amp; Dedicated Parity) Mode</strong>
+   </textblock>
+
+	  
+   <quotation>
+  <strong>RAID-4</strong> entspricht dem <strong>RAID-0</strong> Verfahren, belegt allerdings eine
+  zusätzliche Partition mit Paritätsinformationen, aus denen eine
+  defekte Partition wieder hergestellt werden kann. Allerdings kostet
+  diese Funktion wieder zusätzliche CPU Leistung.
+   </quotation>
+	  
+   <textblock>
+	<strong>RAID-5 (Striping &amp; Distributed parity)Mode</strong>
+   </textblock>
+
+
+   <quotation>
+  Hier werden die Paritätsinformationen zum Restaurieren einer defekten
+  Partition zusammen mit den tatsächlichen Daten über alle Partitionen
+  verteilt.  Allerdings erkauft man sich diese erhöhte Sicherheit durch
+  einen Kapazitätsverlust. Will man 5x1 GB zu einem <strong>RAID-5</strong>
+  zusammenfassen, so bleiben für die eigentlichen Daten noch 4x1 GB
+  Platz übrig. Beim Schreibvorgang auf einen <strong>RAID-5</strong> Verbund wird erst
+  ein Datenblock geschrieben, dann erfolgt die Berechnung der
+  Paritätsinformationen, welche anschließend auch auf den RAID-Verbund
+  geschrieben werden. Hierher rührt die schlechtere
+  Schreibgeschwindigkeit der Daten. Der Lesevorgang ähnelt allerdings
+  dem <strong>RAID-0</strong> Verbund. Das Resultat ist deshalb eine Steigerung der
+  Lesegeschwindigkeit im Gegensatz zu einer einzelnen Festplatte.
+   </quotation>
+
+   <textblock>
+	<strong>RAID-10 (Mirroring &amp; Striping) Mode</strong>
+   </textblock>
+
+
+   <quotation>
+  <strong>RAID-10</strong> bezeichnet keinen eigenständigen RAID-Modus, sondern ist ein
+  Kombination aus <strong>RAID-0</strong> und <strong>RAID-1</strong>. Hierbei werden
+  zuerst zwei <strong>RAID-0</strong> Verbunde erstellt, die dann mittels
+  <strong>RAID-1</strong> gespiegelt werden. Der Vorteil von einem
+  <strong>RAID-10</strong>im Gegensatz zu einem <strong>RAID-5</strong> ergibt sich aus
+  der höheren Performance.  Während ein <strong>RAID-5</strong> nur relativ wenig
+  Geschwindigkeitsvorteile bietet, ist ein <strong>RAID-10</strong> durch die beiden
+  <strong>RAID-0</strong> Verbunde für den Fall besser geeignet, wenn man sowohl
+  Redundanz als auch einen hohen Geschwindigkeitsvorteil erzielen will.
+  Sogar die anschließend notwendige <strong>RAID-1</strong> Spiegelung bringt noch einen
+  Vorteil bei der Lesegeschwindigkeit. Weiterhin fällt hierbei die
+  notwendige Berechnung von Paritätsinformationen weg. Erkauft wird dies
+  allerdings durch eine sehr viel schlechtere Nutzung des vorhandenen
+  Festplattenplatzes, da immer nur 50% der tatsächlichen Kapazität mit
+  den eigentlichen Daten beschrieben werden kann.
+   </quotation>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Voraussetzungen
+   </heading>
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Hardware
+	</heading>
+
+	<textblock>
+  Zum Erstellen von <strong>RAID-Devices</strong> werden für den Linear, <strong>RAID-0</strong> und
+  <strong>RAID-1</strong> Modus mindestens zwei leere Partitionen auf möglichst
+  unterschiedlichen Festplatten benötigt. Für <strong>RAID-4</strong> und <strong>RAID-5</strong> sind
+  mindestens drei Partitionen nötig und für den <strong>RAID-10</strong> Modus vier.
+  Dabei ist es egal, ob die Partitionen auf (E)IDE- oder
+  SCSI-Festplatten liegen.
+	</textblock>
+
+	<textblock>
+  Will man Software-RAID mit (E)IDE-Festplatten benutzen, so empfiehlt
+  es sich, jeweils nur eine (E)IDE-Festplatte an einem (E)IDE Kontroller
+  zu benutzen. Im Gegensatz zu SCSI beherrschen (E)IDE-Festplatten
+  keinen Disconnect - können sich also nicht vorübergehend vom BUS
+  abmelden - und können dementsprechend nicht <strong>parallel</strong> angesprochen
+  werden. An zwei unterschiedlichen (E)IDE Kontrollern ist dies jedoch
+  in Grenzen möglich, wenn auch immer noch nicht so gut wie bei SCSI
+  Kontrollern. Besser als an einem Strang ist es aber auf jeden Fall.
+	</textblock>
+
+	<textblock>
+  Des weiteren können Sie die überlegung, Hot Plugging mit
+ (E)IDE-Festplatten zu benutzen, gleich wieder ad acta legen. Hierbei gibt
+  es mehr Probleme als Nutzen. Wie das jedoch mit eigenen (E)IDE RAID
+  Kontrollern aussieht, kann ich mangels passender Hardware nicht
+  sagen.
+	</textblock>
+
+	<textblock>
+  SCSI Kontroller werden entweder als PCI Steckkarte zusätzlich in den
+  Computer eingebaut, oder sind in Form eines SCSI Chips bereits auf dem
+  Mainboard integriert. Letztere so genannte <strong>On Board Controller</strong>"
+  hatten bei älteren Mainboards die unangenehme Eigenart, die Interrupt
+  Leitungen für den AGP Steckplatz und den SCSI Chip zusammenzulegen und
+  waren so die Ursache für manche Konfigurations-, Stabilitäts- und
+  daraus resultierend auch Geschwindigkeitsprobleme. Inzwischen
+  funktionieren Mainboards mit integriertem SCSI Chip meist ebenso gut
+  wie externe SCSI Kontroller und stehen in ihrer Leistung einander in
+  nichts nach. Aktuelle Probleme können lediglich aus der mangelnden
+  Treiberunterstützung der verwendeten Distribution resultieren und auf
+  diese Weise eine Linux Installation erschweren.
+	</textblock>
+
+	<textblock>
+  Das Software-RAID unter Linux bietet zwar die Möglichkeit, einzelne
+  Partitionen einer Festplatte in einen RAID-Verbund einzubauen, um
+  jedoch einen nennenswerten Geschwindigkeitsvorteil oder entsprechende
+  Redundanz zu erzielen, sind generell die RAID-Partitionen auf
+  unterschiedliche Festplatten zu verteilen. Sinnvoll wäre es, das erste
+  RAID zum Beispiel auf drei Partitionen unterschiedlicher Festplatten
+  zu legen; <command>/dev/md0</command> bestünde dann
+  z.B. aus<command>/dev/sda1</command>, <command>/dev/sdb1</command> und
+  <command>/dev/sdc1</command>. Das zweite RAID würde man ebenso
+  verteilen: <command>/dev/md1</command> wäre
+  dann also ein Verbund aus <command>/dev/sda2</command>,
+  <command>/dev/sdb2</command> und <command>/dev/sdc2</command>. Damit
+  hat man zwei RAID-Verbunde (<command>/dev/md0</command> und
+  <command>/dev/md1</command>), die sich - als einzelnes Device
+  angesprochen -jeweils über alle drei Festplatten ziehen.
+	</textblock>
+
+	<textblock>
+  Da es so gut wie immer unsinnig ist, innerhalb eines RAID-Verbundes
+  mehrere Partitionen auf dieselbe Festplatte zu legen (z.B. <command>/dev/md0</command>
+  bestehend aus <command>/dev/sdb1</command>,
+  <command>/dev/sdb2</command> und <command>/dev/sdc1</command>), kann oft der
+  Begriff RAID-Festplatte mit RAID-Partition synonym verwendet werden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Software
+	</heading>
+
+	<textblock>
+  Die Prozedur wird hier zum einen mit Hilfe der alten RAID-Tools
+  Version 0.4x anhand einer DLD 6.0 und DLD 6.01 beschrieben, zum
+  anderen wird ein aktueller Installationsablauf erläutert, der sich auf
+  den neuen RAID-Patch und die RAID-Tools Version 0.9x bezieht. Der neue
+  Weg hält sich an den Kernel 2.2.10 in Verbindung mit dem passenden
+  RAID-Patch und den RAID-Tools und sollte unabhängig von der von Ihnen
+  benutzten Linux-Distribution funktionieren. Dieser Weg gilt vom Ablauf
+  her auch für alle neueren Kernel der 2.2.xer Reihe. In die Kernel der
+  2.4.xer Reihe hat der neue RAID-Patch bereits Einzug in den Standard
+  Kernel-Sourcetree erlangt, wodurch diese Kernel nicht mehr
+  aktualisiert werden müssen.
+	</textblock>
+
+	<textblock>
+  Im allgemeinen ist, vor allem durch die Tatsache, dass die 2.4.xer
+  Kernel nicht mehr gepatcht werden müssen, die Benutzung des neuen
+  RAID-Patches dringend den alten MD-Tools vorzuziehen. Allein der unter
+  Linux sonst unüblich große Versionssprung von 0.4x auf 0.9x zeigt die
+  starken einhergegangenen Veränderungen. Allerdings kann auch das
+  Verfahren mit Hilfe der MD-Tools für ältere Distributionen von Vorteil
+  sein, in denen diese bereits vorkonfiguriert sind oder für eine
+  Situation, in der bereits mit den älteren MD-Tools Version 0.4x
+  eingerichtete RAID-Verbunde vorhanden sind.
+	</textblock>
+
+	<textblock>
+  Generell sei hier schon gesagt, dass die Lösung durch die MD-Tools und
+  die mit dem aktuellen RAID-Patch unterschiedliche Wege gehen. Bitte
+  beachten Sie das bei der Ihnen vorliegenden Distribution und
+  entscheiden Sie sich frühzeitig für eine Variante. Glauben Sie,
+  zusammen mit einer guten Anleitung mit <command>fdisk</command> und
+  <command>patch</command> zurecht zu kommen, so wählen Sie ruhig den neuen Weg.
+	</textblock>
+
+	<textblock>
+  Für den aktuellen Abschnitt, welcher die Verwendung der neuen
+  RAID-Kernelerweiterungen Version 0.9x beschreibt, werden neben einem
+  lauffähigen Linuxsystem zwei Archive benötigt. Zum einen der zur
+  Kernelversion passende RAID-Patch und zum anderen die aktuellsten
+  RAID-Tools. Beide Archive gibt es im Internet:
+	</textblock>
+
+	<quotation>
+	 <ref url="ftp://ftp.kernel.org:/pub/linux/daemons/raid/alpha/">
+			ftp.//ftp.kernel.org:/pub/linux/daemons/raid/alpha/</ref>
+	</quotation>
+
+	<textblock>
+  Aktuelle Distributionen, welche bereits auf einem 2.4.xer Kernel
+  basieren, enthalten neben den aktuellen RAID-Treibern meistens auch
+  ein RPM-Paket mit den aktuellen RAID-Tools. Im Falle einer <name>RedHat 7.2</name>
+  Linux Distribution heißt das entsprechende Paket
+  <command>raidtools-0.90-23.i386.rpm</command> und ist bei einer Standardinstallation
+  bereits eingerichtet. Der gesamte Einrichtungsteil zur
+  Kernel-Aktualisierung fällt dann angenehmer Weise weg. Alles andere
+  funktioniert allerdings genauso wie mit dem als Beispiel angeführten
+  Kernel 2.2.10.
+	</textblock>
+
+	<textblock>
+  Generell aktualisiert der RAID-Patch Ihren vorhandenen Linux
+  Kernel-Sourcetree wobei die RAID-Tools die zur Verwaltung von RAID-Verbunden
+  benötigten Programme zur Verfügung stellen. Die einzelnen Programme
+  oder <strong>Kommandos der aktuellen RAID-Tools vom 24.08.1999</strong> werden hier mit
+  einer kurzen Erläuterung zu Ihrem Verwendungszweck beschrieben:
+	</textblock>
+
+	<textblock>
+	 <strong><command>ckraid</command></strong>
+	</textblock>
+
+	<quotation>
+        Dieses Programm testete in älteren Software-RAID Versionen, die
+        noch mit den MD-Tools Version 0.4x erstellt wurden, die
+        Konsistenz eines RAID-Verbundes.  Mit dem aktuellen Kernel-Patch
+        übernimmt der Linux-Kernel diese Arbeit und behandelt die RAID-
+        Verbunde genauso wie alle anderen Partitionen. Dieses Programm
+        ist aus Gründen der Rückwärtskompatibilität noch vorhanden.
+	</quotation>
+
+	<textblock>
+	 <strong><command>mkraid</command></strong>
+	</textblock>
+
+	<quotation>
+        Dies ist das zentrale Verwaltungsprogramm, um RAID-Verbunde
+        aller RAID-Modi anhand einer Konfigurationsdatei - meist
+        <command>/etc/raidtab</command> - zu initialisieren, erstellen oder upzugraden.
+	</quotation>
+
+	<textblock>
+	 <strong><command>raid0run</command></strong>
+	</textblock>
+
+	<quotation>
+		Aus Gründen der Rückwärtskompatibilität kann man mit Hilfe
+        dieses Kommandos Linear und <strong>RAID-0</strong> Verbunde starten, welche noch
+        mit den alten MD-Tools Version 0.4x erstellt wurden.
+	</quotation>
+
+	<textblock>
+	 <strong><command>raidhotadd</command></strong>
+	</textblock>
+
+	<quotation>
+        Hiermit wird das sogenannte Hot Plugging, in diesem Fall das
+        Hinzufügen einer RAID-Partition in einen laufenden RAID-Verbund,
+        ermöglicht.
+	</quotation>
+
+	<textblock>
+	 <strong><command>raidhotremove</command></strong>
+	</textblock>
+
+	<quotation>
+        Dies ermöglicht in Analogie zum Kommando raidhotadd das
+        Entfernen einer RAID-Partition aus einem aktiven RAID-Verbund.
+	</quotation>
+
+	<textblock>
+	 <strong><command>raidsetfaulty</command></strong>
+	</textblock>
+
+	<quotation>
+        Um raidhotremove z.B. auf ein laufendes RAID-Array mit
+        <strong>Spare-Disks</strong> anwenden zu können, muss zuerst die zu entnehmende
+        Festplatte als defekt markiert werden. Ist dies nicht von
+	    alleine korrekt geschehen, muss das Kommando <command>raidsetfaulty</command> dazu
+		bemüht werden.  Andernfalls erhält man von <command>raidhotremove</command>
+        lediglich eine Fehlermeldung.
+	</quotation>
+
+	<textblock>
+	 <strong><command>raidstart</command></strong>
+	</textblock>
+
+	<quotation>
+        Ist ein RAID-Verbund erst einmal initialisiert, kann er mit
+        diesem Programm gestartet werden. Durch den neuen RAID-Patch und
+		mit den entsprechenden Optionen in der <command>/etc/raidtab</command> kann dies
+        allerdings der Kernel beim Startup des Rechners bereits
+        automatisch erledigen.
+	</quotation>
+
+	<textblock>
+	 <strong><command>raidstop</command></strong>
+	</textblock>
+
+	<quotation>
+        Erlaubt das Deaktivieren eines RAID-Verbundes, um z.B. den
+        Rechner sicher herunterfahren zu können. Auch dies lässt sich mit
+		den nötigen Einträgen in der <command>/etc/raidtab</command> automatisch durch den
+        Kernel erledigen.
+	</quotation>
+
+	<textblock>
+	 <strong><command>raidtab</command></strong>
+	</textblock>
+
+	<quotation>
+        Dies ist die zentrale Konfigurationsdatei für die gesamten
+        RAID-Verbunde Ihres Systems, die erst neu erstellt werden muss. Die
+        Parameter für die einzelnen RAID-Verbunde werden in den
+		entsprechenden Kapiteln dieser <name>HOWTO</name> beschrieben. Standardmäßig
+		suchen die RAID-Tools nach <command>/etc/raidtab</command>. Hier sollte also diese
+        Datei auch erst mal mit diesem Namen erstellt werden.
+	</quotation>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Generelles zum Umgang mit Linux
+   </heading>
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Möglichkeiten des Bootens von Linux
+	</heading>
+		
+	<textblock>
+  Linux kann auf vielfältige Weise gebootet werden. Gerade im Umgang mit
+  zu testenden RAID-Verbunden und spätestens bei dem Versuch das
+  Root-Verzeichnis auf einen RAID-Verbund verlegen zu wollen, stellt sich
+  einem die Frage, ob und wie Linux bei einem Misserfolg wieder zum
+  sauberen Startup zu bewegen ist. Je nach Zielvorstellung sind dafür
+  unterschiedlich trickreiche Wege zu verfolgen. Diese zahlreichen
+  Möglichkeiten sollen hier erläutert werden.  Welche nun speziell für
+  einen beschriebenen RAID-Verbund nötig ist, wird nochmals in den
+  jeweiligen Kapiteln genannt.
+	</textblock>
+
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Linux von der Festplatte booten
+	 </heading>
+
+	 <textblock>
+  So normal sich das Booten von der Festplatte auch anhört, so treten
+  doch gerade in Verbindung mit RAID-Verbunden als Root-Partition einige
+  Probleme zu Tage die es hierbei zu umschiffen gilt. Andererseits ist
+  es auch oft gerade die Vielfalt der Bootmöglichkeiten, welche den
+  einen oder anderen in Verwirrung stürzt.
+	 </textblock>
+		  
+	 <textblock>
+	  <strong>DOS Partition mit Loadlin</strong>
+	 </textblock>
+		  
+	 <textblock>
+        Ein relativ sicherer und einfacher Weg zugleich Linux zu Booten
+        und schnell die Bootkonfiguration zwischen einem RAID-Verbund
+        und einer normalen ext2-Partition zu wechseln, stellt das Booten
+        per loadlin von einer kleinen DOS-Partition dar. Außer den DOS
+        Systemdateien, einem Linux-Kernel mit RAID-Unterstützung,
+        loadlin und einer Loadlin-Konfigurationsdatei wird nur noch ein
+        DOS Editor benötigt, um simpel die Root-Partition in der
+        Loadlin-Konfigurationsdatei zu ändern.
+	 </textblock>
+
+	 <textblock>
+	  <strong>Extra-Partition für LILO mit Root-RAID</strong>
+	 </textblock>
+		  
+	 <textblock>
+		<strong>Root-RAID</strong> in Verbindung mit LILO braucht noch etwas mehr
+		Fürsorge. Zuerst müssen Sie wissen, ob Ihr <command>LILO</command> im <command>MBR</command> Ihrer
+        Festplatte oder im Superblock Ihrer Root-Partition installiert
+        ist. Ist Linux z.B. das einzige Betriebssystem auf Ihrem Rechner,
+        ist <command>LILO</command> vermutlich im <command>MBR</command> installiert, booten Sie jedoch
+        mittels eines fremden Bootmanagers (<command>OS/2 Bootmanager</command>, <command>XFDisk</command>,
+        oder ähnliche) wird <command>LILO</command> im Superblock Ihrer Root-Partition
+        liegen. Noch einfacher kann das Ihre bisherige <command>/etc/lilo.conf</command>
+        herausstellen: Der Parameter <command>boot=</command> gibt an, wo sich <command>LILO</command>
+        aufhält. Steht dort etwa
+	 </textblock>
+
+	 <file>
+	  <title>
+	  /etc/lilo.conf
+	  </title>
+	  <content>
+	   <![CDATA[
+       boot = /dev/sda
+	    ]]>
+	  </content>
+	 </file>
+
+
+	 <textblock>
+	 so residiert Ihr<command> LILO</command> im <command>MBR</command> der ersten SCSI-Festplatte, bei der
+     Angabe
+	 </textblock>
+
+	 <file>
+	  <title>
+	  /etc/lilo.conf
+	  </title>
+	  <content>
+	   <![CDATA[
+       boot = /dev/sda2
+	    ]]>
+	  </content>
+	 </file>
+
+	 <textblock>
+     handelt es sich um den Superblock Ihrer zweiten primären
+     Partition.
+	 </textblock>
+
+	 <textblock>
+	 <command>LILO</command> braucht zum Booten die Information, wo der Linux-Kernel auf
+	 der Festplatte liegt. Da <command>LILO</command> das aber zu einer Zeit erfahren muss,
+     zu der noch gar keine Partition gemountet ist, behilft sich LILO,
+     indem er Plattengeometriedaten in den <command>MBR</command> oder Superblock schreibt,
+     die die genaue Anfangslage des Linux-Kernel beschreiben. Die
+	 meisten Distributionen legen Ihre Kernel unter <command>/boot</command> ab. Diesen
+     Umstand kann man nun dahingehend ausnutzen, dass man sich ein kleine
+     Extra-Partition (etwa 10-20 MB) erstellt, welche unterhalb der 1024
+	 Zylindergrenze liegt. Diese formatiert man mit <command>ext2</command> und <command>mountet</command> sie
+	 als <command>/boot</command> in seinen Root-RAID-Device-Verzeichnisbaum, kopiert den
+	 gesamten Inhalt von dem originalen <command>/boot</command> Verzeichnis in das neue
+	 <command>/boot</command> Verzeichnis und ändert die Dateien <command>/etc/lilo.conf</command> und
+	 <command>/etc/fstab</command> dementsprechend:
+	 </textblock>
+
+	 <file>
+	  <title>
+	  /etc/lilo.conf
+	  </title>
+	  <content>
+	   <![CDATA[
+          boot = boot-Partition-ohne-RAID (/dev/sda2),
+                 oder: MBR-der-Festplatte (/dev/sda)
+          image = /boot/vmlinuz-2.2.10
+          root = /dev/md0
+          read only
+	    ]]>
+	  </content>
+	 </file>
+
+	 <file>
+	  <title>
+      /etc/fstab
+	  </title>
+	  <content>
+	   <![CDATA[
+        /dev/md0 / ext2 exec,dev,suid,rw 1 1
+        /dev/sda2 /boot ext2 exec,dev,suid,rw 1 1
+	    ]]>
+	  </content>
+	 </file>
+
+		  
+	 <textblock>
+     Das Ausführen von lilo sollte dann bescheinigen, dass der Kernel
+	 <command>vmlinuz-2.2.10</command> korrekt initialisiert wurde.
+	 </textblock>
+		  
+	 <textblock>
+	 Haben Sie nun <command>LILO</command> im Superblock Ihrer neuen <command>/boot</command> Partition
+     angelegt, so müssen Sie dies noch Ihrem Bootmanager bekannt geben
+     und ihn eben diese booten lassen. Dem Beispiel zufolge wäre das die
+	 Partition <command>/dev/sda2</command>. Liegt Ihr <command>LILO</command>
+     im <command>MBR</command> der Festplatte, so
+     brauchen Sie nichts weiter tun, als neu zu booten.
+	 </textblock>
+
+	 <textblock>
+     Dieses Verfahren bootet zwar Linux mit einem Root-RAID, ist aber im
+     Fehlerfall der ersten Festplatte nicht redundant!
+	 </textblock>
+
+	 <textblock>
+	  <strong>Extra-Partition für <command>LILO</command> mit
+		redundantem  Root-RAID</strong>
+	 </textblock>
+
+	 <textblock>
+        Die hier beschriebene Vorgehensweise bezieht sich auf die
+        folgende Konstellation: Zwei (E)IDE-Platten sind beide als
+        Master gejumpert und hängen an verschiedenen (E)IDE Kontrollern:
+		<command>/dev/hda</command> und <command>/dev/hdc</command>.
+	 </textblock>
+
+	 <textblock>
+        Die Partitionstabelle ist für beide Festplatten gleich:
+	 </textblock>
+
+	 <file>
+	  <title>
+		Partitionstabelle
+	  </title>
+	  <content>
+	   <![CDATA[
+          /dev/hd?1   primary   Linux native (83)      ca. 10 MB (fuer /boot)
+          /dev/hd?2   primary   Linux swap (82)        128 MB (fuer swap)
+          /dev/hd?3   primary   Linux raid auto (fd)   den Rest (fuer /dev/md0)
+	    ]]>
+	  </content>
+	 </file>
+
+
+
+
+	 <textblock>
+	  Wenn im folgenden von <strong>Backup-Fall</strong> gesprochen wird, dann ist damit
+     der Fall gemeint, dass die erste Festplatte ausgefallen ist und
+     irgendwie von der verbliebenen zweiten Festplatte gebootet werden
+     soll.
+	 </textblock>
+
+	 <textblock>
+	 Wir gehen von folgender <command>/etc/lilo.conf</command> für die erste Festplatte
+     aus:
+	 </textblock>
+
+	 <file>
+	  <title>
+			  /etc/lilo.conf
+	  </title>
+	  <content>
+	   <![CDATA[
+          boot=/dev/hda
+
+          image=/boot/vmlinuz
+                  root=/dev/md0
+                  label=linux
+	   ]]>
+	  </content>
+	 </file>
+
+	 <textblock>
+     Nun muss auch auf der zweiten Platte eine Boot-Partition erzeugt
+     werden. Dazu erstellt man auf der zweiten Festplatte eine
+     identische Partition und kopiert mittels einer der im Abschnitt
+	 <strong>Möglichkeiten zum Kopieren von Daten</strong> beschriebenen Methoden das
+     originale Boot-Verzeichnis auf die zweite Festplatte.
+	 </textblock>
+
+	 <textblock>
+	 Jetzt kopiert man die <command>/etc/lilo.conf</command> der zweiten Festplatte nach
+	 <command>/etc/lilo.conf.backup</command> und passt sie an die neuen Bedingungen an. Die
+	 endgültige <command>/etc/lilo.conf.backup</command> sollte dann
+	 wie folgt aussehen:
+	 </textblock>
+
+	 <file>
+	  <title>
+		 /etc/lilo.conf.backup
+	  </title>
+	  <content>
+	   <![CDATA[
+          boot=/dev/hdc
+          disk=/dev/hdc bios=0x80
+          map=/boot2/map
+          install=/boot2/boot.b
+
+          image=/boot2/vmlinuz
+                  root=/dev/md0
+                  label=linux
+	   ]]>
+	  </content>
+	 </file>
+
+
+
+	 <textblock>
+	 Der Parameter <command>disk=/dev/hdc</command>
+	 <command>bios=80</command> ist nötig,
+	 um <command>LILO</command>
+     vorzuspiegeln, dass die Festplatte /dev/hdc mit 0x80 eingeloggt ist.
+     Der Grund dafür ist, dass das BIOS normalerweise die ersten beiden
+     Festplatten mit den Adressen 0x80 und 0x81 einloggt. Wir
+	 konfigurieren die Platte 0x81 (<command>/dev/hdc</command>).  Im Backup-Fall wird die
+     Festplatte aber als 0x80 eingeloggt, da die ursprüngliche erste
+     Festplatte ja defekt ist.
+	 </textblock>
+
+	 <textblock>
+     Ein
+	 </textblock>
+
+	 <shell>
+	  <root path="">
+      lilo -C /etc/lilo.conf.backup
+	  </root>
+	 </shell>
+
+	 <textblock>
+     schreibt die Bootinformationen in den <command>MBR</command>. Es erscheint eine
+	 Warnung <strong><command>/dev/hdc</command> is not on the first
+	 disk</strong>, aber das soll uns nicht
+     stören, denn im Backup-Fall wird diese Festplatte ja zur ersten
+     Festplatte im System. Dafür muss sie natürlich noch an den ersten
+     (E)IDE Kanal gehängt werden.
+	 </textblock>
+
+	 <textblock>
+     In komplexeren Fällen ist unter Umständen noch die Optionen
+	 <strong>ignore-table</strong> hilfreich.
+	 </textblock>
+	 
+	 <textblock>
+     Zu bedenken ist noch, dass man nach dem Kompilieren eines neuen
+     Kernels das Boot-Verzeichnis der zweiten Festplatte anpasst und <command>LILO</command>
+     auch mit dem entsprechenden Befehl
+	 </textblock>
+		  
+	 <shell>
+	  <root path="">
+       lilo -C /etc/lilo.conf.backup
+	  </root>
+	 </shell>
+		  
+	 <textblock>
+     für die zweite Festplatte ausführt.
+	 </textblock>
+ 
+	 <textblock>
+       <command>LILO</command> im <command>MBR</command>
+	 </textblock>
+		  
+	 <textblock>
+        Benutzen Sie Linux als einziges Betriebssystem, bietet es sich
+        an, <command>LILO</command> direkt im <command>MBR</command> Ihrer Festplatte unterzubringen.
+	 </textblock>
+
+	 <textblock>
+       <command>LILO</command> im Superblock mit externem Bootmanager
+	 </textblock>
+		  
+	 <textblock>
+        Um auch Betriebssysteme neben Linux zu starten, mit denen <command>LILO</command>
+        nicht zurecht kommt, bietet es sich an, einen externen
+        Bootmanager wie etwa den OS/2-Bootmanager oder XFDisk zu
+        benutzen. Hierbei wird <command>LILO</command> im Superblock Ihrer Root-Partition
+        untergebracht und der externe Bootmanager im
+        <command>MBR</command> der Festplatte.
+	 </textblock>
+
+	 <textblock>
+      <command>LILO</command> direkt vom RAID im <command>MBR</command>
+	 </textblock>
+		  
+	 <textblock>
+        Das grundsätzliche <command>LILO</command> Problem, die Geometriedaten des Kernels
+        wissen zu müssen und somit nicht direkt von einem RAID-Device
+        booten zu können, kann man umgehen, indem man <command>LILO</command> in der
+  	    <command>/etc/lilo.conf</command> auf dem Root-RAID diese Parameter schon mit
+        übergibt. Prinzipiell funktioniert dies für alle RAID-Modi.
+        Wirklich Sinn macht das aber nur für RAID-Modi wie <strong>RAID-1</strong>,
+        <strong>RAID-4</strong> und <strong>RAID-5</strong>, welche auch irgendeine Form von Redundanz
+        versprechen.  Im Gegenzug ist das direkte Booten von einem
+        <strong>RAID-0</strong>-Verbund schon deshalb einfacher zu realisieren, weil man
+        sich beim Defekt einer Festplatte keine Gedanken mehr um die
+        Datenrettung oder das Booten von der zweiten Festplatte zu
+        machen braucht: Diese Daten sind dann ohnehin verloren.
+	 </textblock>
+
+	 <textblock>
+        Wie funktioniert nun das direkte Booten von einem RAID-Verbund?
+	    Hier ein Beispiel der Datei <command>/etc/lilo.conf</command> für den wohl
+        sinnvollsten RAID-Modus für einen Root-RAID Verbund: <strong>RAID-1</strong> auf
+        SCSI-Festplatten:
+	 </textblock>
+
+
+	 <file>
+	  <title>
+		/etc/lilo.conf
+	  </title>
+	  <content>
+	   <![CDATA[
+          disk=/dev/md15
+                        bios=0x80
+                        sectors=63
+                        heads=255
+                        cylinders=1106
+                        partition=/dev/md0
+                        start=1028160
+          boot=/dev/sda
+          image=/boot/vmlinux-2.2.10
+                        label=autoraid
+                        root=/dev/md0
+                        read-only
+	   ]]>
+	  </content>
+	 </file>
+
+
+
+	 <textblock>
+	 Der Eintrag <command>disk=/dev/md15</command> mit seinen Parametern übergibt <command>LILO</command> die
+	 benötigten Geometriedaten einer fiktiven Festplatte <command>/dev/md15</command>.
+	 Hierbei ist es einerlei, ob dieses Device<command> /dev/md15</command> oder <command>/dev/md27</command>
+	 heißt. Wichtig ist nur, dass es per <command>mknod</command> mit der Major-Number eines
+     RAID-Devices erstellt wurde. Sind Sie sich nicht sicher, ob dies
+	 der Fall ist, lassen Sie sich einfach unter <command>/dev/</command> alle Devices, die
+	 mit md anfangen, zeigen. Standardmäßig werden <command>/dev/md0</command> bis
+	 <command>/dev/md15</command> erstellt. Die Parameter der Sektoren, Köpfe und Zylinder
+	 unterhalb von <command>disk=/dev/md15</command> geben die Geometriedaten der ersten
+     Festplatte Ihres Systems an, welche man mittels
+	 </textblock>
+
+	 <shell>
+	  <root path="">
+          fdisk -lu /dev/sda
+	  </root>
+	 </shell>
+
+	 <textblock>
+     erhält. Die Angabe der Partition soll Ihr Root-RAID Verbund sein.
+     Der letzte Parameter start=1028160 bezeichnet den Sektor, in dem
+     Ihre RAID-Partition auf der ersten Festplatte beginnt. Auch diese
+     Information erhalten Sie durch:
+	 </textblock>
+
+	 <shell>
+	  <root path="">
+          fdisk -lu /dev/sda
+	  </root>
+	 </shell>
+
+	 <textblock>
+     Des weiteren muss als Sitz des <command>LILO</command> der <command>MBR</command> Ihrer ersten Festplatte
+	 angegeben werden. Hier geschehen durch den Eintrag: <command>boot=/dev/sda</command>.
+     Der letzte Bereich beschreibt ganz normal die Lokalisation Ihres
+     Kernels mit dem Verweis, als Root-Partition Ihren RAID-Verbund zu
+     nutzen.
+	 </textblock>
+		  
+	 <textblock>
+     Haben Sie den RAID-Verbund nach der weiter unten beschriebenen
+     Methode erstellt und haben sowohl die Option persistent-superblock
+     aktiviert als auch den Partitionstyp der Festplatten auf 0xfd
+     geändert, fehlen dem Master-Boot-Record der SCSI-Festplatten nur
+     noch die Boot-Informationen.  Mit dem Aufruf
+	 </textblock>
+
+	 <shell>
+	  <root path="">
+     lilo -b /dev/sda
+	  </root>
+	 </shell>
+
+	 <textblock>
+	 werden die Informationen der Datei <command>/etc/lilo.conf</command> in den <command>MBR</command> der
+     ersten SCSI-Festplatte geschrieben. Anschließend muss man den Befehl
+     ein zweites Mal aufrufen. Diesmal allerdings für den <command>MBR</command> der
+     zweiten Festplatte des <strong>RAID-1</strong> Verbundes:
+	 </textblock>
+
+	 <shell>
+	  <root path="">
+          lilo -b /dev/sdb
+	  </root>
+	 </shell>
+
+	 <textblock>
+     Achtung: Hierbei wird davon ausgegangen, dass die im RAID-Verbund
+     laufenden Festplatten identisch sind und damit auch die gleichen
+     Geometriedaten besitzen!  Ein <strong>RAID-0</strong> so zu booten, funktioniert
+     auch mit unterschiedlichen Festplatten, da hierbei nur die erste
+     Festplatte berücksichtigt wird. In diesem Beispiel eines <strong>RAID-1</strong>
+     liegen jedoch auf allen RAID-Partitionen die gleichen Daten und
+	 somit auch die gleiche <command>/etc/lilo.conf</command>. Haben die Festplatten
+     unterschiedliche Geometriedaten und fällt im <strong>RAID-1</strong> die erste
+     Festplatte aus, so stehen im <command>MBR</command> der zweiten Festplatte Daten,
+     welche nicht mit denen der zweiten Festplatte übereinstimmen. Ein
+     Workaround könnte sein, zwei <command>LILO</command> Konfigurationsdateien zu pflegen
+     und mit unterschiedlichen Geometriedaten in den <command>MBR</command> der jeweiligen
+     Festplatten zu schreiben. Da mir aber nur mehrere Exemplare
+     dergleichen Festplatte zum Testen von RAID-Verbunden vorliegen, ist
+     dies ein ungesicherter Tipp.
+	 </textblock>
+
+
+	 <textblock>
+     Der Erfolg ist ein <strong>RAID-1</strong> Verbund, den man auch nach einem erneuten
+     Kernelkompilierungslauf durch zweimaliges Aufrufen des <command>LILO</command> mit den
+     Parametern für die unterschiedlichen <command>MBRs</command> von beiden beteiligten
+     RAID-Festplatten booten kann.
+	 </textblock>
+
+	 <textblock>
+     <command>LILO</command> direkt vom <strong>RAID-1</strong> im
+     <command>MBR</command> oder Superblock
+	 </textblock>
+
+	 <textblock>
+        Will man die Root-Partition direkt von einem <strong>RAID-1</strong> Verbund
+        booten, bietet sich einem noch die weitaus eleganteste
+        Möglichkeit: Die <command>LILO</command>-Version des aktuellen RPM-Archives
+	    <command>lilo-0.21-10.i386.rpm</command> kann bereits von sich aus mit <strong>RAID-1</strong>
+        Verbunden umgehen. Andere RAID-Modi werden allerdings nicht
+        unterstützt.
+	 </textblock>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Möglichkeiten zum Kopieren von Daten
+	</heading>
+
+	<textblock>
+  Zu den ersten Methoden muss vorab gesagt werden, dass je nach
+  Distribution bei der Verwendung der Root-Partition als RAID einige
+  Verzeichnisse entweder gar nicht kopiert werden dürfen, oder aber nur
+  als leere Verzeichnisse erstellt werden müssen. Im einzelnen sollte
+  man auf folgende achten:
+	</textblock>
+
+	<textblock>
+	 <strong><command>proc</command></strong>
+	</textblock>
+
+	<quotation>
+        Dieses Verzeichnis bitte nur als leeres Verzeichnis auf dem
+	    RAID-Device erstellen, da unter <command>/proc</command> ein Pseudo-Dateisystem
+        erstellt wird, welches im Prinzip keinen Platz
+	    beansprucht - bitte nicht versuchen, <command>/proc</command> auf eine andere
+        Partition zu kopieren.
+	</quotation>
+	
+	<textblock>
+     <command><strong>mnt</strong></command>
+	</textblock>
+	
+	<quotation>
+        Dieses Verzeichnis oder das, wo Ihr RAID-Device gemountet ist,
+        darf nicht kopiert werden, sonst würden die bereits vorhandenen
+        Daten nochmals überschrieben werden.
+	</quotation>
+
+	<textblock>
+     <command><strong>cdrom</strong></command>
+	</textblock>
+
+	<quotation>
+        Die Daten der CDs selbst möchte man natürlich nicht kopieren. Es
+        sollten daher nur die passenden Mountpoints erstellt werden.
+	</quotation>
+
+	<textblock>
+     <command><strong>dos</strong></command>
+	</textblock>
+
+	<quotation>
+        Auch die DOS-Partition, falls eine vorhanden ist, möchte man
+        nicht mit rüberkopieren. Es sollte also nur ein passender
+        Mountpoint erstellt werden.
+	</quotation>
+
+	<textblock>
+     <command><strong>floppy</strong></command>
+	</textblock>
+
+	<quotation>
+        Das gleiche gilt auch für eine gemountete Diskette.
+	</quotation>
+
+	<textblock>
+  Als generelle Kopiermethoden bieten sich folgende Möglichkeiten
+  an:
+	</textblock>
+
+
+	<textblock>
+	 <command><strong>cp</strong></command>
+	</textblock>
+
+	<quotation>
+	Der normale Copy-Befehl eignet sich für das Kopieren
+    Naheliegenderweise sehr gut und funktioniert problemlos.
+	</quotation>
+
+	<textblock>
+     <command><strong>dd</strong></command>
+	</textblock>
+
+	<quotation>
+	Auch eine saubere Möglichkeit, Verzeichnisse zu kopieren, bietet
+	das Programm <command>dd</command>.
+	</quotation>
+
+	<textblock>
+     <command><strong>dump und restore</strong></command>
+	</textblock>
+
+	<quotation>
+	 Mittels <command>dump</command> und <command>restore</command> lässt sich ohne viel Aufwand z.B. das
+     ganze Root-Verzeichnis kopieren oder auf Band-Streamer sichern,
+	 wobei die unnötigen Verzeichnisse wie <command>/proc</command> oder <command>/mnt</command> fast
+	 <strong>automatisch</strong> ausgelassen werden. Zu diesem Zweck wechselt man
+     in das Verzeichnis, in dem der neue RAID-Verbund gemountet ist
+     und führt die folgenden Befehle aus, um z.B.  das Verzeichnis
+	 <command>/usr</command> zu kopieren:
+	</quotation>
+
+	<shell>
+	 <root path="~">
+	 	  dump 0Bf 1000000000 - /usr | restore rf -
+	 </root>
+	 <root path="~">
+          rm restoresymtable
+	 </root>
+	</shell>
+	 
+	<textblock>
+     <command><strong>Midnight Commander</strong></command>
+	</textblock>
+
+	<quotation>
+	    Zwar liegt der <strong>Midnight Commander</strong> zum Kopieren von
+        Verzeichnissen auf ein neues RAID-Array sehr nahe, jedoch haben
+        einige ältere Versionen die bisweilen sehr unangenehme Eigenart,
+        symbolische Links beim Kopieren zu stabilisieren.  In den
+        aktuellen Versionen sollte dieses Fehlverhalten jedoch behoben
+        sein.
+	</quotation>
+
+	<textblock>
+     <command><strong>tar</strong></command>
+	</textblock>
+
+	<quotation>
+        Ebenso zuverlässig und mit einigen Extraoptionen kann man tar
+        benutzen, um ganze Verzeichnisstrukturen zu kopieren.
+	</quotation>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Möglichkeiten zum Verändern ganzer Partitionen
+	</heading>
+
+	<textblock>
+	 <command><strong>ext2resize</strong></command>
+	</textblock>
+
+	<quotation>
+	    Eine native Möglichkeit unter Linux, <strong>ext2</strong>-Partitionen zu
+        verändern, die noch dazu der GPL unterliegt, bietet das Programm
+	 <command>ext2resize</command>, das von folgender Adresse bezogen
+	 werden kann:<br/><br/>
+
+     <ref lang="en" url="http://ext2resize.sourceforge.net/">
+        http://ext2resize.sourceforge.net/
+	 </ref><br/><br/>
+
+     Da es aber offiziell noch Beta-Status hat, ist beim Umgang mit
+     diesem Programm Vorsicht geboten.
+	</quotation>
+
+	<textblock>
+     <command><strong>Partition Magic</strong></command>
+	</textblock>
+
+	<quotation>
+	    Seit der Version 4.0 kann <strong>Partition Magic</strong> auch mit Linux
+   	    <strong>ext2</strong>-Partitionen umgehen. Eine Version, die unter Linux selbst
+	    lauffähig ist, gibt es allerdings nicht. Das Produkt <strong>Partition
+	    Magic</strong> stammt von der Firma <name>PowerQuest</name>.
+	</quotation>
+
+	<textblock>
+     <command><strong>resize2fs</strong></command>
+	</textblock>
+
+	<quotation>
+        Dieses Programm ist eine Auskopplung aus Partition Magic, ist
+        unter Linux lauffähig und ermöglicht das Vergrößern und
+        Verkleinern von ext2-Partitionen.  Sollten Sie mal über ein
+        gleichnamiges tar-Archiv stolpern, stellt sich hier jedoch noch
+        die Lizenzfrage. Registrierte Benutzer können sich das RPM-Paket
+	 von<br/><br/>
+
+	 <ref lang="en" url="http://www.powerquest.com/">http://www.powerquest.com/</ref><br/><br/>
+
+
+     herunterladen. Innerhalb der Firma überlegt man aber, diesen Teil
+     eventuell frei zu geben.
+	</quotation>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+RAID-Verbunde mit den RAID-Tools Version 0.4x erstellen
+   </heading>
+	  
+   <textblock>
+  Dieses Kapitel bezieht sich auf die Erstellung von RAID-Verbunden
+  unter Zuhilfenahme der alten MD-Tools Version 0.4x. Die aktuellen
+  RAID-Tools Version 0.9x und der RAID-Patch werden in allen
+  Einzelheiten im Abschnitt <ref iref="RAID-Verbunde mit den RAID-Tools Version
+  0.9x erstellen">RAID-Verbunde mit den RAID-Tools Version
+  0.9x erstellen</ref> beschrieben.
+   </textblock>
+
+	  <section>
+<!-- *.* Kapitel -->
+		<heading>
+Vorbereiten des Kernels für 0.4x
+		</heading>
+
+	<textblock>
+  Der Standardkernel Ihrer Distribution besitzt prinzipiell schon gleich
+  nach der Installation alle Optionen, um RAID-Devices zu erstellen.
+	</textblock>
+
+	<textblock>
+  Des weiteren ist noch das Paket <command>md-0.35-2.i386.rpm</command> nötig, welches zum
+  Beispiel für die DLD auf der ersten DLD CD unter delix/RPMS/i386/ zu
+  finden ist. Auch wenn dieses Paket bei Ihrer Distribution eine andere
+  Versionsnummer haben sollte, können Sie es ruhig benutzen.
+	</textblock>
+
+	<textblock>
+  Der Vollständigkeit halber wird hier trotzdem auf die nötigen
+  Kernel-Parameter hingewiesen:
+	</textblock>
+
+	<textblock>
+ Nach der Anmeldung als <command>root</command>, dem Wechsel in das Verzeichnis
+ <command>/usr/src/linux</command> und dem Aufruf von <command>make menuconfig</command> sollte sich Ihnen
+ das Menü mit den unterschiedlichen Kerneloptionen präsentieren. Bitte
+ benutzen Sie nicht <command>make config</command> oder <command>make xconfig</command>, da sich diese
+ Beschreibung ausschließlich auf <command>make menuconfig</command> stützt.
+	</textblock>
+
+	<textblock>
+	 <strong>Kernel 2.0.36</strong>
+	</textblock>
+
+	<textblock>
+  Unter dem Verweis <strong>Floppy, IDE, and other block devices ---&gt;</strong> werden
+  je nach RAID Wunsch folgende Optionen benötigt:
+	</textblock>
+
+	<file>
+	 <title>
+	Floppy, IDE, and other block devices --->
+	 </title>
+	 <content>
+	  <![CDATA[
+       [*] Multiple devices driver support
+       <*> Linear (append) mode
+       <*> RAID-0 (striping) mode
+       <*> RAID-1 (mirroring) mode
+       <*> RAID-4/RAID-5 mode
+	  ]]>
+	 </content>
+	</file>
+
+	<textblock>
+	 <strong>Kernel 2.2.x bis einschließlich 2.2.10</strong>
+	</textblock>
+	<textblock>
+	 Hier stehen die RAID Optionen unter <strong>Block devices ---&gt;</strong>:
+	</textblock>
+
+	<file>
+     <title>
+	Block devices --->
+	 </title>
+	 <content>
+	  <![CDATA[
+       [*] Multiple devices driver support
+       <*> Linear (append) mode (NEW)
+       <*> RAID-0 (striping) mode (NEW)
+       <*> RAID-1 (mirroring) mode (NEW)
+       <*> RAID-4/RAID-5 mode (NEW)
+       [*] Boot support (linear, striped) (NEW)
+	  ]]>
+	 </content>
+	</file>
+
+	<textblock>
+  Zusätzlich wird bei den 2.2.xer Kerneln bei der Auswahl des Linear
+  oder <strong>RAID-0</strong> Modes der Boot Support angeboten. Von
+  <strong>RAID-1</strong>,<strong>4</strong> und <strong>5</strong>
+  Devices kann mit den hier gegebenen Möglichkeiten nicht gebootet
+  werden. Das funktioniert erst mit dem neuen RAID-Patch; siehe
+  Abschnitt <ref iref="RAID-Verbunde mit den RAID-Tools Version 0.9x
+  erstellen">RAID-Verbunde mit den RAID-Tools Version 0.9x
+  erstellen</ref>.
+	</textblock>
+
+	<textblock>
+  Nach Auswahl der nötigen Parameter erfolgt das <strong>Backen</strong> des Kernels
+  mittels:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+	make dep &amp;&amp; make clean &amp;&amp; make bzImage
+	 </root>
+	</shell>
+
+
+	<textblock>
+  Das Kompilieren und Installieren der Module nicht vergessen:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       make modules &amp;&amp; make modules_install
+	 </root>
+	</shell>
+
+	<textblock>
+  Den Kernel zusammen mit der <command>System.map</command> umkopieren und zu guter Letzt
+  den Aufruf von <command>LILO</command> nicht vergessen. Die Benutzer eines
+  SCSI-Kontrollers müssen noch die initiale RAM-Disk mittels
+	</textblock>
+	<shell>
+	 <root path="~">
+       mkinitrd /boot/initrd Kernelversion
+	 </root>
+	</shell>
+
+	<textblock>
+  erstellen, falls der SCSI-Kontroller als Modul eingeladen wird.
+	</textblock>
+
+	<textblock>
+  Nach einem Neustart hat man nun alle Voraussetzungen erfüllt, um ein
+  RAID-Device zu erstellen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	 Erstellen eines RAID-0 Devices mit 0.4x
+	</heading>
+
+	<textblock>
+  Die RAID-Arrays oder RAID-Verbunde werden nachher über <command>/dev/md*</command>
+  angesprochen. Bei der DLD 6.0 sind diese Devices bereits eingerichtet.
+  Schauen Sie zur Sicherheit unter <command>/dev/</command> nach.
+	</textblock>
+
+	<textblock>
+  Jetzt wird das Erstellen eines RAID-Verbundes anhand eines <strong>RAID-0</strong>
+  Devices erklärt.  Andere RAID-Modi lassen sich analog erstellen.
+  Zuerst sollte man sich darüber im klaren sein, welche und wie viele
+  Partitionen man zusammenfassen möchte.  Diese Partitionen sollten leer
+  sein; eine Einbindung von Partitionen, die Daten enthalten, welche
+  nachher wieder zugänglich sein sollen, ist bisher meines Erachtens
+  nicht möglich. Man sollte sich die Devices und ihre Reihenfolge nicht
+  nur gut merken, sondern besser aufschreiben.
+	</textblock>
+
+	<textblock>
+  Als Beispiel werden die zwei SCSI-Festplatten <command>/dev/sda</command> und <command>/dev/sdb</command>
+  benutzt. Bei (E)IDE würden sie dann <command>/dev/hda</command>, <command>/dev/hdb</command> heißen. Auf
+  diesen Festplatten liegen nun zwei leere Partitionen im erweiterten
+  Bereich <command>/dev/sda6</command> und
+  <command>/dev/sdb6</command>, welche zu einem <strong>RAID-0</strong> Device
+  zusammengefasst werden sollen.
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       mdadd /dev/md0 /dev/sda6 /dev/sdb6
+	 </root>
+	</shell>
+
+	<textblock>
+  Sind diese Partitionen nicht gleich groß, so ist der zu erwartende
+  Geschwindigkeitsvorteil nur auf dem Bereich gegeben, der von beiden
+  Partitionen abgedeckt wird. Zum Beispiel sind eine 200 MB große und
+  eine 300 MB große Partition als <strong>RAID-0</strong> Device nur über die ersten 400
+  MB doppelt so schnell. Die letzten 100 MB der zweiten Festplatte
+  werden ja nun nur noch mit einfacher Geschwindigkeit beschrieben.
+	</textblock>
+
+	<textblock>
+  Wieder anders sieht das bei der Einrichtung eines <strong>RAID-1</strong> Verbundes
+  aus. Hierbei wird der überschüssige Platz von der größeren Partition
+  nicht genutzt und liegt damit brach auf der Festplatte.
+	</textblock>
+
+	<textblock>
+  Allgemein heißt das also, dass man für RAID-Devices jeder Art möglichst
+  gleich große Partitionen benutzen sollte. Die Ausnahme bildet der
+  Linear Modus, bei dem es wirklich egal ist, wie groß die einzelnen
+  Partitionen sind.
+	</textblock>
+
+	<textblock>
+  Nun muss Linux noch erfahren, als was für ein RAID-Device es dieses
+  <command>/dev/md0</command> ansprechen soll:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+	mdrun -p0 /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  Hierbei steht<command> -p0</command> für <strong>RAID-0</strong>. Anschließend muss auf diesem neuen
+  RAID-Device ein Dateisystem erstellt werden:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+	mke2fs /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  Testweise kann man das RAID-Device nun nach <command>/mnt</command> mounten und ein paar
+  kleine Kopieraktionen drüberlaufen lassen:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       mount -t ext2 /dev/md0 /mnt
+	 </root>
+	</shell>
+
+	<textblock>
+  Hat man an den unterschiedlichen Festplatten jeweils einzelne LEDs,
+  sieht man jetzt schon sehr eindrucksvoll, wie das RAID arbeitet. Alle
+  Daten, die ab jetzt auf <command>/dev/md0</command> geschrieben werden, nutzen den <strong>RAID-0</strong>
+  Modus.
+	</textblock>
+
+	<textblock>
+  Bevor der Rechner runtergefahren wird, müssen die RAID-Devices jedoch
+  noch gestoppt werden:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       umount /mnt
+	 </root>
+	 <root path="~">
+       mdstop /dev/md0
+	 </root>
+	</shell>
+
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Automatisierung mit 0.4x
+	</heading>
+
+	<textblock>
+  Um nicht nach jedem Bootvorgang diese Prozedur wiederholen zu müssen,
+  benötigt man eine Datei <command>/etc/mdtab</command>, welche - analog
+  zu <command>/etc/fstab</command> - die Mountparameter enthält. Dies erledigt der
+  Befehl:
+	</textblock>
+
+	<shell>
+     <root>
+      mdcreate raid0 /dev/md0 /dev/sda6 /dev/sdb6
+	 </root>
+	</shell>
+
+	<textblock>
+  Dadurch wird die Datei <command>/etc/mdtab</command> erstellt, welche zusätzlich noch
+  eine Prüfsumme enthält und das Aktivieren des RAID-Devices durch den
+  einfachen Befehl
+	</textblock>
+
+	<shell>
+     <root>
+      mdadd -ar
+	 </root>
+	</shell>
+
+	<textblock>
+  erlaubt. Nun trägt man das RAID-Device (<command>/dev/md0</command>) noch unter
+  <command>/etc/fstab</command> mit der Zeile
+	</textblock>
+
+	<file>
+	 <title>
+		/etc/fstab
+	 </title>
+	 <content>
+	  <![CDATA[
+       /dev/md0 /mnt ext2 defaults 0 1
+	  ]]>
+	 </content>
+	</file>
+
+	<textblock>
+  ein, wobei natürlich <command>/mnt</command> durch jeden beliebigen Mountpoint ersetzt
+  werden kann. Ein
+	</textblock>
+
+	<shell>
+	 <root path="~">
+	mount /mnt
+	 </root>
+	</shell>
+
+
+	<textblock>
+  führt nun auch zum Mounten des <strong>RAID-0</strong> Devices.
+	</textblock>
+
+	<textblock>
+  Leider berücksichtigen die Init-Skripte der DLD 6.0 keine
+  RAID-Devices, wodurch man noch einmal auf Handarbeit angewiesen ist.
+  Inwieweit andere Distributionen bereits RAID-Verbunde berücksichtigen,
+  sollten Sie durch einen Blick in die Startskripte feststellen und
+  gegebenenfalls ähnlich den hier abgedruckten Beispielen anpassen.
+	</textblock>
+
+	<textblock>
+  Zum Starten des RAID-Devices ist es unerlässlich den, Befehl <command>mdadd -ar</command>
+  unterzubringen. Will man nicht von dem RAID-Device booten, so reicht
+  es, den Befehl in die Datei <command>/etc/init.d/bc.fsck_other</command> eine Zeile über
+  den fsck Befehl einzutragen.
+	</textblock>
+
+	<file>
+     <title>
+	/etc/init.d/bc.fsck_other
+	 </title>
+	 <content>
+	  <![CDATA[
+       #################################################
+       # Filesystem check und u.U sulogin bei Problemen
+       #################################################
+       if [ ! -f /fastboot ]
+       then
+          mini_text="überprüfe Filesysteme..."
+          mini_startup "$mini_text" start
+          log_msg_buf=`(
+
+
+       mdadd -ar
+
+
+             fsck -R -A -a
+             ) 2>&1`
+          fsck_result=$?
+          old_fsck_result=$fsck_result
+
+       [... Teile gelöscht ...]
+
+       #################################################
+	  ]]>
+	 </content>
+	</file>
+
+	<textblock>
+  Analog sollte der Befehl <command>mdstop -a</command> in die zuletzt ausgeführte Datei
+  nach dem <command>umount</command> Befehl eingetragen werden. Bei der DLD heißt die Datei
+  <command>/etc/init.d/halt</command> und sollte nach dem Eintrag an der richtigen Stelle
+  so aussehen:
+	</textblock>
+
+	<file>
+     <title>
+	/etc/init.d/halt
+	 </title>
+	 <content>
+	  <![CDATA[
+       #################################################
+       # Umount all FS
+       #################################################
+       mini_text="Die Filesysteme werden gelöst"
+       mini_shutdown "$mini_text" start
+       LC_LANG=C
+       LC_ALL=C
+       export LC_LANG LC_ALL
+       # Gib den sleeps der busy_wait_loops zeit sich zu beenden.
+       # sonst gibt es :/usr device busy.
+       sleep 1
+       umount -a
+
+       mdstop -a
+
+       mini_shutdown "$mini_text" stop 0
+       #################################################
+	  ]]>
+	 </content>
+	</file>
+
+	<textblock>
+  Damit kann man nun recht komfortabel das RAID-Device benutzen.
+	</textblock>
+
+	<textblock>
+  Weitere RAID-Verbunde erstellt man auf dieselbe Weise, jedoch sind die
+  Einträge in den Init-Skripten nur einmal zu setzen.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+  <split>
+	<section>
+<!-- * Kapitel -->
+	  <heading>
+RAID-Verbunde mit den RAID-Tools Version 0.9x erstellen
+	  </heading>
+
+	  <section>
+<!-- *.* Kapitel -->
+		<heading>
+Vorbereiten des Kernel für 0.9x
+		</heading>
+
+	<textblock>
+  Sie benötigen hierfür den aktuellen, <strong>sauberen</strong>, ungepatchten
+  Sourcetree des 2.2.10er Kernels. Bitte tun Sie sich selbst einen
+  Gefallen und nehmen Sie keinen Sourcetree Ihrer Distribution. Diese
+  sind meist schon mit Patches aller Art versehen und ein zusätzliches
+  ändern mit dem RAID-Patch würde die Sourcen eventuell sogar zerstören.
+  Die kompletten Kernel-Sourcen erhält man auf:
+	</textblock>
+
+	<textblock>
+	 <ref url="ftp://ftp.kernel.org/pub/linux/kernel/v.2.2/">ftp://ftp.kernel.org/pub/linux/kernel/v.2.2/</ref>
+	</textblock>
+
+	<textblock>
+  Des weiteren benötigen Sie den für diesen Kernel passenden RAID-Patch
+  (raid0145-19990724-2.2.10) und die aktuellsten RAID-Tools
+  (<command>raidtools-19990724-0.90.tar.gz</command>). Diese sind hier zu finden:
+	</textblock>
+
+	<textblock>
+	 <ref url="ftp://ftp.kernel.org/pub/linux/daemons/raid/alpha/">
+	  ftp://ftp.kernel.org/pub/linux/daemons/raid/alpha/</ref></textblock>
+
+	<textblock>
+	 Bitte achten Sie genau auf die passende Kernelversion!<br/>
+
+	 Zuerst muss der Kernel nach <command>/usr/src/linux</command> kopiert und mittels
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       tar xvfz kernelfile.tar.gz
+	 </root>
+	</shell>
+
+	<textblock>
+  entpackt werden. Alternativ und bei Benutzung mehrerer Kernel entpackt
+  man ihn nach <command>/usr/src/linux-2.2.10</command> und setzt den vermutlich schon
+  vorhandenen symbolischen Link von <command>/usr/src/linux</command> auf
+  <command>/usr/src/linux-2.2.10</command>. Dies ist für das Patchen wichtig, da sonst der
+  falsche Sourcetree gepatcht werden könnte. Auch ist es immer schlau,
+  sich einen ungepatchten Original-Sourcetree aufzuheben, falls mal
+  etwas schief geht.
+	</textblock>
+
+	<textblock>
+  Nun wird der RAID-Patch nach <command>/usr/src/linux-2.2.10</command> kopiert und dort
+  mittels
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       patch -p1 &lt; raidpatchfilename
+	 </root>
+	</shell>
+
+	<textblock>
+  in den Sourcetree eingearbeitet. Es sollten nun etwa 20 Dateien
+  kopiert und teilweise geändert werden.
+	</textblock>
+
+	<textblock>
+  Nach dem Aufruf von
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       make menuconfig
+	 </root>
+	</shell>
+
+	<textblock>
+ sollte sich Ihnen das Menü mit den unterschiedlichen Kerneloptionen
+ präsentieren. Bitte benutzen Sie nicht <command>make config</command> oder <command>make xconfig</command>,
+ da sich diese Beschreibung ausschließlich auf <command>make menuconfig</command> stützt.
+ Hier aktivieren Sie unter <strong>Block devices ---&gt;</strong> folgende Optionen:
+	</textblock>
+
+	<file>
+     <title>
+	Block devices ---&gt;
+	 </title>
+	  <content>
+	   <![CDATA[
+       [*] Multiple devices driver support
+       [*] Autodetect RAID partitions
+       <*> Linear (append) mode
+       <*> RAID-0 (striping) mode
+       <*> RAID-1 (mirroring) mode
+       <*> RAID-4/RAID-5 mode
+       < > Translucent mode
+       < > Logical Volume Manager support (NEW)
+       [*] Boot support (linear, striped)
+	   ]]>
+	  </content>
+	 </file>
+
+	<textblock>
+  Da immer wieder einige Fehler durch modularisierte RAID-Optionen
+  auftauchen, nehmen Sie sich an den obigen Einstellungen ein Beispiel
+  und kompilieren Sie den benötigten RAID-Support fest in den Kernel
+  ein.
+	</textblock>
+
+	<textblock>
+  Passen Sie nun noch alle übrigen Kerneleinstellungen Ihren Wünschen
+  an, verlassen Sie das Menü und kompilieren Sie Ihren neuen Kernel:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       make dep &amp;&amp; make clean &amp;&amp; make bzImage
+       &amp;&amp; make modules
+	 </root>
+	 <root path="~">
+       make modules_install
+	 </root>
+	</shell>
+
+	<textblock>
+  Die Benutzer eines SCSI-Controllers sollten daran denken, die initiale
+  RAM-Disk mittels
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       mkinitrd /boot/initrd Kernelversion
+	 </root>
+	</shell>
+
+	<textblock>
+  neu zu erstellen, falls der SCSI-Kontroller als Modul eingeladen wird.
+  Anschließend noch den neuen Kernel und die System.map Datei
+  umkopieren, die <command>/etc/lilo.conf</command> bearbeiten, <command>lilo</command> ausführen und das
+  System neu starten.
+	</textblock>
+
+	<textblock>
+  Ihr Kernel unterstützt nun alle nötigen RAID Optionen.
+	</textblock>
+
+	<textblock>
+  Weiter geht es mit den RAID-Tools. Entpacken Sie die RAID-Tools z.B.
+  nach <strong>/usr/local/src</strong>, führen Sie das enthaltene Konfigurationsskript
+  aus und kompilieren Sie die Tools:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       ./configure &amp;&amp; make &amp;&amp; make install
+	 </root>
+	</shell>
+
+	<textblock>
+  Die RAID-Tools stellen Ihnen zum einen (unter anderem) die Datei
+  <command>mkraid</command> zur Verfügung und erstellen zum anderen die <command>/dev/md0-15</command>
+  Devices.
+	</textblock>
+
+	<textblock>
+  Ob Ihr Kernel die RAID Optionen wirklich unterstützt können Sie
+  mittels
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       cat /proc/mdstat
+	 </root>
+	</shell>
+
+	<textblock>
+  in Erfahrung bringen. Diese Pseudodatei wird auch in Zukunft immer
+  Informationen über Ihr RAID System enthalten. Ein Blick hierher lohnt
+  manchmal. Zu diesem Zeitpunkt sollte zumindest ein Eintrag enthalten
+  sein, der Ihnen zeigt, dass die RAID Personalities registriert sind.
+	</textblock>
+
+	<textblock>
+  Die RAID-Devices, was dasselbe bezeichnet wie das RAID-Array oder den
+  RAID-Verbund, werden nachher über <command>/dev/md*</command>
+  angesprochen.
+	</textblock>
+
+	<textblock>
+  Zuerst sollte man sich darüber im klaren sein, welche und wie viele
+  Partitionen man zusammenfassen möchte. Diese Partitionen sollten leer
+  sein und man sollte sich die Devices und ihre Reihenfolge nicht nur
+  gut merken, sondern besser aufschreiben. Eine Einbindung von
+  Partitionen, die Daten enthalten, welche nachher wieder zugänglich
+  sein sollen, ist bisher nur über einen Umweg möglich und das auch nur
+  bei Verwendung eines <strong>RAID-0</strong> Verbundes.
+	</textblock>
+
+	<textblock>
+  Als Beispiel werden die zwei SCSI-Festplatten <command>/dev/sda</command> und <command>/dev/sdb</command>
+  benutzt. Bei (E)IDE heißen sie dann <command>/dev/hda</command>, <command>/dev/hdb</command> usw. Auf diesen
+  Festplatten liegen nun zwei leere Partitionen im erweiterten Bereich
+  <command>/dev/sda6</command> und <command>/dev/sdb6</command>,
+  welche zu einem <strong>RAID-0</strong> Device zusammenfasst
+  werden sollen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+		<heading>
+Erstellen eines RAID-0 Devices mit 0.9x
+		</heading>
+
+	<textblock>
+  Die Grundkonfiguration der zu erstellenden RAID-Devices werden hier
+  unter <command>/etc/raidtab</command> gespeichert. Diese Datei enthält alle nötigen
+  Angaben für ein oder mehrere RAID-Devices. Generelle Hilfe findet man
+  in den Manual Pages von raidtab und mkraid. Eine<command> raidtab</command> für ein
+  <strong>RAID-0</strong> System mit den oben beschriebenen zwei Partitionen müsste so
+  aussehen:
+	</textblock>
+
+
+	<shell>
+	 <root path="~">
+  raiddev /dev/md0
+	 </root>
+	 <output>
+raid-level              0
+nr-raid-disks           2
+persistent-superblock   1
+chunk-size              4
+
+device                  /dev/sda6
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+	 </output>
+	</shell>
+
+	<textblock>
+	 Sind die Eintragungen in Ordnung, kann das RAID mittels
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       mkraid /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  gestartet werden. Formatieren Sie Ihr neues Device:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       mke2fs /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  Dieses Device kann nun - wie jedes andere Blockdevice auch - irgendwo
+  in den Verzeichnisbaum gemountet werden.
+	</textblock>
+
+	<textblock>
+  Um das RAID-Device wieder zu stoppen, unmounten Sie es und führen
+  Sie
+	</textblock>
+
+
+	<shell>
+	 <root path="~">
+       raidstop /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  aus. Nach einem Reboot kann das Device mittels
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       raidstart /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  wieder aktiviert und anschließend überall hin gemountet werden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Automatisierung mit 0.9x
+	</heading>
+
+	<textblock>
+  Wie viel Komfort einem der neue RAID-Patch bringt, zeigt sich bei
+  diesem Automatisierungsprozess. Das bei der Verwendung der MD-Tools
+  Version 0.4x beschriebene Bearbeiten der Init-Skripte fällt völlig
+  weg. Allerdings ist dafür der einmalige Umgang mit dem nicht ganz
+  ungefährlichen Tool fdisk vonnöten. Bitte seien Sie sich absolut
+  sicher mit der Einteilung Ihrer Festplattenpartitionen, bevor Sie sich
+  damit beschäftigen.
+	</textblock>
+
+	<textblock>
+  Dieses Beispiel sieht nun vor, den <strong>RAID-0</strong> Verbund <command>/dev/md0</command> bestehend
+  aus <command>/dev/sda6</command> und <command>/dev/sdb6</command> komfortabel bei jedem Startup zu mounten
+  und automatisch auch wieder herunterzufahren.
+	</textblock>
+
+	<textblock>
+  Der Trick liegt hierfür in der von Ihnen im Kernelmenü gewählten
+	 Option <strong>Autodetect RAID partitions</strong>. Der Kernel findet damit
+  bestehende RAID-Arrays beim Booten automatisch und aktiviert sie.
+	</textblock>
+
+	<textblock>
+  Voraussetzungen dafür sind:
+	</textblock>
+
+	<ol>
+	 <li>
+	  <strong>Autodetect RAID partitions</strong> ist im Kernel aktiviert.
+	 </li>
+	 <li>
+	 <strong>persistent-superblock 1</strong> ist in der Datei <command>/etc/raidtab</command> für Ihr
+     Device gesetzt.
+	 </li>
+	 <li>
+     Der Partitionstyp, der von Ihnen für das RAID genutzten
+     Partitionen, muss auf "0xFD" gesetzt werden.
+	 </li>
+	</ol>
+
+	<textblock>
+  Sind Sie dieser Anleitung bis hierher gefolgt, dann enthält Ihr Kernel
+  bereits die Autodetection und Sie haben Ihr RAID-Device auch mit dem
+  persistent-superblock Modus erstellt. Bleibt noch das ändern des
+  Partitionstyps.
+	</textblock>
+
+	<textblock>
+  Stellen Sie sicher, dass das RAID-Device gestoppt ist, bevor Sie
+  anfangen, mit <command>fdisk</command> zu arbeiten:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+	  umount /dev/md0
+	 </root>
+	 <root path="~">
+       raidstop /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  Bei der vorliegenden Konfiguration müssten die Typen der Partitionen
+  <command>/dev/sda6</command> und <command>/dev/sdb6</command>
+  geändert werden. Dafür wird <command>fdisk</command> zuerst für
+  die erste SCSI-Festplatte aufgerufen:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       fdisk /dev/sda
+	 </root>
+	</shell>
+
+	<textblock>
+  Man wählt nun die Option <command>t</command> für <strong>toggle partition type</strong> und wird dann
+  aufgefordert, den Hexcode oder einen Partitionstypen einzugeben. <command>l</command>
+  liefert eine Liste der unterstützten Codes, welche aber im Moment
+  uninteressant ist. Geben Sie nun einfach <command>fd</command> ein und prüfen Sie mit
+  <command>p</command>, ob die Partition tatsächlich geändert wurde. In der <strong>Id</strong>-Spalte
+  sollte nun <command>fd</command> auftauchen. Beenden Sie anschließend <command>fdisk</command> mit der
+  Option <command>w</command>. Verfahren Sie analog mit den anderen zu Ihrem RAID
+  gehörenden Partitionen. Um z.B. <command>/dev/sdb6</command> zu ändern, rufen Sie <command>fdisk</command>
+  so auf:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       fdisk /dev/sdb
+	 </root>
+	</shell>
+
+
+	<textblock>
+  Haben Sie das erfolgreich hinter sich gebracht, wird Ihnen beim
+  nächsten Startup der Kernel mitteilen, dass er Ihr RAID-Device gefunden
+  hat und es aktivieren. Schauen Sie ruhig noch mal mittels cat
+  /proc/mdstat Ihr Device an. Es sollte nach diesem Neustart bereits
+  aktiviert sein.
+	</textblock>
+	
+	<textblock>
+  Anschließend können Sie Ihr <command>/dev/md0</command> RAID-Device wie jede andere
+  Partition in die <command>/etc/fstab</command> eintragen und so automatisch an einen
+  beliebigen Ort mounten. Das Dateisystem auf dem RAID ist <command>ext2</command>, obwohl
+  Sie den RAID-Verbund natürlich mit jedem beliebigen Dateisystem
+  formatieren können.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Anmerkung
+	</heading>
+	<textblock>
+  Manche Distributionen sehen es innerhalb ihrer Init-Skripte bereits
+  vor, eventuell vorhandene RAID-Devices beim Herunterfahren des Systems
+  zu deaktivieren oder aber beim Booten zu aktivieren. Dieser Umstand
+  kann zu Fehlermeldungen führen, die Sie jedoch nicht weiter
+  beeindrucken sollten. Diese Distributionen gehen meist davon aus, dass
+  Sie die alten MD-Tools Version 0.4x benutzen. Ihr gepatchter Kernel
+  übernimmt aber ab sofort das Aktivieren und Deaktivieren Ihrer mit den
+  neuen RAID-Tools erstellten RAID-Devices für Sie.  Um die
+  Fehlermeldungen zu unterdrücken, kommentieren Sie einfach in den
+  passenden Init-Skripten (z.B. /etc/rc.d/init.d/halt) die Abfrage nach
+  RAID-Devices und deren nachfolgender Deaktivierung mittels z.B.
+  mdstop -a - oder was auch immer dort angegeben ist - aus.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Root-Partition oder Swap-Partition als RAID
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Root-Partition als RAID
+	</heading>
+
+	<textblock>
+  Eine existierende <name>HOWTO</name> beschäftigt sich bereits mit dem Thema,
+  allerdings ist Sie erstens auf Englisch und zweitens geht es durch
+  neue Kerneloptionen auch eleganter als dort beschrieben.
+	</textblock>
+
+	<textblock>
+  Bitte erleichtern Sie sich Ihre Arbeit und senken Sie das
+  Frustniveau, indem Sie vorab noch drei Tipps beherzigen:
+	</textblock>
+
+	<ol>
+	 <li>
+     Erstellen Sie ein Backup Ihrer Daten.
+	 </li>
+	 <li>
+     Erstellen Sie sowohl eine funktionierende und getestete DOS als
+     auch Linux Bootdiskette.
+	 </li>
+	 <li>
+     Lesen Sie diese Ausführungen erst mal komplett durch, bevor Sie
+     mittendrin feststellen müssen, etwas wichtiges vergessen zu haben,
+     das Sie zu so spätem Zeitpunkt nicht mehr nachholen können.
+	 </li>
+	</ol>
+
+
+   <section>
+<!-- *.*.* Kapitel -->
+	<heading>
+DLD 6.0
+	</heading>
+
+	 <textblock>
+  Für dieses Verfahren wird noch eine DOS oder Win95 Partition in
+  Verbindung mit dem <command>Loadlin</command> benötigt. <command>Loadlin</command> befindet sich - so das
+  Programm nicht schon eingesetzt wird - auf der ersten DLD CD unter
+  <command>/delix/RPMS/i386/loadlin-1.6.2.i386.rpm</command>.  Alternativ kann man sich
+  auch eine Bootdiskette anfertigen.
+	 </textblock>
+
+	 <textblock>
+  Der Hintergrund ist ganz einfach der, dass <command>LILO</command> mit dem RAID-Device
+  nicht zurechtkommt und man somit nicht explizit von diesem RAID-Device
+  booten kann.  Daher behilft man sich hier entweder mit <command>Loadlin</command>, oder
+  aber mit einem Mini Linux auf einer kleinen Extra-Partition. Weitere
+  Möglichkeiten zum Booten von Linux auch von RAID-Verbunden wurden
+  bereits im Abschnitt <ref iref="Möglichkeiten des Bootens von
+  Linux">Möglichkeiten des Bootens von Linux</ref>
+  behandelt.
+	 </textblock>
+	 
+	 <textblock>
+  Nichts desto trotz bleiben wir bei dem Verfahren mit <command>Loadlin</command>. Das
+  Programm befindet sich nach erfolgreicher Installation des
+  RPMS-Paketes unter <command>/dos/loadlin/</command>. Auf der oben genannten nötigen DOS
+  Partition richtet man sich nun ein Verzeichnis wie z.B. Linux ein und
+  kopiert die Dateien <command>loadlin.bat</command> und <command>loadlin.exe</command> zusammen mit dem
+  frischen Kernel, in den die RAID-Parameter einkompiliert wurden,
+  hinein.
+	 </textblock>
+	 
+	 <textblock>
+  Um sicherzugehen, dass auch wirklich nichts passiert, sollte man
+  entweder die nötigen Treiber für den (E)IDE Kontroller oder des
+  passenden SCSI Kontroller auch mit in den Kernel einkompiliert
+  haben.
+	 </textblock>
+
+	 <textblock>
+  Die Batchdatei <command>loadlin.bat</command> wird nun dahingehend angepasst, dass wir die
+  Parameter für das zu bootende RAID-Device gleich mit angeben:
+	 </textblock>
+
+	 <file>
+	  <title>
+	   linux.bat
+	  </title>
+	  <content>
+	   <![CDATA[
+       md=&lt;md device no.>,&lt;raid level>,&lt;chunk
+       size>,dev0,...,devn
+	   ]]>
+	  </content>
+	 </file>
+
+
+	 <textblock>
+	  <strong>md device no</strong>
+	 </textblock>
+	 <quotation>
+	  Die Nummer des RAID (md) Devices: <strong>1</strong> steht für <command>/dev/md1</command>, <strong>2</strong>
+	  für <command>/dev/md2</command> usw.
+	 </quotation>
+
+	 <textblock>
+	  <strong>raid level</strong>
+	 </textblock>
+	 <quotation>
+	  Welches RAID Level wird verwendet: <strong>-1</strong> für Linear Modus, <strong>0</strong>
+        für <strong>RAID-0</strong> (Striping).
+	 </quotation>
+
+	 <textblock>
+	  <strong>chunk size</strong>
+	 </textblock>
+	 <quotation>
+        Legt die Chunk Size fest bei <strong>RAID-0</strong> und
+        <strong>RAID-1</strong> fest.
+	 </quotation>
+
+	 <textblock>
+	  <strong>dev0-devn</strong>
+	 </textblock>
+	 <quotation>
+	  Eine durch Kommata getrennte Liste von Devices, aus denen das md
+      Device gebildet wird, z.B.<command>
+      /dev/hda1</command>,<command>/dev/hdc1</command>,<command>/dev/sda1</command>.
+	 </quotation>
+	 
+	 <textblock>
+  Andere RAID-Modi außer Linear und <strong>RAID-0</strong> werden im Moment nicht
+  unterstützt.  Gemäß der vorher beschriebenen Anleitung würde die Zeile
+  in der <command>linux.bat</command> dann so aussehen:
+	 </textblock>
+
+
+	 <file>
+	  <title>
+	   linux.bat
+	  </title>
+	  <content>
+	   <![CDATA[
+       c:\linux\loadlin c:\linux\zimage root=/dev/md0
+       md=0,0,0,0,/dev/sda6,/dev/sdb6 ro
+	   ]]>
+	  </content>
+	 </file>
+	 
+	 <textblock>
+  Dies soll nur eine einzige Zeile sein; außerdem ist auch hier wieder
+  auf die richtige Reihenfolge der Partitionen zu achten. Weiterhin
+  müssen natürlich zwei oder mehrere Partitionen - zu entweder einem
+  <strong>RAID-0</strong> oder einem Linear Device zusammengefasst - bereits vorliegen.
+  Der Kernel muss die o.a. Bootoption und die nötigen RAID oder Linear
+  Parameter in den Kernel einkompiliert haben; man beachte: Nicht als
+  Module. Dann mountet man das RAID-Device, welches später die
+  Root-Partition werden soll, nach z.B. <command>/mnt</command>, kopiert mittels einer der
+  im Abschnitt <ref iref="Möglichkeiten zum Kopieren von Daten">
+  Möglichkeiten zum Kopieren von Daten</ref> beschriebenen
+  Methoden die benötigten Verzeichnisse auf das RAID-Device.
+	 </textblock>
+
+	 <textblock>
+  Speziell für die DLD 6.0, aber auch für alle anderen Distributionen
+  sei hier gesagt, dass beim Booten von einem RAID-Device der oben
+  beschriebene Befehl <command>mdadd -ar</command> vor dem ersten <command>mount</command> Befehl auszuführen
+  ist. Für die DLD 6.0 heißt das konkret, dass der Befehl bereits in das
+  Skript <command>/etc/init.d/bc.mount_root</command> eingetragen werden muss, da dort der
+  erste <command>mount</command> Befehl ausgeführt wird. Benutzer anderer Distributionen
+  sind hier auf sich gestellt oder schauen sich zur Not die Methode mit
+  den neuen RAID-Tools Version 0.9x an; siehe Abschnitt
+  <ref iref="RAID-Verbunde mit den RAID-Tools Version 0.9x erstellen">
+   RAID-Verbunde mit den RAID-Tools Version 0.9x erstellen</ref>.
+	 </textblock>
+
+	 <textblock>
+  Jetzt fehlen nur noch die passenden Einträge in <command>/etc/fstab</command> und
+  <command>/etc/lilo.conf</command>, in denen man auf dem neuen RAID-Device die
+  ursprüngliche Root-Partition in <command>/dev/md0</command> umändert - im Moment liegen
+  diese Dateien natürlich noch unter <command>/mnt</command>.
+	 </textblock>
+
+	 <textblock>
+  An dieser Stelle sollte man die obige Liste noch einmal in Ruhe
+  durchsehen, sich vergewissern, dass alles stimmt, und dann die DOS oder
+  Win95 Partition booten. Dort führt man nun die Batchdatei
+  <command>linux.bat</command> aus.
+	 </textblock>
+	</section>
+
+   <section>
+<!-- *.*.* Kapitel -->
+	<heading>
+Generisch
+	</heading>
+
+	 <textblock>
+  Im Abschnitt <ref iref=" RAID-Verbunde mit den RAID-Tools
+  Version 0.9x erstellen">RAID-Verbunde mit den RAID-Tools Version
+  0.9x erstellen</ref> wurde bereits auf die vorzügliche Eigenschaft des
+  automatischen Erkennens von RAID-Devices durch den Kernel-Patch beim
+  Startup des Linuxsystems hingewiesen. Dieser Umstand legt die
+  Vermutung nahe, dass es mit dieser Hilfe noch einfacher ist, die
+  Root-Partition als RAID-Device laufen zu lassen. Das ist auch wirklich so,
+  allerdings gibt es auch hierbei immer noch einige Kleinigkeiten zu
+  beachten.  Generell kann man Linux entweder mittels <command>Loadlin</command> oder mit
+  Hilfe von <command>LILO</command> booten. Je nach Bootart ist die Vorgehensweise
+  unterschiedlich aufwendig.
+	 </textblock>
+
+	 <textblock>
+  Für beide Fälle braucht man jedoch erst mal ein RAID-Device. Um bei dem
+  Beispiel des <strong>RAID-0</strong> Devices mit den Partitionen <command>/dev/sda6</command> und
+  <command>/dev/sdb6</command> zu bleiben, nehmen wir dieses Device und mounten es in
+  unseren Verzeichnisbaum.
+	 </textblock>
+
+	 <textblock>
+  Hier muss allerdings noch einmal darauf hingewiesen werden, dass ein
+  <strong>RAID-0</strong> Device als Root-Partition ein denkbar schlechtes Beispiel ist.
+  <strong>RAID-0</strong> besitzt keinerlei Redundanz; fällt eine Festplatte aus, ist das
+  Ganze RAID im Eimer.  Für eine Root-Partition sollte man deshalb auf
+  jeden Fall ein <strong>RAID-1</strong> oder <strong>RAID-5</strong> Device vorziehen. Auch das
+  funktioniert Dank der neuen Autodetect Funktion und wird analog dem
+  beschriebenen <strong>RAID-0</strong> Verbund eingerichtet.
+	 </textblock>
+
+	 <textblock>
+  Auf das gemountete RAID-Device <command>/dev/md0</command> kopiert man nun ganz simpel
+  mittels einer der im Abschnitt <ref iref="Möglichkeiten zum
+  Kopieren von Daten">Möglichkeiten zum Kopieren von Daten</ref>
+  beschriebenen Methoden das komplette Root-Verzeichnis.
+	 </textblock>
+
+	 <textblock>
+  Danach muss auf dem RAID-Device noch die Datei <command>/etc/fstab</command> so angepasst
+  werden, das als Root-Partition <command>/dev/md0</command> benutzt wird und nicht mehr
+  die originale Root-Partition.
+	 </textblock>
+
+	 <textblock>
+  Erstellen Sie sich eine DOS-Bootdiskette - das pure DOS von Win95 tut
+  es auch - und auf dieser ein Verzeichnis Linux. Hierher kopieren Sie
+  nun aus dem passenden RPM-Paket Ihrer Distribution das DOS-Tool
+	  <command>loadlin</command> und Ihren aktuellen Kernel. Manchmal befindet sich <command>loadlin</command>
+  auch unkomprimiert im Hauptverzeichnis der Distributions-CD. Der
+  Kernel sollte natürlich die RAID-Unterstützung bereits implementiert
+  haben. Nun erstellen Sie mit Ihrem Lieblingseditor in dem neuen Linux
+	  Verzeichnis eine <command>loadlin.bat</command>. Haben Sie Ihren Kernel z.B. <command>vmlinuz</command>
+	  genannt, sollte in der Datei <command>loadlin.bat</command> etwas in dieser Art stehen:
+	 </textblock>
+
+     <file>
+      <title>
+	   loadlin.bat
+	  </title>
+	  <content>
+	   <![CDATA[
+       a:\linux\loadlin a:\linux\vmlinuz root=/dev/md0 ro vga=normal
+	   ]]>
+	  </content>
+	 </file>
+
+	 <textblock>
+  Die Pfade müssen natürlich angepasst werden. Ein Reboot und das Starten
+  von der Diskette mit der zusätzlichen Ausführung der <command>linux.bat</command> sollte
+  Ihnen ein vom RAID-Device gebootetes Linux bescheren. Booten Sie
+  generell nur über <command>Loadlin</command>, so endet für Sie hier
+  die Beschreibung.
+	 </textblock>
+
+	 <textblock>
+  Möchten Sie allerdings Ihr neues Root-RAID mittels <command>LILO</command> booten, finden
+  Sie im Abschnitt <ref iref="Möglichkeiten des Bootens von Linux">Möglichkeiten des Bootens von Linux</ref> diverse
+  Methoden aufgelistet und teilweise sehr genau beschrieben, mit denen
+  Sie sich noch bis zum endgültigen Erfolg beschäftigen müssten.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Anmerkung zum redundanten Root-RAID
+	 </heading>
+
+	 <textblock>
+  Hat man sich bei einer anderen Distribution als <name>SuSE 6.2</name> für einen
+  Root-RAID Verbund entschieden, der im Fehlerfall auch von der zweiten
+  Festplatte booten soll, muss man noch folgendes beachten: Da auch auf
+  der zweiten Festplatte eine Boot-Partition benötigt wird, die zwar
+  ebenso in der <command>/etc/fstab</command> aufgenommen wurde, aber im Fehlerfall nicht
+  mehr vorhanden ist, fällt die <name>SuSE 6.2</name> Distribution in einen
+  Notfall-Modus, in dem das root-Paßwort eingegeben werden muss und
+  das fragliche Dateisystem repariert werden soll. Dies kann Ihnen auch
+  bei anderen Distributionen passieren.
+	 </textblock>
+
+	 <textblock>
+  Es wird also ein Weg benötigt, die beiden Boot-Partitionen <command>/boot</command> und
+  <command>/boot2</command> nur dann zu mounten, wenn sie tatsächlich körperlich im Rechner
+  vorhanden sind. Hierbei hilft ihnen das Skript <command>mntboot</command>:
+	 </textblock>
+
+
+     <file>
+	  <title>
+		 mntboot 
+	  </title>
+	  <content>
+	   <![CDATA[
+  #!/bin/sh
+
+  MNTBOOTTAB=/etc/mntboottab
+
+  case "$1" in
+    start)
+      [ -f $MNTBOOTTAB ] || {
+        echo "$0: *** $MNTBOOTTAB: not found" >&2
+        break
+      }
+
+      PARTS=`cat $MNTBOOTTAB`
+
+      for part in $PARTS ; do
+        [ "`awk '{print $2}' /etc/fstab | grep "^$part$"`" == "" ] && {
+          echo "$0: *** Partition $part: not in /etc/fstab" >&2
+          continue
+        }
+
+        [ "`awk '{print $2}' </proc/mounts | grep "^$part$"`" != "" ] && {
+          echo "$0: *** Partition $part: already mounted" >&2
+          continue
+        }
+
+        fsck -a $part
+        [ $? -le 1 ] || {
+          echo "$0: *** Partition $part: Defect? Unavailable?" >&2
+          continue
+        }
+
+        mount $part || {
+          echo "$0: *** Partition $part: cannot mount" >&2
+          continue
+        }
+      done
+
+      exit 0
+      ;;
+
+    *)
+      echo "usage: $0 start" >&2
+      exit 1
+      ;;
+  esac
+	   ]]>
+	  </content>
+	 </file>
+
+	 <textblock>
+  Das Skript gehört bei SuSE Distributionen nach <command>/sbin/init.d</command>, bei
+  vermutlich allen anderen Linux Distributionen nach <command>/etc/rc.d/init.d</command>.
+  Auf das Skript sollte ein symbolischer Link
+  <command>/sbin/init.d/rc2.d/S02mntboot</command> zeigen. Für alle anderen gilt es hier
+  einen Link nach <command>/etc/rc.d/rc3.d/S02mntboot</command> zu setzen, da außer den
+  <name>SuSE</name> Distributionen wohl alle im Runlevel 3 starten und Ihre Links
+  dafür in diesem Verzeichnis haben. Das Skript prüft ein paar
+  Nebenbedingungen für diejenigen Partitionen, die in <command>/etc/mntboottab</command>
+  eingetragen sind (darin sollten <command>/boot</command> und <command>/boot2</command> stehen) und ruft
+  jeweils <command>fsck</command> und <command>mount</command> für diese Partitionen auf. Da es bei allen
+  anderen Distributionen keine <command>/etc/mntboottab</command> gibt, gilt es hier diese
+  zu erstellen oder anzupassen.
+	 </textblock>
+
+	 <textblock>
+  In der <command>/etc/fstab</command> sollten diese Partitionen mit <strong>noauto</strong> statt
+  <strong>defaults</strong> eingetragen werden. Außerdem muss im sechsten Feld der Wert
+  <strong>0</strong> stehen, da die Distribution im Backup-Fall sonst in den
+  Notfall-Modus fällt.
+	 </textblock>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+RAID auch für Swap-Partitionen?
+	</heading>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+RAID-Technik mit normalen Swap-Partitionen
+	 </heading>
+
+	 <textblock>
+  Sie überlegen sich, RAID auch für Swap Partitionen einzurichten? Diese
+  Mühe können Sie sich sparen, denn der Linux-Kernel unterstützt ein
+  RAID-Verhalten auf Swap-Partitionen ähnlich dem <strong>RAID-0</strong> Modus quasi
+  <strong>von Haus aus</strong>. Legen Sie einfach auf verschiedenen Festplatten ein
+  paar Partitionen an, ändern Sie den Partitionstyp mittels
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       fdisk /dev/Ihre-Partition
+	  </root>
+	 </shell>
+
+	 <textblock>
+	  und der Option <command>t</command> auf 82 und erstellen Sie das Swap Dateisystem:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mkswap /dev/Ihre-neue-Swap-Partition
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Nun fügen Sie diese in die <command>/etc/fstab</command> ein und geben allen
+  Swap-Partitionen dieselbe Priorität.
+	 </textblock>
+
+	 <file>
+	  <title>
+	   fstab
+	  </title>
+	  <content>
+	   <![CDATA[
+       /dev/hda3 swap swap defaults,pri=1    0 0
+       /dev/hdb3 swap swap defaults,pri=1    0 0
+       /dev/sda4 swap swap defaults,pri=1    0 0
+	   ]]>
+	  </content>
+	 </file>
+
+	 <textblock>
+  Vom nächsten Startup an werden die Swap Partitionen wie ein <strong>RAID-0</strong>
+  Device behandelt, da die Lese- und Schreibzugriffe ab jetzt
+  gleichmäßig über die Swap-Partitionen verteilt werden.
+	 </textblock>
+
+	 <textblock>
+  Will man aus irgendwelchen Gründen zwei Swap-Partitionen höher
+  priorisieren als eine Dritte, so kann man das auch über den Parameter
+  <strong>pri=</strong> ändern, wobei die Priorität einen Wert zwischen <strong>0</strong> und <strong>32767</strong>
+  annehmen kann. Ein höherer Wert entspricht einer höheren Priorität. Je
+  höher die Priorität desto eher wird die Swap-Partition beschrieben.
+  Bei der folgenden Konfiguration würde also <command>/dev/hda3</command> wesentlich
+  stärker als Swap-Partition genutzt werden als <command>/dev/hdb3</command>.
+	 </textblock>
+
+	 <file>
+	  <title>
+	   fstab
+	  </title>
+	  <content>
+	   <![CDATA[
+       /dev/hda3 swap swap defaults,pri=5    0 0
+       /dev/hdb3 swap swap defaults,pri=1    0 0
+	   ]]>
+	  </content>
+	 </file>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+     <heading>
+Swap-Partitionen auf RAID-1 Verbunden
+	 </heading>
+
+	 <textblock>
+  Erstellt man die Swap-Partition auf einem vorhandenen <strong>RAID-1</strong> Verbund,
+  formatiert sie dann mittels <command>mkswap /dev/mdx</command> und trägt sie als
+  Swap-Partition in die <command>/etc/fstab</command> ein, so hat man zwar keinen, oder nur
+  einen kleinen lesenden Geschwindigkeitsvorteil, jedoch den großen,
+  nicht zu unterschätzenden Vorteil, dass man bei einem Festplattendefekt
+  nach dem Ausschalten des Rechners und dem Austausch der defekten
+  Festplatte, ohne weitere manuelle Eingriffe wieder ein vollständig
+  funktionierendes System hat.  Der einzige Wermutstropfen betrifft
+  hierbei die Freunde des Hot Plugging.  Erfahrungsgemäß verkraftet
+  Linux das Hot Plugging eines dermaßen gestalteten <strong>RAID-1</strong> Verbundes
+  nur, wenn vorher die Swap-Partitionen mittels <command>swapoff -a</command> abgeschaltet
+  wurden.
+	 </textblock>
+
+	 <textblock>
+  Als Warnung seien hier aber noch zwei der schlimmsten Fälle genannt,
+  über die man sich Gedanken machen sollte und die noch dazu voneinander
+  abhängig sind:
+	 </textblock>
+
+	 <textblock>
+  Der erste Fall beschreibt die Situation, Swap auf einem <strong>RAID-1</strong> Verbund
+  mit den alten RAID-Tools und damit den sowohl in den 2.0.xer als auch
+  in den 2.2.xer original im Kernel vorhandenen RAID Treibern zu
+  benutzen. Hierbei können nach einer gewissen Laufzeit des
+  Linuxsystems unweigerliche Abstürze auftreten. Der Grund dafür liegt in der
+  Problematik der unterschiedlichen Cachestrategie von Software-RAID
+  einerseits und Swap-Partitionen andererseits. Erst mit den aktuellen
+  RAID-Treibern ist der Betrieb einer Swap-Partition auf einem
+  RAID-Verbund stabil geworden. Wollen Sie also einen sicheren RAID-Verbund
+  erstellen, der nachher aus Gründen der Ausfallsicherheit auch die
+  Swap-Partition beinhalten soll, benutzen Sie bitte immer die aktuellen
+  RAID-Treiber in Form des aktuellen RAID-Patches.  Dies entspricht dann
+  der Einrichtfunktionalität der RAID-Tools Version 0.9x.
+	 </textblock>
+
+	 <textblock>
+  Der zweite Fall beschreibt die generelle Problematik, mit der Sie sich
+  bei der Einrichtung von Swap-Partitionen in Bezug auf Software-RAID
+  auseinandersetzen müssen:
+	 </textblock>
+
+	 <textblock>
+  Hat man die Swap-Partition auf einen <strong>RAID-1</strong> Verbund gelegt und
+  zusätzlich dafür eine Spare-Disk reserviert, würde diese Spare-Disk
+  natürlich bei einem Festplattendefekt sofort eingearbeitet werden. Das
+  ist zwar erwünscht und auch so gedacht, jedoch funktioniert das
+  Resynchronisieren dieses <strong>RAID-1</strong> Verbundes mit einer aktiven
+  Swap-Partition nicht. Die Software-RAID Treiber nutzen beim
+  Resynchronisieren den Puffer-Cache, die Swap-Partition aber nicht. Das
+  Ergebnis ist eine defekte Swap-Partition.
+	 </textblock>
+
+	 <textblock>
+  Als Lösung bleibt nur die Möglichkeit, keine Spare-Disks zu benutzen
+  und nach einem Festplattenausfall <command>swapoff -a</command> per Hand auszuführen, die
+  defekte Festplatte auszutauschen und nach dem Erstellen der
+  Partitionen und des Swap-Dateisystems mit <command>swapon -a</command> wieder zu
+  aktivieren.
+	 </textblock>
+
+	 <textblock>
+  Ein Problem bleibt dennoch: Gesetzt den Fall der Linux-Rechner würde
+  aufgrund eines Stromausfalls nicht sauber heruntergefahren worden
+  sein, so werden die RAID-Verbunde beim nächsten Startup automatisch
+  resynchronisiert. Dies erfolgt mit einem automatischen <strong>ge-nice-ten</strong>
+  Aufruf des entsprechenden RAID-Daemons im Hintergrund bereits zu
+  Anfang der Bootprozedur. Im weiteren Bootverlauf werden aber
+  irgendwann die Swap-Partitionen aktiviert und treffen auf ein nicht
+  synchronisiertes RAID. Das Aktivieren der Swap-Partitionen muss also
+  verzögert werden, bis die Resynchronisation abgeschlossen ist.
+	 </textblock>
+
+	 <textblock>
+  Wie unter Linux üblich lässt sich auch dieses Problem mit einem Skript
+  lösen.  Der Gedanke dabei ist, den Befehl <command>swapon -a</command> durch ein Skript
+  zu ersetzen, welches die Pseudodatei <command>/proc/mdstat</command> nach der
+  Zeichenfolge <strong>resync=</strong> durchsucht und im Falle des Verschwindens dieser
+  Zeichenfolge die Swap-Partitionen aktiviert. Im folgenden finden Sie
+  ein Beispiel dazu abgedruckt:
+	 </textblock>
+
+	 <file>
+	  <title>
+	   swapon -a
+	  </title>
+	  <content>
+	   <![CDATA[
+       #!/bin/sh
+       #
+
+       RAIDDEVS=`grep swap /etc/fstab | grep /dev/md|cut -f1|cut -d/ -f3`
+
+       for raiddev in $RAIDDEVS
+       do
+       #  echo "testing $raiddev"
+           while grep $raiddev /proc/mdstat | grep -q "resync="
+           do
+       #     echo "`date`: $raiddev resyncing" >> /var/log/raidswap-status
+             sleep 20
+            done
+            /sbin/swapon /dev/$raiddev
+       done
+
+       exit 0
+	   ]]>
+	  </content>
+	 </file>
+	</section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+	<section>
+<!-- * Kapitel -->
+	  <heading>
+Spezielle Optionen der RAID-Devices Version 0.9x
+	  </heading>
+
+	  <section>
+<!-- *.* Kapitel -->
+		<heading>
+Was bedeutet Chunk-Size?
+		</heading>
+
+	<textblock>
+  Mit dem Chunk-Size Parameter legt man die Größe der Blöcke fest, in
+  die eine Datei zerlegt wird, die auf einen RAID-Verbund geschrieben
+  werden soll. Diese ist nicht mit der Blockgröße zu verwechseln, die
+  beim Formatieren des RAID-Verbundes als Parameter eines bestimmten
+  Dateisystems angegeben werden kann. Vielmehr können die beiden
+  verschiedenen Blockgrößen variabel verwendet werden und bringen je
+  nach Nutzung unterschiedliche Geschwindigkeitsvor- wie auch
+  -nachteile.
+	</textblock>
+
+	<textblock>
+ Nehmen wir das Standardbeispiel: <strong>RAID-0</strong> (<command>/dev/md0</command>) bestehend aus
+ <command>/dev/sda6</command> und <command>/dev/sdb6</command> soll als angegebene Chunk-Size in der
+ <command>/etc/raidtab</command> 4 kB haben. Das würde heißen, dass bei einem Schreibprozess
+ einer 16 KB großen Datei der erste 4 KB Block und der dritte 4 KB
+ Block auf der ersten Partition (<command>/dev/sda6</command>) landen würden, der zweite
+ und vierte Block entsprechend auf der zweiten Partition (<command>/dev/sdb6</command>).
+ Bei einem RAID, das vornehmlich große Dateien schreiben soll, kann man
+ so bei einer größeren Chunk-Size einen kleineren Overhead und damit
+ einen gewissen Performancegewinn feststellen. Eine kleinere Chunk-Size
+ zahlt sich dafür bei RAID-Devices aus, die mit vielen kleinen Dateien
+ belastet werden. Somit bleibt auch der <strong>Verschnitt</strong> in einem
+ erträglichen Rahmen. Die Chunk-Size sollte also jeder an seine
+ jeweiligen Bedürfnisse anpassen.
+	</textblock>
+
+	<textblock>
+ Der Chunk Size Parameter in der <command>/etc/raidtab</command> funktioniert für alle
+ RAID-Modi und wird in Kilobyte angegeben. Ein Eintrag von <strong>4</strong> bedeutet
+ also 4096 Byte. Mögliche Werte für die Chunk-Size sind 4 KB bis
+ 128 KB, wobei sie immer einer 2er Potenz entsprechen müssen.
+	</textblock>
+	
+	<textblock>
+  Wie wirkt sich die Chunk-Size jetzt speziell auf die RAID-Modi aus?
+	</textblock>
+
+	<textblock>
+     <strong>Linear Modus</strong>
+	</textblock>
+	<quotation>
+        Beim Linear Modus wirkt sich die Chunk-Size mehr oder minder
+        direkt auf die benutzten Daten aus. Allgemein gilt hier, bei
+        vielen kleinen Dateien eher eine kleine Chunk-Size zu wählen und
+        umgekehrt.
+	</quotation>
+
+	<textblock>
+     <strong>RAID-0</strong>
+	</textblock>
+	<quotation>
+	    Da die Daten auf ein <strong>RAID-0</strong> <strong>parallel</strong> geschrieben werden,
+        bedeutet hier eine Chunk-Size von 4 KB, dass bei einem
+        Schreibprozess mit einer Größe von 16 KB in einem RAID-Verbund
+        aus zwei Partitionen die ersten beiden Blöcke parallel auf die
+        beiden Partitionen geschrieben werden und anschließend die
+        nächsten beiden wieder parallel. Hier kann man auch erkennen,
+        das die Chunk-Size in engem Zusammenhang mit der verwendeten
+        Anzahl der Partitionen steht. Eine generelle optimale
+        Einstellung kann man also nicht geben. Diese hängt vielmehr vom
+        Einsatzzweck des RAID-Arrays in bezug auf die Größe der
+        hauptsächlich verwendeten Dateien, der Anzahl der Partitionen
+        und den Einstellungen des Dateisystems ab.
+	</quotation>
+
+	<textblock>
+     <strong>RAID-1</strong>
+	</textblock>
+	<quotation>
+        Beim Schreiben auf ein <strong>RAID-1</strong> Device ist die verwendete
+        Chunk-Size für den "parallelen" Schreibprozess unerheblich, da
+        sämtliche Daten auf beide Partitionen geschrieben werden müssen.
+        Die Abhängigkeit besteht hier also wie beim Linear-Modus von den
+        verwendeten Dateien. Beim Lesevorgang allerdings bestimmt die
+        Chunk-Size, wie viele Daten zeitgleich von den unterschiedlichen
+        Partitionen gelesen werden können. Der Witz ist hierbei, dass
+        alle Partitionen dieselben Daten enthalten (Spiegel-Partitionen
+        eben) und dadurch Lesevorgänge wie eine Art <strong>RAID-0</strong> arbeiten.
+        Hier ist also mit einem Geschwindigkeitsgewinn zu rechnen.
+	</quotation>
+
+	<textblock>
+     <strong>RAID-4</strong>
+	</textblock>
+	<quotation>
+        Hier beschreibt die Chunk-Size die Größe der Paritätsblöcke auf
+        der Paritäts-Partition, welche nach dem eigentlichen
+        Schreibzugriff geschrieben werden. Wird auf einen <strong>RAID-4</strong> Verbund
+        1 Byte geschrieben, so werden die Bytes, die die Blockgröße
+        bestimmen, von den <strong>RAID-4</strong> Partitionen abzüglich der
+        Paritäts-Partition (X-1, wobei X die Gesamtzahl der <strong>RAID-4</strong> Partitionen
+        ist) gelesen, die Paritäts-Information berechnet und auf die
+        Paritäts-Partition geschrieben. Die Chunk-Size hat auf den
+        Lesevorgang denselben geschwindigkeitsgewinnenden Einfluss wie
+        bei einem <strong>RAID-0</strong> Verbund, da der Lesevorgang auf eine ähnliche
+        Weise realisiert ist.
+	</quotation>
+
+	<textblock>
+     <strong>RAID-5</strong>
+	</textblock>
+	<quotation>
+        Beim <strong>RAID-5</strong> Verbund bezeichnet die Chunk-Size denselben Vorgang
+        wie beim <strong>RAID-4</strong>. Eine allgemein vernünftige Chunk-Size läge hier
+        zwischen 32 KB und 128 KB, jedoch treffen auch hier die Faktoren
+        wie Nutzung des RAIDs und verwendete Partitionen auf den
+        Einzelfall zu und die Chunk-Size sollte dementsprechend angepasst
+        werden.
+	</quotation>
+
+	<textblock>
+     <strong>RAID-10</strong>
+	</textblock>
+	<quotation>
+        Bei dieser Art des RAID-Verbundes bezieht sich die Chunk-Size
+        auf alle integrierten RAID-Verbunde, also beide <strong>RAID-0</strong> Verbunde
+        und das <strong>RAID-1</strong> Array.  Als Richtwert kann man hier 32 KB angeben
+        - experimentieren ist hierbei natürlich wie bei allen anderen
+        RAID-Modi auch ausdrücklich erlaubt.
+	</quotation>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Spezielle Optionen von mke2fs für RAID-4 und RAID-5 Systeme
+	</heading>
+
+	<textblock>
+  Die Option <command>-R stride=nn</command> von <command>mke2fs</command> erlaubt es, verschiedene ext2
+  spezifische Datenstrukturen auf eine intelligentere Weise auf das RAID
+  zu verteilen. Ist die Chunk-Size mit 32 KB angegeben, heißt das, dass
+  32 KB fortlaufende Daten als Block auf dem RAID-Verbund liegen. Danach
+  würde der nächste 32 KB Block kommen. Will man ein ext2 Dateisystem
+  mit 4 KB Blockgröße erstellen, erkennt man, dass acht Dateisystemblöcke
+  in einem Verbundblock (Chunk Block; durch Chunk-Size angegeben)
+  untergebracht werden. Diese Information kann man dem ext2 Dateisystem
+  beim Erstellen mitteilen:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       mke2fs -b 4096 -R stride=8 /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  Die <strong>RAID-4</strong> und <strong>RAID-5</strong> Performance wird durch diesen Parameter
+  erheblich beeinflusst. Das Benutzen dieser Option ist dringend
+  anzuraten.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Beispiel-raidtab Einträge für alle RAID-Modi
+	</heading>
+		
+	<textblock>
+  Hier werden nur der neue RAID-Kernel-Patch in Verbindung mit den
+  passenden RAID-Tools Version 0.9x und der entsprechenden
+  Kernel-Version beschrieben.  Die älteren RAID-Tools der Version 0.4x finden
+  keine Berücksichtigung. Der Kernel-Patch sollte installiert sein.
+  Ebenso sollten die RAID-Optionen im Kernel aktiviert sein und der
+  Kernel neu kompiliert und neu gebootet sein.
+	</textblock>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Linear (Append) Modus
+	 </heading>
+		  
+	 <textblock>
+  Der Linear Modus verbindet mehrere Partitionen unterschiedlicher Größe
+  zu einem Gesamtverbund, der allerdings nicht parallel, sondern
+  nacheinander beschrieben wird. Ist die erste Partition voll, wird auf
+  der nächsten weitergeschrieben. Dadurch sind weder Performancevorteile
+  zu erwarten noch eine gesteigerte Sicherheit. Im Gegenteil. Ist eine
+  Partition des Linear-Verbundes defekt, ist meist auch der gesamte
+  Verbund hinüber.
+	 </textblock>
+
+	 <textblock>
+  Die Parameter der /etc/raidtab für einen Linear-Verbund sehen so
+  aus:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       raiddev /dev/md0
+	  </root>
+	  <output>
+raid-level              linear
+nr-raid-disks           2
+persistent-superblock   1
+chunk-size              4
+device                  /dev/sda6
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+	   </output>
+	  </shell>
+
+	 <textblock>
+  Zu beachten ist hier, dass der Linear Modus keine Spare-Disks
+  unterstützt. Was das ist und was man unter dem Persistent-Superblock
+  versteht, finden Sie im Abschnitt <ref iref="Weitere Optionen des neuen
+  RAID-Patches">Weitere Optionen der neuen RAID-Patches</ref>.
+  Der Parameter <strong>Chunk-Size</strong> wurde bereits in diesem
+  Abschnitt weiter oben erläutert.
+	 </textblock>
+
+	 <textblock>
+  Initialisiert wird Ihr neues Device mit folgendem Kommando:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mkraid -f /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Danach fehlt noch ein Dateisystem:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mke2fs /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Schon können Sie das Device überall hin mounten und in die /etc/fstab
+  eintragen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+RAID-0 (Striping)
+	 </heading>
+
+	 <textblock>
+  Sie haben sich entschlossen, mehrere Partitionen unterschiedlicher
+  Festplatten zusammenzufassen, um eine Geschwindigkeitssteigerung zu
+  erzielen. Auf die Sicherheit legen Sie dabei weniger Wert, jedoch sind
+  Ihre Partitionen alle annähernd gleich groß.
+	 </textblock>
+	 
+	 <textblock>
+  Ihre /etc/raidtab sollte daher etwa so aussehen:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       raiddev /dev/md0
+	  </root>
+	  <output>
+raid-level              0
+nr-raid-disks           2
+persistent-superblock   1
+chunk-size              4
+
+device                  /dev/sda6
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Hier werde genauso wie beim Linear Modus keine Spare-Disks
+  unterstützt. Was das ist und was man unter dem Persistent-Superblock
+  versteht, wird im Abschnitt <ref iref="Weitere Optionen des
+  neuen RAID-Patches">Weitere Optionen der neuen RAID-Patches</ref>
+  erläutert.
+	 </textblock>
+	 
+	 <textblock>
+  Initialisiert wird Ihr neues Device mit folgendem Kommando:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mkraid -f /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Danach fehlt noch ein Dateisystem:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mke2fs /dev/md0
+	  </root>
+	 </shell>
+
+
+	 <textblock>
+  Schon können Sie das Device überall hin mounten und in die <command>/etc/fstab</command>
+  eintragen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+RAID-1 (Mirroring)
+	 </heading>
+
+	 <textblock>
+  Ein <strong>RAID-1</strong> Verbund wird auch als <strong>Spiegelsystem</strong> bezeichnet, da hier
+  der gesamte Inhalt einer Partition auf eine oder mehrere andere
+  gespiegelt und damit eins zu eins dupliziert wird. Wir haben hier also
+  den ersten Fall von Redundanz. Des weiteren können hier, falls es
+  erwünscht ist, zum ersten mal Spare-Disks zum Einsatz kommen. Diese
+  liegen pauschal erst mal brach im System und werden erst um Ihre
+  Mitarbeit bemüht, wenn eine Partition des <strong>RAID-1</strong> Verbundes ausgefallen
+  ist. Spare-Disks bieten also einen zusätzlichen Ausfallschutz, um nach
+  einem Ausfall möglichst schnell wieder ein redundantes System zu
+  bekommen.
+	 </textblock>
+
+	 <textblock>
+  Die /etc/raidtab sieht in solch einem Fall inkl. Spare-Disk so aus:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       raiddev /dev/md0
+	  </root>
+	  <output>
+raid-level              1
+nr-raid-disks           2
+nr-spare-disks          1
+chunk-size              4
+persistent-superblock   1
+
+device                  /dev/sda6
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+device                  /dev/sdc6
+spare-disk              0
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Weitere Spare- oder RAID-Disks würden analog hinzugefügt werden.
+  Führen Sie hier nun folgendes Kommando aus:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mkraid -f /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Mittels <command>cat /proc/mdstat</command> können Sie wieder den Fortschritt und den
+  Zustand Ihres RAID-Systems erkennen. Erstellen Sie das Dateisystem
+  mittels
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mke2fs /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  sobald das RAID sich synchronisiert hat.
+	 </textblock>
+
+	 <textblock>
+  Theoretisch funktioniert das Erstellen des Dateisystems bereits
+  während sich das <strong>RAID-1</strong> noch synchronisiert, jedoch ist es vorläufig
+  sicherer, mit dem Formatieren und Mounten zu warten, bis das <strong>RAID-1</strong>
+  fertig ist.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+RAID-4 (Striping &amp; Dedicated Parity)
+	 </heading>
+
+	 <textblock>
+  Sie möchten mehrere, aber mindestens drei etwa gleich große
+  Partitionen zusammenfassen, die sowohl einen Geschwindigkeitsvorteil
+  als auch erhöhte Sicherheit bieten sollen. Das Verfahren der
+  Datenverteilung beim Schreibzugriff ist hierbei genauso wie beim
+  <strong>RAID-0</strong> Verbund, allerdings kommt hier eine zusätzliche Partition mit
+  Paritätsinformationen hinzu. Fällt eine Partition aus, so kann diese,
+  falls eine Spare-Disk vorhanden ist, sofort wieder rekonstruiert
+  werden; fallen zwei Partitionen aus, ist aber auch hier Schluss und die
+  Daten sind verloren. Obwohl <strong>RAID-4</strong> Verbunde eher selten eingesetzt
+  werden, müsste Ihre <command>/etc/raidtab</command> dann so
+  aussehen:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       raiddev /dev/md0
+	  </root>
+	  <output>
+raid-level              4
+nr-raid-disks           3
+nr-spare-disks          0
+persistent-superblock   1
+chunk-size              32
+
+device                  /dev/sda6
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+device                  /dev/sdc6
+raid-disk               2
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Möchten Sie Spare-Disks einsetzen, so werden sie analog der
+  Konfiguration des <strong>RAID-1</strong> Devices hinzugefügt, also:
+	 </textblock>
+
+	 <shell>
+	  <output>
+nr-spare-disks  1
+device          /dev/sdd6
+spare-disk      0
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Der Grund dafür, dass <strong>RAID-4</strong> Verbunde nicht oft eingesetzt werden,
+  liegt daran, dass die Paritäts-Partition immer die gesamten Daten des
+  restlichen - als <strong>RAID-0</strong> arbeitenden - Verbundes schreiben muss. Denkt
+  man sich einen Extremfall, wo zehn Partitionen als <strong>RAID-0</strong> arbeiten und
+  eine Partition nun die gesamten Paritätsinformationen speichern soll,
+  so wird unweigerlich deutlich, dass die Paritäts-Partition schnell
+  überlastet ist.
+	 </textblock>
+
+	 <textblock>
+  Initialisiert wird Ihr neues Device so:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mkraid -f /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Danach fehlt noch ein Dateisystem:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mke2fs /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Schon können Sie das Device überall hin mounten und in die /etc/fstab
+  eintragen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+RAID-5 (Striping &amp; Distributed Parity)
+	 </heading>
+
+	 <textblock>
+  Ein <strong>RAID-5</strong> Verbund löst nun das klassische <strong>RAID-4</strong> Problem elegant,
+  indem es die Paritätsinformationen gleichmäßig über alle im <strong>RAID-5</strong>
+  Verbund laufenden Partitionen verteilt. Hierdurch wird der
+  Flaschenhals einer einzelnen Paritäts-Partition wirksam umgangen,
+  weshalb sich <strong>RAID-5</strong> als Sicherheit und Geschwindigkeit bietender
+  RAID-Verbund großer Beliebtheit erfreut. Fällt eine Partition aus, beginnt
+  das <strong>RAID-5</strong>, falls Spare-Disks vorhanden sind, sofort mit der
+  Rekonstruktion der Daten, allerdings kann <strong>RAID-5</strong> auch nur den Verlust
+  einer Partition verkraften. Genauso wie beim <strong>RAID-4</strong> sind beim
+  zeitgleichen Verlust zweier Partitionen alle Daten verloren. Eine
+  <command>/etc/raidtab</command> für ein <strong>RAID-5</strong> Device sähe
+  folgendermaßen aus:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       raiddev /dev/md0
+	  </root>
+	  <output>
+raid-level              5
+nr-raid-disks           3
+nr-spare-disks          2
+persistent-superblock   1
+parity-algorithm        left-symmetric
+chunk-size              64
+device                  /dev/sda6
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+device                  /dev/sdc6
+raid-disk               2
+device                  /dev/sdd6
+spare-disk              0
+device                  /dev/sde6
+spare-disk              1
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Bei diesem Beispiel sind gleich zwei Spare-Disks mit in die
+  Konfiguration aufgenommen worden.
+	 </textblock>
+
+	 <textblock>
+  Der Parameter <strong>parity-algorithm</strong> legt die Art der Ablage der
+  Paritätsinformationen fest und kann nur auf <strong>RAID-5</strong> Verbunde angewendet
+  werden.  Die Auswahl <strong>left-symmetric</strong> bietet die maximale Performance.
+  Weitere Möglichkeiten sind <strong>left-asymmetric</strong>, <strong>right-asymmetric</strong> und
+  <strong>right-symmetric</strong>.
+	 </textblock>
+
+	 <textblock>
+  Initialisiert wird Ihr neues Device so:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+  mkraid -f /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Danach fehlt noch ein Dateisystem:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mke2fs /dev/md0
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Schon können Sie das Device überall hin mounten und in die /etc/fstab
+  eintragen.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+RAID-10 (Mirroring &amp; Striping)
+	 </heading>
+
+	 <textblock>
+  Die Kombination aus <strong>RAID-1</strong> und <strong>RAID-0</strong> Verbunden kann sehr flexibel
+  eingesetzt werden, ist aber mit Vorsicht zu genießen. Man muss hierbei
+  genau darauf achten, welche RAID-Partitionen in welchen RAID-Verbund
+  eingebaut werden sollen. Um allerdings die nötige Redundanz
+  gewährleisten zu können, sind hierfür mindestens vier RAID-Partitionen
+  auf unterschiedlichen Festplatten nötig. Als Beispiel erstellen wir
+  zwei <strong>RAID-0</strong> Verbunde über jeweils zwei verschiedene RAID-Partitionen,
+  die anschließend per <strong>RAID-1</strong> gespiegelt werden sollen. Eine passende
+  <command>/etc/raidtab</command> ohne Spare-Disks sähe dann so aus:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+  raiddev /dev/md0
+	  </root>
+	  <output>
+raid-level              0
+nr-raid-disks           2
+nr-spare-disks          0
+persistent-superblock   1
+chunk-size              4
+
+device                  /dev/sda6
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+	  </output>
+	 </shell>
+
+	 <shell>
+	  <root path="~">
+  raiddev /dev/md1
+	  </root>
+	  <output>
+raid-level              0
+nr-raid-disks           2
+nr-spare-disks          0
+persistent-superblock   1
+chunk-size              4
+
+device                  /dev/sdc6
+raid-disk               0
+device                  /dev/sdd6
+raid-disk               1
+	  </output>
+	 </shell>
+	 
+	 <shell>
+	  <root path="~">
+  raiddev /dev/md2
+	  </root>
+	  <output>
+raid-level              1
+nr-raid-disks           2
+nr-spare-disks          0
+persistent-superblock   1
+chunk-size              4
+
+device                  /dev/md0
+raid-disk               0
+device                  /dev/md1
+raid-disk               1
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Jetzt gilt es aber ein paar Kleinigkeiten zu beachten, denn anders als
+  bei den anderen RAID-Verbunden haben wir hier gleich drei RAID-Arrays
+  erstellt, wobei man sich überlegen muss, welches denn nun nachher
+  überhaupt gemountet und mit Daten beschrieben werden soll. Die
+  Reihenfolge ergibt sich aus der Datei <command>/etc/raidtab</command>.<command> /dev/md0</command> wird
+  nachher auf <command>/dev/md1</command> gespiegelt.
+	 </textblock>
+
+	 <textblock>
+  Jedes Devices muss für sich erstellt werden:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mkraid -f /dev/mdx
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Ein Dateisystem per<command> mke2fs</command> wird nur auf
+  <command>/dev/md0</command> und <command>/dev/md1</command>
+  erstellt.
+	 </textblock>
+
+	 <textblock>
+  Die beste Reihenfolge ist, erst das Device <command>/dev/md0</command> zu erstellen, zu
+  formatieren und zu mounten. Dann wird <command>/dev/md1</command> erstellt und
+  formatiert. Dieses bitte nicht mounten, da ja hier keine Daten drauf
+  geschrieben werden sollen. Zuletzt wird nun mittels
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       mkraid -f /dev/md2
+	  </root>
+	 </shell>
+
+	 <textblock>
+  das <strong>RAID-1</strong> Array erstellt, jedoch sollte man hier wirklich kein
+  Dateisystem erstellen. Ab jetzt kann man mittels
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       cat /proc/mdstat
+	  </root>
+	 </shell>
+
+	 <textblock>
+  die Synchronisation der beiden <strong>RAID-0</strong> Verbunde
+  <command>/dev/md0</command> und <command>/dev/md1</command>
+  verfolgen. Ist die Synchronisation abgeschlossen, werden alle Daten,
+  die auf <command>/dev/md0</command> geschrieben werden, auf <command>/dev/md1</command> gespiegelt.
+  Aktiviert, gemountet und in die Datei <command>/etc/fstab</command> eingetragen wird
+  letzthin nur <command>/dev/md0</command>. Natürlich könnte man auch <command>/dev/md1</command> mounten,
+  jedoch sollte man sich für ein Device entscheiden. Ausgeschlossen ist
+  allerdings das Mounten von <command>/dev/md2</command>.
+	 </textblock>
+	</section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Weitere Optionen des neuen RAID-Patches
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Autodetection
+	</heading>
+
+	<textblock>
+  Die Autodetection beschreibt einen Kernel-Parameter, der in allen
+  beschriebenen Kernel-Vorbereitungen als zu aktivieren gekennzeichnet
+  wurde. Er erlaubt das automatische Erkennen und Starten der diversen
+  im System vorhandenen RAID-Verbunde schon während des Bootvorganges
+  von Linux und somit auch die Nutzung eines RAID-Verbundes als
+  Root-Partition.
+	</textblock>
+
+	<textblock>
+  Näheres zur Nutzung eines RAID-Verbundes als Root-Partition finden Sie
+	 im Abschnitt <ref iref="Root-Partition oder Swap-Partition als
+	 RAID">Root-Partition oder Swap-Partition als RAID</ref>.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+ Persistent-Superblock
+	</heading>
+
+	<textblock>
+ Diese überaus nützliche Option ist uns nun in jeder <command>/etc/raidtab</command>
+ Konfiguration über den Weg gelaufen und mit dem Wert <strong>1</strong> eingetragen
+ gewesen, doch was bedeutet er?
+	</textblock>
+
+	<textblock>
+  Erinnern Sie sich noch an die MD-Tools oder gar an die mdtab? Mit
+  diesen älteren Tools wurde eine Datei <command>/etc/mdtab</command> erstellt, die in
+  älteren RAID-Unterstützungen die Konfiguration Ihres RAID-Verbundes
+  inklusiv einer Prüfsumme enthielt.
+	</textblock>
+
+	<textblock>
+  Sollte nun ein RAID-Verbund gestartet werden, so musste der Kernel
+  erst mal diese Datei auslesen, um überhaupt zu erfahren, wo er welches
+  RAID mit welchen Partitionen zu starten hatte. Haben Sie den Abschnitt
+  über die Root-Partition als RAID gelesen, so ahnen Sie es schon: Um an
+  diese Datei heranzukommen, muss aber erst mal das darrunterliegende
+  Dateisystem laufen. Eine Zeit lang war es mit der neueren
+  Konfigurationsdatei <command>/etc/raidtab</command> genauso, aber hier nun tritt der
+  Parameter <strong>persistent-superblock</strong> in Aktion. Die möglichen Werte dafür
+  sind <strong>0</strong> und <strong>1</strong>. Ist der Wert auf
+  <strong>0</strong> gesetzt, so verhält sich das
+  Starten der RAIDs gemäß dem oben beschriebenen Vorgang. Ist er
+  allerdings auf <strong>1</strong> gesetzt, wird beim Erstellen jedes neuen
+  RAID-Verbundes an das Ende jeder Partition ein spezieller Superblock
+  geschrieben, der es dem Kernel erlaubt, die benötigten Informationen
+  über das RAID direkt von den jeweiligen Partitionen zu lesen, ohne ein
+  Dateisystem gemountet zu haben. Trotzdem sollten Sie immer eine
+  <command>/etc/raidtab</command> pflegen und beibehalten. Ist im Kernel die Autodetection
+  aktiviert, so werden die RAID-Arrays mit aktiviertem
+  Persistent-Superblock sogar direkt gestartet. Dies befähigt Sie, ganz simpel
+  jedes RAID-Array als <command>/dev/md0</command>, <command>/dev/md1</command> usw. einfach und problemlos in
+  die <command>/etc/fstab</command> zu setzen. Der Kernel kümmert sich um das Aktivieren
+  beim Startup, wodurch ein
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       raidstart /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  ebenso wie ein
+	</textblock>
+
+	<shell>
+	 <root path="~">
+	raidstop /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+  beim Systemhalt überflüssig ist.
+	</textblock>
+
+	<textblock>
+  Abgesehen davon ermöglicht diese Option auch das Booten von einem
+  <strong>RAID-4</strong> oder <strong>RAID-5</strong> Array als
+  Root-Partition. Näheres zur Einrichtung
+  eines RAID-Arrays als Root-Partition finden Sie im Abschnitt
+  <ref iref="Root-Partition oder Swap-Partition als RAID">Root-Partition oder Swap-Partition als RAID</ref>.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+ Spare-Disks
+	</heading>
+
+	<textblock>
+  Spare-Disks bezeichnen Festplatten-Partitionen, die mit Hilfe der
+  <command>/etc/raidtab</command> zwar schon einem bestimmten RAID-Verbund zugewiesen
+  wurden, jedoch solange nicht benutzt werden, bis irgendwann mal eine
+  Partition ausfällt. Dann allerdings wird die defekte Partition sofort
+  durch die Spare-Disk ersetzt und die Rekonstruktion der Daten aus den
+  Paritätsinformationen wird gestartet. Den Fortschritt dieser
+  Rekonstruktion können Sie - wie alles über RAID-Devices - mittels
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       cat /proc/mdstat
+	 </root>
+	</shell>
+
+	<textblock>
+  nachvollziehen. Eine Spare-Disk sollte mindestens genauso groß oder
+  größer sein als die anderen verwendeten RAID-Partitionen. Ist eine
+  Spare-Disk kleiner als die verwendeten RAID-Partitionen und ist der
+  RAID-Verbund fast voll mit Daten, so kann bei einem Ausfall einer
+  RAID-Partition die Spare-Disk natürlich nicht alle Daten aufnehmen,
+  was unweigerlich zu Problemen führt.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Spare-Disks und Hot Plugging
+	</heading>
+
+	<textblock>
+  Dank der neuen RAID-Tools ist es auch möglich, eine Spare-Disk
+  nachträglich in einen bereits vorhandenen RAID-Verbund einzufügen.
+  Sinnvoll ist dieser Vorgang natürlich nur bei RAID-Modi, welche auch
+  mit Spare-Disks umgehen können.  Erweitern Sie dazu erst Ihre
+  <command>/etc/raidtab</command> um die neue Spare-Disk. Dies ist zwar für den
+  eigentlichen Vorgang nicht zwingend notwendig, jedoch empfiehlt es
+  sich immer, eine sorgfältig gepflegte RAID-Konfigurationsdatei zu
+  besitzen.  Führen Sie dann zum Beispiel den Befehl
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       raidhotadd /dev/md2 /dev/sde4
+	 </root>
+	</shell>
+
+	<textblock>
+  aus, um in Ihren dritten RAID-Verbund die vierte Partition Ihrer
+  fünften SCSI-Festplatte einzufügen. Der Befehl <command>raidhotadd</command> fügt die
+  neue Partition automatisch als Spare-Disk ein und aktualisiert auch
+  gleich die Superblöcke aller in diesem RAID-Verbund befindlichen
+  Partitionen. Somit brauchen Sie keine weiteren Schritte zu unternehmen,
+  um die neue Spare-Disk Ihren anderen RAID-Partitionen als nutzbar
+  bekannt zu geben.
+	</textblock>
+
+	<textblock>
+  Diesen Befehl kann man sich auch zu Nutze machen, einen intakten
+  RAID-Verbund dazu zu bewegen, die Superblöcke neu zu schreiben oder sich zu
+  synchronisieren.  Der analog zu verwendende Befehl raidhotremove
+  entfernt eine so hinzugefügte Spare-Disk natürlich auch wieder aus dem
+  RAID-Array.
+	</textblock>
+   </section>
+  </section>
+ </split>
+  
+  <split>
+	<section>
+<!-- * Kapitel -->
+	  <heading>
+ Fehlerbehebung
+	  </heading>
+
+	<textblock>
+  An dieser Stelle wird auf das Verhalten der unterschiedlichen
+  RAID-Verbunde im Fehlerfall eingegangen. Die Szenarien zum Restaurieren
+  defekter RAID-Verbunde reichen von den verschiedenen RAID-Modi bis hin
+  zu Hot Plugging und Spare-Disks.
+	</textblock>
+
+	<textblock>
+  Die folgenden Beschreibungen stützen sich alle auf den Kernel 2.2.10
+  mit den passenden RAID-Tools und Kernel-Patches, entsprechen also der
+  Einrichtfunktionalität des Abschnittes über die neuen RAID-Tools
+  Version 0.9x.  Die RAID-Verbunde, welche mit den MD-Tools unter der
+  DLD 6.0 und DLD 6.01 eingerichtet und damit quasi auf die alte Art mit
+  den RAID-Tools Version 0.4x erstellt wurden, werden mangels
+  ausgiebiger Tests nicht berücksichtigt.
+	</textblock>
+
+	<textblock>
+  Da sich viele Möglichkeiten der Synchronisation und der überwachung
+  von RAID-Verbunden auf spezielle Funktionen und Optionen der neuen
+  RAID-Tools beziehen, kann man die im folgenden geschilderten
+  Prozeduren nicht mal näherungsweise auf RAID-Verbunde, die mit den
+  alten RAID-Tools Version 0.4x eingerichtet wurden, beziehen. Solange
+  das noch nicht getestet wurde, sind Sie hier auf sich gestellt.
+	</textblock>
+
+	  <section>
+<!-- *.* Kapitel -->
+		<heading>
+Linear (Append) Modus und RAID-0 (Stripping)
+		</heading>
+
+	 <textblock>
+  Hier ist die Möglichkeit der Rekonstruktion von Daten schnell erklärt.
+  Da diese RAID-Modi keine Redundanz ermöglichen, sind beim Ausfall
+  einer Festplatte alle Daten verloren. Definitiv gilt das für <strong>RAID-0</strong>;
+  beim Linear Modus können Sie eventuell mit viel Glück noch einige
+  Daten einer RAID-Partition sichern, so es denn die erste Partition ist
+  und Sie irgendwie in der Lage sind, die Partition einzeln zu Mounten.
+  Da <strong>RAID-0</strong> die Daten parallel schreibt, erhalten Sie - auch wenn Sie
+  eine Partition des <strong>RAID-0</strong> Verbundes gemountet bekommen - niemals mehr
+  als einen zusammenhängenden Block. Meiner Meinung nach ist an dieser
+  Stelle eine Datenrettung von einem <strong>RAID-0</strong> Verbund sehr sehr
+  schwierig.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.* Kapitel -->
+	 <heading>
+RAID-1, RAID-4 und RAID-5 ohne Spare-Disk
+	 </heading>
+
+	 <textblock>
+  Alle drei RAID-Modi versprechen Redundanz. Doch was muss gezielt getan
+  werden, wenn hier eine Festplatte oder eine RAID-Partition ausfällt?
+  Generell bieten sich einem zwei Wege, um die defekte Festplatte durch
+  eine neue zu ersetzen.  Bedenken Sie bei dieser Beschreibung, dass
+  RAID-Partition und Festplatte synonym verwendet wird. Ich gehe von
+  einer Partition je Festplatte aus. Die eine Methode beschreibt den
+  <strong>heißen</strong> Weg. Hierbei wird die Festplatte im laufenden Betrieb
+  ausgetauscht. Die andere Methode beschreibt entsprechend den sicheren
+  Weg. Beide Möglichkeiten haben für die RAID-Modi 1, 4 und 5
+  funktioniert.  Seien Sie insbesondere mit dem <strong>heißen</strong> Weg trotzdem
+  sehr vorsichtig, da die Benutzung dieser Befehle nicht Hot Plugging
+  fähige Hardware zerstören könnte.
+	 </textblock>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	 <heading>
+Der "heiße" Weg (Hot Plugging) ohne Spare-Disk
+	 </heading>
+
+	 <textblock>
+  Vorab muss gesagt werden, dass Hot Plugging unter Linux auch vom
+  SCSI-Treiber unterstützt werden muss, versuchen Sie Hot Plugging aber
+  niemals mit (E)IDE Laufwerken. Zwar sollen alle Linux SCSI-Treiber des
+  hier verwendeten 2.2.10er Kernels Hot Plugging unterstützen, jedoch
+  ist dies nur bei dem Adaptec und Symbios Treiber sicher der Fall. Auch
+  sollte Ihre Hardware und damit Ihr SCSI Kontroller und Ihre
+  SCSI-Festplatten Hot Plugging unterstützen. Wie man das herausbekommt,
+  ist schwer zu sagen, allerdings hat es auch mit einem fünf Jahre alten
+  Symbios Kontroller und mehreren IBM-DCAS-UW Festplatten funktioniert.
+  Generell ist die meiste im Consumer Bereich verfügbare Hardware nicht
+  Hot Plugging fähig. Die zu Testzwecken eingesetzten UW-Wechselrahmen
+  kosten etwa 125,- EUR und haben alle Hot Plugging Tests klaglos
+  verkraftet.
+	 </textblock>
+
+	 <textblock>
+  Haben Sie irgendwelche Zweifel und sind nicht gezwungen, Hot Plugging
+  zu nutzen, dann lesen Sie hier gar nicht erst weiter, sondern springen
+  Sie sofort zu der <strong>sicheren</strong> Beschreibung. Auch ergeben sich aus
+  meinen erfolgreichen Tests keine Garantien für irgendeinen Erfolg. Mit
+  allem Nachdruck muss daher an dieser Stelle auf die Möglichkeit der
+  Zerstörung Ihrer Hardware durch die Benutzung von Hot Plugging mit
+  ungeeigneter Hardware hingewiesen werden.
+	 </textblock>
+
+	 <textblock>
+  Ihr <strong>RAID-1</strong>, <strong>4</strong> oder <strong>5</strong> ist gemäß einer der vorherigen Anleitungen
+  erstellt worden und betriebsbereit. Um den ganzen Ablauf zu
+  vereinfachen, wird ab jetzt nur noch von einem <strong>RAID-5</strong> ausgegangen und
+  auch die Beispielauszüge mittels <command>cat /proc/mdstat</command> beschreiben ein
+  <strong>RAID-5</strong>; <strong>RAID-1</strong> und
+  <strong>RAID-4</strong> Benutzer können analog verfahren, richten
+  aber bitte eine erhöhte Aufmerksamkeit auf die Unterscheidung und
+  Abstraktion der Meldungsparameter.
+	 </textblock>
+
+	 <textblock>
+  Das Beispiel-<strong>RAID-5</strong> ist in der <command>/etc/raidtab</command> so
+  eingetragen:
+	 </textblock>
+
+
+	 <shell>
+	  <root path="~">
+  raiddev /dev/md0
+	  </root>
+	  <output>
+raid-level              5
+nr-raid-disks           4
+nr-spare-disks          0
+parity-algorithm        left-symmetric
+persistent-superblock   1
+chunk-size              32
+device                  /dev/sda5
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+device                  /dev/sdc6
+raid-disk               2
+device                  /dev/sdd1
+raid-disk               3
+	  </output>
+	 </shell>
+
+	 <textblock>
+	  <command>cat /proc/mdstat</command> meldet einen ordentlich laufenden
+  <strong>RAID-5</strong>-Verbund:
+	 </textblock>
+
+
+	 <shell>
+	  <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024 sectors
+md0 : active raid5 sdd1[3] sdc6[2] sdb6[1] sda5[0] 633984 blocks level5, 32k chunk, algorithm 2 [4/4] [UUUU]
+unused devices: &lt;none&gt;
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Jetzt fällt die Festplatte <command>/dev/sdd</command> komplett aus. Beim nächsten
+  Zugriff auf das <strong>RAID-5</strong> wird der Mangel erkannt, der SCSI-Bus wird
+  resetet und das <strong>RAID-5</strong> läuft relativ unbeeindruckt weiter. Die defekte
+  RAID-Partition wird lediglich mit <strong>(F)</strong> gekennzeichnet und fehlt in
+  den durch ein <strong>U</strong> markierten gestarteten RAID-Partitionen:
+	 </textblock>
+
+
+	 <shell>
+	  <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024sectors
+md0 : active raid5 sdd1[3](F) sdc6[2] sdb6[1] sda5[0] 633984 blocks level 5, 32k chunk, algorithm 2 [4/3] [UUU_]
+unused devices: &lt;none&gt;
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Jetzt möchten Sie wieder ein redundantes System bekommen, ohne den
+  Rechner neu booten zu müssen und ohne Ihr gemountetes <strong>RAID-5</strong> stoppen
+  zu müssen. Entfernen Sie dafür die defekte RAID-Partition (<command>/dev/sdd1</command>)
+  mittels des bei den RAID-Tools beiliegenden Hilfsprogramms
+  <command>raidhotremove</command> aus dem aktiven RAID-Verbund (<command>/dev/md0</command>):
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       raidhotremove /dev/md0 /dev/sdd1
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Ein<command> cat /proc/mdstat</command> hat sich nun dahingehend verändert, dass die
+  defekte Partition komplett rausgenommen wurde und Ihnen eine fehlende
+  Partition, um Redundanz zu gewährleisten, mit <strong>[UUU_]</strong> angezeigt
+  wird:
+	 </textblock>
+
+	 <shell>
+	  <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024sectors
+md0 : active raid5 sdc6[2] sdb6[1] sda5[0] 633984 blocks level 5, 32k chunk, algorithm 2 [4/3] [UUU_]
+unused devices: &lt;none&gt;
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Tauschen Sie jetzt Ihre hoffentlich in einem guten Wechselrahmen
+  befindliche defekte Festplatte gegen eine neue aus und erstellen Sie
+  eine Partition darauf. Anschließend geben Sie den Befehl, diese neue
+  RAID-Partition wieder in das laufende Array einzubinden:
+	 </textblock>
+
+	 <shell>
+	  <root path="~">
+       raidhotadd /dev/md0 /dev/sdd1
+	  </root>
+	 </shell>
+
+	 <textblock>
+  Der Daemon raid5d macht sich nun daran, die neue RAID-Partition mit
+  den anderen zu synchronisieren:
+	 </textblock>
+
+	 <shell>
+	  <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024sectors
+md0 : active raid5 sdd1[4] sdc6[2] sdb6[1] sda5[0] 633984 blockslevel5, 32k chunk, algorithm 2 [4/3] [UUU_] recovery=7% finish=4.3min
+unused devices: &lt;none&gt;
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Der Abschluss dieses Vorganges wird mit einem ebenso lapidaren wie
+  beruhigendem <strong>resync finished</strong> quittiert. Eine Kontrolle ergibt
+  tatsächlich ein wieder vollständig redundantes und funktionstüchtiges
+  <strong>RAID-5</strong>:
+	 </textblock>
+
+	 <shell>
+	  <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024sectors
+md0 : active raid5 sdd1[3] sdc6[2] sdb6[1] sda5[0] 633984 blocks level5, 32k chunk, algorithm 2 [4/4] [UUUU]
+unused devices: &lt;none&gt;
+	  </output>
+	 </shell>
+
+	 <textblock>
+  Als ob nicht gewesen wäre.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Der sichere Weg ohne Spare-Disk
+	  </heading>
+
+	  <textblock>
+  Diese Methode sieht einen Wechsel einer defekten Festplatte in einem
+  System vor, das ruhig für einige Zeit heruntergefahren werden kann.
+	  </textblock>
+
+	  <textblock>
+  Ihr <strong>RAID-1</strong>, <strong>4</strong> oder <strong>5</strong> ist gemäß einer der vorherigen Anleitungen
+  erstellt worden und betriebsbereit. Um den ganzen Ablauf zu
+  vereinfachen, wird ab jetzt nur noch von einem <strong>RAID-5</strong> ausgegangen und
+  auch die Beispielauszüge mittels <command>cat /proc/mdstat</command> beschreiben ein
+  <strong>RAID-5</strong>; <strong>RAID-1</strong> und
+  <strong>RAID-4</strong> Benutzer können
+   analog verfahren, richten aber bitte eine erhöhte Aufmerksamkeit auf die Unterscheidung und
+  Abstraktion der Meldungsparameter.
+	  </textblock>
+
+	  <textblock>
+   Das Beispiel <strong>RAID-5</strong> ist in der <command>/etc/raidtab</command> so
+  eingetragen:
+	  </textblock>
+
+
+	  <shell>
+	   <root path="~">
+       raiddev /dev/md0
+	   </root>
+	   <output>
+raid-level              5
+nr-raid-disks           4
+nr-spare-disks          0
+parity-algorithm        left-symmetric
+persistent-superblock   1
+chunk-size              32
+device                  /dev/sda5
+raid-disk               0
+device                  /dev/sdb6
+raid-disk               1
+device                  /dev/sdc6
+raid-disk               2
+device                  /dev/sdd1
+raid-disk               3
+	   </output>
+	  </shell>
+
+	  <textblock>
+   <command>cat /proc/mdstat</command> meldet einen ordentlich
+   laufenden <strong>RAID-5</strong>-Verbund:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm]
+read_ahead 1024 sectors
+md0 : active raid5 sdd1[3] sdc6[2] sdb6[1] sda5[0] 633984 blocks level5, 32k chunk, algorithm 2 [4/4] [UUUU]
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Jetzt fällt die Festplatte <command>/dev/sdd</command> komplett aus. Beim nächsten
+  Zugriff auf das <strong>RAID-5</strong> wird der Mangel erkannt, der SCSI-Bus wird
+  resetet und das <strong>RAID-5</strong> läuft relativ unbeeindruckt weiter. Die defekte
+  RAID-Partition wird lediglich mit <strong>(F)</strong>
+  gekennzeichnet:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024sectors
+md0 : active raid5 sdd1[3](F) sdc6[2] sdb6[1] sda5[0] 633984 blocks level 5, 32k chunk, algorithm 2 [4/3] [UUU_]
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Jetzt möchten Sie wieder ein redundantes System bekommen. Fahren Sie
+  dazu Ihren Rechner herunter und tauschen Sie die defekte Festplatte
+  gegen eine neue aus. Nach dem Startup müssen Sie auf der neuen
+  Festplatte eine entsprechende Partition möglichst auch mit der
+  RAID-Autostart Option durch das <command>fd</command> Flag einrichten. Ist die neue
+  Partitionsangabe identisch mit der auf der defekten Festplatte,
+  brauchen Sie nichts weiter zu machen, ansonsten müssen Sie noch Ihre
+  <command>/etc/raidtab</command> anpassen. Weiterhin ist es erforderlich, dass Ihr
+  RAID-Verbund läuft. Ist das nicht bereits während des Bootvorganges
+  erfolgt, müssen Sie selbiges jetzt nachholen:
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+	  raidstart /dev/md0
+	   </root>
+	  </shell>
+
+	  <textblock>
+  Jetzt fehlt noch der Befehl, um die neue RAID-Partition wieder in das
+  <strong>RAID-5</strong> einzuarbeiten und die <strong>persistent-superblocks</strong> neu zu
+  schreiben. Hierbei werden keine vorhandenen Daten auf dem bestehenden
+  <strong>RAID-5</strong> Verbund zerstört, es sei denn, Sie haben sich bei der eventuell
+  nötigen Aktualisierung der <command>/etc/raidtab</command> vertan. Prüfen Sie alles
+  dringend noch mal. Ansonsten:
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+       raidhotadd /dev/md0 /dev/sdd1
+	   </root>
+	  </shell>
+
+	  <textblock>
+  Dieser Befehl suggeriert zwar, dass hier eine Art Hot Plugging
+  stattfindet, heißt in diesem Zusammenhang aber nichts anderes, als dass
+  eine RAID-Partition in ein vorhandenes RAID-Array eingearbeitet wird.
+  Würden Sie stattdessen den Befehl mkraid mit seinen Parametern
+  aufrufen, würde dies zwar auch zu dem Erfolg führen, ein neues
+  RAID-Array zu erstellen, jedoch dummerweise ohne Daten und damit natürlich
+  auch und vor allem ohne die bisher vorhandenen Daten.
+	  </textblock>
+
+	  <textblock>
+	   Inspizieren Sie anschließend den Verlauf wieder mittels <command>cat
+  /proc/mdstat</command>:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024sectors
+md0 : active raid5 sdd1[3] sdc6[2] sdb6[1] sda5[0] 633984 blocks level5, 32k chunk, algorithm 2 [4/4] [UUUU] resync=57% finish=1.7min
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Der Abschluss dieses Vorganges wird mit einem ebenso lapidaren wie
+  beruhigendem <strong>resync finished</strong> quittiert. Eine Kontrolle ergibt
+  tatsächlich ein wieder vollständig redundantes und funktionstüchtiges
+  <strong>RAID-5</strong>:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [linear] [raid0] [raid1] [raid5] [hsm] read_ahead 1024sectors
+md0 : active raid5 sdd1[3] sdc6[2] sdb6[1] sda5[0] 633984 blocks level5, 32k chunk, algorithm 2 [4/4] [UUUU]
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Das <strong>RAID-5</strong> Array muss nun lediglich wieder in den Verzeichnisbaum
+  gemountet werden, falls Ihr RAID-Array nicht bereits innerhalb der
+  <command>/etc/fstab</command> während des Bootvorganges gemountet wurde:
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+	  mount /dev/md0 /mount-point
+	   </root>
+	  </shell>
+
+	  <textblock>
+  Hiermit haben Sie wieder ein vollständig redundantes und lauffähiges
+  <strong>RAID-5</strong> Array hergestellt.
+	  </textblock>
+	 </section>
+	</section>
+
+	<section>
+<!-- *.* Kapitel -->
+	 <heading>
+RAID-1, RAID-4 und RAID-5 mit Spare-Disk
+	 </heading>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Der "heiße" Weg (Hot Plugging) mit Spare-Disk
+	  </heading>
+
+	  <textblock>
+  Um bei einem <strong>RAID-1</strong>, <strong>4</strong> oder
+  <strong>5</strong> Verbund mit einer Spare-Disk per Hot
+  Plugging, also ohne den RAID-Verbund auch nur herunterzufahren, eine
+  RAID-Partition per <command>raidhotremove</command> aus dem laufenden Verbund zu
+  entfernen und durch eine neue RAID-Partition zu ersetzen, sind die
+  aktuellsten RAID-Tools erforderlich.  Erst diese haben durch das neue
+  Programm <command>raidsetfaulty</command> die Möglichkeit, die ausgefallene
+  RAID-Partition als defekt zu markieren und so den Befehl <command>raidhotremove</command> zu
+  ermöglichen. Zu beachten ist hier, dass bei einem Festplattenausfall
+  die Spare-Disk sofort eingearbeitet und das System anschließend auch
+  wieder Redundant ist und somit natürlich nicht die Spare-Disk, sondern
+  die ausgefallene RAID-Partition als defekt markiert, ausgetauscht und
+  als neue Spare-Disk wieder eingesetzt werden muss.
+	  </textblock>
+
+	  <textblock>
+  Auch an dieser Stelle muss auf die Gefahr der teilweisen oder
+  vollständigen Zerstörung Ihrer Hardware hingewiesen werden, sollte
+  diese nicht Hot Plugging fähig sein. Haben Sie die Möglichkeit zu
+  wählen, benutzen Sie immer die sichere Methode.
+	  </textblock>
+	 </section>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Der sichere Weg mit Spare-Disk
+	  </heading>
+
+	  <textblock>
+Ein normal laufender <strong>RAID-5</strong> Verbund mit Spare-Disk sollte bei einem
+RAID-Verbund <command>/dev/md0</command> mit den RAID-Partitionen
+<command>/dev/sdb1</command>, <command>/dev/sdc1</command>
+und <command>/dev/sdd1</command> plus der Spare-Disk
+<command>/dev/sde1</command> unter <command>/proc/mdstat</command>
+folgendes zeigen:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [raid5]read_ahead 1024 sectors
+md0 : active raid5 sde1[3] sdd1[2] sdc1[1] sdb1[0] 782080 blocks level5, 32k chunk, algorithm 2 [3/3] [UUU]
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Durch das Entriegeln des Wechselrahmens wird ein Defekt der Partition
+  <command>/dev/sdc1</command> simuliert. Sobald wieder auf den <strong>RAID-5</strong> Verbund zugegriffen
+  wird, wird der Defekt bemerkt, der SCSI-Bus resetet und der
+  Recovery-Prozess über den raid5d Daemon beginnt. Ein <command>cat /proc/mdstat</command> zeigt
+  jetzt folgendes:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [raid5] read_ahead 1024 sectors
+md0 : active raid5 sde1[3] sdd1[2] sdc1[1](F) sdb1[0] 782080 blocks level 5, 32k chunk, algorithm 2 [3/2] [U_U] recovery=4% finish=15.4min
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Nach dem erfolgreichen Ende des Recovery-Prozesses liefert <command>cat
+  /proc/mdstat</command> folgendes:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [raid5] read_ahead 1024 sectors
+md0 : active raid5 sde1[3] sdd1[2] sdc1[1](F) sdb1[0] 782080 blocks level 5, 32k chunk, algorithm 2 [3/2] [U_U]
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Den neuen Zustand sollten Sie nun sichern, indem Sie
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+       umount /dev/md0
+	   </root>
+	  </shell>
+
+	  <textblock>
+  ausführen. Mit
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+       raidstop /dev/md0
+	   </root>
+	  </shell>
+
+	  <textblock>
+  wird der aktuelle Zustand auf die RAID-Partitionen geschrieben. Ein
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+	   raidstart -a
+	   </root>
+	   <root path="~">
+       cat /proc/mdstat
+	   </root>
+	  </shell>
+
+	  <textblock>
+  zeigt dann:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [raid5] read_ahead 1024 sectors
+md0 : active raid5 sdd1[2] sde1[1] sdb1[0] 782080 blocks level 5, 32k chunk, algorithm 2 [3/3] [UUU]
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Wie Sie erkennen können, fehlt die defekte Partition <command>/dev/sdc1[1](F)</command>,
+  dafür hat die Spare-Disk <command>/dev/sde1[1]</command> deren Funktion übernommen.  Das
+  ist jetzt der aktuelle Zustand des <strong>RAID-5</strong>. Nun wird die defekte
+  Festplatte ersetzt, indem Sie den Rechner herunterfahren und den
+  Festplattenaustausch durchführt. Wenn Sie neu booten, geht zunächst
+  nichts mehr. Nun bloß keine Panik kriegen, sondern erst mal der
+  <command>/etc/raidtab</command> Datei den neuen Zustand beibringen:
+	  </textblock>
+
+
+	  <shell>
+	   <root>
+       raiddev /dev/md0
+	   </root>
+	   <output>
+raid-level              5
+nr-raid-disks           3
+nr-spare-disks          1
+persistent-superblock   1
+parity-algorithm        left-symmetric
+chunk-size              32
+device                  /dev/sdb1
+raid-disk               0
+device                  /dev/sde1
+raid-disk               1
+device                  /dev/sdd1
+raid-disk               2
+device                  /dev/sdc1
+spare-disk              0
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Anschließend bringt ein
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+       raidhotadd /dev/md0 /dev/sdc1
+	   </root>
+	  </shell>
+
+	  <textblock>
+  dem RAID-Verbund die neue Konstellation bei, ohne dabei die Daten auf
+  dem <strong>RAID-5</strong> Verbund zu beschädigen, solange Sie sich in der Datei
+  <command>/etc/raidtab</command> nicht vertan haben. Schauen Sie sich die Einträge in
+  Ihrem eigenen Interesse bitte noch mal genau an. Ein cat <command>/proc/mdstat</command>
+  zeigt jetzt die Resynchronisation. Man sieht jetzt die neue Zuordnung
+  der RAID-Partitionen im RAID-Verbund, die exakt den neuen Stand der
+  Zuordnung darstellen sollte.
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [raid5] read_ahead 1024 sectors
+md0 : active raid5 sdc1[3] sdd1[2] sde1[19] sdb1[0] 782080 blocks level 5, 32k chunk, algorithm 2 [3/3] [UUU] resync=36% finish=6.7min
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Am Ende erscheint:
+	  </textblock>
+
+	  <shell>
+	   <output>
+raid5: resync finished
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Ein <command>cat /proc/mdstat</command> sieht nun so aus:
+	  </textblock>
+
+	  <shell>
+	   <output>
+Personalities : [raid5] read_ahead 1024 sectors
+md0 : active raid5 sdc1[3] sdd1[2] sde1[1] sdb1[0] 782080 blocks level5, 32k chunk, algorithm 2 [3/3] [UUU]
+unused devices: &lt;none&gt;
+	   </output>
+	  </shell>
+
+	  <textblock>
+  Nun ruft man
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+	  raidstop /dev/md0
+	   </root>
+	  </shell>
+
+	  <textblock>
+  auf, um alles auf die Platten zu schreiben. Hat der Kernel das
+  RAID-Array bereits gestartet (persistent-superblock 1), kann man mit
+  einem
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+       mount /dev/md0 /mount-point
+	   </root>
+	  </shell>
+
+	  <textblock>
+  den RAID-Verbund wieder in das Dateisystem einhängen. Ansonsten ist
+  vorher noch folgender Befehl notwendig:
+	  </textblock>
+
+	  <shell>
+	   <root path="~">
+       raidstart /dev/md0
+	   </root>
+	  </shell>
+
+	  <textblock>
+  Hiermit haben Sie wieder ein vollständiges laufendes <strong>RAID-5</strong> Array
+  hergestellt.
+	  </textblock>
+	 </section>
+	</section>
+   </section>
+  </split>
+  
+  <split>
+   <section>
+<!-- * Kapitel -->
+	<heading>
+Nutzung &amp; Benchmarks
+	</heading>
+
+	<section>
+<!-- *.* Kapitel -->
+	 <heading>
+Wofür lohnt das Ganze denn nun?
+	 </heading>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Performance
+	  </heading>
+
+	  <textblock>
+  Ein RAID-Device lohnt sich überall dort, wo viel auf die Festplatten
+  zugegriffen wird. So kann zum Beispiel ein <strong>RAID-0</strong> oder <strong>RAID-5</strong> als
+  <command>/home</command> Verzeichnis gemountet werden und das
+  Nächste als <command>/var</command> oder <command>/usr</command>.
+  Die Geschwindigkeitsvorteile sind gerade bei SCSI Hardware und
+  <strong>festplattenintensiven</strong> Softwarepaketen wie KDE, StarOffice oder
+  Netscape deutlich spürbar. Das ganze System <strong>fühlt</strong> sich erheblich
+  performanter an.
+	  </textblock>
+	 </section>
+	 
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Sicherheit
+	  </heading>
+
+	  <textblock>
+  Mit einem <strong>RAID-1</strong> System kann man z.B. die Sicherheit seiner Daten
+  erhöhen.  Fällt eine Platte aus, befinden sich die Daten immer noch
+  auf der gespiegelten Partition. ähnliches gilt z.B. für ein <strong>RAID-5</strong>
+  System, welches zusätzlich zur erhöhten Sicherheit noch eine bessere
+  Performance bietet.
+	  </textblock>
+	 </section>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Warum nicht?
+	  </heading>
+
+	  <textblock>
+  Hat man schon mehrere Festplatten in seinem System, stellt sich einem
+  doch die Frage, warum man eigentlich solch ein kostenloses Feature wie
+  Software-RAID nicht nutzen sollte. Man denke nur mal an die Preise für
+  gute Hardware-RAID Kontroller plus Speicher. Gerade der neue
+  Kernel-Patch erleichtert einem vieles, was bisher nur auf Umwegen möglich
+  war.
+	  </textblock>
+
+	  <textblock>
+  Schreitet die Entwicklung der Software-RAID Unterstützung unter Linux
+  weiterhin so gut fort und bedenkt man die stetig steigende Leistung
+  und die fallenden Preise von CPUs, so kann man sich denken, dass in
+  naher Zukunft die CPU-Leistung, die eine Software-RAID Lösung
+  benötigt, auch bei Standard-CPUs nicht mehr ins Gewicht fällt. Selbst
+  heute reichen für ein Software-RAID auf SCSI-Basis CPUs mit 200-300
+  MHz völlig aus. Ein <strong>RAID-0</strong> mit SCSI-Festplatten soll sogar auf einem
+  486DX-2/66 halbwegs akzeptabel laufen.
+	  </textblock>
+	 </section>
+	</section>
+
+	<section>
+<!-- *.* Kapitel -->
+	 <heading>
+Vorschläge und überlegungen zur RAID-Nutzung
+	 </heading>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Apache (Webserver allgemein)
+	  </heading>
+
+	  <textblock>
+  Aufgrund des hauptsächlichen Lesevorgangs kann hier ein <strong>RAID-0</strong> oder
+  <strong>RAID-5</strong> Verbund empfohlen werden. Die Log-Dateien sollten allerdings
+  nicht auf einem <strong>RAID-5</strong> Verbund liegen. Werden durch dynamische Seiten
+  Daten mit einer Datenbank ausgetauscht, gelten dieselben überlegungen
+  wie bei dem Datenbankabschnitt.
+	  </textblock>
+	 </section>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Log-Dateien
+	  </heading>
+
+	  <textblock>
+  Die typischen Sytem-Log-Dateien erbringen im allgemeinen keine hohe
+  Dauerschreiblast. Hierbei ist es also egal, auf was für einem
+  RAID-Verbund sie liegen. Anders sieht es bei Log-Dateien aus, welche viele
+  Accounting-Informationen enthalten. Diese sollte man aufgrund der
+  allgemeinen Schreibschwäche eines <strong>RAID-5</strong> Verbundes eher auf schnellere
+  RAID-Verbunde auslagern.
+	  </textblock>
+	 </section>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Oracle (Datenbank)
+	  </heading>
+
+	  <textblock>
+  Oracle kann mit Tablespaces, die aus mehreren Datenfiles auf
+  unterschiedlichen Platten bestehen, umgehen. Um hier zu einer
+  vernünftigen Lastverteilung ohne RAID zu kommen, ist allerdings
+  einiges an Planung vorauszusetzen. Für die Datenfiles und Controlfiles
+  können <strong>RAID-0</strong>, <strong>RAID-1</strong>,
+  <strong>RAID-10</strong> oder auch <strong>RAID-5</strong> Verbunde empfohlen
+  werden; aus Sicherheitsgründen ist allerdings von <strong>RAID-0</strong> Verbunden
+  abzuraten. Für die Online-Redo-Log-Dateien empfiehlt sich aufgrund der
+  Schreibschwächen kein <strong>RAID-5</strong> System. Dafür könnten folgende Varianten
+  konfiguriert werden:
+	  </textblock>
+
+	  <ul>
+	   <li>
+einfache Redo-Log-Dateien auf einem <strong>RAID-1</strong> oder
+<strong>RAID-10</strong> Verbund
+	   </li>
+	   <li>
+gespiegelte Redo-Log-Dateien jeweils auf einem <strong>RAID-0</strong> Verbund;
+Oracle kann so konfiguriert werden, dass mehrere parallele Kopien
+der Redo-Log-Dateien geschrieben werden.
+	   </li>
+	  </ul>
+	 </section>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Squid (WWW-Proxy und Cache)
+	  </heading>
+
+	  <textblock>
+  Für Squid im speziellen gilt, dass er von Haus aus mit mehreren
+  Cache-Partitionen umgehen kann. Daher bringt ein darunterliegendes
+  RAID-Array nicht mehr viel. Die Log-Dateien wiederum ergeben auf einem
+  <strong>RAID-0</strong> Verbund durchaus Sinn. Für andere WWW-Proxys wäre hier ein
+  <strong>RAID-0</strong> Verbund angebracht.
+	  </textblock>
+	 </section>
+
+	 <section>
+<!-- *.*.* Kapitel -->
+	  <heading>
+Systemverzeichnisse
+	  </heading>
+
+	  <textblock>
+  Da hier verhältnismäßig wenig Schreibvorgänge stattfinden, jedoch auf
+  jeden Fall die Redundanz gewährleistet sein sollte, empfiehlt sich für
+  die Root-Partition ein <strong>RAID-1</strong> Verbund und für die /home, /usr, /var
+  Verzeichnisse einer der redundanten RAID-Modi (<strong>RAID-1</strong>, <strong>RAID-5</strong>,
+  <strong>RAID-10</strong>).
+	  </textblock>
+	 </section>
+	</section>
+
+	<section>
+<!-- *.* Kapitel -->
+	 <heading>
+Benchmarks
+	 </heading>
+	 
+	 <textblock>	 
+  Um einen Vergleich zwischen den RAID-Verbunden mit ihren
+  unterschiedlichen Chunk-Size Parametern ziehen zu können, findet das
+  Programm Bonnie Anwendung, welches im Internet unter
+		</textblock>
+
+		<quotation>
+		  <ref lang="en" url="http://www.textuality.com/bonnie/">http://www.textuality.com/bonnie/</ref>
+		</quotation>
+
+		<textblock>
+  residiert. Bonnie erstellt eine beliebig große Datei auf dem
+  RAID-Verbund und testet neben den unterschiedlichen Schreib- und
+  Lesestrategien auch die anfallende CPU-Last. Allerdings sollte man
+  die Testdatei mindestens doppelt so groß wie den real im Rechner
+  vorhandenen RAM-Speicher wählen, da Bonnie sonst nicht die Geschwindigkeit
+  des RAIDs, sondern das Cacheverhalten von <name>Linux</name> misst - und das ist gar
+  nicht mal so schlecht.
+		</textblock>
+
+		<textblock>
+  Um die bei dem nicht sequentiellen Lesen von einem <strong>RAID-1</strong> Verbund
+  höhere Geschwindigkeit zu testen, eignet sich Bonnie aufgrund seiner
+  einzelnen Testdatei allerdings nicht. Bonnie führt bei seinem Test
+  also einen sequentiellen Schreib-/Lesevorgang durch, welcher nur von
+  einer <strong>RAID-1</strong> Festplatte beantwortet wird. Möchte man trotzdem einen
+  <strong>RAID-1</strong> Verbund geeignet testen, empfiehlt sich hierfür das Programm
+  tiotest welches unter
+		</textblock>
+
+		<quotation>
+		  <ref lang="en" url="http://www.iki.fi/miku/">http://www.iki.fi/miku/</ref>
+		</quotation>
+		
+		<textblock>
+  zu finden ist.
+		</textblock>
+
+		<textblock>
+  Da die Hardware wohl in jedem Rechner unterschiedlich ist, wurde
+  darauf verzichtet, in der Ergebnistabelle absolute Werte einzutragen.
+  Ein besserer Vergleich ergibt sich, wenn man die Geschwindigkeit einer
+  Festplatte alleine als den Faktor eins zugrundelegt und bei Verwendung
+  derselben Festplatten die RAID-Performance als Vielfaches dieses
+  Wertes angibt. Da diese Konfiguration drei identische SCSI-Festplatten
+  vorsieht, wäre also maximal eine 3x1fache Geschwindigkeit zu
+  erwarten. Bedenken sollte man beim <strong>RAID-5</strong> Testlauf auch, dass hier nur
+  2/3 der Kapazität direkt von Bonnie beschrieben werden. Andererseits
+  soll dieser Test ja zeigen, wie viel Geschwindigkeitseinbußen oder
+  -gewinn bei einer Datei derselben Größe zu erwarten sind.
+	</textblock>
+
+	<shell>
+	 <output>
+	  |            |              |                   |                  |                  |
+|RAID-Modus  |  Chunk-Size  |  Blockgröße ext2  |  Seq. Input      |  Seq. Output     |
+|            |              |                   |                  |                  |
+|Normal      |  %           |  4 KB             |  1 = Referenz    |  1 = Referenz    |
+|RAID-0      |  4 KB        |  4 KB             |  2,6 x Referenz  |  2,8 x Referenz  |
+|RAID-5      |  32 KB       |  4 KB             |  1,7 x Referenz  |  1,9 x Referenz  |
+|RAID 10     |  4 KB        |  4 KB             |  1,7 x Referenz  |  2,5 x Referenz  |
+	  </output>
+	</shell>
+
+	<textblock>
+  Wie zu erwarten erreicht ein <strong>RAID-0</strong> Verbund aus drei identischen
+  Festplatten annähernd die dreifache Leistung. Auch die <strong>RAID-5</strong>
+  Ergebnisse zeigen die bei drei Festplatten erwartete doppelte
+  Leistung. Die Geschwindigkeit der dritten Festplatte kann ja aufgrund
+  der Paritätsinformation nicht gemessen werden. Die Leistung eines
+  <strong>RAID-5</strong> sollte also allgemein der aller verwendeten Platten minus eins
+  für die Paritätsinformationsplatte sein. Allerdings leidet <strong>RAID-5</strong> an
+  einer Art chronischer Schreibschwäche, welche durch das Berechnen und
+  Ablegen der Paritätsinformationen zu erklären ist.
+	</textblock>
+
+	<textblock>
+  Um sich die Belastung des Prozessors und die benötigte Zeit zum
+  Schreiben einer Testdatei anzusehen, kann man sich auch wieder des
+  Programms <command>dd</command> befleißigen. Der folgende Aufruf von <command>dd</command> würde eine
+  100 MB große Datei in das aktuelle Verzeichnis schreiben und die
+  Ergebnisse anzeigen:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+		time dd if=/dev/zero of=./Testdatei bs=1024 count=102400
+	 </root>
+	</shell>
+
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Tipps und Tricks
+   </heading>
+
+   <textblock>
+  Hier finden sowohl Tipps und Tricks Erwähnung, die teilweise selbst
+ getestet wurden, als auch Besonderheiten, die nicht direkt durch die
+  RAID-Kernelerweiterungen ermöglicht werden, sondern allgemeiner Natur
+  sind oder zusätzlich integriert werden müssen. Einige der hier
+  aufgelisteten Vorgänge sind mit allerhöchster Vorsicht zu genießen und
+  mehr oder minder ausdrücklich nicht für eine Produktionsumgebung
+  geeignet.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+DRBD
+	</heading>
+
+	<textblock>
+  Drbd versteht sich als ein Block Device, um eine
+  Hochverfügbarkeitslösung unter Linux zu bieten. Im Prinzip ist es eine
+  Art <strong>RAID-1</strong> Verbund, der über ein Netzwerk läuft. Nähere Informationen
+  hierzu gibt es unter:
+	</textblock>
+
+	<quotation>
+	  <ref lang="en" url="http://www.complang.tuwien.ac.at/reisner/drbd/">http://www.complang.tuwien.ac.at/reisner/drbd/</ref>
+	</quotation>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Kernel 2.2.11 bis 2.2.13 und der RAID-Patch
+	</heading>
+
+	<textblock>
+  Um Linux Software-RAID auch mit dem aktuelleren Kerneln zu verwenden,
+  kann man einfach den RAID-Patch für den 2.2.10er Kernel auf den
+  Sourcetree der 2.2.11er bis 2.2.13er Kernel anwenden. Zweimal kommt
+  vom patch die Frage, ob eine bereits gepatchte Datei noch mal gepatcht
+  werden soll. Diese Fragen sollten alle mit "no" beantwortet werden.
+  Der Erfolg ist, dass der so gepatchte Kernel nach dem Kompilierlauf
+  hervorragend mit allen RAID-Modi funktioniert. Wer sich den 2.2.10er
+  RAID-Patch ersparen möchte, kann sich einen Kernel-Patch von Alan Cox
+  für den 2.2.11er bis 2.2.13er Kernel aus dem Internet besorgen:
+	</textblock>
+
+	<quotation>
+	  <ref url="ftp://ftp.kernel.org:/pub/linux/kernel/people/alan/">ftp://ftp.kernel.org:/pub/linux/kernel/people/alan/</ref>
+	</quotation>
+
+	<textblock>
+  Diese enthalten auch die jeweils aktuellen RAID-Treiber.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Kernel 2.2.14 bis 2.2.16 und der RAID-Patch
+	</heading>
+
+	<textblock>	  
+  Auch in den aktuellsten 2.2.xer Linux Kerneln ist der aktuelle
+  RAID-Patch noch nicht enthalten. Passende Patches hierfür findet man im
+  Internet bei Ingo Molnar:
+	</textblock>
+	
+	<quotation>
+	  <ref lang="en" url="http://people.redhat.com/mingo/raid-patches/">http://people.redhat.com/mingo/raid-patches/</ref>
+	</quotation>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+	  Kernel der 2.4.xer Reihe und der RAID-Patch
+	</heading>
+
+	<textblock>
+  Alle aktuellen Kernel der 2.4.xer Reihe beinhalten bereits die neue
+  RAID-Unterstützung. Diese Kernel müssen nicht mehr gepatcht werden,
+  lassen sich mit den aktivierten RAID-Optionen einwandfrei kompilieren
+  und funktionieren problemlos.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+SCSI-Festplatte zum Ausfallen bewegen
+	</heading>
+
+	<textblock>
+  Für SCSI Devices aller Art - also nicht nur Festplatten - gibt es
+  unter Linux die Möglichkeit, sie während des laufenden Betriebes quasi
+  vom SCSI Bus abzuklemmen; dies allerdings ohne Hand an den
+  Stromstecker oder Wechselrahmenschlüssel legen zu müssen. Möglich ist
+  dies durch den Befehl:
+	</textblock>
+
+	<shell>
+	 <root>
+	   echo "scsi remove-single-device c b t l" > /proc/scsi/scsi
+	 </root>
+	</shell>
+
+	<textblock>
+	 Die Optionen stehen für:
+	</textblock>
+
+	<quotation>
+	  <command>c</command> = die Nummer des SCSI-Controllers<br/>
+	  <command>b</command> = die Nummer des Busses oder Kanals<br/>
+	  <command>t</command> = die SCSI ID<br/>
+	  <command>l</command> = die SCSI LUN
+	</quotation>
+
+	<textblock>
+  Möchte man das 5. Device des 1. SCSI-Controllers rausschmeißen, müsste
+  der Befehl so aussehen:
+	</textblock>
+
+	<shell>
+	 <root>
+       echo "scsi remove-single-device 0 0 5 0" > /proc/scsi/scsi
+	 </root>
+	</shell>
+
+	<textblock>
+  Umgekehrt funktioniert das Hinzufügen einer so verbannten Festplatte
+  natürlich auch:
+	</textblock>
+
+	<shell>
+	 <root>
+       echo "scsi add-single-device c b t l" > /proc/scsi/scsi
+	 </root>
+	</shell>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+überwachen der RAID-Aktivitäten
+	</heading>
+
+	<textblock>
+  Um einen überblick über den Zustand des RAID-Systems zu bekommen, gibt
+  es mehrere Möglichkeiten:
+	</textblock>
+
+	<textblock>
+	 <command> mdstat</command>
+	</textblock>
+
+	<quotation>
+Mit einem
+	</quotation>
+
+	<shell>
+	 <root path="~">
+          cat /proc/mdstat
+	 </root>
+	</shell>
+
+	<quotation>
+     haben wir uns auch bisher immer einen überblick über den aktuellen
+     Zustand des RAID-Systems verschafft.
+	</quotation>
+
+	<textblock>
+	  <command>vmstat</command>
+	</textblock>
+
+	<quotation>	
+        Ist man an der fortlaufenden CPU und Speicher-Belastung sowie an
+        der Festplatten I/O-Belastung interessiert, sollte man auf der
+        Konsole einfach ein
+	</quotation>
+
+	<shell>
+	 <root path="~">
+          vmstat 1
+	 </root>
+	</shell>
+
+	<quotation>
+		     ausprobieren.
+	</quotation>
+
+	<textblock>
+		  <strong>Mit grep oder perl mdstat abfragen</strong>
+	</textblock>
+
+	<quotation>
+        Wie üblich lässt sich unter Linux auch eine Abfrage von
+		<command>/proc/mdstat</command> mit einem Skript realisieren. Hier könnte man z.B.
+		die Folge "[UUUU]" nach einem Unterstrich regelmäßig per <command>cron</command>
+        abfragen - der Unterstrich signalisiert ja eine defekte
+        RAID-Partition - und lässt sich diese Information dann als E-Mail
+        schicken. Lässt man sich allerdings schon eine E-Mail schicken,
+        kann man sich ebenso gut auch eine SMS an sein Handy schicken
+        lassen. Dieser Weg ist dann auch nicht mehr weit. Ein passendes
+		<command>grep</command>-Kommando zum Abfragen von <command>/proc/mdstat</command> könnte dieses
+        Aussehen haben:
+	</quotation>
+
+	<shell>
+	 <root path="~">
+     grep '[\[U]_' /proc/mdstat
+	 </root>
+	</shell>
+
+	<textblock>
+		  <command>xosview</command>
+	</textblock>
+
+	<quotation>
+        Die aktuelle Entwicklerversion dieses bekannten
+        überwachungsprogramms enthält bereits eine Statusabfrage für
+        <strong>RAID-1</strong> und <strong>RAID-5</strong> Verbunde. Für den ordnungsgemäßen Betrieb ist
+        ein weiterer Kernel-Patch notwendig, der jedoch im tar-Archiv
+        enthalten ist.
+	</quotation>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Verändern des read-ahead-Puffers
+	</heading>
+
+	<textblock>
+  Um den read-ahead-Puffer jeglicher Major-Devices unter Linux einfach
+  ändern zu können, gibt es ein nettes kleines Programm:
+	</textblock>
+	
+	<file>
+	 <title>
+			read-ahead-Puffer
+	 </title>
+	 <content>
+	  <![CDATA[
+  /* readahead -- set & get the read_ahead value for the specified device
+  */
+
+  #include "stdio.h"
+  #include "stdlib.h"
+  #include "linux/fs.h"
+  #include "asm/fcntl.h"
+
+  void usage()
+  {
+    printf( "usage:  readahead <device> [newvalue]\n" );
+
+  }/* usage() */
+
+
+  int main( int args, char **argv )
+  {
+    int fd;
+    int oldvalue;
+    int newvalue;
+
+    if ( args <= 1 ) {
+      usage();
+      return(1);
+    }
+
+    if ( args >= 3 && !isdigit(argv[2][0]) ) {
+      printf( "readahead: invalid number.\n" );
+      return(1);
+    }
+
+    fd = open( argv[1], O_RDONLY );
+    if ( fd == -1 ) {
+      printf( "readahead: unable to open device %s\n", argv[1] );
+      return(1);
+    }
+
+    if ( ioctl(fd, BLKRAGET, &oldvalue) ) {
+      printf( "readahead: unable to get read_ahead value from "
+              "device %s\n", argv[1] );
+      close (fd);
+      return(1);
+    }
+
+    if ( args >= 3 ) {
+      newvalue = atoi( argv[2] );
+      if ( ioctl(fd, BLKRASET, newvalue) ) {
+        printf( "readahead: unable to set %s's read_ahead to %d\n",
+                argv[1], newvalue );
+        close (fd);
+        return(1);
+      }
+    }
+    else {
+      printf( "%d\n", oldvalue );
+    }
+
+    close (fd);
+    return(0);
+
+  }/* main */
+	  ]]>
+	 </content>
+	</file>
+
+	<textblock>
+  Damit kann man natürlich auch RAID-Devices tunen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Bestehenden RAID-0 Verbund erweitern
+	</heading>
+
+	<textblock>
+  Um einen <strong>RAID-0</strong> Verbund zu vergrößern, zu verkleinern oder aus einer
+  einzelnen Festplatte ein <strong>RAID-0</strong> zu erstellen, gibt es von Jakob
+  Oestergaard einen Patch für die RAID-Tools:
+	</textblock>
+
+	<quotation>
+		  <ref url="http://ostenfeld.dk/~jakob/raidreconf/raidreconf-0.0.2.patch.gz">
+			http://ostenfeld.dk/~jakob/raidreconf/raidreconf-0.0.2.patch.gz</ref>
+	</quotation>
+
+	<textblock>
+  Dieser Patch muss in den Source der RAID-Tools eingearbeitet werden und
+  die RAID-Tools anschließend neu kompiliert und installiert werden. Das
+  Erweitern eines <strong>RAID-0</strong> Verbundes funktioniert dann durch zwei
+  unterschiedliche /etc/raidtab Dateien, die miteinander verglichen
+  werden und eine zusätzliche Partition innerhalb desselben Verbundes
+  eingearbeitet wird. Nach dem stoppen des zu verändernden
+  RAID-Verbundes, erfolgt der Aufruf durch:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+       raidreconf /etc/raidtab /etc/raidtab.neu /dev/md0
+	 </root>
+	</shell>
+
+	<textblock>
+ Hierbei muss in der <command>/etc/raidtab.neu</command> für den Verbund <command>/dev/md0</command> eine
+ weitere Partition im Gegensatz zu <command>/etc/raidtab</command>
+ eingetragen sein.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Bestehenden RAID-5 Verbund erweitern
+	</heading>
+	
+	<textblock>
+  Einen bereits initialisierten und laufenden <strong>RAID-5</strong> Verbund kann man
+  derzeit leider nicht mit weiteren Festplatten vergrößern. Die einzige
+  Möglichkeit besteht darin, die Daten zu sichern, den <strong>RAID-5</strong> Verbund
+  neu aufzusetzen und die Daten anschließend zurück zu schreiben.
+	</textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

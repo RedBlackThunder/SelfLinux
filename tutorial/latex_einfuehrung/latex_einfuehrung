@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>LaTeX-Schnelleinführung</title>
+
+ <author>
+  <name>Andreas Kalbitz</name>
+  <mailto>felix@pingos.org</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GPL</license>
+
+ <index>latex_einfuehrung</index>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Anfängliche Fragestellungen
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Was ist LaTeX?
+	</heading>
+	<textblock>
+LaTeX ist ein Drucksatzsystem, dessen Ergebnisse weit über das
+hinausgehen, was man mit einer Schreibmaschine schreiben könnte.
+Die Qualität der gesetzten Zeichen unterscheidet sich auch von
+den Druckergebnissen von herkömmlichen Textverarbeitungsprogrammen,
+da
+LaTeX Ligaturen verwendet. Das Ausmaß der Fähigkeiten wird aber
+erst richtig deutlich, wenn man mit Notensatz, Kreuzworträtseln,
+mathematischen Formeln oder chemischen Symboldarstellungen zu
+tun hat. Selbst Diagramme lassen sich bei Kenntnis der
+entsprechenden LaTeX-Befehle programmieren.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Was ist anders beim Erstellen von LaTeX-basierten Texten?
+	</heading>
+
+	<textblock>
+LaTeX ist ein System, das wie eine Programmiersprache Befehle
+bereitstellt, um ein gewünschtes Ergebnis zu erzielen.
+Man muss also einen Überblick über die LaTeX-Befehle erhalten,
+um damit arbeiten zu können.<br/>
+Dies ist auch der Grund, warum häufig gestresste Linux-Anwender
+eher zum Textprogramm greifen, als LaTeX zu nutzen.
+Wer die ersten Grundbefehle allerdings gelernt hat, greift gern
+auf LaTeX zurück, wenn neben dem schnellen Text auch
+das Layout eine Rolle spielt.
+	</textblock>
+
+	<textblock>
+LaTeX benötigt ein installiertes LaTeX-System und einen
+Editor - mehr nicht.
+Die Ergebnisse der ersten Verarbeitungsstufe eines Textes liegen
+im <strong>DeVice-Independend Format</strong> (DVI) vor.
+Diese Dateien lassen sich dann beispielsweise ins Postscript-
+oder in PDF-Format verwandeln. Mit dem Programm <command>pdflatex</command> lassen sich
+auch direkt PDF-Dateien erzeugen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Welcher Editor ist am besten für LaTeX geeignet?
+	</heading>
+
+	<textblock>
+Wichtig für den guten Überblick ist das Syntax-Highlighting, wie
+es auch in der Programmierung gern genutzt wird.
+Editoren wie <name>Vim</name>, <name>EMACS</name>, <name>Nedit</name> oder <name>Kate</name> bringen die
+entsprechenden Voraussetzungen mit. So behält man den Überblick
+über öffnende und schließende Klammern. Ansonsten gibt es keine
+Besonderheiten zu beachten. Am besten geeignet ist der
+Lieblingseditor,
+weil man mit ihm am besten umgehen kann.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Gibt es grafische Benutzeroberfächen für LaTeX?
+	</heading>
+
+	<textblock>
+Ja, in der Tat, die gibt es. Für KDE2 wurde <command>Ktexmaker2</command> entwickelt.
+Sein Nachfolger für KDE3 ist <command>Kile</command>.  Doch schon vor KDE2
+gab es nützliche Oberflächen, wie die <command>TeX-Shell</command> (ts). Sie alle
+bieten die Möglichkeit die Sourcen zu editieren und anschließend
+eines der
+LaTeX-Programme aufzurufen, um die DVI-Dateien zu erzeugen. <command>LyX</command>
+geht dabei noch etwas weiter. <strong>WYSIWYM</strong> (What you see, is
+what you mean) nennt sich die Ansicht, die mit diesem Editor
+erzeugt wird. <command>LyX</command> stellt dabei die Sourcen zusammen. Aus dem
+Mac-User-Bereich
+stammt das Programm <command>TeXMacs</command>.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Wie erhalte ich meinen Text in druckbarer Fassung?
+	</heading>
+
+	<textblock>
+	 Zunächst muss der Text, wie im <ref iref="Die Arbeit mit den
+	 LaTeX-Standards">Abschnitt 2</ref> folgt, erstellt werden.
+Abgespeichert wird er mit der Erweiterung .tex.
+Diese Quelldatei wird dann mit den Befehlen
+	</textblock>
+
+	<shell>
+	 <user>
+latex quelldatei.tex
+	 </user>
+	 <user>
+dvips quelldatei.dvi
+	 </user>
+	 <user>
+ps2pdf quelldatei.ps
+	 </user>
+	</shell>
+
+	<textblock>
+übersetzt. Wer keine PDF-Datei als Ergebnis benötigt, kann die
+letzte Zeile weglassen.<br/>
+Die einzelnen Dateien lassen sich mit den Programmen
+<command>xdvi quelldatei.dvi</command>, <command>kghostview quelldatei.ps</command>, oder <command>xpdf
+quelldatei.pdf</command> bzw. <command>acroread
+quelldatei.pdf</command> betrachten.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Die Arbeit mit den LaTeX-Standards
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Der Grundaufbau eines LaTeX-Dokuments
+	</heading>
+
+	<textblock>
+Jedes LaTeX-Hauptdokument wird in Präambel und Body aufgeteit.
+In der Präambel werden LaTeX-Klasse und LaTeX-Styles sowie
+einige zusätzliche Angaben zu bestimmten Dokumentarten angegeben.
+In den Body wird der Inhalt mit Befehlen strukturiert eingegeben.
+	</textblock>
+
+	<file>
+	 <title>
+Quelltext 1: Grobgerüst eines deutschsprachigen Artikels
+	 </title>
+
+	 <content>
+\documentclass[a4paper,11pt]{article}
+\usepackage{ngerman}
+\usepackage[latin1]{inputenc}
+\begin{document}
+Hier wird der Text des Dokumentes eingefügt.
+\end{document}
+	 </content>
+	</file>
+
+	<textblock>
+Der Befehl <command>\documentclass[]{}</command> definiert die Art des Dokumentes.
+Mehr dazu steht im nächsten Abschnitt. Die Dokumentklasse wird in
+den geschweiften Klammern angegeben.
+Die eckigen Klammern nehmen Optionen entgegen. In unserem Beispiel
+sind das die Voreinstellungen für den Druck auf DIN-A4-Papier mit
+einer 11pt-Standardschriftgröße.
+Jedes Hauptdokument darf nur eine Dokumentklasse aufrufen. Die
+<command>\usepackage[]{}</command>-Befehle binden alle gewünschten Zusatzpakete ein.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Die Standard-Klassen
+	</heading>
+
+	<textblock>
+LaTeX stellt standardmäßig die Klassen <command>article</command>, <command>book</command>, <command>report</command>, <command>proc</command>
+und <command>plain</command> zur Verfügung. Jede hat ihre Besonderheiten.
+Sie unterscheiden sich in der Art, wie die Gliederung verarbeitet
+wird, ja sogar die Gliederungsbefehle sind nicht in allen Klassen
+gleich.<br/>
+So macht es beim Satz eines Buches Sinn, den Befehl <command>\part{Titel}</command>
+zu benutzen, wenn es in mehrere Teile aufgeliedert werden soll,
+die dann
+wiederum Kapitel, Sektionen usw. beinhalten. Dieser Befehl steht
+darüberhinaus in der Klasse <command>report</command> zur Verfügung. Alle anderen
+Klassen
+können darauf verzichten. Eine weitere Besonderheit ist die
+Voreinstellung der <command>book</command>-Klasse, Kapitelüberschriften auf eine
+einzelne Seite zu setzen.
+Beschränken wir uns hier auf diese Angaben zum <command>part</command>-Befehl. Alle
+anderen Gliederungsebenen sind gleich verwendbar.
+	</textblock>
+
+	<file>
+	 <title>
+Quelltext 2: Gliederungsbefehle innerhalb eines 1. Kapitels
+	 </title>
+	 <content>
+\begin{document}
+\chapter{Kapiteltitel}
+\section{Thementitel}
+\subsection{Titel eines Unterthemas}
+\subsubsection{Titel eines Unterthemas der nächst tieferen
+Gliederungsstufe}
+\paragraph[optinaler hervorhebbarer Absatzanfang] Absatztext der
+nicht gesondert hervorgehoben wird.
+Hier wird der Text des Dokumentes eingefügt.
+\section{Thementitel}
+\subsection{Titel eines Unterthemas}
+\subsubsection{Titel eines Unterthemas der nächst tieferen
+Gliederungsstufe}
+\paragraph*{} Absatz der nicht extra in die Gliederung
+aufgenommen wird.
+\end{Document}
+	 </content>
+	</file>
+
+	<textblock>
+So ausgerüstet bin ich in der Lage einen reinen Text zu schreiben,
+Dessen Layout ich eigentlich nicht beeinflusst habe.
+Latex übernimmt einige Standardeinstellungen die der
+Fortgeschrittene Benutzer zu modifizieren weiß.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Bilder im Text
+	</heading>
+
+	<textblock>
+Bilder können auf unterschiedliche Weise erzeugt werden. So gibt es
+zum einen die bereits erwähnte Möglichkeit direkt über
+entsprechende
+Befehle Grafiken zu erzeugen. Das gehört aber in keine
+Kurzbeschreibung. Um schnell ein Bild in einen Text einzubinden,
+muss man die Präambel
+erweitern.
+	</textblock>
+
+	<file>
+	 <title>
+Quelltext 3: Änderungen in der Präambel und im Textkörper zum
+	 </title>
+	 <content>
+Einfügen einer eps-Grafik.
+....
+\usepackage[dvips]{graphicx}
+\usepackage{epsfig}
+....
+\begin{document}
+....
+\includegraphics[width=13cm]{Bilddatei}\\
+....
+\end{document}
+	 </content>
+	</file>
+
+	<textblock>
+Dabei wird das Bild in den Absatz eingefügt. Und ein Zeilenumbruch
+angehängt. So erscheint der Text ober und unterhalb des Bildes.
+Einen Textumlauf erreichen wir damit noch nicht. In diesem Beispiel
+haben wir eine <command>eps</command>-Grafik verwendet. (Encapsulated Postscript).
+Das Paket <command>graphicx</command> sorgt für die Konvertierung und Einbindung in
+die DVI-Datei.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Farbe im Text
+	</heading>
+
+	<textblock>
+Um Farbe in den Text zu bringen, brauchen wir das Zusatzpaket color
+in der Präambel.
+Quelltext 4 demonstriert, wie man einen Kasten erzeugt, der 3
+verschiedene Farbwerte für den Rand, das Innere und den Text eines
+Kastens
+akzeptiert.
+	</textblock>
+
+	<file>
+	 <title>
+Quelltext 4: Änderungen in der Präambel und im Textkörper für die
+Benutzung farbiger Rahmen und farbiger Texte
+	 </title>
+	 <content>
+....
+\usepackage{color}
+....
+\begin{document}
+....
+\fcolorbox{Rahmenfarbe}{Füllfarbe}{\textcolor{Textfarbe}{Text im
+Kasten.}}
+....
+\end{document}
+	 </content>
+	</file>
+
+	<textblock>
+Leider stoßen wir hier auf ein Problem. Der Befehl <command>\fcolorbox</command> färbt
+nur die Elemente einer Zeile. Ist der Text zu lang, bricht die Box
+aus dem
+normalen Text aus und wird über den rechten Rand verlängert. Es
+gibt also keinen Zeilenumbruch mehr.
+Abhilfe schafft hier zum Beispiel die <command>parbox</command>-Umgebung.
+	</textblock>
+
+	<file>
+	 <title>
+Quelltext 5: Parbox innerhalb einer farbigen Box
+	 </title>
+	 <content>
+...
+\fcolorbox{red}{blue}{\parbox{\textwidth}{\textcolor{white}{
+Textinhalt der weit über die Textbreite hinausragt.
+belegt werden können.}}}
+....
+	 </content>
+	</file>
+
+	<textblock>
+Mit der Angabe <command>\textwidth</command> benutzen wir eine LaTeX-Variable die den
+Wert der Textbreite enthält. Hier kann auch eine Breitenangabe wie
+10cm stehen.  Die <command>Parbox</command> nimmt den Text auf und sorgt für den
+Zeilenumbruch. Ob der Text darin nun gefärbt wird oder nicht,
+hat auf das Verhalten der <command>Parbox</command> keine Auswirkung. <command>Parbox</command>
+funktioniert übrigens auch ohne den <command>fcolorbox</command>-Befehl.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Tabellen im Text
+	</heading>
+
+	<textblock>
+Tabellen sind Gestaltungselemente die für Übersicht sorgen sollen.
+Wer einen Tabellenquellcode liest, der viele Spalten und Zeilen
+enthält kann schnell mal den Überblick verlieren. Dennoch sieht
+in der
+Ausgabedatei später alles so aus, wie in einer richtigen Tabelle.
+	</textblock>
+
+	<textblock>
+Es gibt in LaTeX verschiedene Möglichkeiten, Tabellen zu erzeugen.
+Die einfachste für kleine tabellarische Übersichten ist die
+Tabular-Umgebung.
+	</textblock>
+
+	<file>
+	 <title>
+Quelltext 6: Beispieltabelle mit der Tabular-Umgebung
+	 </title>
+	 <content>
+...
+\begin{tabular}{|l|c|r|}
+\hline
+linksbündig &amp; zentriert &amp; rechtsbündig \\
+\hline
+1 &amp; 2 &amp; 3,141\\
+\hline
+\end{tabular}
+...
+	 </content>
+	</file>
+
+	<textblock>
+Die Angaben in den geschweiften Klammern nach dem
+<command>\begin{tabular}</command>-Befehl dienen der Formatierung der Tabelle.
+Die senkrechten  Striche stehen für die senkrechten
+Spaltenbegrenzungen der  Tabelle. Lässt man sie weg, werden
+die Spalten ohne Linien formatiert. Die Buchstaben <command>l</command>, <command>c</command> und <command>r</command>
+stehen für die Ausrichtung der Zelleninhalte.
+Der Befehl <command>\hline</command> fügt horizontale Linien in die Tabelle ein.
+Jede Tabellenzeile darf nur so viele Feldinhalte haben, wie
+formatierte Felder in der Format-Klammer stehen.
+Ein <command>{rrrr}</command> ergibt also eine Tabelle mit vier rechtsbündig
+ausgerichteten Spalten.
+Eine Zelle wird von der anderen durch das &amp;-Zeichen getrennt. Jede
+Tabellenzeile schließt mit einem <command>\\</command> (=Zeilenumbruch) ab.
+	</textblock>
+
+	<textblock>
+Will man die Tabelle für die Formatierung längerer Textpassagen
+benutzen, kann in der Format-Klammer anstelle von <command>l</command>, <command>c</command> oder <command>r</command> auch
+ein
+Absatz mit fester länge eingegeben werden.
+	</textblock>
+
+	<file>
+	 <title>
+Quelltext 6: Beispieltabelle Absatz-Zellen
+	 </title>
+	 <content>
+...
+\begin{tabular}{|p{3cm}|p{7cm}|}
+\hline
+Zeit &amp; Ereignis \\
+\hline
+2001 &amp; Linuxtag in Stuttgart\\
+2002 &amp; Linuxtag in Karlsruhe\\
+2003 &amp; Linuxtag in Karlsruhe\\
+\hline
+\end{tabular}
+...
+	 </content>
+	</file>
+
+	<textblock>
+Die Absatzbreiten sollten hier auf jeden Fall so gewählt werden,
+dass sie in der Summe die Textbreite nicht überschreiten.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Mathematische Formeln in LaTeX
+   </heading>
+
+   <textblock>
+Wer nur mal zwischendurch in LaTeX eine Formel eingeben will, kann
+das ganz schnell durch Umschalten in den Math-Modus durch
+Einklammerung der Formel in zwei <command>$</command>-Zeichen erreichen. Hier ein paar
+Beispiele für Gleichungen mit Potenz-, Wurzel- und Bruchausdrücken.
+   </textblock>
+
+   <file>
+	<title>
+Quelltext 6: Formelbeispiele
+	</title>
+	<content>
+...
+$ f(x)=3x^2+2x+2 $\\
+$ f(x)=\frac{x+3}{x^2 - 9} $\\
+$ f(x)=\frac{1}{\sqrt{x^2}} $\\
+$ y=\sqrt[3]{8} $\\
+...
+	</content>
+   </file>
+
+   <textblock>
+Die Beispiele enthalten Befehle, die sich ineinander verschachteln
+lassen.
+Wer ausführlichere Formelkonstrukte erstellen möchte, sollte aber
+unbedingt auf die <command>AMS-LaTeX-Pakete</command> zurückgreifen, die verschiedene
+Umgebungen für alle nur erdenklichen mathematischen Formeln und
+Symbole bereitstellen.
+   </textblock>
+  </section>
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Zusammenfassung
+   </heading>
+
+   <textblock>
+Eine Kurzbeschreibung kann nur in ein Thema einführen.
+Mit dieser Beschreibung sollte es möglich sein, erste Gehversuche
+mit LaTeX zu machen.
+Hier kann nicht der Anspruch auf Vollständigkeit erhoben werden.
+Eine umfangreichere Referenz ist im Entstehen und wird in den
+nächsten SelfLinux-Versionen stetig ausgebaut.
+   </textblock>
+  </section>
+ </split>
+</chapter>

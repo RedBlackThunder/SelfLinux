@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Dokumentation zu ADSL</title>
+
+ <author>
+  <name>Simon Schwarz</name>
+  <mailto>s.sch-@gmx.de</mailto>
+ </author>
+
+ <layout>
+  <name>Axel Gross</name>
+  <mailto>axelgross@web.de</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>adsl</index>
+
+ <split>
+  <section>
+   <!-- 1 Kapitel  -->
+   <heading>
+Warum rp-pppoe?
+   </heading>
+
+   <textblock>
+Der Roaring-Penguin Treiber ist eine sogenannte Userspace-Lösung, ist also
+ein eigenständiges Programm und nicht Teil des Kernels. Das hat den
+Nachteil, dass der rp-pppoe mehr CPU-Zeit benötigt als die Kernel
+Lösungen, dafür aber größtenteils Kernel unabhängig ist und schon
+längere Zeit als stabil eingestuft wird.
+   </textblock>
+  </section>
+
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+Die Voraussetzungen für den rp-pppoe
+   </heading>
+   <ul>
+    <li>
+     Ein Linuxsystem mit einem Kernel >=2.0
+    </li>
+    <li>
+     Kernelunterstützung für "packet sockets". (Das ist bei den
+     meisten Standard Kerneln der Fall)
+    </li>
+    <li>
+     ppp daemon, Version 2.3.7 oder besser. Wenn dial-on-demand
+     (Einwählen wenn gebraucht) benutzt wird, Version 2.3.10 oder
+     besser. Für Kernel der 2.4 Serie muss der pppd 2.4 installiert
+     werden.
+    </li>
+    <li>
+     Eine funktionierende Ethernet-Netzwerkkarte
+    </li>
+    <li>
+     Ein ADSL Modem
+    </li>
+    <li>
+     ADSL Provider
+    </li>
+   </ul>
+  </section>
+
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+Installation der Netzwerkkarte
+   </heading>
+
+   <textblock>
+Um die in Deutschland üblichen DSL Anschlüsse nutzen zu können,
+braucht man eine funktionierende Netzwerkkarte (von internen Modems
+abgesehen). Das kann auch eine alte 10BaseT (RJ45-Anschluss) Karte
+sein, solange Linux Treiber für sie verfügbar sind. Um die Karte zu
+installieren, müssen die entsprechenden Module geladen werden.
+Mithilfe von <command>modconf</command> kann der Treiber über eine Oberfläche bequem
+installiert werden. Sollte dieses Programm nicht zur Verfügung stehen,
+kann man <command>insmod</command> benutzen:
+   </textblock>
+
+   <shell>
+    <root path="~">
+insmod &lt;modulname&gt;
+    </root>
+   </shell>
+
+   <textblock>
+Man sollte noch einen Blick in die Datei <path>/etc/modules</path> werfen. Dort
+sollte nun ein Eintrag mit dem Kernel-Modul vorhanden sein, damit es
+bei jedem Start des Systems automatisch geladen wird.
+   </textblock>
+
+   <textblock>
+Um die Einrichtung abzuschließen, muss noch eine eventuell vorhandene
+default Route gelöscht werden:
+   </textblock>
+
+   <shell>
+    <root path="~">
+route del default
+    </root>
+   </shell>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+Die Verkabelung
+   </heading>
+
+   <textblock>
+Als erstes muss vor dem NTBA (bei ISDN) der Splitter installiert
+werden, der das ISDN/Analog Signal vom DSL-Signal trennt. An den
+Splitter wird dann mit einem RJ-45 Netzwerkkabel das DSL-Modem
+angeschlossen. Eventuell muss noch beim Splitter eingestellt werden ob
+das Telefonsignal Analog oder ISDN ist. Um die Verkabelung
+abzuschließen, verlegt man noch ein Netzwerkkabel von der
+Netzwerkkarte zum DSL-Modem.
+   </textblock>
+
+   <image height="150">
+    <title>
+Verkabelung mit einem externen Modem
+    </title>
+    <filename>adsl-verkabelung.png</filename>
+   </image>
+
+   <textblock>
+Mithilfe des folgenden Kommandos kann man überprüfen, ob die
+Verkabelung richtig vorgenommen wurde:
+   </textblock>
+
+   <shell>
+    <root path="~">
+pppoe -I eth1 -A
+    </root>
+   </shell>
+
+   <textblock>
+Wenn alles funktioniert sollte die Ausgabe wie folgt aussehen:
+   </textblock>
+
+   <shell>
+    <output>
+Access-Concentrator: OSNC13-nrp3
+Got a cookie: 50 64 87 59 6d bf 73 00 1d 67 98 7d c2 d3 a5 32
+AC-Ethernet-Address: 00:01:96:99:50:b7
+    </output>
+   </shell>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+Die Konfiguration
+   </heading>
+  </section>
+
+  <section>
+   <!-- 1.1 Kapitel -->
+   <heading>
+pap-secrets
+   </heading>
+
+   <textblock>
+Um den Anschluss zu konfigurieren, wird die Datei
+<path>/etc/ppp/pap-secrets</path> mit einem beliebigen Editor geöffnet:
+   </textblock>
+
+   <shell>
+    <root path="~">
+vi /etc/ppp/pap-secrets
+    </root>
+   </shell>
+
+   <!-- Hier z.B. mit vi -->
+   <textblock>
+In dieser Datei müssen nun die Einwahldaten eingetragen werden.
+   </textblock>
+
+   <textblock>
+Achtung: Das hier aufgeführte Beispiel gilt für T-Online Anschlüsse. 
+Bei anderen Providern können die Einwahldaten anders aussehen.
+   </textblock>
+
+   <table>
+    <pdf-column/>
+    <tr>
+     <td>Anschlusskennung: 11111111111</td>
+    </tr>
+    <tr>
+     <td>T-Onlinenummer: 222222222222</td>
+    </tr>
+    <tr>
+     <td>Mitbenutzer: 0001</td>
+    </tr>
+    <tr>
+     <td>Passwort: passwort</td>
+    </tr>
+   </table>
+
+   <textblock>
+Bei der Mitbenutzernummer muss darauf geachtet werden, nur die 0001 zu
+verwenden, da eine Einwahl mit z.B. 0002 zusätzliche Kosten
+verursachen kann. Am Anfang steht die Anschlusskennung gefolgt von
+der T-Onlinenummer, die durch ein # von der Anschlusskennung getrennt
+wird. Dann wird wieder durch ein # getrennt die Mitbenutzernummer
+und "@t-online.de" angehängt, so dass sich folgende Zeichenkette
+ergibt:
+   </textblock>
+
+   <textblock>
+	   11111111111#222222222222#0001@t-online.de
+   </textblock>
+   
+   <textblock>
+    Diese muss zusammen mit dem Passwort in die Datei geschrieben werden:
+   </textblock>
+
+   <file>
+    <title>Auszug der Datei pap-secrets</title>
+    <content>
+# Secrets for authentication using PAP
+# client      server      secret      IP adresses
+
+"111111111111#222222222222#0001@t-online.de"  *  "passwort"
+    </content>
+   </file>
+  </section>
+
+  <section>
+   <!-- 1.1 Kapitel -->
+   <heading>
+dsl-provider
+   </heading>
+
+   <textblock>
+In der Datei <path>/etc/ppp/peers/dsl-provider</path> müssen nun die für den <command>ppp</command>
+nötigen Optionen eingestellt werden.
+   </textblock>
+
+   <textblock>
+Die Option <command>user</command> muss mit den Einwahldaten, wie sie auch in der
+pap-secrets stehen, gefüttert werden (ohne das Passwort natürlich).
+Ausserdem muss das Device (z.B. eth0) entsprechend angepasst werden.
+Mit dem Befehl <command>man pppd</command> kann eine nähere Beschreibung der einzelnen
+Optionen aufgerufen werden.
+   </textblock>
+
+   <file>
+    <title>Auszug der Datei dsl-provider</title>
+    <content>
+# Configuration file for PPP, using PPP over Ethernet
+# to connect to a DSL provider.
+#
+# See the manual page pppd(8) for information on all the options.
+
+##
+# Section 1
+#
+# Stuff to configure...
+
+# MUST CHANGE: Uncomment the following line, replacing the user@provider.net
+# by the DSL user name given to your by your DSL provider.
+# (There should be a matching entry in /etc/ppp/pap-secrets with the password.)
+#user myusername@myprovider.net
+
+# Use the pppoe program to send the ppp packets over the Ethernet link
+# This line should work fine if this computer is the only one accessing
+# the Internet through this DSL connection. This is the right line to use
+# for most people.
+pty "/usr/sbin/pppoe -I eth0 -T 80 -m 1452"
+
+# If the computer connected to the Internet using pppoe is not being used
+# by other computers as a gateway to the Internet, you can try the following
+# line instead, for a small gain in speed:
+#pty "/usr/sbin/pppoe -I eth0 -T 80"
+
+# An even more conservative version of the previous line, if things
+# don't work using -m 1452...
+#pty "/usr/sbin/pppoe -I eth0 -T 80 -m 1412"
+
+
+# The following two options should work fine for most DSL users.
+
+# Assumes that your IP address is allocated dynamically
+# by your DSL provider...
+noipdefault
+# Comment out if you already have the correct default route installed
+defaultroute
+
+##
+# Section 2
+#
+# Uncomment if your DSL provider charges by minute connected
+# and you want to use demand-dialing.
+#
+# Disconnect after 300 seconds (5 minutes) of idle time.
+
+#demand
+#idle 300
+
+##
+# Section 3
+#
+# You shouldn't need to change these options...
+
+hide-password
+lcp-echo-interval 20
+lcp-echo-failure 3
+# Override any connect script that may have been set in /etc/ppp/options.
+connect /bin/true
+noauth
+persist
+mtu 1492
+    </content>
+   </file>
+  </section>
+
+  <section>
+   <!-- 1.1.1 Kapitel -->
+   <heading>
+Dial-on-demand
+   </heading>
+
+   <textblock>
+Für all diejenigen die einen zeitabhängigen Tarif haben, ist die
+<command>Section 2</command> in der Datei <path>dsl-provider</path> interresant. Hier kann durch
+Auskommentieren von <command>demand</command> die automatische Einwahl und <command>idle xxx</command>
+das automatische Trennen der Verbindung aktiviert werden. Die xxx
+muss durch die Idle Zeit in Sekunden ersetzt werden.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+Der erste Start
+   </heading>
+
+   <textblock>
+Bevor wir zum ersten Mal die Verbindung testen, sollte noch in der 
+<path>dsl-provider</path> die Option <command>nodetach</command> angefügt werden, so dass der <command>pppd</command>
+beim Start nicht in den Hintergrund rutscht und wir die Ausgaben 
+verfolgen können. Um alle Ausgaben verfolgen zu können, geben wir in 
+einer extra Konsole, als root, noch folgenden Befehl ein:
+   </textblock>
+
+   <shell>
+    <root path="~">
+tail -f /var/log/messages
+    </root>
+   </shell>
+
+   <textblock>
+Nun können wir die Verbindung zum erstenmal testen:
+   </textblock>
+
+   <shell>
+    <root path="~">
+pppd call dsl-provider
+    </root>
+   </shell>
+
+   <textblock>
+Die Ausgabe des <command>pppd</command> sollte in etwa so aussehen:
+   </textblock>
+
+   <shell>
+    <output>
+pppd[1578]: pppd 2.4.1 started by root, uid 0
+pppd[1578]: Serial connection established.
+pppd[1578]: Using interface ppp0
+pppd[1578]: Connect: ppp0 &lt;--&gt; /dev/pts/2
+pppoe[1579]: PADS: Service-Name: ''
+pppoe[1579]: PPP session is 31959
+pppd[1578]: local  IP address 62.226.75.9
+pppd[1578]: remote IP address 62.225.254.169 
+    </output>
+   </shell>
+
+   <textblock>
+Um zu testen, ob die Verbindung funktioniert, muss ein <command>ping</command> auf eine
+ip abgesetzt werden:
+   </textblock>
+
+   <shell>
+    <user path="~">
+ping 134.100.212.78
+    </user>
+   </shell>
+
+   <textblock>
+War der Ping erfolgreich, so steht auch unsere Verbindung. Nun können
+wir noch testen, ob der Nameserver richtig übernommen wurde:
+   </textblock>
+
+   <shell>
+    <user path="~">
+ping www.selflinux.de
+    </user>
+   </shell>
+
+   <textblock>
+Sollte die Namensauflösung fehlschlagen, kann man alternativ auch 
+einen DNS-Server per Hand eintragen. Dies muss in der Datei
+<path>/etc/resolv.conf</path> geschehen:
+   </textblock>
+
+   <file>
+    <title>Auszug der Datei resolv.conf</title>
+    <content>
+search
+nameserver 212.185.253.9
+nameserver 194.25.2.129
+    </content>
+   </file>
+
+   <textblock>
+Normalerweise sollte dies aber nicht nötig sein, da die Adresse des
+Nameservers automatisch bezogen wird.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+Manuelle Einwahl
+   </heading>
+
+   <textblock>
+Die manuelle Einwahl ist für all diejenigen interresant, die einen
+zeitabhängigen Tarif haben und die Kosten gerne unter Kontrolle haben
+(was bei Dial-on-Demand nicht der Fall ist).
+   </textblock>
+
+   <textblock>
+ Um eine manuelle Einwahl durchführen zu können, muss ein Script in
+<path>/usr/local/bin/</path> angelegt werden. Das Script kann man nennen wie man
+will, sinnvoll ist z.B. <command>connectadsl</command> o.ä.
+   </textblock>
+
+   <file>
+    <title>Connectadsl</title>
+    <content>
+#! /bin/sh
+#
+# Connectadsl: Skript zur Erstellung einer Verbindung zum Provider
+# via ADSL/T-DSL fuer Debian GNU/Linux
+#
+# Verbindung starten: connectadsl start
+# Verbindung stoppen: connectadsl stop
+#
+# written by: Michael Schlenstedt
+# Michael@adsl4linux.de
+# http://www.adsl4linux.de
+#
+# Version: 0.2a
+#
+#
+# Einstellungen:
+#
+#
+#
+# Pfad zu pppd
+#
+PPPD="/usr/sbin/pppd"
+#
+# Pfad zu sudo
+#
+SUDO="/usr/bin/sudo"
+#
+#
+#
+# Ende der Einstellungen
+#
+#
+#
+# Wenn UID ungleich "0" (root), dann führe Skript mit sudo aus
+#
+#
+if test -x $SUDO; then
+   if test $UID -ne 0; then
+            exec $SUDO $0 $*
+   fi
+fi
+#
+# Mit welchem Parameter wurde das Skript gestartet: Start oder Stop
+#
+case "$1" in
+#
+# Bei Stop wird aufgelegt
+#
+stop)
+     echo Verbindung beenden
+     killall pppd
+     ;;
+#
+# Beim Parameter (Start) wird die Verbindung aufgebaut
+#
+start)
+     echo Verbindung starten
+     $PPPD call dsl-provider
+     ;;
+*)
+     echo Falscher oder garkein Parameter angegeben!
+     echo Bitte starten sie $0 mit dem Parameter start oder stop
+     ;;
+esac
+    </content>
+   </file>
+
+   <textblock>
+Der große Vorteil bei der Verwendung dieses Scriptes ist, dass auch
+ein non-root user eine Internetverbindung herstellen kann. Diese
+Funktion wird über das Programm <command>sudo</command> realisiert.
+   </textblock>
+
+   <textblock>
+Soll nur root die Möglichkeit des Einwählens haben, so reichen die
+folgenden Befehle aus, und das Script wird nicht benötigt:
+   </textblock>
+
+   <shell>
+    <root path="~">
+pon dsl-provider
+    </root>
+   </shell>
+
+   <textblock>
+Verbindungs Abbau:
+   </textblock>
+
+   <shell>
+    <root path="~">
+poff
+    </root>
+   </shell>
+
+   <textblock>
+Um nun als normaler user die frisch eingerichtete Internetverbindung 
+nutzen zu können, muss noch das Programm <command>sudo</command> installiert werden.
+Normalerweise sollte jede Distribution ein entsprechendes Paket
+bereitstellen. Sollte dies nicht der Fall sein, kann man es hier
+<ref lang="en" url="http://www.sudo.ws/sudo/">http://www.sudo.ws/sudo/</ref> herunterladen.
+   </textblock>
+
+   <textblock>
+Ist die Installation abgeschlossen, muss <command>sudo</command> nur noch konfiguriert
+werden. Hierzu ruft man <command>visudo</command> auf:
+   </textblock>
+
+   <shell>
+    <root path="~">
+visudo
+    </root>
+   </shell>
+
+   <textblock>
+Visudo lässt sich wie der Editor <ref chapter="vim">vi</ref> benutzen.
+   </textblock>
+
+   <textblock>
+Nun trägt man wie im unteren Beispiel die User ein, die das Internet 
+nutzen können sollen.
+   </textblock>
+
+   <file>
+    <title>sudoers file</title>
+    <content>
+# sudoers file.
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# See the man page for the details on how to write a sudoers file.
+#
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root    ALL=(ALL) ALL
+Peter   ALL=NOPASSWD:/usr/local/bin/connectadsl
+    </content>
+   </file>
+
+   <textblock>
+Loggt man sich nun mit dem Benutzer Peter ein, kann er mit den
+folgenden zwei Befehlen die eingerichtete Verbindung nutzen:
+   </textblock>
+
+   <shell>
+    <user path="~">
+connectadsl start
+    </user>
+    <user path="~">
+connectadsl stop
+    </user>
+   </shell>
+
+   <textblock>
+Damit ist die Einrichtung des A-DSL Anschlusses abgeschlossen.
+   </textblock>
+
+   <textblock>
+Viel Spaß im WWW (Welt Weites Warten *g*)
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+    Danksagung
+   </heading>
+
+   <textblock>
+Viele Informationen und Texte für diesen Artikel stammen von
+<ref lang="de" url="http://www.adsl4linux.de">http://www.adsl4linux.de</ref>
+   </textblock>
+  </section>
+ </split>
+</chapter>

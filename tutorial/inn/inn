@@ -1,0 +1,1226 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>INN</title>
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+ <license>
+GFDL
+ </license>
+ <index>inn</index>
+ 
+ <split>
+  <section>
+<!-- *. Kapitel -->   
+   <heading>
+Einleitung
+   </heading>
+   
+   <textblock>
+Dieses Dokument beschreibt den Betrieb eines <strong>echten</strong> Newsservers
+mit der Software <name><strong>INN</strong></name>. Es richtet sich an angehende
+News-Administratoren, nicht jedoch an Heimanwendungen. Für
+Heimanwendungen verwendet man am besten einen bereits bestehenden
+Newsserver oder das Programm <name><strong>leafnode</strong></name>. Der Betrieb eines
+<strong>echten</strong> Newsservers ist sehr aufwendig, kompliziert und
+erfordert bei größeren, sinnvollen Installationen, dass mindestens
+ein Newsserver angepaßt wird, damit der eigene Server News zugeschickt
+bekommt (das ist ein grundlegender Unterschied zum eMail-Versand,
+wo ja jeder einfach einen eigenen Server betreiben kann).
+   </textblock>
+
+   <textblock>
+Der Betrieb eines <strong>echten</strong> Newsserver lohnt sich, wenn man viele
+Clienten bedienen möchte (das heißt, weit mehr als 10), oder
+viele Artikel verwalten muß (das heißt, weit mehr als 10.000).
+Für kleinere Installationen sollte entweder ein fremder
+Newsserver verwendet werden, oder das Programm <name><strong>leafnode</strong></name>
+verwendet werden. Nur, wenn wirklich Bedarf besteht, sollte man
+sich einen <strong>echten</strong> Newsserver leisten, denn Einrichtung und
+richtiger Betrieb sind aufwendig.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+News
+	</heading>
+
+	<textblock>
+Mit News bezeichnet man kurze Textdateien, von denen ständig
+welche geschrieben werden (in einigen Fällen sind das auch binäre
+Dateien). Diese werden an viele Benutzer
+verteilt. Diese können dann auch darauf antworten. Da es sehr viele
+solcher Artikel gibt, hat man diese sogenannten Gruppen
+zugeordnet. So gibt es eine Gruppe <strong>comp.os.linux</strong>, die sich mit
+Linux beschäftigt und viele andere, bis hin zu
+<strong>de.alt.freieliebe</strong>.
+	</textblock>
+
+	<textblock>
+Um der Flut von Artikeln Herr zu werden, werden diese nach
+einiger Zeit, zum Beispiel nach einem Monat, gelöscht. Es handelt
+sich schließlich um <strong>News</strong> - also Neuigkeiten.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Genereller Überblick
+	</heading>
+
+	<textblock>
+Ein Benutzer schreibt einen solchen Artikel mit einem Programm,
+zum Beispiel mit <name>Netscape</name>. Das Programm sendet (postet) den
+Artikel dann zu einem bestimmten Server. Dieser verteilt den
+Artikel dann an weitere Server und diese verteilen den Artikel dann auch
+wieder weiter. Über irgendwelche Wege <strong>kennt</strong> jeder Server indirekt
+jeden anderen (sonst würde es <strong>Inseln</strong> geben). Es kann somit auch
+einige Zeit dauern, bis der Artikel überall zur Verfügung steht, von
+allen gelesen und beantwortet werden kann. Heutzutage sind jedoch die
+Verbindungen so schnell, dass ein Artikel in Sekunden fast alle
+Teile der Welt erreicht hat. Jedoch gibt es auch Server, die zum
+Beispiel aus Kostengründen Artikel nur nachts übertragen.
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Usenet
+	</heading>
+
+	<textblock>
+Mit Usenet bezeichnet man alle Server, die News-Artikel
+untereinander austauschen. Das Usenet ist eine dezentrale
+Anordnung von Newsservern. Das Usenet enthält Artikel, die einer
+Gruppe zugehören. Die Gruppen sind dabei in (mehrere) Hierarchien
+gegliedert, eine davon heißt z.B. <strong>de</strong> und beinhaltet u.a.
+<strong>de.answers</strong>, <strong>de.test</strong> und (Sub-) Hierarchien wie z.B.  <strong>de.comp</strong>
+(mit <strong>de.comp.os</strong> usw.).  Ein Newsserver hat eine bestimmte Menge
+von Newsgroups, die er verwaltet/kennt. 
+	</textblock>
+
+	<textblock>
+Ein Client, auch Newsreader genannt (z.B. <name>tin</name>, <name>Netscape</name>), kann
+nun über den NNTP Port auf den Newsserver connecten, sich eine
+Liste der Newsgroups geben lassen, sich einzelne Artikel
+herunterladen oder senden (<strong>posten</strong>). Diese Clienten werden hier
+als Newsreader (oder kurz Reader) bezeichnet, mit Server wird im
+folgenden ein Newsserver bezeichnet.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+<!-- *. Kapitel -->
+  <section>
+   <heading>
+Verteilung von News
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Verteilung vieler Artikel
+	</heading>
+	<textblock>
+Um die Verteilung zu ermöglichen, stehen die Newsserver
+untereinander in Verbindung. Da in der Regel viele Artikel
+übertragen werden und aus Effizienzgründen keine doppelt
+übertragen werden sollen, wird ein spezielles Verfahren
+verwendet. Die Server pflegen Listen, in denen die zu
+übertragenden Artikel stehen, wird eine Übertragung durchgeführt,
+wird die Liste <strong>abgearbeitet</strong>, so dass mit einer Verbindung alle
+Artikel übertragen werden können. Diese Listen nennt man
+<strong>Feedlisten</strong>. Hat ein Newsserver einen neuen
+Artikel empfangen, so trägt er die Nummer des Artikels in die
+Feedlisten ein. Ein Artikel trägt in seinem Header
+Steuerinformationen, wie z.B. eine Pfadliste, in der die
+Newsserver stehen, die diesen Artikel übertragen haben (jeder
+Server fügt seinen Namen am Anfang der Liste ein, das Verfahren ist
+analog zur Pfadadresse einer eMail aus UUCP-Zeiten).
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Feeden und Posten
+    </heading>
+
+    <textblock>
+Artikel, die in der Feedliste stehen, sollen also später gefeeded
+werden. Dies darf man nicht mit dem posten verwechseln. Clients
+posten, Newsserver feeden. Feeden ist auf den ersten Blick zwar
+sehr ähnlich, jedoch auf Protokollebene anders. Feeden ist für
+große Mengen an Artikeln optimiert. Posten funktioniert
+einfacher. Beim Posten geht der Newsserver davon aus, dass der
+Artikel neu ist. Gepostete Artikel werden gegebenenfalls um eine
+ID ergänzt. Gefeedete Artikel müssen immer bereits eine ID
+besitzen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Feedlisten
+	</heading>
+	
+	<textblock>
+Soll ein Artikel in die Feedliste für einen Zielserver
+eingetragen werden, ist das natürlich nur nötig, wenn der Name
+des Zielservers noch nicht in der Pfadliste steht (denn
+anderenfalls hat er den Artikel ja bereits gesehen und
+gespeichert).  Der Artikel wird also nur in die Feedlisten der Server
+eingetragen, die den Artikel noch nicht weitergeleitet haben. Nun
+kann aber ein Zielserver diesen Artikel von einem anderen Server
+erhalten haben. Um sinnlosen Datenverkehr zu unterbinden, hat
+deshalb jeder Artikel eine weltweit eindeutige ID (genauer
+gesagt, muß die ID eindeutig im gesammten Usenet sein,
+also eindeutig in allen bekannten Universen). Connected ein
+Server einen anderen, um ihm Artikel zu schicken, sendet er erst
+einmal eine Liste von
+IDs, die er hat. Diese Liste wird aus den Feedlisten
+erstellt. Der andere Server vergleicht diese mit seinem
+Datenbestand. Artikel mit unbekannten IDs werden nun übertragen.
+Dieser Vorgang läuft ebenfalls oft über den NNTP Port ab
+(deswegen kann es Schwierigkeiten geben, wenn vom Feeder aus
+versucht wird, eine Client-Verbindung aufzubauen, da der Server
+häufig hier nur einen Server erwartet, und sich entsprechend
+<strong>[falsch]</strong> verhält).
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Die eigentliche Übertragung
+	</heading>
+	
+	<textblock>
+In regelmäßigen Zeitabständen wird ein <command>cron</command>-job gestartet, der
+die Feedlisten überträgt. Alternativ dazu kann man das auch über
+ein Programm erledigen, was sich wie ein Client verhält und
+diese Artikel postet (also nicht feeded!), dabei müssen die
+Artikel allerdings etwas modifiziert werden, da ein Client einige
+Headerfelder nicht setzen darf (z.B. NNTP-Posting-Host, Xref,
+X-Trace, X-Complaints-To, NNTP-Posting-Date), da diese vom
+Newsserver gesetzt werden (dazu kann man ein Filterscript
+verwenden).
+	</textblock>
+
+	<textblock>
+Um nicht in der Datenflut zu ersticken, akzeptiert ein Newsserver
+nur einige Gruppen (das können auch einige hundert sein). Das
+sollte bereits beim Erstellen der Feedlisten berücksichtigt
+werden, man muß schließlich keine Artikel in die Listen
+eintragen, die sowieso nicht akzeptiert werden. Auch möchte man
+evtl. einige <strong>private</strong> Gruppen führen, die ebenfalls nicht
+gefeeded werden sollen.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>  
+Neue Gruppe einrichten
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Überblick
+	</heading>
+
+	<textblock>
+Eine neue Gruppe wird in drei Schritten eingerichtet.
+Zum Einen muß der Feeder (i.d.R. der ISP) die neue Gruppe in seine
+Feedliste aufnehmen, damit der Feeder neue Artikel in die
+Feedliste einträgt (das macht er nur, wenn der Empfänger die
+Gruppe überhaupt haben will). Dazu ist es natürlich notwendig, dass der
+Feeder der Gruppe selbst gefeeded bekommt und neue Artikel
+entsprechend <strong>zurückfeeden</strong> kann, sonst erhält man natürlich
+keine Artikel. Einfacher gesagt, man kann keine Gruppen bekommen,
+die er selbst nicht hat.
+	</textblock>
+
+	<textblock>
+Zum Anderen muß der lokale Newsserver diese Gruppe bedienen, d.h.
+diese Gruppe muß <strong>active</strong> sein, ansonsten würde der lokale
+Newsserver die gefeedeten Artikel als <strong>unwanted</strong> - <strong>ungewollt</strong> -
+ablehnen und in der <strong>Pseudo</strong>-Gruppe <strong>junk</strong> - <strong>Müll</strong> ablegen
+(diese Gruppe hat nur einen geringe Lebensdauer, oft werden die
+Artikel nach einem Tag bereits gelöscht).
+	</textblock>
+
+	<textblock>
+Dann muß als drittes der lokale Newsserver diese Gruppe auch an
+den <strong>Feeder feeden</strong>, damit eventuelle Antworten ins Usenet
+gelangen. Ansonsten würde man ja keine Antwort auf die Artikel
+bekommen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Vorgehen
+	</heading>
+	<textblock>
+Man beginnt sicherheitshalber immer mit dem zweiten Schritt (damit
+keinesfalls Artikel in <strong>junk</strong> landen und <strong>verloren</strong> gehen, denn
+ein manuelles Übertragen von <strong>junk</strong> in eine Gruppe ist mindestens
+mühsam!). Dazu richtet man mit dem Dienstprogramm <command><strong>ctlinnd(1m)</strong></command>
+eine neue Gruppe ein. Dabei sorgt <command>ctlinnd</command> hier <strong>nur</strong> für eine
+ordnungsgemäße Eintragung in <strong>active</strong> (und macht diese Änderung
+dem innd bekannt). Der Aufruf lautet dabei z.B.:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+ctlinnd newgroup de.talk.jokes
+	 </root>
+	</shell>
+
+	<textblock>
+Dabei können noch weitere Argumente angegeben werden, dass ist
+hier ein minimalistisches Beispiel.
+Dann richtet man am besten erstmal gleich den eigenen Feed ein,
+damit Postings dann auch zurückgehen können (bzw. an weitere
+Server verteilt werden). Dazu muß man dann
+die Datei <command>newsfeeds</command> (meist <command>/etc/news/newsfeeds</command>) anpassen,
+wenn nötig (es kann z.B.  sein, das alle Gruppen, evtl. bis auf
+Ausnahmen, gefeeded werden).
+    </textblock>
+	
+    <textblock>
+Nun muß der Feeder den newsfeed für unseren Newsserver anpassen.
+    </textblock>
+
+    <textblock>
+Normalerweise bekommt man vom Feeder keine alten Artikel. Das
+heißt, es kann eine Weile dauern, bis neue Gruppen auch wirklich
+Artikel beinhalten!
+    </textblock>
+   </section>
+  </section>
+
+
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Gruppen entfernen
+   </heading>
+
+   <textblock>
+Eine Gruppe loszuwerden, läuft entsprechend rückwärts. Um die
+Benutzer nicht zu ärgern, sollte sowas immer angekündigt und
+abgesprochen werden. Zu diesem Zwecke kann man z.B. eine Gruppe
+<command>local.users</command> oder so verwenden. Zuerst sollte dann der Feeder
+die Gruppe nicht mehr feeden. Es kommen damit keine neuen
+Artikel, aber es kann noch gepostet werden. Dann kann man die
+Gruppe einfach <strong>expiren</strong> lassen - irgendwann ist sie leer.
+Spätestens dann sollte man dann die Gruppe aus dem feed nehmen,
+und dann auch entfernen.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>  
+Newsserver ohne Feeder
+   </heading>
+
+   <textblock>
+Wenn man keinen Newsserver zur Verfügung hat, der den eigenen
+Newsserver feedet, also man keinen Newsadministrator überreden
+kann, für seinen eigenen Server Feedlisten zu pflegen, kann man
+auch einen Newsserver betreiben, der sich wie ein Client verhält.
+   </textblock>
+
+   <textblock>
+Das bedeutet, er holt die Artikel wie ein Client ab und verteilt
+Artikel nicht über Feeds, sondern postet diese selbst auch
+wieder. Mischformen sind natürlich auch möglich.
+   </textblock>
+
+   <textblock>
+Man kann hier <command>suck</command> und <command>rpost</command> verwenden.
+   </textblock> 
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Artikel einspeisen
+    </heading>
+
+    <textblock>
+     <command>Suck</command> verwendet man wie folgt:
+    </textblock>
+
+    <file>
+     <title>
+Suck
+     </title>
+     <content>
+#!/bin/sh
+
+suck &lt;newsserver&gt; -c -bi /var/spool/news/batch -dt /var/spool/news \
+        -dm /var/spool/news/Msgs -dd /var/spool/news
+
+/usr/lib/news/bin/innxmit localhost /var/spool/news/batch
+     </content>
+    </file>
+
+    <textblock>
+Die Pfade müssen natürlich den Gegebenheiten angepaßt werden.
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Artikel weiterschicken
+	</heading>
+	<textblock>
+Beim Posten müssen noch einige Infos aus dem Header gefiltert werden,
+da der andere Server keine Newsserver Einträge in den Artikeln sehen
+möchte (viele Newsserver werfen solche Artikel gleich in <strong>junk</strong>).
+	</textblock> 
+
+	<textblock>
+Hier ein Beispiel für die Verwendung von Post:
+	</textblock>
+
+    <file>
+     <title>
+Beispiel für die Verwendung von Post
+     </title>
+     <content>
+#!/bin/bash
+mv /var/spool/news/out.going/newssrv3 \
+	/var/spool/news/out.going/newssrv3.new
+/usr/lib/news/bin/ctlinnd flush newssrv3
+/usr/bin/rpost newssrv3.bedi.net -d -b \
+	/var/spool/news/out.going/newssrv3.new \
+        -p /var/spool/news \
+        -f /etc/news/post.filter  \$\$o=/tmp/filtered_msg \
+        \$\$i /tmp/filtered_msg
+     </content>
+    </file>
+
+    <textblock>
+Das ist hier <command>quick-and-dirty</command> (für Testumgebungen z.B.). Hier wird
+<command>out.going</command> sicherheitshalber für die Dauer des <command>rpost</command> Aufrufes
+umbenannt, damit keine Artikel übergangen oder doppelt gepostet
+werden.
+    </textblock>
+
+    <section>
+<!-- *.*.* Kapitel -->
+     <heading>
+Artikel zum Versand aufbereiten
+     </heading>
+
+     <textblock>
+Ein Beispiel-Filter für das Entfernen der Header und
+Newsservereinträge (<command>/etc/news/post.filter</command>) könnte so aussehen:
+     </textblock>
+	 
+     <file>
+      <title>
+Beispiel-Filter für das Entfernen der Header und Newsservereinträge
+      </title>
+      <content>
+#!/bin/sh
+
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/lib/news/bin 
+
+PERLCMD='/^(NNTP-Posting-Host|Xref|X-Trace|\
+X-Complaints-To|NNTP-Posting-Date)/ or print'
+
+INFILE=$1
+OUTFILE=$2
+
+if [ -f ${INFILE} ]; then
+        cat ${INFILE} | perl -ne "${PERLCMD}" > ${OUTFILE}
+
+        if [ $? -ne 0 ]; then
+                echo "Error"
+                exit -1
+	fi
+else
+        echo "$1 does not exist"
+        exit -1
+fi
+      </content>
+     </file>
+    </section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Automatisierung
+    </heading>
+
+    <textblock>
+Beide Scripte kann man über einen <command>Wrapper</command> (News eXchanger)
+starten:
+    </textblock>
+
+    <file>
+     <title>
+Wrapper (News eXchanger)
+     </title>
+     <content>
+#!/usr/bin/bash
+
+/etc/news/post.sh &gt;&gt; /var/log/news/post_log 2&gt;&amp;1
+/etc/news/suck.sh &gt;&gt; /var/log/news/suck_log 2&gt;&amp;1
+     </content>
+    </file>
+
+    <textblock>
+Hier werden noch Logdateien geschrieben.
+    </textblock>
+
+    <textblock>
+Das kann man dann per Cron alle 5 Minuten ausführen lassen:
+    </textblock>
+
+	
+    <file>
+     <title>
+per Cron alle 5 Minuten ausführen lassen
+     </title>
+     <content>
+*/5 * * * * /etc/news/NX.sh
+     </content>
+    </file>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Erweiterungen
+    </heading>
+    <textblock>
+Das ist ein kleines Grundgerüst, auf dem man aufbauen kann. Es
+ist damit zu rechnen, dass weitere Dinge angepaßt werden müssen;
+leider verhalten sich Newsserver nicht einheitlich. Das ist
+meistens neben dem Verwalten der Datenmengen die größte
+Schwierigkeit beim Administrieren von <strong>richtigen</strong> Newsservern.
+    </textblock>
+   </section>
+  </section>
+ </split>
+ 
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>  
+Echte Feeds
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Feeds für andere Server konfigurieren
+    </heading>
+
+    <textblock>
+Hier nun ein paar Infos, wie man INN verrät, wie die Feedlisten
+auszusehen haben. Als erstes muß INN natürlich wissen, für welchen
+Newsserver überhaupt Feedlisten erstellt werden müssen und welche
+Gruppen enthalten sein sollen. Das erledigt man in der Datei
+<command>newsfeeds</command>. Das Format sieht wie folgt aus:
+    </textblock>
+
+    <textblock>
+Mit <command>#</command> beginnende Zeilen sind Kommentare. Ein Eintrag ist eine Zeile
+lang, kann sich über mehrere erstrecken, wenn als letztes Zeichen ein
+<command>\</command> kommt. Die Felder eines Eintrags werden durch <command>:</command> getrennt und
+bedeuten:
+    </textblock>
+
+    <file>
+     <title>
+Datei newsfeeds
+     </title>
+     <content>
+Newsserver/Alias			\
+	:Gruppenpattern/Distribution	\
+	:flag,flag			\
+	:param
+     </content>
+    </file>			
+
+    <textblock>
+Jeder Eintrag entspricht einer Feedliste und damit einem Server,
+dem man Artikel feeden möchte.
+    </textblock>
+
+    <textblock>
+Ist Newsserver bereits im Pfad, so wird ein Artikel nicht gefeeded.
+Unter Umständen stimmen Newsserver <strong>FQDN</strong> und dessen Pfadeintrag nicht
+überein (ein Server kann ja mehrere [Alias-] Namen haben). Diese kann
+(und sollte) man dann alle bei Alias aufführen.
+    </textblock>
+   </section>
+   
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Einen Feed konfigurieren
+    </heading>
+
+    <textblock>
+Was genau der Server gefeeded bekommen soll, wird über die
+Optionen des Feedlisten-Eintragen eingestellt.
+    </textblock>
+	
+    <textblock>
+Gruppenpattern bestimmt die Gruppen, die gefeeded werden sollen. Dabei
+ist als Wildcard <command>*</command> erlaubt (was eine beliebige Anzahl von ebenfalls
+beliebigen Zeichen darstellt).<br/>
+Gruppen, die ausgeschlossen werden sollen, kann man hinter <command>!</command> definieren.
+Zusätzlich kann man eine Distributionsliste angeben (incl. Ausnahmen).
+    </textblock>
+
+    <textblock>
+Die beiden wichtigesten Flags sind:
+    </textblock>
+
+    <textblock>
+	 <command>T&lt;type&gt;	mit &lt;type&gt; &lt;f|p|...&gt;</command>
+    </textblock>
+	
+    <quotation>
+	 <command>f</command>:	file<br/>
+	 <command>p</command>:	programm
+    </quotation>
+
+    <textblock>
+(hier wird nur <command>Tf</command> erklärt: die Feedliste ist eine
+normale Datei)
+    </textblock>
+
+    <textblock>
+	 <command>W&lt;items&gt; mit &lt;items&gt; {m,n,H...}</command>
+    </textblock>
+
+    <quotation>
+	 <command>m</command>:	Message-ID<br/>
+	 <command>n</command>:	Pfadname<br/>
+	 <command>H</command>:	Alle Header
+    </quotation>
+
+    <textblock>
+Zum späteren Senden via NNTP mittels nntpsend wird die Message-ID und
+der Pfad benötigt (der Rest steht ja im Artikel unter Pfad), also
+<strong>Wnm</strong>
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Feedlisten zusammenstellen
+    </heading>
+	
+    <textblock>
+Aus technischen Gründen muß erst ein spezieller Feed
+für den Server selbst eingerichtet werden. Dieser enthält in der Regel
+alles. Ein entsprechende Eintrag sieht so aus:
+    </textblock>
+
+    <file>
+     <title>
+     </title>
+     <content>
+ME\
+        :*,!control,!junk\
+        ::
+     </content>
+    </file>
+
+    <textblock>
+(<command>control</command> und <command>junk</command>
+interessieren nicht)
+    </textblock>
+
+    <textblock>
+Ein Beispiel für einen Feed zum ISP könnte so aussehen:
+    </textblock>
+
+    <file>
+     <title>
+     </title>
+     <content>
+newsfeed\
+        :*,!control,!junk,!local.*\
+        :Tf,Wnm:
+     </content>
+    </file>      
+
+    <textblock>
+Das bedeutet: Es soll NNTP zum Feeden verwendet werden [UUCP ist
+so gut wie tot]. Dabei sollen alle Gruppen, außer
+<command>control</command>, <command>junk</command>,
+und <command>local.*</command>
+übertragen werden. <command>nntpsend</command> erwartet ein File (<command>Tf</command>) mit dem Format
+Message-ID und Pfad (<command>Wnm</command>).
+    </textblock>
+	
+    <textblock>
+Overview- und Crosspostsdata kann so erzeugt werden:
+    </textblock>
+
+    <file>
+     <title>
+Overview- und Crosspostsdata
+     </title>
+     <content>
+overview!:*:Tc,WO:/usr/bin/overchan
+crosspost:*:Tc,Ap,WR:/usr/bin/crosspost
+     </content>
+    </file>
+
+    <textblock>
+Diese Datei <command>newsfeed</command> gehört ins Verzeichnis <command>/etc/news</command>.
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Feeds durchführen
+    </heading>
+    
+    <textblock>
+Um diese Feeds auch durchzuführen, muß ein entsprechender <command>cronjob</command>
+laufen. Man kann ihn nachts laufen lassen, nur dann erhält man
+frühestens einen Tag später eine Antwort, laufen beide Feeds (also
+Server zum ISP und ISP zum Server) einmalig nachts, kann eine Antwort
+frühestens zwei Tage später erscheinen. Für ein schnelleres Verhalten
+sollte man nntpsend z.B. alle 10 Minuten starten. Dazu dient
+unter Linux z.B. folgender Eintrag:
+    </textblock>
+
+    <file>
+     <title>
+alle 10 Minuten starten
+     </title>
+     <content>
+*/10 * * * * /usr/lib/news/bin/nntpsend
+     </content>
+    </file>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Feeds testen
+    </heading>
+    
+    <textblock>
+Zu Testzwecken kann man <command>nntpsend</command> natürlich auch manuell starten. Ein
+(leider selten nützliches) <command>logfile</command> liegt unter
+<command>/var/log/news/nntpsend.log</command>.<br/> 
+Das sieht z.B. so aus:
+    </textblock>
+
+    <file>
+     <title>
+/var/log/news/nntpsend.log
+     </title>
+     <content>
+nntpsend: [5694] start
+nntpsend: [5694] stop
+nntpsend: [5694:5715] begin newssrv2 Wed Dec 15 20:06:03 MET 1999
+nntpsend: [5694:5715] innxmit -a newssrv2 ...
+nntpsend: [5694:5715] end newssrv2 Wed Dec 15 20:06:04 MET 1999
+     </content>
+    </file>  
+
+    <textblock>
+Im Falle, dass Artikel gesendet wurden (<command>nntpsend</command> verwendet <command>innxmit</command> nur
+in diesem Fall). Ansonsten besteht es nur aus start/stop Zeilen (keine
+Artikel übertragen).
+    </textblock>
+
+    <textblock>
+Der <command>innd</command> auf der <strong>anderen</strong> Seite, also der Empfänger, loggt diese
+Vorgänge auch (das wird dabei indirekt von <command>nntpsend</command> gesteuert), das
+sieht so aus:
+    </textblock>
+
+    <file>
+     <title>
+/var/log/news/nntpsend.log
+     </title>
+     <content>
+Dec 15 20:05:00 newssrv1 innd: newssrv3 flush
+Dec 15 20:05:00 newssrv1 innd: newssrv3 opened newssrv3:15:file
+Dec 15 20:05:00 newssrv1 innd: newssrv3 closed
+Dec 15 20:05:02 newssrv1 innd: localhost connected 18 streaming allowed
+Dec 15 20:05:02 newssrv1 innd: localhost:18 NCmode "mode stream" received
+Dec 15 20:05:04 newssrv1 innxmit[5692]: localhost stats offered 737 accepted
+1 refused 736 rejected 0
+Dec 15 20:05:04 newssrv1 innxmit[5692]: localhost times user 0.070 system
+0.110 elapsed 2.337
+Dec 15 20:05:04 newssrv1 innd: localhost:18 closed seconds 2 accepted 1
+refused 736 rejected 0
+     </content>
+    </file>	 
+
+    <textblock>
+Hier sieht man eine nette Fehlkonfiguration: der Newsserver hat von
+737 Artikeln 736 abgelehnt (vermutlich <strong>hat</strong> er diese Gruppe nicht,
+bzw. möchte sie nicht, weil er sie nicht bedient). Einen hat er jedoch
+akzeptiert (und keinen rejected. Rejected wird, wenn er ihn eigentlich
+möchte, aber er z.B. meint, es handle sich um <strong>Spam</strong>, oder der Artikel
+hat falsche Struktur oder sowas, beispielsweise die oben
+erwähnten Newsserverheader). Das ganze hat zwei Sekunden gedauert.
+    </textblock>
+   </section>
+   
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Beliebte Fehlersituationen bei Feeds
+    </heading>
+    <textblock>
+Es gibt weitere häufige Fehlermeldungen, die nicht immer klar
+verständlich sind. Hier einige wichtige Beispiele.
+    </textblock>
+
+    <section>
+<!-- *.*.* Kapitel -->
+     <heading>
+Der eigene Server läuft nicht
+     </heading>
+
+     <textblock>
+Situation: Der eigene Server ist down, <command>nntpsend</command> bekommt keine
+Daten zum versenden. Das sieht dann so aus:
+     </textblock>
+
+     <file>
+      <title>
+/var/log/news/nntpsend.log
+      </title>
+      <content>
+nntpsend: [2681] start
+Can't send "flush" command (dead server failure) No such process.
+nntpsend: file /var/news/storage/out.going/newsfeed for newsfeed
+not found
+nntpsend: skipping newsfeed via newsfeed
+      </content>
+     </file>
+
+    </section>
+
+    <section>
+<!-- *.*.* Kapitel -->
+     <heading>
+Der fremde Server läuft nicht
+     </heading>
+	 
+     <textblock>
+Situation: Der fremde Server ist down, innxmit kann ihn nicht
+erreichen:
+     </textblock>
+
+     <file>
+      <title>
+/var/log/news/nntpsend.log
+      </title>
+      <content>
+nntpsend: [3888:3909] innxmit -a newsfeed ...
+Can't connect to newsfeed, Connection refused
+      </content>
+     </file>
+
+    </section>
+
+    <section>
+<!-- *.*.* Kapitel -->
+     <heading>
+Probleme mit den Gruppen
+     </heading>
+
+     <textblock>
+In der Praxis kommt es immer wieder mal vor, dass der Server plötzlich
+hunderte von Artikel ablehnt.
+     </textblock>
+
+     <textblock>
+Ungewollte newsgroups werden in <command>unwanted.log</command> erfaßt:
+     </textblock>
+
+     <file>
+      <title>
+unwanted.log
+      </title>
+      <content>
+130 newsgroup de.comp.lang.delphi.datenbanken
+3 newsgroup de.comp.datenbanken.misc
+      </content>
+     </file>
+
+     <textblock>
+Dies kann kommen, wenn uns Datenbanken nicht mehr interessieren
+und die Gruppe nicht mehr geführt wird. Der Feeder sollte seine
+Feedlisten anpassen; in der Praxis kann sowas leider oft lange
+dauern, da die Administratoren selten Zeit haben.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Selektion von Gruppen
+    </heading>
+
+    <textblock>
+Bei der Auswahl der erwünschten Newsgroups, die vom ISP gefeeded
+werden sollen, ist sehr selektiv auszuwählen. Keinesfalls darf der
+Fehler gemacht werden, z.B. <command>de.*</command> oder <command>alt.*</command> haben zu wollen (es sei
+denn, Sie sind glücklicher Besitzer einer gelangweilten E3 Anbindung
+- das sind 34 Mbit Bandbreite - und haben einen Kleiderschrank voller
+Geld für die Trafficgebühren). Lektüre entsprechender
+<strong>Selbstzweck</strong>-Newsgroups (<command>news.admin.technical</command> z.B.) ist hilfreich,
+daher auch das folgende Zitat:
+    </textblock>
+
+    <file>
+     <title>
+Zitat
+     </title>
+     <content>
+> curt@kcwc.com (Curt Welch) wrote:
+> thebyte@san.rr.com (Daniel Trewella) wrote:
+> > Our news server currently hogs about 2mb/s on our 6mb/s backbone.
+> > (Can
+> > you say "ouch"?) Is there a way to limit the bandwith that our news
+> > server is using?
+> >
+> > The system is running FreeBSD 3.0-RELEASE and INN 2.1.
+> 
+> Are you talking about your incoming feeds?  You're lucky it's only
+> 2mb/s.
+> A full feed is more like 8mb/s these days.
+> 
+> The only good way to deal with the size of your incomming feed is to
+> change what your feeds are sending you.
+     </content>
+    </file>
+
+    <textblock>
+Überschlagen wir mal ganz grob: 8mb/s sind 1Mbyte/s. Der Tag hat
+60*60*24 Sekunden, macht etwa 84 GB am Tag, und 2,5 TB (TeraByte) im
+Monat. Nehmen wir mal an, 1 GB würde EUR 10,- kosten (das ist ein in
+etwa realistischer Preis), dann kämen wir auf etwa 25.000 Euro
+im Monat!! Dies setzt natürlich voraus, das die Bandbreite
+im Tagesdurchschnitt bei 8Mbit liegt...
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>  
+Cron Jobs
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Für Feeds
+    </heading>
+
+    <textblock>
+Hier ein Cronjob zum Durchführen der Feeds:
+    </textblock>
+
+    <textblock>
+nntpsend z.B. alle 10 Minuten starten. Dazu dient unter Linux z.B.:
+    </textblock>
+
+    <file>
+     <title>
+alle 10 Minuten starten
+     </title>
+     <content>
+*/10 * * * * /usr/lib/news/bin/nntpsend
+     </content>
+    </file>
+
+   </section> 
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Nächtliches Aufräumen
+    </heading>
+	
+    <textblock>
+Diese Jobs können viel Rechen- und Plattenleistung verbrauchen
+und sollten daher nachts ausgeführt werden.
+    </textblock>
+
+    <file>
+     <title>
+Cronjob
+     </title>
+     <content>
+0  * * * * /usr/lib/news/bin/news.daily expireover lowmark
+24 3 * * 0 /usr/lib/news/bin/expireover -a -v
+24 1 1 * * /usr/lib/news/bin/makehistory -buv
+     </content>
+    </file>
+
+   </section>  
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Löschen alter Artikel
+    </heading>
+    <textblock>
+Meist reicht es aus, <command>news.daily</command> regelmäßig auszuführen.
+Beispielsweise könnte man es dreimal täglich starten (bei großen
+Servern vielleicht auch nur einmal täglich, daher der Name des
+Scriptes; einmal nachts beim Aufräumen reicht meistens):
+    </textblock>
+
+    <file>
+     <title>
+news.daily
+     </title>
+     <content>
+5 9,15,21 * * * /usr/bin/news.daily delayrm \
+expireover norenumber nomail nologs &gt;/dev/null 26gt;&amp;1
+     </content>
+    </file>
+
+   </section>
+  </section>  
+ 
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Debugging, Inbetriebnahme, Probleme
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+1.1 Informationsquellen
+    </heading>
+	
+    <textblock>
+Die beiden wichtigsten Quellen für Informationen bzw.
+Fehlerbeschreibungen sind eMails, die an <strong>news</strong> bzw. <strong>root</strong> gemailt
+werden, und die Logfiles. Die wichtigesten logfiles werden dabei
+meistens via <command>syslog</command> verwaltet. Der Standard-Pfad ist <path>/var/log/*</path>
+(einschließlích <path>/var/log/news/*</path>) unter Linux. Diese lassen sich
+natürlich anpassen, wenn man möchte. Eine kleine
+Inkonsistenz tritt hierbei auf: Linux-Syslog legt manchmal alle news
+Meldungen in <path>news.notice</path> ab. Diese beiden Dateien sind immer
+die erste Anlaufstelle bei Problemen.
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Startprobleme
+    </heading>
+
+    <textblock>
+Wenn innd überhaupt nicht startet, kann es z.B. an einem Syntaxfehler
+in der Konfiguration liegen. Das Programm <command>inncheck</command> hilft, derartige
+Fehler zu finden. Im Normalfall sollte es keine Ausgabe machen.
+Ausgewiesene Fehler sind entsprechend zu korrigieren, klar. Wenn es
+gar nicht klappt, kann man evtl. durch ein System trace (mit <command>strace
+-f /pfad/innd</command> - Pfade ergänzen!) Hinweise bekommen. Die Interpretation
+erfordert allerdings recht intensive Systemkenntnisse.
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Zugriffsprobleme
+    </heading>
+    
+    <textblock>
+Wenn <command>innd</command> läuft, kann man prüfen, ob ein Client Zugriff bekommt:
+    </textblock>
+
+    <shell>
+     <root path="~">
+telnet newshost 119
+     </root>
+    </shell>
+	
+    <textblock>
+Wenn man einen <strong>connect</strong> bekommt, kann man z.B. das Kommando <command>LIST</command>
+probieren (danach dann <command>QUIT</command>). Man sollte die Gruppenliste erhalten.
+Ein Feedtest macht man z.B. mit dem Kommando
+    </textblock>
+
+    <shell>
+     <root path="~">
+ihave &lt;xxx@test.de&gt;
+     </root>
+    </shell>
+	
+    <textblock>
+Einem Clienten sollte dann geantwortet werden <strong>480 Transfer permission
+denied</strong>, einem Feeder <strong>335</strong> und dem Warten auf Eingaben (Ende mit
+<strong>&lt;CR&gt;"."&lt;CR&gt;</strong> (also einem Punkt als einziges Zeichen auf einer
+Zeile, wie auch bei SMTP). Die zu erwartende Fehlermeldung: <strong>437 No colon-space in
+header</strong>. Je nach Version und Typ werden Abweichungen vorhanden sein.
+    </textblock>
+
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Probleme mit Feedern
+    </heading>
+
+    <textblock>
+Wird ein Feed nicht als Feed erkannt, sollte als erstes geprüft
+werden, ob der <strong>FQDN</strong> (Systemname des Servers) übereinstimmt. Dazu
+kann man z.B. eine Verbindung aufbauen und dann mit
+    </textblock>
+	
+    <shell>
+     <root path="~">
+netstat -a|grep nntp
+     </root>
+    </shell>
+	
+    <textblock>
+schauen, wie der Name ist, bzw.
+    </textblock>
+	
+    <shell>
+     <root path="~">
+netstat -an|grep 119
+     </root>
+    </shell>
+
+    <textblock>
+mit nachfolgendem <command>nslookup</command>.  Ist der Name bestimmt, können
+die Einträge in <path>hosts.nntp</path> überprüft werden.
+    </textblock>
+
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Abgelehnte Artikel
+    </heading>
+	
+    <textblock>
+Gründe für rejects oder refuses zu finden, kann aufwendig werden. Es
+ist zu beachten, dass auch bereits gespoolte Artikel abgelehnt werden können.
+Unerwünschte Gruppen werden sowieso abgelehnt. Ein Blick ins <path>active</path>-File
+ist jedenfalls immer ratsam.
+    </textblock>
+   </section> 
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Probleme mit Clienten
+    </heading>
+
+	<textblock>
+Falls sich Clienten beschweren, nicht mehr connecten zu können, sollten
+als erstes die Prozesse des Newsservers neu gestartet werden:
+    </textblock>
+
+    <shell>
+     <root path="~">
+/etc/init.d/inn stop
+     </root>
+     <root path="~">
+/etc/init.d/inn start
+     </root>
+    </shell>
+  
+    <textblock>
+Dann kann z.B. mit:
+    </textblock>
+	
+    <shell>
+     <root path="~">
+telnet &lt;newsserver&gt; 119
+     </root>
+    </shell>
+
+
+    <textblock>
+ein Test gemacht werden.<br/>
+In jedem Falle sind die Logfiles zu analysieren. Das sollte von Zeit
+zu Zeit auch gemacht werden, wenn augenscheinlich alles funktioniert,
+um evtl. Fehler früh zu erkennen.
+    </textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+    <heading>
+Vollaufen eines Dateisystems
+    </heading>
+
+    <textblock>
+Einer der schlimmsten anzunehmenden Fehler ist ein Vollaufen eines
+Dateisystems, insbesondere des <strong>root</strong>-Dateisystems. In einem solchen Fall
+wird nicht nur der Newsbetrieb gestört, sondern fast alle
+Serverfunktionen. Außerdem können dadurch undefinierte Zustände
+auftreten, die sich nur schwer erkennen und beheben lassen (z.B.
+existierende, aber leere Dateien). Dateien, die regelmäßig
+<strong>überarbeitet</strong> und neuangelegt werden, verschwinden dabei unter
+Umständen. Deshalb ist die freie Kapazität streng zu beobachten. Dabei
+ist es eine Hilfe, dass bei normalen Konfigurationen per Cronjob eine
+eMail generiert wird, die auch diese Information liefert. Man
+kann das Problem entschärfen, in dem man Quotas verwendet oder
+eine eigene Partition für News bereitstellt. Newsserver neigen im
+Betrieb dazu, riesige Datenmengen zu produzieren.
+    </textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,2293 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Das KWrite-Handbuch</title>
+
+ <author>
+  <name>Christoph Cullmann</name>
+  <mailto>cullmann@kde.org</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+  
+ <index>kwrite</index>
+
+ <description>
+ 
+  <textblock>
+   <strong>Das KWrite-Handbuch</strong>
+  </textblock>
+ 
+  <textblock>
+   <name email="ctmcginnis@compuserve.com">Thad McGinnis</name>
+  </textblock>
+
+  <textblock>
+Hauptentwickler und Verantwortlicher: <name>Christoph Cullmann</name>
+  </textblock>
+
+  <textblock>
+Korrektur: <name>Lauri Watts</name>
+  </textblock>
+
+  <textblock>
+Übersetzer: <name>Matthias Schulz</name> Version 2.00.00
+  </textblock>
+
+  <textblock>
+Copyright © 2000, 2001 Thad McGinnis
+  </textblock>
+
+  <textblock>
+Es ist erlaubt, dieses Dokument zu kopieren, zu vertreiben und/oder zu ändern
+gemäß den Bedingungen der GNU Free Documentation License, Version 1.1 oder
+irgend einer späteren Version, wie sie von der Free Software Foundation
+veröffentlicht wurde; ohne die invarianten Abschnitte, ohne Texte auf der
+vorderen Umschlagseite, und ohne Texte auf der hinteren Umschlagseite. Eine
+Kopie der Lizenz findet sich im Abschnitt "GNU Free Documentation License".
+  </textblock>
+
+  <textblock>
+KWrite ist ein Texteditor für die K Deskop Environment (KDE).
+  </textblock>
+ </description>
+
+ <split>
+  <section>	
+<!-- *. Kapitel-->
+  <heading>
+Einleitung
+  </heading>
+
+   <textblock>
+KWrite ist mehr als ein Texteditor für die KDE Oberfläche. Es ist als
+Programmiereditor gedacht und könnte mindestens als teilweise Alternative zu
+leistungsfähigeren Editoren betrachtet werden. Es kann am besten in Verbindung
+mit Konqueror für das Darstellen von Quelltext verschiedener Sprachen benutzt
+werden. KWrite ist auch sehr gut als einfacher Texteditor zu verwenden. Eine der
+Haupteigenschaften von KWrite ist die farbige Darstellung von Quelltext,
+angepasst für viele verschiedene Programmiersprachen wie: C/C++, Java, Python,
+Perl, Bash, Modula 2, HTML, XML und Ada.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>	
+<!-- *. Kapitel-->
+   <heading>
+Grundsätzliches
+   </heading>
+
+   <textblock>
+KWrite ist sehr einfach zu nutzen. Jeder, der schon einen Texteditor benutzt
+hat, sollte keine Probleme haben.
+   </textblock>
+
+   <section>	
+<!-- *.* Kapitel-->
+	<heading>
+Drag and Drop (Ziehen und Ablegen)
+	</heading>
+
+    <textblock>
+KWrite nutzt das Drag-and-Drop-Protokoll von KDE. Dateien können gezogen und
+auf KWrite abgelegt werden; von der Arbeitsoberfläche, Konqueror, oder einer
+FTP-Seite, die in einem Konqueror-Fenster geöffnet ist.
+    </textblock>
+   </section>
+
+   <section>	
+<!-- *.* Kapitel-->
+	<heading>
+Befehlszeilenargumente
+	</heading>
+
+    <textblock>
+Auch wenn KWrite meistens vom K-Menü oder über ein Arbeitsflächensymbol
+geöffnet wird, kann es von einer Befehlszeile in einem Terminalfenster gestartet
+werden. Es gibt hierbei einige nützliche Optionen.
+    </textblock>
+
+	<section>	
+<!-- *.*.* Kapitel-->
+	 <heading>
+Angabe eines Dateinamens
+	 </heading>
+
+     <textblock>
+Der Benutzer kann Pfad und Dateinamen einer Datei angeben, die dann beim Starten
+von KWrite geöffnet (oder erzeugt) wird. Hierzu ein Beispiel:
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite /home/myhome/docs/myfile.txt
+      </user>
+     </shell>
+	</section> 
+
+	<section>	
+<!-- *.*.* Kapitel-->
+	 <heading>
+Angabe eines Dateinamens im Internet
+	 </heading>
+
+     <textblock>
+Die oben genannte Methode kann auch benutzt werden, um Dateien im Internet zu
+öffnen (wenn der Nutzer eine aktive Verbindung hat). Hierzu wieder ein Beispiel:
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite ftp://ftp.kde.org/pub/kde/Welcome.msg
+      </user>
+     </shell>
+	</section> 
+
+	<section>	
+<!-- *.*.* Kapitel-->
+	 <heading>
+Andere Befehlszeilenargumente
+	 </heading>
+
+     <textblock>
+Die folgenden Hilfe-Möglichkeiten sind über die Befehlszeile verfügbar
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite --help
+      </user>
+     </shell>
+
+     <textblock>
+Zeigt die grundsätzlichsten Möglichkeiten für die Befehlszeile an.
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite --help-qt
+      </user>
+     </shell>
+
+     <textblock>
+Zeigt die Möglichkeiten für die Einstellung der Zusammenarbeit von KWrite mit
+Qt an.
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite --help-kde
+      </user>
+     </shell>
+
+    <textblock>
+Zeigt die Möglichkeiten für die Einstellung der Zusammenarbeit von KWrite mit
+KDE an.
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite --help-all
+      </user>
+     </shell>
+
+     <textblock>
+Zeigt alle Möglichkeiten der Befehlszeile an.
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite --author
+      </user>
+     </shell>
+
+     <textblock>
+Zeigt die Autoren von KWrite im Terminalfenster an.
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite --version
+      </user>
+     </shell>
+
+     <textblock>
+Zeigt Versionsinformation für Qt, KDE und KWrite an. Auch verfügbar durch:
+     </textblock>
+
+     <shell>
+      <user path="~">
+kwrite -V
+	  </user>
+     </shell>
+	</section> 
+   </section>
+
+   <section>
+<!--*.*. Kapitel -->
+	<heading>
+Tastenbelegungen
+	</heading>
+
+    <textblock>
+Viele der Tastenfunktionen (Tastenkürzel) sind einstellbar im
+Einstellungen-Menü. In der Grundeinstellung hat KWrite die folgenden
+Tastenfunktionen.
+    </textblock>
+
+    <table>
+	 <pdf-column width="150"/>
+	 <pdf-column/>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Einf</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Umschaltung zwischen Einfüge- und Überschreibmodus. Im Einfügemodus werden alle
+Zeichen an der Cursorposition eingefügt und alle Zeichen rechts vom Cursor nach
+rechts verschoben. Im Überschreibmodus werden die Zeichen rechts vom Cursor
+sofort durch die neu geschriebenen Zeichen ersetzt.
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Pfeil links</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Bewegt den Cursor ein Zeichen nach links
+      </td>
+     </tr>
+     <tr>
+	  <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Pfeil rechts</key>
+		</keycomb>
+	   </command>
+	  </td>
+      <td>
+Bewegt den Cursor ein Zeichen nach rechts
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Pfeil nach oben</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Bewegt den Cursor um eine Zeile nach oben
+      </td>
+     </tr>
+	 <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Pfeil nach unten</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Bewegt den Cursor um eine Zeile nach unten
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Bild aufwärts</key>
+		</keycomb>
+	   </command>
+	  </td>
+      <td>
+Bewegt den Cursor um eine Seite nach oben
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Bild abwärts</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Bewegt den Cursor um eine Seite nach unten
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Rücktaste</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Löscht das Zeichen links vom Cursor
+      </td>
+     </tr>
+	 <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Pos1</key>
+		</keycomb>
+	   </command>
+      </td>
+	  <td>
+Setzt den Cursor an den Zeilenanfang
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Ende</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Setzt den Cursor an das Zeilenende
+      </td>
+     </tr>
+	 <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Entf</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Löscht das Zeichen rechts vom Cursor (oder den markierten Text)
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Umschalt</key>
+		 <key>Pfeil links</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Markiert Text ein Zeichen nach links
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Umschalt</key>
+		 <key>Pfeil rechts</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Markiert Text ein Zeichen nach rechts
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>F1</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Hilfe
+      </td>
+	 </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Umschalt</key>
+		 <key>F1</key>
+		</keycomb>
+	   </command>
+	  </td>
+	  <td>
+Was ist das?
+      </td>
+	 </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>F</key>
+		</keycomb>
+	   </command>
+	  </td>
+      <td>
+Suchen
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>F3</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Weitersuchen
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>C</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Kopiert den markierten Text in die Zwischenablage.
+      </td>
+	 </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>M</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Marker hinzufügen
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>N</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Neue Datei
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>P</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Drucken
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>Q</key>
+		</keycomb>
+      </command>
+	  </td>
+      <td>
+Beenden - Aktives Editorfenster schließen
+      </td>
+	 </tr>
+     <tr>
+	  <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>R</key>
+		</keycomb>
+	   </command>
+	  </td>
+      <td>
+Ersetzen
+	  </td>
+	 </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>S</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Führt den Befehl Sichern aus.
+      </td>
+	 </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>V</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Inhalt der Zwischenablage einfügen.
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>X</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Markierten Text löschen und in die Zwischenablage kopieren.
+      </td>
+	 </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>Z</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Rückgängig
+      </td>
+     </tr>
+     <tr>
+      <td valign="middle">
+	   <command>
+		<keycomb mode="hold">
+		 <key>Strg</key>
+		 <key>Umschalt</key>
+		 <key>Z</key>
+		</keycomb>
+	   </command>
+      </td>
+      <td>
+Wiederherstellen
+      </td>
+	 </tr>
+    </table> 
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Die Menüpunkte
+   </heading>
+   
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Das Dateimenü
+	</heading>
+
+    <textblock>
+     <command>
+Datei->Neu (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>N</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Erzeugt eine neue Datei. Wenn eine Datei mit ungesicherten Änderungen geöffnet
+ist, fragt das Programm, ob diese gespeichert werden soll.
+    </textblock>
+
+    <textblock name="oeffnen">
+     <command>
+Datei-> Öffnen (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>O</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnen einer Datei. Es wird ein Dialogfenster geöffnet, das zum Navigieren im
+Dateisystem verwendet werden kann. Das Fenster arbeitet wie ein kleiner
+Dateimanager. Klicken auf Verzeichnisse im zentralen Fenster öffnet das
+Verzeichnis und zeigt seinen Inhalt an. Es gibt außerdem ein Eingabefeld, das
+zur direkten Eingabe von Dateinamen und Pfad benutzt werden kann. Sie können
+auch auf den Pfeil an der Seite klicken und dann aus den letzten bearbeiteten
+Dateien auswählen. Darunter ist ein Filter, der benutzt werden kann, um
+ausschließlich Dateien anzuzeigen, die den Filterregeln entsprechen. Zum
+Beispiel bewirkt die Filterregel <path>*.txt</path>, dass nur Dateien mit
+der Endung <path>.txt</path>
+angezeigt werden. Unterhalb des Filters wird eine Statusleiste mit Information
+über die Anzahl der Dateien und Unterverzeichnisse im aktuellen Verzeichnis
+angezeigt.
+    </textblock>
+
+    <textblock>
+Die Werkzeugleiste oben im Dialogfeld hat Pfeilknöpfe, die Sie benutzen können,
+um in schon einmal aufgerufene Verzeichnisse zu wechseln. Der Knopf mit dem
+Pfeil nach oben bewirkt einen Sprung um eine Ebene nach oben in der
+Verzeichnishierarchie. Der Knopf mit dem Haus dient zum schnellen Wechsel in das
+persönliche Verzeichnis des Nutzers und der Knopf mit den kreisförmig
+angeordneten Pfeilen liest das aktuelle Verzeichnis neu ein. Mit dem Knopf mit
+der kleinen Fahne können Sie ein Lesezeichen in ein Verzeichnis setzen oder,
+wenn sie dies schon getan hatten, zu diesem Lesezeichen springen.
+    </textblock>
+
+    <textblock>
+Mit dem letzten Knopf können Sie ein neues Verzeichnis erzeugen und einige
+Grundeinstellungen des Dialogfeldes verändern. Ganz rechts finden Sie ein
+Auswahlfeld in dem einige häufig genutzte Verzeichnisse zur Auswahl angeboten
+werden.
+    </textblock>
+
+    <textblock>
+     <command>
+Datei->Zuletzt geöffnete Dateien
+     </command>
+    </textblock>
+
+    <textblock>
+Ist eine Abkürzung für das Öffnen der letzten bearbeiteten Dateien. Dieser
+Menüpunkt öffnet eine Liste mit einigen zuletzt bearbeiteten Dateien. Klicken
+auf eine der Dateien öffnet diese in KWrite - wenn diese Datei noch am selben
+Ort gespeichert ist.
+    </textblock>
+
+    <textblock>
+     <command>
+Datei->Speichern (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>S</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Speichert die aktuelle Datei. Wenn diese noch nicht gesichert war, wird der
+<command>Speichern unter...</command>-Dialog geöffnet, ansonsten wird ohne 
+Nachfrage überschrieben.
+    </textblock>
+
+    <textblock>
+     <command>
+Datei->Speichern unter...
+     </command>
+    </textblock>
+
+    <textblock>
+Speichert die Datei unter einem neuen Dateinamen. Die Auswahl des Dateinamens
+erfolgt durch einen Dialog wie bei <ref iref="oeffnen">Öffnen</ref> beschrieben.
+    </textblock>
+
+    <textblock>
+     <command>
+Datei->Drucken... (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>P</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet ein einfaches Dialogfenster, in dem der Nutzer einstellen kann, was, wo
+und wie zu drucken ist.
+    </textblock>
+
+    <textblock>
+     <command>
+Datei->Neue Ansicht
+     </command>
+    </textblock>
+
+    <textblock>
+Dies erzeugt eine neue Ansicht des aktuellen Dokuments von KWrite.
+    </textblock>
+
+    <textblock>
+     <command>
+Datei->Beenden (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>Q</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Schließt KWrite. Wenn Sie jedoch mehrere KWrite-Ansichten geöffnet haben, z.B.
+durch Neue Ansicht oder Neues Fenster werden die anderen KWrite-Ansichten nicht
+geschlossen.
+    </textblock>
+   </section> 
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Das Bearbeitenmenü
+	</heading>
+
+    <textblock>
+     <command>
+Bearbeiten->Rückgängig (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>Z</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Macht die letzte Veränderung im aktuellen Editorfenster rückgängig. Zum besseren
+Verständnis bitte im Teil <ref iref="back_gruppieren">Rückgängig
+gruppieren</ref> dieses Hilfstextes nachlesen.
+    </textblock>
+
+    <textblock name="strgz">
+     <command>
+Bearbeiten->Wiederherstellen (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>Umschalt</key>
+       <key>Z</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Macht das letzte Rückgängig (wenn vorhanden) rückgängig.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Verlauf Rückgängig/Wiederherstellen
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet ein Dialogfenster, das links die letzten Aktionen und rechts rückgängig
+gemachte Aktionen anzeigt. Auf der rechten Seite gibt es drei Knöpfe:
+Rückgängig, Wiederherstellen und Schließen. Klicken auf Rückgängig bewirkt, dass
+die erste Aktion in der Liste rückgängig gemacht und an die Spitze der
+Wiederherstellen-Liste gesetzt wird. Genauso bewirkt klicken auf
+Wiederherstellen die Wiederausführung der rückgängig gemachten Aktion an der
+Spitze der Wiederherstellen-Liste und das Setzen dieser Aktion an die Spitze der
+Rückgängig-Liste. Wenn Sie auf eine weiter unten in einer der beiden Listen
+stehenden Aktion klicken, werden alle Aktionen von oben in der Liste bis
+einschließlich der angeklickten Aktion ausgewählt. Ein anschließendes Klicken
+auf den zugehörigen Knopf bewirkt das Rückgängigmachen oder die erneute
+Ausführung der ausgewählten Aktionen. Mit dieser Möglichkeit können Sie direkt
+zu einem bekannten Punkt in der Bearbeitung zurück- oder vorwärtsgehen, ohne
+sich mühselig durch einzelne Bearbeitungsschritte durchzuarbeiten.
+    </textblock>
+
+    <textblock>
+     
+     <command>
+Bearbeiten->Ausschneiden (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>X</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Schneidet den ausgewählten Text aus und kopiert diesen in die Zwischenablage.
+Die Zwischenablage ist ein Teil von KDE, das unsichtbar arbeitet und eine
+Möglichkeit bereitstellt, Daten zwischen Anwendungen zu übertragen.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Kopieren (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>C</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Kopiert den ausgewählten Text in die Zwischenablage. Die Zwischenablage ist ein
+Teil von KDE, das unsichtbar arbeitet und eine Möglichkeit bereitstellt, Daten
+zwischen Anwendungen zu übertragen.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Einfügen (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>V</key>
+	  </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Fügt den in der Zwischenablage gespeicherten Text an der Cursorposition ein. Die
+Zwischenablage ist ein Teil von KDE, das unsichtbar arbeitet und eine Möglichkeit
+bereitstellt, Daten zwischen Anwendungen zu übertragen.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Alles auswählen (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>A</key>
+      </keycomb>
+)
+     </command>
+	</textblock>
+
+    <textblock>
+Die gesamte Datei wird ausgewählt. Dies ist besonders zum Kopieren der gesamten
+Datei in eine andere Anwendung nützlich.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Auswahl umkehren
+     </command>
+    </textblock>
+
+    <textblock>
+Invertiert die Auswahl von Text: Aller bisher unausgewählter Text wird
+ausgewählt und aller bisher ausgewählter Text wird freigegeben.
+    </textblock>
+
+    <textblock>
+     <command>
+Gehe zu->Gehe zu Zeile... (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>G</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet das Gehe zu-Dialogfenster, das zur Eingabe der Zeilennummer dient, an
+die der Cursor springen soll. Die Zeilennummer kann direkt eingegeben oder durch
+die Auf- und Abpfeile erhöht oder verringert werden. Sie können auch den Regler
+an der Seite verschieben, um zu der gewünschten Seite zu gelangen.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Suchen... (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>F</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet ein Dialogfenster, das zum Steuern der Suche in der Datei verwendet wird.
+Es gibt ein kleines Textfeld zum Eingeben von Text Gesuchter Text:, das auch als
+Auswahlfenster verwendet werden kann. Klicken auf den Pfeil macht frühere Suchen
+verfügbar. Andere Parameter können verwendet werden, um die Suche effizienter zu
+machen. Die Auswahl von Groß/Kleinschreibung grenzt die Suche ein - nur wenn
+auch die Groß- und Kleinschreibung mit der Suchphrase übereinstimmt, wird die
+Textstelle als gefunden gewertet und angezeigt. Rückwärts suchen veranlasst
+KWrite von unten nach oben zu suchen. Die Option Ausgewählter Text limitiert die
+Suche auf den ausgewählten Textbereich. Wenn die Option Nur ganze Wörter
+ausgewählt ist, werden Textstellen, bei denen das gesuchte Wort in einem
+längeren Wort enthalten ist, nicht angezeigt. Die Option Ab Cursorposition
+veranlasst KWrite, von der aktuellen Cursorposition an zu suchen und nicht vom
+Beginn der Datei (oder vom Ende bei gleichzeitig verwendeter Option Rückwärts
+suchen).
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Weitersuchen (
+      <keycomb mode="hold">
+       <key>F3</key>
+      </keycomb>
+     </command>
+    </textblock>
+
+    <textblock>
+Wiederholt die zuletzt ausgeführte Suche, ohne dass erst das Dialogfenster
+geöffnet wird.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Rückwärts suchen (
+      <keycomb mode="hold">
+       <key>Shift</key>
+       <key>F3</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Wiederholt die zuletzt ausgeführte Suche, ohne dass erst das Dialogfenster
+geöffnet wird und sucht dabei rückwärts.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Ersetzen (
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>R</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet das Ersetzen-Dialogfenster. Die Eingabe der Suchkriterien ist genauso wie
+bei dem oben erklärten Suche-Dialogfenster. Hinzu kommt das Eingabefeld Ersetzen
+durch:. Hierin wird der Text eingegeben, der den zu suchenden Text ersetzen
+soll. Im Ankreuzfeld Vor Ersetzen nachfragen kann eingestellt werden, ob KWrite
+vor dem Ersetzen an jeder gefundenen Stelle nachfragen oder das Ersetzen für die
+ganze Datei ohne nochmaliges Nachfragen ausführen soll.
+    </textblock>
+
+    <textblock>
+     <command>
+Bearbeiten->Editing Command (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>M</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+   </section> 
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Das Menü Lesezeichen
+	</heading>
+
+    <textblock>
+     <command>
+Gehe zu->Toggle Bookmark (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>B</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+     <command>
+Gehe zu->Marker löschen
+     </command>
+    </textblock>
+
+    <textblock>
+Löscht alle Marker aus der Datei sowie die Markerliste, die am unteren Ende
+dieses Menüs eingefügt wird.
+    </textblock>
+
+    <textblock>
+Am unteren Ende diese Menüs werden die in diesem Fenster vorhandenen Marker
+angezeigt.
+    </textblock>
+   </section> 
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Das Menü Werkzeuge
+	</heading>
+
+    <textblock>
+     <command>
+Werkzeuge->Rechtschreibung...
+     </command>
+    </textblock>
+
+    <textblock>
+Ruft die Rechtschreibprüfung - ein Programm zum Finden und Korrigieren von
+Rechtschreibfehlern - auf. Klicken auf diesen Menüeintrag startet das
+Rechtschreibprüfungsprogramm und öffnet dessen Dialogfenster, in dem Sie die
+Ausführung der Rechtschreibprüfung steuern können. Es gibt drei Textfelder in
+der Mitte des Dialogfensters mit deren zugehörigen Namen links daneben. Diese
+sind von oben nach unten:
+    </textblock>
+
+    <textblock>
+	 <strong>Falsches Wort:</strong>
+    </textblock>
+
+    <quotation>
+Hier zeigt das Rechtschreibprüfungsprogramm das aktuell als falsch erkannte Wort
+an. Dieses Wort hat das Rechtschreibprüfungsprogramm nicht in seinem Wörterbuch
+gefunden. Das Wörterbuch ist eine Datei, die eine Liste der korrekt
+geschriebenen Wörter enthält, mit denen das Rechtschreibprüfungsprogramm jedes
+einzelne Wort des zu prüfenden Textes vergleicht.
+    </quotation>
+
+    <textblock>
+	 <strong>Ersetzung:</strong>
+    </textblock>
+
+    <quotation>
+Wenn das Rechtschreibprüfungsprogramm ähnliche Wörter im Wörterbuch findet,
+wird das erste hier angezeigt. Der Nutzer kann den Vorschlag akzeptieren, eine
+eigene Korrektur eingeben oder einen anderen Vorschlag aus dem nächsten Feld
+auswählen.
+    </quotation>
+
+    <textblock>
+	 <strong>Vorschläge:</strong>
+    </textblock>
+
+    <quotation>
+Das Rechtschreibprüfungsprogramm listet hier einige mögliche Ersetzungen für
+das aktuelle Wort auf. Klicken auf eines dieser Worte trägt dieses in das Feld
+Ersetzung ein.
+    </quotation>
+
+    <textblock>
+Auf der rechten Seite des Dialogfensters sind 6 Knöpfe vorhanden, mit denen der
+Nutzer den Prüfungsprozess steuern kann. Diese sind im einzelnen:
+    </textblock>
+
+     <textblock>
+	 <strong>Ersetzen:</strong>
+     </textblock>
+
+    <quotation>
+Ersetzt das falsche Wort durch das Wort im Feld Ersetzung.
+    </quotation>
+
+    <textblock>
+	 <strong>Alle ersetzen:</strong>
+     </textblock>
+
+    <quotation>
+Klicken auf diesen Knopf bewirkt, dass alle Vorkommen des im Feld Falsches
+Wort angezeigten Wortes im gesamten Text mit dem Wort im Feld Ersetzung
+ersetzt werden.
+    </quotation>
+
+    <textblock>
+	 <strong>Ignorieren:</strong>
+	</textblock>
+
+    <quotation>
+Die Rechtschreibprüfung wird ohne Änderungen am aktuellen Wort fortgesetzt.
+    </quotation>
+
+    <textblock>
+	 <strong>Alle ignorieren:</strong>
+     </textblock>
+
+    <quotation>
+Klicken auf diesen Knopf setzt die Rechtschreibprüfung ohne Änderungen am
+aktuellen Wort fort und ignoriert alle weiteren Vorkommen dieses Wortes im
+gesamten Dokument.
+    </quotation>
+
+    <textblock>
+Anmerkung
+    </textblock>
+
+    <hint>
+Dies gilt nur für den aktuellen Lauf der Rechtschreibprüfung, wenn später noch
+einmal die Rechtschreibung geprüft wird, wird dasselbe Wort wieder als falsch
+erkannt.
+    </hint>
+
+    <textblock>
+	 <strong>Hinzufügen</strong>
+    </textblock>
+
+    <quotation>
+Klicken auf diesen Knopf fügt das Wort im Feld Falsches Wort zum Wörterbuch
+hinzu. Dieses Wort wird dann in der Zukunft immer als richtig erkannt.
+    </quotation>
+
+    <textblock>
+	 <strong>Anhalten</strong>
+    </textblock>
+
+    <quotation>
+Dieser Knopf stoppt die Rechtschreibprüfung.
+    </quotation>
+
+    <textblock>
+Am unteren Ende des Dialogfeldes liegt ein Balken, der den Fortschritt der
+Rechtschreibprüfung innerhalb der Datei anzeigt. Dieser Wert wird graphisch und
+durch Ziffern angezeigt.
+    </textblock>
+
+    <textblock>
+Anmerkung
+    </textblock>
+
+    <hint>
+Gleichzeitig wird der Fortschritt der Rechtschreibprüfung in der <ref iref="statusleiste">Statusleiste</ref>
+des Editors angezeigt. Die Statusleiste ist der liegende Streifen am unteren
+Rand des Editorfensters unterhalb des Texteingabebereiches.
+    </hint>
+
+    <textblock>
+Zwei weitere Knöpfe befinden sich unter dem Anzeigebalken im Dialogfeld:
+    </textblock>
+
+    <textblock>
+	 <strong>Hilfe</strong>
+    </textblock>
+
+    <quotation>
+Ruft das KDE-Hilfesystem mit den Informationen zu KWrite auf und zeigt die
+Seiten, die Sie gerade lesen.
+    </quotation>
+
+    <textblock>
+	 <strong>Cancel</strong>
+    </textblock>
+
+    <quotation>
+Dieser Knopf bricht die Rechtschreibprüfung ab.
+    </quotation>
+
+    <textblock>
+     <command>
+Werkzeuge->Einrücken
+     </command>
+    </textblock>
+
+    <textblock>
+Erhöht die Einrückung des Abschnittes um einen Schritt. Die Schrittgröße wird in
+ <ref iref="Einrücken">Persönliche Einstellungen -> Einrücken</ref> festgelegt.
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Einrücken rückgängig
+     </command>
+    </textblock>
+
+    <textblock>
+Verringert die Einrückung des Abschnittes um einen Schritt. Die Schrittgröße
+wird in <ref iref="Einrücken">Persönliche Einstellungen -> Einrücken</ref> festgelegt.
+    </textblock>
+
+    <textblock>
+     <command>
+Werzeuge->Einrückungen löschen
+     </command>
+    </textblock>
+
+    <textblock>
+Noch nicht verfügbar.
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Kommentar
+     </command>
+    </textblock>
+
+    <textblock>
+Dieser Befehl fügt ein Leerzeichen am Zeilenanfang der aktuellen Zeile oder an
+den Zeilenanfängen aller markierten Zeilen ein.
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Kommentar entfernen
+     </command>
+    </textblock>
+
+    <textblock>
+Dieser Befehl entfernt (wenn vorhanden) ein Leerzeichen vom Zeilenanfang der
+aktuellen Zeile oder von den Zeilenanfängen der markierten Zeilen.
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Einrücken (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>I</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Einrücken rückgängig (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>U</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Einrückungen löschen
+     </command>
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Kommentar (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>#</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+     <command>
+Werkzeuge->Kommentar entfernen (
+      <keycomb mode="hold">
+       <key>Ctrl</key>
+       <key>Shift</key>
+       <key>#</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+  </section> 
+
+  <section>
+<!-- *.* Kapitel -->
+   <heading>
+Das Menü Einstellungen
+   </heading>
+
+    <textblock>
+     <command>
+Einstellungen->Werkzeugleiste anzeigen
+     </command>
+    </textblock>
+
+    <textblock>
+Schaltet die Anzeige der Werkzeugleiste mit oft benutzten Befehlen ein und aus,
+die auch verschoben werden kann.
+    </textblock>
+
+    <textblock name="statusleiste">
+     <command >
+Einstellungen->Statusleiste anzeigen
+     </command>
+    </textblock>
+
+    <textblock>
+Schaltet die Anzeige der Statusleiste mit Informationen über den aktuellen Text
+am unteren Ende des KWrite-Fensters ein und aus.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->Pfad anzeigen
+     </command>
+    </textblock>
+
+    <textblock>
+Schaltet die Anzeige des vollständigen Pfades der aktuellen Datei im Kopf des
+Fensters ein und aus.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->Tastenzuordnungen vornehmen...
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet ein Dialogfenster zum Einstellen der Tastenzuordnungen. Ein
+Anzeigefenster oben im Dialogfenster zeigt die Liste der verfügbaren Befehle.
+Darunter befinden sich drei Auswahltasten mit den Funktionen Keine Taste,
+Standardtaste und Benutzerdef. Tasten. Nur eine der drei Tasten kann gedrückt
+sein und die Möglichkeit Standardtaste ist nur für Befehle, die ein
+Standard-Tastenkürzel haben, vorhanden. Wenn die Möglichkeit Benutzerdef. Tasten
+ausgewählt ist, werden die drei Ankreuzfelder und das Tastensymbol unten in der
+Dialogbox aktiviert. Hier kann dann der gewünschte Tastenkurzbefehl eingestellt
+werden.
+    </textblock>
+
+    <textblock>
+Beispiel:
+    </textblock>
+
+    <textblock>
+Im Anzeigefeld <strong>Über KWrite</strong> auswählen <command>Strg</command> und <command>Alt</command> ankreuzen, das
+Tastensymbol anklicken und die Taste <command>K</command> auf der Tastatur drücken - erzeugt die
+Tastenkombination 
+     <command>
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>Alt</key>
+       <key>K</key>
+      </keycomb>
+     </command> 
+als Kurzbefehl zum Anzeigen der <strong>Über KWrite</strong>
+Information.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->Werkzeugleisten einrichten...
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet eine Dialogbox zum Einstellen der Eigenschaften der Werkzeugleisten. Der
+Nutzer kann auswählen, welche Aktionen als Symbole in der Werkzeugleiste
+erscheinen sollen. Das Anzeigefenster links zeigt die Befehle, die in der
+Werkzeugleiste erscheinen können, das Fenster auf der rechten Seite zeigt die
+Befehle, die auf der Werkzeugleiste erscheinen werden. Die vier Pfeile zwischen
+den Anzeigefenstern dienen zum Verschieben des vorher durch einen Klick auf den
+Eintrag in einem der beiden Fenster auszuwählenden Befehle. Rechts verschiebt
+den ausgewählten Befehl von der linken in die rechte Liste; dieses wird also zu
+den anzuzeigenden Befehlen hinzugefügt, Auf und Ab verschieben den ausgewählten
+Befehl innerhalb der fertigen Werkzeugleiste. Ein in der rechten Liste
+ausgewählter Befehl wird durch einen Klick auf Links aus der Werkzeugleiste
+entfernt.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->KWrite einrichten...
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet ein Dialogfenster zur Auswahl von verschiedenen <ref iref="Einrichten von KWrite"> Einstellungen</ref>.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->Symbolrand anzeigen (
+      <keycomb mode="hold">
+       <key>F6</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Schaltet eine Anzeige am linken Rand des Editorfensters ein und aus, die
+Lesezeichen neben der markierten Zeile anzeigt.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->Vertikale Auswahl (
+      <keycomb mode="hold">
+       <key>F4</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Schaltet die Vertikalauswahl ein und aus. Die Vertikalauswahl erlaubt die
+Textauswahl nach Spalten, so dass rechteckige Bereiche ausgewählt werden können,
+die sich nur über bestimmte Spalten und Zeilen ausdehnen.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->Hervorhebungsmodus
+     </command>
+    </textblock>
+
+    <textblock>
+Dies erlaubt dem Benutzer den Stil zu wählen, in dem die Farben für den
+Hervorhebungsmodus benutzt werden. Die Stile werden nach Programmiersprache
+ausgewählt und werden nicht mit dem Dokument gespeichert.
+    </textblock>
+
+    <textblock>
+     <command>
+Einstellungen->Zeilenende
+     </command>
+    </textblock>
+
+    <textblock>
+Öffnet ein Untermenü in dem der Typ des "Zeilenendezeichens" das KWrite benutzen
+soll, ausgewählt werden kann. Zur Auswahl stehen: Unix, Mac® oder
+MSDOS/Windows®.
+    </textblock>
+
+  </section> 
+
+  <section>
+<!-- *.* Kapitel -->
+   <heading>
+Das Menü Hilfe
+   </heading>
+
+    <textblock>
+     <command>
+Hilfe->Inhalt (
+      <keycomb mode="hold">
+       <key>F1</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Ruft das KDE-Hilfesystem mit den Informationen zu KWrite auf und zeigt die
+Seiten, die Sie gerade lesen.
+    </textblock>
+
+    <textblock>
+     <command>
+Hilfe->Was ist das? (
+      <keycomb mode="hold">
+       <key>Umschalt</key>
+       <key>F1</key>
+      </keycomb>
+)
+     </command>
+    </textblock>
+
+    <textblock>
+Schaltet den Cursor in eine Kombination aus Pfeil und Fragezeichen um. Klicken
+auf beliebige Bedienungselemente von KWrite öffnet ein Hilfefenster mit
+Erklärung zu diesem Element - wenn diese existiert.
+    </textblock>
+
+    <textblock>
+     <command>
+Hilfe->Berichten Sie Probleme oder Wünsche...
+     </command>
+    </textblock>
+
+    <textblock>
+Dies öffnet ein Fenster Problembericht einschicken. Hier können Sie direkt eine
+E-Mail an die Entwickler von KWrite verfassen. Wählen Sie den Schweregrad und
+geben Sie (möglichst auf Englisch) einen Problembericht ein. Auch Berichte über
+(bisher) unerfüllte Wünsche sind hier willkommen.
+    </textblock>
+
+    <textblock>
+     <command>
+Hilfe->Über KWrite
+     </command>
+   </textblock>
+
+    <textblock>
+Zeigt Versionsinformation, Autor und Lizenzinformationen von KWrite an.
+    </textblock>
+
+    <textblock>
+     <command>
+Hilfe->Über KDE
+     </command>
+    </textblock>
+
+    <textblock>
+Zeigt Versionsinformation und Grundsätzliches zu KDE an.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kaptiel-->
+   <heading>
+Einrichten von KWrite
+   </heading>
+
+   <textblock>
+Die Auswahl von Einstellungen->Kwrite einrichten... im Menü öffnet das
+Dialogfenster KWrite einrichten. In diesem Dialogfenster können eine ganze Reihe
+von Einstellungen vorgenommen werden. Die angezeigten Einstellungsmöglichkeiten
+hängen von der Auswahl eines links in der Liste angezeigten Symbols ab. Die drei
+am unteren Rand des Dialogfeldes rufen die <command>Hilfe</command> auf, machen die aktuellen
+Einstellungen mit <command>OK</command> gültig, oder brechen mit Abbrechen den Einstellungs-Prozess
+ab. Die zur Auswahl stehenden Kategorien - Farben, Einrücken, Auswählen,
+Bearbeiten und Rechtschreibung sind nachfolgend erläutert.
+   </textblock>
+
+   <textblock>
+Sie können das Hilfesystem aufrufen, die aktuellen Einstellungen mit <command>OK</command>
+akzeptieren und das Dialogfeld schließen, oder den Knopf <command>Abbrechen</command> benutzen, um
+das Dialogfeld zu Schliessen, ohne Änderungen zu speichern. Die zur Auswahl
+stehenden Kategorien - Farben, Schriftart, Einrücken, Auswählen, Bearbeiten und
+Rechtschreibung sind nachfolgend erläutert.
+   </textblock>
+
+  <section>
+<!-- *.* Kapitel-->
+   <heading>
+Farben
+   </heading>
+
+    <textblock>
+In diesem Abschnitt können fünf verschiedene Farbeinstellungen vorgenommen
+werden. Das Anklicken der speziellen großen Knöpfe öffnet jeweils ein Dialogfeld
+zum Einstellen der Farbe. Die Knöpfe nehmen die jeweils eingestellte Farbe an.
+    </textblock>
+
+    <textblock>
+Im Dialogfeld Farben können Sie einfach und bequem die gewünschte Farbe
+auswählen. Das rechteckige Feld links oben zeigt ein Spektrum der verfügbaren
+Farben an. Der Balken gleich rechts daneben zeigt die Helligkeit von der
+hellsten Einstellung oben bis zur dunkelsten Einstellung unten an. Sie können
+die gewünschte Farbe durch Klicken auf den Farbton links auswählen und dann die
+Helligkeit durch Klicken auf den Balken einstellen. Die Werte für die
+Grundfarben Rot, Grün und Blau sowie Helligkeit und Sättigung werden in
+numerischer Form in den Feldern links unten angezeigt. Sie können auch die
+gewünschten Werte direkt hier eingeben. Das kleinen Quadrat unten in der Mitte
+zeigt die aktuell eingestellte Farbe an. Das Feld unten rechts HTML: zeigt den
+Farbcode in HTML an, wie er für Webseiten verwendet wird.
+    </textblock>
+
+    <textblock>
+Die Pipette rechts dient zum Einfangen einer Farbe irgendwo auf dem Bildschirm.
+Wenn Sie diesen Knopf anklicken, dann ändert sich das Aussehen des Cursors in
+ein feines Kreuz. Wenn Sie mit diesem Kreuz dann irgendeinen Punkt auf dem
+Bildschirm anklicken, dann werden die Einstellungen für die Farbe dieses Punktes
+übernommen.
+    </textblock>
+
+    <textblock>
+Weiterhin gibt es die Möglichkeit, mit dem Knopf Zu eigenen Farben hinzufügen
+eine eingestellte Farbe zu einer <strong>Persönlichen Palette</strong> hinzuzufügen. Diese
+Palette steht zur Verfügung, wenn Sie Eigene Farben im Auswahlfeld rechts oben
+auswählen. Zusätzlich stehen noch einige vordefinierte Paletten bereit.
+    </textblock>
+
+    <textblock>
+	 <strong>Hintergrund</strong>
+    </textblock>
+
+    <quotation>
+Stellt die generelle Hintergrundfarbe für KWrite ein.
+    </quotation>
+
+    <textblock>
+	 <strong>Ausgewählt</strong>
+    </textblock>
+
+    <quotation>
+Stellt die Hintergrundfarbe ein, die zur Darstellung von ausgewähltem Text
+verwendet wird.
+    </quotation>
+   </section>
+
+   <section>
+<!-- *.* Kapitel-->
+	<heading>
+Schriftart
+	</heading>
+
+    <textblock>
+Hier können Sie die Schriftart einstellen, die KWrite standardmäßig verwendet.
+Sie könnenjede im System verfügbare Schriftart auswählen und die Standardgröße
+und -Codierung einstellen.Das Beispiel am unteren Rand des Dialogfeldes wird in
+der ausgewählten Schriftart angezeigt, sodass Sie die Auswirkungen von
+Änderungen sofort sehen.
+    </textblock>
+
+	<section>
+<!-- *.* Kapitel-->
+	 <heading>
+Einrücken
+	 </heading>
+
+	 <textblock>
+	  <strong>Automatisch einrücken</strong>
+	 </textblock>
+
+	 <quotation>
+Ankreuzen dieser Option sorgt dafür, dass neue Zeilen genauso eingerückt werden
+wie die darüberstehende Zeile.
+Mit Leerzeichen einrücken
+	 </quotation>
+
+	 <textblock>
+	  <strong>Mit Leerzeichen einrücken</strong>
+	 </textblock>
+
+	 <quotation>
+Anstelle von Tabulatoren werden zum Einrücken Leerzeichen verwendet. Die Anzahl
+der Leerzeichen wird im Feld Tabulator-Breite in der Sektion <ref iref="Bearbeiten"> Bearbeiten der
+Einstellungen...</ref> vorgenommen.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Rücktasten-Ausrückung</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn dieses Feld angekreuzt ist, kann die Rücktaste-Taste zum Ausrücken benutzt
+werden.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Tabulator-Einrückung</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn dieses Feld angekreuzt ist, kann die Tab-Taste zum Einrücken benutzt
+werden.
+	 </quotation>
+
+     <textblock>
+	  <strong>Zusätzliche Leerzeichen beibehalten</strong>
+	 </textblock>
+
+	 <quotation>
+Einrückungen von mehr als der voreingestellten Anzahl von Leerzeichen werden
+nicht gekürzt.
+	 </quotation>
+	</section>
+
+	<section>
+<!-- *.* Kapitel-->
+	 <heading>
+Auswählen
+	 </heading>
+
+	 <textblock>
+	  <strong>Durchgehende Auswahl</strong>
+	 </textblock>
+
+	 <quotation>
+Diese Einstellung verhindert, dass durch Eingaben oder Bewegen des Cursors mit
+den Pfeiltasten die Textauswahl aufgehoben wird.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Auswahl überschreiben</strong>
+	 </textblock>
+
+	 <quotation>
+Jedes eingegebene Zeichen oder Einfügeoperation ersetzt (überschreibt) den
+ausgewählten Text.
+	 </quotation>
+
+	 <textblock>
+Anmerkung
+     </textblock>
+
+	 <hint>
+(Beachten Sie: Wenn die Option Auswahl überschreiben aktiv ist, dann ersetzt
+jedes eingegebene Zeichen oder Einfügeoperation den ausgewählten Text.)
+	 </hint>
+
+	 <textblock>
+	  <strong>Automatisch mit Maus kopieren</strong>
+	 </textblock>
+
+	 <quotation>
+Text, der mit der Maus ausgewählt wird, wird automatisch in die Zwischenablage
+kopiert.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Einfache Auswahl nach dem X11-Standard</strong>
+	 </textblock>
+
+	 <quotation>
+Diese Einstellung wird noch nicht verwendet.
+	 </quotation>
+
+    <textblock name="vertikale_auswahl">
+	  <strong>Vertikale Auswahl</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn diese Option aktiviert ist, erfolgt die <ref iref="vertikale_auswahl"> Auswahl in Rechteckform</ref> und nicht
+in ganzen Zeilen, sobald der Cursor vertikal bewegt wird.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Auswahl umkehren</strong>
+	 </textblock>
+
+	 <quotation>
+Noch nicht verfügbar.
+	 </quotation>
+	</section>
+
+	<section>
+<!-- *.* Kapitel-->
+	 <heading>
+Bearbeiten
+	 </heading>
+
+	 <textblock name="Zeilenumbruch">
+	  <strong>Zeilenumbruch</strong>
+	 </textblock>
+
+	 <quotation>
+Zeilenumbruch ist eine Funktion, die bewirkt, dass der Editor automatisch eine
+neue Texteile beginnt und den Cursor an den Anfang dieser neuen Zeile
+verschiebt. Wenn diese Option aktiv ist, beginnt KWrite automatisch eine neue
+Zeile, sobald die aktuelle Zeile die Länge erreicht, die im Feld <ref iref="Zeilenumbruch_bei">Zeilenumbruch</ref>
+angegeben ist.
+	 </quotation>
+
+	 <textblock name="Zeilenumbruch_bei">
+	  <strong>Zeilenumbruch bei:</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn die <ref iref="Zeilenumbruch">Zeilenumbruch</ref> Option aktiv ist, bestimmt dieses Feld, beim Erreichen
+welcher Position KWrite eine neue Zeile beginnt.
+	 </quotation>
+
+	 <textblock name="Tabulator-Leerzeichen">
+	  <strong>Tabs durch Leerzeichen ersetzen</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn diese Option aktiv ist, ersetzt KWrite eingegebene Tabulatoren durch die im
+Feld <ref iref="Tabulator-Breite">Tabulator-Breite:</ref> eingestellte Anzahl Leerzeichen.
+	 </quotation>
+
+	 <textblock name="Tabulator-Breite">
+	  <strong>Tabulator-Breite</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn die Option <ref iref="Tabulator-Leerzeichen">Tabs durch Leerzeichen ersetzen</ref> aktiv ist, gibt dieses Feld die
+Anzahl der Leerzeichen an, die an Stelle eines Tabs treten.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Leerzeichen am Zeilenende entfernen</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn diese Option aktiv ist, entfernt KWrite automatisch alle zusätzlichen
+Leerzeichen an Zeilenenden.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Automatische Klammern</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn dies Option aktiv ist, setzt KWrite beim Eingeben einer linken Klammer
+([,(, oder {) automatisch eine rechte Klammer des gleichen Typs rechts vom
+Cursor. Diese braucht dann zum Schließen der Klammer nur noch übersprungen zu
+werden.
+	 </quotation>
+
+	 <textblock name="back_gruppieren">
+	  <strong>Rückgängig gruppieren</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn diese Option aktiv ist, werden von KWrite Folgen von gleichartigen Aktionen
+als ein <ref iref="strgz">Rückgängig:</ref>-Schritt angesehen. Wenn Sie Text eingeben, ohne dass die
+Eingabe durch die Rücktaste oder Cursorbewegungen unterbrochen wurde, entfernt
+KWrite bei Rückgängig alle seit der letzten Unterbrechung eingegebenen Zeichen
+auf einmal.
+	 </quotation>
+
+	 <quotation>
+Wenn diese Option nicht aktiv ist, betrachtet KWrite jeden Tastendruck als
+einzelnen Schritt. Zum Entfernen des letzten eingegebenen Wortes wären dann
+mehrere Rückgängig-Schritte notwendig. Wenn diese Option aktiv ist, werden, wenn
+Sie Text eingeben, ohne dass die Eingabe durch die Rücktaste oder
+Cursorbewegungen unterbrochen wurde, bei Rückgängig alle seit der letzten
+Unterbrechung eingegebenen Zeichen auf einmal entfernt.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Tabulatoren anzeigen</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn diese Option aktiv ist, zeigt KWrite einen Tabulator im Text durch ein
+Symbol an.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Intelligente Pos1-Taste</strong>
+	 </textblock>
+
+	 <quotation>
+Noch nicht verfügbar.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Bild Auf/Ab bewegt Cursor</strong>
+	 </textblock>
+
+	 <quotation>
+Diese Option ändert das Verhalten der Cursors wenn der Benutzer die <command>Bild auf</command>
+oder <command>Bild ab</command> Tasten. Wenn nicht aktiviert, bleibt der Text-Cursor an seiner
+relativen Position innerhalb des sichtbaren Textes in KWrite wenn neuer Text
+sichtbar wird. Wenn der Cursor also in der Mitte des Textes steht wenn man <command>Bild
+ab</command> drückt, dann wird der sichtbare Bereich verschoben, aber der Cursor bleibt in
+der Mitte (außer am Dateianfang oder -ende). Wenn die Option aktiviert ist,
+wird der Cursor durch den ersten Tastendruck an die erste oder letzte Zeile
+innerhalb des sichtbaren Bereichs verschoben.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Cursor folgt Zeilenumbruch</strong>
+	 </textblock>
+
+	 <quotation>
+Wenn diese Option aktiv ist, springt der Cursor an den Anfang der nächsten
+Zeile, sobald dieser mit der Cursortaste über den rechten Rand der Zeile hinaus
+bewegt wird. Wenn versucht wird, den Cursor nach links über den Zeilenanfang
+hinaus zu bewegen, springt dieser an das Ende der vorhergehenden Zeile. Wenn
+diese Option nicht aktiv ist, springt der Cursor am Zeilenende auf der selben
+Zeile weiter nach rechts und tut nichts, wenn am Zeilenanfang versucht wird,
+weiter nach links zu gehen.
+	 </quotation>
+
+	 <quotation>
+Wenn diese Einstellung aktiviert ist, dann wird beim Klicken mit dem Mauszeiger
+nach dem Ende einer Zeile der Cursor an das Ende der Zeile gesetzt. Das
+verhindert das versehentliche Einfügen von Leerzeichen irgendwo im Text und ist
+das Standardverhalten der meisten Editoren.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Anzahl <ref iref="strgz">Rückgängig:</ref></strong>
+	 </textblock>
+
+	 <quotation>
+Dieses Feld gibt die Anzahl der Schritte an, die von KWrite im Speicher für
+Rückgängig gespeichert werden. Wenn hier 10 steht, heißt das, dass Sie die
+letzten 10 Schritte mit Rückgängig ungeschehen machen können. Je größer die
+Anzahl der Schritte ist, desto mehr Speicher wird KWrite für dieses Werkzeug
+benutzen.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Kodierung:</strong>
+	 </textblock>
+
+	 <quotation>
+Hier wird der Zeichensatz für Ihre Datei eingestellt.
+	 </quotation>
+	</section>
+
+	<section>
+<!-- *.* Kapitel-->
+	 <heading>
+Rechtschreibung
+	 </heading>
+
+	 <textblock>
+Die Rechtschreibprüfung ist ein Programm zum Finden und Berichtigen von
+Schreibfehlern. In diesem Abschnitt werden die wichtigen Einstellungen hierzu
+vorgenommen.
+	 </textblock>
+
+	 <textblock>
+	  <strong>Kombinationen aus Wortstamm+Zusätzen erstellen, die nicht im Wörterbuch stehen:</strong>
+	 </textblock>
+
+	 <quotation>
+Bei Auswahl dieser Funktion werden Wortstämme mit Vor- oder Nachsilben als
+richtig erkannt, auch wenn diese Schreibung nicht im Wörterbuch enthalten ist.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Zusammengezogene Wörter als Rechtschreibfehler betrachten:</strong>
+	 </textblock>
+
+	 <quotation>
+Bei Auswahl dieser Funktion werden zwei korrekt geschriebene Wörter als Fehler
+erkannt, wenn sie zusammengeschrieben sind.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Wörterbuch:</strong>
+	 </textblock>
+
+	 <quotation>
+Abhängig von der spezifischen Installation können mehrere Wörterbücher vorhanden
+sein. Das Auswahlfeld ermöglicht die Einstellung des von der Rechtschreibprüfung
+zu benutzenden Wörterbuches.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Kodierung:</strong>
+	 </textblock>
+
+	 <quotation>
+Hier erfolgt die Auswahl des benutzten Codesystems und des Zeichensatzes, so
+dass die Rechtschreibprüfung korrekt arbeiten kann.
+	 </quotation>
+
+	 <textblock>
+	  <strong>Programm:</strong>
+	 </textblock>
+
+	 <quotation>
+Weil KWrite keine eigene Rechtschreibprüfung enthält, muss eine externe
+Rechtschreibprüfung verwendet werden. Die Einstellungen hierzu erfolgen hier.
+	 </quotation>
+	</section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel-->
+   <heading>
+Hervorhebungsmodus
+   </heading>
+
+   <textblock>
+Der Dialog Hervorhebungsmodus einrichten... besteht aus zwei Seiten: 
+Standardstile und Hervorhebungsmodi. Der Nutzer kann die gewünschte Seite durch
+Klicken auf die entsprechende Karteikarte oben im Dialogfenster aufrufen.
+   </textblock>
+
+   <textblock>
+Auf der Seite Standardstile sind folgende Einstellungsmöglichkeiten vorhanden:
+   </textblock>
+
+   <textblock>
+	<strong>Standard-Elementstile</strong>
+   </textblock>
+
+   <hint>
+Hier können Sie das Standardaussehen für bestimmte Elemente einstellen. Das
+erleichtert das Erkennen verschiedener (Typen) von Elementen in Quelltext.
+   </hint>
+
+   <hint>
+	<strong>Element</strong>
+   </hint>
+
+   <quotation>
+Dieses Auswahlfeld stellt eine Reihe von Elementen bereit, die der Nutzer
+eventuell hervorgehoben angezeigt bekommen möchte. Normal für Elemente die nicht
+in eine der anderen Kategorien passen, Kommentar, Zeichenkette, Stichwort und
+einige andere sind enthalten. Nicht alle diese Elemente müssen für jede
+Programmiersprache eingerichtet werden, so dass der Nutzer nur die Elemente, die
+er braucht, auswählen muss. Die Einstellungen, die in diesem Abschnitt
+beschrieben werden, werden auf das in diesem Auswahlfeld ausgewählte Element
+angewendet.
+   </quotation>
+
+   <hint>
+	<strong>Normal</strong>
+   </hint>
+
+   <quotation>
+Hier wählt der Nutzer die Farbe für die Normalelemente aus. Dies erfolgt durch
+ein Farbauswahldialogfenster. Weitere Informationen zu diesem Dialogfenster
+finden Sie im Abschnitt Farben im Kapitel Einrichten von KWrite.
+   </quotation>
+
+   <hint>
+	<strong>Fett</strong>
+   </hint>
+
+   <quotation>
+Aktivieren Sie diese Option, wenn das Element fettgedruckt angezeigt werden
+soll.
+   </quotation>
+
+   <hint>
+<strong>Kursiv</strong>
+   </hint>
+
+   <quotation>
+Aktivieren Sie diese Option, wenn das Element in Kursivschrift angezeigt werden
+soll.
+   </quotation>
+
+   <hint>
+	<strong>Ausgewählt</strong>
+   </hint>
+
+   <quotation>
+Farbe, die das Element haben soll, wenn es ausgewählt (markiert) ist. Dies
+erfolgt durch ein Farbauswahldialogfenster. Weitere Informationen zu diesem
+Dialogfenster finden Sie im Abschnitt Farben im Kapitel Einrichten von KWrite.
+   </quotation>
+
+   <textblock>
+Die Einstellungselemente auf der Hervorhebungsmodiseite erlauben weitreichende
+Einstellungen, abhängig von der ausgewählten Programmiersprache.
+   </textblock>
+
+   <textblock>
+Der Nutzer muss nicht alle vorhandenen Optionen einstellen, Elemente die nicht
+eingestellt sind, behalten die Standardeinstellung, wie in der Standardseite.
+   </textblock>
+
+   <textblock>
+	<strong>Auswahl einrichten</strong>
+   </textblock>
+
+   <hint>
+In diesem Feld wählen Sie den Elementetyp und die Programmiersprache aus, deren
+Einstellungen Sie verändern wollen. Alle anderen Einstellungen werden auf die
+hier ausgewählte Sprache angewendet.
+   </hint>
+
+   <hint>
+	<strong>Hervorhebung</strong>
+   </hint>
+
+   <quotation>
+Hier wird die einzurichtende Programmiersprache ausgewählt.
+   </quotation>
+
+   <hint>
+	<strong>Element</strong>
+   </hint>
+
+   <quotation>
+Hier wird das einzurichtende Element ausgewählt. Beachten Sie, dass sich die
+Einstellung nur auf dieses Element in dieser Programmiersprache bezieht.
+   </quotation>
+
+   <textblock>
+Wenn Sie das Erscheinungsbild von z.B. "Kommentaren" in C++ einrichten wollen,
+wählen Sie C++ in der Hervorheben Auswahlbox und dann Kommentar in der Element
+Auswahlbox. Wenn das Aussehen von Kommentaren in allen Sprachen verändert werden
+soll, dann muss das Erscheinungsbild in der Standard Seite eingerichtet werden
+und in den spezielleren Seiten unverändert belassen werden.
+   </textblock>
+
+   <textblock>
+<strong>Element-Stil</strong>
+   </textblock>
+
+   <hint>
+Hier stellt der Nutzer das Aussehen des ausgewählten Elementes ein. Er kann
+entweder das Ankreuzfeld Standard aktivieren, das die Einstellungen aus der
+Seite Standards übernimmt, oder das Aussehen direkt hier einstellen. Die
+Einstellungsmöglichkeiten sind dieselben, wie für die Standardsseite
+beschrieben: Normal, Ausgewählt, Fett und Kursiv stehen zur Verfügung.
+   </hint>
+
+   <textblock>
+	<strong>Automatische Hervorhebungen</strong>
+   </textblock>
+
+   <hint>
+KWrite kann automatisch einstellen, für welche Hervorhebungen für das geöffnete
+Dokument angewendet werden sollen. Dies geschieht anhand der
+Dateinamenserweiterung oder anhand des MIME-Typs der Datei. Wenn häufig mit
+nicht standardgemäß bezeichneten Dateien gearbeitet wird, kann hier der MIME-Typ
+oder die Dateinamenserweiterung hinzugefügt werden. Jokerzeichen sind im Feld
+Dateierweiterungen erlaubt. Z.B. der Standardeintrag für C++ ist
+<path>*.cpp;*.cc;*.C;*.h</path>. Wenn eine Datei <path>foo.h</path> geöffnet wird, wendet KWrite
+automatisch die Hervorhebungen für die Programmiersprache C++ an.
+   </hint>
+
+   <textblock>
+	<strong>Element-Schrift</strong>
+   </textblock>
+
+   <hint>
+Hier stellt der Nutzer das Aussehen des ausgewählten Elementes ein.
+   </hint>
+
+   <hint>
+Es kann entweder das Ankreuzfeld Standard aktiviert werden, das die
+Einstellungen aus der Seite Standards übernimmt, oder es kann das Aussehen
+direkt hier eingestellt werden. Die Einstellungsmöglichkeiten sind dieselben,
+wie für die Standardsseite beschrieben.
+   </hint>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel-->
+   <heading>
+Mitwirkende und Lizenz
+   </heading>
+
+   <textblock>
+KWrite Copyright 2001 by the Kate team.
+   </textblock>
+
+   <textblock>
+Basiert auf dem Original-KWrite, das Copyright 2000 by <name 
+email="digisnap@cs.tu-berlin.de">Jochen Wilhelmy</name> war.
+   </textblock>
+
+   <textblock>
+Mitarbeit:
+   </textblock>
+
+   <textblock>
+	<name email="cullmann@kde.org">Christoph Cullmann</name>
+   </textblock>
+
+   <textblock>
+	<name email="michael.bartl1@chello.at">Michael Bartl</name>
+   </textblock>
+
+   <textblock>
+	<name email="phlip_cpp@my-deja.com">Phlip</name>
+   </textblock>
+
+   <textblock>
+	<name email="anders@alweb.dk">Anders Lund</name>
+   </textblock>
+
+   <textblock>
+	<name email="newellm@proaxis.com">Matt Newell</name>
+   </textblock>
+
+   <textblock>
+	<name email="jowenn@bigfoot.com">Joseph Wenninger</name>
+   </textblock>
+
+   <textblock>
+	<name email="digisnap@cs.tu-berlin.de">Jochen Wilhely</name>
+   </textblock>
+
+   <textblock>
+	<name email="koch@kde.org">Michael Koch</name>
+   </textblock>
+
+   <textblock>
+	<name email="gebauer@bigfoot.com">Christian Gebauer</name>
+   </textblock>
+
+   <textblock>
+	<name email="hausmann@kde.org">Simon Hausmann</name>
+   </textblock>
+
+   <textblock>
+	<name email="glenebob@nwlink.com">Glen Parker</name>
+   </textblock>
+
+   <textblock>
+	<name email="sdmanson@altel.net">Scott Manson</name>
+   </textblock>
+
+   <textblock>
+	<name email="jfire@uclink.berkeley.edu">John Firebaugh</name>
+   </textblock>
+
+   <textblock>
+Diese Dokumentation wurde von <name email="ctmcginnis@compuserve.com">Thad
+McGinnis</name> erstellt.
+   </textblock>
+
+   <textblock>
+Dieser Version des KWrite-Handbuchs liegt das Original von <name 
+email="tibirna@kde.org">Cristian Tibirna</name> zugrunde.
+   </textblock>
+
+   <textblock>
+In das Docbook-Format überführt und Korrektur gelesen wurde dieses Handbuch von
+<name email="lauri@kde.org">Lauri Watts</name>
+   </textblock>
+
+   <textblock>
+Übersetzungen von:
+   </textblock>
+
+   <textblock>
+<name email="thd@kde.org">Thomas Diehl</name>, GUI-Übersetzung
+   </textblock>
+
+   <textblock>
+<name email="matthschulz@linuxfreemail.com">Matthias Schulz</name>, Übersetzung 
+der Dokumentation
+   </textblock>
+
+   <textblock>
+Diese Dokumentation ist unter den Bedingungen der GNU Free Documentation License
+veröffentlicht.
+   </textblock>
+
+   <textblock>
+Dieses Programm ist unter den Bedingungen der GNU General Public License
+veröffentlicht.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Anhang A. Installieren
+   </heading>
+
+   <textblock>
+KWrite ist Teil des kdebase Paketes. Für mehr Information über das Installieren
+und Kompilieren von KDE sehen Sie unter <ref lang="en" url="http://www.kde.org">www.kde.org</ref> nach.
+   </textblock>
+  </section>
+ </split>
+</chapter>

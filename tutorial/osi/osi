@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Das OSI-Referenzmodell</title>
+
+ <author>
+  <name>M. Kleine</name>
+  <mailto>kleine_matthias@gmx.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Nüßler</name>
+  <mailto>m.nuessler@web.de</mailto>
+ </layout>
+
+ <license>GPL</license>
+
+ <index>osi</index>
+
+ <description>
+  <textblock>
+  Das OSI-Referenzmodell ist das bekannteste Modell zur Beschreibung
+  offener Kommunikationsarchitekturen und eignet sich hervorragend zur
+  Erläuterung des Aufbaus von Computernetzen.
+  </textblock>
+ </description>
+
+ <split>
+
+  <section>
+   <heading>
+Das OSI-Modell
+   </heading>
+
+   <textblock>
+Im Umgang mit Netzwerken hat sich die Bezugnahme auf ein
+Referenzmodell der <ref lang="en" url="http://www.iso.org">International Organization for Standardization (ISO)</ref> als
+ausgesprochen hilfreich erwiesen. Hier soll von Anfang an betont
+werden, dass es sich um ein Modell handelt, das eine
+Standard-Netzarchitektur beschreiben soll. Ein Modell ist jedoch nicht
+die Realität, und das Open Systems Interconnection-Modell (OSI) ist
+und war auch zu keinem Zeitpunkt die Realität in der Netzwerkwelt.
+Trotz seines Modellcharakters kann man seine Rolle beim Verständnis
+der Zusammenhänge in einem Netzwerk kaum überschätzen.
+   </textblock>
+
+   <textblock>
+Das OSI-Modell
+wird auch als <strong>7-Schichten-Modell</strong> bezeichnet. Es
+definiert 7 Schichten und ordnet jeder einzelnen Schicht spezielle
+Funktionalität zu. Über diese Grundidee lohnt es sich
+nachzudenken.
+   </textblock>
+
+   <textblock>
+Zunächst einmal müssen wir verstehen, dass ein Netzwerk
+seinen Benutzern Dienste bereitstellt. Im einfachsten Sinne überträgt
+es Daten von A nach B. Damit dies auf die Art und Weise geschieht, die
+wir im Sinn haben, müssen jedoch tatsächlich eine Vielzahl von
+Aufgaben bewältigt werden. Die Probleme, die dabei gelöst werden
+müssen, reichen von Fragen der elektronischen Übertragung der Signale
+über eine geregelte Reihenfolge in der Kommunikation (wer darf wann
+senden?) bis hin zu abstrakteren Aufgaben, die sich innerhalb der
+kommunizierenden Anwendungen ergeben. Die Vielzahl dieser Probleme und
+Aufgaben lässt es sinnvoll erscheinen, das Netz nicht als einen
+einzigen Dienstleister zu betrachten, sondern seine Dienste ganz
+bestimmten Kategorien zuzuordnen. Als besonders geeignet hat sich die
+Aufteilung in Schichten erwiesen.
+   </textblock>
+
+   <textblock>
+Schichten sind in zweierlei Hinsicht interessant.
+
+Erstens stellt jede Schicht ganz bestimmte Dienste zur Verfügung.
+Betrachten wir das Problem der elektronischen Datenübertragung.
+Werden die Daten über ein Kabel übertragen, so stellt sich die Frage,
+welches elektrische Signal als 0 und welches als 1 erkannt werden soll.
+Da 0 und 1 die elementaren Informationseinheiten sind, macht es keinen
+Sinn, etwa die Reihenfolge der Kommunikation regeln zu wollen, bevor
+dieses Problem gelöst ist - alles Weitere baut dann auf dieser
+Problemlösung auf. Wir können also sagen, dass eine Schicht der über ihr
+liegenden Schicht bestimmte Dienste zur Verfügung stellt. Die höhere
+Schicht verlässt sich darauf, dass die untere Schicht ihre Aufgaben
+korrekt erledigt. Sie benutzt ihre Dienste, um damit ihre eigenen
+Aufgaben zu erledigen.
+   </textblock>
+
+   <textblock>
+Zweitens dürfen wir nicht aus den Augen verlieren, dass wir von
+kommunikativen Prozessen reden. Auch hier spielt das Schichten-Modell
+eine zentrale Rolle. Die Schicht (um beim Beispiel zu bleiben), die für
+die elektronische Übertragung zuständig ist, wird die hier auftretenden
+Probleme alleine mit ihrer Partnerschicht in den Nachbarrechnern klären,
+und nicht etwa auch die darüberliegenden Schichten bemühen, welche von
+Elektronik auch gar nichts wissen. Eine Schicht, welche die Reihenfolge
+der Kommunikation regelt, wird dies nur mit ihrer Partnerschicht tun.
+Nur diese Partnerschicht weiß überhaupt, dass hier eine Regelung gefunden
+werden muss, folglich kann nur sie Antwort geben, und nur mit ihr kann
+eine Vereinbarung getroffen werden. Wir sehen also, dass eine Schicht
+zwei Dinge tut: Erstens stellt sie den anderen Schichten (im selben
+System) ihre Dienste zur Verfügung, zweitens kommuniziert sie mit
+ihrer Partnerschicht in einem oder mehreren fremden Systemen. Indem
+die Kommunikation mit der Partnerschicht eines fremden Systems
+erfolgreich ist, kann die Schicht ihren Dienst erfolgreich an die
+höheren Schichten im eigenen System weitergeben.
+   </textblock>
+
+   <textblock>
+Damit ist es nun an der Zeit, die einzelnen Schichten näher zu
+betrachten. Wir beginnen ganz unten und arbeiten uns
+Schicht für Schicht nach oben.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Die verschiedenen Schichten
+   </heading>
+
+   <image height="250">
+    <filename>osi.png</filename>
+   </image>
+
+   <section>
+    <heading>
+Die Bitübertragungsschicht
+    </heading>
+
+    <textblock>
+Die Bitübertragungsschicht (engl. Physical Layer) löst die Probleme
+der Übertragung von Datenbits über physikalische Medien. Dies beginnt
+bei den Spezifikationen bestimmter Übertragungsmedien (Kupferkabel,
+Lichtwellenleiter, Stromnetz, Luft etc.), der Definition von
+Steckverbindungen u.s.w. Darüber hinaus muss auf dieser Ebene gelöst
+werden, auf welche Art und Weise überhaupt ein einzelnes Bit übertragen
+werden soll. Was ist damit gemeint?
+    </textblock>
+
+    <textblock>
+Nun, wie wir wissen, baut die Informatik auf dem alles
+entscheidenden Unterschied zwischen 0 und 1, zwischen wahr und falsch
+auf. Diese Informationseinheit nennen wir Bit, und es steht außer
+Frage, dass wir nichts Sinnvolles übertragen könnten, wenn wir nicht
+die Möglichkeit hätten, 0 und 1 zu übertragen. Selbstverständlich sind
+dem Übertragungsmedium selbst, z.B. einem Kupferkabel im Falle
+elektrischer Übertragung, oder auch der Luft im Falle von
+Funkübertragung, die Werte 0 und 1 unbekannt. Für jedes Medium muss
+daher eine Codierung dieser Werte gefunden werden, beispielsweise ein
+Stromimpuls von bestimmter Spannung oder eine Funkwelle mit
+bestimmter Frequenz, jeweils bezogen auf eine bestimmte Dauer.
+    </textblock>
+
+    <textblock>
+Insgesamt können wir sagen, dass die Bitübertragungsschicht zu großen
+Teilen mechanische und elektrotechnische Probleme löst. Dies bedeutet
+jedoch nicht,
+dass wir keine weiteren Kenntnisse über diese Schicht zu haben
+brauchen. Durch die Wahl einer bestimmten hardwaretechnischen Lösung
+werden häufig bereits viele Eigenschaften und Einschränkungen des
+Netzwerkes festgelegt, die sich später nicht mehr ändern
+lassen. Falsche Entscheidungen können hier Unsummen von Geld
+verschlingen, weil häufig ein großer Teil der Hardware durch anderes
+Material ersetzt werden muss. Wir werden daher im Kapitel
+<ref chapter="lokale_netze">Lokale Netze</ref> auf
+bestimmte Kabeltypen und die Eigenschaften des meistverbreiteten
+Netztypes, des Ethernet, eingehen. Verschiedene Netztypen wie
+<ref chapter="lokale_netze" iref="Ethernet">Ethernet</ref>,
+<ref chapter="lokale_netze" iref="Token Ring">Token Ring</ref>
+und andere haben ihre Wurzeln meist tief in
+Schicht 1 und sind eng mit bestimmten hardwaremäßigen Entscheidungen
+verbunden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Die Sicherungsschicht
+    </heading>
+
+    <textblock>
+Während Schicht 1 lediglich einen rohen Strom an Bits kennt, werden
+die Daten in der Sicherungsschicht (engl. Data-Link Layer) zu
+sogenannten <strong>Frames</strong> (Datenrahmen) zusammengefasst. Dabei steht jeweils
+eine bestimmte Bitfolge für den Beginn eines Frames, eine andere für
+dessen Ende. Innerhalb eines Frames können weitere Steuerinformationen
+abgelegt werden.
+    </textblock>
+
+    <textblock>
+Ein Frame umfasst typischerweise einige hundert bis einige tausend
+Bytes. Auf das Senden eines Frames folgt die Bestätigung des
+Empfängers durch einen Bestätigungsrahmen (Acknowledgement Frame),
+welcher den korrekten Empfang eines Datenrahmens quittiert. Sowohl
+beim Senden eines Frames als auch beim Senden der Bestätigung kann es
+zu Fehlern kommen. Es kann auch geschehen, dass der Empfänger vom
+Sender (oder von mehreren Sendern) mit Daten überflutet wird, so dass
+er die Menge der gesendeten Pakete nicht mehr ordnungsgemäß empfangen
+und quittieren kann. Auch diesem Problem, bekannt unter dem Stichwort
+Flusskontrolle, wird bereits auf der Sicherungschicht begegnet.
+    </textblock>
+
+    <textblock>
+Im Vergleich mit der unstrukturierten Bitübertragungsschicht ist damit
+bereits ein erhebliches Maß an Übertragungssicherheit gegeben, das
+übrigens häufig auch von erfahrenen Administratoren und Entwicklern
+unterschätzt wird. Der Grund für diese Unterschätzung ist vermutlich
+darin zu suchen, dass auch in höheren Schichten häufig noch
+Sicherheitsmechanismen verwendet werden, was der Sicherungsschicht in
+gewisser Weise das Misstrauen ausspricht. Nichtsdestotrotz kommt man
+für viele Anwendungen auch ohne weitere Sicherungsmechanismen aus, was
+dafür spricht, dass die Sicherungsschicht durchaus bereits
+hervorragende Arbeit leistet.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Die Vermittlungsschicht
+    </heading>
+
+    <textblock>
+Bislang haben wir den Horizont unseres Nachbarrechners nicht überschritten.
+Dieser Schritt wird erst ab der Vermittlungsschicht vollzogen. In den
+seltensten
+Fällen wollen wir in einem Netzwerk tatsächlich nur mit unserem physischen
+Nachbarrechner kommunizieren. Um genau zu sein, wissen wir häufig gar nicht,
+wo der Rechner, auf dem unsere Nachricht landen wird oder von dem wir
+unsere Daten beziehen, überhaupt lokalisiert ist. Automatisch stellt
+sich die Frage, wie unser Datenpaket seinen Weg zum eigentlichen
+Bestimmungsort finden soll.
+    </textblock>
+
+    <textblock>
+Die Problematik wird nicht einfacher, wenn wir uns vergegenwärtigen,
+dass ein Paket auf seinem Weg womöglich durch viele verschiedene
+Teilnetze hindurchgeleitet werden muss. Diese Netze gehören uns nicht,
+und wir können auch nicht ahnen, ob es gerade Sinn macht, das eine
+oder das andere Teilnetz zu bevorzugen, weil dort vielleicht gerade
+weniger Verkehr ist. Probleme dieser Art, die man unter dem Stichwort
+Routing zusammenfassen kann, werden in der Vermittlungsschicht
+(engl. Network Layer) gelöst.
+    </textblock>
+
+    <textblock>
+Beim Durchqueren von fremden Teilnetzen können vielerlei Aufgaben und
+Probleme entstehen. Ein wichtiger Faktor ist sicher das Finden der
+richtigen Route in Fällen, in denen die Route dynamisch
+ermittelt wird. Bei Datenübertragungen über das Internet ist dies eher
+die Regel als die Ausnahme. Man kann davon ausgehen, dass beispielsweise
+im Verlaufe eines Downloads ein Teil der übertragenen Daten eine ganz
+andere Route genommen hat als ein anderer Teil. Die Wahl der Route
+
+obliegt sogenannten <ref chapter="lokale_netze" iref="Router">Routern</ref>,
+die man sich - einfach gesagt - wie
+Lotsen zwischen den unzähligen Teilnetzen vorstellen kann. Auch
+Linux-Rechner können als Router eingesetzt werden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Die Transportschicht
+    </heading>
+
+    <textblock>
+Auch wenn Schicht 3 bereits dafür sorgt, dass Daten den eigentlichen
+Zielrechner erreichen, können wir noch nicht wirklich von einer
+Kommunikation zwischen den Rechnern reden. Was bisher geschehen ist,
+können wir mit dem Landen eines Briefes im Briefkasten vergleichen:
+Der Brief hat sein Ziel erreicht, doch die eigentliche Information
+will noch gelesen und möglichst auch beantwortet werden. Eine echte
+sogenannte Ende-zu-Ende-Kommunikation beginnt erst ab Schicht 4, der
+Transportschicht (engl. Transport Layer).
+    </textblock>
+
+    <textblock>
+Kommunikation muss zwischen Partnern stattfinden, die sich verstehen
+können. Nun "hausen" in einem Rechner üblicherweise Unmengen von
+Applikationen und Prozessen, und es stellt sich automatisch die Frage,
+für wen die empfangene Nachricht eigentlich bestimmt ist. Möglicherweise
+ist auch der adressierte Partner augenblicklich gar nicht verfügbar -
+sei es, weil der Prozess gerade anderweitig beschäftigt ist, weil er hängt
+oder gar nicht gestartet wurde. In jedem Fall muss die Kommunikation an
+einen bestimmten Dienst gekoppelt werden, wenn sie erfolgreich sein
+soll. Irgendjemand muss das Gespräch entgegennehmen.
+    </textblock>
+
+    <textblock>
+Es wäre freilich auch sinnvoll, wenn der Sender über den Empfang der
+Daten eine Rückmeldung erhielte - insbesondere dann, wenn es sich um
+wichtige Daten handelt. Schicht 4 bietet diese Möglichkeit an und
+stellt somit gewissermaßen einen weiteren Sicherheitsmechanismus gegenüber
+der Low-Level-Sicherung der Schicht 2 zur Verfügung. Der Preis für
+diese Sicherheit wird in jedem Fall eine langsamere Kommunikation
+sein, denn auch das Versenden und der Erhalt von Bestätigungen will
+besorgt sein. Wenn es auf schnelle Verbindungen ankommt, kann das
+Versenden von Bestätigungen auch eher unerwünscht sein und muss daher
+nicht erfolgen.
+    </textblock>
+
+    <textblock>
+Stellen wir also nochmals in den Vordergrund, was die
+Transportschicht im Wesentlichen erreicht: Sie stellt eine
+Ende-zu-Ende-Verbindung her und ermöglicht damit erst die eigentliche
+Kommunikation zwischen zwei Partnerprogrammen auf 2 verschiedenen
+Rechnern. Das Öffnen einer solchen Verbindung ermöglicht nun
+beispielsweise eine sogenannte Sitzung...
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Die Sitzungsschicht
+    </heading>
+
+    <textblock>
+Eine Sitzung lebt von geordnetem Dialog. Wenn alle gleichzeitig reden,
+kann der Erfolg einer Sitzung fraglich sein. Tatsächlich haben viele
+Netzverbindungen Sitzungscharakter, d.h. die Kommunikation verläuft nicht
+nur in eine Richtung, sondern muss geregelt werden, da es sonst zu
+Konfusionen kommen kann. Eine solche Dialogsteuerung wird auf der
+Sitzungsschicht (engl. Session Layer) bereitgestellt. Zu den Aufgaben, die dabei anfallen,
+gehören der Auf- und Abbau von Sitzungen, Vereinbarungen über den
+Sitzungsverlauf, das Setzen von Sicherungspunkten bei
+Datenübertragungen (um bei Störungen die Übertragung an einem solchen
+Sicherungspunkt wieder aufnehmen zu können) usw.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Die Darstellungsschicht
+    </heading>
+
+    <textblock>
+Verschiedene Endsysteme stellen bestimmte häufig verwendete Elemente
+auf verschiedene Weise dar. Die Darstellung von Datentypen wie
+Zeichenketten oder Ganzzahlen, von Dateien, von Steuerzeichen für den
+Drucker und vieles andere variieren von System zu System, und da
+Anwendungen meist mit solchen Codierungen (und nicht etwa mit reinen
+Bitfolgen) kommunizieren, ist es gerechtfertigt, eine
+Standardcodierung für das Netz zu verwenden. Diese Standardcodierung
+wird von der Darstellungsschicht (engl. Presentation Layer) erzeugt
+bzw. beim Empfang in die interne Darstellungsform des Computers
+konvertiert.
+Zu den Aufgaben, die dabei anfallen, gehört auch die Komprimierung
+oder Verschlüsselung von Daten, die im heutigen Datenverkehr eine
+wichtige Rolle spielt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Die Anwendungsschicht
+    </heading>
+
+    <textblock>
+Schicht 1 ist von der Hardware nicht zu trennen, obwohl ihr die
+Hardware selbst nicht angehört. Ebenso, nur mit Perspektive auf die
+Anwendungsprogramme, verhält es sich mit Schicht 7. Die Aufgabe dieser
+Schicht lässt sich nicht wirklich auf den Punkt bringen, da für
+verschiedene häufige Anwendungsfälle auch ganz verschiedene Funktionen
+bereitgestellt werden.
+    </textblock>
+
+    <textblock>
+Die Anwendungsschicht (engl. Application Layer) stellt
+Protokolle für häufige Anwendungsfälle zur Verfügung,
+und gewährleistet, dass sich die Anwendungen auch auf
+unterschiedlichen Endsystemen erwartungsgemäß verhalten. Besinnen wir
+uns auf den Begriff Protokoll: Das Protokoll eines Staatsbesuches
+beispielsweise legt exakt fest, in welcher Reihenfolge welche
+Handlungen vollzogen werden, vom ersten Empfang am Morgen bis zum
+abendlichen Dinner. Solchen Protokollen sind wir bereits in niedrigeren
+Schichten begegnet, doch dort dienten sie nahezu ausschließlich der
+zuverlässigen Übertragung der Datenpakete. Auf Anwendungsebene
+interessieren uns nicht mehr die einzelnen Pakete, sondern größere
+inhaltliche Einheiten, die je nach Anwendung variieren können.
+    </textblock>
+
+    <textblock>
+Bleiben wir einmal bei dem Vergleich mit einem Staatsbesuch: Dem hohen
+Regierungsvertreter werden beim Empfang die Hände geschüttelt, und die
+Fahnen der Nationen wehen einmütig im Wind. Schön wäre es doch auch,
+wenn wir zum Empfang auf einem anderen Rechner eine Willkommensmeldung
+erhielten, in netten und informativen Worten auf unser Terminal
+geschrieben. Doch selbstverständlich kann sich das fremde System nicht
+darum kümmern, welchen Terminaltyp wir gerade benutzen - und davon
+gibt es Hunderte! Und jedes Terminal benutzt seinen eigenen Satz von
+Steuerzeichen. Die Willkommensmeldung würde ein unverständliches Chaos
+auf unserem Bildschirm auslösen, wenn sie nicht speziell für unser
+verwendetes Terminal umgesetzt würde. Auch dies gehört zu den Aufgaben
+der Anwendungsschicht.
+    </textblock>
+
+    <textblock>
+Im Verlaufe des Staatsbesuches müssen wichtige Dinge besprochen
+werden. Bestimmte Informationen müssen erfragt, andere sollen
+vermittelt werden. So gehören beispielsweise auch zu einer
+<!-- FUTURELINK chapter="Auf eine Einfuerung ins Thema E-Mail verlinken" -->E-Mail<!-- ENDLINK --> ganz
+bestimmte Informationen, ohne die eine E-Mail nicht vollständig ist:
+wie z.B. ein Subject, eine Absenderadresse, eine Zieladresse und auch
+ein Endezeichen, um zu ermitteln, wann der Textkörper beendet
+ist. Solche Teile eines Protokolls, die freilich von Anwendung zu
+Anwendung stark variieren können (je nachdem, welche Information
+gerade erfragt bzw. vermittelt werden soll) werden für häufige
+Anwendungen auf Schicht 7 festgelegt.
+    </textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

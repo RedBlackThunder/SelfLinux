@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Der Linux-Kernel</title>
+
+ <author>
+  <name>Erwin Dogs</name>
+  <mailto>edogs@t-online.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>kernel</index>
+
+ <description>
+  <textblock>
+Dieses Kapitel führt in die grundsätzliche Arbeitsweise eines Linux-Systems ein.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!--1. Kapitel -->
+   <heading>
+Der Kernel
+   </heading>
+
+   <textblock>
+Der Kernel verwaltet alle Betriebsmittel eines Computers. Er ist der erste
+Schritt von der Hardware zum Benutzer. Nach <strong>innen</strong>, zur Hardware hin,
+ist der Kernel ein Organisator. Er teilt den unterschiedlichen Geräten
+mit, was sie wann zu tun haben und sorgt für möglichst reibungslose,
+effiziente Abläufe. Nach <strong>außen</strong>, zum Benutzer hin,
+ist er ein Dienstleister:<br/>
+Er bietet Funktionen an, die von Programmen verwendet werden können.
+Programme verlangen Prozessorzeit, Speicherplatz, möchten von Geräten lesen
+oder auf sie schreiben, sie wollen andere Programme starten oder sich
+selbst beenden. Für all diese Aktionen müssen sie eine Anfrage an den
+Kernel richten, die von diesem an die Hardware weitergegeben oder auch
+verweigert werden kann.
+   </textblock>
+
+   <textblock>
+Der Kernel selbst ist ein Programm. Er liegt im Hauptspeicher, erhält
+dann und wann Prozessorzeit und kontrolliert in diesen Intervallen, welches
+Programm außer ihm etwas tun darf. Mit dem Systemstart muss der Kernel
+also in den Speicher geladen werden. Dies geschieht üblicherweise mittels
+eines
+<!-- FUTURELINK chapter="auf das kommende Kapitel zu bootloadern linken" -->Bootloaders wie <command>Lilo</command> oder <command>Grub</command><!-- ENDLINK -->
+von der lokalen Festplatte. Es gibt
+jedoch auch andere Möglichkeiten. Booten von Diskette oder CD ist ebenso
+möglich wie das Booten über ein Netzwerk.
+   </textblock>
+
+   <textblock>
+Um mit der Hardware kommunizieren zu können, benötigt ein Kernel spezielle
+Treiber. Des weiteren bestehen meist sehr konkrete Anforderungen an ein
+Rechnersystem - und diese Anforderungen können sich von System zu System
+stark unterscheiden. Benötigte Treiber und die konkreten Anforderungen an
+das System verlangen nach ganz unterschiedlichen Kernelfunktionen. Daher
+ist Kernel nicht gleich Kernel. Es wäre unsinnig, einen einzigen großen
+Kernel zu erstellen, der gewissermaßen <strong>alles kann</strong>. Ein enormer
+Speicherbedarf wäre die Folge. Es ist also eine Auswahl der Treiber
+und Funktionen notwendig.
+   </textblock>
+
+   <textblock>
+Diese Auswahl geschieht unter Linux auf zweierlei Weise. Zum einen kann
+bereits vor dem Kompilieren des Kernels angegeben werden, welche Komponenten
+überhaupt Bestandteil des Kernels werden sollen. Zweitens bietet Linux
+die Möglichkeit, einzelne Komponenten als Module zu kompilieren. Module
+können dann zur Laufzeit geladen und wieder aus dem Speicher entfernt
+werden.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!--4. Kapitel -->
+   <heading>
+Erzeugen eines eigenen Kernels
+   </heading>
+
+   <section>
+<!--4.1 Kapitel -->
+    <heading>
+Voraussetzungen
+    </heading>
+
+    <textblock>
+Um einen eigenen Kernel zu übersetzen, brauchen
+Sie einen C-Compiler, der die Quelltexte ins Binärformat übersetzt.
+Ob der C-Compiler installiert ist, erfahren Sie mit dem folgenden
+Befehl:
+    </textblock>
+
+    <shell>
+     <root path="">
+gcc --version
+     </root>
+    </shell>
+
+    <textblock>
+oder
+    </textblock>
+
+    <shell>
+     <root path="">
+cc --version
+     </root>
+    </shell>
+
+    <textblock>
+Nach Eingabe dieses Befehls sollte die Versionsnummer auf dem Schirm
+erscheinen.
+    </textblock>
+   </section>
+
+   <section>
+<!--4.2 Kapitel -->
+    <heading>
+Holen der Kernel-Quellen
+    </heading>
+
+    <textblock>
+Nun brauchen Sie noch die aktuellen Kernel-Quellen. Die Quellen des
+unveränderten Original-Kernels finden Sie auf
+    </textblock>
+
+    <textblock>
+<ref lang="en" url="http://www.kernel.org">http://www.kernel.org</ref>
+    </textblock>
+
+    <textblock>
+Schauen Sie auch auf der Downloadseite ihres
+<ref chapter="sl_linksammlung" iref="Distributionen">Distributors</ref>, der oft
+eigene (angepaßte) Versionen des Kernels im
+<ref chapter="software_installation">RPM- oder DEB-Format</ref>
+bereitstellt.
+    </textblock>
+
+    <textblock>
+Die Quelltexte des Kernels sollten Sie in <path>/usr/src</path> entpacken
+(bei der Installation eines Paketes wird das bereits oft automatisch erledigt).
+    </textblock>
+
+    <textblock>
+Wechseln Sie in das Verzeichnis <path>/usr/src</path>, um zu schauen,
+ob ein Verzeichnis <path>linux-&lt;kernelversion&gt;</path> existiert. Wenn ja, kann es auch schon los gehen.
+    </textblock>
+
+    <textblock>
+Wenn Sie die aktuelle Version des Originalkernels von
+<ref lang="en" url="http://www.kernel.org">www.kernel.org</ref>
+heruntergeladen haben, kopieren Sie die
+Datei <path>linux-2.x.xx.tar.bz2</path> in das Verzeichnis <path>/usr/src</path> und entpacken
+Sie das Archiv mit dem folgenden Befehl:
+    </textblock>
+
+    <shell>
+     <root path="/usr/src">
+tar jvxf linux-2.x.xx.tar.bz2
+     </root>
+    </shell>
+
+    <textblock>
+Nach dem Entpacken ist das Verzeichnis <path>/usr/src/linux-&lt;kernelversion&gt;</path> entstanden.
+    </textblock>
+   </section>
+
+   <section>
+<!--4.3 Kapitel -->
+    <heading>
+Hinweis zur Versionsnummer des Kernels
+    </heading>
+
+    <textblock>
+Es werden im Grunde zwei Arten von Kernels unterschieden. Das sind
+zum einen die <strong>stabilen Kernel</strong>, zum anderen die <strong>Entwickler-Kernel</strong>, an
+denen aktuell gearbeitet wird und die nicht stabil genug für die
+Benutzung sind.  Diese unterscheiden sich anhand der Versionsnummer. Eine
+gerade Zahl an der zweiten Stelle der Versionsnummer kennzeichnet den
+stabilen Kernel-Zweig, eine ungerade den aktuellen Entwickler-Kernel. Also
+sind etwa 2.0, 2.2, 2.4 und 2.6 <strong>stabile Kernel</strong>. Die Versionen 2.1, 2.3 und 2.5
+dagegen sind <strong>Entwickler-Kernel</strong>.
+    </textblock>
+
+    <textblock>
+Die Zahl, die darauf folgt, ist der <strong>Patchlevel</strong> des Kernels. Werden
+Änderungen an einer Kernelversion von den Kernel-Entwicklern freigegeben,
+so erhöht sich der Patchlevel jeweils um den Wert Eins. Der <strong>Patchlevel</strong> gibt somit
+Auskunft über die Aktualität des Kernels.
+    </textblock>
+   </section>
+
+   <section>
+<!--4.4 Kapitel -->
+    <heading>
+Konfiguration des Kernels
+    </heading>
+
+    <textblock>
+Sie haben im Wesentlichen drei Möglichkeiten, einen neuen Kernel zu
+konfigurieren.
+    </textblock>
+
+    <ul>
+     <li>
+<command>make config</command> ist die einfachste aber nicht die beste von allen:<br/> innerhalb des
+Konsolenfensters werden dem Benutzer Fragen gestellt, die er einzeln
+beantworten muss. Da dies mit der Zeit sehr umfangreich und unübersichtlich
+geworden ist, ist diese Methode nicht zu empfehlen.
+     </li>
+
+     <li>
+<command>make menuconfig</command> stellt ein grafisches Menü in einer Konsole bereit. In
+diesem Menü kann man Konfigurationsoptionen auswählen. Meistens werden die
+Möglichkeiten <strong>[X] [ ] [M]</strong> (aktiviert, deaktiviert und als Kernelmodul
+kompiliert) angeboten. Um diesen Weg zu nutzen, benötigt Ihr System die
+<path>ncurses</path>-Bibliothek, die jedoch von den meisten Distributionen von ganz
+allein installiert wird.
+     </li>
+
+     <li>
+<command>make xconfig</command> bietet ebenfalls ein Auswahlmenü an, aber unter
+der X-Window-Oberfläche. Hierzu müssen Sie <strong>Tcl/Tk</strong> installiert haben.
+     </li>
+    </ul>
+
+    <image height="200">
+     <title>
+make menuconfig in Aktion
+     </title>
+     <filename>make_menuconfig2.png</filename>
+    </image>
+
+    <textblock>
+Schauen Sie sich zunächst genau die Auswahloptionen an und
+vergleichen Sie, welche Hardware Sie in ihrem Computer haben
+(eventuell schauen Sie auch einmal in die Ausgaben der Befehle <command>lspci</command> und <command>dmesg</command>).
+Schauen Sie ggf. auf der Homepage des Herstellers nach, ob Sie eine
+Dokumentation zu Ihrer Hardware finden.
+    </textblock>
+
+    <textblock>
+Nachdem Sie die Auswahlentscheidungen getroffen haben, können Sie
+Ihre Konfiguration speichern. Die Konfiguration wird dann in die
+Datei
+    </textblock>
+
+    <textblock>
+<path>/usr/src/linux-&lt;kernelversion&gt;/.config</path>
+    </textblock>
+
+    <textblock>
+geschrieben.
+    </textblock>
+   </section>
+
+   <section>
+<!--4.5 Kapitel -->
+    <heading>
+Übersetzung des Kernels
+    </heading>
+
+    <textblock>
+Nach der Konfiguration erfolgt die Übersetzung mit den Befehlen:
+    </textblock>
+
+    <shell>
+     <root path="">
+make dep
+     </root>
+
+     <root path="">
+make clean
+     </root>
+
+     <root path="">
+make bzImage
+     </root>
+
+     <root path="">
+make modules
+     </root>
+
+     <root path="">
+make modules_install
+     </root>
+    </shell>
+
+    <textblock>
+Beim Kernel <strong>2.6</strong> hat sich dies jedoch geändert:
+    </textblock>
+
+    <shell>
+     <root path="">
+make
+     </root>
+
+     <root path="">
+make modules_install
+     </root>
+    </shell>
+   </section>
+
+   <section>
+<!--4.6 Kapitel -->
+    <heading>
+Installation des Kernels
+    </heading>
+
+    <textblock>
+Nach dem Kompilieren (die Kompilierungszeit ist abhängig von der
+Rechnenleistung und kann mehrere Stunden oder auch nur einige
+Minuten dauern) kopieren Sie den Kernel in Ihre Boot-Partition bzw. Ihr
+<path>/boot</path>-Verzeichnis. Sichern Sie bitte vorher den
+funktionierenden Kernel!
+Eine Befehlsfolge könnte etwa wie folgt aussehen:
+    </textblock>
+
+    <shell>
+     <root path="">
+cp /boot/vmlinuz /boot/vmlinuz.old
+     </root>
+
+     <root path="">
+cp /usr/src/linux/arch/i386/boot/bzImage /boot/vmlinuz
+     </root>
+
+     <root path="">
+cp /usr/src/linux/System.map /boot/System.map-&lt;kernelversion&gt;
+     </root>
+    </shell>
+
+    <textblock>
+Die exakte Versionsbezeichnung Ihres neu kompilierten Kernels teilt
+Ihnen die Datei <path>/usr/src/linux/include/linux/version.h</path> unter der Definition
+der <strong>UTS-RELEASE</strong> mit. Dies ist insbesondere dann wichtig, wenn Ihr Kernel eine
+besondere Namensgebung wie z.B. <strong>2.6.0-64GB-SMP</strong> aufweist. Programme, welche
+die Datei <path>System.map</path> benötigen, suchen nach einer Datei mit dem Namen
+<path>System.map-&lt;kernelversion&gt;</path> und verwenden dabei exakt den in der <path>version.h</path>
+Datei definierten Namen. Für Ihr laufendes System können Sie die richtige
+Versionsbezeichung mittels
+    </textblock>
+
+    <shell>
+     <root path="">
+uname -r
+     </root>
+    </shell>
+
+    <textblock>
+in Erfahrung bringen.
+    </textblock>
+
+    <textblock>
+Um den neuen Kernel booten zu können, müssen Sie dem Bootloader noch
+mitteilen, wo er den neuen Kernel findet.
+    </textblock>
+
+    <textblock>
+Öffnen Sie bei Verwendung von <command>LILO</command> die Datei <path>/etc/lilo.conf</path> mit einem Texteditor
+und fügen Sie Einträge der Form
+    </textblock>
+
+    <file>
+     <title>
+/etc/lilo.conf
+     </title>
+     <content><![CDATA[
+...
+# Neuer Kernel:
+image = /boot/vmlinuz
+label = kernel_new
+
+# Backup-Kernel:
+image = /boot/vmlinuz.old
+label = kernel_old
+...
+     ]]>
+     </content>
+    </file>
+
+    <textblock>
+hinzu.
+    </textblock>
+
+    <textblock>
+Nun führen Sie noch als <strong>root</strong> <command>/sbin/lilo</command> aus.
+    </textblock>
+   </section>
+
+   <section>
+<!--4.7 Kapitel -->
+    <heading>
+Starten des neuen Kernels
+    </heading>
+
+    <textblock>
+Nun können Sie ihren neuen Kernel booten. Geben Sie dazu als root
+    </textblock>
+
+    <shell>
+     <root path="">
+reboot
+     </root>
+    </shell>
+
+    <textblock>
+oder
+    </textblock>
+
+    <shell>
+     <root path="">
+shutdown -r now
+     </root>
+    </shell>
+
+    <textblock>
+ein.
+    </textblock>
+
+    <textblock>
+Beim Erscheinen des Bootmenüs wählen Sie den Eintrag mit dem neuen
+Kernel aus. Damit bootet der Computer mit Ihrem neuen Kernel.
+    </textblock>
+
+    <textblock>
+Sollte der Computer aus irgendwelchen Gründen nicht booten, so
+schauen Sie sich die Fehlermeldungen genau an, sie geben Aufschluß
+über die Ursachen. Starten Sie in diesem Fall Ihren Computer neu
+und booten Sie ihn dann mit dem alten Kernel. Sie finden die Fehlermeldungen, falls
+sie nicht ohnehin auf der Konsole ausgegeben wurden, in der Datei
+<command>/var/log/messages</command>.
+    </textblock>
+
+    <textblock>
+Weitere Informationen zum Erstellen eines eigenen Kernels (in englischer Sprache)
+finden Sie auch hier:
+    </textblock>
+
+    <textblock>
+<ref lang="en" url="http://www.tldp.org/HOWTO/Kernel-HOWTO.html">http://www.tldp.org/HOWTO/Kernel-HOWTO.html</ref>
+    </textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

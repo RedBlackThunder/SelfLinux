@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+ <xs:annotation>
+  <xs:documentation xml:lang="de">
+    Dieses Schema dient zur Validierung von XML-Dokumenten des 
+    SelfLinux-Projektes. Fuer weitere Informationen siehe
+    http://www.selflinux.org
+  </xs:documentation>
+ </xs:annotation>
+
+
+ <!-- =================== Parameter Entity ================================= -->
+ <!--
+     Es folgt die Definition des komplexen Typs "text.format". Ein
+     Element vom Typ "text.format" entspricht einem Textabsatz. Hier
+     koennen unformatierter Text (plain), hervorgehobener Text (strong),
+     Kommandonamen (command), Eigennamen (name) mit dem Attribut "email", Verzeichnisse und
+     Dateinamen (path), Text tiefgestellt (sub), Text hochgestellt
+     (sup), Hyperlink (ref), Zeilenumbruch (br)  oder Tastaturicons
+     (key) vorkommen. Ein Textblock untersteht einer Section. Eine
+     Section untersteht einem Chapter. Ein Chapter ist das
+     Wurzelelement eines SelfLinux-Dokumentes.
+ -->
+
+  <xs:complexType name="text.format" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="strong"/>
+      <xs:element ref="path"/>
+      <xs:element ref="command"/>
+      <xs:element ref="name"/>
+      <xs:element ref="keycomb"/>
+      <xs:element ref="ref"/>
+      <xs:element ref="br"/>
+      <xs:element ref="sub"/>
+      <xs:element ref="sup"/>
+      <xs:element ref="italic"/>
+      <xs:element ref="version"/>
+    </xs:choice>
+  </xs:complexType>
+
+<!--
+     Es folgt die Definition des komplexen Typs "adresse". Ein
+     Element vom Typ "adresse" enthält "name" und "mailto" für das
+     "Layouter" und "Autor" Element. Es können mehrere Autoren und
+     Layouter für einen Text angegeben werden.
+ -->
+ 
+  <xs:complexType name="adresse">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element ref="name"/>
+      <xs:element ref="mailto"/>
+    </xs:choice>
+  </xs:complexType>
+
+ 
+  <!-- ================== CHAPTER =========================================== -->
+
+<!--
+     Es folgt die Deklaration des Wurzelelementes "chapter". 
+     Ein SelfLinux-Dokument als ganzes ist immer als Chapter zu sehen.
+     Es ist also das, was ein Autor als zusammengehoerigen Text 
+     zu SelfLinux unter einem bestimmten Titel beitraegt. Ein Chapter
+     enthaelt somit alle anderen Elemente und traegt des weiteren 
+     Metainformationen ueber seinen eigenen Stellenwert innerhalb des
+     gesamten SelfLinux-Tutorials in sich.
+ -->
+
+ <!-- chapter-tag -->
+  <xs:element name="chapter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="title"/>
+        <xs:element ref="author" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="layout" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="license"/>
+        <xs:element ref="index"/>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="keyword"/>
+        <xs:element maxOccurs="unbounded" ref="split"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+
+ <!-- ================= CHAPTER-HEADER ==================================== -->
+
+ <!-- ================ CHAPTER-HEADER-AUTHOR-LAYOUTER  ===================== -->
+
+ <!-- author-tag
+      beinhaltet die Elemente "mailto" und "name" mit denen ein Autor
+      benannt wird. Es sind auch mehrere Autoren möglich.
+ -->
+
+ <xs:element name="author" type="adresse"/>
+
+ <!-- layout-tag
+      beinhaltet die Elemente "mailto" und "name" mit denen ein Layouter
+      benannt wird. Es sind auch mehrere Layouter möglich.
+ -->
+
+ <xs:element name="layout" type="adresse"/>
+
+
+
+ <!-- mailto-tag
+      beinhaltet eine E-Mail Adresse, z.B. matthias.hagedorn@selfliunx.org
+ -->
+  <xs:element name="mailto" type="xs:string"/>
+
+
+ <!-- ================ CHAPTER-HEADER-LICENSE ============================= -->
+
+ <!-- license-tag
+      beinhaltet die Lizenz unter die der Text steht
+ -->
+ 
+  <xs:element name="license" type="xs:NMTOKEN"/>
+
+ 
+  <!-- ================ CHAPTER-HEADER-INDEX  =============================== -->
+ 
+  <!-- index-tag
+      beinhaltet einen eindeutigen "index" über den der Text
+      identifiziert werden kann. Dieser "index" wird bei der Erstellung
+      des Release benötigt. Der "index" darf keine Withespace-Zeichen enthalten.
+  -->
+  <xs:element name="index" type="xs:Name"/>
+  <!-- ================ CHAPTER-HEADER-DESCRIPTION ========================= -->
+  <!-- description-tag -->
+  <xs:element name="description">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="textblock"/>
+        <xs:element ref="quotation"/>
+        <xs:element ref="definition"/>
+        <xs:element ref="hint"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+ <xs:element name="keyword" type="xs:string"/>
+
+
+ <!-- ================ CHAPTER-SPLIT ===================================== -->
+
+ <!--
+        Es folgt die Deklaration des Elementes "split".
+        Jedes "split"-Element wird zu einem HTML-Ausgabedokument.
+        Ein "split"-Element kann ein oder mehrere "section"-Elemente
+        enthalten.
+-->
+
+  <xs:element name="split">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element maxOccurs="unbounded" ref="section"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="keyword"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION ============================= -->
+
+<!--
+     Es folgt die Definition des komplexen Typs "section". Ein Element
+     vom Typ "section" besteht aus mindestens einem Heading und 
+     null bis mehreren zusaetzlichen Elementen (textblock, quotation,
+     definition, hint, table, image, file, shell, ul, ol). Eine Section ist
+     ihrerseits einem Chapter untergeordnet und kann mehrfach in
+     diesem vorkommen. 
+ -->
+
+ 
+  <xs:element name="section">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="heading"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="keyword"/>
+          <xs:element ref="section"/>
+          <xs:element ref="textblock"/>
+          <xs:element ref="quotation"/>
+          <xs:element ref="definition"/>
+          <xs:element ref="hint"/>
+          <xs:element ref="table"/>
+          <xs:element ref="image"/>
+          <xs:element ref="file"/>
+          <xs:element ref="shell"/>
+          <xs:element ref="ul"/>
+          <xs:element ref="ol"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-HEADING ===================== -->
+
+ <!-- heading-Tag
+       gibt die Überschrift eines Kapitels an
+   -->
+
+  <xs:element name="heading" type="xs:string"/>
+
+ <!-- ================ CHAPTER-SPLIT-SECTION-TEXTBLOCK ==================== -->
+
+ <!-- textblock-tag
+      Die Definition des komplexen Typs "text.format" wurde weiter
+      oben ausführlich beschrieben.
+      "textblock" definiert einen normalen Textabschnitt. Mit dem Attribut
+      "name" kann ein Anker angegeben werden auf den dann im Text verwiesen
+      werden kann.
+ -->
+  <xs:element name="textblock">
+    <xs:complexType mixed="true">
+      <xs:complexContent>
+        <xs:extension base="text.format">
+          <xs:attribute name="name"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-QUOTATION ================== -->
+
+ <!-- quotation-tag
+      Die Definition des komplexen Typs "text.format" wurde weiter
+      oben ausführlich beschrieben.
+      Mit "quotation" werden Zitate gekennzeichnet.
+ -->
+  <xs:element name="quotation" type="text.format"/>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-DEFINITION ================= -->
+
+ <!-- definition-tag
+      Die Definition des komplexen Typs "text.format" wurde weiter
+      oben ausführlich beschrieben.
+      Mit "definition" werden Definitionen gekennzeichnet.
+-->
+
+ <xs:element name="definition" type="text.format"/>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-HINT ======================= -->
+
+ <!-- hint-tag
+      Die Definition des komplexen Typs "text.format" wurde weiter
+      oben ausführlich beschrieben.
+      Mit "hint" können Hinweise gegeben werden.
+ -->
+
+ <xs:element name="hint" type="text.format"/>
+
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-SHELL ====================== -->
+
+<!--
+     Es folgt die Definition des komplexen Typs "shell". Ein Element
+     vom Typ "shell" besteht aus mindestens einem bis mehreren
+     Elementen (user, root, input, output) sie ist ihrerseits einem
+     "section" untergeordnet und kann mehrfach in diesem vorkommen. 
+ -->   
+ 
+  <xs:element name="shell">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="user"/>
+        <xs:element ref="root"/>
+        <xs:element ref="input"/>
+        <xs:element ref="output"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- input-tag
+       Werden Programme aus der Shell ausgeführt (im Beispiel: su), die
+       die Benutzereingaben erwarten, werden mit dem "input"-Tag
+       gekennzeichnet.
+ -->
+  <xs:element name="input">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="keycomb"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- output-tag
+       Werden Programme aus der Shell ausgeführt (im Beispiel: su), die
+       eigene Ausgaben machen, so werden diese mit dem "output"-Tag
+       angegeben. -->
+ 
+  <xs:element name="output" type="xs:string"/>
+
+ <!-- user-tag
+      user gibt eine Eingabe an eine User-Shell an. Der Prompt wird
+      automatisch generiert und enthält auch eine Pfadangabe, die
+      durch das Attribut path bestimmt wird. (Fehlt die Angabe von
+      path, so wird der Pfad des letzten Prompt übernommen)
+
+      Wenn die Befehle unter einem bestimmten Usernamen ausgeführt werden
+      sollen (z.B. als mysql oder news), kann dieser Name beim user-Tag mit
+      angebeben werden: 
+      <user name="mysql">mysqladmin ...</user>
+      Auch hier gilt: bei allen folgenden user-Tags muss kein Name mehr
+      angegeben werden, sie übernehmen ihn automatisch.
+ -->
+ 
+  <xs:element name="user">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="keycomb"/>
+      </xs:choice>
+      <xs:attribute name="path"/>
+      <xs:attribute name="name"/>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- root-tag
+      root gibt eine Eingabe an eine Root-Shell an. Der Prompt wird
+      automatisch generiert und enthält auch eine Pfadangabe, die
+      durch das Attribut path bestimmt wird. (Fehlt die Angabe von
+      path, so wird der Pfad des letzten Prompt übernommen)
+ -->
+ 
+  <xs:element name="root">
+    <xs:complexType mixed="true">
+      <xs:attribute name="path"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ================ CHAPTER-SPLIT-SECTION-COMMAND ===================== -->
+
+ <!-- command-tag
+      Mit command werden Befehle gekennzeichnet, die im Text erwähnt
+      werden. Das command-Tag enthält die inline-Elemente "strong",
+      "path", "name", "keykomb", "ref", "br", "sub" und "sup".
+ -->
+
+  <xs:element name="command">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="italic"/>
+        <xs:element ref="version"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!-- ================ CHAPTER-SPLIT-SECTION-PATH ===================== -->
+  <!-- path-tag
+       Mit "path" wird im Text ein Pfad oder Datei gekennzeichnet. Das
+       path-Tag enthält die inline-Elemente "strong", 
+      "command", "name", "keykomb", "ref", "br", "sub" und "sup".
+ -->
+  <xs:element name="path">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="italic"/>
+        <xs:element ref="version"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-STRONG ====================== -->
+  <!-- strong-tag
+       Mit "strong" werden im Hervorhebungen im Text gekennzeichnet.
+       Das strong-Tag enthält die inline-Elemente "command",
+      "path", "name", "keykomb", "ref", "br", "sub" und "sup".
+   -->
+ 
+  <xs:element name="strong">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="italic"/>
+        <xs:element ref="version"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ================ CHAPTER-SPLIT-SECTION-ITALIC ====================== -->
+  <!-- italic-tag
+       Mit "italic" wird Kursivtext gekennzeichnet.
+       Das italic-Tag enthält die inline-Elemente "command",
+      "path", "name", "keykomb", "ref", "br", "sub" und "sup".
+   -->
+ 
+  <xs:element name="italic">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="version"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ================ CHAPTER-SPLIT-SECTION-NAME  ======================= -->
+  <!-- name-tag
+       Mit "name" werden im Text Eigennamen gekennzeichnet. Das
+       name-Tag enthält die inline-Elemente "strong", 
+      "path", "command", "keykomb", "ref", "br", "sub" und "sup".
+ -->
+
+  <xs:element name="name">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+      </xs:choice>
+      <xs:attribute name="email"/>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-KEYCOMB ==================== -->
+
+ <!-- keycomb-tag
+      Mit "keycomb" werden Tastenkombinationen speziell im Text
+      hervorgehoben.  Das keycomb-Tag enthält das key-Element und das
+      Attribut "mode" mit den Werten "hold" und "sequenze".
+ -->
+
+ <xs:element name="keycomb">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="key"/>
+      </xs:sequence>
+      <xs:attribute name="mode">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="hold"/>
+            <xs:enumeration value="sequence"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="key">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="italic"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-SUP ==================== -->
+  <!-- sup-tag
+       Mit "sup" werden Textestellen tiefgestellt.  Das
+       sup-Tag enthält die inline-Elemente "strong",
+      "path", "name", "keykomb", "ref", "br", "sub" und "command".
+ -->
+  <xs:element name="sup">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="italic"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-SUB ==================== -->
+  <!-- sub-tag
+        Mit "sub" werden Textstellen hochgestellt. Das
+       sub-Tag enthält die inline-Elemente "strong",
+      "path", "name", "keykomb", "ref", "br", "sup" und "command".
+  -->
+ 
+  <xs:element name="sub">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="italic"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-TABLE ======================= -->
+  <!-- table-tag
+       Mit table können Tabellen erzeugt werden; die Tags funktionieren
+       genauso wie in HTML.
+       Als Tags dürfen verwendet werden: <table>,<tr>,<th>,<td>
+       Als Attribute sind erlaubt:
+       border,align,valign,width,height,rowspan,colspan,nowrap
+ -->
+  <xs:element name="table">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="pdf-column"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tr"/>
+      </xs:sequence>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="right"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="border"/>
+      <xs:attribute name="cellspacing"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- pdf-column-tag -->
+  <xs:element name="pdf-column">
+    <xs:complexType mixed="true">
+      <xs:attribute name="width"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- tr-tag -->
+  <xs:element name="tr">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="th"/>
+        <xs:element maxOccurs="unbounded" ref="td"/>
+      </xs:choice>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="justify"/>
+            <xs:enumeration value="char"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="valign">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="middle"/>
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="baseline"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <!-- th-tag -->
+  <xs:element name="th">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="table"/>
+        <xs:element ref="ol"/>
+        <xs:element ref="ul"/>
+        <xs:element ref="italic"/>
+      </xs:choice>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="justify"/>
+            <xs:enumeration value="char"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="valign">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="middle"/>
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="baseline"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="width"/>
+      <xs:attribute name="height"/>
+      <xs:attribute name="rowspan"/>
+      <xs:attribute name="colspan"/>
+      <xs:attribute name="nowrap"/>
+    </xs:complexType>
+  </xs:element>
+  <!-- td-tag -->
+  <xs:element name="td">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="table"/>
+        <xs:element ref="ol"/>
+        <xs:element ref="ul"/>
+        <xs:element ref="italic"/>
+      </xs:choice>
+      <xs:attribute name="align">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="justify"/>
+            <xs:enumeration value="char"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="valign">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="middle"/>
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="baseline"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="width"/>
+      <xs:attribute name="height"/>
+      <xs:attribute name="rowspan"/>
+      <xs:attribute name="colspan"/>
+      <xs:attribute name="nowrap">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="nowrap"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ================ CHAPTER-SPLIT-SECTION-IMAGE ====================== -->
+  <!-- image-tag
+       Mit "image" wird ein Bild gekennzeichnet; der Bildtitel wird durch den
+       title-Tag, der Dateiname durch den filename-Tag angegeben. Mit
+       den Attributen "width" und "height" wird die Grösse des Bildes
+       angegeben. Wird benötigt um für die Ausgabe im pdf-Format die
+       Bilder auf eine bestimmte Grösse zu rendern.
+ -->
+
+  <xs:element name="image">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="title" minOccurs="0"/>
+        <xs:element ref="filename"/>
+      </xs:choice>
+      <xs:attribute name="width"/>
+      <xs:attribute name="height"/>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- filename-tag
+      Mit "filename" wird der Dateiname des Bildes angegeben.
+  -->
+ 
+  <xs:element name="filename" type="xs:string"/>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-FILE  ======================= -->
+   <!-- file-tag
+        Mit "file" können Dateilistings eingebunden werden. Dabei
+        wird mit "title" der Titel des Listings (meistens wohl der Dateiname)
+        und mit "content" den Inhalt angegeben. 
+     -->
+ 
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="title"/>
+        <xs:element ref="content"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ 
+  <!-- title-tag
+       Mit "title" wird der Titel für "file" angegeben.
+  -->
+
+  <xs:element name="title" type="xs:string"/>
+
+ <!-- content-tag
+      Mit "content" wird der Inhalt für "file" gekennzeichnet
+  -->
+
+  <xs:element name="content" type="xs:string"/>
+  <!-- ================ CHAPTER-SPLIT-SECTION-REF ======================== -->
+
+ <!-- ref-tag
+      Mit "ref" werden Hyperlinks zu Seiten im Web oder zu anderen
+      SelfLinux-Kapiteln gesetzt. Das ref-Tag enthält die inline-Elemente "strong",
+      "path", "name", "keykomb", "sub", "br", "sup" und "command". Die
+      Attribute "iref", "url" und "chapter" dienen für die genauere
+      Kennzeichnung, so dass ein Hyperlink auf eine URL oder ein Verweis auf
+      ein SelfLinux-Kapitel sein kann.
+ -->
+  <xs:element name="ref">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="br"/>
+      </xs:choice>
+      <xs:attribute name="lang"/>
+      <xs:attribute name="iref"/>
+      <xs:attribute name="url"/>
+      <xs:attribute name="chapter"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ================ CHAPTER-SPLIT-SECTION-BR  ========================= -->
+  <!-- br-tag -->
+  <xs:element name="br">
+    <xs:complexType/>
+  </xs:element>
+  
+  <!-- ================ CHAPTER-SPLIT-SECTION-VERSION  ========================= -->
+  <!-- version-tag -->
+  <xs:element name="version">
+    <xs:complexType/>
+  </xs:element>
+ 
+  <!-- ================ CHAPTER-SPLIT-SECTION-UL-OL-LI ==================== -->
+  <!-- ul-tag -->
+  <xs:element name="ul">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- ol-tag -->
+  <xs:element name="ol">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+      <xs:attribute name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="I"/>
+            <xs:enumeration value="i"/>
+            <xs:enumeration value="a"/>
+            <xs:enumeration value="A"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <!-- li-tag -->
+  <xs:element name="li">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="strong"/>
+        <xs:element ref="path"/>
+        <xs:element ref="command"/>
+        <xs:element ref="name"/>
+        <xs:element ref="keycomb"/>
+        <xs:element ref="ref"/>
+        <xs:element ref="file"/>
+        <xs:element ref="br"/>
+        <xs:element ref="sub"/>
+        <xs:element ref="sup"/>
+        <xs:element ref="ul"/>
+        <xs:element ref="ol"/>
+        <xs:element ref="italic"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

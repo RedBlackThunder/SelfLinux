@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Bunte Shells - Benutzung der Shellfarben</title>
+
+ <author>
+  <name>Nico Golde</name>
+  <mailto>nico@ngolde.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+    GPL
+ </license>
+
+ <index>bash_farben</index>
+
+ <split>  
+  <section>
+   <heading>
+Allgemeines
+   </heading>
+
+   <textblock>
+Mit der <ref chapter="bash_basic">Einführung in die Bourne Again Shell (bash)</ref>
+kommt praktisch jeder Linux-Benutzer irgendwann in
+Berührung. Auf den ersten Blick sieht diese sehr langweilig aus, doch
+man hat viele Möglichkeiten, seine Shell individuell zu gestalten.
+Farbliche Hervorhebungen der Eingabeaufforderung 
+(des Shell-Promptes) machen die Shell zum
+Einen individuell und zum Anderen gut lesbar.
+   </textblock>
+
+   <textblock>
+Dieses Dokument bezieht sich auf die bash-Shell.
+Die Escape-Sequenzen (<ref iref="Escape-Sequenzen">siehe unten</ref>) können sich
+von Terminal zu Terminal
+unterscheiden, der Autor bezieht sich in diesem Text auf ein ANSI
+Terminal. Ein ANSI Terminal ist ein Terminal, das zu dem
+Zeichensatzstandard ANSI kompatibel ist. Es gibt noch
+andere Zeichensätze,
+der bekannteste ist ASCII.
+   </textblock>
+
+   <textblock>
+Dieses Dokument kann nur einen kleinen Überblick über die
+Funktionalität der Shell in Bezug auf ihre Eigenschaften geben.
+Viele Themen werden nur angerissen oder überhaupt nicht erwähnt.
+Grundlegende Informationen zur <strong>bash</strong> sind in einem eigenen Kapitel
+<ref chapter="bash_basic">Einführung in die Bourne Again Shell (bash)</ref>
+zu finden.
+   </textblock>
+
+   <textblock>
+Der Autor <name email="nico@ngolde.de">Nico Golde</name> freut sich natürlich
+über Kommentare und Anregungen zu diesem Text.
+   </textblock>
+
+   
+   <section>
+    <heading>
+Konfiguration der Shell
+    </heading>
+
+    <textblock>
+Bei der <strong>bash</strong> ist die zentrale Konfigurationsdatei, die auch bei
+der Konfiguration der Shellfarbe zum Einsatz kommt, die Datei <path>~/.bashrc</path>
+oder die globale bash-Konfigurationsdatei <path>/etc/bashrc</path>.
+Mittels der <command>PS1</command> Variable in der <path>bashrc</path> werden die Einstellungen für das
+Aussehen der Shell verändert.
+    </textblock>
+
+    <textblock>
+Normalerweise hat dieser Eintrag die folgende Form:
+    </textblock>
+
+    <file>
+     <content>
+PS1="\s-\v\$ "
+     </content>
+    </file>
+
+    <textblock>
+Dabei steht <command>\s</command> für den Namen und <command>\v</command> für die Version der Shell.
+Am Ende des Promptes wird dann ein <command>$</command> gesetzt.
+Das Ganze sieht in der Shell so aus (ohne Anführungszeichen):
+    </textblock>
+
+    <textblock>
+<strong>"bash-2.05b$ "</strong>
+    </textblock>
+
+    <textblock>
+Da dies ein wenig langweilig ist, kann man stattdessen folgenden
+Eintrag verwenden, den die meisten Linux-Distributionen als
+Standardeinstellung haben:
+    </textblock>
+
+    <file>
+     <content>
+PS1="\u@\h \w \$ "
+     </content>
+    </file>
+
+    <textblock>
+Hier steht <command>\u</command> für den Benutzernamen, <command>\h</command> für den Hostnamen und <command>\w</command>
+für das aktuelle Verzeichnis.
+Als Prompt bekommt man jetzt (wieder ohne Anführungszeichen):
+    </textblock>
+
+    <textblock>
+<strong>"user@myhost /home $ "</strong>
+    </textblock>
+
+    <textblock>
+Dies ist der normale Shell-Prompt, den die meisten Linux-Benutzer
+gewöhnt sein werden.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Escape-Sequenzen
+    </heading>
+
+    <textblock>
+Um diesem Prompt mittels verschiedener Farben eine persönliche
+Note zu verleihen, verwendet man Escape-Sequenzen (engl: flüchten).
+Eine Escape-Sequenz ist ein Steuerzeichen, das die Shell veranlasst,
+etwas Bestimmtes auszuführen, sozusagen aus ihrem normalen Modus
+zu flüchten. 
+Escape-Sequenzen werden auch Steuerzeichen genannt und sind keine
+normalen druckbaren Zeichen. Vielmehr dienen sie dazu,
+Bildschirmausgaben eines Programms zu manipulieren (steuern).
+Eine Escape-Sequenz wird normalerweise mittels <command>^[</command> eingeleitet.
+Diese Schreibweise ist etwas gewöhnungsbedürftig. <command>\033</command> hat denselben
+Effekt.
+    </textblock>
+
+    <textblock>
+In der Shell kann man, statt die Sequenz zu tippen, allerdings auch
+<keycomb mode="hold"><key>Strg</key><key>V</key></keycomb>
+<keycomb mode="sequence"><key>ESC</key></keycomb> drücken.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Farben der Shell benutzen
+    </heading>
+
+    <textblock>
+Die Farben der Shell werden zunächst an einem
+Beispiel-Prompt erklärt.
+    </textblock>
+
+    <file>
+     <content>
+PS1="\[\033[0;32;40m\u@\h:\w\$ \]"
+     </content>
+    </file>
+
+    <textblock>
+Dies stellt den kompletten Prompt in grün dar.
+<command>\033</command> leitet die Escape Sequenz ein, <command>[</command> eröffnet die Farbangabe.
+Die anschließende <command>0</command> gibt an, dass eine Normaldarstellung benutzt wird.
+Welche anderen Möglichkeiten man an dieser Stelle hat, wird später
+erwähnt.
+Die gesamte Sequenz ist in <command>\[</command> und <command>\]</command> eingeschlossen, damit sie
+nicht in die Ausgabe mit hinein kommen und Platz auf der Shell
+wegnehmen.
+    </textblock>
+
+    <textblock>
+Als nächstes wird die Vordergrundfarbe gewählt (in diesem Fall <command>32</command>,
+das entspricht Grün).
+Die Hintergrundfarbe <command>40</command> steht für die Farbe Schwarz.
+Möchte man in unserem Beispiel nicht, dass die Schrift nach
+dem Prompt auch grün ist, so fügt man an den Schluss die Escape
+Sequenz <command>\033[0m</command> an.
+Dies ist die Voreinstellung für die Shellfarbe.
+Sowohl für den Vordergrund als auch für den Hintergrund stehen
+8 Farben zur Verfügung.
+    </textblock>
+
+    <textblock>
+Auswahl: schwarz, rot, grün, gelb, blau, magenta, cyan und weiß. Die
+Zahlen dafür sind: 30, 31, 32, 33, 34, 35, 36, 37. 
+    </textblock>
+
+    <textblock>
+Das Setzen der Hintergrundfarbe verläuft genauso, allerdings statt
+3 mit 4.  Also 40, 41, 42, 43, 44, 45, 46, 47.
+    </textblock>
+
+    <textblock>
+Beispiel: 
+    </textblock>
+
+    <file>
+     <content>
+PS1="\[\033[0;37;44m\u@\033[0;32;43m\h:\033[0;33;41m\w$\033[0m\]"
+     </content>
+    </file>
+
+    <textblock>
+Am besten testet man diese Einstellungen per <command>export PS1="string"</command>
+in der Kommandozeile und kann die Einstellungen später in die <path>bashrc</path>
+eintragen.
+Der aktuelle Prompt des Autors sieht z.B. so aus: 
+    </textblock>
+
+    <file>
+     <content>
+PS1="\[\033[1;34;40m[\033[1;31;40m\u@\h:\w\033[1;34;40m]\033[1;37;40m $\033[0;37;0m\] "
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Eigenschaften der Schrift
+    </heading>
+
+    <textblock>
+Wie oben erwähnt ist die 0 direkt nach der ersten Escape Sequenz
+die Voreinstellung für die Schrift des Shell-Promptes. Für
+die Schrifteigenschaft sind die folgenden Werte sinnvoll: <strong>0, 1, 22, 4,
+24, 5, 25, 7, 27</strong>. Sie bedeuten: <strong>Standard, dick, nicht dick,
+unterstrichen, nicht unterstrichen, blinkend, nicht blinkend,
+invers, nicht invers</strong>.
+    </textblock>
+
+    <textblock>
+Mit dem folgenden kleinen Shell-Script kann man sich die
+Farbkombinationen ansehen:
+    </textblock>
+
+    <file>
+     <content>
+#!/bin/sh
+############################################################
+# Nico Golde &lt;nico@ngolde.de&gt; Homepage: http://www.ngolde.de
+# Letzte Änderung: Mon Feb 16 16:24:41 CET 2004
+############################################################
+    
+for attr in 0 1 4 5 7 ; do
+    echo "----------------------------------------------------------------"
+    printf "ESC[%s;Vordergrund;Hintergrundm - \n" $attr
+    for fore in 30 31 32 33 34 35 36 37; do
+        for back in 40 41 42 43 44 45 46 47; do
+            printf '\033[%s;%s;%sm %02s;%02s  ' $attr $fore $back $fore $back
+        done
+    printf '\n'
+    done
+    printf '\033[0m'
+done
+     </content>
+    </file>
+   </section>
+  </section> 
+ </split>
+
+ <split>
+  
+  <section>
+   <heading>
+Eine andere Form der Anwendung
+   </heading>
+
+   <textblock>
+Die Fähigkeit der Farbsetzung in der Shell macht nicht nur Sinn,
+wenn man einen schöneren Shell-Prompt haben möchte, sondern kann auch
+in der Programmierung eines Programmes für die Konsole sinnvoll sein.
+   </textblock>
+
+   <textblock>
+So müsste man bei jeder Benutzung von Farben auf Bibliotheken wie
+<command>slang</command> oder <command>ncurses</command> zurückgreifen, was die Größe der Binärdatei
+beachtlich steigen ließe.
+<command>Ncurses</command> hat allerdings den Vorteil, dass es mehr oder weniger 
+unabhängig vom Terminal-Typ ist.
+   </textblock>
+
+   <section>
+    <heading>
+Beispiele in C
+    </heading>
+
+    <textblock>
+Ein Hello World mit grüner Schrift:
+    </textblock>
+
+    <file>
+     <title>Hello World</title>
+     <content>
+#include &lt;stdio.h&gt;
+int main(void){
+    const char *const green = "\033[0;40;32m";
+    const char *const normal = "\033[0m";
+    printf("%sHello World%s\n", green, normal);
+return 0;
+}
+     </content>
+    </file>
+
+    <textblock>
+Eine weitere nützliche Escape Sequenz ist <command>printf("\033[2J");</command> Sie
+hat denselben Effekt wie <command>system(clear);</command> allerdings kann man damit auf
+die Headerdatei <command>unistd.h</command> verzichten.
+    </textblock>
+
+    <textblock>
+Mit <command>printf("\033[1K");</command> lässt sich eine Zeile löschen.
+    </textblock>
+   </section>
+    
+   <section>
+    <heading>
+Beispiel für die init-Scripte
+    </heading>
+
+    <textblock>
+Möchte man nicht, dass beim Starten der init-Scripte in <path>/etc/init.d</path>
+nur ein '<strong>.</strong>' beim erfolgreichen Starten des Prozesses angezeigt wird,
+sondern statt dessen eine farbliche, besser lesbare Ausgabe, so ist
+dies auch mittels einer Escape-Sequenz lösbar.
+    </textblock>
+
+    <textblock>
+Hier ein Auszug aus einem <command>Cron</command> init-Script:
+    </textblock>
+
+    <file>
+     <title>
+Cron init-Script
+     </title>
+     <content>
+#!/bin/sh
+# Start/stop the cron daemon.
+test -f /usr/sbin/cron || exit 0
+
+case "$1" in
+ start)  echo -n "Starting periodic command scheduler: cron"
+      start-stop-daemon --start --quiet --exec /usr/sbin/cron
+      echo "."
+;;
+     </content>
+    </file>
+
+    <textblock>
+Beim erfolgreichen Starten von <command>Cron</command> wird dann ein Punkt ausgegeben.
+Farblich könnte man das auch durch [Ok] gestalten, indem man den echo
+String ändert. Z.B. so:
+    </textblock>
+
+    <file>
+     <title>
+Cron init-Script 2
+     </title>
+     <content>
+#!/bin/sh
+# Start/stop the cron daemon.
+test -f /usr/sbin/cron || exit 0
+case "$1" in
+start)  echo -n "Starting periodic command scheduler: cron"
+        start-stop-daemon --start --quiet --exec /usr/sbin/cron
+echo "\[ \033[1;34;40m[ \033[1;32;40mOk \033[1;34;40m]\033[0m\]"
+;;
+     </content>
+    </file>
+
+    <textblock>
+Möchte man diese Einstellungen allerdings für alle init-Scripte
+vornehmen, ist das sehr zeitaufwändig, es sei denn, man benutzt
+als Escape Sequenz <command>\033</command>, da <keycomb><key>Strg</key><key>v</key></keycomb> <keycomb><key>ESC</key></keycomb> nicht als Zeichen
+interpretiert wird. 
+    </textblock>
+
+    <textblock>
+Es kann sich allerdings ein weiteres Problem ergeben:
+Bei einer System-Aktualisierung, wie z.B. der Einspielung von
+Sicherheitsaktualisierungen können veränderte init-Scripte und andere
+Konfigurationsdateien durch Distributionsstandards überschrieben
+werden. Dadurch könnte das farbige [ OK ] schneller verschwinden, als
+es
+eingerichtet wurde.
+    </textblock>
+   </section>
+  </section>
+ </split>
+ 
+ <split> 
+  <section>
+   <heading>
+Feedback
+   </heading>
+
+   <textblock>
+Feedback, Kritik, Bugs etc. bitte per Mail an <name email="nico@ngolde.de">nico@ngolde.de</name>
+schicken.<br/>
+Viel Spaß...
+   </textblock>
+  </section>  
+ </split>
+</chapter>

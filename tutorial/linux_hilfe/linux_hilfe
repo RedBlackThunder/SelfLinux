@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Linux Hilfe</title>
+
+ <author>
+  <name>Dennis Roch</name>
+  <mailto>ysae@users.sourceforge.net</mailto>
+ </author>
+
+ <layout>
+  <name>Frank Börner</name>
+  <mailto>frank@frank-boerner.de</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>linux_hilfe</index>
+
+ <split>
+  <section>
+   <heading>
+Einleitung und Überblick
+   </heading>
+
+   <textblock>
+Linux und die auf ihm laufenden Programmen sind zumeist
+extrem flexibel und mächtig, aber auch dem entsprechend
+umfangreich. Man vergisst deshalb schnell einmal,
+welche Bedeutung die eine oder andere Option hatte.
+Manchmal sucht man auch nur die passende Anwendung
+für seine Zwecke oder einem ist lediglich der genaue Name
+eines Programms entfallen.
+   </textblock>
+
+   <textblock>
+Wenn man sich zu helfen weiß, ist alles halb so schlimm.
+Die gängigsten Wege, in solchen Fällen weiter zu kommen,
+sollen im Folgenden vorgestellt werden.
+   </textblock>
+  </section>
+ </split>
+ <split>
+
+  <section>
+   <heading>
+Die Option "--help"
+  </heading>
+
+   <textblock>
+Der Befehl <command>"Programmname" --help</command> liefert eine
+kurze,überblicksartige Beschreibung des Programms.
+Dabei wird in der Regel auf den Zweck des
+Programms, Aufruf und die wichtigsten Optionen bzw.
+Tastenkombinationen eingegangen.
+   </textblock>
+
+   <textblock>
+Tip: Die Ausgabe umfasst in der Regel eine Bildschirmseite.
+Falls der Text länger sein sollte, übergibt man die
+Ausgabe einfach dem Programm <command>less</command>.
+Der Befehl lautet dann <command>
+"Programmname" --help | less</command>. Nun sollte es möglich
+sein mit den Cursortasten zu scrollen. Man beendet
+<command>less</command> durch Druck auf die Taste <command>q</command>.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+man
+   </heading>
+
+   <textblock>
+Nachdem <command>--help</command> eine eher spärliche Ausbeute
+brachte, ist
+es nun an der Zeit <command>man</command> (engl.: manual Handbuch) kennen zu
+lernen. Dieses Handbuch bietet detaillierte Informationen
+über die auf dem System installierten Programme.
+   </textblock>
+
+   <textblock>
+Dabei bringt jedes (Programm-)Paket seine eigenen
+Handbuchseiten mit. Bei der Installation wird es zum bereits
+bestehenden Teil hinzugefügt.
+   </textblock>
+
+   <section>
+    <heading>
+Aufruf
+    </heading>
+
+    <textblock>
+Die Handbuch-Seite (manpage) über ein bestimmtes
+Programm kann man sich mittels
+    </textblock>
+
+    <shell>
+     <user path="~">
+      man N "Programmname"
+     </user>
+    </shell>
+    
+    <textblock>
+anzeigen lassen.
+    </textblock>
+
+    <textblock>
+<command>N</command> ist dabei eine Nummer, die angibt, in welchem Kapitel
+des Handbuches nachgeschlagen werden soll. In den meisten
+Fällen kann sie weg gelassen werden.
+    </textblock>
+
+    <textblock>
+Von Bedeutung ist sie jedoch dann, wenn ein Programm in
+mehreren Teilen des Handbuchs beschrieben ist. Die
+Einteilung erfolgt standardmäßig in acht Kategorien,
+die der folgenden Liste oder
+    </textblock>
+
+    <shell>
+     <user>
+      man man
+     </user>
+    </shell>
+
+    <textblock>
+entnommen werden können.
+    </textblock>
+
+    <table>
+     <pdf-column width="50"/>
+     <pdf-column/>
+     <tr>
+      <td>1</td>
+      <td>Benutzerbefehle</td>
+     </tr>
+     <tr>
+      <td>2</td>
+      <td>Systemaufrufe</td>
+     </tr>
+     <tr>
+      <td>3</td>
+      <td>Funktionen aus Systembibliotheken</td>
+     </tr>
+     <tr>
+      <td>4</td>
+      <td>Spezielle Dateien (z.B. Geräte)</td>
+     </tr>
+     <tr>
+      <td>5</td>
+      <td>Dateiformate</td>
+     </tr>
+     <tr>
+      <td>6</td>
+      <td>Spiele</td>
+     </tr>
+     <tr>
+      <td>7</td>
+      <td>Makropakete und Konventionen (z.B. <command>man</command>)</td>
+     </tr>
+     <tr>
+      <td>8</td>
+      <td>Befehle für Systemadministration (i.d.R. nur für root)</td>
+     </tr>
+    </table>
+
+    <textblock>
+Wird keine Zahl angegeben, wird die Manpage angezeigt,
+die zuerst gefunden wird.
+    </textblock>
+    
+    <textblock>
+Da wir es bei der Anzeige wieder mit <command>less</command> zu tun haben,
+kann man sich in den Seiten per Cursortasten bewegen und
+durch Druck auf die Taste <command>q</command> zur Shell zurückkehren.
+    </textblock>
+
+    <textblock>
+Eine Suche lässt sich über <command>/"Suchtext"</command> starten.
+Um sich für den gleichen Begriff weitere Treffer anzeigen
+zu lassen, reicht ein  Druck auf die Taste <command>n</command>.
+Die Fundstellen im Text sind jeweils hervorgehoben.
+    </textblock>
+
+    <textblock>
+Wer mit diesen elementaren Funktionen nicht zufrieden ist,
+dem kann ein Hilfetext zu <command>less</command>, der über <command>h</command> zu erreichen
+ist, auf die Sprünge helfen.
+    </textblock>
+
+    <hint>
+<strong>Tip:</strong> Nicht jeder mag längere Texte am Monitor lesen.
+Besitzt man ein funktionierendes Drucksystem,
+so kann man die Manpage mit Hilfe des Kommandos
+    </hint>
+
+    <shell>
+     <user path="~">
+      man -t "Programmname" | lpr
+     </user>
+    </shell>
+
+    <textblock>
+zu Papier bringen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Aufbau
+    </heading>
+
+    <textblock>
+Die Gliederung einer typischen Manpage orientiert sich an
+gewissen Vorgaben.
+    </textblock>
+
+    <textblock>
+Folgende Punkte findet man in den meisten Manpages
+(in Klammern sind die englischen Bezeichnungen angegeben):
+    </textblock>
+
+    <section>
+     <heading>
+Name
+     </heading>
+
+     <textblock>
+Wie der Name schon sagt, beinhaltet dieser Abschnitt den Namen
+des Programms. Außerdem wird noch eine einzeilige Kurzbeschreibung
+des Programms angegeben.
+     </textblock>
+
+     <textblock>
+Für das Programm <command>apropos</command>, das wir in diesem Kapitel
+auch noch behandeln werden,
+würde das beispielsweise so aussehen:
+     </textblock>
+
+     <textblock>
+"<command>apropos</command> - sucht die Manualkurzbeschreibung in der Indexdatenbank"
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Syntax (Synopsis)
+     </heading>
+
+     <textblock>
+Sie beschreibt wie man das Programm
+aufruft, welche Angaben in jedem Fall gemacht werden müssen
+und welche zusätzlich gemacht werden können.
+     </textblock>
+
+     <textblock>
+      Für <command>apropos</command> sieht das wie folgt aus:
+     </textblock>
+
+     <shell>
+      <user>
+       apropos [-dhV] [-e|-r|-w] [-m System[,...]] [-M Pfad] Schlüsselwort
+      </user>
+     </shell>
+
+     <textblock>
+Alles, was nicht in eckigen Klammern steht, muss
+angegeben werden. In unserem Beispiel ist dies zum einen
+der Programmname (logisch) und zum anderen ein
+Schlüsselwort (also Suchbegriff).
+     </textblock>
+
+     <textblock>
+Die eckigen Klammern umschließen alle freiwilligen
+Optionen. Man kann also (muss aber nicht)  <command>-d</command> oder <command>-h</command>
+oder <command>-V</command> bzw. beliebige Kombinationen dieser Buchstaben
+als Optionen verwenden (z.B. <command>-Vd</command>; das Minus muss nur
+einmal angegeben werden).
+     </textblock>
+
+     <textblock>
+Alternative Optionen werden durch vertikale Striche
+getrennt. <command>[-e|-r|-w]</command> heißt also, man kann -eine- der drei
+Optionen angeben.
+     </textblock>
+
+     <textblock>
+Die darauf folgenden Optionen verlangen beide die Angabe
+eines Arguments. Beispielsweise muss auf <command>-M</command> (wenn man es
+verwendet) eine Pfadangabe folgen.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Beschreibung (Description)
+     </heading>
+
+   <textblock>
+Hier wird der Sinn und Zweck des Programms erläutert und
+grundlegende Bedienprinzipien dargelegt.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Optionen (Options)
+     </heading>
+
+     <textblock>
+Bisher weiß man noch nicht unbedingt, was z.B. die Option
+<command>-e</command> bewirkt. Genau darüber wird man in diesem Abschnitt
+aufgeklärt.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Dateien (Files)
+     </heading>
+
+     <textblock>
+Hier sind die wichtigsten Dateien aufgelistet, die das Programm
+für seine Arbeit benutzt. Dazu findet man oft ein kurze
+Beschreibung, wofür die jeweilige Datei gut ist.
+     </textblock>
+
+     <textblock>
+Es handelt sich zumeist um Konfigurationsdateien, aber auch
+mal um solche, in denen Datenbanken gespeichert sind oder 
+ähnliches.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Siehe auch (See also)
+     </heading>
+
+     <textblock>
+In diesem Abschnitt wird auf Manpages zu anderen
+Programmen hingewiesen, die entweder mit dem jeweiligen
+Programm zusammen arbeiten oder aber ähnliche Funktionen
+erfüllen (und daher von Interesse sein könnten).
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Fehler (Bugs)
+     </heading>
+
+     <textblock>
+Es werden bekannte Fehler des Programms, sowie
+Inkompatibilitäten und häufige Bedienungsfehler
+aufgelistet.
+     </textblock>
+
+     <textblock>
+Manchmal findet sich auch ein Hinweis, an wen man
+sich wenden kann, wenn man glaubt einen noch unentdeckten
+Fehler gefunden zu haben.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Autoren (Authors)
+     </heading>
+
+     <textblock>
+Hier werden Lorbeeren an alle diejenigen verteilt, die
+wesentlich zur Entwicklung des Programms beigetragen
+haben.
+     </textblock>
+
+     <textblock>
+Übrigens: Bisher war immer von Programmen die Rede.
+Darüber hinaus
+existieren aber auch noch Manpages für bestimmte
+Konfigurationsdateien. Z.B. liefert:
+     </textblock>
+
+     <shell>
+      <user path="~">
+	   man fstab
+      </user>
+     </shell>
+
+     <textblock>
+Hinweise zum Aufbau von <path>/etc/fstab</path>.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+info
+   </heading>
+
+   <textblock>
+Über das <command>info</command>-Hilfesystem findet man manchmal nur die
+selben Informationen wie mittels <command>man</command>.
+Nicht selten jedoch gehen die gebotenen Informationen
+weit über die der Manpages hinaus.
+   </textblock>
+
+   <textblock>
+Vor allem bietet <command>info</command> ein anderes Bedienkonzept.
+Es wird die Möglichkeit der Verknüpfung von Texten
+(also des Setzens von Links) genutzt.
+Der Benutzer kann dabei durch eine
+Dokumenten-Hierarchie navigieren und sich Stück für
+Stück von generellen Aussagen ausgehend immer tiefer
+in das Thema einlesen.
+   </textblock>
+
+   <textblock>
+Der Aufruf erfolgt über die einfache Befehlszeile
+   </textblock>
+
+   <shell>
+    <user path="~">
+	info "Programmname"
+    </user>
+   </shell>
+
+   <textblock>
+bzw.
+   </textblock>
+
+   <shell>
+    <user path="~">
+	 info
+    </user>
+   </shell>
+
+   <textblock>
+Letztere Variante stellt einen Index der vorhandenen Themen
+zur Verfügung.
+   </textblock>
+
+   <textblock>
+In jedem Falle werden in der oberen Zeile Informationen über
+die Hierarchie angezeigt. Von links nach rechts sind das:
+die zugehörige info-Datei, der Name des aktuellen Dokuments,
+der des nächsten (Link), der des vorhergehenden (Link) sowie ein
+Link eine Ebene aufwärts.
+   </textblock>
+
+   <textblock>
+Eine Einführung in <command>info</command> liefert ein Druck auf die Taste <command>h</command>.
+Für die Navigation in den Dokumenten sind folgende Tasten
+von Bedeutung:
+   </textblock>
+
+   <table>
+    <pdf-column width="125"/>
+    <pdf-column width="75"/>
+    <pdf-column/>
+    <tr>
+     <td><command>n</command></td>
+     <td><command>next</command></td>
+     <td>Springt zum der Hierarchie nach nächsten Dokument</td>
+    </tr>
+    <tr>
+     <td><command>p</command></td>
+     <td><command>previous</command></td>
+     <td>Tut das Selbe für das vorher gehende Dokument</td>
+    </tr>
+    <tr>
+     <td><command>u</command></td>
+     <td><command>up</command></td>
+     <td>Geht in der Hierarchie eine Ebene nach oben</td>
+    </tr>
+    <tr>
+     <td><command>Space</command> und <command>Backspace</command></td>
+     <td></td>
+     <td>Scrollen im aktuellen Dokument seitenweise herunter bzw. herauf</td>
+    </tr>
+    <tr>
+     <td><command>Cursortasten</command></td>
+     <td></td>
+     <td>Bewegung des Cursors bzw. normales Scrollen</td>
+    </tr>
+    <tr>
+     <td><command>Return/Enter</command></td>
+     <td></td>
+     <td>
+Wenn sich der Cursor über einer Verknüpfung (also einem Link)
+befindet, so wird zum zugehörigen Dokument gesprungen.
+In Texten werden Links meistens zwischen einen "*" und "::"
+eingeschlossen (also * Link_auf_irgendwas:: ).
+     </td>
+    </tr>
+    <tr>
+     <td><command>s</command></td>
+     <td><command>search</command></td>
+     <td>
+Sucht nach dem Begriff, den man anschließend eingibt
+(mit abschließendem Return/Enter).
+Weitersuchen über ernute Suche ohne Angabe eines Suchbegriffs
+     </td>
+    </tr>
+    <tr>
+     <td><command>q</command></td>
+     <td><command>quit</command></td>
+     <td>Beendet info</td>
+    </tr>
+   </table>
+
+   <textblock>
+Interessant ist auch noch die Option <command>--apropos</command>.
+Mittels
+   </textblock>
+
+   <shell>
+    <user path="~">
+     info --apropos Suchbegriff
+    </user>
+   </shell>
+
+   <textblock>
+kann man
+die Info-Seiten nach einem bestimmten Thema
+durchsuchen - ähnlich dem zu man gehörenden
+Befehl apropos der im nächsten Abschnitt
+beschrieben wird.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Womit kann ich ... ?
+   </heading>
+
+   <section>
+    <heading>
+apropos &amp; Co
+    </heading>
+
+    <textblock>
+Manpages sind eine schöne Sache, aber was macht man,
+wenn man nur weiß, was man machen will, aber nicht,
+wie das entsprechende Programm heißt?
+    </textblock>
+
+    <textblock>
+Hier schafft <command>apropos</command> Abhilfe. Es durchsucht die
+Manpages jeweils im Abschnitt Name, in dem (wie oben
+erwähnt) auch eine Kurzbeschreibung enthalten ist.
+    </textblock>
+
+    <textblock>
+Wenn man mehrere Suchbegriffe übergibt so nimmt
+<command>apropos</command> eine ODER-Suche vor.
+Für
+    </textblock>
+
+    <shell>
+     <user path="~">
+	  apropos linux help
+     </user>
+    </shell>
+
+    <textblock>
+ würde <command>apropos</command> nach allen
+Programmnamen und -beschreibungen suchen die <strong>linux</strong>
+oder <strong>help</strong> oder beides beinhalten (also gar nicht
+so wenige).
+    </textblock>
+
+    <textblock>
+Man kann natürlich auch nach dem dem Vorkommen
+beider Begriffe suchen (UND-Suche). Dazu sucht man mit
+<command>apropos</command> den ersten Begriff und filtert seine Ausgabe mit
+<command>grep</command> (nach dem zweiten Begriff).
+    </textblock>
+    
+    <textblock>
+Für alles das sowohl <strong>linux</strong> als auch <strong>help</strong> enthält,
+würden wir also
+    </textblock>
+
+    <shell>
+     <user path="~">
+	  apropos linux | grep help
+     </user>
+    </shell>
+
+    <textblock>
+eingeben.
+    </textblock>
+
+    <textblock>
+<command>grep</command> hat einige sehr interessante Optionen (<command>-v</command> sucht
+z.B. alles was den gegebenen Begriff nicht enthält)
+Für eine Befehlsübersicht sei auf <command>man grep</command> verwiesen.
+    </textblock>
+
+    <textblock>
+Zum Schluss seien noch mal drei Optionen von
+<command>apropos</command> erläutert:
+    </textblock>
+
+    <table>
+     <pdf-column width="25"/>
+     <pdf-column/>
+     <tr>
+      <td><command>-e</command></td>
+      <td>
+       sucht nach einer exakten Übereinstimmung mit dem Suchbegriff so
+       findet man mit "string" nur noch "string" und nicht mehr
+       "strings"
+      </td>
+     </tr>
+     <tr>
+      <td><command>-r</command></td>
+      <td>
+       der Suchbegriff wird als regulärer Ausdruck interpretiert
+      </td>
+     </tr>
+     <tr>
+      <td><command>-w</command></td>
+      <td>
+       Hier kann man mit so genannten Wildcards/Jokern rumspielen. Das
+       wären zum Beispiel das <command>*</command> das für eine beliebige Zeichenkette
+       oder das <command>?</command>, das für genau ein beliebiges Zeichen steht.<br/>
+       Aber Achtung: gefunden wird nur das, was mit allen
+       Wildcards auf einen ganzen Programmnamen oder eine ganze
+       Beschreibung passt. (jeweils ein <command>*</command> am Anfang und am
+       Ende des Suchbegriffs macht sich also ganz gut)
+      </td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
+HOWTOs
+    </heading>
+
+    <textblock>
+Man &amp; Co sind immer dann gut, wenn man Informationen
+zu einem bestimmten Programm sucht.
+Manche Aufgaben sind allerdings etwas komplexer und
+bedürfen somit einer intensiveren Erläuterung.
+Dafür sind die als Kurzreferenz gedachten
+Dokumentationen nicht ausgelegt.
+    </textblock>
+
+    <textblock>
+Im Unix/Linux-Bereich haben sich daher umfangreichere
+Anleitungen unter dem Namen <strong>HOWTO</strong> etabliert.
+    </textblock>
+
+    <textblock>
+Zu finden sind diese in der Regel im
+Verzeichnis <path>/usr/share/doc/HOWTO</path> oder auch
+<path>/usr/doc/HOWTO</path> (abhängig von der verwendeten
+Distribution).
+    </textblock>
+
+    <textblock>
+Dort findet man die installierten HOWTOs in
+Verzeichnissen nach Sprache und Format sortiert.
+Für die Sortierung werden die Länderkürzel und
+die typische Dateierweiterung des Formats verwendet.
+So finden sich in <path>de-html</path> beispielsweise
+deutschsprachige Hypertextdokumente oder in
+<path>en-txt</path> englische Textdateien.
+    </textblock>
+
+    <textblock>
+Die Dateien selber sind nach dem Thema benannt
+(manchmal findet sich auch die Sprache noch mal
+wieder).
+Beispielsweise <path>DE-Drucker-HOWTO.html</path> oder
+<path>CD-Writing-HOWTO</path>.
+    </textblock>
+
+    <textblock>
+Sucht man neue und aktuelle HOWTOs, so lohnt
+sich ein Blick auf die Homepages des
+des "Linux Documentation Project" (englisch)
+<ref lang="en" url="http://www.tldp.org">http://www.tldp.org</ref>
+bzw. des "deutschen Linux HOWTO Projekts"<ref lang="de" url="http://www.linuxhaven.de/dlhp">http://www.linuxhaven.de/dlhp</ref>.
+    </textblock>
+
+    <hint>
+<strong>Tip:</strong> Vor allem die englischen Text-HOWTOs sind häufig
+nur als komprimierte Dateien installiert.
+Um sie zu lesen kann man folgendes Kommando verwenden:
+    </hint>
+
+    <shell>
+     <user path="~">
+	  zless dateiname.gz
+     </user>
+    </shell>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Paketdokumentation
+   </heading>
+
+   <textblock>
+Als letzte Möglichkeit der Informationsbeschaffung
+bleibt noch der Blick in die Dokumentation
+der installierten Pakete.
+   </textblock>
+
+   <textblock>
+Diese liegt meist unter <path>/usr/share/doc</path>.
+Je nach Distribution sind aber auch Pfade wie
+<path>/usr/doc</path> oder <path>/usr/doc/packages</path> möglich.
+   </textblock>
+
+   <textblock>
+Was sich in den Verzeichnissen befindet, die
+nach den Paketen benannt sind, ist unterschiedlich.
+Allerdings tragen fast alle wichtigen Dateien
+aussagekräftige Namen und es findet sich auch fast
+immer eine Datei <path>README</path>.
+Sie gibt darüber Auskunft, welche Dateien oder Webseiten
+Informationen zum Programm/Paket bereitstellen
+oder tut dies selbst.
+   </textblock>
+  </section>
+ </split>
+</chapter>

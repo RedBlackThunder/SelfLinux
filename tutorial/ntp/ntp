@@ -1,0 +1,1009 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Netzwerkzeitprotokoll</title>
+
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>ntp</index>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->   
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Uhrzeiten (zusammen mit einem Datum) sind ein wichtiger
+Bestandteil des täglichen Lebens. Man verabredet sich für eine
+bestimmte Zeit oder erwartet eine Fernsehsendung zu einer bestimmten
+Zeit. Seit Jahrhunderten verwendet die Menschheit Uhren, um die
+Zeit möglichst genau zu messen. Mit der Kenntnis einer genauen
+Uhrzeit können auch längere Zeitspannen genau gemessen werden.
+Inzwischen ist man mit sogenannten Atomuhren in der Lage, mit viel
+technischem Aufwand die Zeit unheimlich genau zu messen: eine
+Atomuhr misst die Zeit auf mindestens 0.00000000001 Sekunden
+genau! Das bedeutet, dass eine Atomuhr nach zehn Jahren um
+maximal eine Millisekunde oder nach 10.000 Jahren nur um eine
+Sekunde falsch geht.
+   </textblock>
+
+   <textblock>
+Es ist sicherlich einsichtig, dass es wichtig ist, dass auch
+jeder die gleiche Uhrzeit verwendet. Falsch gehende Armbanduhren
+können zu bösen Überraschungen beim ersten Rendevouz führen...
+   </textblock>
+
+   <textblock>
+Auch bei Rechnersystemen und in Netzwerken spielt die genaue
+Uhrzeit eine wichtige Rolle: nur so können Protokoll- und
+Logdateien sinnvoll genutzt werden, Dateiänderungen korrekt
+dokumentiert und verglichen werden.
+   </textblock>
+
+   <textblock>
+Dieser Text beschreibt, wie man es erreicht, dass ein Linuxsystem
+über das Netzwerkzeitprotokoll NTP über eine sehr genaue Zeit
+verfügt und diese einem Windowssystem über <command>Samba</command> zur Verfügung
+stellen kann. Netzwerkzeit ist ein Basisdienst eines Netzwerkes
+und sollte immer eingerichtet werden. Dies ist auch nicht sehr
+aufwendig.
+   </textblock>
+
+   <textblock>
+Die Begriffe Uhrzeit und Zeit schließen im Folgenden das Datum
+grundsätzlich mit ein.
+   </textblock>
+
+
+   <section>
+<!-- *.* Kapitel -->   
+	<heading>
+Über dieses Dokument
+	</heading>
+
+	<textblock>
+Dieses Dokument kann nur einen kleinen Überblick über das Thema geben.
+Viele Details werden nur angerissen oder überhaupt nicht erwähnt.
+Trotz aller Sorgfalt kann es leider passieren, dass einige der
+Informationen aus diesem Dokument fehlerhaft sind.
+	</textblock>
+
+	<textblock>
+Der Autor <name email="steffen@dett.de">Steffen Dettmer</name> freut sich natürlich
+über Kommentare und Anregungen zu diesem Text.
+	</textblock>
+   </section>
+
+
+   <section>
+<!-- *.* Kapitel -->	
+	<heading>
+Zeitzonen
+	</heading>
+
+	<textblock>
+Mittags erwarten wir, dass die Sonne den höchsten Stand hat. Nun
+ist klar, dass dies regional unterschiedlich ist: ist es in
+Europa Mittag, so herrscht in Australien gerade tiefe Nacht. Also
+hat man verschiedene Uhrzeiten. Nun wäre es natürlich
+umständlich, in Berlin ausrechnen zu müssen, wie spät es gerade
+in Hamburg ist (vermutlich ein paar Sekunden früher), daher hat
+man sogenannte Zeitzonen eingeführt. Innerhalb einer Zeitzone
+verwendet man die gleiche Uhrzeit (auch wenn dann die Sonne erst
+ein paar Minuten nach zwölf Uhr im Zenit steht). Vereinfacht
+gesprochen hat man jeweils etliche Länder oder grössere Regionen
+in eine Zeitzone gesteckt, deren Zeit weniger als eine Stunde von
+einander abweicht. So erhält man 24 Zeitzonen (in der Praxis gibt
+es allerdings mehr). Im Internet findet man Seiten, die Karten
+der Zeitzonen zeigen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Weltzeit und Sommerzeit
+	</heading>
+
+	<textblock>
+Beispielsweise im internationalen Schiffsverkehr, aber auch in
+internationalen Chaträumen ist es aufwendig, die Zeitzonen
+entsprechend ineinander umzurechnen. Daher hat man eine Weltzeit
+<strong>Coordinated Universal Time</strong> UTC definiert. Diese entspricht der
+Zeit am Nullmeridian und ist damit (ziemlich genau) gleich der
+<strong>Greenwich Mean Time</strong> (GMT). Die Zeit in Mitteleuropa ist im Winter
+eine Stunde, im Sommer zwei Stunden weiter (später).
+	</textblock>
+
+	<textblock>
+Sommerzeit wurde eingeführt, um das Tageslicht besser ausnutzen
+zu können. Man kennt das: zweimal im Jahr werden die Uhren um je
+eine Stunde verstellt. Da man die Uhrzeit im Sommer eine Stunde
+vorstellt und die UTC keine Sommer- oder Winterzeit
+unterscheidet, hat man im Sommer also zwei Stunden Differenz.
+	</textblock>
+
+	<textblock>
+Bei Zeitsynchronisation verwendet man UTC oder GMT. Die lokale
+Zeit wird dann vom System entsprechend der lokalen Zeitzone
+angezeigt. Die Umstellung von Sommer- auf Winterzeit und
+umgekehrt ist in diesem Modell auch keine Zeitumstellung, sondern
+lediglich eine Änderung der Zeitzone; so sind <strong>CET</strong> und <strong>MET</strong>
+Winterzeit, <strong>CEST</strong> und <strong>MEST</strong> sind Varianten dieser Zeitzonen in
+Sommerzeit.
+	</textblock>
+
+	<textblock>
+Das Kommando <command>date</command> gibt die aktuelle Systemzeit und die lokale
+Zeitzone aus:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+date
+	 </user>
+	 <output>
+Sun Apr 13 16:08:15 CEST 2003
+	 </output>
+	</shell>
+
+	<textblock>
+man erkennt, dass wir Sommerzeit haben. Die Weltzeit <strong>UTC</strong> kann das
+GNU <command>date</command> Kommando über die Option <command>--utc</command> anzeigen:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+date --utc
+	 </user>
+	 <output>
+Sun Apr 13 14:11:15 UTC 2003
+	 </output>
+	</shell>
+
+	<textblock>
+Mitteleuropäische Zeit ist eine Stunde Differenz, die zweite
+kommt durch die Sommerzeit - daher beträgt die Zeitdifferenz im
+Winter nur eine Stunde.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Zeitverteilung
+	</heading>
+
+	<textblock>
+Dass es super genaue Atomuhren gibt, hilft einem zunächst erstmal
+nicht sehr viel: man bräuchte einen grossen Keller und sehr
+preiswert sind diese Uhren auch nicht. Nun ist es aber möglich,
+die Atomzeit zu verteilen. Ein bekanntes Beispiel sind die
+Funkuhren, die die Uhrzeit auf ca. 20 Millisekunden genau über
+das <command>DFC77</command> Protokoll aus Frankfurt/Main per Funk empfangen. Mit
+dem Satelliten-Navigationssystem GPS ist es sogar möglich, die
+Uhrzeit auf eine Mikrosekunde genau zu erhalten, jedoch ist dies
+technisch deutlich aufwendiger.
+	</textblock>
+
+	<textblock>
+Neben Funkverbindungen bietet sich das Internet an, um
+Uhrzeitdaten zu übermitteln. Leider ist die Signallaufzeit im
+Internet deutlich größer und vor allem ungenau, so dass man einige
+Tricks benutzen muß, um eine Genauigkeit besser als eine Sekunde
+zu erreichen. Es gibt Server im Internet, die die Uhrzeit auf
+Anfrage verschicken. Die physikalisch-technische Bundesanstalt
+beispielsweise betreibt eine Atomuhr und solche Zeitserver.
+	</textblock>
+
+	<textblock>
+Es gibt etliche Programme, die eine genaue Zeitsynchronisation
+über das Internet ermöglichen.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Server
+	</heading>
+
+	<textblock>
+Häufig wird das Network Time Protocol (NTP) verwendet. Es gibt
+Server, die über eine externe Quelle, beispielsweise über einen
+GPS Empfänger, mit einer Atomuhr verbunden sind. Man bezeichnet
+diese als Stratum 1 Server. Diese können die Zeit mittels NTP
+zur Verfügung stellen. Server, die ihre Zeit über Stratum 1
+Server beziehen, und damit <strong>indirekt</strong> von einer Atomuhr, nennt
+man Stratum 2 Server. So hat man ein Maß für die <strong>Qualität</strong> der
+Zeit. Auch Stratum 2 Server sind auf Sekundenbruchteile genau.
+	</textblock>
+
+	<textblock>
+Manche Zeitserver im Internet dürfen nur nach Vereinbarung oder
+Erlaubnis benutzt werden. Insbesondere Stratum 1 Server sind oft
+stark belastet. Für die meisten Anwendungen ist ein Stratum 2
+Server jedoch mehr als ausreichend (im Heimbereich ist eine auf
+hundertstel Sekunde genaue Uhrzeit sicherlich immer ausreichend).
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Zeit Einstellen
+   </heading>
+
+   <textblock>
+Beim Systemstart, wenn der Kernel bootet, wird die aktuelle
+Uhrzeit aus der Echtzeituhr des Computers ausgelesen. Diese ist
+in einem Baustein auf dem Mainboard angebracht. Man erkennt
+diesen kleinen schwarzen Käfer oft an einer kleinen Uhrengrafik
+und der Beschriftung <strong>RTC</strong> (Real Time Clock, englisch für
+Echtzeituhr). Da dieser über eine Batterie gepuffert wird,
+stimmt bei einem Neustart also auch die Systemzeit in etwa.
+   </textblock>
+
+   <textblock>
+Um die Zeit genau einzustellen, gibt es das Tool <command>ntpdate</command>. Dieses
+Programm nimmt Verbindung mit einem oder mehreren Timeservern auf
+und stellt die Systemuhrzeit ein. Dabei werden etliche Packete
+verschickt und empfangen und anschließend wird das halbe
+Antwortzeitmittel von der Uhrzeit abgezogen. Der Aufruf ist
+denkbar einfach: lediglich ein paar Servernamen sind als
+Parameter notwendig. Bei den Einstellungen sind die Standardwerte
+meistens passend.
+   </textblock>
+
+   <textblock>
+Um die Zeit einzustellen, muß man über root-Rechte verfügen. Man
+schreibt dann beispielsweise:
+   </textblock>
+
+<!--   
+********
+* Layout: erste Zeile ist Kommand, Rest Ausgabe
+********
+-->
+
+   <shell>
+	<root path="~">
+ntpdate clock.isc.org ptbtime1.ptb.de ntps1-0.cs.tu-berlin.de
+	</root>
+	<output>
+12 Jan 21:12:38 ntpdate[2382]: adjust time server 192.53.103.103 offset 3.493504 sec
+	</output>
+   </shell>
+
+   <textblock>
+<command>ntpdate</command> hat die Linux-Kerneluhr eingestellt, und dabei die
+Uhrzeit um dreieinhalb Sekunden vorgestellt. Wenn man das
+Kommando jetzt noch ein paarmal ausführt, gewinnt man einen
+Eindruck, wie präzise dieser Mechanismus ist: in der Regel wird
+die Zeit dann nur noch um wenige Millisekunden verstellt, so
+genau funktioniert das! Um die Genauigkeit zu halten, könnte man
+<command>ntpdate</command> alle paar Stunden laufen lassen.
+   </textblock>
+
+   <textblock>
+Nun kann man diese Uhrzeit noch in die BIOS-Echtzeituhr
+eintragen, damit man nach dem nächsten Neustart eine genauere
+Zeit hat. Dazu gibt es das Tool <command>hwclock</command>. Mit dem Parameter
+<command>--systohc</command> schreibt man die Systemzeit in die	<strong>hardware clock</strong>
+(bei PCs also in den RTC des Mainboards). Der Aufruf sieht dann
+so aus:
+   </textblock>
+
+   <shell>
+	<root path="~">
+hwclock --systohc
+	</root>
+   </shell>
+
+   <textblock>
+Das dauert ein paar Sekunden, dann stimmt die Zeit in der
+Echtzeituhr.
+   </textblock>
+
+   <textblock>
+Mit dieser Methode kann man also schon eine Genauigkeit
+erreichen, die für Heimanwender ausreichend ist. Hier hat man oft
+Internetwählverbindungen. Da bei Linux bei einer PPP Anwahl das
+Script <path>/etc/ppp/ip-up</path> ausgeführt wird, paßt hier ein Aufruf von
+<command>ntpdate</command> gut rein. Beispielsweise kann man hier einfügen:
+   </textblock>
+
+<!--
+**********
+* Layout: Datei /etc/ppp/ip-up (Auszug)
+**********
+-->
+
+   <file>
+	<title>Datei /etc/ppp/ip-up (Auszug)
+	</title>
+	<content>
+#Ein paar Server, die zur Synchronisation verwendet werden
+#  können. Bitte nicht unbedingt diese verwenden, sondern andere
+#  aus http://www.eecis.udel.edu/~mills/ntp/ auswählen
+/usr/sbin/ntpdate -bs \
+                clock.isc.org \
+                ptbtime1.ptb.de \
+                ntps1-0.cs.tu-berlin.de
+	</content>
+   </file>
+
+<!--   
+**********
+* Layout: ENDE Datei /etc/ppp/ip-up (Auszug)
+**********
+-->
+
+   <textblock>
+Die Option <command>-s</command> gibt ab, dass man <command>syslog</command> für die Ausgaben
+verwenden möchte. Oft sieht man hier zusätzlich den Schalter
+<command>-b</command>, dieser gibt an, dass hier mit der Zeit gesprungen werden
+darf und sollte angegeben werden, wenn man <command>ntpdate</command> nur selten
+startet.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Der XNTP Deamon
+   </heading>
+
+   <textblock>
+Der <command>xntpd</command> ist ein Dienst, der die Zeit eines Linuxservers
+synchronisiert. Dazu verwendet er, wie <command>ntpdate</command>, Zeitserver im
+Internet. Der Dienst arbeitet jedoch noch aufwendiger. Zunächst
+sendet er alle paar Minuten (je nach Genauigkeit) Zeitpackete, um
+die Zeit ständig aktuell zu halten. Dies ist notwendig, da die
+Kerneluhr (und auch die Hardware- Echtzeituhr) nicht so genau
+sind und beispielsweise temperaturbedingter Schwankungen
+unterliegen.
+   </textblock>
+
+   <textblock>
+Daher muß die Kerneluhr auch nachgestellt werden. Der <command>xntpd</command> macht
+das Nachstellen allerdings sehr geschickt: er setzt nicht einfach
+ruckartig die Zeit eine Sekunde zurück (oder natürlich vor),
+sondern er bremst die Kerneluhr ein kleines bißchen ab, bis die
+Zeiten gleich sind. Im Prinzip regelt der Dienst also die
+Geschwindigkeit der Kerneluhr (und gleicht so die
+temperaturabhängiger Schwankungen aus). So hat man - eine
+Internetverbindung vorrausgesetzt - ständig eine genaue Zeit.
+Genau heißt hier, auf einen Sekundenbruchteil genau; beispielsweise
+auf eine Millisekunde genau. Das ist beachtenswert, denn die
+Antwortzeiten der Server betragen oft mehr als das hundertfache
+(also eine zehntel Sekunde).
+   </textblock>
+
+   <textblock>
+Der Daemon sollte als <command>ntpd</command> oder als <command>xntpd</command> Paket in jeder
+Distribution zu finden sein.
+   </textblock>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Installation
+	</heading>
+
+	<textblock>
+Dieser Text erklärt nicht ausführlich, wie man das <command>ntpd</command> Paket
+installiert, da es in den großen Distributionen verfügbar ist und
+hier auf die gleiche Weise wie andere Softwarepakete einfach
+installiert werden kann. Meistens wird es soagr bereits
+installiert sein, da man diesen Basisdienst auf fast allen Server
+einsetzt. Man verwendet den Paketmanager oder das
+Distributionsspezifische Installationswerkzeug, um das Paket
+gegebenenfalls zu installieren.
+	</textblock>
+
+	<textblock>
+Natürlich ist es auch möglich, den Quellcode downzuladen und
+selbst zu kompilieren. Diese Prozedur basiert auf GNU <command>autoconf</command>
+und ist daher sehr ähnlich zu anderen Softwarepaketen, die GNU
+<command>autoconf</command> verwenden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Konfiguration
+	</heading>
+	
+	<textblock>
+Eine einfache Konfigurationsdatei ist schnell erstellt. Im
+westentlichen werden ein paar Server eingetragen und der Zugriff
+darauf etwas beschränkt.
+	</textblock>
+
+<!--
+**********
+* Layout: Datei /etc/ntp.conf
+**********
+-->
+
+	<file>
+	 <title>
+	  Datei /etc/ntp.conf
+	 </title>
+	 <content>
+#lokale Uhr
+server 127.127.1.0
+#stratum 10 bedeutet "schlechte Qualität"
+fudge  127.127.1.0 stratum 10
+
+#Nun ein paar Server, die zur Synchronisation verwendet werden
+#  können. Bitte nicht unbedingt diese verwenden, sondern andere
+#  aus http://www.eecis.udel.edu/~mills/ntp/ auswählen.
+#  Stratum 2 Server sind mehr als ausreichend.
+server ntps1-0.cs.tu-berlin.de prefer
+server clock.isc.org
+server ptbtime1.ptb.de
+server ptbtime2.ptb.de 
+
+#Hat man mehrere NTP Server im LAN, sollte man diese als peer
+#  konfigurieren:
+#peer ntps2-0.bedi.net  # local time peer server
+
+
+#Die ermittelte Laufzeitabweichung des Systems hier speichern:
+driftfile /etc/ntp.drift  
+
+#Andere Server oder Clients dürfen die Zeit nur abfragen
+restrict default notrust nomodify
+#localhost darf alles (siehe "ntpdc")
+restrict 127.0.0.1
+#Normalerweise vertrauen wir dem Partnerserver im LAN auch:
+#restrict ntps2-0.bedi.net
+	 </content>
+	</file>
+
+<!--	
+**********
+* Layout: ENDE Datei /etc/ntp.conf
+**********
+-->	
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Starten
+	</heading>
+
+	<textblock>
+Vor dem Starten sollte man <command>ntpdate</command> ausführen, um eine korrekte
+Ausgangszeit zu haben. Weicht die Zeit beim Start von <command>ntpd</command> stark
+ab, so wird die Zeit vom <command>ntpd</command> nicht automatisch korrigiert, da es
+sich möglicherweise um Fehler handelt, die manuell korrgiert
+werden sollten.
+	</textblock> 
+
+	<textblock>
+Man könnte den <command>xntpd</command> einfach von der Kommandozeile starten, aber
+dass kann die verwendete Distribution auch automatisch beim Start
+über die sogenannten <path>rc</path>-Skripte. Bei SuSE-Distributionen kann man
+beispielsweise über das Konfigurationswerkzeug den Dienst
+aktivieren lassen und auch per Hand starten:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+/etc/rc.d/xntpd start
+	 </root>
+	</shell>
+
+	<textblock>
+Bei anderen Distributionen kann der Name geringfügig abweichen
+und beispielsweise ntpd oder ntp lauten.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Hierachien aufbauen
+	</heading>
+
+	<textblock>
+Hat man viele Server im LAN, so muss man natürlich nicht mit
+jedem Server die Zeit aus dem Internet heraus synchronisieren.
+Man kann auch Stratum 2 Server verwenden, um zwei (oder mehrere)
+interne Stratum 3 Server zu betreiben. Diese sollten
+untereinander als <command>peer</command> konfiguriert sein, um bei Internetausfall
+höhere Genauigkeit zu bieten.
+	</textblock>
+
+	<textblock>
+Die anderen lokalen Server können die Uhrzeit dann von den
+eigenen Stratum 3 Servern beziehen. Dieses Verfahren ermöglicht
+immernoch Zeiten auf hunderstel Sekunde genau, was meistens
+ausreichend sein sollte. Man kann die lokalen Server auch alle
+untereinander als <command>peer</command> konfigurieren, beziehungsweise die mit
+ausreichend genauen Uhren (manche PCs haben sehr ungenaue
+Systemuhren). Dies ist jedoch ein grosser Aufwand, der nicht
+unbedingt durch Nutzen überwogen wird.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Überwachung des Servers
+   </heading>
+
+
+   <textblock>
+Betreibt man <command>ntp</command> Server, so sollte man diese hin und wieder
+kontrollieren. Weicht die Zeit einmal erheblich ab, so stellt der
+<command>ntpd</command> die Zeit beispielsweise nicht mehr automatisch nach.
+   </textblock>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Das Kontrollprogramm ntpdc verwenden
+	</heading>
+	
+	<textblock>
+Zur Überwachung gibt es das Werkzeug <command>ntpdc</command>. Dieses baut eine
+Verbindung zum Server auf und kann über Kommandos Einstellungen
+und Statusanzeigen abfragen und setzen. Daher sollte auch die
+<command>restrict</command> Option im Server gesetzt werden, um zu verhindern, daß
+jeder Optionen ändern kann.
+	</textblock>
+
+	<textblock>
+<command>ntpdc</command> verbindet per Voreinstellung zu localhost. Möchte man zu
+einem anderen Server, so gibt man dessen Name einfach auf der
+Kommandozeile an.
+	</textblock>
+
+	<textblock>
+Nach dem Start befindet sich das Werkzeug im interaktiven Modus,
+was durch ein Prompt angezeigt wird, und erwartet ein Kommando.
+	</textblock>
+
+	<textblock>
+Eine Hilfe gibt es mit dem Kommando <command>help</command>.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Partner Server anzeigen
+	</heading>
+
+	<textblock>
+Ein Überblick gibt eine Tabelle, in der die verwendeten Server
+und Informationen darüber angezeigt werden. Diese Tabelle kann
+man sich mit dem Kommando peers anzeigen lassen:
+	</textblock>
+
+<!--	
+***************
+* LAYOUT: das Prompt lautet "ntpdc>", weiß nicht, ob wir das mit
+*         XML so darstellen können. Der Rest ist dann die
+*         Ausgabe.
+**************
+-->
+
+	<shell>
+	 <input>
+ntpdc> peers
+	 </input>
+	 <output>
+     remote           local      st poll reach  delay   offset    disp
+=======================================================================
+*ntp1.ptb.de     193.178.163.162  1 1024  377 0.03285 -0.001386 0.01483
+=LOCAL(0)        127.0.0.1       10   64  377 0.00000  0.000000 0.00093
+=hora.cs.tu-berl 193.178.163.162  2 1024  377 0.03644 -0.001299 0.01486
++secu.bedi.net   193.178.163.162  2 1024  376 0.11745 -0.003707 0.02843
+=ntp2.ptb.de     193.178.163.162  1 1024  377 0.03380 -0.001047 0.01485
+=clock.isc.org   193.178.163.162  2 1024  377 0.21767 -0.012278 0.01485
+=ntp-nasa.arc.na 5.0.0.0         16 1024    0 0.00000  0.000000 0.00000
+=ntp0-rz.rrze.un 5.0.0.0         16 1024    0 0.00000  0.000000
+0.00000
+	 </output>
+	</shell>
+
+	<textblock>
+Hier erkennt man, dass mit fünf Servern die Zeit synchron läuft.
+Zusätzlich werden Informationen über die lokale Systemuhr (LOCAL)
+angezeigt. Die unteren beiden Einträge stammen von Servern, die
+vermutlich nicht erreichbar sind und deuten auf eine ungünstige
+Konfiguration hin (beispielsweise eine Firewall, die diese Pakete
+abweist).
+	</textblock>
+
+	<textblock>
+Die Spalte <strong>offset</strong> gibt an, wie synchron die Uhren laufen. Die
+Spalte <strong>disp</strong> gibt die Dispersion, also Streuung, der Zeitwerte
+an. Eine Dispersion größer als 1 deutet auf grobe Fehler hin, ist
+diese jedoch kleiner als 0.1, sind die Werte in Ordnung.
+	</textblock>
+
+	<textblock>
+Beim Start des Servers ist die Dispersion zunächst sehr groß und
+pegelt sich im Laufe der Zeit auf einen kleineren Wert ein. Dies
+kann jedoch etliche Minuten dauern!
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Details über Server anzeigen
+	</heading>
+
+	<textblock>
+Im Beispiel sah man, das der Server <path>clock.isc.org</path> gute, der
+Server <path>ntp.nasa.gov</path> <path>(ntp-nasa.arc.nasa.gov</path>) jedoch keine
+sinnvollen Werte übermittelt. Das Kommando <command>pstats</command> gibt nähere
+Informationen. Zunächst für den ersten Server:
+	</textblock>
+
+	<shell>
+	 <input>
+ntpdc> pstats clock.isc.org
+	 </input>
+	 <output>
+remote host:          clock.isc.org
+local interface:      62.154.193.196
+time last received:   778s
+time until next send: 247s
+reachability change:  3079649s
+packets sent:         19408
+packets received:     18658
+bad authentication:   0
+bogus origin:         0
+duplicate:            0
+bad dispersion:       11395
+bad reference time:   0
+candidate order:      3
+	 </output>
+	</shell>
+
+	<textblock>
+Man sieht, das vor 778 Sekunden Daten empfangen wurden und in 247
+Sekunden das nächste Mal ein Datenaustausch stattfinden soll. Der
+Server ist seit 35 Tagen (3079649 Sekunden) ununterbrochen
+erreichbar gewesen.
+	</textblock>
+
+	<shell>
+	 <input>
+ntpdc> pstats ntp.nasa.gov
+	 </input>
+	 <output>
+remote host:          ntp-nasa.arc.nasa.gov
+local interface:      7.0.0.0
+time last received:   3209635s
+time until next send: 10s
+reachability change:  3209635s
+packets sent:         3150
+packets received:     0
+bad authentication:   0
+bogus origin:         0
+duplicate:            0
+bad dispersion:       0
+bad reference time:   0
+candidate order:      0
+	 </output>
+	</shell>
+
+	<textblock>
+Man erkennt, dass der Server seit 37 Tagen (3209635 Sekunden)
+nicht erreichbar ist. Möglicherweise ist dieser Server nicht mehr
+frei verfügbar.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Systeminformationen anzeigen
+	</heading>
+
+	<textblock>
+Für globale Serverinformationen gibt es die Kommandos sysinfo und
+sysstats. sysinfo gibt den aktuellen Serverstatus aus:
+	</textblock>
+
+	<shell>
+	 <input>
+ntpdc> sysinfo
+	 </input>
+	 <output>
+system peer:          ntp1.ptb.de
+system peer mode:     client
+leap indicator:       00
+stratum:              2
+precision:            -17
+root distance:        0.07309 s
+root dispersion:      0.01715 s
+reference ID:         [192.53.103.103]
+reference time:       c243ecfe.50fd08d4  Sun, Apr 13 2003
+16:04:46.316
+system flags:         auth monitor ntp kernel stats kernel_sync 
+jitter:               0.001297 s
+stability:            0.003 ppm
+broadcastdelay:       0.003998 s
+authdelay:            0.000000 s
+	 </output>
+	</shell>
+
+	<textblock>
+Man erkennt, welcher Server momentan zur Synchronisation
+verwendet wird (hier <path>ntp1.ptb.de</path>), und das im Clientmode
+gearbeitet wird. Hat man mehrere NTP Server im LAN, die
+untereinander auch <command>peer</command> sind, arbeitet ein System bei
+Internetzugangsproblemen im <command>peer</command> Modus. Der Beispielserver
+befindet sich aber im Clientmodus, so dass die Internetverbindung
+offensichtlich funktioniert.
+	</textblock>
+
+	<textblock>
+Die Ausgaben von systats:
+	</textblock>
+
+	<shell>
+	 <input>
+ntpdc> sysstats
+	 </input>
+	 <output>
+system uptime:          19681383
+time since reset:       19681383
+bad stratum in packet:  0
+old version packets:    21927
+new version packets:    525853
+unknown version number: 0
+bad packet length:      0
+packets processed:      114444
+bad authentication:     0
+limitation rejects:     0
+	 </output>
+	</shell>
+
+	<textblock>
+zeigen beispielsweise, wie lange (in Sekunden) das System schon
+läuft (hier also 19.681.383 Sekunden, das entspricht ca. 227
+Tagen) und das 114.444 Pakete bearbeitet wurden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Automatisierte Überwachung
+	</heading>
+
+
+	<textblock>
+Es bietet sich an, den Dienst automatisch überwachen zu lassen:
+so kann man es nicht vergessen und wird informiert, sobald ein
+Fehler auftritt.
+	</textblock>
+
+	<textblock>
+Man kann das <command>netsaint</command> Paket verwenden, dass man über
+<ref lang="en" url="http://www.netsaint.org">http://www.netsaint.org</ref> downloaden kann. <command>Netsaint</command> hat neben vielen
+anderen Tests auch ein <command>check_ntp</command>, welches NTP Server über das
+Netzwerk kontrolliert. Antwortet ein Server nicht, oder hat seine
+Uhrzeit schlechte Qualität, kann ein Information verschickt
+werden. Der Administrator bekommt dann eine eMail mit einer
+entsprechenden Fehlermeldung. Über ein Webfrontend kann er sich
+Details anschauen, beispielsweise die Verfügbarkeit des Dienstes
+als Diagramm.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Zeit für Windows
+   </heading>
+
+   <textblock>
+Meistens hat man viele Windows Arbeitstationen im LAN. Es ist
+natürlich wichtig, auch diesen eine genaue Zeit einzustellen.
+Windows verfügt von Haus aus über keinen genauen, präzisen
+Mechanismus, jedoch ist für Workstations im LAN eine nur
+sekundengenaue Uhrzeit mehr als ausreichend.
+   </textblock>
+
+   <textblock>
+Dieser Abschnitt beschreibt, wie man die Uhrzeit über einen
+Sambaserver an Windows verteilen kann.
+   </textblock>
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Samba Konfigurieren
+	</heading>
+
+<!--	
+*******************
+*** LAYOUT datei /etc/smb.conf (Auszug)
+*******************
+-->
+
+	<file>
+	 <title>
+	  /etc/smb.conf (Auszug)
+	 </title>
+	 <content>
+; Zeitsynchronisation mit Server. Optionen:
+; time server, logon server, logon script, netlogon share
+
+; (Samba's) Time Server aktivieren
+        time server = yes
+
+; LogOn Server für logon script aktivieren
+        logon server = yes
+
+; Das Script, relativ zur LogOn-Share
+        logon script = scripts/logon.bat
+
+; Und die Share mit dem Script
+[netlogon]
+        comment = Netlogon Service
+        browseable = no
+        read only = yes
+        public = yes
+        path = /var/spool/samba/netlogon
+	 </content>
+	</file>
+
+<!--	
+*******************
+*** LAYOUT ENDE Datei /etc/smb.conf (Auszug)
+*******************
+-->	
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+LogOn Script anlegen
+	</heading>
+
+	<textblock>
+Das <path>LogOn</path>-Script benötigt nur eine Kommandozeile zusätzlich (ein
+Aufruf von <command>net time</command>). Hat man bereits eines, zu fügt man diesen
+Aufruf einfach dazu. Sicherheitshalber hier ein Beispiel-Script
+	 (danke an <name email="carsten@heinrici.net">Carsten Heinrici</name>):
+	</textblock>
+
+<!--	
+*******************
+*** LAYOUT Datei netlogon/scripts/logon.bat
+*******************
+-->
+	<file>
+	 <title>
+	  netlogon/scripts/logon.bat
+	 </title>
+	 <content>
+rem sync time with server on logon
+net time /set /yes
+	 </content>
+	</file>
+
+<!--	
+*******************
+*** LAYOUT ENDE Datei netlogon/scripts/logon.bat
+*******************
+-->
+	
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Einsatz
+	</heading>
+
+	<textblock>
+Wenn man alles nochmals überprüft hat, kann man den <command>Samba</command>-Server
+neustarten. Loggt sich ab jetzt ein Windows-Benutzer auf diesem
+Server ein, so wird automatisch das Logon-Script logon.bat
+ausgeführt. Damit wird die Zeit automatisch beim Einloggen
+gesetzt.
+	</textblock>
+
+	<textblock>
+Mit Windows 95/98/ME ist das schon alles. Bei Windows 2000 muß
+man jedoch davon ausgehen, dass der Benutzer nicht berechtigt
+ist, die Uhrzeit zu setzen. Hier muß das Windowssystem
+entsprechend konfiguriert werden.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Zusammenfassung und Ausblick
+   </heading>
+
+   <textblock>
+Die Werkzeuge <command>ntpdate</command> (insbesondere für Dial-Up-Verbindungen) und
+ntpd (insbesondere für Server mit permanenter Internetanbindung)
+für die Zeitsynchronisation mit NTP wurden hier kurz vorgestellt.
+Dieses Protokoll und der Dienst ist sehr mächtig, hier wurde nur
+auf die wichtigesten Optionen eingegangen.
+   </textblock>
+
+   <textblock>
+Es gibt einfache Werkzeuge, wie <command>netdate</command> und <command>rdate</command>, die auf ganz
+einfache Weise Zeiten synchronisieren, jedoch westenlich
+ungenauer sind und daher nicht so gerne benutzt werden. Weiterhin
+gibt es das Paket <command>chrony</command>, das auch NTP verwendet und damit sehr
+genau ist.
+   </textblock>
+
+   <textblock>
+Im Internet finden sich viele Informationen zu Zeiten,
+beispielsweise auf der Homepage des NTP Projektes:
+   </textblock>
+
+   <quotation>
+	<ref lang="en" url="http://www.ntp.org/">http://www.ntp.org/</ref>
+   </quotation>
+
+   <textblock>
+David L. Mills pflegt eine Seite mit Informationen rund um das
+Thema:
+   </textblock>
+
+   <quotation>
+	<ref lang="en" url="http://www.eecis.udel.edu/~mills/ntp/">http://www.eecis.udel.edu/~mills/ntp/</ref>
+   </quotation>
+
+   <textblock>
+die oft referenziert wird und beispielsweise Listen öffentlicher
+Zeitserver enthält.
+   </textblock>
+  </section>
+ </split>
+</chapter>

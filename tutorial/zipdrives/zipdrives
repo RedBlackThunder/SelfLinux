@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Zipdrives</title>
+
+ <author>
+  <name>Marco Budde </name>
+  <mailto>Budde@tu-harburg.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GPL</license>
+ <index>zipdrives</index>
+
+ <description>
+  <textblock>
+In diesem HOWTO wird beschrieben, wie man ein ZIP-Laufwerk unter 
+Linux installiert und benutzt.
+  </textblock>
+ </description>
+
+<split>
+ <section>
+
+  <heading>
+Das ZIP-Laufwerk
+  </heading>
+  
+  <section>
+   <heading>
+Grundlagen
+   </heading>
+   
+    <textblock>
+Das ZIP-Laufwerk der Firma IOMEGA ist ein kleines und recht populäres
+Wechselplatten-Laufwerk. Es existieren zwei verschiedene Typen von
+Medien und dazu passende Laufwerke, die 100 MB bzw. 250 MB pro Medium
+speichern können.
+    </textblock>
+
+    <textblock>
+Vor allem die Laufwerke für die 100 MB-Medien sind sehr weit
+verbreitet und eignen sich deshalb sehr gut für den Austausch von
+Daten zwischen verschiedenen Rechnern. Sie ersetzen zunehmend die
+1,44 MB-Diskettenlaufwerke, die für die heutigen Datenmengen
+zu klein sind.
+    </textblock>
+
+    <textblock>
+Zur Archivierung von Daten sind die ZIP-Laufwerke allerdings weniger
+geeignet:
+    </textblock>
+
+    <ul>
+     <li>
+Die Laufwerke selbst sind zwar sehr günstig, aber bei den Medien ist
+der Preis pro MByte relativ hoch. So sind die Medien sechs Mal teurer als
+Medien für MODs (Magneto Optical Disks) und dreißig Mal so teuer wie
+beschreibare CD-ROMs.
+     </li>
+
+     <li>
+Ebenso wie Disketten speichern ZIP-Laufwerke die Daten rein magnetisch.
+Bei dieser Methode ist es durchaus möglich, dass die Medien
+nach  einigen Jahren teilweise nicht mehr lesbar sind. Auch
+werden die Medien nicht berührungslos gelesen, so dass hier mit
+Abnutzungserscheinungen zu rechnen ist. MODs und CD-ROMs lesen die
+Medien hingegen optisch aus (bei MODs wird lediglich die Magnetisierung
+eines Lichtstrahls ausgewertet) und verwenden auch beim Speichern der Daten ein anderes
+physikalisches Prinzip, so dass hier mit
+einer deutlich längeren Haltbarkeit zu rechnen ist.
+     </li>
+
+    </ul>
+
+    <textblock>
+Beide Laufwerkstypen gibt es in verschiedenen Bauformen und mit
+unterschiedlichen Schnittstellen. So gibt es nicht nur interne, sondern
+auch externe Laufwerke, die besonders dann interessant sind, wenn
+nicht alle Rechner, mit denen man Daten austauschen möchte, über ein
+solches Laufwerk verfügen. In einem solchen Fall kann man dann einfach
+das Laufwerk mitnehmen.
+    </textblock>
+
+    <textblock>
+Bei ZIP-Laufwerken kann man zwischen verschiedenen Schnittstellen wählen:
+parallele Schnittstelle, IDE, SCSI und USB. Das Laufwerk ZIP100 gibt es
+außerdem in der sogenannten Plus-Variante. Dieses externe Laufwerk hat
+sowohl eine parallele als auch eine SCSI-Schnittstelle. Allerdings
+berichten viele Anwender von Problemen mit der SCSI-Schnittstelle der
+Plus-Variante.
+    </textblock>
+
+    <textblock>
+Neben der heute für die IDE-Schnittstelle verfügbaren Version gab es
+früher noch eine IDE-Version des ZIP100, die sich für den PC nicht wie 
+eine Wechselplatte, sondern wie eine
+Festplatte verhielt. Diese frühe Version 
+hatte je nach Betriebssystem allerdings diverse
+Nachteile und ist heute nicht mehr erhältlich.
+    </textblock>
+
+    <textblock>
+Das externe ZIP-Laufwerk für die parallele Schnittstelle enthält ein
+ZIP-Laufwerk mit einer SCSI-Schnittstelle und einem integrierten
+Konverter, der die SCSI-Schnittstelle in eine parallele Schnittstelle
+umwandelt. Für diese Version ist daher ein
+SCSI-Treiber für Linux erforderlich; dazu weiter unten mehr.
+    </textblock>
+  </section>
+  
+  <section>
+
+   <heading>
+Welches ZIP-Laufwerk sollte man nehmen?
+   </heading>
+   
+    <textblock>
+Falls man noch kein ZIP-Laufwerk besitzt, 
+sollte man sich genau überlegen, für welches man sich entscheidet.
+Eine ausführliche Beschreibung der Laufwerke ist auf der Homepage von
+IOMEGA zu finden:
+    </textblock>
+    
+    <textblock>
+<ref lang="de" url="http://www.iomega.de/">http://www.iomega.de</ref>
+    </textblock>
+
+    <textblock>
+Möchte man das Laufwerk nur mit dem eigenen Rechner benutzen, so ist in
+der Regel ein internes IDE- oder SCSI-Laufwerk zu empfehlen, da diese
+deutlich schneller sind als z. B. die externen Laufwerke für die
+parallele Schnittstelle. Außerdem benötigt man dafür weder
+zusätzliche Kabel noch ein separates Netzteil.
+    </textblock>
+
+    <textblock>
+Das externe Laufwerk mit einer parallelen Schnittstelle ist vor allem
+dann sinnvoll, wenn man das Laufwerk an viele andere PCs
+anschließen möchte. Schließlich verfügt eigentlich jeder PC über eine
+externe parallele Schnittstelle.
+    </textblock>
+
+    <textblock>
+Seit Kernel-Version 2.2.18 unterstützt Linux auch USB. Für 
+aktuelle Informationen sei auf http://www.linux-usb.org
+verwiesen.
+    </textblock>
+
+    <textblock>
+Schließlich muss man sich noch zwischen der 100 MB- und der 250 MB-Variante
+des ZIP-Laufwerkes entscheiden. Hier fällt die Wahl
+eigentlich immer auf das ZIP100. Es gibt einfach zu wenige PCs, die
+über ein ZIP250 verfügen, so dass man die 250 MB-Medien kaum jemals für den
+Datenaustausch verwenden kann. Für eine Archivierung
+größerer Datenmengen sind ZIP-Medien viel zu teuer. Hier ist es
+günstiger, zusätzlich zu einem ZIP100 noch ein MOD-
+Laufwerk oder einen CD-Brenner zu kaufen.
+    </textblock>
+  </section>
+ </section>
+</split>
+
+<split>
+
+ <section>
+  <heading>
+Kernel-Konfiguration
+  </heading>
+  
+   <textblock>
+Möchte man ein ZIP-Laufwerk unter Linux nutzen, so
+besteht der erste Schritt darin, in den Linux-Kernel die passenden Treiber
+einzukompilieren oder als Modul zu laden. Falls Sie noch keine
+Erfahrung mit dem Linux-Kernel gesammelt haben sollten, empfiehlt es
+sich, das <strong>Kernel HOWTO</strong> zu lesen. Um einen neuen Kernel
+mit dem passenden Treiber übersetzen zu können, muss man zuerst die
+Übersetzung des Kernels konfigurieren. Hierzu wechselt man in das
+Verzeichnis mit dem Quellcode - in der Regel <path>/usr/src/linux</path> - und gibt
+dort ein:
+  </textblock>
+
+  <shell>
+   <root path="/usr/src/linux">
+make menuconfig
+   </root>
+  </shell>
+
+   <textblock>
+In dem Programm, das nun gestartet wird, müssen die passenden
+Treiber ausgewählt werden. Wie dies geschieht, werden wir im
+Folgenden besprechen. Über diese Auswahl hinaus können an dieser
+Stelle keine weiteren Details zur Kernel-Konfiguration- und
+Installation behandelt werden. Wie bereits erwähnt, finden Sie
+solche Details im Kernel HOWTO.
+  </textblock>
+   
+  <section>
+   <heading>
+IDE-Version
+   </heading>
+
+   <textblock>
+Um die Treiber für die IDE-Versionen zu übersetzen, muss man im Hauptmenü
+der Kernel-Konfiguration den Menüpunkt <strong>Block devices</strong> wählen.
+In dem darauf folgenden Menü müssen mindestens die beiden folgenden
+Punkte aktiviert sein:
+   </textblock>
+
+   <file>
+    <title>
+Block devices
+    </title>
+
+    <content>
+     <![CDATA[
+<*> Enhanced IDE/MFM/RLL disk/cdrom/tape/floppy support
+--- Please see Documentation/ide.txt for help/info on IDE drives
+[ ]    Use old disk-only driver on primary interface
+< >    Include IDE/ATA-2 DISK support
+< >    Include IDE/ATAPI CDROM support
+< >    Include IDE/ATAPI TAPE support
+<*>    Include IDE/ATAPI FLOPPY support
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Falls man noch weitere IDE-Geräte besitzt, muss man natürlich auch die
+für diese Geräte notwendigen Treiber aktivieren. Auch für manche
+IDE-Chipsätze auf den Motherboards gibt es spezielle IDE-Treiber und
+-Patches.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+SCSI-Version
+   </heading>
+
+   <textblock>
+Wenn man ein ZIP-Laufwerk mit SCSI-Schnittstelle in einen Rechner
+einbaut, der bereits vorher eine SCSI-Festplatte oder SCSI-
+Wechselplatte enthielt, so ist keine weitere Konfiguration am Linux-Kernel 
+notwendig, da alle SCSI-Festplatten und SCSI-Wechselplatten von
+demselben Treiber gesteuert werden.
+   </textblock>
+
+   <textblock>
+Die für das ZIP-Laufwerk benötigten Treiber findet man unter dem
+Menüpunkt <strong>SCSI support</strong>. Die folgenden beiden Optionen müssen
+aktiviert werden:
+   </textblock>
+
+   <file>
+    <title>
+SCSI support
+    </title>
+
+    <content>
+     <![CDATA[
+<*> SCSI support
+--- SCSI support type (disk, tape, CD-ROM)
+<*> SCSI disk support
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Neben diesen Treibern muss der Treiber für den verwendeten SCSI-
+Host-Adapter aktiviert werden. IOMEGA legt der SCSI-Version des
+Laufwerkes in der Regel einen einfachen Host-Adapater mit Adaptecs Chipsatz AHA
+152x bei. Falls man noch keinen eigenen SCSI-Host-Adapter
+besitzt und den beiliegenden benutzen möchte, so muss man unter <strong>SCSI low-
+level drivers</strong> diesen Treiber auswählen:
+   </textblock>
+
+   <file>
+    <title>
+SCSI low- level drivers
+    </title>
+    <content>
+     <![CDATA[
+<*> Adaptec AHA152X/2825 support
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Da Linux diesen Host-Adapter nicht automatisch erkennt,
+muss man ihn mit dem Boot-Parameter aha152x= mitteilen. Eine
+Beschreibung dieses Parameters ist im <strong>BootPrompt HOWTO</strong> zu finden.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Version für die parallele Schnittstelle
+   </heading>
+   
+   <textblock>
+Da die ZIP-Laufwerke für die parallele Schnittstelle - wie oben
+beschrieben - ein SCSI-Laufwerk mit einem SCSI-Host-Adapter für
+die parallele Schnittstelle enthalten, erfolgt die Konfiguration des
+Kernels praktisch genauso wie bei der SCSI-Version.
+   </textblock>
+
+   <textblock>
+Unter <strong>Character devices</strong> muss die Unterstützung der parallelen
+Schnittstelle aktiviert werden:
+   </textblock>
+
+   <file>
+    <title>
+Character devices
+    </title>
+    <content>
+     <![CDATA[
+<*> Parallel printer support
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Als nächstes muss wieder unter <strong>SCSI support</strong> die SCSI-Unterstützung
+aktiviert werden:
+   </textblock>
+
+   <file>
+    <title>
+SCSI support
+    </title>
+    <content>
+     <![CDATA[
+<*> SCSI support
+--- SCSI support type (disk, tape, CD-ROM)
+<*> SCSI disk support
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Jetzt fehlt nur noch der Treiber für den in das externe Laufwerk
+eingebauten SCSI-Host-Adapter. Dabei stehen zwei Treiber zur
+Auswahl: PPA und IMM.  Der PPA-Treiber ist für ältere ZIP-Laufwerke
+gedacht. Seit dem ZIP100 Plus muss der IMM-Treiber benutzt werden.
+   </textblock>
+
+   <file>
+    <content>
+     <![CDATA[
+<*> IOMEGA parallel port (ppa - older drives)
+< > IOMEGA parallel port (imm - newer drives)
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Welchen der beiden Treiber man aktiviert, hängt also von dem
+verwendeten Laufwerk ab. Im Zweifelsfall muss man beide
+ausprobieren.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Rechner neu starten
+   </heading>
+   
+   <textblock>
+Nachdem man den Kernel konfiguriert, kompiliert und installiert hat,
+sollte man den Rechner neu starten. Beim Starten sollte jetzt, wenn
+bei der Konfiguration alles richtig funktioniert hat, das ZIP-Laufwerk
+gefunden werden.
+   </textblock>
+
+   <textblock>
+HINWEIS: Bei einem Kernel mit Modul-Unterstützung kann der Neustart
+entfallen, falls der Treiber als Modul konfiguriert wurde!
+   </textblock>
+
+   <textblock>
+Bei einem SCSI-Laufwerk an einem NCR 810 SCSI-Host-Adapter sieht das
+z. B. so aus:
+   </textblock>
+
+   <file>
+    <title>
+SCSI-Laufwerk
+    </title>
+    <content>
+     <![CDATA[
+ncr53c8xx: at PCI bus 0, device 9, function 0
+ncr53c8xx: 53c810 detected
+ncr53c810-0: rev=0x02, base=0xe7000000, io_port=0xe400, irq=11
+ncr53c810-0: ID 7, Fast-10, Parity Checking
+ncr53c810-0: restart (scsi reset).
+scsi0 : ncr53c8xx - version 3.2
+scsi : 1 host.
+[...]
+Vendor: IOMEGA    Model: ZIP 100           Rev: J.03
+Type:   Direct-Access                      ANSI SCSI revision: 02
+Detected scsi removable disk sdc at scsi0, channel 0, id 5, lun 0
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Die letzte Zeile zeigt, dass Linux dem ZIP-Laufwerk in diesem Beispiel
+das Device <path>/dev/sdc</path> zugewiesen hat. Bei einem ZIP-Laufwerk für die
+parallele Schnittstelle sieht die Meldung ähnlich aus, allerdings
+wird am Anfang natürlich ein anderer Hostadapter erkannt.
+   </textblock>
+
+   <textblock>
+Bei einem IDE-Laufwerk sieht die Meldung ungefähr folgendermaßen aus:
+   </textblock>
+
+   <file>
+    <title>
+IDE-Laufwerk
+    </title>
+    <content>
+     <![CDATA[
+hdc: IOMEGA ZIP 100 ATAPI, ATAPI FLOPPY drive
+Partition check:
+hdc: 98304kB, 196608 blocks, 512 sector size
+hdc: 98304kB, 96/64/32 CHS, 4096 kBps, 512 sector size, 2941 rpm
+hdc: hdc4
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Hier erhält das Laufwerk das Device <path>/dev/hdc</path>.
+   </textblock>
+
+   <textblock>
+Falls beim Starten Probleme auftreten, die angezeigten Meldungen
+mitzulesen, kann man sich nach dem Starten mit
+dem Befehl dmesg alle Meldungen ansehen.
+    </textblock>
+  </section>
+ </section>
+</split>
+
+<split>
+ <section>
+  <heading>
+Nutzung des Laufwerkes
+  </heading>
+
+  <textblock>
+Ein von Linux erkanntes ZIP-Laufwerk kann wie jedes andere Laufwerk
+als Device angesprochen werden. Es ist möglich, mit jeder Linux-
+Anwendung direkt auf das Laufwerk und seine Daten zuzugreifen.
+  </textblock>
+  
+  <section>
+   <heading>
+ZIP-Medien aufsetzen
+   </heading>
+   
+   <textblock>
+Standardmäßig enthalten ZIP-Medien von IOMEGA eine Partition mit der
+Nummer 4, wobei diese Partition mit einem MS-DOS-Dateisystem
+formatiert ist. Um ein solches Medium aufzusetzen, gibt man Folgendes
+ein:
+   </textblock>
+
+   <shell>
+    <root path="~">
+mount -t vfat /dev/sdc4 /zip
+    </root>
+   </shell>
+
+   <textblock>
+Dabei muss man die letzten beiden Parameter an die eigene Konfiguration
+anpassen. Dieses Beispiel geht von einem SCSI-Laufwerk aus,
+dem Linux das Device <path>/dev/sdc</path> zugewiesen hat. Linux ordnet jeder
+Partition auf einem Device ein weiteres Device zu. Deshalb wird die
+vierte Partition des Laufwerkes mit dem Device <path>/dev/sdc4</path> angesprochen.
+Der Mountpunkt ist in diesem Beispiel <path>/zip</path>.
+   </textblock>
+
+   <textblock>
+Natürlich muss der Mountpunkt existieren, damit das Medium erfolgreich
+aufgesetzt werden kann. Existiert das Verzeichnis noch nicht, muss es
+angelegt werden:
+   </textblock>
+
+   <shell>
+    <root path="~">
+mkdir /zip
+    </root>
+   </shell>
+
+   <textblock>
+Mit
+   </textblock>
+
+   <shell>
+    <root path="~">
+umount /zip
+    </root>
+   </shell>
+
+   <textblock>
+kann ein Medium wieder freigegeben werden. Bevor dies nicht geschehen
+ist, sperrt Linux den Auswurfknopf des ZIP-Laufwerkes.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+ZIP-Medien partitionieren
+   </heading>
+   
+   <textblock>
+Je nach Verwendungszweck kann es sinnvoll sein, die ZIP-Medien neu zu
+partitionieren und zu formatieren.
+   </textblock>
+
+   <textblock>
+Folgende Formen der Partitionierung sind bei ZIP-Medien üblich:
+   </textblock>
+
+   <ul>
+    <li>
+<strong>Superfloppy</strong><br/>
+Hier verzichtet man vollständig auf eine Partitionierung.  Man spricht
+also z. B. direkt das Device <path>/dev/sdc</path> an. Das ZIP-Medium verhält sich
+dann also wie eine normale Diskette.
+    </li>
+
+    <li>
+<strong>1. Partition</strong><br/>
+Das Medium enthält eine Partition, und zwar die erste in der
+Partitionstabelle. Es wird dann z. B. das Device <path>/dev/sdc1</path> benutzt.
+    </li>
+
+    <li>
+<strong>4. Partition</strong><br/>
+Das Medium enthält eine Partition, und zwar die vierte in der
+Partitionstabelle. Es wird dann z. B. das Device <path>/dev/sdc4</path> benutzt. So
+liefert IOMEGA die Medien aus.
+    </li>
+   </ul>
+
+   <textblock>
+Jeder entscheidet selbst, welche Partitionierung er wählt.
+Nach Meinung des Autors ergibt das <strong>Superfloppy</strong>-Konzept am meisten Sinn,
+da man Partitionen sowieso nicht benötigt und es sich nicht um eine
+Festplatte handelt. Für den Datenaustausch mit anderen
+Betriebssystemen kann es aber sinnvoll sein, die vierte Partition zu
+benutzen, da manche Systeme eventuell davon ausgehen, dass der Anwender
+das Medium nicht neu partitioniert hat.
+   </textblock>
+
+   <textblock>
+Um ein ZIP-Medium neu zu partitionieren, kann das Programm fdisk
+benutzt werden. Das Programm wird folgendermaßen aufgerufen:
+   </textblock>
+
+   <shell>
+    <root path="~">
+fdisk /dev/sdc
+    </root>
+   </shell>
+
+   <textblock>
+Hierbei ist <path>/dev/sdc</path> wieder das Device des ZIP-Laufwerkes.  Mit <command>p</command>
+kann man dann die auf dem Medium vorhandene Partitionstabelle
+ansehen:
+   </textblock>
+
+   <shell>
+    <root path="~">
+fdisk  /dev/sdc
+    </root>
+    <input>
+Command (m for help): p
+    </input>
+    <output>
+Disk /dev/sdc: 64 heads, 32 sectors, 96 cylinders
+Units = cylinders of 2048 * 512 bytes
+
+Device      Boot    Start       End    Blocks   Id  System
+/dev/sdc4      *        1        96     98288    6  FAT16
+    </output>
+   </shell>
+
+   <textblock>
+Um eine bestehende Partition zu löschen, kann der Menüpunkt <command>d</command>
+benutzt werden. Mit <command>n</command> wird eine neue Partition angelegt. Nach der
+Erzeugung einer neuen Partition sollte man auch den Typ der Partition
+mit dem Menüpunkt <command>t</command> richtig setzen. Wurden alle Änderungen an der
+Partitionstabelle durchgeführt, so wird sie mit <command>w</command> abgespeichert. Dabei
+gehen in der Regel alle Daten auf dem Medium verloren!
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+ZIP-Medien formatieren
+   </heading>
+   
+   <textblock>
+Das Medium kann mit fast allen von Linux unterstützten Dateisystemen
+formatiert werden. Gebräuchlich sind vor allem die Dateisysteme VFAT
+(Windows 95) und ext2 (Linux). Wenn man keine Dateirechte benötigt,
+empfiehlt es sich meist, das Dateisystem VFAT zu benutzen, da man
+es nicht nur unter Linux, sondern auch mit den meisten anderen
+Betriebssystemen lesen kann.
+    </textblock>
+
+    <textblock>
+Um z. B. das Medium in Laufwerk <path>/dev/sdc</path>, das als <strong>Superfloppy</strong> genutzt
+werden soll, mit einem ext2-Dateisystem zu versehen, benutzt man
+folgenden Befehl:
+    </textblock>
+
+    <shell>
+     <root path="~">
+mke2fs /dev/sdc
+     </root>
+    </shell>
+
+    <textblock>
+Ein VFAT-Dateisystem kann mit dem Befehl <command>mkdosfs</command> erzeugt werden.
+Beide Programme kennen eine große Anzahl von Optionen, die in den
+beiden Manpages zu den Programmen beschrieben werden.
+    </textblock>
+  </section>
+  
+  <section>
+   <heading>
+ZIP-Medien einfacher aufsetzen
+   </heading>
+   
+   <textblock>
+Es ist relativ lästig, immer den kompletten Befehl zum Aufsetzen der
+ZIP-Medien per Hand einzugeben. Besser ist es, das Laufwerk in die
+Datei <path>/etc/fstab</path> einzutragen.  Ein solcher Eintrag für die
+standardmäßig partitionierten und formatierten ZIP-Medien sieht dann
+z. B. so aus:
+   </textblock>
+
+   <file>
+    <title>
+/etc/fstab
+    </title>
+    <content>
+     <![CDATA[
+/dev/sdc4    /zip    vfat   defaults,noauto   0 0
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Häufig möchte man zusätzlich die Optionen <command>user</command>, <command>gid</command> und <command>umask</command>
+benutzen, um normalen Benutzern das Aufsetzen und Beschreiben der ZIP-
+Medien zu ermöglichen. Eine Beschreibung dieser Optionen ist in der
+Manpage zu <command>mount</command> zu finden.
+   </textblock>
+
+   <textblock>
+Nachdem man ein Laufwerk auf diese Art eingetragen hat, kann man ein ZIP-Medium
+einfach folgendermaßen aufsetzen:
+   </textblock>
+
+   <shell>
+    <root path="~">
+mount /zip
+    </root>
+   </shell>
+
+   <textblock>
+Aber selbst dieser kurze Befehl kann zuviel werden, wenn man die
+Medien häufig während des Betriebes wechselt.  Eine sehr schöne
+Alternative bietet hier der Treiber <command>autofs</command> des Linux-Kernels, der
+Laufwerke bei einem Zugriff automatisch aufsetzt und nach einer
+bestimmten Zeit ohne Zugriff automatisch wieder freigibt.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Werkzeuge für ZIP-Laufwerke
+   </heading>
+   
+   <textblock>
+Im Gegensatz zu normalen Disketten und z. B. MODs verfügen ZIP-Medien
+über keinen Schalter zur Aktivierung des Schreibschutzes.
+Allerdings kann man ein ZIP-Medium mittels eines speziellen
+Programmes mit einem Schreibschutz versehen.  Damit Viren und ähnliche
+Programme den Schreibschutz nicht einfach per Software wieder
+deaktivieren können, kann der Schreibschutz mit einem Passwort
+geschützt werden.
+   </textblock>
+
+   <textblock>
+Folgende Programme können den Schreibschutz und das Passwort verändern:
+   </textblock>
+
+   <ul>
+    <li>
+mtools<br/>
+<ref lang="en" url="http://mtools.ltnb.lu">http://mtools.ltnb.lu</ref>
+    </li>
+
+    <li>
+GtkZip<br/>
+<ref lang="en" url="http://www.smallpig.net/gtkzip/">http://www.smallpig.net/gtkzip/</ref>
+    </li>
+   </ul>
+  </section>
+ </section>
+</split>
+</chapter>

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Was ist Linux?</title>
+
+ <author>
+  <name>Lugs</name>
+  <mailto>philipp.frauenfelder@swissonline.ch</mailto>
+ </author>
+
+ <author>
+  <name>Heiko Degenhardt</name>
+  <mailto>hede@pingos.org</mailto>
+ </author>
+
+ <author>
+  <name>Nico Golde</name>
+  <mailto>nion@gmx.net</mailto>
+ </author>
+
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+GFDL
+ </license>
+
+ <index>was_ist_linux</index>
+
+ <split>
+  <section>
+<!-- 1. Kapitel-->
+
+   <heading>
+Begriffsklärung
+   </heading>
+
+   <textblock>
+Es soll hier zunächst einmal klargestellt werden, was man unter dem
+Begriff "Linux" eigentlich versteht, und wie dieser Begriff hier im
+SelfLinux-Tutorial (auch) verwendet wird.
+   </textblock>
+
+   <textblock>
+Prinzipiell ist mit dem Begriff "Linux" nur der Kernel gemeint, also
+der Teil des Systems, der z.B. die Ressourcen für die laufenden
+Programme und die Anwender verwaltet. Obwohl der Kernel ein
+essentieller Teil des Systems ist, wäre er ohne zusätzliche Software
+allerdings nutzlos. Um diesen Kernel effektiv nutzen zu können, ist
+weitere (teilweise sehr systemnahe) Software notwendig, also das
+eigentliche Betriebssystem. Derzeit wird in den meisten Fällen die
+Software des GNU-Projektes (<ref lang="en" url="http://www.gnu.org">http://www.gnu.org</ref>) in Verbindung mit
+dem Linux-Kernel verwendet. Das GNU-Projekt entwickelt bereits seit
+1984 Freie Software (<ref lang="de" url="http://www.gnu.org/philosophy/free-sw.de.html">http://www.gnu.org/philosophy/free-sw.de.html</ref>),
+unter anderem das Unix-ähnliche Softwaresystem GNU. Als 1991 die
+Arbeit am Linux-Kernel begann, war dieses Softwaresystem bereits
+fast fertig, sodass man auf einen Großteil Freier Software für
+die Linux-Entwicklung zurückgreifen konnte.
+   </textblock>
+
+   <textblock>
+Heute sind beide Komponenten, der Linux-Kernel und die
+GNU-Betriebssoftware, kaum noch voneinander zu trennen. Beide Teile
+haben sich gegenseitig vorangebracht und gegenseitig befruchtet.
+   </textblock>
+
+   <textblock>
+Korrekterweise müsste man also eigentlich, wenn man das
+Betriebssystem meint, von "GNU/Linux" sprechen, da hier immer der
+Kernel (Linux) und die Systemwerkzeuge (GNU) gemeinsam gemeint
+sind.
+   </textblock>
+
+   <textblock>
+Es hat sich allerdings heute eingebürgert, dass umgangssprachlich
+unter dem Begriff "Linux" die Kombination aus Kernel und Systemwerkzeugen gemeint
+ist. An vielen Stellen in diesem Tutorial (beginnend bereits im
+vorliegenden Text) wird dies genauso gehandhabt. Es finden sich also
+als Bezeichnung für das Betriebssystem gleichbedeutend die
+Begriffe "Linux" und "GNU/Linux", und für den Kernel "Kernel" oder
+"Linux-Kernel". Dies soll keinesfalls eine Verunglimpfung der
+hervorragenden Arbeit des GNU-Projektes sein, sondern trägt eher der
+Tatsache Rechnung, dass diese Benennung heutzutage von den meisten
+Anwendern verstanden und benutzt wird.
+
+Eine detaillierte Erklärung über die Zusammenhänge zwischen GNU und
+Linux ist auf <ref lang="en" url="http://www.gnu.org/gnu/linux-and-gnu.html">http://www.gnu.org/gnu/linux-and-gnu.html</ref> zu finden.
+
+
+HINWEIS: Natürlich wird auf GNU/Linux-Systemen nicht nur Software
+eingesetzt, die unter der GNU GPL steht. Es gibt viele andere
+Freie Lizenzen, unter denen Software stehen kann. Einen ersten
+Überblick kann man sich auch hier beim GNU-Projekt auf
+<ref lang="en" url="http://www.gnu.org/licenses/licenses.html">http://www.gnu.org/licenses/licenses.html</ref>
+verschaffen.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Kurze Einführung
+   </heading>
+
+   <textblock>
+(GNU/)Linux ist ein hochstabiles, sehr schnelles und voll funktionsfähiges
+Unix-ähnliches Betriebssystem. Es wird von einer Gemeinschaft von
+tausenden von Leuten im Internet programmiert und unter der
+GNU General Public License verteilt, das heisst, es ist frei erhältlich. Es wird
+weltweit von mehreren Millionen Leuten, Organisationen und Firmen
+benutzt (aktuelle Zahlen gibt es beim <ref lang="en" url="http://www.linuxcounter.org">Linux Counter</ref>).
+   </textblock>
+
+   <textblock>
+Linux
+   </textblock>
+   <quotation>
+    Das ist "nur" der Kernel. Ein Kernel ist ein Stück Software,
+    das die Kommunikation zwischen den einzelnen Hardwarekomponenten
+    und den Anwenderprogrammen regelt. Das mag trivial klingen, ist
+    aber eine sehr komplexe Aufgabe. Jedes OS (Operating System) hat
+    einen Kernel, nur werden die wenigsten nach dessen Namen
+    benannt.
+   </quotation>
+
+   <textblock>
+Betriebssystem (engl. Operating System)
+   </textblock>
+   <quotation>
+    Ein Kernel allein nützt noch (fast) niemandem etwas. Damit
+    ein Mensch mit ihm arbeiten kann braucht ein OS weitere,
+    elementare Programme, um funktionieren zu können.
+   </quotation>
+
+   <textblock>
+Shell
+  </textblock>
+   <quotation>
+    Eine Shell ist ein
+    Programm, das zwischen dem Benutzer und dem System arbeitet. Auf der
+    Shell hat man die Möglichkeit, Befehle und Programme auszuführen. Zudem
+    verfügt jede Shell über eine eigene Scriptsprache. Damit können Skripte
+    zur Arbeitserleichterung geschrieben werden. Unter Linux ist die <command>Bash</command>
+    (Bourne Again Shell) die Standardshell.
+   </quotation>
+
+   <textblock>
+X-Server
+   </textblock>
+   <quotation>
+    Es ist möglich ein Linux-Betriebssystem (also Kernel und
+    "Systemprogramme") auf einem Plattenplatz von &lt;50 MB unterzubringen (zum
+    Beispiel mit Hilfe einer RAM-Disk, wie sie bei Embedded-Linux-Systemen
+    verbreitet ist). Allerdings steht dann mit Sicherheit nur eine Shell
+    (Befehlszeilen-Prompt) als Benutzerschnittstelle zur Verfügung. Heute
+    möchten nur noch wenige den Komfort einer grafischen Benutzeroberfläche
+    missen, trotzdem ist eine grafische Oberfläche (unter Unix X-Server, X
+    Window System oder X11 genannt) nicht Teil des Betriebssystems, sondern
+    ein Programm, das auf diesem läuft.
+   </quotation>
+
+   <textblock>
+Desktop
+   </textblock>
+   <quotation>
+    Der X-Server bringt einem nicht den gewünschten Arbeitskomfort. Dazu dient
+    ein Desktop wie <command>KDE</command> oder <command>GNOME</command>. Dieser ermöglicht das Arbeiten, wie man es
+    von anderen grafischen Betriebssystemen her kennt. Man verfügt über eine
+    Arbeitsfläche mit Fenstern und kann Programme über Icons starten.
+   </quotation>
+
+   <textblock>
+Bibliothek
+   </textblock>
+   <quotation>
+    Eine Bibliothek ist eine Sammlung von wiederkehrenden Programmteilen.
+    Da viele Programme gleiche oder ähnliche Teile haben, ist es ineffektiv,
+    diesen Teil immer wieder zu programmieren. Daher werden diese Teile in
+    eine externe Datei ausgelagert. Da mehrere Programme darauf zugreifen,
+    kann die Grösse des einzelnen Programms verkleinert werden. Fehlt die
+    Bibliothek, läuft aber das gesamte Programm nicht mehr. Dies sind dann
+    die berühmten fehlenden Abhängigkeiten.
+   </quotation>
+
+   <textblock>
+Anwendungen
+   </textblock>
+   <quotation>
+    Alles was wir so zum Arbeiten mit dem Computer brauchen, also
+    z.B. eine Office-Software, Internet-Tools, Buchhaltungen, Spiele,
+    Bildbearbeitung, Audio-Software, etc.
+   </quotation>
+
+
+   <textblock>
+Distribution
+   </textblock>
+   <quotation>
+    Alles oben Genannte zusammengestellt und aufeinander abgestimmt
+    ergibt eine Distribution. Linux-Distributoren sind unabhängige
+    Organisationen, die Software für Linux sammeln und vertreiben.
+   </quotation>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 2. Kapitel-->
+   <heading>
+Eigenschaften von Linux
+   </heading>
+
+   <ul>
+    <li>
+ Entweder 32- oder 64-bittig, abhängig von der Computer-Architektur.
+    </li>
+    <li>
+ Multi-User: mehrere Benutzer können gleichzeitig auf derselben Maschine
+ arbeiten.
+    </li>
+    <li>
+ Multi-Plattform: Linux läuft auf den verschiedensten Prozessoren.
+    </li>
+    <li>
+ Multi-Processing: SMP (Symmetric Multi-Processing) für bis zu 16
+ Prozessoren.
+    </li>
+    <li>
+ Clustering: Cluster von beliebiger Grösse (es gibt schon solche
+  mit 520 Maschinen).
+    </li>
+    <li>
+ Geschützter Speicher: damit ein Prozess nicht das ganze System
+  zum Absturz bringen kann.
+    </li>
+    <li>
+ Programme, die bestimmte Teile nur nachladen, wenn sie wirklich
+  gebraucht werden.
+    </li>
+    <li>
+ Virtueller Speicher mit Paging (das heisst nur Teile von Prozessen
+  können auf die Festplatte ausgelagert werden).
+    </li>
+    <li>
+ Freier Speicher wird in einem Pool verwaltet, der sowohl Programme
+  als auch Disk-Cache bedient: der gesamte freie Speicher kann zum Cachen
+  verwendet werden.
+    </li>
+    <li>
+ Verwendung von dynamisch gelinkten Bibliotheken; statische
+  Bibliotheken können selbstverständlich auch verwendet werden.
+    </li>
+    <li>
+ Größtenteils kompatibel mit Unix (POSIX, System V und BSD)
+  Der Unix98-Standard wird ebenfalls
+  angestrebt (und bald erreicht).
+   </li>
+    <li>
+ POSIX-kompatible Job-Kontrolle. Realtime Scheduling ist ebenfalls möglich.
+    </li>
+    <li>
+ Ein nicht fragmentierendes Dateisystem (Extended 2) mit langen
+  Dateinamen (255 Zeichen) und Partitionen von bis zu 4 Terabyte. Es
+  unterstützt Hard- und Softlinks.
+    </li>
+    <li>
+ Unterstützt zahlreiche Dateisysteme, unter anderem VFAT /
+  FAT32, Windows NT / NTFS, MacOS / HFS, QNX, BSD 4.3 ufs, Coda und
+  Amiga / AFFS.
+    </li>
+    <li>
+ Bis zu 64 virtuelle Konsolen.
+    </li>
+    <li>
+ Der ganze Quellcode ist erhältlich, eingeschlossen der ganze
+  Kernel und (fast) alle Treiber.
+    </li>
+    <li>
+ Schnell, sogar richtig schnell! Und wahrscheinlich der schnellste
+  TCP/IP-Stack der Welt.
+    </li>
+    <li>
+ Ein Großteil der PC-Hardware wird unterstützt, dazu
+  gehören auch Sound-, Ethernet-, ATM-, Appletalk-, TV-, ISDN-
+  und Multiport-Karten, Joysticks etc.
+    </li>
+    <li>
+ Viele Netzwerk-Protokolle wie TCP/IP Versionen 4 und 6, IPX/SPX,
+  Token-Ring, Ethertalk, Appletalk etc.
+    </li>
+    <li>
+ Viele konfigurierbare Netzwerk-Funktionen wie Masquerading
+  (NAT), Tunneling, Forwarding, Routing, Firewalling etc.
+   </li>
+   </ul>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 3. Kapitel-->
+   <heading>
+Unterstützte Plattformen
+   </heading>
+
+   <table>
+    <pdf-column width="75"/>
+    <pdf-column/>
+    <tr>
+     <td nowrap="nowrap">
+Intel x86 / IA-32 (i386):
+     </td>
+     <td>
+PCs mit Intel-, AMD- oder Cyrix-Prozessoren, die zum 80386
+kompatibel sind.
+     </td>
+    </tr>
+    <tr>
+     <td nowrap="nowrap">
+IA-64 (ia64):
+     </td>
+     <td>
+Der neue Intel-Prozessor wird von Beginn an unterstützt.
+     </td>
+    </tr>
+    <tr>
+     <td nowrap="nowrap">
+Motorola/IBM PowerPC (powerpc):
+     </td>
+     <td>
+Power Macintosh und Kompatible. Beachten Sie, dass es zwei
+Linux-Versionen für den PPC gibt: eine generische und eine, die auf dem
+Mach-Microkernel aufbaut.
+     </td>
+    </tr>
+    <tr>
+     <td nowrap="nowrap">
+Motorola 68k (m68k):
+     </td>
+     <td>
+MicroLinux und uClinux für 68000 Prozessoren ohne MMU: Palmpilot,
+Amiga 500, ColdFire. Ebenso für Atari und verschiedenste embedded Systeme.
+     </td>
+    </tr>
+    <tr>
+     <td nowrap="nowrap">
+MIPS R3000:
+     </td>
+     <td>
+Digital Decstations (mipsel) und SGI Computer (mips).
+     </td>
+    </tr>
+
+    <tr>
+     <td nowrap="nowrap">
+ARM (arm):
+     </td>
+     <td>
+Acorn Archimedes.
+     </td>
+    </tr>
+
+    <tr>
+     <td nowrap="nowrap">
+DEC Alpha (alpha):
+     </td>
+     <td>
+DEC Alpha und Kompatible.
+     </td>
+    </tr>
+    <tr>
+     <td nowrap="nowrap">
+Sun Sparc (sparc):
+     </td>
+     <td>
+Sun4c und höher. Ebenso UltraSparc-Prozessoren. Das ist einer der
+schnellsten und stabilsten Ports.
+     </td>
+    </tr>
+    <tr>
+     <td nowrap="nowrap">
+HP PA-RISC (hppa):
+     </td>
+     <td>
+Hewlett-Packard PA-RISC-Architektur.
+     </td>
+    </tr>
+    <tr>
+     <td nowrap="nowrap">
+S/390 (s390):
+     </td>
+     <td>
+IBM S/390-Server und IBM zSeries.
+     </td>
+    </tr>
+   </table>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 4. Kapitel-->
+   <heading>
+Voraussetzungen
+   </heading>
+
+   <textblock>
+Linux benötigt mindestens 4 MB RAM, beziehungsweise 8 für das X Window
+System. 128 MB werden empfohlen. Es ist möglich, ein Minimal-System mit
+weniger als 50 MB Festplatten-Platz zu installieren, aber wir empfehlen 1 GB.
+Für die CPU ist bei Intel Prozessoren ein 80386sx das Minimum.
+   </textblock>
+  </section>
+
+
+  <section>
+<!-- 5. Kapitel-->
+   <heading>
+Wer benutzt Linux?
+   </heading>
+
+
+   <textblock>
+Viele Privatpersonen benutzen es als Workstation; speziell Studenten,
+System-Betreuer und Programmierer. Linux wird auch in vielen Firmen eingesetzt,
+dort vor allem als Server für verschiedene Aufgaben wie Mail, WWW, File-Server,
+Firewalls oder auch als Application-Server. Einige Firmen benutzen Linux als
+über das Netz wartbare Thin Clients.
+   </textblock>
+  </section>
+
+
+  <section>
+<!-- 6. Kapitel-->
+   <heading>
+Gründe, Linux zu benutzen
+   </heading>
+
+   <textblock>
+Es ist schneller, stabiler und besser skalierbar als so manches kommerzielle
+System. Anschaffungs- und Unterhaltskosten sind niedrig, was zu einem
+hervorragenden Preis-/Leistungsverhältnis führt. Die Hardwareunterstützung ist
+besser als bei den meisten anderen Unix-Systemen. Die Quellen sind verfügbar.
+Fehler werden sehr schnell behoben, oft innerhalb weniger Stunden nach der
+Entdeckung.
+   </textblock>
+  </section>
+
+
+  <section>
+<!-- 7. Kapitel-->
+   <heading>
+Wer leistet Support für Linux?
+   </heading>
+
+   <textblock>
+Sie erhalten gratis Support von zahlreichen Internet-Newsgroups, Mailinglisten
+und ungezählten WWW-Seiten. Sie haben die Möglichkeit, dem Programmierer einer
+Software direkt
+eine Mail zu schicken. Sie können auch mit Ihrer lokalen Linux oder Unix User
+Group Kontakt aufnehmen. Wenn Sie kommerziellen Support benötigen, können Sie
+sich an einen der Distributoren oder eine Firma, die Linux einsetzt und
+unterstützt, wenden. Eine Liste solcher Firmen erscheint beispielsweise
+monatlich im Linux-Magazin (<ref lang="de" url="http://www.linux-magazin.de">http://www.linux-magazin.de</ref>).
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+
+  <section>
+<!-- 7. Kapitel-->
+   <heading>
+Warum der Pinguin?
+   </heading>
+
+   <image height="150">
+    <filename>tux.png</filename>
+    <title> Der Tux</title>
+   </image>
+
+   <textblock>
+Viele haben sich sicher schonmal gefragt, warum gerade ein
+Pinguin das am weitesten verbreitete Symbol für Linux auf
+der Welt ist.
+   </textblock>
+
+   <textblock>
+Alles begann damit, dass eine Linux User Group in Bristol in
+England für <name>Linus Torvalds</name> einen Pinguin gekauft hat. Linus
+machte sich auf den weiten Weg um das Tier zu besuchen. Als er
+dort ankam, stellte sich heraus, dass sie ihm keinen Pinguin gekauft,
+sondern nur in seinem Namen eine Patenschaft für einen Pinguin
+übernommen hatten. Aber wie kam es jetzt, dass der Pinguin als
+Symbol für Linux genommen wurde?<br/>
+Dies war die Idee von <name>Tove</name>, seiner Frau. <name>Linus</name> versuchte ein Symbol
+für Linux zu finden, da ihn viele Leute darauf ansprachen, dass es
+gut wäre, ein eigenes Symbol zu haben. Die anderen Linux Firmen hatten
+ja zu dem Zeitpunkt auch schon alle eigene Logos. Seine Frau
+dachte bei der Logosuche an Pinguine, weil Linus im einem Zoo in
+Australien einmal von einem Pinguin gebissen wurde. Dies geschah beim
+Versuch, die Pinguine einfach so über ihren Zaun hinweg zu streicheln.
+   </textblock>
+
+   <textblock>
+Nach diesem Erlebnis entwickelte <name>Linus</name> komischerweise eine
+Leidenschaft für Pinguine und <name>Tove</name> machte den Vorschlag, er solle
+doch einfach einen Pinguin als Logo nehmen. Linus sprach die
+Idee des Pinguins nach langem Überlegen mit <name>Henry Hall</name> und
+<name>Maddog</name> ab
+und schließlich entschieden sie sich dafür, dass der Pinguin
+gut ist.
+   </textblock>
+
+   <textblock>
+Als nächstes spornte Linus die Internetgemeinde an, ihm Bilder von
+Pinguinen zu schicken. Linus gab sich jedoch nicht mit einem x-beliebigen
+Pinguin ab, nein, sein Pinguin sollte glücklich aussehen, "so als hätte er
+eine Maß Bier genossen und den besten Sex seines Lebens gehabt". Er wählte
+die Version von <name>Larry Ewing</name>, einem Grafiker, der am Institute for Scientific
+Computing an der A&amp;M University in Texas arbeitete, aus.
+Der Pinguin sollte unverwechselbar sein, was er mit <name>Tux</name>, so sein Name,
+auch geschafft hat.
+   </textblock>
+
+   <textblock>
+Während normale Pinguine einen schwarzen Schnabel und schwarze
+Füße haben, sollte das Linux Maskottchen wegen der Einzigartigkeit
+einen orangen Schnabel und orangefarbene Füße haben, so dass es so
+aussieht, als sei die Mutter des Pinguins eine Ente.<br/>
+"Als hätte Daisy Duck sich auf einer Antarktis-Kreuzfahrt
+vergessen und einen wilden One-Night-Stand mit einem einheimischen
+Federvieh gehabt".
+   </textblock>
+
+   <textblock>
+Nähere Informationen in dem Buch:<br/>
+Linus Torvalds und David Diamond<br/>
+Just for fun.<br/> Wie ein Freak die Computerwelt revolutionierte<br/>
+ISBN: 3-423-36299-5
+   </textblock>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Grabber und Encoder</title>
+
+ <author>
+   <name>Johnny Graber</name>
+   <mailto>linux@jgraber.ch</mailto>
+ </author>
+ <author>
+   <name>Frank Boerner</name>
+   <mailto>frank@frank-boerner.de</mailto>
+ </author>
+
+ <layout>
+   <name>Johnny Graber</name>
+   <mailto>linux@jgraber.ch</mailto>
+ </layout>
+
+ <license>GFDL</license>
+ <index>grabber_encoder</index>
+
+<split>
+ <section>
+   <heading>
+Begriffe
+   </heading>
+   <section>
+    <heading>
+grabben
+    </heading>
+
+    <textblock>
+Das Auslesen einer Musik-CD und abspeichern auf einer
+Festplatte wird mit grabben bezeichnet. Häufig wird auch
+von rippen (englisch rip = trennen) gesprochen.
+    </textblock>
+   </section>
+
+
+
+   <section>
+    <heading>
+encoden
+    </heading>
+
+    <textblock>
+Mit encoden bezeichnet man die Konvertierung einer
+WAV-Datei in ein Endformat wie MP3 oder Ogg Vorbis.
+Dies geschieht vor allem um Speicherplatz zu sparen
+und die Dateien schneller austauschen zu können.
+    </textblock>
+   </section>
+
+
+
+   <section>
+    <heading>
+decoden
+    </heading>
+
+    <textblock>
+Wie es der Name schon sagt, ist es die Umkehr von
+encoden. Aus einer MP3- oder OGG Vorbis Datei macht
+man eine WAV-Datei. Dieser Vorgang muss gemacht werden,
+wenn das Brennprogramm Audio-CDs nur mit WAV-Dateien
+erstellen kann.
+    </textblock>
+   </section>
+ </section>
+</split>
+
+
+
+<split>
+ <section>
+   <heading>
+Grabber
+   </heading>
+   <section>
+    <heading>
+dagrab
+    </heading>
+
+    <textblock>
+<command>dagrab</command> ist ein reiner Grabber, der ohne grafisches Frontend
+auskommt. Er kümmert sich als nur um das Auslesen der Musik-CD
+und erstellt die WAV-Dateien. Was die Geschwindigkeit betrifft,
+gehört <command>dagrab</command> eindeutig nicht zu den schnellen Grabbern. Zu
+finden ist <command>dagrab</command> auf seiner <ref lang="en" url="http://web.tiscali.it/marcellou/dagrab.html">Homepage</ref>.
+    </textblock>
+
+    <textblock>
+Gerade Anfängern wird die Verwendung des RPM-Paketes empfohlen,
+da dessen Installation problemlos klappt. Zur Installation
+genügt nach dem Download als root:
+    </textblock>
+
+    <shell>
+     <root path="~">
+rpm -ihv dagrab-0.3.5-1.i386.rpm
+     </root>
+    </shell>
+
+   <textblock>
+Sollte sich die Version geändert haben, muss auch der Befehl
+entsprechend angepasst werden.
+    </textblock>
+
+    <textblock>
+Da man oft gerne vor dem Start wissen möchte, wieviel Platz
+für die WAV-Dateien gebraucht wird, gibt es bei <command>dagrab</command> die
+Option <command>-i</command>. Da man oft auch gerne noch gleich die Titel
+angezeigt haben will, ist <command>-C</command> angenehm. Mit <command>-H</command> kann man eine
+beliebige CD-Datenbank angeben.
+    </textblock>
+
+    <shell>
+     <user path="~">
+dagrab -i -C -H www.freedb.org
+     </user>
+     <output>
+dagrab: cddb inexact matches found, picking first
+
+DISK: S Club 7 / Sunshine
+
+track    start   length  type  duration   MB Title
+    1      150    17522 audio  00:03:53   39 Don't Stop Movin
+    2    17672    13930 audio  00:03:05   31 Show Me Your Colours
+    3    31602    15545 audio  00:03:27   34 You
+    4    47147    15115 audio  00:03:21   33 Have You Ever
+    5    62262    16005 audio  00:03:33   35 Good Times
+    6    78267    13983 audio  00:03:06   31 Boy Like You
+    7    92250    17495 audio  00:03:53   39 Sunshine
+    8   109745    17040 audio  00:03:47   38 Dance Dance Dance
+    9   126785    15815 audio  00:03:30   35 It's Alright
+   10   142600    14427 audio  00:03:12   32 Stronger
+   11   157027    14703 audio  00:03:16   32 Summertime Feeling
+   12   171730    17167 audio  00:03:48   38 I Will Find You
+   13   188897    29420 audio  00:06:32   65 Never Had A Dream Come True
+   14   218317    27507  data  00:06:06   61 CD Rom: Never Had A Dream Come True
+  170   245824        - leadout
+
+CDDB DISCID: a40ccb0e
+     </output>
+    </shell>
+
+
+
+
+    <section>
+     <heading>
+einzelne Lieder auslesen mit dagrab
+     </heading>
+
+     <textblock>
+Will man nur die ersten 3 Musikstücke auslesen, genügt ein:
+     </textblock>
+   
+   
+     <shell>
+      <user path="~">
+dagrab 1 2 3
+      </user>
+     </shell>
+
+
+     <textblock>
+Die Dateinamen lauten dann aber unschön @num-@trk.wav. Der
+deutlich längere Befehl führt dann aber zum gewünschten
+Ergebnis:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+dagrab -N -C -H www.freedb.org 1 2 3
+      </user>
+      <output>
+...
+      </output>
+      <user path="~">
+ls
+      </user>
+      <output>
+01-Don_t_Stop_Movin.wav
+02-Show_Me_Your_Colours.wav
+03-You.wav
+      </output>
+     </shell>
+    </section>
+
+
+    <section>
+     <heading>
+ganze CD grabben mit dagrad
+     </heading>
+
+     <textblock>
+Will man die WAV-Dateien ohne speziellen Namen auf seine
+Disk bekommen, genügt wiederum ein kleiner Befehl:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+dagrab -a
+      </user>
+     </shell>
+
+
+     <textblock>
+Auch hier ist es möglich, die <ref lang="en" url="http://www.freedb.org">freedb.org</ref>
+für die Namensgebung
+zu verwenden:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+dagrab -N -C -H www.freedb.org -a
+      </user>
+     </shell>
+    </section>
+
+
+    <section>
+     <heading>
+dagrab mit anderen Tools nutzen
+     </heading>
+
+     <textblock>
+Man kann <command>dagrab</command> auch mit anderen Tools zusammenarbeiten lassen.
+Dazu genügt die Option <command>-e</command> gefolgt vom Programmnamen und
+Optionen für das Hilfsprogramm, sofern notwendig:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+dagrab -a -e bladeenc %s
+      </user>
+     </shell>
+
+
+     <textblock>
+Dieser Befehl ruft den MP3-Encoder <command>bladeenc</command> auf und mit <command>%s</command>
+wird ihm der Dateinamen übergeben. So kann man mit einem
+Befehlsaufruf gleich die WAV-Dateien in MP3s umwandeln lassen.
+     </textblock>
+    </section>
+   </section>
+
+
+
+   <section>
+    <heading>
+cdparanoia
+    </heading>
+
+    <textblock>
+Die Aufgabe von <command>cdparanoia</command> beschränkt sich ebenfalls nur auf
+das Auslesen von CDs. Auf seiner Homepage
+(<ref lang="en" url="http://www.xiph.org/paranoia/index.html">http://www.xiph.org/paranoia/index.html</ref>) gibt es eine mit <command>gzip</command>
+komprimierte Binärdatei. Bevor diese verwendet werden kann, muss
+sie dekomprimiert werden:
+    </textblock>
+
+
+    <shell>
+     <user path="~">
+gunzip cdparanoia-III-alpha9.8.i386-linux-elf.gz
+     </user>
+     <user path="~">
+mv cdparanoia-III-alpha9.8.i386-linux-elf.gz cdparanoia
+     </user>
+    </shell>
+
+
+    <hint>
+(Mit mv wird das Programm auf einen kürzeren Namen umbenannt.)
+    </hint>
+
+    <textblock>
+<command>cdparanoia</command> ist deutlich schneller als <command>dagrab</command>. Wenn man nicht
+nur gelegentlich ein Musikstück grabbt, wird man sehr schnell
+über die Geschwindigkeit von <command>cdparanoia</command> erfreut sein.
+    </textblock>
+
+    <textblock>
+Da <command>cdparanoia</command> nicht nur schnell, sondern auch flexibel ist,
+wird es von zahlreichen grafischen Programmen fürs Grabben
+verwendet.
+    </textblock>
+
+
+    <section>
+     <heading>
+einzelne Lieder auslesen mit cdparanoia
+     </heading>
+
+     <textblock>
+Will man die ersten 3 Lieder auslesen, lautet der Befehl so:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+cdparanoia -B "1-3"
+      </user>
+     </shell>
+
+
+     <textblock>
+Mit <command>-B</command> werden die Lieder in einzelne Dateien geschrieben. Lässt
+man diese Option weg, wird einem nur eine einzige Datei erstellt.
+     </textblock>
+    </section>
+
+
+    <section>
+     <heading>
+ganze CD grabben mit cdparanoia
+     </heading>
+
+     <textblock>
+Fürs grabben einer ganzen CD können wir den bereits bekannten
+Befehl nutzen, doch diesmal ohne Angabe des Endes:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+cdparanoia -B
+      </user>
+     </shell>
+    </section>
+   </section>
+ </section>
+</split>
+
+
+
+
+
+
+<split>
+ <section>
+   <heading>
+Encoder
+   </heading>
+   <section>
+    <heading>
+notlame
+    </heading>
+
+    <textblock>
+<command>notlame</command> baut auf dem Encoder <command>lame</command> auf und kann auf
+<ref lang="en" url="http://www.idiap.ch/~sanders/not_lame/">http://www.idiap.ch/~sanders/not_lame/</ref> gefunden werden.
+In den Anfangstagen verwendete <command>lame</command> grössere Code-Teile
+der ISO-Implementierung und konnte daher nicht mit den
+Linux-Distributionen vertrieben werden. So entstand
+<command>notlame</command>, um dieses Problem zu umgehen. Seit 2000 steht zwar
+auch <command>lame</command> komplett unter der <name>LGPL</name>, doch hat <command>notlame</command> seither
+viele Freunde gewonnen.
+    </textblock>
+
+
+    <section>
+     <heading>
+MP3 erstellen mit notlame
+     </heading>
+
+     <textblock>
+Mit <command>notlame</command> können WAV-Dateien sehr einfach in MP3s
+umgewandelt werden:
+     </textblock>
+    
+    
+     <shell>
+      <user path="~">
+lame lied.wav lied.mp3
+      </user>
+      <output>
+LAME version 3.93 MMX  (http://www.mp3dev.org/)
+CPU features: i387, MMX (ASM used), SIMD
+Using polyphase lowpass  filter, transition band: 15115 Hz - 15648 Hz
+Encoding lied.wav to lied.mp3
+Encoding as 44.1 kHz 128 kbps j-stereo MPEG-1 Layer III (11x) qval=2
+    Frame          |  CPU time/estim | REAL time/estim | play/CPU |    ETA
+  8943/8945  (100%)|    0:35/    0:35|    0:45/    0:45|   6.5862x|    0:00
+average: 128.0 kbps   LR: 1025 (11.46%)   MS: 7921 (88.54%)
+
+Writing LAME Tag...done
+      </output>
+     </shell>
+
+
+     <textblock>
+<command>notlame</command> bietet etliche Möglichkeiten, um die MP3-Tags
+zu setzen. Eine ausführliche Liste gibt es in der Hilfe
+von <command>notlame</command>:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+lame --longhelp
+      </user>
+      <output>
+...
+ID3 tag options:
+    --tt &lt;title&gt;    audio/song title (max 30 chars for version 1 tag)
+    --ta &lt;artist&gt;   audio/song artist (max 30 chars for version 1 tag)
+    --tl &lt;album&gt;    audio/song album (max 30 chars for version 1 tag)
+    --ty &lt;year&gt;     audio/song year of issue (1 to 9999)
+...
+      </output>
+     </shell>
+
+
+     <textblock>
+Jedem der sich länger mit notlame beschäftigen will, sollte
+einen Blick in die Hilfe werfen. Neben den ID3-Tags finden
+sich noch unzählige andere Themen.
+     </textblock>
+    </section>
+   </section>
+
+
+   <section>
+    <heading>
+bladeenc
+    </heading>
+
+    <textblock>
+<command>bladeenc</command> wurde 1998 gestartet, da dem Autor Tord Jansson die
+bestehenden Encoder zu langsam waren oder nicht sauber mit
+einer grösseren Datenrate zurecht kamen.
+    </textblock>
+
+    <textblock>
+<command>bladeenc</command> findet man entweder auf <ref lang="en" url="http://bladeenc.mp3.no">http://bladeenc.mp3.no</ref> oder
+als RPM bei <ref lang="en" url="http://www.rpmseek.com">http://www.rpmseek.com</ref>.
+    </textblock>
+
+
+    <section>
+     <heading>
+MP3 erstellen mit bladeenc
+     </heading>
+
+     <textblock>
+Gleich einfach wie bei <command>notlame</command> ist die Erstellung von MP3 mit
+<command>bladeenc</command>.
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+bladeenc lied.wav
+      </user>
+      <output>
+BladeEnc 0.94.2    (c) Tord Jansson            Homepage: http://bladeenc.mp3.no
+===============================================================================
+BladeEnc is free software, distributed under the Lesser General Public License.
+See the file COPYING, BladeEnc's homepage or www.fsf.org for more details.
+
+Files to encode: 1
+
+Encoding:  lied.wav
+Input:     44.1 kHz, 16 bit, stereo.
+Output:    128 kBit, stereo.
+
+Completed. Encoding time: 00:01:08 (3.44X)
+
+All operations completed. Total encoding time: 00:01:08
+      </output>
+     </shell>
+    </section>
+   </section>
+
+
+   <section>
+    <heading>
+oggenc
+    </heading>
+
+    <textblock>
+<command>oggenc</command> ist Teil der <name>OGG Vorbis Tools</name> und kann auf
+<ref lang="en" url="http://www.vorbis.com/download_unix.psp">http://www.vorbis.com/download_unix.psp</ref> heruntergeladen
+werden. Im Gegensatz zu den bisher vorgestellten Tools
+können mit <command>oggenc</command> keine MP3-Dateien hergestellt werden.
+    </textblock>
+
+
+
+    <section>
+     <heading>
+OGG Vorbis erstellen
+     </heading>
+
+     <textblock>
+Eine OGG Vorbis Datei ist nicht schwerer zu erstellen als ein
+MP3:
+     </textblock>
+
+
+     <shell>
+      <user path="~">
+oggenc lied.wav
+      </user>
+      <output>
+Opening with wav module: WAV file reader
+Encoding "lied.wav" to
+         "lied.ogg"
+at quality 3.00
+        [100.0%] [ 0m00s remaining] -
+
+Done encoding file "lied.ogg"
+
+        File length:  3m 53.0s
+        Elapsed time: 1m 01.9s
+        Rate:         3.7719
+        Average bitrate: 110.8 kb/s
+      </output>
+     </shell>
+
+
+     <textblock>
+Auch OGG Vorbis kennt Kommentare, die in der Datei abgelegt
+werden können. Die dafür wichtigsten Optionen sind:
+     </textblock>
+
+     <table>
+<pdf-column width="25"/>
+<pdf-column/>
+<tr><td><command>-t</command></td>  <td>Titel des Liedes</td></tr>
+<tr><td><command>-a</command></td>  <td>Künstler</td></tr>
+<tr><td><command>-l</command></td>  <td>Name der CD</td></tr>
+     </table>
+    </section>
+   </section>
+ </section>
+</split>
+
+
+
+
+<split>
+ <section>
+   <heading>
+Alleskönner
+   </heading>
+   <section>
+    <heading>
+grip
+    </heading>
+
+    <textblock>
+<command>grip</command> ist ein mächtiges Tool. Es kann nicht nur CDs
+grabben, es kann sie auch als MP3 oder OGG encoden.
+Durch seinen grafisches Frontend ist <command>grip</command> auch sehr
+einfach zu benutzen.
+    </textblock>
+
+    <textblock>
+Sollte <command>grip</command> noch nicht installiert sein, findet man
+es auf <ref lang="en" url="http://nostatic.org/grip/">http://nostatic.org/grip/</ref>.
+    </textblock>
+
+
+   <image height="250">
+       <filename>grip-start.png</filename>
+       <title>Ein Alleskönner in Sachen Sound</title>
+   </image>
+
+
+    <section>
+     <heading>
+grip konfigurieren
+     </heading>
+
+     <textblock>
+Die Konfiguration ist schnell gemacht. Es braucht kaum
+etwas geändert werden, da die Standardeinstellung gut
+gelungen ist. Die wichtigsten Änderungen betreffen
+unter 'Rip' die Anpassung des Ablageortes für WAV-Dateien
+(Rip-Datei-Format). Dort kann man nicht nur den Ablageort,
+sondern auch den Dateinamen festlegen. Dies geschieht über
+Schlüsselzeichen, von denen hier die häufigst verwendeten
+aufgelistet sind:
+     </textblock>
+
+
+     <table>
+<pdf-column/>
+<pdf-column/>
+<tr><td><command>%n</command></td>
+<td>Name des Stücks</td></tr>
+
+<tr><td><command>%a</command></td>
+<td>Künstler des Stücks.</td></tr>
+
+<tr><td><command>%A</command></td>
+<td>Künstler der CD</td></tr>
+
+<tr><td><command>%d</command></td>
+<td>Name der CD</td></tr>
+
+<tr><td><command>%i</command></td>
+<td>Der Index (als hex-Zahl) der CD aus der FreeDB-Datenbank</td></tr>
+
+<tr><td><command>%y</command></td>
+<td>Das Erscheinungsjahr der CD</td></tr>
+
+<tr><td><command>%t</command></td>
+<td>Die Positionsnummer des Stücks (mit führender Null, wenn nötig)</td></tr>
+     </table>
+
+
+     <textblock>
+Falls man einen speziellen Grabber verwenden will, kann
+man den unter "Ripper" auswählen, samt den damit möglichen
+Optionen.
+     </textblock>
+
+     <image height="250">
+       <filename>grip-konfig.png</filename>
+       <title>Erstellt mehr als nur MP3 Dateien</title>
+     </image>
+
+
+     <textblock>
+Unter 'MP3' kann man den Encoder auswählen. Auch wenn der
+Name dieses Reiters etwas anderes vermuten lässt: Man kann
+auch andere Formate als MP3 erstellen. Dazu wählt man bei
+Kodierer z.B. <command>oggenc</command> oder den OGG Vorbis Encoder seiner Wahl.
+     </textblock>
+    </section>
+
+
+    <section>
+     <heading>
+grabben und encoden mit grip
+     </heading>
+
+     <textblock>
+Beim Startbildschirm wählt man die gewünschten Lieder durch
+Mausklick ins Feld "Rip" aus. Sobald man damit fertig ist,
+wechselt man auf den Reiter "Rip". Man muss sich dann
+entscheiden, ob man "Rippen und Kodieren" oder nur "Rippen"
+will. Wenn beides gemacht werden soll, wählt man ab besten
+gleich das 1. Sobald das Grabben/Rippen abgeschlossen ist,
+wird die CD ausgeworfen und das encoden beginnt. Sobald das
+encoden abgeschlossen ist, wird die nicht mehr benötigte
+WAV-Datei gelöscht (ausser man hat diese Option deaktiviert).
+     </textblock>
+
+     <textblock>
+Das Erstellen von MP3 oder OGG Vorbis Dateien ist unter Linux
+dank Tools wie <command>grip</command> auch für normale Benutzer ein Kinderspiel.
+     </textblock>
+    </section>
+   </section>
+
+
+   <section>
+    <heading>
+ripperX
+    </heading>
+
+    <textblock>
+<command>RipperX</command> ist ein universellen Programm mit dem Sie CDs nicht nur
+grabben können, sondern Sie auch gleich im selben Arbeitsgang
+zu mp3 oder ogg Dateien umwandeln.
+    </textblock>
+
+    <textblock>
+Sie können das Programm bei <ref lang="en" url="http://sourceforge.net/projects/ripperx/">http://sourceforge.net/projects/ripperx/</ref>
+downloaden.
+    </textblock>
+
+
+    <image height="200">
+       <filename>ripperx-start.png</filename>
+       <title>Startbild von ripperX</title>
+    </image>
+
+
+    <section>
+     <heading>
+ripperX konfigurieren
+     </heading>
+
+     <textblock>
+Wenn Sie das Programm das erste Mal starten, erscheint der
+Startbildschirm. Das erste was Sie tun sollten, ist das
+Programm nach Ihren Wünschen anzupassen.
+    </textblock>
+
+    <image height="200">
+       <filename>ripperx-config-general.png</filename>
+       <title>Allgemeine Einstellungen</title>
+    </image>
+
+
+     <textblock>
+Klicken Sie dazu auf den Button Config. Sie befinden sich jetzt
+bei den allgemeinen Einstellungen. Dort können Sie das "Aussehen"
+der Titel einstellen, festlegen ob sie vorhandene WAV-Dateien
+umwandeln wollen oder ob sie die WAV-Dateien nur bei erfolgreicher
+Umwandlung löschen wollen.
+    </textblock>
+
+    <image height="200">
+       <filename>ripperx-config-wav.png</filename>
+       <title>WAV-Einstellungen</title>
+    </image>
+
+
+     <textblock>
+Auf dem WAV Reiter können Sie den Ripper auswählen (Standard
+ist <command>cdparanoia III</command>). Wenn sich das Laufwerk mit dem Sie Ihre
+CDs auslesen nicht unter /dev/cdrom befindet, müssen Sie die
+erste Option aktivieren.
+    </textblock>
+
+    <image height="200">
+       <filename>ripperx-config-mp3.png</filename>
+       <title>Komprimierungs-Einstellungen</title>
+    </image>
+
+
+     <textblock>
+Auf dem MP3 Reiter können Sie den Encoder auswählen. Bei mir
+steht dort <command>OGG Vorbis Encoder</command>. Sie haben jedoch die Möglichkeit
+auch z.B. <command>lame</command> auszuwählen, je nachdem welche Encoder auf ihrem
+System installiert sind.<br/>
+Sie müssen noch ein Bitrate auswählen; standardmässig wird
+128kbit ausgewählt, was für die meistens Fälle in Ordnung ist.
+Sie können auch variable Bitraten benutzen. Empfehlenswert ist
+dabei eine Einstellung 3 oder 4.<br/>
+Unten haben sie noch 2 Punkte die sie auswählen können: High quality
+mode und include CRC Error Protection.
+    </textblock>
+
+    <image height="200">
+       <filename>ripperx-config-player.png</filename>
+       <title>Einstellungen der Playern</title>
+    </image>
+
+
+     <textblock>
+Auf dem Players Reiter können sie Optionen zu den verschiedenen
+Playern einstellen. Die Voreinstellungen kann man so übernehmen.
+    </textblock>
+
+    <image height="200">
+       <filename>ripperx-config-cddb.png</filename>
+       <title>Einstellungen zu CDDB</title>
+    </image>
+
+
+     <textblock>
+Auf dem CDDB Reiter können sie einen CDDB Server auswählen. Die
+Voreinstellungen kann auch hier wieder übernommen werden.
+    </textblock>
+
+    <image height="200">
+       <filename>ripperx-config-files.png</filename>
+       <title>Einstellungen zu den Files</title>
+    </image>
+
+
+     <textblock>
+Auf dem Files Reiter können sie Optionen zu den Dateinamen
+einstellen.
+     </textblock>
+    </section>
+
+
+    <section>
+     <heading>
+grabben und encoden mit ripperX
+     </heading>
+
+    <image height="200">
+       <filename>ripperx-vor-dem-encoden.png</filename>
+       <title>Gleich geht es los</title>
+    </image>
+
+
+     <textblock>
+Da nun alles konfiguriert ist, können Sie eine CD ins Laufwerk
+legen. Drücken Sie den Knopf "Scan" und der Inhalt ihrer CD wird
+angezeigt. Nun können Sie auf den Knopf CDDB drücken (bei aktiver
+Internetverbindung) und das Programm schaut auf dem von Ihnen
+gewählten CDDB Server nach, ob ihre CD vorhanden ist.<br/>
+Wenn ja erscheinen die Informationen im Programmfenster. Wenn
+nicht können Sie die Informationen auch manuell eingeben. Zum
+Schluss wählen Sie noch die Lieder aus die sie umwandeln wollen
+und drücken den "Go!!!" Knopf.
+     </textblock>
+    </section>
+   </section>
+ </section>
+</split>
+
+</chapter>
+

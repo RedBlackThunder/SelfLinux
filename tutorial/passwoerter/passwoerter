@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Über die Sicherheit von Passwörtern</title>
+
+ <author>
+  <name>Christoph Zurnieden</name>
+  <mailto>czurnieden@users.sourceforge.net</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>passwoerter</index>
+
+ <description>
+  <textblock>
+Die Sicherheit eines passwortgeschützten Systems hängt entscheidend
+von der richtigen Auswahl eines Passworts ab.  Es können im grobem
+fünf Sicherheitsstufen unterschieden werden: <strong>Nachlässig</strong>,
+<strong>Niedrig</strong>, <strong>Mittel</strong>, <strong>Hoch</strong> und <strong>Sehr Hoch</strong>.
+  </textblock>
+ </description>
+
+
+ <split>
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Über die Sicherheit von Passworten
+   </heading>
+
+   <textblock>
+Die Sicherheit eines passwortgeschützten Systems hängt entscheidend
+von der Wahl des richtigen Passwortes ab.  Im allgemeinen unterscheidet man
+fünf Sicherheitsstufen: <strong>nachlässig</strong>, <strong>niedrig</strong>, <strong>mittel</strong>, <strong>hoch</strong> und <strong>sehr hoch</strong>.
+   </textblock>
+
+   <textblock>
+<strong>Wahrscheinlichkeit</strong> bedeutet hier die in Prozent angegebene Wahrscheinlichkeit,
+mit der das Passwort in einer gegebenen Zeit durch
+Brute-Force-Methoden erraten werden kann.
+Bei Brute-Force Angriffen handelt es sich um das methodische Durchprobieren alle
+in Frage kommenden Schlüsselkombinationen.
+   </textblock>
+
+   <textblock>
+Die Berechnung erfolgt nach der Formel des <strong>National Computer
+Security Center [NCSC1985a]</strong>.
+   </textblock>
+
+   <image height="25">
+    <title>Formel NCSC1985a</title>
+    <filename>formula.png</filename>
+   </image>
+
+   <image height="25">
+    <filename>tfrac.png</filename>
+   </image>
+
+   <textblock>
+Dabei ist t_{life} die Lebenszeit des Passwortes in Sekunden,
+\frac{n_{tries}}{\text{sec}} [tfrac.png] die Anzahl der möglichen
+Tests pro Sekunde, n_{c} die Anzahl der möglichen Zeichen und l die
+Länge des Passwortes.
+   </textblock>
+
+   <image height="25">
+    <filename>tfrac.png</filename>
+   </image>
+
+   <textblock>
+Der Wert von \frac{n_{tries}}{\text{sec}} [tfrac.png] liegt bei
+durchschnittlichen Rechnern und mit dem normalen Verfahren (crypt()) bei
+etwa 250.000 Versuchen pro Sekunde.
+   </textblock>
+  </section>
+
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Nachlässig
+   </heading>
+
+   <textblock>
+In die Sicherheitsstufe <strong>nachlässig</strong> werden diejenigen Passworte eingeordnet, die aus
+regulären Worten bestehen, also aus Worten, die einer Wortliste entnommen
+werden können. Nicht nur im Internet stehen derartige Wortlisten in großer Zahl zur
+Verfügung, sondern zum Beispiel auch bei Rechtschreibhilfen. Zu den regulären Worten
+gehören auch alle Eigennamen, insbesondere die Namen von Familienangehörigen
+und Haustieren. Außerdem gehören in diese Kategorie alle Worte, die auf der Reihenfolge
+der Tasten auf der Tastatur beruhen ("wert", "asdf" u. s. w.), sowie alle
+Passworte, die schlichtweg zu kurz sind.
+   </textblock>
+
+   <textblock>
+Wahrscheinlichkeit:<br/>
+Geht gegen 100%.
+   </textblock>
+  </section>
+
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Niedrig
+   </heading>
+
+   <textblock>
+Als <strong>niedrig</strong> gilt die Sicherheit aller Passworte, die nach den folgenden Regeln erstellt werden:
+   </textblock>
+
+   <ul>
+    <li>
+Das Passwort muss mindestens ein alphanumerisches Zeichen enthalten.
+    </li>
+    <li>
+Es besteht aus maximal 14 Zeichen.
+    </li>
+    <li>
+Es enthält keine Leerzeichen.
+    </li>
+    <li>
+Es kann ein Sonderzeichen enthalten.
+    </li>
+    <li>
+Es unterscheidet Groß- und Kleinschreibung.
+    </li>
+    <li>
+Es hat eine Lebensdauer von maximal einem Jahr.
+    </li>
+   </ul>
+
+   <textblock>
+Beispiele (in Klammern eine Umschreibung der englischen Aussprache):
+   </textblock>
+
+   <textblock>
+IcvawyowgIbCic (Ic-vaw-yowg-Ib-Cic)<br/>
+tunebelk (tun-eb-elk)<br/>
+itvigumI (it-vig-um-I)<br/>
+uccywojEgty (uc-cy-woj-Eg-ty)<br/>
+hiddUlicdift (hidd-Ul-ic-dift)<br/>
+SudNom (Sud-Nom)
+   </textblock>
+
+   <textblock>
+Wahrscheinlichkeit:
+   </textblock>
+
+   <textblock>
+10454% bei einer Länge von 6 Zeichen und einem Bestand von 65 möglichen Zeichen
+[a-zA-Z0-9] sowie einigen Sonderzeichen.*<br/>
+161% bei einer Länge von 7 Zeichen und demselben Zeichenbestand.*<br/>
+2,5% bei einer Länge von 8 Zeichen und demselben Zeichenbestand.<br/>
+0,0000000000003% bei einer Länge von 14 Zeichen und demselben Zeichenbestand.
+   </textblock>
+
+   <textblock>
+*)<br/>
+Die Werte über 100% kommen dadurch zustande, dass für die Versuche die gesamte
+Gültigkeitsdauer zur Verfügung steht.
+Bei der theoretischen Anzahl von 250.000 Versuchen pro Sekunde
+werden die einfachen Passworte naturgemäß sehr schnell geknackt,
+bei sehr einfachen Passworten sogar deutlich innerhalb der
+Gültigkeitsdauer. Solche Passwort-/Gültigkeitsdauer-Kombinationen
+sind demnach eindeutig ungeeignet.
+   </textblock>
+
+   <textblock>
+Das Login-Programm benutzt unter anderem auch die Möglichkeit,
+die Sicherheit der Passworte durch Herabsetzung der Anzahl der Versuche pro Sekunde
+zu erhöhen. In den mir bekannten Distributionen ist
+z. B. eine kleine Pause von einer Sekunde nach Eingabe eines fehlerhaften
+Passwortes eingestellt. Dadurch wird die Anzahl der Versuche
+auf einen Versuch pro Sekunde reduziert. Dieses Verfahren sollte aber unter keinen
+Umständen verwendet werden, da die verschlüsselten Passworte in einer
+Datei gespeichert werden.<br/>
+(Es ist sehr schwierig, eine Datei so zu schützen, dass sie nicht gelesen werden kann. Es können jederzeit
+Sicherheitslücken auftreten, die das Lesen der Datei trotz aller
+Sicherheitsmaßnahmen ermöglichen, zum Beispiel durch direkten Zugriff auf die Hardware.)
+Auf die Angaben in dieser Datei können dann
+normale Crack-Programme angesetzt werden, die dann wieder 250.000 und mehr
+Versuche pro Sekunde erzielen können.
+   </textblock>
+
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Mittel
+   </heading>
+
+   <textblock>
+Als <strong>mittel</strong> wird die Sicherheit derjenigen Passworte eingestuft, die nach
+den folgenden Regeln erstellt wurden:
+   </textblock>
+
+   <ul>
+    <li>
+Das Passwort besteht aus mindestens 8 und höchstens 14 Zeichen.
+    </li>
+    <li>
+Es kann Sonderzeichen enthalten.
+    </li>
+    <li>
+Es muss mindestens ein alphabetisches Zeichen enthalten.
+    </li>
+    <li>
+Es darf den Benutzernamen nicht enthalten.
+    </li>
+    <li>
+Es enthält keine Leerzeichen.
+    </li>
+    <li>
+Es unterscheidet Groß- und Kleinschreibung.
+    </li>
+    <li>
+Es hat eine Lebensdauer von maximal einem halbem Jahr.
+    </li>
+   </ul>
+
+   <textblock>
+Beispiel 1:
+   </textblock>
+
+   <textblock>
+!Tvv,+I*k?%<br/>
+(Sea?{~Cp@<br/>
+IROKobh`#>d<br/>
+vobjiWuz> (vob-ji-Wuz-GREATER_THAN)<br/>
+Wruhaukbot) (Wru-hauk-bot-RIGHT_PARENTHESIS)<br/>
+ishcichejKev} (ish-cich-ej-Kev-RIGHT_BRACE)<br/>
+   </textblock>
+
+   <textblock>
+Beispiel 2 (enthält keine Sonderzeichen, die in Shellscripten
+Probleme verursachen könnten):
+   </textblock>
+
+   <textblock>
+;)XbNo#h%]<br/>
+j~//pdZq&lt;<br/>
+CnjKdgM(M-n*(<br/>
+ofNocip} (of-Noc-ip-RIGHT_BRACE)<br/>
+vafAdyif; (vaf-Ad-yif-SEMICOLON)<br/>
+pomcotyadoon&amp; (pom-cot-yad-oon-AMPERSAND)
+   </textblock>
+
+   <textblock>
+Wahrscheinlichkeit:<br/>
+0,06% bei einer Länge von 8 Zeichen und einem Bestand von 95 möglichen Zeichen [:print:].<br/>
+0,0006% bei einer Länge von 9 Zeichen und demselben Zeichenbestand.<br/>
+0,0000066% bei einer Länge von 10 Zeichen und demselben Zeichenbestand.
+   </textblock>
+  </section>
+
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Hoch
+   </heading>
+
+   <textblock>
+Als <strong>hoch</strong> gilt die Sicherheit aller Passworte, die nach den folgenden Regeln erstellt wurden:
+   </textblock>
+
+   <ul>
+    <li>
+Es gelten dieselben Regeln wie für die Sicherheitsstufe <strong>mittel</strong>.
+    </li>
+    <li>
+Das Passwort muss mindestens ein numerisches Zeichen enthalten.
+    </li>
+    <li>
+Es muss mindestens ein Sonderzeichen enthalten.
+    </li>
+    <li>
+Die ersten drei Zeichen dürfen nicht gleich sein.
+    </li>
+    <li>
+Die ersten drei Zeichen dürfen nicht im Benutzernamen enthalten sein.
+    </li>
+    <li>
+Das Passwort hat eine Lebensdauer von maximal drei Monaten.
+    </li>
+   </ul>
+
+   <textblock>
+Beispiel 1:
+   </textblock>
+
+   <textblock>
+_y@lK^T8(<br/>
+`"%ld!QG2DGA<br/>
+GTDeUZ#-7<br/>
+IF=Qd6U*n{q<br/>
+enalAjOj% (en-al-Aj-Oj-PERCENT_SIGN)<br/>
+NeubOcaj&lt; (Neub-Oc-aj-LESS_THAN)
+   </textblock>
+
+   <textblock>
+Beispiel 2 (enthält keine Sonderzeichen, die in Shellscripten
+Probleme verursachen könnten):
+   </textblock>
+
+   <textblock>
+]aj~-kn4vYc/wg<br/>
+jfVN/QAfak<br/>
+rVG1s&lt;K*^5j<br/>
+l=.y)Q*utZKd<br/>
+udGifwis# (ud-Gif-wis-CROSSHATCH)<br/>
+yewt^Shrak' (yewt-CIRCUMFLEX-Shrak-APOSTROPHE
+   </textblock>
+
+   <textblock>
+Wahrscheinlichkeit:<br/>
+Insgesamt etwas niedriger als bei der Sicherheitsstufe <strong>mittel</strong>.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Sehr hoch
+   </heading>
+
+   <textblock>
+Als <strong>Sehr hoch</strong> gilt die Sicherheit derjenigen Passworte, die nach den folgenden Regeln erstellt wurden:
+   </textblock>
+
+   <ul>
+    <li>
+Das Passwort muss aus mindestens 14 Zeichen bestehen.
+    </li>
+    <li>
+Es muss mindestens ein alphabetisches Zeichen enthalten.
+    </li>
+    <li>
+Es muss mindestens ein numerisches Zeichen enthalten.
+    </li>
+    <li>
+Es muss mindestens ein Sonderzeichen enthalten.
+    </li>
+    <li>
+Es muss mindestens ein Leerzeichen enthalten
+    </li>
+    <li>
+Es dürfen keine drei Zeichen in Folge gleich sein.
+    </li>
+    <li>
+Es dürfen keine drei Zeichen in Folge aus dem Benutzernamen
+enthalten sein.
+    </li>
+    <li>
+Die Zeichenfolge darf nicht aussprechbar sein.
+    </li>
+    <li>
+Das Passwort hat eine Lebensdauer von maximal einem Monat.
+    </li>
+   </ul>
+
+   <textblock>
+Beispiel 1:
+   </textblock>
+
+   <textblock>
+3'cIy`a$ d\mWK(0e¤'lp<br/>
+Y6E6hE®5U.Z$aQ;>|/Ps$&amp;]R<br/>
+\-IOæbq}zE&amp;EA2<br/>
+N3$a  jw%{TI¢E{/%<br/>
+YZ# #þ0M  uyAs!'Pb<br/>
+shSz*GP)1 X¾$=A(H~RXc<br/>
+   </textblock>
+
+   <textblock>
+Beispiel 2 (enthält keine Sonderzeichen, die in Shellscripten
+Probleme verursachen könnten):
+   </textblock>
+
+   <textblock>
+TIQ-Ndx¡¬O  0~]i<br/>
+@6Fi=,K¹-:µ^_SG@jg~n<br/>
+x)/@£z-&amp;- _.E%_MTK2gm}5;<br/>
+KmZªfc(7ÐnZziUÞR(;FQAd[r<br/>
+M0 &amp; hr}!_p14>~©KKzqaU<br/>
+(R,EP md]U(Pd,A1»ZBnzi
+   </textblock>
+
+   <textblock>
+Wahrscheinlichkeit:<br/>
+0,000000000000000000013% bei einer Länge von 14 Zeichen und einem Bestand von 256 möglichen Zeichen.<br/>
+0,00000000000000000000000000000000000000000001% bei einer Länge von 24 Zeichen und demselben Zeichenbestand.
+   </textblock>
+
+   <textblock>
+(Eigentlich ist die Wahrscheinlichkeit etwas höher, da einige Passworte entfallen.
+Dieser Unterschied ist jedoch nur unwesentlich.)
+   </textblock>
+  </section>
+
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Laufzeit
+   </heading>
+
+   <textblock>
+Was nützt das beste Passwort, wenn es ewig haltbar ist? Je länger ein Passwort in Kraft ist,
+desto größer ist die Wahrscheinlichkeit, dass es doch noch
+geknackt, verraten oder gestohlen wird. Deshalb empfiehlt es sich,
+die Laufzeit von Passworten zu begrenzen. Je nach
+Sicherheitsanspruch kann eine Laufzeit von einigen Stunden bis zu einem
+Jahr gewählt werden. Zwischen der Lebensdauer eines Passwortes
+und dessen Sicherheit besteht eine direkt proportionale Beziehung. Auch ein Passwort mit der Sicherheitsstufe <strong>niedrig</strong>
+kann ausreichend Sicherheit bieten, sofern es stündlich
+gewechselt wird. Ebenso kann ein Passwort mit <strong>hoher</strong> Sicherheit durchaus Schwachstellen aufweisen,
+wenn es jahrelang nicht geändert wird.
+   </textblock>
+
+   <textblock>
+Beispiel
+   </textblock>
+
+   <textblock>
+Bei einer Laufzeit von einem Jahr besteht für ein Password der Kategorie <strong>niedrig</strong> mit einer Länge von 8 Zeichen
+eine Wahrscheinlichkeit von 2,5%, dass es innerhalb dieser Laufzeit geknackt wird. Wird die Laufzeit auf ein
+Monat verkürzt, so sinkt diese Wahrscheinlichkeit auf 0,2%.
+   </textblock>
+
+   <textblock>
+Bei einer Laufzeit von einem Jahr besteht für ein Password der Kategorie <strong>hoch</strong> mit einer Länge von 14
+Zeichen eine Wahrscheinlichkeit von 1,5e-23, dass es innerhalb dieser Laufzeit geknackt wird. Wird die
+Laufzeit auf ein Monat verkürzt, so sinkt diese Wahrscheinlichkeit auf 1,2e-24, also fast um das Zehnfache.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Extrem
+   </heading>
+
+   <textblock>
+Über die üblichen Sicherheitskategorien hinaus gibt es auch noch die Gruppe der 
+<strong>extrem sicheren Passworte</strong>. Dabei handelt es sich um sehr lange Passworte,
+die im Normalfall niemand im Gedächtnis behalten oder von Hand eingegeben kann. 
+Diese Passworte werden als Schlüssel benutzt, z. B. auf elektronisch lesbaren Karten.
+Diese Schlüssel haben meist eine Länge von 1024 Bytes.
+   </textblock>
+
+   <textblock>
+Hierzu ein Beispiel (der Lesbarkeit halber in ASCII-Code):
+   </textblock>
+
+   <textblock>
++iG8&lt;3u9+%CY9_w5UZI6(Yt*f*DS3]&amp;7 nHK8Z.kG^3R%jeSQB+rE ?U[,8{)boYiv!CNI"yo=5DgR/
+oT%7K9u7k%o,gF>D-9cKp0[>_U='_G~l8=?E8ITdIK)  iwKqB^.2u@wVKQ}7iF-0H?P"d FaqG=v4U
+lx3cu.zHoo`m'}dGFx VIY%]~3mcSKkA]8)j(o&amp;cUezo@sf\VP  _W9|0{&amp;>b?N4Ix@s;99'{PRMd~?
+{r8$4Q&amp;H9-@eKybMkZ.GW^| ^cKP{%RC`,)O^7.9>vlFa0r;:MG$V89eIssCo6*YA^U8.&lt;&lt;&amp;`,YwmF@
+r6z\(u%I"D^8`tY9E6YbyI$X$\Va&lt;wto!0gR?N@W#3Bvz;3#s[6Umk&lt;bf-p?M/_:g5Q3^txeW1SVmg^
+KSq>Z1qNt8[SP5)zV,.nR5"F]$c`uBq!Y[wk@!5t^|&amp;g>9p4)-yF(kosG[C%n-zI _kPAiK2&amp;T_V{{m
+\M?biIpc[1CTQOay,b  ;^txeW1SVmg^KSq>Z1qNt8[SP5)zV,.nR5"F]$c`uBq!Y[wk@!5t^|&amp;g>9p
+4)-  (kosG[C%n-zI"_kPAiK2&amp;T_V{{m\M?biIpc[1CTQOay, $d;@-mlpj&amp;Kzj&amp;XK\5@v@-mlpj&amp;Kz
+j&amp;XK\5@vW,{x1,c;/$;]7w>&lt;?yN!r#$.9Xf.*d&lt;}K -KP83~FE[TbG+2l/U~e9pGf{2Zd{}2Yp3XA^!
+H0K.%/Tfr=TyQx7K0sXID}tzc;Q~E*}1a{AmQ/ITj>94Qs,RbZ/E2(zKH+(Teu&lt;^>xXW'UEk@y,\0IA
+"S4pvgC|*&amp;7plMP5Yf?C}@C0{bkX0N&lt;q!_ uQ6$U3s,Bmk6\V)[RhGC?7w2c*lV$i'/CWY]iVuXWYIl
+E]Mz%Cq))tvU8F%&lt;1/(&lt;Ra!>UqKYNV)jBHW,?Tv!8&amp;YyTPo0F}V/zV=\P>":b,i5ry~P%YW(%./;w2/
+&amp;qn;w->3,9e94qkI!Zgs9yeQbrn/SkX&amp;WCK\K;Q,w|(G3 q{?a4cjbS$)\9eNZZ;F^7>#,mUWtQZ~Q3
+:C[wiS`cDVVnWP9C(\Yhf?3IrjrX#GKfB!^;7:0/&amp;;bq&amp;PZHrFA8Ig!9tl;(bl#_KoufHpWM6kC"^(a
+~VQ&lt;Qh?bf@K&lt;Md #/0Uep@`|T/KI(f^/c9 WA"G1NV(I}_
+   </textblock>
+
+   <textblock>
+Der entscheidende Nachteil solcher Schlüssel besteht darin, dass man sie schriftlich
+festhalten muss. Es besteht zwar die Möglichkeit, diese Schlüssel mit einem
+normalen Passwort zu kombinieren. Dies bring allerdings keinerlei Vorteile mit sich,
+sondern erhöht die Gefahr eines allzu sorglosen Umganges mit dem Passwort.
+   </textblock>
+
+   <textblock>
+Alle hier angeführten Beispiele wurden mit dem <strong>Automated Password Generator</strong> (<command>apg</command>) von <name>Adel
+I. Mirzazhanov generiert</name>, den Sie unter <ref lang="en" url="http://www.adel.nursat.kz/apg/">http://www.adel.nursat.kz/apg/</ref> finden. In der
+hier verwendeten Version 2.0.0 final PRNG:
+X9.17/CAST) generiert dieses Tool allerdings weder Leerzeichen noch
+Zeichen oberhalb von 128 dezimal. Sofern diese Zeichen in den Beispielen vorkommen,
+wurden sie per Hand eingefügt.
+   </textblock>
+  </section>
+
+  <section>
+<!--*. Kapitel -->
+   <heading>
+Fazit
+   </heading>
+
+   <textblock>
+Wie man anhand der in diesem Abschnitt aufgelisteten Wahrscheinlichkeiten sieht, reicht
+schon der regelmäßige Wechsel eines sorgfältig gewählten Passwortes mit einer Länge von 8
+Zeichen aus, um eine relativ hohe Sicherheit zu erzielen.
+   </textblock>
+  </section>
+ </split>
+</chapter>

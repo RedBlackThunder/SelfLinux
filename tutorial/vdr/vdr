@@ -1,0 +1,3823 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>vdr</title>
+
+ <author>
+  <name>Hubertus Sandmann</name>
+  <mailto>Hubertus.Sandmann@t-online.de</mailto>
+ </author>
+
+ <author>
+  <name>Alexander Fischer</name>
+  <mailto>tbanus@tbanus.de</mailto>
+ </author>
+  
+ <layout>
+  <name>Alexander Fischer</name>
+  <mailto>Tbanus@tbanus.de</mailto>
+ </layout>
+
+ <license>
+GFDL
+ </license>
+
+ <index>vdr</index>
+
+ <description>
+
+  <textblock>
+Dieses Dokument unterliegt der GNU FDL. Es darf gemäß dieser Lizenz frei
+kopiert und weitergegeben werden.
+  </textblock>
+ </description>
+ 
+<split>
+ <section>
+<!-- *. Kapitel -->
+  <heading>
+Einleitung
+  </heading>
+  
+<!-- *.* Kapitel -->
+   <section>
+    <heading>
+Vorwort
+    </heading>
+    <textblock>
+Das hier ist schon mal ein Ansatz für eine Beschreibung zur
+Installation der aktuellen VDR-Versionen mit Plugin-Konzept.
+Diese Version mit neuen Features wie <name>Timeshifting</name> und gleichzeitiger
+Aufnahme mehrerer Sendungen vom gleichen <name>Transponder</name> mit nur einer
+einzigen DVB-Karte befindet sich noch in der Entwicklungsphase,
+kann aber durchaus schon im Alltagsbetrieb genutzt werden.
+    </textblock>
+    
+    <textblock>
+Die jeweils aktuelle Version der Anleitung findet sich hier:
+<ref lang="de" url="http://home.t-online.de/home/hubertus.sandmann/">http://home.t-online.de/home/hubertus.sandmann/ </ref>
+    </textblock>
+   
+    <textblock>
+Eine detaillierte Beschreibung für einen Standalone-Rechner
+mit der letzten stabilen Version 1.0.4 der VDR-Software inklusive
+AIO-Patch auf der Basis einer SuSE 7.3-Distribution findet sich hier
+als gezipptes Archiv zum Download. Es beinhaltet auch eine Anleitung
+für die Installation einer komfortablen Fernbedienung mittels <command>LIRC</command>
+und der Einrichtung des automatischen Aufwachens des VDR-Rechners
+für eine programmierten Aufnahme.
+    </textblock>
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Überblick
+    </heading>
+    <textblock>
+Für den Aufbau des digitalen Videorecorder auf der Basis von Linux
+und der VDR-Software reicht grundsätzlich ein PC mit
+Minimalausstattung, bestückt mit einem Prozessor der PII-Klasse
+und etwa 32 MByte RAM und natürlich mindestens einer DVB-Karte mit
+MPEG2-Decoderchip. Ausserdem benötigt man eine auf das
+ASTRA-Satellitensystem ausgerichtete digitaltaugliche Empfangsanlage
+mit Universal-LNB. Die Bedienung kann vollständig per Fernbedienung
+an Hand eines ins Bild eingeblendeten Menüs (OSD) erfolgen.
+Aufnahmen von digitalen TV-Sendungen lassen sich komfortabel auf
+der Basis der vom EPG (<name>Electronic Programm Guide</name>) übermittelten Daten
+realisieren. Ebenfalls ist ein Videoschnitt um z. B. Werbeeinblendungen
+in den digitalen Aufnahmen auszublenden möglich. Wie bei einer
+digitalen Aufnahme nicht anders zu erwarten, ist die Bildqualität
+der Wiedergabe hervorragend, da das MPEG2-Signal ohne weitere
+Kompression 1:1 abgespeichert wird. 1 GByte Speicherplatz auf der
+Festplatte reichen dabei für rund eine 1/2 Stunde Aufnahmedauer.
+Die Ausgabe von Bild und Ton erfolgt im einfachsten Fall direkt
+über den FBAS-Ausgang und die Stereo-Klinkenbuchse der DVB-Karte.
+    </textblock>
+    
+    <textblock>
+Der Vorteil dieser Realisierung auf PC-Basis liegt in der beliebigen
+Erweiterbarkeit wie z. B. in diesem Fall mit der zusätzlichen Nutzung
+als DVD-, VCD- und MP3-Player. Auch die Wiedergabe von Audio-CD's und
+DivX ist möglich, ebenso das automatisierte Konvertieren von Aufnahmen
+in das DivX-Format sowie das Erstellen von VCD's bzw. SVCD's.
+Die Bedienung und Programmierung kann neben einer Fernbedienung
+auch über ein lokales Netzwerk oder sogar per Internet erfolgen.
+Das offene Konzept von VDR ermöglicht die Entwicklung zu einer
+universellen Multimediazentrale fürs Wohnzimmer mit mehr
+Möglichkeiten als es kommerzielle Fertiggeräte vermutlich
+jemals bieten werden. Dahinter steckt der Gedanke von Open Source
+und freier Software. Dies alles sollte Grund genug sein sich
+einmal mit dem Betriebssystem Linux zu beschäftigen. Es lohnt sich!
+    </textblock>
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Links
+    </heading>
+    <textblock>
+Eine Sammlung an Informationen über Hardwarekompatibilitäten von
+DVB-Karten und CAM's und weitere Hilfestellungen zum Thema DVB
+findet sich hier: <ref lang="en" url="http://www.linuxdvb.tv">http://www.linuxvb.tv </ref>
+    </textblock>
+    
+    <textblock>
+Eine gute Gelegenheit zum Erfahrungsaustausch bezüglich des Themas
+DVB und VDR findet sich im deutschsprachigen Forum:<br/>
+<ref lang="de" url="http://www.dvbforum.de">http://dvbforum.de</ref>
+    </textblock>
+    
+    <textblock>
+Auch die englischsprachigen Mailinglisten von <ref lang="en" url="http://LinuxTV.org">http://LinuxTV.org</ref> sind
+eine interessante Informationsquelle und bieten eine Suchfunktion.
+    </textblock>
+    
+    <textblock>
+Auf dem Newsserver <ref url="news://ltv.boerde.de:119/">news://ltv.boerde.de:199/</ref> gibt es eine
+deutschsprachige Newsgroup für VDR.
+    </textblock>
+
+    <textblock>
+Die ausführliche Linksammlung <ref lang="en" url="http://hotchevy.future.easyspace.com/">http://hotchevy.future.easyspace.com/</ref>
+zum Thema DVB und VDR mit Hinweisen auf diverse User-Foren bei
+Installationsproblemen ist ebenfalls einen Klick wert.
+    </textblock>
+   </section>
+ </section>
+</split> 
+ <!--Kapitel * -->  
+<split>
+ <section>
+  <heading>
+Installation
+  </heading>
+<!-- Kapitel *.* -->
+   <section>
+    <heading>
+DVB-Treiber
+    </heading>
+    <textblock>
+Für die DVB-Karten braucht man den entprechenden Treiber, welcher
+ursprünglich von der Firma Convergence entwickelt wurde und auf
+<ref lang="en" url="http://www.linuxtv.org">http://www.linuxtv.org</ref> als freie Software zur Verfügung gestellt wird.
+    </textblock>
+    
+    <textblock>
+Die vom Entwickler der VDR-Software jeweilig genutzte Version
+steht auf der Projekthomepage bereit. Sie dient denn auch als
+Basis für diese Installation.
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://www.cadsoft.de/people/kls/vdr/">http://www.cadsoft.de/people/kls/vdr/</ref>
+Voraussetzung für eine erfolgreiche Übersetzung der Quellen sind ein
+aktueller Kernel der Version 2.4 mit Modul-Unterstützung für
+video4linux und i2c. Ebenso muss die Unterstützung für input-core
+und event-interface vorhanden sein. Zudem müssen die Kernelquellen
+installiert sein.
+    </textblock>
+    
+    <textblock>
+Nunmehr kann es an die Installation des Treibers gehen. Diese erfolgt
+aus dem Verzeichnis <command>/usr/local/src</command> heraus.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src
+     </root>
+     
+     <root path="/usr/local/src">
+tar -xjvf siemens_dvb-0.9.4-2002-12-08.tar.bz2
+     </root>
+     
+     <root path="/usr/local/src">
+ln -s siemens_dvb-0.9.4-2002-12-08 DVB
+     </root>
+     
+     <root path="/usr/local/src">
+cd DVB/driver
+     </root>
+     
+     <root path="/usr/local/src/DVB/driver">
+make
+     </root>
+     
+     <root path="/usr/local/src/DVB/driver">
+./makedev.napi
+     </root>
+     
+     <root path="/usr/local/src/DVB/driver">
+make insmod
+     </root>
+    </shell>
+     
+    <textblock>
+Aktuell ist dies die als <command>NEWSTRUCT</command> bezeichnete CVS-Entwicklerversion
+des Treibers, welcher die gleichzeitige Aufnahme mehrerer Programme
+vom gleichen Transponder und das Timeshifting mit nur einer einzigen
+DVB-Karte möglich macht.
+    </textblock>
+    
+    <textblock>
+Beim Laden der Treiber sollte der Copyright-Schriftzug und bei
+korrekter Ausrichtung auf ASTRA am TV-Ausgang der DVB-Karte erscheinen.
+Ist das der Fall, war zumindest das Laden des Treibers schon mal
+erfolgreich.
+    </textblock>
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+VDR
+   </heading>
+   <textblock>
+Die aktuelle Version der VDR-Software mit Plugins-Konzept befindet
+sich offiziell noch im experimentellen Stadium, ist aber schon für
+den praktischen Einsatz geeignet und kann downgeloaded werden.
+    </textblock>
+    
+    <textblock>
+<ref url="ftp://ftp.cadsoft.de/vdr/Developer/">ftp://ftp.cadsoft.de/vdr/Developer/</ref>
+    </textblock>
+    
+    <textblock>
+Die Übersetzung dieser Software muss unbedingt aus dem gleichen
+Verzeichnis <command>/usr/local/src</command> wie das des DVB-Treibers erfolgen.
+    </textblock>
+
+    <shell>
+     <root path="~"> 
+cd /usr/local/src
+     </root>
+     
+     <root path="/usr/local/src">
+tar -xjvf vdr-1.1.20.tar.bz2
+     </root>
+     
+     <root path="/usr/local/src">
+ln -s vdr-1.1.20 VDR
+     </root>
+     
+     <root path="/usr/local/src">
+cd VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">   
+make VFAT=1
+     </root>
+    </shell>
+
+    <textblock>
+Die Steuerung mit der Tastatur ist hierbei immer möglich. Man kann
+auch zusätzlich mit <command>REMOTE=LIRC</command> die Bedienung mittels des Paketes
+<command>LIRC</command> per Fernbedienung vorsehen. Die Option <command>VFAT=1</command> ist notwendig,
+wenn man beispielsweise auf einer FAT32-Partition des Betriebssystems
+<name>Windows</name> aufzeichnen will, oder aber auch, sobald man die
+gespeicherten Files zur späteren Bearbeitung etwa mittels <name>Samba</name>
+im Windows-Netzwerk exportieren will.
+    </textblock>
+    
+    <textblock>
+Vor dem ersten Aufruf des Programms müssen noch die
+Konfigurationsdateien in das zu erstellende Verzeichnis <command>/video</command>
+kopiert werden. In diesem Verzeichnis werden später auch die
+aufgezeichneten Video-Dateien gespeichert.
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src/VDR">
+mkdir /video
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+cp *.conf /video
+     </root>
+    </shell>
+    
+    <textblock>
+Anschließend wird die Software aus dem aktuellen Verzeichnis
+heraus gestartet und kann mit Tastatursteuerung bedient werden.
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src/VDR">
+./vdr
+     </root>
+    </shell> 
+
+
+    <textblock>
+Zum Beenden verwendet man die Tastenkombination <keycomb mode="hold"><key>STRG</key><key>c</key></keycomb>.
+    </textblock>
+    
+    <textblock>
+Die verschiedenen Optionen kann man sich anzeigen lassen mittels:
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src/VDR">
+./vdr --help
+     </root>
+    </shell>
+     
+    <textblock>
+Die VDR-Software startet nur, wenn auch die DVB-Treiber geladen sind.
+Der komfortabelste Weg dies zu erreichen ist, das Skript <command>runvdr</command> dafür
+zu nutzen. Ruft man dieses als root auf, lädt es die Treiber bei
+Bedarf automatisch und startet dann die VDR-Software. Ausserdem sorgt
+es durch Aktivierung der internen Watchdog-Funktion dafür, dass eine
+im Fehlerfall abgestorbene VDR-Software und auch der DVB-Treiber im
+Bedarfsfall selbstständig innerhalb einer Minute wieder neu
+gestartet wird.
+    </textblock>
+    
+    <textblock>
+Zuvor sollte man noch dafür sorgen, dass die Steuerung über Tastatur
+weiterhin möglich bleibt. Dazu legt man <command>tty8</command> als kontrollierendes
+Terminal mit einer Ergänzung in der Datei <command>runvdr</command>. Von der graphischen
+Oberfläche schaltet man mit der Tastenkombination <keycomb mode="hold"><key>STRG</key><key>ALT</key><key>F8</key></keycomb>
+um und von der Textkonsole aus mit <keycomb mode="hold"><key>ALT</key><key>F8</key></keycomb>.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[ 
+...  
+DVBDIR="../DVB/driver"
+VDRPRG="./vdr"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 $*"
+...
+     ]]></content>
+    </file>
+      
+    <textblock>
+Danach kann man das Startskript aus dem Quellverzeichnis her aufrufen.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+    
+     <root path="/usr/local/src/VDR">
+./runvdr
+     </root>
+    </shell>
+     
+    <textblock>
+Bei der vollständigen Installation der VDR-Software wird das Binary und
+auch das Skript runvdr in das Verzeichnis <command>/usr/local/bin</command> kopiert.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+make install
+     </root>
+    </shell>
+     
+    <textblock>
+Ebenso ist dann die Manpage als Ergänzung zur beigefügten Dokumentation
+im Quellpaket auf dem System verfügbar und kann aufgerufen werden.
+    </textblock>
+    
+     <shell>
+      <root path="~">
+man vdr
+      </root>
+     </shell>
+      
+    <textblock>
+Gleiches gilt für den Abschnitt 5 mit den Erläuterungen zum Format
+der einzelnen Konfigurationsdateien.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+man 5 vdr
+     </root>
+    </shell>  
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Konfigurationsdateien
+    </heading>
+    <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+remote.conf
+      </heading>
+      <textblock>
+Beim erstmaligen Aufruf der VDR-Software geht das Programm in den Lernmodus
+um wahlweise die Tasten oder aber auch bei laufendem <command>LIRC-Dämon</command> im Falle
+einer Fernbedienung die Signale zur Steuerung der VDR-Funktionen wunschgemäß
+zuzuordnen. Während der Lernphase kann man Korrekturen durchführen oder
+vorzeitig abbrechen. Das Ergebnis wird dann in der Datei remote.conf
+gespeichert. Der Inhalt der erzeugten Datei bei Einsatz von <command>LIRC</command> könnte
+folgendermaßen aussehen:
+      </textblock>
+
+       <table>
+	<pdf-column width="75"/>
+	<pdf-column/>
+        <tr>
+	 <td>
+LIRC.Up
+         </td>
+	 <td>
+UP
+         </td>
+	</tr>
+	<tr>
+	 <td>
+LIRC.Down
+         </td>
+	 <td>
+DOWN
+         </td>
+	</tr>
+	<tr>
+	 <td>
+LIRC.Menu
+         </td>
+	 <td>
+MENU
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Ok         
+         </td>
+	 <td>
+OK
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Back       
+         </td>
+	 <td>
+BACK
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Left       
+         </td>
+	 <td>
+LEFT
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Right      
+         </td>
+	 <td>
+RIGHT
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Red        
+         </td>
+	 <td>
+RED
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Green      
+         </td>
+	 <td>
+GREEN
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Yellow     
+         </td>
+	 <td>
+YELLOW
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Blue       
+         </td>
+	 <td>
+BLUE
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.0          
+         </td>
+	 <td>
+0
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.1
+         </td>
+	 <td>
+1
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.2          
+         </td>
+	 <td>
+2
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.3          
+         </td>
+	 <td>
+3
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.4          
+         </td>
+	 <td>
+4
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.5          
+         </td>
+	 <td>
+5
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.6          
+         </td>
+	 <td>
+6
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.7          
+         </td>
+	 <td>
+7
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.8          
+         </td>
+	 <td>
+8
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.9          
+         </td>
+	 <td>
+9
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Power      
+         </td>
+	 <td>
+POWER
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Volume+    
+         </td>
+	 <td>
+VOLUME+
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Volume-    
+         </td>
+	 <td>
+VOLUME-
+         </td>
+	</tr>
+	<tr>
+	 <td> 
+LIRC.Mute       
+         </td>
+	 <td>
+MUTE
+         </td>
+	</tr>
+       </table>
+
+      <textblock>
+Auch wenn es in dieser Beispieldatei noch der Fall ist, ist es jetzt
+nicht mehr nötig die Tastenbenennung in der <command>lircd.conf</command> den Kommandos
+für VDR anzupassen. Es ist jetzt grundsätzlich eine freie Belegung möglich.
+Löscht man diese Datei, geht die VDR-Software beim nächsten Aufruf
+wieder in den Lernmodus.
+      </textblock>
+      
+      <textblock>
+Mann kann zusätzlich spezielle Schlüssel für den direkten Zugriff
+auf einige Menüpunkte der VDR-Software anlernen. Ebenso lassen sich
+einige weitere Schlüsselwörter auf Wunsch für bestimmte Tasten einer
+Fernbedienung anlernen, welche z. B. in den Plugins eine besondere
+Bedeutung zugewiesen bekommen können. Während der Lernphase lassen
+sich nicht benötigte Tasten auch überspringen. Im obigen Beispiel
+sind nur die für die Grundfunktionen des VDR nötigen Elemente aufgeführt.
+      </textblock>
+     </section> 
+<!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+channels.conf
+      </heading>
+      
+      <textblock>
+Die mitgelieferte Datei <command>channels.conf</command> für DVB-s(atellite) enthält relativ
+aktuell eine Senderbelegung des digitalen ASTRA-Programmangebotes.
+Auch jeweils eine Vorlagedatei für DVB-c(able) und DVB-t(errestrial)
+liegen bei.
+      </textblock>
+   
+      <file>
+       <title>channels.conf</title>
+       <content><![CDATA[     
+..
+ORF1:12692:h:S19.2E:22000:160:161:165:102:13001:0:0:0
+ORF2:12692:h:S19.2E:22000:500:501:505:102:13002:0:0:0
+ZDF.info:11954:h:S19.2E:27500:610:620:0:0:28011:0:0:0
+CNN:12168:v:S19.2E:27500:165:100:0:0:28512:0:0:0
+Super RTL:12188:h:S19.2E:27500:165:120:65:0:12040:0:0:0
+VOX:12188:h:S19.2E:27500:167:136:71:0:12060:0:0:0
+Kabel 1:12480:v:S19.2E:27500:511:512:33:0:899:0:0:0
+Neun Live:12480:v:S19.2E:27500:767:768:35:0:897:0:0:0
+DSF:12480:v:S19.2E:27500:1023:1024:0:0:900:0:0:0
+HOT:12480:v:S19.2E:27500:1279:1280:0:0:40:0:0:0
+Bloomberg TV Germany:12552:v:S19.2E:22000:162:99:0:0:12160:0:0:0
+Bloomberg TV France:11817:v:S19.2E:27500:163:92:0:0:8004:0:0:0
+Bloomberg TV Spain:12168:v:S19.2E:27500:167:112:0:0:12721:0:0:0
+Sky News:12552:v:S19.2E:22000:305:306:0:0:3995:0:0:0
+Fox Kids Netherlands:12574:h:S19.2E:22000:163:92:0:0:5020:0:0:0
+Alice:12610:v:S19.2E:22000:162:96:0:0:12200:0:0:0
+n-tv:12670:v:S19.2E:22000:162:96:55:0:12730:0:0:0
+Grand Tourisme:12670:v:S19.2E:22000:289:290:0:0:17300:0:0:0
+TW1:12692:h:S19.2E:22000:166:167:0:0:13013:0:0:0
+Eurosport:11954:h:S19.2E:27500:410:420:0:0:28009:0:0:0
+EinsExtra:12110:h:S19.2E:27500:101:102:0:0:28201:0:0:0
+EinsFestival:12110:h:S19.2E:27500:201:202:0:0:28202:0:0:0
+EinsMuXx:12110:h:S19.2E:27500:301:302:0:0:28203:0:0:0
+ZDF Theaterkanal:11954:h:S19.2E:27500:1110:1120:0:0:28016:0:0:0
+ZDF.doku:11954:h:S19.2E:27500:660:670:0:0:28014:0:0:0
+MDR:12110:h:S19.2E:27500:401:402:404:0:28204:0:0:0
+ORB:12110:h:S19.2E:27500:501:502:504:0:28205:0:0:0
+B1:12110:h:S19.2E:27500:601:602:604:0:28206:0:0:0
+:Premiere World
+Premiere Start:11797:h:S19.2E:27500:255:256:0:101:8:0:0:0
+Premiere 1:11797:h:S19.2E:27500:511:512,513;515:0:101:10:0:0:0
+Premiere 2:11797:h:S19.2E:27500:1791:1792,1793;1795:0:101:11:0:0:0
+Premiere 3:11797:h:S19.2E:27500:2303:2304:0:101:43:0:0:0
+Premiere 4:11797:h:S19.2E:27500:767:768:0:101:9:0:0:0
+Premiere 5:11797:h:S19.2E:27500:1279:1280:0:101:29:0:0:0
+Premiere 6:11797:h:S19.2E:27500:1535:1536:0:101:41:0:0:0
+Premiere 7:11797:h:S19.2E:27500:1023:1024:0:101:20:0:0:0
+...
+       ]]></content>
+      </file>
+        
+      <textblock>
+Im Einzelnen bedeuten die Einträge in jeder Zeile der Reihe nach:
+Programmbezeichnung, Transponderfrequenz, Polarisation,
+DiSEqC-Quelle, Symbolrate, Video-PID, Audio-PID, Teletext-PID,
+Verschlüsselungsmethode und Service-ID. Es folgen noch für
+zukünftige Nutzung die Network-ID, die Transport Stream-ID und
+sowie die Radio-ID. Die verschiedenen Programmgruppen können durch
+eine Zeile mit vorangestelltem Doppelpunkt zusammengefasst werden,
+damit sie im Menü auf kurzem Wege angewählt werden können.
+Zusätzlich kann hier nach einem "@" noch die nächste Kanalnummer
+vorgegeben werden.
+      </textblock>
+     </section>
+     <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+ca.conf
+      </heading>
+      <textblock>
+Wer ein CI-Modul für seine DVB-Karte sowie ein AllCAM 4.6/4.7SE
+und natürlich die entsprechende Abo-Karte besitzt, kann auch
+verschlüsselte Sendungen betrachten. Das jeweilig benutzte
+Verschlüsselungsverfahren muss dafür im OSD für jede Karte ausgewählt
+werden. Die in der Datei <command>ca.conf</command> vorgesehenen Werte entsprechen
+dem vorletzten Wert jeder Zeile in der channels.conf.
+      </textblock>
+ 
+      <file>
+       <title>ca.conf</title>
+       <content><![CDATA[ 
+# Conditional Access configuration for VDR
+#
+# Format:
+#
+# number  description
+#
+# Please contact kls@cadsoft.de before assigning a new number
+# to a description, in order to keep them unique.
+
+0      Free To Air
+
+# BetaCrypt
+
+101    Premiere World
+102    ORF
+103    DIGI-Kabel
+
+...
+        ]]></content>
+       </file>
+       	
+      <textblock>
+Maximal 2 Verschlüsselungen je DVB-Karte sind möglich; die freien
+Programme (FTA) können dabei auch ohne besondere Angabe empfangen
+werden.
+      </textblock>
+     </section>
+     <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+svdrphosts.conf
+      </heading>
+      <textblock>
+Über das Simple Video Disk Recorder Protocol (SVDRP) kann die
+VDR-Software auch über das Netzwerk gesteuert werden. Standardmäßig
+ist in der Datei <command>svdrphost.conf</command> nur der Zugriff von localhost
+mit der IP-Adresse 127.0.0.1 freigegeben, kann aber auf Wunsch auch
+beispielsweise für ein ganzes Subnetz wie 192.168.1.0 mit der
+Netzmaske 255.255.255.0 freigegeben werden. Notwendig ist der Zugang
+via Netz z. B. für Programme wie kvdr und vdradmin, die diese
+Möglichkeit der Steuerung nutzen. Der gleichzeitige Zugriff mehrerer
+Programme über diese Schnittstelle ist allerdings nicht möglich.
+      </textblock>
+      
+      <file>
+       <title>scdrphosts.conf</title>
+       <content><![CDATA[
+#
+# svdrphosts    This file describes a number of host addresses that
+#               are allowed to connect to the SVDRP port of the Video
+#               Disk Recorder (VDR) running on this system.
+# Syntax:
+#
+# IP-Address[/Netmask]
+#
+
+127.0.0.1             # always accept localhost
+192.168.1.0/24        # any host on the local net
+#204.152.189.113      # a specific host
+#0.0.0.0/0            # any host on any net (USE THIS WITH CARE!)
+        ]]></content>
+      </file>
+            
+      <textblock>
+In der Voreinstellung wird Port 2001 zur Steuerung genutzt.
+      </textblock>
+      
+      <shell>
+       <root path="~">
+telnet localhost 2001
+       </root>
+      </shell>
+       
+      <textblock>
+Die verfügbaren Befehle werden einem nach dem Einloggen mit help angezeigt.
+Auch eine Erklärung zu jedem einzelnen Befehl kann man erhalten.
+      </textblock>
+
+      <shell>
+       <root path="~">
+help BEFEHL 
+       </root>
+      </shell>
+       
+     </section>
+     <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+sources.conf
+      </heading>
+      <textblock>
+VDR arbeitet grundsätzlich mit den verschiedenen DVB-Karten für Kabel
+(DVB-c), terrestrischen Empfang (DVB-t) und Empfang über Satellit (DVB-s)
+zusammen. In den Menüeinstellungen zum Festlegen der Quelle eines
+Kanals werden aus der <command>sources.conf</command> die Angaben entnommen. Sie finden
+sich dann auch entsprechend in der channels.conf wieder.
+      </textblock>
+
+      <file>
+       <title>sources.conf</title>
+       <content><![CDATA[ 
+# Sources configuration for VDR
+#
+# Format:
+#
+# code  description
+#
+# S (satellite) xy.z (orbital position in degrees) E or W (east or west)
+# Note: only the first part is actually used by VDR. The description part
+# is for the "human" interface for clarity.
+#
+# '&' means same orbital position but different host company.
+# '/' means same (or very little deviation) orbital position & host.
+# A value in () means this satellite is still in it's test phase.
+#
+# Please contact kls@cadsoft.de before assigning a new code
+# to a description, in order to keep them unique.
+
+# Satellites
+
+S5E     Sirius 2/3
+S7E     Eutelsat W3
+S10E    Eutelsat W1R
+S13E    Hotbird 1-(5)-6
+S16E    Eutelsat W2
+S19.2E  Astra 1B/C/E/F/G/H/2C
+
+...
+
+# Cable
+
+C       Cable
+
+# Terrestrial
+
+T       Terrestrial
+       ]]></content>
+      </file>
+        
+     </section>
+     <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+diseqc.conf
+      </heading>
+      <textblock>
+Die Datei diseqc.conf dient zur Steuerung einer Anlage mit mehreren
+Satelliten. Diese werden mittels der Signalisierung nach DiSEqC
+(<name>Digital Satellite Equipment Control</name>). Die Angaben werden nur gebraucht,
+wenn man mehr als einen Satelliten über beispielsweise einen
+entsprechenden Umschalter an einer DVB-Karte betreibt.
+      </textblock>
+      
+      <file>
+       <title>diseqc.conf</title>
+       <content><![CDATA[
+# DiSEqC configuration for VDR
+#
+# Format:
+#
+# satellite slof polarization lof command...
+#
+# satellite:      one of the 'S' codes defined in sources.conf
+# slof:           switch frequency of LNB; the first entry with
+#                 an slof greater than the actual transponder
+#                 frequency will be used
+# polarization:   V = vertical, H = horizontal
+# lof:            the local oscillator frequency to subtract from
+#                 the actual transponder frequency
+# command:
+#   t         tone off
+#   T         tone on
+#   v         voltage low (13V)
+#   V         voltage high (18V)
+#   A         mini A
+#   B         mini B
+#   Wnn       wait nn milliseconds (nn may be any positive integer number)
+#   [xx ...]  hex code sequence (max. 6)
+#
+# The 'command...' part is optional.
+#
+# Examples:
+
+# Full DiSEqC sequence:
+
+S19.2E  11700 V  9750  t v W15 [E0 10 38 F0] W15 A W15 t
+S19.2E  99999 V 10600  t v W15 [E0 10 38 F1] W15 A W15 T
+S19.2E  11700 H  9750  t V W15 [E0 10 38 F2] W15 A W15 t
+S19.2E  99999 H 10600  t V W15 [E0 10 38 F3] W15 A W15 T
+
+S21.5E  11700 V  9750  t v W15 [E0 10 38 F4] W15 B W15 t
+S21.5E  99999 V 10600  t v W15 [E0 10 38 F5] W15 B W15 T
+S21.5E  11700 H  9750  t V W15 [E0 10 38 F6] W15 B W15 t
+S21.5E  99999 H 10600  t V W15 [E0 10 38 F7] W15 B W15 T
+
+...
+       ]]></content>
+      </file>
+       
+      <textblock>
+Für den Fall des Falles sind hier auch noch Alternativen für
+die <name>DiSEqC-Ansteuerung</name> aufgeführt.
+      </textblock>
+     </section>
+     <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+commands.conf
+      </heading>
+      <textblock>
+Die VDR-Software bietet die Möglichkeit selbst definierte Befehle
+aus dem OSD heraus per Fernbedienung ausführen zu lassen. Hierzu
+legt man sich eine Datei unter der Bezeichnung <command>commands.conf</command> an.
+Es lassen sich daraus beliebige Scripte ausführen und deren
+Ausgaben formatiert im OSD anzeigen.
+      </textblock>
+      
+      <textblock>
+TDSL-Verbindung ein : 
+      </textblock>
+      
+      <shell>
+       <root path="~">
+sudo /usr/sbin/cinternet -start; echo "PPPD gestartet"
+       </root> 
+      </shell> 
+      
+      <textblock>
+TDSL-Verbindung aus : 
+      </textblock>
+      
+      <shell>
+       <root path="~">
+sudo /usr/sbin/cinternet -stop; echo "PPPD gestoppt"
+       </root>
+      </shell>
+      
+      <textblock>
+Den verschiedenen Befehlen wird beim Aufruf automatisch eine
+laufende Nummer zur Kurzwahl vorangestellt. Hängt man ein
+Fragezeichen hinter den korrespondierenden Text, wird vor der
+Ausführung noch eine Bestätigung verlangt. Die Kommandos werden
+hier mit der Berechtigung des Users der VDR-Software ausgeführt.
+Bei Befehlen, welche eigentlich nur durch dem Superuser root
+ausgeführt werden können, ist hierzu sinnvollerweise auf die
+sudo-Anweisung zurückzugreifen, wenn die Software nicht mit der
+Berechtigung von root gestartet wurde.
+      </textblock>
+     </section>
+     <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+reccmds.conf
+      </heading>
+      <textblock>
+Wenn man im Auswahlmenü der Aufzeichnungen einen bestimmten Eintrag
+markiert, lassen sich hierfür frei definierbare Befehle ausführen.
+Das Format der <command>reccmds.conf</command> entspricht dabei den Vorgaben für die
+<command>commands.conf</command>. Aufgerufen wird es bei der markierten Aufnahme durch
+Drücken einer der Zifferntasten.
+      </textblock>
+      
+      <textblock>
+Konvertierungsliste ergänzen?:
+      </textblock>
+      
+      <shell>
+       <root path="~">
+echo $1 >> /video/toconvert.txt
+       </root>
+      </shell>
+       
+      <textblock>
+In diesem Beispiel wird nach einer Bestätigung der Name der markierten
+Aufnahme einer Datei zur späteren Konvertierung dieser Aufnahme hinzugefügt.
+      </textblock>
+     </section>
+     <!-- *.*.* Kapitel -->
+     <section>
+      <heading>
+keymacros.conf
+      </heading>
+      <textblock>
+Beigefügt ist auch eine Datei <command>keymacros.conf</command> für die Definition von
+Kurzbefehlen, die durch Drücken z. B. der Farbtasten direkt während
+einer Wiedergabe die direkte Ausführung von Menüpunkten erlaubt.
+Praktischerweise kann man dabei gleich verschiedene Tastendrücke
+hintereinander simulieren.
+      </textblock>
+      
+      <file>
+       <title>keymacros.conf</title>
+       <content><![CDATA[
+# Remote control key macros for VDR
+#
+# Format:
+#
+# macrokey  key1 key2 key3...
+#
+# See man vdr(5)
+
+Red       Recordings
+Green     Schedule Ok
+Blue      Timers
+Yellow    Commands
+       ]]></content>
+      </file>
+       
+     </section>
+   </section> 
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Systemuser
+    </heading>
+    <textblock>
+Aus Sicherheitsgründen ist es normalerweise keine gute Idee einen Dienst
+mit der Berechtigung des Superusers <command>root</command> laufen zu lassen. Man sollte
+allerdings bedenken, dass für die Funktion des Setzens der Systemzeit
+von der VDR-Software dies notwendig wäre. Dennoch richtet man für den
+im Hintergrund laufenden VDR-Dämon sinnvollerweise einen User auf dem
+System mit eingeschränkten Rechten ein. Das Konzept hierzu ist dem
+Paket <command>vdrdaemon_SuSE.tar.gz</command> aus dem Tools-Unterverzeichnis des
+Downloadservers der VDR-Software entnommen. Diese Paket enthält auch
+ein Skript namens <command>mk_vdrdaemon</command>, welches vollautomatisch alle notwendigen
+Schritte zum Einrichten eines Systemusers und der entsprechenden
+Startskripte ermöglicht, aber es setzt die korrekte und vollständige
+Installation der DVB-Treiber im System voraus. Dies habe ich auch in
+mehreren Anläufen noch nicht erfolgreich zu Wege gebracht. Daher
+beschränke ich mich hier auf denjenigen Teil, der auch
+tatsächlich funktioniert.
+    </textblock>
+    
+    <textblock>
+Es wird der User vdr mit der Zugehörigkeit zur vorab erstellten Gruppe
+vdrdaem sowie entsprechendem Passwort erzeugt.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+groupadd -g 99 vdrdaem
+     </root>
+     
+     <root path="~">
+useradd -u 99 -g vdrdaem -d /usr/local/vdr -p vdrdaem -c 'VDR User' vdr
+     </root>
+    </shell>
+     
+    <textblock>
+Die User- und Group-ID unterhalb des Wertes 100 sind traditionell für
+die speziellen User von Systemdiensten vorbehalten.
+    </textblock>
+    
+    <textblock>
+Im Anschluss daran muss man noch das Verzeichnis für die Videodaten
+und ein zu erstellendes Verzeichnis für die Konfigurationsdateien sowie
+die Gerätetreiber mit den passenden Zugehörigkeiten versehen.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+chown -R vdr:vdrdaem /video
+     </root>
+     
+     <root path="~">
+mkdir -p /usr/local/vdr/etc/plugins
+     </root>
+     
+     <root path="~">
+chown -R vdr:vdrdaem /usr/local/vdr
+     </root>
+     
+     <root path="~">
+chown vdr:vdrdaem /dev/dvb/adapter?/*
+     </root>
+    </shell>
+      
+    <textblock>
+Ausserdem sind noch die Beispielkonfigurationsdateien in das dafür
+vorgesehene Verzeichnis zu kopieren. Ebenfalls sind ggf. noch die
+Rechte zu erweitern für das kontrollierende Terminal wie und das
+DVD-Laufwerk, wenn es später einmal mit dem DVD-Plugin genutzt
+werden sollte.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cp /usr/local/src/VDR/*.conf /usr/local/vdr/etc
+     </root>
+     
+     <root path="~">
+chmod o+rw /dev/tty8
+     </root>
+     
+     <root path="~">
+chmod o+rw /dev/dvd
+     </root>
+    </shell>
+     
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Systemstart
+    </heading>
+    <textblock>
+Was noch fehlt, ist eine elegante Art die VDR-Software beim Booten
+des Rechners automatisch vom System aus starten zu lassen.
+Geeignet ist hierzu das Skript runvdr, weil es gleichzeitig
+den DVB-Treiber startet. Um mit dem Skript <command>runvdr</command> aus dem
+Verzeichnis <command>/usr/local/bin</command> die VDR-Software starten zu können
+sind hierin Änderungen und Ergänzungen durchzuführen.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 $*"
+VDRUSR=vdr
+...
+     ]]></content>
+    </file>
+     
+    <textblock>
+Wie man erkennen kann, ist das zu nutzende Verzeichnis für
+die Konfigurationsdateien mit einer Option angegeben und auch die
+Variable für den Systemuser, mit dessen Berechtigung die VDR-Software
+laufen soll, ist gesetzt. Ausserdem wird schon mal der Pfad angegeben,
+in dem später die Libs der Plugins zu finden sind. Damit die Treiber
+geladen werden können in das Skript zunächst noch vom Superuser root
+aufzurufen.
+    </textblock>
+    
+    <textblock>
+Für die vollständige Automatisierung des Startvorgangs kann man am
+Ende der Datei <command>/etc/inittab</command> z. B. folgende Zeile hinzufügen. Diese
+bewirkt den Start der VDR-Software in den definierten Runleveln 3
+und 5 beim Hochfahren des Rechners.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+vdr:35:once:/usr/local/bin/runvdr > /dev/null
+     ]]></content>
+    </file>
+     
+   </section>
+   <!--*.* Kapitel -->
+   <section>
+    <heading>
+Shutdown
+    </heading>
+    <textblock>
+Die VDR-Software bietet die praktische Möglichkeit den Rechner nach
+einer bestimmten Zeit der Inaktivität und wenn keine Aufnahmen anstehen
+den Rechner automatisch oder aber auch per Direkteingabe
+herunterzufahren. Man benötigt lediglich ein kleines Skript,
+welches diese Aufgabe erledigt und beispielsweise unter dem Namen
+<command>vdrshutdown</command> im Verzeichnis <command>/usr/local/bin</command> angelegt wird.
+    </textblock>
+    
+    <file>
+     <title>vdrshutdown</title>
+     <content><![CDATA[
+#!/bin/bash
+sudo /sbin/halt -p
+     ]]></content>
+    </file>
+    
+    <textblock>
+Das Skript muss ausführbar gemacht werden.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+chmod +x /usr/local/bin/vdrshutdown
+     </root>
+    </shell>
+     
+    <textblock>
+Da in diesem Fall die VDR-Software mit den beschränkten Rechten des
+Users vdr läuft muss per <command>sudo</command> das Kommando zum Herunterfahren des
+Rechners gegeben werden. Damit nun der User vdr auf dem Rechner namens
+vdr diesen Befehl ohne Eingabe des Passworts ausführen kann, ist die
+Datei <command>/etc/sudoers</command> zu editieren. Dies geschieht mit mit dem
+berüchtigten Editor <command>vi</command>, der hier gleichzeitig eine formale Prüfung
+der Änderungen durchführt.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+visudo
+     </root>
+    </shell>
+
+    <textblock>
+Bei diesem Editor gelangt man mit der Taste <keycomb><key>i</key></keycomb> in den Einfügemodus
+und mit <keycomb><key>ESC</key></keycomb> wieder zurück. Abgespeichert werden kann durch die
+Eingabe von <command>:wq</command> und beendet ohne zu speichern wird mit <command>:q</command>.
+    </textblock>
+
+    <file>
+     <title>visudo</title>
+     <content><![CDATA[
+...
+# User privilege specification
+root    ALL=(ALL) ALL
+vdr     ALL=(ALL) NOPASSWD: /sbin/halt
+     ]]></content>
+    </file>
+
+    <textblock>
+Abschließend wird noch die Option für den automatischen Shutdown
+im Skript <command>runvdr</command> ergänzt.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $*"
+VDRUSR=vdr
+...
+     ]]></content>
+    </file>
+     
+   </section>
+ </section>
+</split>
+
+<split>
+ <!-- Kapitel * -->
+ <section>
+  <heading>
+Plugins
+  </heading>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+VCD
+    </heading>
+    <textblock>
+Das Plugin zur Wiedergabe von VCD's oder SVCD's mittels der
+VDR-Software ist sehr einfach zu installieren, da man hierfür
+keine zusätzlichen Libraries oder weitere Programme braucht.
+Lediglich das Plugin selbst wird dazu benötigt.
+    </textblock>
+    
+    <textblock>
+<ref lang="de" url="http://www.heiligenmann.de/download/">http://www.heiligenmann.de </ref>
+    </textblock>
+    
+    <textblock>
+Die Installation erfolgt aus dem Verzeichnis <command>/usr/local/src</command> heraus.
+    </textblock>
+   
+    <shell>
+     <root path="~"> 
+cd /usr/local/src/
+     </root>
+     
+     <root path="/usr/local/src">
+tar -xjvf vcd-0.0.3.tar.bz2 -C VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src">
+cd VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/src">
+ln -s vcd-0.0.3 vcd
+     </root>
+    </shell>
+     
+    <textblock>
+Der neue symbolische Link für das Plugin-Verzeichnis sollte
+ausschließlich aus Kleinbuchstaben und Ziffern bestehen.
+    </textblock>
+    
+    <textblock>
+Für die Verwendung des so genannten <name>NEWSTRUCT</name>-Treibers ist noch eine
+Zeile des Makefile im Quellverzeichnis des VCD-Plugins anzupassen.
+    </textblock>
+    
+    <file>
+     <title>Anpassung des Makefiles</title>
+     <content><![CDATA[
+...
+### The directory environment:
+
+DVBDIR = ../../../../DVB/include
+...
+     ]]></content>
+    </file>
+     
+    <textblock>
+Anschließend wird das Plugin dann kompiliert.
+    </textblock>
+ 
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+make plugins
+     </root>
+    </shell>
+     
+    <textblock>
+Nun kann man endlich die VDR-Software aus dem Quellverzeichnis heraus
+starten mit der zusätzlichen Option zur Aktivierung des VCD-Plugins.
+Es ist dabei nur noch sicherzustellen, dass das betroffene Laufwerk
+über den Link <command>/dev/cdrom</command> angesprochen wird. Es ist nicht nötig die
+eingelegte CD vorher zu mounten.
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src/VDR">
+./vdr -Pvcd
+     </root>
+    </shell>
+     
+    <textblock>
+Das lässt sich auch in das Skript <command>/usr/local/bin/runvdr</command> integrieren um
+gleichzeitig die DVB-Treiber zu laden. Hierbei muss zusätzlich der Pfad
+zu dem Libraries der Plugins angegeben werden.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $* \
+                -P vcd"
+VDRUSR=vdr
+...
+     ]]></content>
+    </file>
+     
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+DVD
+    </heading>
+    <textblock>
+Für die aktuelle Entwicklerversion der VDR-Software existiert auch ein Plugin
+zum Abspielen von Video-DVD's. Um dies erfolgreich zu bewerkstelligen sind
+aber noch einige Vorbereitungen zu treffen.
+    </textblock>
+    
+    <textblock>
+Die meisten Video-DVD's sind mit dem so genannte <name>Content Scrambling System</name>
+(CSS) versehen. Um diesen Schutz auszuhebeln benötigt noch die <command>Libdvdcss</command>
+eines anderen freien Projektes <ref lang="en" url="http://www.videolan.org/">http://www.videolan.org</ref>.
+    </textblock>
+    
+    <textblock>
+Dessen Einsatz ist in rechtlicher Hinsicht allerdings nicht unumstritten.
+Dennoch kann die Installation notwendig werden um die rechtmäßig
+erworbenen DVD's auf der rechtmäßig erworbenen Hardware abspielen zu können.
+    </textblock>
+    
+    <textblock>
+Ein zusammengefasstes Paket mit praktischem Installationsskript,
+welches ebenfalls noch das Paket <command>Libdvdread</command> für den Zugriff auf
+die DVD, das für den freien Software-Player Ogle auf
+<ref lang="en" url="http://www.dtek.chalmers.se/groups/dvd/">http://www.drek.chalmers.se/groups/dvd/</ref> entwickelt wurde, ist verfügbar.
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://208.231.8.118/linux/">http://208.231.8.118/linux/</ref><br/>
+Die Installation erfolgt mit:
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src">
+tar -xjvf dvdinstall.tar.bz2
+     </root>
+     
+     <root path="/usr/local/src">
+cd dvd
+     </root>
+     
+     <root path="/usr/local/src/dvd">
+./install
+     </root>
+    </shell>
+     
+    <textblock>
+Des Weiteren ist für die Navigation durch das Menü einer DVD
+noch eine speziell angepasste Variante der <command>Libdvdnav</command> zuvor zu
+installieren.
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://linvdr.org/download/vdr-dvd/">http://linvdr.org/download/vdr-dvd/</ref>
+    </textblock>
+    
+    <textblock>
+Installiert wird dieses folgendermaßen:
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src">
+tar -xjvf libdvdnav-as-0.0.4.tar.bz2
+     </root>
+     
+     <root path="/usr/local/src">
+cd libdvdnav-cvs-as
+     </root>
+     
+     <root path="/usr/local/src/libvdnav-cvs-as">
+./configure --prefix=/usr
+     </root>
+     
+     <root path="/usr/local/src/libvdnav-cvs-as">
+make
+     </root>
+     
+     <root path="/usr/local/src/libvdnav-cvs-as">     
+make install
+     </root>
+    </shell> 
+    
+    <textblock>
+In jedem Fall ist auch für die mögliche Ausgabe des AC3-Sounds die
+<command>Liba52</command> von Nöten, auch dann, wenn man den digitalen Sound gar nicht
+nutzten will.
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://liba52.sourceforge.net/">http://lib52.sourceforge.net/</ref>
+Sie wird installiert mit:
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src">
+tar -xzvf a52dec-0.7.4.tar.gz
+     </root>
+     
+     <root path="/usr/local/src">
+cd a52dec-0.7.4
+     </root>
+     
+     <root path="/usr/local/src/a52dec-0.7.4">
+./configure --prefix=/usr 
+     </root>
+     
+     <root path="/usr/local/src/a52dec-0.7.4">
+make
+     </root>
+
+     <root path="/usr/local/src/a52dec-0.7.4">          
+make install
+     </root>
+    </shell>
+    
+    <textblock>
+Nun braucht man noch das eigentliche DVD-Plugin.
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://linvdr.org/download/vdr-dvd/">http://linvdr.org/download/vdr-dvd/</ref>
+    </textblock>
+    
+    <textblock>
+Die Installation erfolgt in diesem Fall aus dem
+Verzeichnis <command>/usr/local/src</command> heraus.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/
+     </root>
+     
+     <root path="/usr/local/src">
+tar -xjvf vdr-dvd-0.2.0.tar.bz2 -C VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src">
+cd VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/src">
+ln -s dvd-0.2.0 dvd
+     </root>
+    </shell>
+    
+    <textblock>
+Nach dem Entpacken wird das Plugin kompiliert.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+make NEWSTRUCT=1 plugins
+     </root>
+    </shell> 
+
+    <textblock>
+Beim Aufruf der VDR-Software aus dem Quellverzeichnis heraus geschieht
+dies mit der zusätzlichen Option zur Aktivierung des DVD-Plugins.
+Ausserdem ist dringend empfohlen, die Variable für die
+Entschlüsselungsmethode mit <command>key</command> auszuwählen.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+export DVDCSS_METHOD=key
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+./vdr -Pdvd
+     </root>
+    </shell>
+     
+    <textblock>
+Es wird dabei angenommen, dass das DVD-Laufwerk unter dem
+symbolischen Link <command>/dev/dvd</command> ansprechbar ist. Ist dies nicht
+der Fall kann es auch mit einer zusätzlichen Angabe beim Start
+der VDR-Software geändert werden. Optionen für ein Plugin müssen
+in Anführungszeichen eingeschlossen werden.
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src/VDR">
+./vdr -P"dvd -C /media/dvd"
+     </root>
+    </shell> 
+ 
+    <textblock> 
+Auch das lässt sich in das Skript <command>/usr/local/bin/runvdr</command> integrieren
+um gleichzeitig die DVB-Treiber zu laden.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $* \
+                 -P vcd \
+                 -P dvd"
+VDRUSR=vdr
+export DVDCSS_METHOD=key
+...
+     ]]></content>
+    </file>
+    
+    <textblock>
+Um die Systemlast bei DVD-Wiedergabe möglichst gering zu halten,
+sollte man für das Laufwerk den DMA-Modus aktivieren. Bei einer
+SuSE erledigt man das z. B. durch einen Eintrag in der Datei
+<command>boot.local</command>, welche beim Systemstart abgearbeitet wird.
+    </textblock>
+    
+    <file>
+     <title>boot.local</title>
+     <content><![CDATA[
+...
+/sbin/hdparm -d1 -X34 /dev/dvd
+     ]]></content>
+    </file> 
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+MP3
+    </heading>
+    <textblock>
+Ein weiteres Plugin für VDR ist das MP3-Plugin zum
+Abspielen von MP3-Songs von Festplatte oder CD-ROM.
+    </textblock>
+    
+    <textblock>
+Voraussetzung für die Installation des MP3-Plugins ist
+zunächst einmal eine aktuelle Libmad von:
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://www.mars.org/home/rob/proj/mpeg/">http://www.mars.org/home/rob/proj/mpeg/</ref>
+    </textblock>
+    
+    <textblock>
+Diese wird folgendermaßen installiert: 
+    </textblock>
+    
+    <shell>
+     <root path="~">
+tar -xzvf mad-0.14.2b.tar.gz
+     </root>
+     
+     <root path="~">
+cd mad-0.14.2b
+     </root>
+     
+     <root path="~/mad-0.14.2b">
+./configure --enable-shared
+     </root>
+     
+     <root path="~/mad-0.14.2b">
+make
+     </root>
+     
+     <root path="~/mad-0.14.2b">
+make install
+     </root>
+    
+     <root path="~/mad-0.14.2b"> 
+ldconfig
+     </root>
+    </shell>
+     
+    <textblock>
+Mit der MP3-Erweiterung lassen sich grundsätzlich auch andere
+Sound-Files wie etwa WAV-Dateien abspielen. Die dafür benötigte
+zusätzliche Library <command>Libsndfile</command> besorgt man sich von:
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://www.zip.com.au/~erikd/libsndfile/">http://www.zip.com.au/~erikd/libsndfile/</ref>
+    </textblock>
+
+    <textblock> 
+Diese wird dann installiert:
+    </textblock>
+
+    <shell>
+     <root path="~">
+tar -xzvf libsndfile-1.0.3.tar.gz
+     </root>
+     
+     <root path="~">
+cd libsndfile-1.0.3
+     </root>
+     
+     <root path="~/libsndfile-1.0.3">
+./configure
+     </root>
+     
+     <root path="~/libsndfile-1.0.3">
+make
+     </root>
+     
+     <root path="~/libsndfile-1.0.3">
+make install
+     </root>
+     
+     <root path="~/libsndfile-1.0.3">
+ldconfig
+     </root>
+    </shell>
+     
+    <textblock>
+Hiermit lassen sich aus dem MP3-Menüpunkt bereits WAV-Dateien
+von der Festplatte abspielen. Um auch die Tracks auf Audio-CD's
+abspielen zu können benötigt man das Paket <command>cdfs</command> von:
+    </textblock>
+    
+    <textblock>
+<ref lang="en" url="http://www.elis.rug.ac.be/~ronsse/cdfs/">http://www.elis.rug.ac.be/~ronsse/cdfs/</ref>
+    </textblock>
+    
+    <textblock>
+Installiert wird mit:
+    </textblock>
+    
+    <shell>
+     <root path="~">
+tar -xjvf cdfs-0.5c.tar.bz2
+     </root>
+     
+     <root path="~">
+cd cdfs-0.5c
+     </root>
+     
+     <root path="~/cdfs-0.5c">
+./configure
+     </root>
+     
+     <root path="~/cdfs-0.5c">
+make
+     </root>
+     
+     <root path="~/cdfs-0.5c">
+make install
+     </root>
+     
+     <root path="~/cdfs-0.5c">
+ldconfig
+     </root>
+    </shell>
+    
+    <textblock>
+Normalerweise kann eine Audio-CD nicht gemountet werden,
+da diese kein eigentliches Dateisystem enthält. Mit der Hilfe
+von <command>cdfs</command> erscheinen die Tracks jedoch als WAV-Dateien und
+können somit abgespielt werden. Es findet allerdings bei dieser
+Methode keine Fehlerkorrektur wie z. B. beim Auslesen mit den
+Programmen <command>cdda2wav</command> oder <command>cdparanoia</command> statt, sodass bei zerkratzten
+CD's Probleme auftreten könnten.
+    </textblock>
+    
+    <textblock>
+Das MP3-Plugin selbst ist downzuloaden von:
+    </textblock>
+    
+    <textblock> 
+<ref lang="de" url="http://www.muempf.de">http://www.muempf.de</ref>
+    </textblock>
+    
+    <textblock> 
+Die Installation erfolgt aus dem Verzeichnis <command>/usr/local/src</command> heraus.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src
+     </root>
+     
+     <root path="/usr/local/src">
+tar -xzvf vdr-mp3-0.7.9.tar.gz -C VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src">
+cd VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/src">
+ln -s mp3-0.7.9 mp3
+     </root>
+    </shell>
+    
+    <textblock>
+Nach dem Entpacken werden die Quellen des Plugins übersetzt.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+make plugins
+     </root>
+    </shell>
+         
+    <textblock>
+Dann wird noch beispielsweise ein Verzeichnis <command>/mp3</command> für die
+MP3-Dateien angelegt.
+    </textblock>
+ 
+    <shell>
+     <root path="/usr/local/src/VDR">
+mkdir /mp3
+     </root>
+    </shell>
+
+    <textblock>
+Zuletzt werden noch die beigefügten Beispieldateien als Vorlage für
+diverse Scripte und Konfigurationsdateien des Plugins in die passenden
+Verzeichnisse kopiert.
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src/VDR">
+cd PLUGINS/SRC/mp3/examples
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/SRC/mp3/examples">
+cp mount.sh.example /usr/local/vdr/mount.sh
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/SRC/mp3/examples">
+chmod +x /usr/local/vdr/mount.sh
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/SRC/mp3/examples">
+cp mp3sources.conf.example /usr/local/vdr/etc/plugins/mp3sources.conf
+     </root>
+    </shell>
+    
+    <textblock>
+Meine Datei <command>mp3sources.conf</command> musste ich für mein System anpassen
+und enthält folgende Zeilen.
+    </textblock>
+    
+    <file>
+     <title>mp3sources.conf</title>
+     <content><![CDATA[
+/mp3;Locale Platte;0
+/media/cdrom;CDROM;1
+/cdfs;CD-Audio;1;*.wav
+     ]]></content>
+    </file>
+    
+    <textblock>
+Der Einträge für die zu mountenden Wechselmedien müssen mit den
+Mointpoints in der Datei <command>/etc/fstab</command> korrespondieren.
+    </textblock>
+    
+    <file>
+     <title>Auszug aus der fstab</title>
+     <content><![CDATA[
+...
+/dev/cdrom      /media/cdrom    auto    ro,noauto,user,exec 0 0
+/dev/hdc        /cdfs           cdfs    ro,noauto,user  0 0
+...
+     ]]></content>
+    </file>
+    
+    <textblock>
+Nun kann man endlich die VDR-Software aus dem Quellverzeichnis
+heraus starten mit der zusätzlichen Option zur Einbindung des
+MP3-Plugins. Die Optionen für das Plugin selbst müssen in
+Anführungszeichen angegeben werden.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+./vdr -P"mp3 -m /usr/local/vdr/mount.sh"
+     </root>
+    </shell>
+    
+    <textblock>
+Wer es wünscht, kann sich zur Anzeige der Tracknamen einer
+Audio-CD auch noch die Abfrage der FreeDB einrichten. Dies geht
+entweder mit einer lokal installierten Datenbank als auch
+alternativ oder zusätzlich bei einer Internetverbindung mit Zugriff
+auf die Online-Datenbank im Internet. Hierzu legt man das
+Verzeichnis zum Abspeichern der Daten an und startet das Plugin
+ggf. mit einigen weiteren Angaben zum Auslesen der Datenbank im
+Internet.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+mkdir /var/lib/cddb
+     </root>
+     
+     <root path="~">
+chown vdr:vdrdaem /var/lib/cddb
+     </root>
+    </shell> 
+    
+    <textblock> 
+Das lässt sich auch in das Skript <command>/usr/local/bin/runvdr</command> integrieren,
+welches die VDR-Software automatisch beim Hochfahren des Rechners startet.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $* \
+                -P vcd \
+                -P dvd \
+                -P'mp3 -m /usr/local/vdr/mount.sh -B /var/lib/cddb'"
+VDRUSR=vdr
+export DVDCSS_METHOD=key
+...
+     ]]></content>
+    </file> 
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+MPlayer
+    </heading>
+    <textblock>
+Als Besonderheit beinhaltet das MP3-Plugin gleichzeitig noch die
+Möglichkeit der Wiedergabe von <command>DivX</command> mit Hilfe von MPlayer.
+Dies klappt z. Z. in der nachfolgend beschriebenen Art und Weise nur
+mit der alten DVB-Treiberversion, welche nicht mehr für die
+VDR-Version 1.1.20 verwendet werden kann! Für flüssige Wiedergabe
+der verschiedensten DivX-Formate über den TV-Ausgang der DVB-Karte
+braucht man einen GHz-Prozessor. Die Software gibt es auf:
+    </textblock>
+    
+    <textblock> 
+<ref lang="en" url="http://www.mplayerhq.hu/homepage/">http://www.mplayerhq.hu/homepage/</ref>
+    </textblock>
+    
+    <textblock> 
+Im so genannten Slave-Modus erfolgen die Steuerung des MPlayers und
+auch die Menüeinblendungen über die laufende VDR-Software. Hierzu
+muss man jedoch zuvor die Quellen des Mplayers mit der entsprechenden
+Datei aus dem Quellverzeichnis des MP3-Plugins patchen.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+tar -xjvf MPlayer-0.90pre9.tar.bz2
+     </root>
+     
+     <root path="~">
+cd MPlayer-0.90pre9
+     </root>
+     
+     <root path="~/Mplayer-0.90pre9">
+patch &lt; mplayer-slavemode.diff
+     </root>
+    </shell>
+    
+    <textblock>
+Danach schließt man die Installation ab.
+    </textblock>
+    
+    <shell>
+     <root path="~/Mplayer-0.90pre9">
+./configure --with-extraincdir=/usr/local/src/DVB/ost/include
+     </root>
+      
+     <root path="~/Mplayer-0.90pre9">
+make
+     </root>
+      
+     <root path="~/Mplayer-0.90pre9">
+make install
+     </root>
+    </shell>
+    
+    <textblock>  
+Statt der dem Plugin beigefügten Beispieldatei für das Skript <command>mplayer.sh</command>
+verwendet man geschickterweise das etwas ausgefeiltere Skript von:
+    </textblock>
+    
+    <textblock> 
+<ref lang="de" url="http://ma.hoff.bei.t-online.de/mplayer.sh/">http://ma.hoff.bei.t-online.de/mplayer.sh/</ref>
+Es wird beispielsweise in das Verzeichnis <command>/usr/local/vdr</command> installiert.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+tar -xzvf mplayer.sh004.tar.gz -C /usr/local/vdr
+     </root>
+    </shell>
+    
+    <textblock> 
+Mit der Hilfe dieses Skripts werden auch DivX-Filme der
+verschiedensten Auflösungen Bildschirm füllend über die DVB-Karte
+auf dem TV-Gerät ausgegeben. In der zugehörigen Konfigurationsdatei
+<command>mplayer.sh.conf</command> im gleichen Verzeichnis sind normalerweise keine
+Änderungen notwendig. Will man hingegen das MPlayer-Plugin im
+Slave-Modus nutzen muss am Ende dieser Datei noch eine Ergänzung
+gemacht werden.
+    </textblock>
+    
+    <file>
+     <title>mplayer.sh.conf</title>
+     <content><![CDATA[
+...
+# Lirc RC File
+## LIRCRC       /usr/local/vdr/etc/.lircrc
+
+# Userdefined Options - make sure they do not collide with options
+# used in mplayer.sh
+# Only for experienced users
+# userdef -what -option you ever -like to give -to mplayer
+
+# mplayer options for SlaveMode
+USERDEF "-slave -quiet -nolirc"
+
+# End of Options
+     ]]></content>
+    </file>
+    
+    <textblock> 
+Für die <command>mplayersources.conf</command> kann man einen symbolischen Link
+auf die vorhandenen Konfigurationsdatei des MP3-Plugins anlegen
+oder aber auch eine separate Datei hierfür anlegen.
+    </textblock>
+    
+    <textblock> 
+Jetzt kann man die VDR-Software aus dem Quellverzeichnis heraus
+starten mit den benötigten Optionen des MPlayer-Plugins.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/VDR
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+./vdr -P"mplayer -m /usr/local/vdr/mount.sh -M /usr/local/vdr/mplayer.sh"
+     </root>
+    </shell>
+    
+    <textblock> 
+Auch dies kann man in das Skript <command>/usr/local/bin/runvdr</command> integrieren.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[ 
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $* \
+                -P vcd \
+                -P dvd \
+                -P'mp3 -m /usr/local/vdr/mount.sh' \
+                -P'mplayer -m /usr/local/vdr/mount.sh -M /usr/local/vdr/mplayer.sh'"
+VDRUSR=vdr
+export DVDCSS_METHOD=key
+...
+     ]]></content>
+    </file>
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Teletext
+    </heading>
+    <textblock>
+Damit die Darstellung des Teletextes mittels des Plugins für VDR über
+den TV-Ausgang der DVB-Karte möglich ist, braucht man das <command>FFmpeg</command>-Paket von
+<ref lang="en" url="http://ffmpeg.sourceforge.net/">http://ffmpeg.sourceforge.net/</ref>
+Entpackt wird es in das gleiche Verzeichnis <command>/usr/local/src</command> wie das,
+aus dem die Installation der VDR-Software erfolgt. Dies klappt z. Z.
+allerdings nur mit einer etwas älteren Version von <command>FFmpeg</command>!
+    </textblock>
+    
+    <shell>
+     <root path="~">
+tar -xzvf ffmpeg-cvs.tar.gz -C /usr/local/src
+     </root>
+     
+     <root path="/usr/local/src">
+cd ffmpeg
+     </root>
+     
+     <root path="/usr/local/src/ffmpeg">
+./configure
+     </root>
+     
+     <root path="/usr/local/src/ffmpeg">
+make
+     </root>
+    </shell>
+    
+    <textblock> 
+Auch die Installation des Teletext-Plugins erfolgt aus dem Verzeichnis <command>/usr/local/src</command> heraus.
+    </textblock>
+
+    <shell>
+     <root path="~">
+cd /usr/local/src/
+     </root>
+
+     <root path="/usr/local/src">
+tar -xzvf vdr-teletext-0.7.6.tgz -C VDR/PLUGINS/src
+     </root>
+
+     <root path="/usr/local/src">
+cd VDR/PLUGINS/src
+     </root>
+
+     <root path="/usr/local/src/VDR/PLUGINS/src">
+ln -s teletext-0.7.6 teletext
+     </root>
+
+     <root path="/usr/local/src/VDR/PLUGINS/src">
+cd ../..
+     </root>
+
+      <root path="/usr/local/src/VDR">
+make NEWSTRUCT=1 plugins
+     </root>
+    </shell>
+    
+    <textblock>  
+Nun muss noch das Verzeichnis <command>/vtx</command> zur Speicherung der aufgerufenen Seiten
+angelegt und mit den passenden Benutzerrechten versehen werden.
+    </textblock>
+    
+    <shell>
+     <root path="/usr/local/src/VDR">
+mkdir /vtx
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+chown vdr:vdrdaem /vtx
+     </root>
+    </shell>
+    
+    <textblock>     
+Damit das Verzeichnis <command>vtx</command> nicht auf Dauer zugemüllt wird, kann man ein
+temporäres Filesystem einrichten. Im Gegensatz zu einer RAM-Disk ist es hier
+nicht nötig ein Filesystem einzurichten. In diesem Beispiel für die Datei
+<command>/etc/fstab</command> wird der Bereich dynamisch bis zu 16MByte für die
+Zwischenspeicherung verwendet. Der Inhalt geht bei einem Neustart verloren.
+    </textblock>
+    
+    <file>
+     <title>fstab</title>
+     <content><![CDATA[     
+...
+tmpfs   /vtx    tmpfs   size=16m        0 0
+     ]]></content>
+    </file>
+    
+    <textblock> 
+Damit der neue Menüpunkt beim nächsten Start der VDR-Software erscheint,
+ist die Datei <command>/usr/local/bin/runvdr</command> entsprechend zu ergänzen.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $* \
+                -P vcd \
+                -P dvd \
+                -P'mp3 -m /usr/local/vdr/mount.sh' \
+                -P'mplayer -m /usr/local/vdr/mount.sh -M /usr/local/vdr/mplayer.sh' \
+                -P teletext"
+VDRUSR=vdr
+export DVDCSS_METHOD=key
+...
+     ]]></content>
+    </file> 
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Streaming
+    </heading>
+    <textblock>
+Mit dem aktuell verfügbaren Streaming-Plugin kann man bereits
+jetzt schon mal einen festen Kanal über das Netzwerk auf bis zu
+10 entfernte Rechner im lokalen Netz verteilen.
+    </textblock>
+    
+    <textblock> 
+<ref lang="en" url="http://www.magoa.net/linux/">http://www.magoa.net/linux/</ref>
+    </textblock>
+    
+    <textblock> 
+Die Installation erledigt man aus dem Verzeichnis
+<command>/usr/local/src</command> heraus.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+cd /usr/local/src/
+     </root>
+     
+     <root path="/usr/local/src">
+tar -xzvf vdr-stream-0.1.0.tgz -C VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src">
+cd VDR/PLUGINS/src
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/src">
+ln -s stream-0.1.0 stream
+     </root>
+     
+     <root path="/usr/local/src/VDR/PLUGINS/src">
+cd ../..
+     </root>
+     
+     <root path="/usr/local/src/VDR">
+make plugins
+     </root>
+    </shell>
+    
+    <textblock> 
+Zur Aktivierung des Streaming-Plugins ergänzt man die Datei <command>/usr/local/bin/runvdr</command>.
+    </textblock>
+    
+    <file>
+     <title>runvdr</title>
+     <content><![CDATA[
+...
+DVBDIR="/usr/local/src/DVB/driver"
+VDRPRG="/usr/local/bin/vdr -L /usr/local/src/VDR/PLUGINS/lib -c /usr/local/vdr/etc"
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $* \
+                -P vcd \
+                -P dvd \
+                -P'mp3 -m /usr/local/vdr/mount.sh' \
+                -P'mplayer -m /usr/local/vdr/mount.sh -M /usr/local/vdr/mplayer.sh' \
+                -P teletext \
+                -P stream"
+VDRUSR=vdr
+export DVDCSS_METHOD=key
+...
+     ]]></content>
+    </file>
+    
+    <textblock> 
+Auf dem entfernten Rechner wird die Clientsoftware aus dem
+Unterverzeichnis der Plugin-Quellen übersetzt.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+tar -xzvf vdr-stream-0.1.0.tgz
+     </root>
+     
+     <root path="~/stream-0.1.0/client">
+cd stream-0.1.0/client
+     </root>
+     
+     <root path="~/stream-0.1.0/client">
+make
+     </root>
+     
+     <root path="~/stream-0.1.0/client">
+cp stream /usr/local/bin
+     </root>
+    </shell>
+    
+    <textblock> 
+Der aus dem Menü der VDR-Software gestartete Stream des laufenden
+Kanals kann mit der Clientsoftware unter Angabe der IP-Adresse des
+VDR-Rechners im Netzwerk sowie dem Programm mplayer empfangen werden.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+stream &lt;IP-ADRESSE_DES_VDR-RECHNERS&gt; | mplayer -
+     </root>
+    </shell>
+    
+    <textblock> 
+Alternativ kann der Stream auch per Multicast übertragen werden.
+Dazu ist aber zuvor die entsprechende Route zu setzen.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+route add -net 224.0.0.0 netmask 240.0.0.0 dev eth0
+     </root>
+    </shell>
+    
+    <textblock>  
+Die Unterstützung für Multicast muss dazu im Kernel grundsätzlich
+vorhanden sein. Damit diese Route beim Start des Rechners automatisch
+gesetzt wird, ist eine entsprechende Ergänzung in der Datei
+<command>/etc/route.conf</command> zu tätigen.
+    </textblock>
+    
+    <file>
+     <title>route.conf</title>
+     <content><![CDATA[
+# Destination     Dummy/Gateway     Netmask            Device
+
+...
+224.0.0.0         0.0.0.0           240.0.0.0          eth0
+     ]]></content>
+    </file>
+    
+    <textblock>
+Mit mplayer lautet die entsprechende Kommandozeile für den
+Empfang auf dem Client-Rechner:
+    </textblock>
+    
+    <shell>
+     <root path="~">
+mplayer rtp://224.0.1.2:5002 -cache 2048
+     </root>
+    </shell>
+    
+    <textblock>     
+Wichtig ist, dass auch auf den Clientrechnern die Multicastroute
+durch den Eintrag in der Datei <command>/etc/route.conf</command> wie auf dem VDR-Rechner
+eingerichtet ist. Ansonsten ist kein Empfang des Datenstroms möglich.
+    </textblock> 
+   </section>
+ </section>
+</split>
+<!-- * Kapitel -->
+<split>
+ <section>   
+  <heading>
+Addons
+  </heading>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+kvdr
+    </heading>
+    <textblock>
+Für die VDR-Software gibt es auch ein Frontend für den KDE-Desktop
+namens <command>kvdr</command>. Damit ist auf dem Rechner selbst eine Bedienung per
+Tastatursteuerung möglich ist. Ausserdem wird die Bildschirmausgabe
+des TV-Ausgangs der DVB-Karte in einem Fenster der X-Oberfläche
+oder im Vollbild angezeigt. Es lassen sich dafür Helligkeit,
+Farbe und Kontrast einstellen und abspeichern. Auch Snapshots
+vom Bildschirminhalt sind machbar. Dieses praktische Programm
+gibt es auf:
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.s.netic.de/gfiala/">http://www.s.netic.de/gfiala/</ref>
+     </textblock>
+    
+     <textblock>
+Das Kompilieren aus den Sourcen bereitete mir auf meiner
+<name>SuSE</name>-Distribution bereits mehrfach Probleme. Glücklicherweise
+gibt es aber auch eine vorkompiliertes Binary, welches nur
+noch entpackt werden muss und dann aus dem aktuellen Verzeichnis
+heraus gestartet wird.
+     </textblock>
+     
+     <shell>
+      <root path="~">    
+tar -xzvf kvdr-0.51-i386.tgz
+      </root>
+      
+      <root path="~">
+./kvdr
+      </root>
+     </shell>
+     
+     <textblock> 
+Zur endgültigen Installation sucht man noch ein geeignetes
+Verzeichnis für das Programm. Dies sollte im Suchpfad für
+ausführbare Programme eines normalen Users liegen.
+     </textblock>
+     
+     <shell>
+      <user path="~">
+echo $PATH
+      </user>
+     </shell>
+     
+     <textblock> 
+Anschließend wechselt man mit dem Befehl <command>su</command> und Eingabe des
+Administratorpassworts in die Identität von root und verschiebt
+das Binary z. B. in das für KDE-Programme vorgesehene Verzeichnis
+<command>/opt/kde2/bin</command>.
+     </textblock>
+     
+     <shell>
+      <user path="~">
+su
+      </user>
+      
+      <root path="~">
+mv kvdr /opt/kde2/bin
+      </root>
+      
+      <root path="~">
+exit
+      </root>
+     </shell>
+     
+     <textblock> 
+Danach kann es als normaler User ganz einfach aufgerufen werden.
+     </textblock>
+     
+     <shell>
+      <user path="~">
+kvdr
+      </user>
+     </shell>
+
+     <textblock> 
+Voraussetzung für die korrekte Funktion ist natürlich, dass die
+DVB-Treiber und die VDR-Software bereits laufen und der Zugriff
+über Port 2001 auf den lokalen Rechner mittels <command>SVDRP</command> möglich ist.
+     </textblock>
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+vdradmin
+    </heading>
+    <textblock>
+Ebenso wie das graphische Frontend <command>kvdr</command> setzt das hier für die
+Websteuerung benutzte Perl-Programmpaket vdradmin auf die Möglichkeit
+der Steuerung über das Netzwerk auf. Viele Funktionen lassen sich
+nach dessen Installation dann komfortabel per Browsersteuerung
+erledigen. Sogar eine elektronische Programmzeitschrift auf der
+Basis der gespeicherten EPG-Daten mit einer Suchfunktion ist
+integriert. Mit der aktivierten Autotimer-Funktion kann man auch
+anhand von Suchbegriffen Timer-Aufnahmen automatisch generieren
+lassen. Die gebotene Weboberfläche ist sehr ansprechend gestaltet
+und vollkommen selbsterklärend.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.LinVDR.org/download/vdradmin/">http://www.LinVDR.org/download/vdradmin/</ref>
+     </textblock>
+    
+     <textblock>
+Die Installation gestaltet sich zunächst ganz einfach.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xzvf vdradmin-0.18.tar.gz -C /opt
+      </root>
+      
+      <root path="~">
+cd /opt
+      </root>
+      
+      <root path="/opt">
+chown -R vdr:vdrdaem vdradmin-0.18
+      </root>
+      
+      <root path="/opt">
+ln -s vdradmin-0.18 vdradmind
+      </root>
+     </shell>
+     
+     <textblock>
+Danach wird das entstandene Unterverzeichnis an den bereits zuvor angelegten
+Systemuser vdr übergeben und die einmalig durchzuführende
+Konfiguration erledigt.
+     </textblock>
+     
+     <shell>
+      <root path="/opt">
+cd vdradmind
+      </root>
+      
+      <root path="/opt/vdradmind">
+./vdradmind.pl --config
+      </root>
+     </shell>
+     
+     <textblock> 
+Da der Dienst hier auf dem VDR-Rechner selbst installiert wird, ist
+es sinnvoll bei der Abfrage für den Hostrechner localhost anzugeben.
+Der SVDRP-Port ist standardmäßig 2001 und sollte so belassen werden.
+Auch den Vorgabewert des Portes 8001 kann man getrost übernehmen.
+Über diesen Port ist später die Websteuerung im Netzwerk möglich.
+Ausserdem vergibt man für den Zugang zum Server-Dämon <command>vdradmind</command> noch
+einen Usernamen und ein Passwort.
+     </textblock>
+    
+     <textblock>
+Aus Sicherheitsgründen soll der Serverdienst nicht mit der
+Berechtigung von <command>root</command> laufen. Der Einfachheit halber habe ich den
+bereits angelegten Systemuser <command>vdr</command> hierfür vorgesehen. Gestartet und
+auch wieder gestoppt werden kann der Server dann jederzeit aus dem
+aktuellen Verzeichnis.
+     </textblock>
+     
+     <shell>
+      <root path="/opt/vdradmind">      
+su vdr -c ./vdradmind.pl
+      </root>
+      
+      <root path="/opt/vdradmind">
+./vdradmind.pl --kill
+      </root>
+     </shell>
+     
+     <textblock>
+Ich habe ein sehr einfach gehaltenes <command>SysV</command>-Initskript für den
+automatischen Start des Servers in den Runleveln 3 und 5 erstellt.
+     </textblock>
+     
+     <file>
+      <title>SysV-Initskript</title>
+      <content><![CDATA[
+#! /bin/sh
+#
+# /etc/init.d/vdradmind
+#
+### BEGIN INIT INFO
+# Provides:       vdradmin
+# Required-Start: $network
+# Required-Stop:
+# Default-Start:  3 5
+# Default-Stop:   0 1 2 6
+# Description:    starts vdradmind
+### END INIT INFO
+
+. /etc/rc.status
+rc_reset
+
+case "$1" in
+    start)
+        echo -n "Starting Vdradmind: "
+        ## Startet vdradmind als User vdr
+        ps -A | grep -q -w vdradmind.pl || cd /opt/vdradmind; su vdr -c /opt/vdradmind/vdradmind.pl
+        rc_status -v
+        ;;
+
+    stop)
+        echo "Shutting down Vdradmind"
+        ## Stoppt vdradmind
+        killall -q vdradmind.pl
+        rc_status -v
+        ;;
+
+    restart)
+        $0 stop
+        $0 start
+        rc_status
+        ;;
+
+    status)
+        echo -n "Checking for Vdradmind: "
+        ps -A | grep -q -w vdradmind.pl || rc_failed
+        rc_status -v
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+rc_exit
+      ]]></content>
+     </file>
+     
+     <textblock>
+Das Skript muss ausführbar sein.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+chmod +x /etc/init.d/vdradmind
+      </root>
+     </shell>
+     
+     <textblock> 
+Anhand der Infozeilen des Skripts werden die notwendigen
+symbolischen Links automatisch erzeugt.
+     </textblock>
+     
+     <shell>
+      <root path="~"> 
+insserv -d vdradmind
+      </root>
+     </shell>
+     
+     <textblock> 
+Die gängigen Distributionen verwenden ähnliche Systematiken für
+das Runlevelkonzept. Inwieweit dies auf andere Distributionen als
+auf die von mir verwendetet <name>SuSE 7.3</name> ohne Anpassungen anwendbar ist,
+vermag ich nicht zu sagen.
+     </textblock>
+    
+     <textblock>
+Die Bedienung des VDR-Rechners lässt sich danach von jedem Rechner
+mit beliebigem Betriebssystem innerhalb des lokalen Netzes bequem
+erledigen. Hierzu nutzt man einfach in einem gängigen Browser. Auf
+demselben Rechner kann die Weboberfläche als localhost über den
+Port 8001 angesprochen werden.
+     </textblock>
+    
+     <textblock>
+http://localhost:8001/
+     </textblock>
+
+     <textblock>
+Von anderen Rechnern im lokalen Netz erreicht man dies über den
+Rechnernamen oder die IP-Adresse des VDR-Rechners.
+     </textblock>
+    
+     <textblock>
+http://IP-ADRESSE:8001/
+     </textblock>
+    
+     <textblock>
+Man muss sich dann noch mit dem gewählten Usernamen und Passwort
+anmelden. Die Angaben für den Rechnernamen und die IP-Adresse
+sind dabei natürlich für die eigenen Verhältnisse passend zu wählen.
+     </textblock>
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+epg2timers
+    </heading>
+    <textblock>
+Die VDR-Box lässt sich auch ganz einfach über das Internet programmieren.
+Dazu gibt es im Web eine EPG-basierte TV-Programmzeitschrift mit deren
+Hilfe man sich sehr übersichtlich und geordnet nach Sparten und Kategorien
+seine Wunschsendungen und Serien zur Aufnahme markieren kann. Die
+Nutzung des werbefinanzierten Dienstes ist kostenfrei. Man muss sich
+lediglich zuvor anmelden. Danach speichert man sich im Setup-Menü die
+Seite für den schnellen Zugriff auf die persönlichen Einstellungen als
+Bookmark im Browser. So erhält man dann den schnellen Zugriff zur
+persönlichen Merkliste mit den vorgemerkten Sendungen.
+     </textblock>
+    
+     <textblock>
+<ref lang="de" url="http://www.tvtv.de/">http://www.tvtv.de</ref>
+     </textblock>
+    
+     <textblock>
+Das Programmpaket <command>epg2timers</command> sorgt dafür, dass diese Merkliste aus dem
+Internet heruntergeladen und passend aufbereitet wird um damit den
+Timer des VDR zu füttern.
+     </textblock>
+    
+     <textblock>
+<ref url="ftp://ftp.cadsoft.de/pub/people/kls/vdr/Tools/">ftp://ftp.cadsoft.de/pub/people/kls/vdr/Tools/</ref>
+     </textblock>
+    
+     <textblock>
+Installiert wird beispielsweise mit:
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xjvf epg2timers0.9.6.tar.bz2 -C /opt
+      </root>
+      
+      <root path="~">
+cd /opt/epg2timers
+      </root>
+     </shell>
+     
+     <textblock> 
+Das darin enthaltene Perl-Programm <command>get_merkliste.pl</command> lädt dabei die
+online verfügbare Liste herunter und speichert sie lokal ab. Zuvor
+ist aber noch die persönliche ID anzupassen. Im Modus zum Bearbeiten
+der Bookmarks kann man sie einfach mittels Copy und Paste aus der URL
+des Bookmark-Links im Browser übernehmen.
+     </textblock>
+     
+     <file>
+      <title>get_merkliste.pl</title>
+      <content><![CDATA[
+...
+$filename = "merkliste.html";
+$base_url = "http://www.tvtv.de";
+# Hier das Bookmark von TVTV eintragen:
+@files_to_fetch = ("/cgi-bin/bookmark.cgi?id=1234567890_abcdefghIJKLMNOPQrstuvwXYZ");
+...
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Für diesen Zweck neben Perl noch <command>perl-libwww-perl</command> installiert sein.
+     </textblock>
+    
+     <textblock>
+Weiterhin wird aus der Sammlung noch <command>epg2timers</command> benötigt, um die in
+der lokal zwischengespeicherten Datei <command>merkliste.html</command> enthaltenen
+Daten in das passende Format für VDR zu wandeln. In der Regel kann
+es ohne weitere Anpassungen einfach kompiliert werden mit:
+     </textblock>
+     
+     <shell>
+      <root path="~">
+g++ epg2timers.cxx -o epg2timers
+      </root>
+     </shell>
+     
+     <textblock> 
+Im Anschluss daran wird mit dem ebenfalls mitgelieferten Perl-Programm
+<command>loadvdr.pl</command> der Timer des VDR geupdated.
+     </textblock>
+    
+     <textblock>
+Alle notwendigen Schritte werden in dem Shell-Script <command>update_timers</command>
+zusammengefasst. Damit das klappt, ist in der jeweiligen Variablen
+noch das Verzeichnis, in dem die benötigten Programme zu finden
+sind hierin anzupassen; ebenso der Aufenthaltsort der Datei <command>channels.conf</command>.
+     </textblock>
+     
+     <file>
+      <title>update_timers</title>
+      <content><![CDATA[
+#!/bin/sh
+
+# update_timers: retrieve a new "merkliste" from http://tvtv.de,
+# convert it to vdr format and transmit it to vdr via SVDRP.
+
+TOOLDIR="/opt/epg2timers"
+CHANPATH="/usr/local/vdr/etc/channels.conf"
+...
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Nach der Zusammenstellung der gewünschten Sendungen für die
+Timerprogrammierung im Web kann bei bestehender Verbindung des
+VDR zum Internet die Aktualisierung des Timers ganz einfach
+erfolgen mit dem Aufruf:
+     </textblock>
+     
+     <shell>
+      <root path="~">
+/opt/epg2timers/update_timers
+      </root>
+     </shell>
+     
+     <textblock> 
+Hat der VDR-Rechner ständigen Zugang zum Internet, lässt man das
+Timer-Update regelmäßig per cron-Job durchführen. Im Falle einer
+Dial-Up-Verbindung kann man den obigen Aufruf auch in das
+ip-up-Skript aufnehmen.
+     </textblock>
+    
+     <textblock>
+Eine andere Möglichkeit ist, das Update händisch aus dem
+Kommando-Menü des VDR zu starten. Dazu erstellt man ein
+passendes Skript.
+     </textblock>
+     
+     <file>
+      <title>script-Erstellung</title>
+      <content><![CDATA[
+#!/bin/sh
+/opt/epg2timers/update_timers
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Diese Skript muss ausführbar gemacht werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+chmod +x /usr/local/vdr/epg2timers.sh
+      </root>
+     </shell>
+     
+     <textblock>
+Zusätzlich baut man noch folgende Zeile in die Datei
+<command>commands.conf</command> ein:
+     </textblock>
+     
+     <file>
+      <title>commands.conf</title>
+      <content><![CDATA[
+epg2timers-Update starten     : at now -f /usr/local/vdr/epg2timers.sh;
+echo "epg2timers-Update gestartet"
+      ]]></content>
+     </file> 
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+master-timer
+    </heading>
+    <textblock>
+Ähnlich der Autotimer-Funktion von <command>vdradmim</command> gibt es für
+VDR eine Perl-Skriptsammlung namens master-timer, die ein
+automatisches Programmieren an Hand von Konfigurationsdateien
+und der EPG-Daten der VDR-Software ermöglicht. Wenn man tiefer
+in die Materie einsteigt, lassen sich damit komplexe Kriterien
+zum Aufnehmen von Serien, Movies und zur Vermeidung von
+Wiederholungen festlegen.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.fall-tot-um.org/home/scin18/mt/">http://www.fall-tot-um.org/home/scin18/mt/</ref>
+     </textblock>
+    
+     <textblock>
+Zunächst wird installiert.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xzvf master-timer-0.5.11a.tar.gz -C /opt
+      </root>
+      
+      <root path="~">
+cd /opt
+      </root>
+      
+      <root path="/opt">
+ln -s master-timer-0.5.11a master-timer
+      </root>
+     </shell>
+     
+     <textblock>      
+Die mitgelieferten Konfigurationsdateien werden in ein
+verstecktes Unterverzeichnis des Home-Verzeichnisses des
+vorgesehenen Users kopiert. In diesem Fall ist es das
+Verzeichnis <command>/usr/local/vdr/.master-timer</command>. Das erledigt
+man am Besten als der betreffende User vdr.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+su vdr
+      </root>
+      
+      <root path="~">
+cd master-timer
+      </root>
+      
+      <root path="~/master-timer">
+mkdir ~/.master-timer
+      </root>
+      
+      <root path="~/master-timer">
+cp sample/* ~/.master-timer
+      </root>
+     </shell>
+     
+     <textblock> 
+In der hier beschriebenen einfachen Konfiguration braucht
+man an der Datei config nichts zu ändern. In der Datei
+<command>torecord</command> legt man, den darin enthaltenen Beispielen folgend,
+die gewünschten Sendungen, deren Aufnahmen selbstständig
+programmiert werden sollen, fest.
+     </textblock>
+     
+     <file>
+      <title>torecord</title>
+      <content><![CDATA[
+...
+[Harald Schmidt Show]
+Title = Harald Schmidt Show
+Prio = 99
+Timeframe = 2300-0100
+Margin = 120;900
+...
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Danach kann man schon mal einen Test durchführen.
+     </textblock>
+     
+     <shell>
+      <root path="~/master-timer">
+./run-mt.pl
+      </root>
+     </shell>
+
+     <textblock>
+Sinnvollerweise lässt man diesen Aufruf später automatisch von
+cron erledigen, indem man als User vdr mit <command>crontab -e</command> eine
+entsprechende Zeile anlegt.
+     </textblock>
+
+     <file>
+      <title>crontab</title>
+      <content><![CDATA[
+15  0  *  *  *   /opt/master-timer/run-mt.pl 2&>1 >/dev/null
+      ]]></content>
+     </file>
+
+     <textblock>
+Hiermit wird das Skript täglich um 15 Minuten nach Mitternacht
+vom System gestartet. Beim Editieren mit dem eigenwilligen Editor
+vi erreicht den Einfügemodus mit der Taste <keycomb><key>i</key></keycomb> und kehrt daraus
+mit <keycomb><key>ESC</key></keycomb> wieder zurück. Abgespeichert wird mit <command>:wq</command>; Beenden
+ohne zu Speichern geht mit <command>:q</command>.
+     </textblock>
+
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+vdr2divx
+    </heading>
+    <textblock>
+Für VDR gibt es eine praktische Skriptsammlung zur automatischen
+Konvertierung von Aufnahmen im Platz sparenden DivX-Format. Auf
+Wunsch kann man auch entsprechende Vorgaben für die Benennung und
+die Verzeichnisse bei Aufnahmen von Serien vorgeben. Die Bitrate
+wird dabei so berechnet, dass das Ergebnis auf einen einzelnen
+Rohling zur dauerhaften Archivierung passt.
+     </textblock>
+    
+     <textblock>
+Zunächst ist der DivX4-Codec zum Wandeln des von der DVB-Karte
+gelieferten MPEG2-Formats nach DivX erforderlich. Hierzu nutzt man
+z. B. das für Linux erhältliche <command>divx4linux</command>-Paket. von
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://avifile.sourceforge.net/">http://avifile.sourceforge.net/</ref>
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xzvf divx4linux-20011025.tgz
+      </root>
+      
+      <root path="~">
+cd divx4linux-20011025
+      </root>
+      
+      <root path="~/divx3linux-20011025">
+./install.sh
+      </root>
+     </shell>
+     
+     <textblock> 
+Ausserdem muss man noch den Lame-MP3-Codec zur Umwandlung
+des Ton ins MP3-Format installieren.
+     </textblock>
+     
+     <textblock>
+<ref lang="en" url="http://lame.sourceforge.net/">http://lame.sourceforge.net/</ref>
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xzvf lame-3.92.tar.gz
+      </root>
+      
+      <root path="~">
+cd lame-3.92
+      </root>
+      
+      <root path="~/lame-3.92">
+./configure
+      </root>
+      
+      <root path="~/lame-3.92">
+make
+      </root>
+      
+      <root path="~/lame-3.92">
+make install
+      </root>
+     </shell>
+     
+     <textblock> 
+Ebenso braucht man noch den eigentlichen Encoder zum Wandeln des
+Formats. Hierfür nimmt man in diesem Fall den MEncoder, der im
+Paket des MPlayer bereits enthalten ist und mit dessen
+Installation automatisch mit installiert wird.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.mplayerhq.hu/homepage/">http://www.mplayerhq.hu/homepage/</ref>
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xjvf MPlayer-0.90pre9.tar.bz2
+      </root>
+      
+      <root path="~">
+cd MPlayer-0.90pre9
+      </root>
+      
+      <root path="~/Mplayer-0.90pre9">
+./configure
+      </root>
+      
+      <root path="~/Mplayer-0.90pre9">
+make
+      </root>
+      
+      <root path="~/Mplayer-0.90pre9">
+make install
+      </root>
+     </shell>
+
+     <textblock> 
+Nun kann es daran gehen, das eigentliche Skriptpaket von zu
+installieren:
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xzvf 2divx160pre1.tar.gz -C /opt
+      </root>
+      
+      <root path="~">
+cd /opt
+      </root>
+      
+      <root path="/opt">
+ln -s dist160pre1 vdr2divx
+      </root>
+     </shell>
+     
+     <textblock>      
+Es muss dann noch die Konfigurationsdatei <command>2divx.conf</command> erzeugt werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+cd /opt/vdr2divx
+      </root>
+      
+      <root path="/opt/vdr2divx"> 
+./setup
+      </root>
+     </shell>
+     
+     <textblock> 
+Voraussichtlich sind noch einige Anpassungen darin erforderlich.
+     </textblock>
+     
+     <file>
+      <title>setup</title>
+      <content><![CDATA[
+...
+# *** User Configuration (should be adapted to your system ...)
+#
+
+# Path where all 2divx scripts are located
+MYPATH /opt/vdr2divx
+
+# Where should the Jobfile be placed - and whats the name ? /path/file
+JOBFIL /movies/JobQ
+
+# Temporary Directory where the script(s) can store temp files...
+WRKTMP /movies/temp
+
+# Where should the output files be placed ?
+DSTDIR /movies
+
+# Where is the mencoder executable located ? (/path/binary)
+ENCEXE /usr/local/bin/mencoder
+...
+      ]]></content>
+     </file>
+     
+     <textblock>      
+Man hat hier in dieser Datei noch die Wahl zwischen den Codes
+von <command>ffmpeg</command> und <command>divx4</command> mit den Einstellungen <command>"lavc"</command> und <command>"divx"</command>.
+     </textblock>
+    
+     <textblock>
+Als Alternative zum kommerziellen DivX4/5-Codec kann man
+stattdessen den freien XviD-Codecs nutzen. Hiermit kann man
+dann auch mit der Einstellung <command>"divx"</command> oder auch <command>"xvid"</command> die
+Konvertierung durchführen.
+     </textblock>
+    
+     <textblock>
+Aller Wahrscheinlichkeit muss hierzu auf nicht allzu taufrischen
+Distributionen erst noch auf einen aktuellen nasm upgedated werden.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://nasm.sourceforge.net/">http://nasm.sourceforge.net/</ref>
+     </textblock>
+     
+     <shell>
+      <root path="~">
+rpm -Uvh nasm-0.98-35-1.i386.rpm
+      </root>
+     </shell>
+     
+     <textblock> 
+Danach kann man die Xvid-Libraries z. B. in das Verzeichnis
+<command>/usr/local/src</command> installieren.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.xvid.org/">http://www.xvid.org</ref>
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xzvf xvid_latest.tar.gz -C /usr/local/src
+      </root>
+
+      <root path="~"> 
+cd xvid_20021027/xvidcore/build/generic
+      </root>
+     </shell>
+     
+     <textblock> 
+In der Datei Makefile.linuxx86 habe ich für meinen PIII und
+den <command>gcc 2.9X</command> meiner <name>SuSE 7.3</name> die Zeile für die i686-Architektur
+entkommentiert. Dann erfolgt das Kompilieren mit:
+     </textblock>
+     
+     <shell>
+      <root path="/usr/local/src/xvid_20021027/xvidcore/build/generic">
+make -f Makefile.linuxx86
+      </root>
+     </shell>
+     
+     <textblock> 
+Anschließend muss noch die Übersetzung der Quellen des MEncoder
+mit der Integration der Xvid-Libraries wiederholt werden.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.mplayerhq.hu/homepage/">http://www.mplayerhq.hu/homepage/</ref>
+     </textblock>
+     
+     <shell>
+      <root path="~">
+cd MPlayer-0.90pre9
+      </root>
+      
+      <root path="~/MPlayer-0.90pre9">
+make distclean
+      </root>
+      
+      <root path="~/MPlayer-0.90pre9">
+./configure --with-extraincdir=/usr/local/src/xvid_20021027/xvidcore/src \
+--with-xvidcore=/usr/local/src/xvid_20021027/xvidcore/build/generic/libxvidcore.a
+      </root>
+      
+      <root path="~/MPlayer-0.90pre9">
+make
+      </root>
+      
+      <root path="~/MPlayer-0.90pre9">
+make install
+      </root>
+     </shell>
+     
+     <textblock> 
+Das Verzeichnis und die Unterverzeichnisse für temporäre Dateien
+und das Endprodukt der DivX-Files müssen noch erstellt und mit den
+passenden Zugehörigkeiten versehen werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+mkdir -p /movies/temp /movies/MusicVideos
+      </root>
+      
+      <root path="~">
+chown -R vdr:vdrdaem /movies
+      </root>
+     </shell>
+     
+     <textblock>      
+Praktischerweise stößt man die Umwandlung erst an, nachdem man
+die Aufnahmen mit der Schnittfunktion des VDR entsprechend
+bearbeitet hat. Hierbei wird nach dem Abschluss eines
+Editiervorgangs mit der Taste <keycomb><key>2</key></keycomb> von der VDR-Software automatisch
+das Script <command>nq.sh</command> aufgerufen wird, welches eine entsprechende
+Job-Warteschlange erstellt. Dazu ist noch eine Ergänzung im Script
+<command>runvdr</command> zu machen:
+     </textblock>
+
+     <file>
+      <title>runvdr</title>
+      <content><![CDATA[
+...
+
+VDRCMD="$VDRPRG -w 60 -t /dev/tty8 -s /usr/local/bin/vdrshutdown $* \
+                -P vcd \
+                -P dvd \
+                -P'mp3 -m /usr/local/vdr/mount.sh' \
+                -P'mplayer -m /usr/local/vdr/mount.sh -M /usr/local/vdr/mplayer.sh' \
+                -r /opt/vdr2divx/nq.sh"
+VDRUSR=vdr
+export DVDCSS_METHOD=key
+...
+      ]]></content>
+     </file>
+
+     <textblock>
+Der Inhalt der Datei JobQ wird vom Skript <command>wait2enc.sh</command> minütlich
+überprüft und ggf. die Konvertierung durch das Script <command>2divx</command> angestoßen.
+Dafür erstellt man z. B. ein Skript namens <command>vdr2divx.sh</command>:
+     </textblock>
+
+     <file>
+      <title>vdr2divx.sh</title>
+      <content><![CDATA[
+#!/bin/bash
+cd /opt/vdr2divx; ./wait2enc.sh
+      ]]></content>
+     </file>
+     
+     <textblock>      
+Das Skript muss ausführbar gemacht werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+chmod +x /opt/vdr2divx/vdr2divx.sh
+      </root>
+     </shell> 
+     
+     <textblock>
+Den Anstoß dazu könnte man aus dem VDR-Menü heraus über eine
+Zeile in der Datei <command>commands.conf</command> geben.
+     </textblock>
+    
+     <textblock>
+DivX-Konvertierung starten:     <command>at now -f /opt/vdr2divx/vdr2divx.sh;</command>
+<command>echo "Konvertierung gestartet"</command>
+     </textblock>
+    
+     <textblock>
+Die Wandlung einer Aufnahme erfolgt im aufwändigen 2-Pass-Verfahren
+mit verminderter Priorität um die eigentlichen Funktionen der VDR-Box
+im normalen Betrieb nicht zu beeinträchtigen. Dies kann auch durchaus
+schon mal die ganze Nacht dauern. Um nicht die automatische
+Shutdown-Funktion deaktivieren zu müssen, kann man eine zusätzliche
+Zeile in der Datei <command>vdrshutdown</command> einfügen, die verhindert, dass der
+Rechner herunter gefahren wird, solange eine laufende Konvertierung
+noch andauert.
+     </textblock>
+     
+     <file>
+      <title>vdrshutdown</title>
+      <content><![CDATA[
+#!/bin/bash
+test -s /movies/JobQ && exit 1
+...
+      ]]></content>
+     </file> 
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+tosvcd
+    </heading>
+    <textblock>
+Als Alternative zur dauerhaften Archivierung der VDR-Aufnahmen im
+DivX-Format kann man diese auch zu SVCD's konvertieren, die sich auf
+vielen preisgünstigen DVD-Playern problemlos abspielen lassen. Auch
+die Wiedergabe mittels der VDR-Box ist möglich für den Fall, dass die
+Prozessorleistung für DivX-Wiedergabe ein wenig zu dürftig ausfällt.
+     </textblock>
+    
+     <textblock>
+Zur Umwandlung der VDR-Aufnahmen in das benötigte MPEG2-Format für
+SVCD's gibt es ein Tool mit der treffenden Bezeichnung <command>tosvcd</command>. Es
+lassen sich bei Bedarf mannigfaltige Optionen wie z. B. zum Festlegen
+der maximalen Anzahl der benötigten CDR's, der maximalen Größe der
+Rohlinge, usw. übergeben. Eine Umrechnung auf die Auflösung von 480x576
+findet automatisch statt. Abweichend vom Standard für SVCD's wird der
+Ton aber mit einer Samplingfrequenz von 48 kHz statt 44,1 kHz erstellt.
+Auf vielen DVD-Playern bereitet das aber keine Probleme beim Abspielen.
+Es können auch gleich SVCD- und VCD-konforme Image-Dateien erstellt werden.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://muse.seh.de/tosvcd/">http://muse.seh.de/tosvcd/</ref><br/>
+Es wird installiert mit:
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xjvf tosvcd-0.9.tar.bz2
+      </root>
+      
+      <root path="~">
+cd tosvcd-0.9
+      </root>
+      
+      <root path="~/tosvcd-0.9">
+make
+      </root>
+      
+      <root path="~/tosvcd-0.9">
+make install
+      </root>
+     </shell>
+     
+     <textblock> 
+Voraussetzung sind die installierten MJPEG-Tools.
+     </textblock>
+     
+     <textblock>
+http://mjpeg.sourceforge.net/
+Die Installation des RPM-Paketes muss ggf. ohne Berücksichtigung
+der Abhängigkeiten erfolgen:
+     </textblock>
+     
+     <shell>
+      <root path="~">
+rpm -ivh --nodeps mjpegtools-1.6.0-1.i386.rpm
+      </root>
+     </shell>
+     
+     <textblock> 
+Weiterhin wird VCDImager benötigt um automatisch die Images zu erstellen,
+welche den gültigen Spezifikationen für VCD bzw. SVCD entsprechen.
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.vcdimager.org/">http://www.vcdimager.org</ref>
+Hier wird ebenfalls das geeignete RPM-Paket für die Installation gewählt:
+     </textblock>
+     
+     <shell>
+      <root path="~"> 
+rpm -ivh vcdimager-0.7.12-1.i386.rpm
+      </root>
+     </shell>
+     
+     <textblock> 
+Zusätzlich braucht man noch für weitere Schritte wie die Erstellung eines
+Startmenüs für die fertigen SVCD's das Paket Netpbm.
+     </textblock>
+    
+     <textblock>
+http://sourceforge.net/projects/netpbm/
+     </textblock>
+    
+     <textblock>
+Bei der Installation lassen sich zunächst die Voreinstellungen übernehmen.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+tar -xzvf netpbm-10.9.tgz
+      </root>
+      
+      <root path="~">
+cd netpbm-10.9
+      </root>
+      
+      <root path="~/netpbm-10.9">
+./configure
+      </root>
+      
+      <root path="~/netpbm-10.9">
+make
+      </root>
+      
+      <root path="~/netpbm-10.9">
+make package
+      </root>
+      
+      <root path="~/netpbm-10.9">
+./installnetpbm
+      </root>
+     </shell>
+     
+     <textblock>
+Beim abschließenden Schritt wird für den "install prefix" der Pfad
+"/usr" gewählt und die weiteren Default-Werte lässt man unverändert.
+     </textblock>
+     
+     <textblock>
+Zwar ist es auch mit dem Tool <command>tosvcd</command> möglich direkt Images von SVCD's
+zu erstellen, doch haben diese den Nachteil, dass diese kein Menü
+haben und der Wechsel häufig Mitten in einer Szene oder gar einem
+Dialog erfolgt. Ausserdem besteht beim Abspielen mit VDR das Problem
+durch lückenhafter Wiedergabe am Anfang und Ende einer SVCD. Hier kann
+ein Vor- und Abspann Abhilfe schaffen. Ein entsprechendes Konzept
+mit den passenden Skripten findet sich hier:
+     </textblock>
+    
+     <textblock>
+<ref lang="en" url="http://www.mannitec.de/SVCD.htm">http://www.mannitec.de/SVCD.htm</ref>
+     </textblock>
+    
+     <textblock>
+Für die Zwischenspeicherung der temporären Dateien und der fertig
+gestellten Images habe ich ein Unterverzeichnis unter der
+Video-Partition vorgesehen. Nur hier kann ich auf meinem VDR-Rechner
+genügend freien Speicherplatz bereit stellen. Das Verzeichnis muss
+erstellt und mit den notwendigen Zugehörigkeiten versehen werden:
+     </textblock>
+     
+     <shell>
+      <root path="~">
+mkdir /video/mpeg
+      </root>
+      
+      <root path="~">
+chown vdr:vdrdaem /video/mpeg
+      </root>
+     </shell>
+     
+     <textblock> 
+Bei diesem Konzept ist erst einmal die gewünschte Aufnahme mit der
+Schnittfunktion des VDR von Werbung zu befreien und der Schnitt mit
+der Taste "2" einzuleiten. In dieser bereits geschnittenen Version
+werden die Anfangs- und Ende-Markierungen für die Aufteilung der
+Aufnahme auf die einzelnen CD-Roms sinnvoll bei einem Szenenwechsel
+gesetzt. Es sollten etwa 40 Minuten Filmlänge auf einen
+80-Minuten-Rohling passen. Für die weiteren Verarbeitung werden diese
+Schnittpunkte in der Datei <command>marks.vdr</command> automatisch beachtet, sodass
+es an dieser Stelle nicht mehr nötig ist den Schnitt mit der Taste
+"2" zu beenden. Wenn man im Auswahlmenü der Aufzeichnungen diesen
+Eintrag markiert, wird mit dem anschließenden Drücken der Taste "1"
+diese Aufnahme der Liste mit den zu konvertierenden Aufnahmen in der
+Datei <command>toconvert.txt</command> hinzu gefügt. Dazu dient eine entsprechende
+Zeile in der Datei <command>reccmds.conf</command>.
+     </textblock>
+    
+     <textblock>
+Todoliste ergänzen?     : <command>/usr/local/bin/todolist.sh</command>
+     </textblock>
+     
+     <textblock>
+Das hier aufgerufene Skript namens <command>todolist.sh</command> muss noch erstellt
+     </textblock>
+     
+     <file>
+      <title>todolist.sh</title>
+      <content><![CDATA[
+#!/bin/bash
+
+TODOLIST=/video/toconvert.txt
+
+[ `echo $1 >> ${TODOLIST}` ] && echo "Fehler mit der TODOLIST ${TODOLIST}!!!"
+      ]]></content>
+     </file>
+     
+     <textblock> 
+und anschließend ausführbar gemacht werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+chmod +x /usr/local/bin/todolist.sh
+      </root>
+     </shell>
+     
+     <textblock> 
+Das eigentliche Konvertieren startet man aus dem Befehls-Menü des OSD
+heraus. Dazu ist eine entsprechende Zeile in der <command>commands.conf</command> zu
+ergänzen.
+     </textblock>
+     
+     <file>
+      <title>commands.conf</title>
+      <content><![CDATA[
+run conversion     : if [ `ps -ef | grep -e "/svcd.sh"| grep -c -v grep` -eq 0 ];
+                                then at now -f /usr/local/bin/tosvcd.sh && echo "conversion
+				gestartet";else echo "Läuft schon";fi
+status conversion  : [ -f /video/mpeg/status ] && cat /video/mpeg/status;
+				[ -f /video/mpeg/TOSVCD.log ] && cat /video/mpeg/TOSVCD.log
+				|tr "\r" "\n"|tail -1
+view jobs          : cat /video/toconvert.txt|cut -c1-38
+clear jobs         : rm -f /video/toconvert.txt && echo "clean"
+list /video/mpeg   : cd /video/mpeg; du -sk */*.mpg |cut -c1-38
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Es sind hier noch weitere Zeilen zum Überwachen der Vorgänge
+enthalten.
+     </textblock>
+     
+     <textblock>
+Auch das hier aufgerufene Skript namens <command>tosvcd.sh</command> muss noch
+erstellt werden.
+     </textblock>
+     
+     <file>
+      <title>tosvcd.sh</title>
+      <content><![CDATA[
+#!/bin/bash 
+
+nice -n 19 /usr/local/bin/svcd.sh
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Es muss ebenfalls ausführbar sein.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+chmod +x /usr/local/bin/tosvcd.sh
+      </root>
+     </shell>
+     
+     <textblock> 
+Die eigentliche Arbeit, bestehend aus dem Erstellen der
+SVCD-konformen MPGE2-Files in der passenden Länge, erledigt
+das Beispielskript <command>svcd.sh</command> von obiger Site. Es wird ebenfalls
+aus den in der <command>summary.vdr</command> enthaltenen EPG-Daten zum Film
+automatisch ein Startmenü generiert. Ein für meine Verhältnisse
+angepasstes Skript habe ich hier abgelegt: <command>svcd.sh</command>
+     </textblock>
+    
+     <textblock>
+Zudem braucht man für das Erstellen der fertigen Images noch ein
+weiteres Skript namens <command>vcdbatch.sh</command>. Für meine Zwecke habe ich das
+Beispielskript ebenfalls ein wenig ändern müssen. Ich lasse es
+ausserdem direkt im Anschluss aus dem vorhergehenden Skript
+starten. Meine Variante des Skripts liegt hier: <command>vcdbatch.sh</command>
+     </textblock>
+    
+     <textblock>
+Beide Scripte müssen ausführbar gemacht werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+chmod +x /usr/local/bin/svcd.sh
+      </root>
+      
+      <root path="~">
+chmod +x /usr/local/bin/vcdbatch.sh
+      </root>
+     </shell>
+     
+     <textblock> 
+Die kurzen MPEG-Dateien, welche als Vor- und Abspann dienen
+sollen, müssen hierfür im Verzeichnis <command>/video/mpeg</command> als <command>intro.mpg</command>
+und <command>outtro.mpg</command> vorhanden sein.
+     </textblock>
+    
+     <textblock>
+Man sollte natürlich darauf achten, dass die automatische
+Abschaltung des VDR-Rechners für die Dauer der Konvertierung
+deaktiviert ist, da die Umwandlungen in der Regel längere Zeit
+in Anspruch nehmen.
+     </textblock>
+    
+     <textblock>
+Stilecht brennt man die fertigen Images dann mit Linux und der
+freien Software <command>CDRDAO</command> auf Rohlinge. Es lassen sich die Images
+aber auch z. B. per <command>Samba</command> auf Windows-Rechner exportieren und
+dann mit Sharewareprogrammen wie <name>CDRWin</name> bzw. <name>FireBurner</name> brennen.
+Grundsätzlich lassen sich die erzeugten Images auf der Basis der
+Cuesheets auch mit Nero verarbeiten.
+     </textblock>
+     
+   </section>
+ </section>
+</split>
+
+<split>
+ <!-- * Kapitel -->
+ <section>
+  <heading>
+Sonstiges
+  </heading>
+   <!-- Kapitel *.* -->
+   <section>
+    <heading>
+Samba
+    </heading>
+    <textblock> 
+Im Gegensatz zu kommerziellen Fertiggeräten ist es bei der VDR-Box
+grundsätzlich kein Problem, die gespeichterten Dateien auf andere
+Rechner zu exportieren um sie auf Wunsch weiter zu verarbeiten.
+Der Datenaustausch mit Windows-Rechnern geschieht üblicherweise
+mittels <name>Samba</name>. Um auf dem VDR einen Samba-Server einzurichten ist
+bei meiner <name>SuSE 7.3</name> zunächst per <name>yast</name> mit das entsprechende Paket
+samba nachzuinstallieren. Weiterhin ist in der Konfigurationsdatei
+<command>/etc/rc.config</command> dazu eine Variable zu setzen.
+    </textblock>
+    
+    <file>
+     <title>rc.config</title>
+     <content> 
+START_SMB="yes"
+     </content>
+    </file>
+    
+    <textblock> 
+Ausserdem wird eine Konfigurationsdatei <command>/etc/samba/smb.conf</command> nach
+folgendem Beispiel erstellt:
+    </textblock>
+    
+    <file>
+     <title>smb.conf</title>
+     <content><![CDATA[
+[global]
+   workgroup = ARBEITSGRUPPE
+   security = user
+   server string = Samba-Server %v auf Rechner %h
+   hosts allow = 192.168.1.0/255.255.255.0
+   interfaces = 192.168.1.0/255.255.255.0
+   bind interfaces only = yes
+
+   guest account = nobody
+   keep alive = 30
+   os level = 2
+   kernel oplocks = false
+   encrypt passwords = yes
+   socket options = TCP_NODELAY
+   map to guest = Bad User
+   wins support = no
+
+[video]
+   comment = Meine Videodateien
+   path =/video
+   read only = no
+   create mode = 0644
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Ich habe versucht, dies auf möglichst sichere Weise zu realisieren,
+indem der Zugriff auf das als Beispiel gewählte lokale Netzwerk mit
+der Netzadresse 192.168.1.0 und der Netzmaske 255.255.255.0
+beschränkt wird. Diese Daten sind natürlich auf die eigenen
+Verhältnisse anzupassen. Wichtig ist, dass die VDR-Software mit der
+Option "VFAT=1" übersetzt wird, ansonsten lässt sich der Inhalt der
+Verzeichnisse nicht darstellen. Vollen Zugriff von einem
+Windowsrechner aus erhält nur der passende User "vdr" mit dem richtigen
+Passwort. Dieser User muss wegen der verschlüsselten Übertragung
+der Passwörter ab Windows'98 speziell angelegt werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+smbpasswd -a -e vdr
+      </root>
+     </shell> 
+      
+     <textblock>
+Es muss noch ein Passwort vergeben werden. Dieses muss nicht mit dem
+des lokal auf dem VDR-Rechner angelegten User vdr übereinstimmen.
+Lesenden Zugriff erlangen nur User, welche ebenfalls mittels
+smbpasswd angelegt wurden.
+     </textblock>
+    
+     <textblock>
+Der Samba-Server kann nun von Hand gestartet werden.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+/etc/init.d/smb start
+      </root>
+     </shell> 
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+NFS
+    </heading>
+    <textblock>
+Zwischen Linux-Rechnern hingegen exportiert man Dateien im
+Netzwerk per Network File System (NFS). Dazu betreibt man auf
+dem VDR-Rechner einen NFS-Server und passt die
+Konfigurationsdatei <command>/etc/exports</command> entsprechend an.
+    </textblock>
+    
+    <file>
+     <title>exports</title>
+     <content><![CDATA[
+/video       192.168.1.0/24(rw,root_squash)
+     ]]></content>
+    </file>
+    
+    <textblock> 
+In diesem Beispiel wird der Zugriff auf das lokale Netz
+192.168.1.0 mit der Netzmaske 255.255.255.0 beschränkt und der
+Zugriff ist ausschließlich lesend möglich ausser für denjenigen
+User auf der entfernten Maschine mit der UserID "99". Diese
+UID muss mit der des lokalen Users namens vdr übereinstimmen,
+nicht jedoch der Username.
+     </textblock>
+    
+     <textblock>
+Für den automatischen Start des Serverdienstes beim Booten
+des Rechners sind in der Konfigurationsdatei einer
+SuSE-Distribution <command>/etc/rc.config</command> die notwendigen Variablen
+entsprechend zu setzen. 
+     </textblock>
+     
+     <file>
+      <title>rc.config</title>
+      <content><![CDATA[
+START_NFS_SERVER="yes"
+START_PORTMAP="yes"
+      ]]></content>
+     </file>
+     
+     <textblock> 
+Auf der Seite des Clients wird dann der Inhalt des Verzeichnisses
+<command>/video</command> auf dem VDR-Rechner beispielsweise in das Verzeichnis <command>/mnt</command>
+gemountet.
+     </textblock>
+     
+     <shell>
+      <root path="~">
+mount -t nfs 192.168.1.99:/video /mnt
+      </root>
+     </shell> 
+
+   </section>
+   <!-- *.* Kapitel -->
+   <section>
+    <heading>
+Automounter
+    </heading>
+    <textblock>
+Für das MP3- bzw. MPlayer-Plugin lässt sich das Mounten und Unmounten
+der CD's im ein wenig eleganter und komfortabler mit dem so genannten
+Automounter-Service handhaben. Das jeweilige Medium wird hiermit dann
+automatisch im Hintergrund eingehängt, sobald darauf zugegriffen wird.
+Nach einem wählbaren Timeout erfolgt selbständig die Freigabe des
+Mediums, wenn kein Zugriff mehr erfolgt. Bei einer <name>SuSE 7.3</name> ist dazu
+das Paket autofs zu installieren und in der Konfigurationsdatei
+<command>/etc/rc.config</command> wird der Dienst mittels der dafür vorgesehenen
+Variablen mit einem Timeout-Wert von beispielsweise 5 Sekunden
+aktiviert.
+    </textblock>
+    
+    <file>
+     <title>/etc/rc.config</title>
+     <content><![CDATA[
+START_AUTOFS="yes"
+AUTOFS_OPTIONS="--timeout 5"
+     ]]></content>
+    </file>
+     
+    <textblock>
+Anschließend ist ggf. noch die Konfigurationsdatei <command>/etc/auto.master</command>
+für die Nutzung des vorgesehenden Mountpoints <command>/misc</command> anzupassen.
+    </textblock>
+    
+    <file>
+     <title>auto.master</title>
+     <content>
+/misc    /etc/auto.misc
+     </content>
+    </file>
+     
+    <textblock>
+Ausserdem muss natürlich das benutzte Verzeichnis <command>/misc</command> vorhanden sein.
+    </textblock>
+    
+    <shell>
+     <root path="~">
+mkdir /misc
+     </root>
+    </shell>
+     
+    <textblock>
+In der speziell für diesen Mountpoint zuständigen Konfigurationsdatei
+<command>/etc/auto.misc</command> werden passend zu den Einträgen in den Dateien
+<command>mp3sources.conf</command> und <command>mplayersources.conf</command> für ein an hdc angeschlossenes
+DVD/CD-Rom-Gerät die notwendigen Ergänzungen gemacht. Das Verzeichnis
+<command>/misc</command> wird fortan vom Automounter-Dienst ständig überwacht.
+    </textblock>
+    
+    <shell>
+     <output>
+cdrom           -fstype=iso9660,ro      :/dev/hdc
+cdfs            -fstype=cdfs,ro         :/dev/hdc
+     </output>
+    </shell> 
+    
+    <textblock>
+Abschließend muss noch die Datei <command>mp3sources.conf</command> und ggf.
+<command>mplayersources.conf</command> für diesen Anwendungsfall angepasst werden.
+    </textblock> 
+    <file>
+     <title>Anpassung von mp3sources.conf / mplayersources.conf</title>
+     <content><![CDATA[
+/misc/cdrom;CDROM;0
+/misc/cdfs;CD-Audio;0
+/mp3;Locale Platte;0
+     ]]></content>
+    </file>
+
+    <textblock>
+Von nun an kann das Mounten und Unmounten von CD's per Menüsteuerung
+komplett entfallen. Diese Menüpunkte werden durch die "0" am Ende jeder
+Zeile für das betreffende Laufwerk auch gar nicht mehr angeboten.
+    </textblock>
+   </section>
+ </section>
+</split> 
+</chapter>   

@@ -1,0 +1,1398 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>Werkzeuge von Drittanbietern, die mit CVS zusammen arbeiten</title>
+
+ <author>
+  <name>Karl Fogel</name>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GPL</license>
+ <index>cvs_buch_kapitel_10</index>
+
+<!-- 10. Kapitel -->
+ <description>
+  <textblock>
+Der folgende Text enthält das Kapitel 10 der
+deutschen Übersetzung des Buches "Open Source Development with CVS",
+welche unter der GNU Public License veröffentlicht wurden.
+  </textblock>
+
+  <textblock>
+Das SelfLinux-Team
+  </textblock>
+ </description>
+
+
+ <split>
+  <section>
+<!-- 10.1 Kapitel -->
+   <heading>
+Was sind Werkzeuge von Drittanbietern?
+   </heading>
+
+   <textblock>
+Viele Leute haben Programme geschrieben, die den Funktionsumfang von
+CVS erweitern. Ich nenne diese <strong>Werkzeuge von Drittanbietern</strong>, da sie
+auch separat zur CVS-Entwicklung verwaltet werden. Die meisten dieser
+Programme werden nicht zusammen mit CVS verbreitet, einige allerdings
+schon. Dieses Kapitel behandelt Werkzeuge von Drittanbietern, die ich
+nützlich finde, die aber nicht mit CVS vertrieben werden.
+   </textblock>
+
+   <textblock>
+Obwohl es einige sehr populäre und weit verbreitete
+Bedienungsoberflächen für CVS gibt, die nicht für die Kommandozeile
+oder nicht für Unix sind (Download-Adressen sind in Kapitel 4
+aufgelistet), behandelt dieses Kapitel die meisten von ihnen nicht.
+Ihre Popularität macht es einfach, mehr über sie in Newsgruppen und
+Mailinglisten zu erfahren. Eine Ausnahme ist das <strong>Emacs
+pcl-cvs-Interface</strong>, das sehr nützlich, aber oft nicht einfach zu
+installieren ist. Damit fangen wir an.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 10.2 Kapitel -->
+   <heading>
+pcl-cvs: eine Emacs-Bedienungsoberfläche für CVS
+   </heading>
+
+
+   <textblock>
+Benötigt: Emacs, Elib
+   </textblock>
+
+
+   <textblock>
+URLS:
+   </textblock>
+
+   <quotation>
+<ref url="ftp://rum.cs.yale.edu/pub/monnier/pcl-cvs/">ftp://rum.cs.yale.edu/pub/monnier/pcl-cvs/</ref>
+   </quotation>
+
+   <textblock>
+Autoren: <name>Per Cederqvist</name> und <name>Stefan Monnier</name> (derzeitige Betreuung)
+   </textblock>
+
+   <textblock>
+<command>Pcl-cvs</command> ist eine von zwei Emacs/CVS-Bedienungsoberflächen. Die andere
+ist die <strong>native VC</strong>-(Version Control-)Oberfläche, die in Emacs
+eingebaut ist. Ich bevorzuge <command>pcl-cvs</command>, weil es speziell für CVS
+geschrieben wurde und daher sehr angenehm mit der Art harmoniert, in
+der CVS arbeitet. VC andererseits wurde entwickelt, um mit mehreren
+unterschiedlichen Versionskontrollsystemen zusammenzuarbeiten - RCS
+und SCCS genau wie CVS -, und ist daher nicht wirklich optimal auf CVS
+abgestimmt. Zum Beispiel präsentiert VC eine dateibasierte anstatt
+einer verzeichnisbasierten Oberfläche zur Revisionskontrolle.
+   </textblock>
+
+   <textblock>
+Die Vorteile von <command>pcl-cvs</command> wiegen stark genug, um viele Benutzer zum
+Download und zur Installation zu bewegen, anstatt VC zu benutzen.
+Unglücklicherweise hat <command>pcl-cvs</command> zwei Nachteile: Es kann etwas
+problematisch in der Installation sein (ein Großteil dieses Abschnitts
+befasst sich mit möglichen Installationshürden), und seine neuen
+Versionen laufen etwas instabil.
+   </textblock>
+
+   <textblock>
+Das letzte Problem ist wahrscheinlich eher temporärer Natur, es stellt
+sich jedoch die Frage, welche Version zu benutzen ist. <name>Stefan Monnier</name>
+hat erst kürzlich die Betreuung des <command>pcl-cvs</command> übernommen; die neueste
+Version, 2.9.6 (erhältlich vom ersten URL in der obigen Liste), lief
+ein bisschen holprig, als ich sie ausprobierte. Zweifellos werden die
+Probleme binnen kurzem ausgebügelt sein, aber in der Zwischenzeit
+möchten Sie möglicherweise eine etwas ältere Version benutzen. Da ich
+Version 1.0.5 lange Zeit täglich benutzt habe, wobei sie sich sehr gut
+verhielt, werde ich diese Version hier dokumentieren. Glücklicherweise
+ändert sich an der Installation von Version zu Version nicht allzu
+viel. Falls Sie sich also dazu entschließen, <command>pcl-cvs</command> zu benutzen, so
+schlage ich vor, dass Sie auf <name>Stefan Monniers</name> Seite nach einer neueren
+Version als 2.9.6 schauen; falls es eine gibt, versuchen Sie die,
+bevor Sie ganz auf 1.0.5 zurückgehen.
+   </textblock>
+
+   <textblock>
+Sie werden feststellen, dass ich zwei URLs für Version 1.0.5 angegeben
+habe. Die erste ist <name>Per Cederqvists</name> Site, wo er ein Archiv alter
+<command>pcl-cvs</command>-Versionen unterhält. Da ich nicht sicher bin, wie lange dieses
+Archiv noch Bestand haben wird, mache ich außerdem die Version 1.05
+auf <ref url="ftp://ftp.red-bean.com">ftp.red-bean.com</ref> verfügbar.
+   </textblock>
+
+   <textblock>
+Obwohl der Rest dieser Anweisungen Beispiele aus einer
+1.05-Distribution verwendet, sollten diese ebenfalls problemlos auf
+neuere Versionen anwendbar sein.
+   </textblock>
+  </section>
+
+  <section>
+<!-- 10.3 Kapitel -->
+   <heading>
+Installation von pcl-cvs
+   </heading>
+
+
+   <textblock>
+Falls Sie sich normalerweise nicht mit Problemen der
+Emacs-Installation und -Instandhaltung beschäftigen, könnte Ihnen die
+<command>pcl-cvs</command>-Installationsprozedur etwas entmutigend erscheinen. Ein paar
+Hintergrundinformationen zur Arbeitsweise von Emacs hilft dem
+vielleicht etwas ab.
+   </textblock>
+
+   <textblock>
+Die meisten abstrakteren Funktionen von Emacs sind in einer
+Programmiersprache namens <strong>Emacs Lisp</strong> geschrieben (Emacs selbst ist
+praktisch ein Interpreter für diese Programmiersprache). Die Leute
+fügen Emacs neue Funktionen hinzu, indem sie Dateien mit Emacs
+Lisp-Programmcode verbreiten. <command>Pcl-cvs</command> ist in dieser Programmiersprache
+geschrieben und benötigt eine Sammlung (Bibliothek) nützlicher
+allgemeiner Emacs Lisp-Funktionen namens <strong>Elib</strong> (auch von <name>Per
+Cederqvist</name> geschrieben, wird aber nicht zusammen mit <command>pcl-cvs</command>
+verbreitet), um zu funktionieren.
+   </textblock>
+
+   <textblock>
+Elib ist in der normalen Emacs-Distribution nicht enthalten (zumindest
+nicht im FSF Emacs; bei XEmacs weiß ich es nicht), sodass Sie Elib
+zunächst selber herunterladen und installieren müssen, bevor Sie
+<command>pcl-cvs</command> nutzen können. Sie können es von
+<ref url="ftp://ftp.lysator.liu.se/pub/emacs/elib-1.0.tar.gz">ftp://ftp.lysator.liu.se/pub/emacs/elib-1.0.tar.gz</ref> bekommen.
+Installationsanweisungen sind in dem Archiv enthalten.
+   </textblock>
+
+   <textblock>
+Wenn Elib installiert ist, sind Sie in der Lage, <command>pcl-cvs</command> einzurichten.
+Die folgenden Anweisungen sind gleichermaßen für Version 1.05 und 2.x
+gültig (auch wenn Sie in den <command>NEWS</command>- und <command>INSTALL</command>-Dateien in neuen
+Distributionen nachschauen sollten, ob sich etwas geändert hat).
+   </textblock>
+
+   <textblock>
+Entpacken Sie zunächst <command>pcl-cvs</command>. (Ich benutze Version 1.05, es könnte
+aber genauso gut 2.9.6 sein.)
+   </textblock>
+
+   <shell>
+    <user path="~">
+zcat pcl-cvs-1.05.tar.gz | tar xvf -
+    </user>
+    <output>
+pcl-cvs-1.05/
+pcl-cvs-1.05/README
+pcl-cvs-1.05/NEWS
+pcl-cvs-1.05/INSTALL
+pcl-cvs-1.05/ChangeLog
+pcl-cvs-1.05/pcl-cvs.el
+pcl-cvs-1.05/pcl-cvs.texinfo
+pcl-cvs-1.05/compile-all.el
+pcl-cvs-1.05/pcl-cvs-lucid.el
+pcl-cvs-1.05/pcl-cvs-startup.el
+pcl-cvs-1.05/pcl-cvs.info
+pcl-cvs-1.05/Makefile
+pcl-cvs-1.05/texinfo.tex
+    </output>
+   </shell>
+
+   <textblock>
+und gehen Sie dann in das Hauptverzeichnis des Quelltextes:
+   </textblock>
+   <shell>
+    <user path="~">
+cd pcl-cvs-1.05/
+    </user>
+   </shell>
+
+   <textblock>
+In diesem Verzeichnis ist ein Makefile. Entsprechend der Anweisungen
+in der <command>INSTALL</command>-Datei müssen Sie nun einige Dateipfade am Anfang des
+Makefile anpassen und dann eingeben:
+   </textblock>
+
+   <shell>
+    <user path="~">
+make install
+    </user>
+   </shell>
+
+   <textblock>
+Wenn das funktioniert, toll! Allerdings gibt es manchmal auch eine
+Fehlermeldung. (Der <command>pcl-cvs</command>-Programmcode ist sehr portabel, die
+Installationsprozeduren sind es aber manchmal nicht!) Machen Sie
+Solgendes, wenn Sie eine Fehlermeldung erhalten:
+   </textblock>
+
+   <shell>
+    <user path="~">
+make clean
+    </user>
+    <user path="~">
+make
+    </user>
+   </shell>
+
+   <textblock>
+Wenn bis dahin alles gut geht, dann haben diese beiden Kommandos einen
+beträchtlichen Teil der Installation bereits erledigt, indem sie alle
+nötigen Emacs Lisp-Dateien byte-kompiliert haben. (Byte-Compiling
+verwandelt eine Datei mit lesbarem Emacs Lisp-Programmcode - eine
+<command>.el</command>-Datei - in eine kompaktere und effizientere Repräsentation - eine
+<command>.elc</command>-Datei. Emacs kann <command>.elc</command>-Dateien effizienter laden und ausführen
+als <command>.el</command>-Dateien.)
+   </textblock>
+
+   <textblock>
+Ich fahre nun fort, in der Annahme, dass das mit dem Byte-Compiling
+geklappt hat. Sollte das nicht der Fall sein, keine Panik: Die
+<command>.elc</command>-Dateien sind ein Luxus, keine Notwendigkeit. Sie verbessern die
+Leistung ein wenig, aber <command>pcl-cvs</command> kann problemlos mit den normalen
+<command>.el</command>-Dateien laufen.
+   </textblock>
+
+   <textblock>
+Falls das <command>make install</command> fehlgeschlagen ist, ist der nächste Schritt
+der, die Emacs Lisp-Dateien (<command>.elc</command> oder <command>.el</command>) in ein Verzeichnis zu
+packen, aus dem Emacs sie automatisch laden kann. Emacs hat ein
+spezielles Verzeichnis auf Ihrem System für solche lokal installierten
+Lisp-Dateien. Um dieses Verzeichnis zu finden - es enthält eine Datei
+namens <command>default.el</command> -, suchen Sie an den folgenden Orten in dieser
+Reihenfolge:
+   </textblock>
+
+   <ul>
+    <li>
+<command>/usr/share/emacs/site/lisp/</command>
+    </li>
+    <li>
+<command>/usr/local/share/emacs/site-lisp/</command>
+    </li>
+    <li>
+<command>/usr/lib/emacs/site-lisp/</command>
+    </li>
+    <li>
+<command>/usr/local/lib/emacs/site-lisp/</command>
+    </li>
+   </ul>
+
+   <textblock>
+Wenn Sie Ihr <command>site-lisp</command>-Verzeichnis gefunden haben, kopieren Sie alle
+Lisp-Dateien dort hinein (dafür müssen Sie möglicherweise Superuser
+(root) sein):
+   </textblock>
+
+   <shell>
+    <user path="~">
+cp -f *.el *.elc /usr/share/emacs/site-lisp/
+    </user>
+   </shell>
+
+   <textblock>
+Im letzten Schritt muss nun Emacs mitgeteilt werden, wo sich die
+Eintrittspunkte zu den <command>pcl-cvs</command>-Funktionen befinden (wobei der
+Haupteintrittspunkt <command>cvs-update</command> ist), sodass Emacs weiß, wie es bei
+Bedarf den <command>pcl-cvs</command>-Code laden muss. Da Emacs grundsätzlich die Datei
+<command>default.el</command> liest, wenn er startet, müssen dort die Eintrittspunkte
+aufgelistet werden.
+   </textblock>
+
+   <textblock>
+Glücklicherweise liegt bei <command>pcl-cvs</command> die für <command>default.el</command> notwendige Liste
+schon bei. Kopieren Sie also einfach den Inhalt von <command>pcl-cvs-startup.el</command>
+in die Datei <command>default.el</command> hinein (oder in Ihre <command>.emacs</command>-Datei, falls Sie
+die Installation nur für sich selbst vornehmen), und starten Sie Ihren
+Emacs neu.
+   </textblock>
+
+   <textblock>
+Am besten kopieren Sie auch die <command>.info</command>-Dateien in Ihr Info-Verzeichnis,
+und fügen Sie <command>pcl-cvs</command> dem Inhaltsverzeichnis in der Datei dir hinzu.
+   </textblock>
+  </section>
+
+  <section>
+<!-- 10.4 Kapitel -->
+   <heading>
+Benutzung von pcl-cvs
+   </heading>
+
+
+   <textblock>
+Wenn es erst einmal installiert ist, ist <command>pcl-cvs</command> ganz einfach zu
+benutzen. Sie starten einfach die Funktion <command>cvs-update</command>, und <command>pcl-cvs</command>
+erzeugt eine Liste mit den Dateien, die in Ihrer Arbeitskopie
+verändert oder aktualisiert wurden. Von dieser Liste aus können Sie
+dann <command>Commits</command> durchführen, diffs machen und so weiter.
+   </textblock>
+
+   <textblock>
+Da <command>cvs-update</command> der Haupteintrittspunkt ist, schlage ich vor, dass Sie
+ihn an eine einfach zu merkende Tastenkombination binden, bevor Sie
+weitermachen. Ich habe ihn in meiner <command>.emacs</command>-Datei an die
+Tastenkombination
+    <keycomb mode="hold">
+     <key>Ctrl</key>
+     <key>c</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>v</key>
+    </keycomb>
+gebunden:
+   </textblock>
+
+   <quotation>
+<command>(global-set-key "\C-cv" 'cvs-update)</command>
+   </quotation>
+
+   <textblock>
+Sie können die Funktion aber auch einfach starten, indem Sie
+    <keycomb mode="hold">
+     <key>M</key>
+     <key>x</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>cvs-update</key>
+    </keycomb>
+eingeben (auch bekannt als
+    <keycomb mode="hold">
+     <key>Esc</key>
+     <key>x</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>cvs update</key>
+    </keycomb>
+.
+   </textblock>
+
+   <textblock>
+Wenn es gestartet wurde, lässt <command>cvs-update</command> <command>cvs update</command> laufen, als ob es
+in dem Verzeichnis gestartet worden wäre, in dem sich die gerade in
+Emacs geladene Datei befindet - so, als hätten Sie dort auf der
+Kommandozeile <command>cvs update</command> eingegeben. Hier ist ein Beispiel für das,
+was Sie dann in Emacs sehen könnten:
+   </textblock>
+
+   <file>
+    <title>
+Beispiel
+    </title>
+    <content>
+    <![CDATA[
+PCL-CVS release 1.05 from CVS release &#36;Name: &#36;.
+Copyright (C) 1992, 1993 Per Cederqvist
+Pcl-cvs comes with absolutely no warranty; for details consult the manual.
+This is free software, and you are welcome to redistribute it under certain
+conditions; again, consult the TeXinfo manual for details.
+Modified ci README.txt
+Modified ci fish.c
+---------- End ----
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Zwei Dateien sind lokal verändert worden. (Manche Versionen von
+<command>pcl-cvs</command> zeigen die Unterverzeichnisse der Dateien mit an.) Der nächste
+logische Schritt ist nun, den <command>Commit</command> einer oder beider Dateien
+vorzunehmen, was durch die Buchstaben <command>ci</command> auf jeder der beiden Zeilen
+angezeigt wird. Für den <command>Commit</command> einer Datei bewegen Sie einfach den
+Cursor auf deren Zeile, und drücken <command>c</command>. Es öffnet sich dann ein
+Buffer, in den Sie eine Log-Mitteilung beliebiger Länge eingeben
+können (echtes Bearbeiten von Log-Mitteilungen ist der Hauptvorteil
+von <command>pcl-cvs</command> gegenüber der Kommandozeile). Wenn die Mitteilung
+geschrieben ist, drücken Sie
+    <keycomb mode="hold">
+     <key>Ctrl</key>
+     <key>c</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>Ctrl</key>
+     <key>c</key>
+    </keycomb>
+, um den <command>Commit</command>
+durchzuführen.
+   </textblock>
+
+   <textblock>
+Wenn sich der <command>Commit</command> auf mehrere Dateien, die sich eine Log-Mitteilung
+teilen, auswirken soll, dann markieren Sie zunächst die gewünschten
+Dateien mit der Taste <command>m</command>. Ein Sternchen erscheint neben jeder
+markierten Datei:
+   </textblock>
+
+   <file>
+    <title>
+Beispiel
+    </title>
+    <content>
+    <![CDATA[
+PCL-CVS release 1.05 from CVS release &#36;Name: &#36;.
+Copyright (C) 1992, 1993 Per Cederqvist
+Pcl-cvs comes with absolutely no warranty; for details consult the manual.
+This is free software, and you are welcome to redistribute it under certain
+conditions; again, consult the TeXinfo manual for details.
+* Modified ci README.txt
+* Modified ci fish.c
+---------- End ----
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+Wenn Sie nun irgendwo <command>c</command> eingeben, dann sind davon alle (und nur die)
+markierten Dateien betroffen. Schreiben Sie die Log-Mitteilung, und
+übermitteln Sie die Daten wie gehabt mit
+    <keycomb mode="hold">
+     <key>Ctrl</key>
+     <key>c</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>Ctrl</key>
+     <key>c</key>
+    </keycomb>
+.
+   </textblock>
+
+   <textblock>
+Sie können auch <command>d</command> drücken, um <command>cvs diff</command> mit einer Datei (oder mehreren
+markierten Dateien) zu starten, und <command>f</command>, um eine Datei in Emacs zu
+bearbeiten. Es sind noch andere Kommandos möglich; drücken Sie
+    <keycomb mode="hold">
+     <key>Ctrl</key>
+     <key>h</key>
+    </keycomb>
+    <keycomb mode="hold">
+     <key>m</key>
+    </keycomb>
+im Buffer mit der Dateiliste, um zu sehen, was sonst noch geht.
+   </textblock>
+  </section>
+
+  <section>
+<!-- 10.5 Kapitel -->
+   <heading>
+Fehlerbehandlung in pcl-cvs
+   </heading>
+
+
+   <textblock>
+Das Programm <command>pcl-cvs</command> hatte schon immer eine etwas ungeschickte Art,
+mit Fehlermeldungen und Informationen von CVS umzugehen (auch wenn das
+möglicherweise in aktuelleren Versionen verbessert wurde). Wenn es auf
+eine Nachricht von CVS stößt, die es nicht kennt, wird es hysterisch,
+und Sie landen in einem Mail-Buffer, vorbereitet, um einen Bug-Report
+an den Autor von <command>pcl-cvs</command> abzuschicken. Dummerweise sind aber unter den
+CVS-Nachrichten, die <command>pcl-cvs</command> möglicherweise nicht erkennt, auch
+solche, die bei einer problematischen Integration (Merge) von
+Quelltext entstehen, was zwar selten, aber doch immer mal wieder
+vorkommt.
+   </textblock>
+
+   <textblock>
+Falls <command>pcl-cvs</command> Sie also plötzlich in einen Mail-Buffer umschaltet -
+keine Panik. Lesen Sie den vorbereiteten Text der E-Mail sorgfältig
+durch - die problematische CVS-Ausgabe sollte da irgendwo drin stehen.
+Wenn es aussieht wie ein fehlgeschlagenes merge, dann verwerfen Sie
+die E-Mail einfach, und starten Sie erneut <command>cvs-update</command>. Diesmal sollte
+es keine Probleme mehr geben, da die Integration des problematischen
+Quelltexts bereits stattgefunden hat.
+   </textblock>
+  </section>
+
+  <section>
+<!-- 10.6 Kapitel -->
+   <heading>
+Die Zukunft von pcl-cvs
+   </heading>
+
+
+   <textblock>
+Auch wenn ich den Eindruck erweckt haben mag, dass <command>pcl-cvs</command> kaum
+weiterentwickelt wird und eine riskante Investition sein könnte,
+scheint mir die Instabilität eine zeitweilige Erscheinung zu sein.
+<name>Stefan Monnier</name> reagiert sehr schnell auf Anfragen. (Ich schrieb ihn
+mehrfach an, während ich dieses Kapitel verfaßte, und erhielt immer
+sofort eine Antwort; er kümmert sich bereits um mehrere Fehler in der
+Version 2.9.6.) Sehr wahrscheinlich werden Sie zu dem Zeitpunkt, zu
+dem dieses Buch erschienen ist, bereits eine stabile Version 2.9.7
+oder höher herunterladen können. [Anm.d.Übers.: 2.9.8 ist da.]
+   </textblock>
+
+   <textblock>
+Ich habe sogar eine ermutigende E-Mail zu diesem Thema von <name>Greg Woods</name>
+erhalten, einem früheren Betreuer von <command>pcl-cvs</command>, die ich hier
+wiedergeben möchte:
+   </textblock>
+
+   <file>
+    <title>
+E-Mail
+    </title>
+    <content>
+    <![CDATA[
+From: woods@most.weird.com (Greg A. Woods)
+Subject: Re: Status der pcl-cvs Betreuung, Stabilität der neueren Versionen?
+To: kfogel@read-bean.com
+Date: Sun, 29 Aug. 1999 18:59:19 -0400 (EDT)
+[...]
+
+Ich habe Stefans Versionen inzwischen einige Zeit benutzt und
+tatsächlich meinen eigenen Entwicklungszweig aufgegeben.
+
+Er hat eine Menge wirklich gute Arbeit in PCL-CVS gesteckt, und
+abgesehen von einigen wenigen Merkwürdigkeiten in Version 2.9.6, die
+ich inzwischen täglich nutze, ist es wirklich benutzbar (und es ist so
+unendlich viel benutzbarer mit aktuellen CVS-Versionen als die
+Version, die in der CVS-Distribution enthalten war! ;-).
+
+Ich habe eine Datei pcl-cvs.README auf meinem ftp-Server abgelegt, in
+der steht, dass die Dateien wirklich ziemlich alt sind (zumindest nach
+Internet-Zeit ;-), und einen Verweis auf Stefans ftp-Server angegeben.
+[...]
+     ]]>
+    </content>
+   </file>
+
+   <textblock>
+In einer späteren E-Mail sagte <name>Greg</name>, dass die FSF erwägt, <command>pcl-cvs</command> in
+ihre nächsten Ausgabe von Emacs (20.5) als Bestandteil zu integrieren,
+was den größten Teil der oben stehenden Installationshilfen
+überflüssig machen würde. Seufz. Manchmal ist es wirklich schwierig,
+mit der Entwicklung freier Software Schritt zu halten.
+   </textblock>
+  </section>
+ </split>
+
+
+
+ <split>
+  <section>
+<!-- 10.7 Kapitel -->
+   <heading>
+cvsutils: allgemeine Werkzeuge zur Nutzung mit CVS
+   </heading>
+
+
+   <textblock>
+Benötigt: Perl
+   </textblock>
+
+   <textblock>
+URLs:
+   </textblock>
+
+   <quotation>
+<ref lang="en" url="http://www.red-bean.com/cvsutils/">http://www.red-bean.com/cvsutils/</ref>
+<ref lang="en" url="http://www.red-bean.com/cvsutils/releases/">http://www.red-bean.com/cvsutils/releases/</ref>
+   </quotation>
+
+   <textblock>
+Autoren: <name>Tom Tromey</name> (ursprünglicher Autor) und <name>Pavel Roskin</name>
+(momentaner Betreuer)
+   </textblock>
+
+   <textblock>
+Die Sammlung kleiner Programme namens <command>cvsutils</command> arbeitet meist (aber
+nicht immer) ohne aktive Verbindung in der CVS-Arbeitskopie.
+Arbeitsgänge ohne aktive Verbindung werden ohne Kontakt zum Archiv
+durchgeführt, belassen die Arbeitskopie jedoch in einem Zustand, der
+jederzeit einen problemlosen späteren Kontakt zum Archiv
+gewährleistet. Dieses Verhalten kann sehr praktisch sein, wenn Ihre
+Netzwerkverbindung sehr langsam oder unzuverlässig ist.
+   </textblock>
+
+   <textblock>
+Die <command>cvsutils</command>-Programme habe ich unten in der (meiner Meinung nach)
+ungefähren Reihenfolge ihrer Nützlichkeit aufgelistet, die
+nützlichsten zuerst. Zufällig entspricht diese Reihenfolge auch der
+Reihenfolge der Sicherheit der Programme. Sicherheit ist hier ein
+Thema, denn einige der Programme können durch ihren normalen
+Ablauf den Verlust lokaler Veränderungen oder Dateien in Ihrer Arbeitskopie
+bewirken. Lesen Sie daher zunächst sorgfältig die Beschreibungen
+durch, bevor Sie diese Werkzeuge benutzen.
+   </textblock>
+
+   <textblock>
+Bemerkung:
+   </textblock>
+
+   <quotation>
+Diese Dokumentation ist auf dem Stand von Version 0.1.4. Lesen Sie
+sicherheitshalber die Datei README in neueren Versionen, um die
+aktuellsten Informationen zu erhalten.
+   </quotation>
+
+   <textblock>
+<strong><command>cvsu</command></strong>
+   </textblock>
+
+   <textblock>
+Gefahr: Keine<br/>
+Kontakt zum Archiv: Nein
+   </textblock>
+
+   <textblock>
+Dieses Werkzeug führt ein simuliertes <command>cvs update</command> ohne Kontakt zum
+Archiv durch, indem es die Zeitstempel aller Dateien mit den
+Aufzeichnungen in <command>CVS/Entries</command> vergleicht. So können Sie feststellen,
+welche Dateien lokal verändert wurden und welche nicht von CVS erfasst
+sind. Anders als <command>cvs update</command> aktualisiert <command>cvsu</command> Ihre Dateien nicht aus
+dem Archiv.
+   </textblock>
+
+   <textblock>
+Obwohl es diverse Optionen versteht, wird <command>cvsu</command> meistens ohne jegliche
+Option gestartet:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvsu
+    </user>
+    <output>
+? ./bar
+? ./chapter-10.html
+M ./chapter-10.sgml
+D ./out
+? ./safe.sh
+D ./tools
+    </output>
+   </shell>
+
+   <textblock>
+Die Kürzel auf der linken Seite entsprechen denen von <command>cvs update</command>,
+außer dass <command>D</command> hier ein Verzeichnis symbolisiert. Dieses Beispiel zeigt
+leider nicht, wie <command>cvsu</command> sofort durchlief, wohingegen ein normales <command>cvs
+update</command> bei meiner lahmen Modemverbindung eine halbe Minute oder so
+gebraucht hätte.
+   </textblock>
+
+   <textblock>
+Geben Sie
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvsu --help
+    </user>
+   </shell>
+
+   <textblock>
+ein, um eine Liste möglicher Optionen zu erhalten.
+   </textblock>
+
+
+   <textblock>
+<strong><command>cvsdo</command></strong>
+   </textblock>
+
+   <textblock>
+Gefahr: Sehr gering<br/>
+Kontakt zum Archiv: Nein
+   </textblock>
+
+   <textblock>
+Dieser Befehl kann die Effekte von <command>cvs add</command> und <command>cvs remove</command> auf die
+Arbeitskopie simulieren, ohne dabei eine Verbindung zum Archiv
+aufzubauen. Natürlich müssten Sie dann noch immer die Änderungen per
+<command>commit</command> übermitteln, damit sie auch im Archiv gültig werden, aber
+wenigstens die Kommandos <command>add</command> und <command>remove</command> selbst können dadurch
+beschleunigt werden. Und so wird es benutzt:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvsdo add DATEINAME
+    </user>
+   </shell>
+
+   <textblock>
+oder
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvsdo remove DATEINAME
+    </user>
+   </shell>
+
+   <textblock>
+Um eine Liste weiterer möglicher Optionen zu bekommen, benutzen Sie:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvsdo --help
+    </user>
+   </shell>
+
+
+   <textblock>
+<strong><command>cvschroot</command></strong>
+   </textblock>
+
+   <textblock>
+Gefahr: Gering<br/>
+Kontakt zum Archiv: Nein
+   </textblock>
+
+   <textblock>
+Dieses Werkzeug kann die Arbeitskopie auf ein neues Archiv umstellen,
+falls das Archiv auf einen anderen Server umziehen sollte. Wenn dieser
+Fall eintritt, dann ändert sich keine der Revisionen, aber alle
+Arbeitskopien müssen ihre <command>CVS/Root</command>-(und möglicherweise
+<command>CVS/Repository</command>-)Dateien aktualisieren, damit sie den neuen Standort
+des Archivs beinhalten. Die Benutzung von <command>cvschroot</command> ist viel schneller
+als ein komplett neuer <command>Checkout</command>. Ein weiterer Vorteil ist, dass Sie
+lokale Änderungen nicht verlieren. Benutzung:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvschroot NEUES_ARCHIV
+    </user>
+   </shell>
+
+   <textblock>
+Zum Beispiel:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvschroot
+    </user>
+    <output>
+:pserver:benutzer@neues.archiv.wo.auch.immer.com:/home/cvs/projekt
+    </output>
+   </shell>
+
+   <textblock>
+<strong><command>cvsrmadm</command></strong>
+   </textblock>
+
+   <textblock>
+Gefahr: Mäßig<br/>
+Kontakt zum Archiv: Nein
+   </textblock>
+
+   <textblock>
+Entfernt alle <command>CVS/</command>-Verwaltungsverzeichnisse in Ihrer Arbeitskopie und
+hinterlässt einen Dateibaum, der dem gleicht, der durch <command>cvs export</command>
+erzeugt würde. Auch wenn Sie durch diesen Befehl keine lokalen
+Änderungen verlieren, wird Ihre Arbeitskopie anschließend keine
+CVS-Arbeitskopie mehr sein.
+   </textblock>
+
+   <textblock>
+Mit Bedacht verwenden!
+   </textblock>
+
+
+   <textblock>
+<strong><command>cvspurge</command></strong>
+   </textblock>
+
+   <textblock>
+Gefahr: Mittel<br/>
+Kontakt zum Archiv: Nein
+   </textblock>
+
+   <textblock>
+Dieser Befehl löscht alle nicht von CVS kontrollierten Dateien aus
+Ihrer Arbeitskopie. Es nimmt keine lokalen Änderungen an von CVS
+kontrollierten Dateien zurück.
+   </textblock>
+
+   <textblock>
+Mit Bedacht verwenden!
+   </textblock>
+
+
+   <textblock>
+<strong><command>cvsdiscard</command></strong>
+   </textblock>
+
+   <textblock>
+Gefahr: Recht beträchtlich<br/>
+Kontakt zum Archiv: Unter Umständen
+   </textblock>
+
+   <textblock>
+Dies ist das Gegenstück zu <command>cvspurge</command>. Anstatt unbekannte Dateien unter
+Beibehaltung lokaler Änderungen zu löschen, verwirft es alle lokalen
+Änderungen und behält unbekannte Dateien bei.
+   </textblock>
+
+   <textblock>
+Mit extremer Vorsicht verwenden!
+   </textblock>
+
+
+   <textblock>
+<strong><command>cvsco</command></strong>
+   </textblock>
+
+   <textblock>
+Gefahr: Groß<br/>
+Kontakt zum Archiv: Unter Umständen
+   </textblock>
+
+   <textblock>
+Macht dasselbe wie <command>cvspurge</command> und <command>cvsdiscard</command> zusammen! Es löscht alle
+nicht von CVS kontrollierten Dateien aus Ihrer Arbeitskopie und
+verwirft alle lokalen Änderungen.
+   </textblock>
+
+   <textblock>
+Nur mit wirklich paranoider Vorsicht anwenden!
+   </textblock>
+
+
+   <textblock>
+<strong><command>cvsdate</command></strong>
+   </textblock>
+
+   <textblock>
+Dieses Programm ist scheinbar unvollständig und wird möglicherweise
+niemals fertig gestellt. (Siehe die Datei README für Details.)
+   </textblock>
+  </section>
+ </split>
+
+
+
+ <split>
+  <section>
+<!-- 10.8 Kapitel -->
+   <heading>
+cvs2cl.pl: die Erzeugung von ChangeLogs im GNU-Stil aus CVS Logs
+   </heading>
+
+
+   <textblock>
+Benötigt: Perl
+   </textblock>
+
+   <quotation>
+URL: <ref lang="en" url="http://www.red-bean.com/~kfogel/cvs2cl.shtml">URL: http://www.red-bean.com/~kfogel/cvs2cl.shtml</ref>
+   </quotation>
+
+   <textblock>
+Das Programm <command>cvs2cl.pl</command> dient zur Verdichtung und Umformatierung der
+Ausgabe von <command>cvs log</command>, damit daraus eine <command>ChangeLog</command>-Datei im GNU-Stil
+erzeugt werden kann. ChangeLogs sind chronologisch geordnete
+Dokumente, welche die Veränderungen eines Projektes über die Zeit in
+einem Format beinhalten, das speziell auf leichte Lesbarkeit durch den
+Benutzer ausgerichtet ist (siehe untenstehende Beispiele).
+   </textblock>
+
+   <textblock>
+Das Problem mit dem Befehl <command>cvs log</command> ist, dass er seine Ausgabe
+dateiweise organisiert, ohne zu berücksichtigen, dass dieselbe
+Log-Mitteilung, wenn sie fast im selben Moment in diversen Dateien
+auftaucht, impliziert, dass alle betroffenen Dateien Bestandteil eines
+einzigen <command>Commit</command> waren. Daher ist die Betrachtung der <command>cvs log</command>-Ausgabe
+in der Absicht, einen Überblick über ein Projekt zu erhalten, von
+vornherein zum Scheitern verurteilt - man kann nur den
+Entwicklungshergang einzelner Dateien zuverlässig verfolgen.
+   </textblock>
+
+   <textblock>
+In dem <command>ChangeLog</command>, das <command>cvs2cl.pl</command> produziert, werden identische
+Log-Mitteilungen zusammengefasst, sodass ein <command>commit</command>, der mehrere
+Dateien umfaßt, auch nur als einzelner Eintrag auftaucht. Zum
+Beispiel:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvs3cl.pl
+    </user>
+    <output>
+cvs log: logging .
+cvs log: logging a-verzeichnis
+cvs log: logging a-verzeichnis/unterverzeichnis
+cvs log: logging b-verzeichnis
+    </output>
+    <user>
+cat ChangeLog
+    </user>
+    <output>
+...
+1999-08-29 05:44 jrandom
+*README (1.6), hello.c (2.1), a-verzeichnis/irgendwas.c (2.1),
+a-verzeichnis/unterverzeichnis/fisch.c (2.1): Ich committe mit pcl-cvs 2.9, weil mir danach ist.
+1999-08-23 22:48 jrandom
+*README (1.5): [no log message]
+1999-08-22 19:34 jrandom
+*README (1.4): triviale Änderung
+...
+    </output>
+    <user>
+    </user>
+   </shell>
+
+   <textblock>
+Der erste Eintrag zeigt, dass der <command>Commit</command> von vier Dateien auf einmal
+mit der Log-Mitteilung: <strong>Ich committe mit pcl-cvs 2.9, weil mir danach
+ist.</strong> vorgenommen wurde. (Die Option <command>-r</command> wurde benutzt, um die
+Revisionsnummer jeder Datei mit dem Log-Eintrag anzuzeigen.)
+   </textblock>
+
+   <textblock>
+Wie CVS selbst, nimmt auch <command>cvs2cl.pl</command> das aktuelle Verzeichnis als
+implizites Argument, kann aber auch mit bestimmten Dateien arbeiten,
+wenn diese auf der Kommandozeile angegeben werden. Es folgen einige
+der am häufigsten benutzten Optionen.
+   </textblock>
+
+   <textblock>
+<command>-h, --help</command>
+   </textblock>
+
+   <quotation>
+Zeigt eine kurze Hilfe zur Benutzung des Programms an.
+   </quotation>
+
+   <textblock>
+<command>-r, --revisions</command>
+   </textblock>
+
+   <quotation>
+Listet Revisionsnummern in der Ausgabe mit auf (s.o.). In Verbindung
+mit der Option <command>-b</command> werden Entwicklungszweige als <command>ZWEIGNAME.N</command> gelistet,
+wobei <command>N</command> die Revision auf dem Zweig ist.
+   </quotation>
+
+   <textblock>
+<command>-t, --tags</command>
+   </textblock>
+
+   <quotation>
+Listet symbolische Namen bei allen Revisionen, die welche besitzen, mit auf.
+   </quotation>
+
+   <textblock>
+<command>-b, --branches</command>
+   </textblock>
+
+   <quotation>
+Listet den Namen des Entwicklungszweiges für alle Revisionen auf
+diesem Zweig mit auf (siehe auch <command>-r</command>).
+   </quotation>
+
+   <textblock>
+<command>-g OPTIONEN, --global-opts OPTIONEN</command>
+   </textblock>
+
+   <quotation>
+Übergibt OPTIONEN als globale Argumente an cvs. Intern ruft <command>cvs2cl.pl</command>
+cvs auf, um die unformatierten Log-Daten zu erhalten; dabei werden
+OPTIONEN direkt hinter den cvs-Aufruf geschrieben. Um beispielsweise
+eine Beschränkung auf wichtige Meldungen und Kompression zu erreichen,
+kann man folgenden Aufruf verwenden:
+   </quotation>
+
+   <shell>
+    <user path="~">
+cvs2cl.pl -g "-Q -z3"
+    </user>
+   </shell>
+
+   <textblock>
+<command>-l OPTIONEN, --log-opts OPTIONEN</command>
+   </textblock>
+
+   <quotation>
+Wie <command>-g</command>, nur dass die OPTIONEN hier als Befehlsoptionen, nicht global,
+übergeben werden. Um beispielsweise ein <command>ChangeLog</command> zu erzeugen, das nur
+<command>Commits</command> zwischen dem 26. Juli und dem 15. August anzeigt, könnten
+Sie folgenden Befehl verwenden:
+   </quotation>
+
+   <shell>
+    <user path="~">
+cvs2cl.pl -l "'-d1999-07-26&lt;1999-08-15'"
+    </user>
+   </shell>
+
+   <quotation>
+Beachten Sie die doppelten Anführungszeichen - diese sind in Unix
+notwendig, da die Shell, die <command>cvs log</command> innerhalb von <command>cvs2cl.pl</command> aufruft,
+das <strong>&lt;</strong>-Zeichen sonst als Zeichen zur Eingabeumleitung interpretieren
+würde. Daher müssen die Anführungszeichen als Teil des Arguments
+übergeben werden, was eine zweite <strong>Schicht</strong>
+von Anführungszeichen notwendig macht.
+   </quotation>
+
+   <textblock>
+<command>-d, --distributed</command>
+   </textblock>
+
+   <quotation>
+Schreibe ein eigenes <command>ChangeLog</command> in jedes Unterverzeichnis, das nur die
+<command>Commits</command> in jenem Verzeichnis beinhaltet. (Im Gegensatz zur Erzeugung
+eines einzigen <command>ChangeLogs</command>, welches das aktuelle Verzeichnis und alle
+Unterverzeichnisse desselben beinhaltet.)
+   </quotation>
+  </section>
+ </split>
+
+
+ <split>
+  <section>
+<!-- 10.9 Kapitel -->
+   <heading>
+cvslock: Sperren von Archiven
+   </heading>
+
+
+   <textblock>
+Benötigt: C-Compiler zur Installation; nichts Besonderes zur Laufzeit
+   </textblock>
+
+   <quotation>
+URL: <ref url="ftp://riemann.iam.uni-bonn.de/pub/users/roessler/cvslock/">ftp://riemann.iam.uni-bonn.de/pub/users/roessler/cvslock/</ref>
+   </quotation>
+
+   <textblock>
+Operationen auf dem Archiv (egal ob über cvs oder direkt an seinen
+Dateien ausgeführte) geschehen normalerweise nicht atomar. Das
+Programm <command>cvslock</command> sperrt ein CVS-Archiv (für Lese- oder Schreibzugriff)
+in derselben Art, wie CVS das auch macht, sodass CVS die Sperrung
+beachtet. Das kann beispielsweise nützlich sein, wenn Sie eine Kopie
+des gesamten Archivs machen möchten, dabei aber vermeiden wollen, dass
+Sie eventuell gerade laufende <command>Commit</command>-Vorgänge nur teilweise
+mitbekommen oder die <command>Lock</command>-Dateien anderer Benutzer mit kopieren.
+   </textblock>
+
+   <textblock>
+Das <command>cvslock</command>-Archiv ist sehr gut eingerichtet und kann wie jedes
+GNU-Programm installiert werden. Hier ist der Mitschnitt eines
+Installationsvorgangs:
+   </textblock>
+
+   <shell>
+    <user path="~">
+zcat cvslock-0.1.tar.gz | tar xvf -
+    </user>
+    <output>
+cvslock-0.1/
+cvslock-0.1/Makefile.in
+cvslock-0.1/README
+cvslock-0.1/COPYING
+cvslock-0.1/Makefile.am
+cvslock-0.1/acconfig.h
+cvslock-0.1/aclocal.m4
+cvslock-0.1/config.h.in
+cvslock-0.1/configure
+cvslock-0.1/configure.in
+cvslock-0.1/install-sh
+cvslock-0.1/missing
+cvslock-0.1/mkinstalldirs
+cvslock-0.1/stamp-h.in
+cvslock-0.1/cvslock.c
+cvslock-0.1/cvslock.1
+cvslock-0.1/snprintf.c
+cvslock-0.1/cvslssh
+cvslock-0.1/VERSION
+    </output>
+    <user>
+cd cvslock-0.1
+    </user>
+    <user>
+./configure
+    </user>
+    <output>
+...
+    </output>
+    <user>
+make
+    </user>
+    <output>
+gcc -DHAVE_CONFIG_H -I. -I. -I. -g -O2 -c cvslock.c
+gcc -g -O2 -o cvslock cvslock.o
+    </output>
+    <user>
+make install
+    </user>
+    <output>
+...
+    </output>
+    <user>
+    </user>
+   </shell>
+
+   <textblock>
+(Beachten Sie, dass Sie den Befehl <command>make install</command> möglicherweise als
+Superuser (<strong>root</strong>) ausführen müssen.)
+   </textblock>
+
+   <textblock>
+Nun ist <command>cvslock</command> als <command>/usr/local/bin/cvslock</command> installiert. Wenn Sie es
+aufrufen, können Sie das Archiv mit <command>-d</command> oder über die
+<command>$CVSROOT</command>-Umgebungsvariable angeben, genau wie bei CVS selbst auch (das
+folgende Beispiel nutzt <command>-d</command> ). Das einzige benötigte Argument ist der
+Name des Verzeichnisses, das gesperrt werden soll, relativ zum
+Hauptverzeichnis des Archivs. Dieses Verzeichnis und alle
+Unterverzeichnisse desselben werden dann gesperrt. In diesem Beispiel
+gibt es keine Unterverzeichnisse, daher wird nur eine Lock-Datei
+erzeugt:
+   </textblock>
+
+   <shell>
+    <user path="~">
+ls /usr/local/archiv/projekt/b-verzeichnis/
+    </user>
+    <output>
+random.c,v
+    </output>
+    <user>
+cvslock -d /usr/local/archiv projekt/b-verzeichnis
+    </user>
+    <user>
+ls /usr/local/archiv/projekt/b-verzeichnis/
+    </user>
+    <output>
+#cvs.rfl.cvslock.floss.27378 random.c,v
+    </output>
+    <user>
+cvslock -u -p 27378 -d /usr/local/archiv projekt/b-verzeichnis
+    </user>
+    <user>
+ls /usr/local/archiv/projekt/b-verzeichnis/
+    </user>
+    <output>
+random.c,v
+    </output>
+    <user>
+    </user>
+   </shell>
+
+   <textblock>
+Beachten Sie, dass ich <command>-p 27378</command> angeben musste, als ich (mittels <command>-u</command>
+für <command>unlock</command>) die Sperre wieder aufhob. Das kommt daher, dass <command>cvslock</command>
+Unix-Prozessnummern zur Namensvergabe bei der Sperrung verwendet, um
+sicherzustellen, dass die Namen der Lock-Dateien einzigartig sind.
+Wenn Sie die Sperre nun entfernen, müssen Sie <command>cvslock</command> (mittels der
+Option <command>-p</command>) mitteilen, welche Instanz Sie aufheben möchten, auch wenn
+nur eine existiert. (Sie können jedoch <command>-p</command> auch ohne <command>-u</command> verwenden.)
+   </textblock>
+
+   <textblock>
+Wenn Sie vorhaben, eine Weile im Archiv zu arbeiten und einiges direkt
+im Dateisystem zu ändern, dann können Sie die Option <command>-s</command> verwenden, um
+sich von <command>cvslock</command> eine neue Shell starten zu lassen. In diesem Fall
+benutzt es die <command>$SHELL</command>-Umgebungsvariable in Ihrer aktuellen Shell, um
+herauszufinden, welche Shell verwendet werden soll:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvslock -s -d /usr/local/archiv projekt
+    </user>
+   </shell>
+
+   <textblock>
+Die Sperre bleibt dann genau so lange bestehen, bis Sie die Shell
+verlassen, wonach sie automatisch aufgehoben wird. Sie können auch die
+<command>-c</command>-Option verwenden, um einen Befehl auszuführen, während das Archiv
+gesperrt ist. Genau wie bei <command>-s</command> werden zunächst die Lock-Dateien
+erzeugt, dann wird der Befehl ausgeführt und nach dessen Ende die
+Sperre wieder entfernt. Im folgenden Beispiel sperren wir das Archiv
+gerade lange genug, um eine Liste der Lock-Dateien anzeigen zu können:
+   </textblock>
+
+   <shell>
+    <user path="~">
+cvslock -c 'find . -name "*cvslock*" -print' -d /usr/local/archiv projekt
+    </user>
+    <output>
+cvslock: '/usr/local/archiv/projekt' locked successfully.
+cvslock: starting'find . -name "*cvslock*" -print' ...
+./a-verzeichnis/unterverzeichnis/#cvs.rfl.cvslock.floss.27452
+./a-verzeichnis/#cvs.rfl.cvslock.floss.27452
+./b-verzeichnis/#cvs.rfl.cvslock.floss.27452
+./#cvs.rfl.cvslock.floss.27452
+    </output>
+    <user>
+find /usr/local/archiv/projekt -name "*cvslock*" -print
+    </user>
+    <user>
+    </user>
+   </shell>
+
+   <textblock>
+Das Kommando (das Argument zur Option <command>-c</command>) wird mit dem angegebenen
+Archivverzeichnis als Arbeitsverzeichnis gestartet.
+   </textblock>
+
+   <textblock>
+Normalerweise erzeugt <command>cvslock</command> eine Lesesperre. Wenn gegen
+Schreibzugriff gesperrt werden soll, dann geht das mit der Option <command>-W</command>.
+(Sie können für die Lesesperrung auch <command>-R</command> angeben, aber das ist ja
+sowieso standardmäßig aktiv.) Entfernen Sie immer alle Sperren, wenn
+Sie mit Ihrer Arbeit fertig sind, sodass andere CVS-Prozesse nicht
+unnötig warten müssen.
+   </textblock>
+
+   <textblock>
+Beachten Sie, dass <command>cvslock</command> auf der Maschine laufen muss, auf der sich
+das Archiv befindet - es gibt keine Möglichkeit, ein externes Archiv
+anzugeben. (Weitere Informationen erhalten Sie mit dem Befehl <command>man
+cvslock</command>, wodurch eine Anleitung angezeigt wird, die beim <command>make install</command> für
+<command>cvslock</command> mit installiert wurde.)
+   </textblock>
+  </section>
+ </split>
+
+
+
+ <split>
+  <section>
+<!-- 10.10 Kapitel -->
+   <heading>
+Weitere Pakete
+   </heading>
+
+
+   <textblock>
+Eine Vielzahl anderer Softwarepakete von Drittanbietern ist für CVS
+verfügbar. Es folgen Hinweise auf einige von ihnen.
+   </textblock>
+
+
+   <textblock>
+CVSUp (Bestandteil des FreeBSD-Projektes)
+   </textblock>
+
+   <textblock>
+<command>CVSUp</command> ist ein effizientes Werkzeug zum Spiegeln1 von Dateien im
+allgemeinen mit spezieller Unterstützung für das Spiegeln von
+CVS-Archiven. Das Betriebssystem <name>FreeBSD</name> benutzt dieses Programm, um
+Aktualisierungen seines Hauptarchivs an andere weiterzuverteilen,
+sodass die Benutzer bequem auf dem neuesten Stand bleiben können.
+   </textblock>
+
+   <textblock>
+Für mehr und allgemeinere Informationen zu <command>CVSUp</command> schauen Sie auf
+<ref lang="en" url="http://www.polstra.com/projects/freeware/CVSup/">http://www.polstra.com/projects/freeware/CVSup/</ref> nach.
+   </textblock>
+
+   <textblock>
+Informationen speziell zu <name>FreeBSD</name> gibt es unter
+<ref lang="en" url="http://www.freebsd.org/handbook/synching.html#CVSUP">http://www.freebsd.org/handbook/synching.html#CVSUP</ref>.
+   </textblock>
+
+
+   <textblock>
+CVSWeb: Ein Web-Iterface für CVS-Archive
+   </textblock>
+
+   <textblock>
+<command>CVSWeb</command> stellt ein Web-Interface zur Verfügung, mit dessen Hilfe man
+sich in CVS-Archiven umsehen kann. Ein passenderer Name wäre wohl
+<command>RCSWeb</command>, da es Ihnen genau genommen erlaubt, bestimmte Revisionen
+direkt anzusehen, mitsamt Log-Mitteilungen und <command>Diffs</command>. Obwohl ich
+selber es nie als besonders ansprechend empfunden habe, muss ich
+zugeben, dass es recht intuitiv ist, und eine Menge Server benutzen
+es.
+   </textblock>
+
+   <textblock>
+Obschon die Software ursprünglich von <name>Bill Fenner</name> geschrieben wurde,
+steht die Version, die momentan am aktivsten weiterentwickelt wird,
+offensichtlich unter der Obhut von <name>Henner Zeller</name>, unter
+<ref lang="en" url="http://stud.fh-heilbronn.de/~zeller/cgi/cvsweb.cgi/">http://stud.fh-heilbronn.de/~zeller/cgi/cvsweb.cgi/</ref>.
+   </textblock>
+
+   <textblock>
+Möglicherweise möchten Sie auch Fenners ursprüngliche Webseite unter
+<ref lang="en" url="http://www.freebsd.org/~fenner/cvsweb/">http://www.freebsd.org/~fenner/cvsweb/</ref> und die Aufbereitung der
+<command>CVSWeb</command>-Szene von <name>Cyclic Software</name> unter
+<ref lang="en" url="http://www.cyclic.com/cyclic-pages/web-cvsweb.html">http://www.cyclic.com/cyclic-pages/web-cvsweb.html</ref> besuchen.
+   </textblock>
+
+   <textblock>
+Das CVS-contrib/-Verzeichnis
+   </textblock>
+
+   <textblock>
+Wie schon in Kapitel 4 erwähnt, wird eine Reihe von Werkzeugen von
+Drittanbietern zusammen mit CVS geliefert und ist dort im Verzeichnis
+<command>contrib/</command> zusammengefasst. Auch wenn mir keine formelle Regel bekannt
+ist, welche Werkzeuge mit CVS vertrieben werden, könnte dies ein
+laufender Versuch sein, die am häufigsten mit CVS verwendeten
+Werkzeuge zu finden und dort zu sammeln, sodass man stets weiß, wo man
+suchen muss. Bis es so weit ist, ist der beste Weg, um solche
+Programme zu finden, immer noch ein Blick auf die diversen
+CVS-Webseiten und das Fragen auf der Mailingliste.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 10.11 Kapitel -->
+   <heading>
+Eigene Werkzeuge schreiben
+   </heading>
+
+
+   <textblock>
+CVS mag zuweilen wie ein wüster Haufen improvisierter Standards
+erscheinen. Da sind das RCS-Format, diverse Ausgabeformate (<command>history</command>,
+<command>annotate</command>, <command>log</command>, <command>update</command> usw.), diverse Formate für die
+Verwaltungsdateien der Archive und Arbeitskopien, das
+Client/Server-Protokoll, das Lock-Datei-Protokoll ... (Und? Ist es
+Ihnen schon langweilig geworden? Wissen Sie, Ich könnte fröhlich
+weitermachen.)
+   </textblock>
+
+   <textblock>
+Erfreulicherweise bleiben diese Standards von Version zu Version recht
+konsistent - wenn Sie also ein Programm zur Nutzung mit CVS schreiben,
+dann brauchen Sie zumindest nicht zu befürchten, auf ein bewegliches
+Ziel schießen zu müssen. Zu jedem internen Standard gibt es
+üblicherweise eine Reihe von Leuten auf der
+<name email="infocvs@gnu.org">infocvs@gnu.org</name>-Mailingliste, die sich mit diesem sehr gut auskennen.
+(Einige von ihnen halfen mir weiter, während ich an diesem Buch
+schrieb.) Weiterhin ist da die Dokumentation (in Englisch), die mit
+der CVS-Distribution geliefert wird (insbesondere <command>doc/cvs.texinfo</command>,
+<command>doc/cvsclient.texi</command> und <command>doc/RCSFILES</command>). Zuletzt ist da immer noch der
+CVS-Quelltext selbst, das letzte Wort zu jeder Frage bezüglich
+Implementation oder Verhalten von CVS.
+   </textblock>
+
+   <textblock>
+Mit all diesen Informationen zu Ihrer Verfügung gibt es keinen Grund
+zu zögern. Wenn Sie sich irgendein Programm vorstellen können, das Ihr
+Leben mit CVS einfacher machen könnte, dann los, schreiben Sie es -
+die Chancen stehen gut, dass andere Leute das auch schon immer haben
+wollten. Anders als eine Veränderung an CVS selbst kann ein kleines
+eigenständiges Hilfsprogramm sich sehr schnell weit verbreiten, was
+schnellere Rückmeldung für seinen Autor und zügigere Behebung von
+Fehlern für alle Benutzer bedeutet.
+   </textblock>
+
+
+
+
+   <textblock>
+1. Anm. d. Übers: Spiegeln (mirroring): das Erstellen des Abbildes
+einer kompletten Verzeichnisstruktur an anderer Stelle
+   </textblock>
+  </section>
+ </split>
+</chapter>

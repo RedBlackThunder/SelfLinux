@@ -1,0 +1,6668 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>CVS-Referenz</title>
+
+ <author>
+  <name>Karl Fogel</name>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GPL</license>
+ <index>cvs_buch_kapitel_9</index>
+<!-- 9. Kapitel -->
+ <description>
+  <textblock>
+Der folgende Text enthält das Kapitel 9 der
+deutschen Übersetzung des Buches "Open Source Development with CVS",
+welche unter der GNU Public License veröffentlicht wurden.
+  </textblock>
+
+  <textblock>
+Das SelfLinux-Team
+  </textblock>
+ </description>
+
+
+ <split>
+  <section>
+<!-- 9.1 Kapitel -->
+   <heading>
+Organisation und Konventionen
+   </heading>
+
+   <textblock>
+Dieses Kapitel ist eine vollständige Referenz für CVS-Kommandos,
+Archivverwaltungsdateien, Schlüsselwortersetzung,
+Laufzeit-Kontrolldateien, Arbeitskopien und Umgebungsvariablen -
+alles, was in CVS Version 1.10.7 (genauer: Stand 20. August 1999)
+enthalten ist.
+   </textblock>
+
+   <textblock>
+Die Kommandos sind der wichtigste Teil jeder CVS-Referenz, also
+beginnen wir damit:
+   </textblock>
+
+  </section>
+
+  <section>
+<!-- 9.2 Kapitel -->
+   <heading>
+Kommandos
+   </heading>
+
+   <textblock>
+Dieser Abschnitt ist alphabetisch geordnet, um es einfacher für Sie zu
+machen, einen bestimmten Befehl oder eine Option zu finden. Die
+folgenden Konventionen werden verwendet:
+   </textblock>
+
+   <textblock>
+Argumente zu Kommandos und Optionen sind in Großbuchstaben geschrieben
+und kursiv in der Zusammenfassung, die jede Erklärung einleitet.
+Optionale Teile werden in eckigen Klammern [] geschrieben. Wenn aus
+einer Menge ausgewählt werden muss, werden die Möglichkeiten durch ein
+Pipe-Symbol getrennt: <strong>x|y|z</strong>. Der Plural oder Punktierung <strong>...</strong>
+deuten auf mögliche Mehrfachoptionen hin, die üblicherweise durch
+Leerzeichen getrennt sind. Zum Beispiel bedeutet DATEIEN eine oder
+mehrere Dateien. Der Eintrag [&amp;MOD...] ist also ein Und-Zeichen, das
+direkt von einem Modulnamen gefolgt wird, dann ein Leerzeichen und
+dann evtl. noch ein Und-Zeichen mit Modulnamen und so weiter - kein
+Mal oder häufiger. (Hier wurde die Punktierung verwendet, weil ein
+Plural nicht eindeutig ausgesagt hätte, ob das Und-Zeichen nur beim
+ersten Modul notwendig ist oder bei allen.) Wenn ein Plural in
+Klammern steht, wie beispielsweise bei DATEI(EN), dann bedeutet das,
+dass hier zwar mehrere Argumente stehen können, üblicherweise aber nur
+eines verwendet wird. REV wird oft als Platzhalter für einen
+Revisionsbezeichner verwendet. Letzterer ist üblicherweise lediglich
+eine Revisionsnummer oder ein Bezeichner. In ganz seltenen Fällen ist
+es möglich, dass nur die eine oder die andere Variante verwendet
+werden kann, aber diese Fälle werden im Text besonders angemerkt.
+   </textblock>
+
+  </section>
+
+  <section>
+<!-- 9.3 Kapitel -->
+   <heading>
+Typische Eigenschaften von CVS-Kommandos
+   </heading>
+
+   <textblock>
+CVS-Kommandos setzen sich wie folgt zusammen:
+   </textblock>
+
+   <textblock>
+<command>cvs [GLOBALE_OPTIONEN] KOMMANDO [OPTIONEN] [DATEIEN]</command>
+   </textblock>
+
+   <textblock>
+Der zweite Satz von Optionen wird bisweilen <strong>Kommandooptionen</strong>
+genannt. Weil es aber so viele davon gibt, werden sie hier
+üblicherweise nur <strong>Optionen</strong> genannt, um etwas Platz zu sparen.
+   </textblock>
+
+   <textblock>
+Viele Kommandos sind dazu gedacht, in einer Arbeitskopie angewendet zu
+werden, und können daher ohne Dateiargument ausgeführt werden. Diese
+Kommandos beziehen sich dann standardmäßig auf das derzeitige
+Verzeichnis und alle darin enthaltenen Verzeichnisse. Wenn ich mich
+also im Text auf die <strong>Datei</strong> oder <strong>Dateien</strong> beziehe, dann ist die
+Rede von den Dateien, auf denen CVS-Operationen ausführt. Je nachdem,
+wie Sie CVS aufgerufen haben, können diese Dateien also in der
+Kommandozeile aufgeführt sein oder auch nicht.
+   </textblock>
+
+   <section>
+<!-- 9.3.1 Kapitel -->
+    <heading>
+Datumsformate
+    </heading>
+
+    <textblock>
+Viele Optionen benötigen ein Datumsargument. CVS akzeptiert eine große
+Menge an unterschiedlichen Datumsformaten - zu viele, um sie hier
+aufzulisten. Im Zweifelsfall halten Sie sich an das ISO 8601-Format:
+    </textblock>
+
+    <textblock>
+<command>1999-08-23</command>
+    </textblock>
+
+    <textblock>
+Das bedeutet 23. August 1999 (genau genommen ist <strong>23 August 1999</strong>
+ebenfalls eine absolut gültige Datumsbezeichnung, solange Sie nicht
+vergessen, sie in Anführungszeichen zu setzen). Wenn Sie außerdem
+eine Tageszeit angeben müssen, dann geht das so:
+    </textblock>
+
+    <textblock>
+<command>"1999-08-23 21:20:30 CET"</command>
+    </textblock>
+
+    <textblock>
+Sie können sogar übliche englische Wörter als Zeitangabe einsetzen,
+wie zum Beispiel <command>now</command> (jetzt), <command>yesterday</command> (gestern) oder sogar <command>12
+days ago</command>(vor 12 Tagen). Im Allgemeinen können Sie gefahrlos mit
+Datumsformaten experimentieren; wenn CVS Ihre Datumsangabe überhaupt
+versteht, dann mit großer Wahrscheinlichkeit auch so, wie Sie es sich
+gedacht haben. Wenn nicht, dann wird der Befehl mit einer
+Fehlermeldung beendet.
+    </textblock>
+
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 9.4 Globale Optionen -->
+   <heading>
+Globale Optionen
+   </heading>
+
+   <textblock>
+Hier folgt eine Liste aller globalen Optionen für CVS
+   </textblock>
+
+   <section>
+    <heading>
+--allow-root=ARCHIV
+    </heading>
+
+    <textblock>
+Die alphabetisch erste globale Option, die praktisch nie auf der
+Kommandozeile verwendet wird. Sie wird mit dem <command>pserver</command>-Kommando zum
+Aufbau eines authentifizierten Zugriffes zu dem angegebenen Archiv
+verwendet. Dabei handelt es sich um das Hauptverzeichnis eines
+Archivs, (wie <command>/usr/local/cvsarchiv/</command>), nicht um ein Unterverzeichnis
+(wie <command>/usr/local/cvsarchiv/projekt</command>). Normalerweise ist die einzige
+Stelle, an der diese Option überhaupt vorkommt in der Datei
+<command>/etc/inetd.conf</command> (siehe Kapitel 4), genau wie das mit ihr verwendete
+<command>pserver</command> Kommando. Jedes Archiv, auf das mit <command>cvs pserver</command> auf einem
+bestimmten Rechner zugegriffen wird, benötigt eine entsprechende
+<command>--allow-root</command>-Option in <command>/etc/inetd.conf</command>. Dies ist eine
+Sicherheitsmaßnahme, die gewährleisten soll, dass niemand mittels
+eines <command>cvs pserver</command>-Kommandos Zugriff auf private Archive erlangen
+kann. (Siehe auch den Abschnitt <strong>Password Authentication Server</strong> im
+Cederqvist.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-a
+    </heading>
+
+    <textblock>
+Authentifiziert jede Kommunikation mit dem Server. Diese Option hat
+keinen Effekt, solange Sie nicht mittels <command>GSSAPI</command>-Server (gserver)
+Verbindungen aufbauen. <command>GSSAPI</command>-Verbindungen sind in diesem Buch nicht
+behandelt, weil sie noch immer relativ selten anzutreffen sind (auch
+wenn sich das ändern könnte). Siehe auch die Abschnitte <strong>Global
+Options</strong> und <strong>GSSAPI Authenticated</strong> im <name>Cederqvist</name> für mehr
+Information zu diesem Thema.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-b (Überholt)
+    </heading>
+
+    <textblock>
+Diese Option wurde früher dazu verwendet anzugeben, in welchem
+Verzeichnis sich die <command>RCS</command>-Programmdateien befanden. CVS implementiert
+inzwischen jedoch intern die <command>RCS</command>-Funktionen, sodass diese Option nur
+noch aus Gründen der Kompatibilität beibehalten wird. Sie hat
+keinerlei Wirkung mehr.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-d ARCHIV
+    </heading>
+
+    <textblock>
+Diese Option gibt das Archiv an. ARCHIV kann entweder einfach ein
+absoluter Pfad oder ein komplexerer Ausdruck sein, der eine
+Verbindungsmethode, einen Benutzer- und Rechnernamen sowie einen Pfad
+enthält. In letzterem Fall sieht die generelle Ausdrucksform so aus:
+    </textblock>
+
+    <textblock>
+<command>:METHODE:BENUTZER@RECHNER:PFAD_ZUM_ARCHIV</command>
+    </textblock>
+
+    <textblock>
+Hier ein paar Beispiele zu den üblichen Verbindungsarten:
+    </textblock>
+
+    <textblock>
+<command>:ext:jrandom@floss.red-bean.com:/usr/local/archiv</command><br/>
+- Baut eine Verbindung unter Verwendung von <command>rsh</command>, <command>ssh</command> oder eines anderen externen
+Programmes auf. Falls die <command>CVS_RSH</command>-Umgebungsvariable nicht gesetzt
+ist, ist die Standardeinstellung <command>rsh</command>, ansonsten wird der Wert dieser
+Variablen verwendet.
+    </textblock>
+
+    <textblock>
+<command>:server:jrandom@floss.red-bean.com:/usr/local/archiv</command><br/>
+- Wie <command>:ext:</command>, nutzt aber die interne <command>rsh</command>-Variante von CVS. (Diese Option ist möglicherweise nicht auf allen Plattformen verfügbar.)
+    </textblock>
+
+    <textblock>
+<command>:pserver:jrandom@floss.red-bean.com:/usr/local/archiv</command><br/>
+- Baut mit Hilfe des Passwortauthentifizierungs-Servers eine Verbindung auf (siehe <strong>Der Passwortauthentifizierungs-Server</strong> in Kapitel 4; siehe auch das <command>login</command>-Kommando).
+    </textblock>
+
+    <textblock>
+<command>:kserver:jrandom@floss.red-bean.com:/usr/local/archiv</command><br/>
+- Baut eine Verbindung mit Hilfe der Kerberos-Authentifizierung auf.
+    </textblock>
+
+    <textblock>
+<command>:gserver:jrandom@floss.red-bean.com:/usr/local/archiv</command><br/>
+- Baut eine Verbindung unter Verwendung der <command>GSSAPI</command>-Authentifizierung auf.
+    </textblock>
+
+    <textblock>
+<command>:fork:jrandom@floss.red-bean.com:/usr/local/archiv</command><br/>
+- Baut eine Verbindung zu einem lokalen Archiv auf, benutzt aber das
+<command>Client/Server</command>-Protokoll, anstatt direkt auf die Dateien zuzugreifen.
+Dies kann nützlich sein, um das Verhalten einer CVS-Konfiguration im
+Netz auf dem eigenen Rechner zu testen und Fehler zu suchen.
+    </textblock>
+
+    <textblock>
+<command>:local:jrandom@floss.red-bean.com:/usr/local/newrepos</command><br/>
+- Greift direkt auf ein lokales Archiv zu, so als wäre nur der absolute Pfad angegeben
+worden.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-e EDITOR
+    </heading>
+
+    <textblock>
+Startet EDITOR für Ihre <command>commit</command>-Mitteilung, falls diese
+nicht auf der Kommandozeile mit der <command>-m</command>-Option angegeben wurde.
+Normalerweise startet CVS den Editor abhängig vom Inhalt der
+Umgebungsvariablen CVSEDITOR, VISUAL oder EDITOR (in dieser
+Reihenfolge), falls keine Mitteilung mit <command>-m</command> angegeben wird. Falls
+alles schief geht, versucht CVS, den verbreiteten Unix-Editor <strong>vi</strong> zu
+starten. Wenn Sie sowohl <command>-e</command> also auch <command>-m</command> mit <command>commit</command> verwenden, wird
+das <command>-e</command> zu Gunsten der bei <command>-m</command> angegebenen Mitteilung ignoriert. (Daher
+ist es unproblematisch, <command>-e</command> in einer <command>.cvsrc</command>-Datei zu verwenden.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-f
+    </heading>
+
+    <textblock>
+Diese globale Option unterbindet das Lesen der <command>.cvsrc</command>-Datei.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+--help [KOMMANDO]
+    </heading>
+   </section>
+
+   <section>
+    <heading>
+-H [KOMMANDO]
+    </heading>
+
+    <textblock>
+Diese beiden Optionen bewirken dasselbe. Sollte kein KOMMANDO
+angegeben sein, dann wird in einer kurzen Ausgabe die Bedienung der
+Grundfunktionen erläutert.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+--help-options
+    </heading>
+
+    <textblock>
+Gibt eine Liste aller verfügbaren Optionen für CVS samt kurzer
+Erklärung aus.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+--help-synonyms
+    </heading>
+
+     <textblock>
+Gibt eine Liste aller CVS-Kommandos und ihrer Kurzformen (<command>up</command> für
+<command>update</command> usw.) aus.
+     </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-l
+    </heading>
+
+    <textblock>
+Unterdrückt das Mitschneiden dieses Kommandos in die
+<command>CVSROOT/history</command>-Datei im Archiv. Das Kommando wird zwar ausgeführt,
+aber es wird kein Eintrag in der <command>History</command>-Datei erzeugt.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-n
+    </heading>
+
+    <textblock>
+Ändert keine Datei in der Arbeitskopie oder im Archiv. Mit anderen
+Worten, diese Option führt zu einer Art Testlauf, in dem CVS zwar fast
+alle Kommandos abarbeitet, aber nichts wirklich verändert. Das kann
+nützlich sein, wenn Sie sehen wollen, was ein Kommando bewirkte, wenn
+Sie es tatsächlich anwenden würden. Ein übliches Szenario ist, wenn
+Sie sehen möchten, welche Dateien in Ihrem Arbeitsverzeichnis
+inzwischen verändert wurden, diese aber noch nicht aktualisieren
+möchten (was die Veränderungen aus dem Archiv in Ihre Dateien
+übertragen würde). Durch die Ausführung des Kommandos <command>cvs -n update</command>
+können Sie so eine Zusammenfassung der Veränderungen angezeigt
+bekommen, ohne Ihre Arbeitskopie der Daten anzutasten.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-q
+    </heading>
+
+    <textblock>
+Diese Option befiehlt CVS, etwas <strong>leiser</strong> zu arbeiten und unnötige
+Informationen nicht auszugeben. Was als notwendig angesehen wird,
+hängt hierbei von dem Kommando ab. Zum Beispiel werden bei der
+Aktualisierung die Nachrichten unterdrückt, die CVS normalerweise
+ausgibt, wenn es in ein neues Unterverzeichnis der Arbeitskopie
+eintritt - die einzeiligen Statusmeldungen über veränderte oder
+aktualisierte Dateien werden jedoch trotzdem angezeigt.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-Q
+    </heading>
+
+    <textblock>
+Wie <command>-q</command>, nur dass CVS hier lediglich die allernötigsten Informationen
+ausgibt. Kommandos, deren einziger Zweck es ist, Ausgaben zu erzeugen
+(wie z.B. <command>diff</command> und <command>annotate</command>), werden davon natürlich nicht
+beeinflusst. Hingegen geben Befehle, die unabhängig von irgendwelchen
+Ausgaben ihre Aufgabe erfüllen können (wie z.B. <command>update</command> und <command>commit</command>),
+nichts aus.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-r
+    </heading>
+
+    <textblock>
+Bewirkt, dass neue Arbeitsdateien ohne Schreibzugriff erzeugt
+werden (hat also dieselbe Wirkung wie die CVSREAD-Umgebungsvariable).
+Wenn Sie diese Option verwenden, werden bei Dateneinspielungen und
+-aktualisierungen die Dateien in Ihrer Arbeitskopie als nur lesbar
+markiert (sofern Ihr Betriebssystem diese Option unterstützt). Genau
+genommen habe ich keine Ahnung, warum je jemand diese Option verwenden
+sollte.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-s VARIABLE=WERT
+    </heading>
+
+    <textblock>
+Hiermit wird die interne CVS-Variable namens VARIABLE auf den Wert
+WERT gesetzt. Auf der Seite des Archivs können die
+<command>CVSROOT/*info</command>-Kontrolldateien solche Variablen in Werte übersetzen,
+die mit der <command>-s</command>-Option gesetzt wurden. Wenn zum Beispiel die Datei
+<command>CVSROOT/loginfo</command> eine Zeile wie diese enthält
+    </textblock>
+
+    <shell>
+     <output>
+myproj /usr/local/bin/foo.pl &#36;{=FISCH}
+     </output>
+    </shell>
+
+    <textblock>
+und dann jemand ein <command>commit</command> von myproj wie folgt startet
+    </textblock>
+
+    <shell>
+     <user path="~">
+cvs -s FISCH=Karpfen commit -m "Köder-Bug behoben"
+     </user>
+    </shell>
+
+    <textblock>
+dann wird das Skript <command>foo.pl</command> mit <strong>Karpfen</strong> als Argument gestartet. Man
+beachte jedoch die schräge Syntax: Das Dollarzeichen, die geschweifte
+Klammer und das Gleichheitszeichen - fehlt eines der drei, dann
+funktioniert die Zuweisung nicht korrekt. Variablennamen dürfen
+lediglich Buchstaben, Zahlen und Unterstriche enthalten. Obwohl es
+nicht unbedingt erforderlich ist, dass alle Buchstaben groß
+geschrieben werden, scheinen sich doch die meisten Leute an diese
+Konvention zu halten. Das <command>-s</command>-Flag kann in einem Kommando beliebig oft
+hintereinander verwendet werden. Falls sich jedoch eines der
+Kontrollskripten auf Variablen bezieht, die nicht beim Aufruf gesetzt
+wurden, dann wird zwar das Skript ausgeführt, aber eine Warnung an den
+Benutzer ausgegeben und keiner einzigen Variablen ihr Wert
+zugewiesen. Wenn zum Beispiel in <command>loginfo</command> Folgendes steht
+    </textblock>
+
+    <shell>
+     <output>
+myproj /usr/local/bin/foo.pl ${=FISCH} ${=VOGEL}
+     </output>
+    </shell>
+
+    <textblock>
+aber derselbe Befehl wie vorhin ausgeführt wird
+    </textblock>
+
+    <shell>
+     <user path="~">
+cvs -s FISCH=Karpfen commit -m "Köder-Bug behoben"
+     </user>
+    </shell>
+
+    <textblock>
+dann bekommt der Benutzer, der den Befehl gestartet hat, eine Warnung wie
+    </textblock>
+
+    <shell>
+     <output>
+loginfo:31: no such user variable ${=BIRD}
+     </output>
+    </shell>
+
+    <textblock>
+und das Skript <command>foo.pl</command> wird ohne Argumente ausgeführt. Wenn das
+Kommando jedoch so aussieht:
+    </textblock>
+
+    <shell>
+     <user path="~">
+cvs -s FISCH=Karpfen -s VOGEL=Geier commit -m "Köder-Bug behoben"
+     </user>
+    </shell>
+
+    <textblock>
+dann wird keine Warnung ausgegeben, und <command>foo.pl</command> wird wie erwartet mit
+den Argumenten Karpfen und Geier aufgerufen. In beiden Fällen würde
+der <command>Commit</command> selbst korrekt durchgeführt.
+    </textblock>
+
+
+    <textblock>
+Bemerkung
+    </textblock>
+
+    <quotation>
+Obwohl all diese Beispiele <command>commit</command> verwenden, kann die Zuweisung von
+Variablen mit jedem CVS-Kommando geschehen, das eine <command>CVSROOT/</command>
+Kontrolldatei auslöst - darum ist <command>-s</command> eine globale Option.
+    </quotation>
+
+    <quotation>
+(Siehe auch den Abschnitt Archivverwaltungsdateien weiter hinten in
+diesem Kapitel zur Expansion von Variablen in Kontrolldateien.)
+    </quotation>
+
+   </section>
+
+   <section>
+    <heading>
+-T DIR
+    </heading>
+
+    <textblock>
+Speichert alle temporären Dateien in DIR anstatt da, wo CVS sie
+normalerweise ablegt. (Dies überschreibt im Besonderen den Wert der
+Umgebungsvariablen TMPDIR, falls sie existiert.) DIR sollte ein
+absoluter Pfad sein. Diese Option ist nützlich, falls Sie als Benutzer
+keinen Schreibzugriff auf die üblichen temporären Verzeichnisse
+besitzen.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-t
+    </heading>
+
+    <textblock>
+Verfolgt die Durchführung eines CVS-Kommandos. Dies veranlasst CVS
+genau alle Schritte anzuzeigen, die es durchführt, um einen Befehl
+auszuführen. Das kann sich besonders im Zusammenhang mit der Option
+<command>-n</command> als nützlich erweisen, damit Sie sich so im Detail die Effekte
+eines ungewöhnlichen Befehles im Voraus ansehen können, ohne ihn
+wirklich auszuführen. Die Option ist ebenfalls praktisch, um
+herauszufinden, warum ein Kommando nicht funktioniert.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-v --version
+    </heading>
+
+    <textblock>
+Veranlasst CVS, seine vollständige Version und Urheberrechtsangaben auszugeben.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-w
+    </heading>
+
+    <textblock>
+Bewirkt, dass neue Arbeitsdateien mit Schreibzugriff ausgestattet
+werden (überschreibt damit jeden Wert, den eventuell die
+Umgebungsvariable CVSREAD haben könnte). Weil normalerweise sowieso
+alle Dateien mit Schreibzugriff versehen werden, wird diese Option nur
+selten benutzt.
+    </textblock>
+
+    <textblock>
+Werden beide Optionen, <command>-r</command> und <command>-w</command>, angegeben, so gilt die <command>-w</command>-Option.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-x
+    </heading>
+
+    <textblock>
+Verschlüsselt jede Kommunikation mit dem Server. Diese Option hat
+keine Wirkung, solange nicht eine Verbindung via GSSAPI zum Server
+(gserver) besteht. GSSAPI-Verbindungen werden in diesem Buch nicht
+behandelt, weil sie immer noch eher selten benutzt werden - obwohl
+sich das ändern könnte). (Siehe auch die Abschnitte <strong>Global Options</strong>
+und <strong>GSSAPI Authenticated</strong> im <name>Cederqvist</name> mit mehr Informationen zu
+dieser Thematik.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+-z GZIPLEVEL
+    </heading>
+
+    <textblock>
+Stellt die Stärke der Datenkompression für die Verbindungen zum Server
+ein. Das Argument GZIPLEVEL muss eine Zahl zwischen eins und neun
+sein. Eins steht für minimale Kompression (dafür schnell); neun
+hingegen hat nur auf sehr schnellen Rechnern oder sehr langsamen
+Verbindungen Sinn (komprimiert sehr stark, braucht aber viel
+Rechenzeit). Die meisten Benutzer dürften Werte zwischen drei und
+fünf praktikabel finden. Das Leerzeichen zwischen <command>-z</command> und seinem
+Argument ist optional.
+    </textblock>
+
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- 9.5 Kapitel -->
+   <heading>
+Liste der Befehle
+   </heading>
+
+   <textblock>
+m Folgenden eine Liste aller CVS-Befehle
+   </textblock>
+
+   <section>
+    <heading>
+add [OPTIONS] FILES
+    </heading>
+
+    <textblock>
+Alternativen: ad, new<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Arbeitskopie<br/>
+    </textblock>
+
+    <textblock>
+Fügt eine neue Datei einem existierenden Projekt hinzu. Obwohl das
+Archiv zur Bestätigung kontaktiert wird, wird die Datei dem Archiv
+nicht wirklich hinzugefügt, bis später <command>commit</command> ausgeführt wird. (Siehe
+auch <command>remove</command> und <command>import</command>.)
+    </textblock>
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-k METHODE</command>
+      <ul>
+       <li>
+Spezifiziert, dass die Datei mit der angegebenen Methode zur
+Schlüsselwortersetzung abgespeichert werden soll. Zwischen <command>-k</command> und dem
+Argument ist kein Leerzeichen. (Für eine Liste gültiger Methoden und
+Beispiele siehe auch den Abschnitt <strong>Schlüsselwortersetzung</strong> weiter
+hinten in diesem Kapitel.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-m MITTEILUNG</command>
+      <ul>
+       <li>
+Vermerkt MITTEILUNG als ersten Eintrag zur Entstehung bzw.
+Beschreibung der Datei. Diese unterscheidet sich von dem Log-Eintrag
+bei späteren Revisionen - jede Datei hat nur genau eine Beschreibung.
+Die Beschreibung ist optional.
+       </li>
+      </ul>
+     </li>
+    </ul>
+    <textblock>
+Bemerkung:
+    </textblock>
+
+    <quotation>
+In Version 1.10.7 gibt es einen Fehler in CVS, der zum Verlust der
+Beschreibung führt, wenn eine Datei mittels Client/Server CVS
+hinzugefügt wird. Alle anderen Funktionen des <command>add</command>-Kommandos werden
+trotzdem einwandfrei ausgeführt, falls das ein Trost sein sollte.
+    </quotation>
+
+   </section>
+
+   <section>
+    <heading>
+admin [OPTIONEN] [DATEIEN]
+    </heading>
+
+    <textblock>
+Alternativen: adm, rcs<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Archiv<br/>
+    </textblock>
+
+    <textblock>
+Dieses Kommando fungiert als Schnittstelle zu diversen administrativen
+Aufgaben - um genau zu sein Aufgaben, die sich auf einzelne
+RCS-Dateien innerhalb des Archivs beziehen, wie zum Beispiel die
+Veränderung der Schlüsselwortersetzungs-Methode oder die Veränderung
+einer Log-Mitteilung, nachdem diese bereits per <command>commit</command> gespeichert
+wurden.
+    </textblock>
+
+    <textblock>
+Obwohl <command>admin</command> rekursiv arbeitet, sofern keine Dateiargumente übergeben
+wurden, ist es in den meisten Fällen sinnvoller, Dateien konkret zu
+spezifizieren. Es hat nur selten Sinn, einen <command>admin</command>-Befehl auf alle
+Dateien eines Projektes oder auch nur eines ganzen Verzeichnisses
+anzuwenden. Dementsprechend beziehen sich alle Erklärungen, die mit
+einer <strong>Datei</strong> zu tun haben, im Folgenden auf die im Befehl angegebene
+Datei, manchmal Dateien.
+    </textblock>
+
+    <textblock>
+Bemerkung:
+    </textblock>
+
+    <quotation>
+Falls es auf dem Rechner mit dem Archiv eine Benutzergruppe namens
+<strong>cvsadmin</strong> gibt, so dürfen nur zu dieser Gruppe gehörige Benutzer das
+<command>admin</command>-Kommando ausführen. (Ausnahme: <command>cvs admin -k</command> ist für alle
+erlaubt.) So können Sie admin für alle Benutzer sperren, indem Sie
+diese Gruppe leer lassen.
+    </quotation>
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-AALTE_DATEI (Überholt)</command>
+      <ul>
+       <li>
+Hängt die RCS-Zugriffsliste der Datei ALTE_DATEI an die Zugriffsliste
+der behandelten Datei an. CVS ignoriert RCS-Zugriffslisten, daher ist
+diese Option nutzlos.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-a BENUTZER1 [,BENUTZER2...] (Überholt)</command>
+      <ul>
+       <li>
+Hängt die BENUTZER in der durch Kommata separierten Liste der
+Zugriffsliste der behandelten Datei an. Wie <command>-A</command> ist auch diese Option
+wirkungslos.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-bREV</command>
+      <ul>
+       <li>
+Setzt die Revision des Standardverzeichnisbaumes der Datei
+(üblicherweise des Wurzelverzeichnisses) auf REV. Normalerweise
+werden Sie diese Option nicht benötigen, da Sie die Revisionen, die
+Sie benötigen, über bindende Markierungen erhalten, aber Sie könnten
+Sie verwenden, um zu einer Vertriebsversion zurückzukehren, falls
+Sie entsprechende Archivbereiche führen. Es sollte sich zwischen <command>-b</command>
+und seinem Argument kein Leerzeichen befinden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-cKOMMENTAR_PREFIX (Überholt)</command>
+      <ul>
+       <li>
+Setzt das Kommentarzeichen der Datei auf KOMMENTAR_PREFIX. Dieses wird
+weder von CVS noch von aktuellen RCS-Versionen verwendet. Diese
+Option ist daher wirkungslos.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-eBENUTZER1 [,BENUTZER2...] (Überholt)</command>
+      <ul>
+       <li>
+Gegenstück zu <command>-a</command>: Entfernt Benutzernamen aus der Zugriffsliste. Ebenso
+wirkungslos wie <command>-a</command> und <command>-A</command>.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-i oder -I (Überholt)</command>
+      <ul>
+       <li>
+Diese beiden sind so alt und überholt, dass ich nicht einmal auf ihre
+frühere Bedeutung eingehe. Neugierige mögen den <name>Cederqvist</name> befragen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-kMETHODE</command>
+      <ul>
+       <li>
+Setzt die Methode der Schlüsselwortersetzung für die Datei auf
+METHODE. Diese Option verhält sich wie die <command>-k</command>-Option des <command>add</command>-Befehls,
+nur dass man hier die Methode ändern kann, nachdem die Datei dem
+Archiv hinzugefügt wurde. (Siehe auch den Abschnitt zur
+Schlüsselwortersetzung weiter hinten in diesem Kapitel.) Zwischen <command>-k</command>
+und seinem Argument darf sich kein Leerzeichen befinden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-L</command>
+      <ul>
+       <li>
+Setzt das Locking der Datei auf <strong>strikt</strong> (siehe <command>-l</command>).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-l[REV]</command>
+      <ul>
+       <li>
+Legt die Revision der Datei auf REV fest. Fehlt REV, so wird die
+neueste verfügbare Revision auf dem Hauptentwicklungszweig gehalten.
+Wenn REV ein Zweig des Archivs ist, so wird die aktuellste Revision in
+diesem Zweig des Archivs festgehalten (<strong>Locking</strong>). Der Zweck dieser
+Option ist, Ihnen eine Möglichkeit zu geben, <strong>reservierte <command>Checkouts</command></strong>
+zu machen, bei denen nur ein Benutzer auf einmal die Datei bearbeiten
+kann. Ich bin nicht sicher, wie nützlich diese Option wirklich ist,
+aber wenn Sie sie ausprobieren möchten, sollten Sie das eventuell in
+Verbindung mit dem <command>rcslock.pl</command>-Skript aus dem <command>contrib/</command>-Verzeichnis der
+CVS Quelltextdistribution machen. Siehe auch die Kommentare in jener
+Datei für weitere Informationen. Unter anderem weisen diese Kommentare
+darauf hin, dass das Locking auf strikt gesetzt werden muss (siehe
+<command>-L</command>). Zwischen <command>-l</command> und dem Argument ist kein Leerzeichen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-mREV:MITTEILUNG</command>
+      <ul>
+       <li>
+Ändert die Log-Mitteilung für die Revision REV auf MITTEILUNG. Sehr
+praktisch - neben <command>-k</command> ist dies die wohl meist genutzte Option zu <command>admin</command>.
+Es sind keine Leerzeichen vor dem Argument oder um den Doppelpunkt
+herum gestattet. Natürlich darf MITTEILUNG trotzdem Leerzeichen
+enthalten (dann aber bitte die MITTEILUNG in Anführungszeichen setzen,
+damit die Shell nicht durcheinander kommt!).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-NNAME[:[REV]]</command>
+      <ul>
+       <li>
+Wie <command>-n</command>, nur dass es das Überschreiben jeder existierenden Zuweisung
+des symbolischen Namens NAME erzwingt, anstatt mit einer Fehlermeldung
+auszusteigen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-nNAME[:[REV]]</command>
+      <ul>
+       <li>
+Es handelt sich hier um eine allgemeine Schnittstelle zur Zuweisung,
+Umbenennung und zum Löschen von Markierungen. Soweit ich das
+beurteilen kann, gibt es keinen Grund, diese Option dem <command>tag</command>-Kommando
+und seinen vielfältigen Optionen vorzuziehen (<command>-d</command>, <command>-r</command>, <command>-b</command>, <command>-f</command> usw.).
+Ich empfehle daher die Benutzung des <command>tag</command>-Befehls. Der NAME und die
+Optionale REV können sich auf folgende Arten zusammensetzen:
+       </li>
+
+       <li>
+Falls nur das NAME-Argument angegeben wurde, wird der symbolische Name
+(tag) namens NAME gelöscht. Falls NAME: angegeben wurde, aber kein
+REV, so wird NAME der aktuellsten Revision des
+Standardverzeichnisbaumes (üblicherweise der Hauptentwicklungslinie)
+zugewiesen. Falls NAME:REV gegeben ist, wird NAME der Revision
+zugeordnet. REV kann wiederum ein symbolischer Name sein, dann wird es
+zunächst in eine Revisionsnummer übersetzt (kann auch die Nummer einer
+abgezweigten Version sein). Falls REV die Nummer einer abgezweigten
+Version ist und ein Punkt folgt (<strong>.</strong>), dann wird NAME der aktuellsten
+Revision auf dieser abgezweigten Version zugewiesen. Ist REV nur &#36;,
+dann wird NAME den Revisionsnummern zugeordnet, die in den
+Schlüsselwörtern der behandelten Datei(en) gefunden werden.
+       </li>
+
+       <li>
+In allen Fällen, in denen ein Name zugewiesen wird, beendet sich CVS
+mit einer Fehlermeldung, sofern schon eine Marke namens NAME in der
+Datei existiert. (Ausnahme: siehe <command>-N</command>.) Es sind keine Leerzeichen
+zwischen <command>-n</command> und seinen Argumenten.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-oBEREICH</command>
+      <ul>
+       <li>
+Löscht die Revisionen, die durch BEREICH spezifiziert werden (auch
+bekannt als <strong>Outdating</strong>, daher <command>-o</command>). BEREICH kann wie folgt angegeben
+werden:
+        <ul>
+         <li>
+<command>REV1::REV2</command><br/>
+- Vernichtet alle Revisionen zwischen REV1 und REV2, sodass
+in der Revisionshistorie REV2 direkt auf REV1 folgt. Nach dieser
+Aktion sind alle Versionen dazwischen nicht mehr existent, und es gibt
+einen Sprung in der Folge der Revisionen.
+         </li>
+
+         <li>
+<command>::REV</command><br/>
+- Löscht alle Revisionen vom Anfang dieser abgezweigten Version
+(die auch die Hauptentwicklungslinie sein kann) bis hin zu REV,
+natürlich nicht inklusive REV. Danach ist REV die erste Revision in
+diesem Bereich.
+         </li>
+
+         <li>
+<command>REV::</command><br/>
+- Schreddert alle Revisionen, die in dieser abgezweigten Version
+(die auch die Hauptentwicklungslinie sein kann) auf REV folgen. REV
+ist dann die letzte Revision in diesem Bereich.
+         </li>
+
+         <li>
+<command>REV</command><br/>
+- Löscht Revision REV. (<command>-o1.8</command> wäre äquivalent zu <command>-o1.7::1.9.</command>)
+         </li>
+
+         <li>
+<command>REV1:REV2</command><br/>
+- Löscht von REV1 bis REV2 inklusive! Sie müssen im selben
+Entwicklungszweig sein. Danach ist es unmöglich, auf REV1, REV2 und
+alle Revisionen dazwischen zuzugreifen.
+         </li>
+
+         <li>
+<command>:REV</command><br/>
+- Löscht Revisionen vom Anfang des Entwicklungszweiges bis REV
+inklusive. (Siehe vorhergehende Warnung.)
+         </li>
+
+         <li>
+<command>REV:</command><br/>
+- Löscht beginnend mit REV bis zum Ende der abgezweigten Version
+inklusive. (Siehe vorhergehende Warnung.)
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <textblock>
+Bemerkung:
+    </textblock>
+
+    <quotation>
+Keine der zu löschenden Revisionen darf Entwicklungszweige oder Locks
+haben. Sollten irgendwelchen der betroffenen Revisionen symbolische
+Namen zugewiesen sein, müssen diese zunächst mit <command>tag -d</command> oder <command>admin -n</command>
+gelöscht werden. (Genau genommen schützt CVS momentan nur dann gegen
+das Löschen symbolisch benannter Revisionen, wenn die <strong>::</strong>-Notation
+verwendet wird, aber die <strong>:</strong>-Notation könnte sich diesem Verhalten
+bald anpassen.)
+    </quotation>
+
+    <quotation>
+Anstatt diese Option zu nutzen, um ein fehlerhaftes <command>Commit</command> zu löschen,
+sollten Sie eine neue Version per <command>Commit</command> in das Archiv bringen, welche
+die fehlerhafte Änderung wieder in Ordnung bringt. Es gibt keine
+Leerzeichen zwischen <command>-o</command> und seinen Argumenten.
+    </quotation>
+
+    <ul>
+     <li>
+<command>-q</command>
+      <ul>
+       <li>
+Stellt CVS ruhig - keine unnötigen Mitteilungen werden generiert
+(genau wie mit der globalen Option <command>-q</command>).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-sSTATUS[:REV]</command>
+      <ul>
+       <li>
+Setzt das Statusattribut der Revision REV auf STATUS. Wird REV
+weggelassen, so wird die aktuellste Revision des
+Hauptentwicklungszweiges angenommen. Ist REV eine Markierung oder
+Nummer einer abgezweigten Version, dann wird die aktuellste Revision
+auf dieser abgezweigten Version verwendet. Beliebige Buchstaben- oder
+Nummernfolgen für STATUS werden akzeptiert. Einige übliche
+Statusbezeichnungen sind Exp für experimentell, Stab für stabil und
+Rel für released (veröffentlicht). (Tatsächlich setzt CVS den Status
+automatisch auf Exp, wenn eine Datei neu erzeugt wird.) Beachten Sie,
+dass CVS die Statusbezeichnung dead für eigene Zwecke verwendet, also
+geben Sie diese bitte nicht an. Statusinformationen werden in der <command>cvs
+log</command>-Ausgabe sowie in den <command>&#36;Log-</command> und <command>&#36;State-RCS</command>-Schlüsselwörtern in
+Dateien ausgegeben. Zwischen <command>-s</command> und seinem Argument sind keine
+Leerzeichen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-t[BESCHREIBUNGSDATEI]</command>
+      <ul>
+       <li>
+Ersetzt die Beschreibung (den <command>Log</command>-Eintrag zur Entstehung) für die
+Datei durch den Inhalt von BESCHREIBUNGSDATEI oder liest diesen von
+der Standardeingabe, falls keine BESCHREIBUNGSDATEI angegeben wurde.
+Diese nützliche Option funktioniert - leider - momentan nicht im
+Client/Server-CVS. Außerdem wird jede existierende Beschreibung einer
+Datei gelöscht und durch einen leeren String ersetzt, falls man
+versucht, diese Option im Client/Server-CVS ohne Angabe von
+BESCHREIBUNGSDATEI zu verwenden. Wenn Sie die Beschreibung einer Datei
+erneuern müssen, dann tun Sie dies bitte nur lokal auf der Maschine
+mit dem Archiv, oder benutzen Sie die Option <command>-t</command>-BESCHREIBUNG.
+BESCHREIBUNGSDATEI darf nicht mit einem Bindestrich (<strong>-</strong>) beginnen
+(siehe <command>-t</command>-BESCHREIBUNG).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command> -t-BESCHREIBUNG</command>
+      <ul>
+       <li>
+Wie <command>-t</command>, nur dass hier BESCHREIBUNG direkt als Beschreibung verwendet
+wird. BESCHREIBUNG darf Leerzeichen enthalten, wenn sie mit
+Anführungszeichen eingeschlossen wird. Diese Variante funktioniert im
+Client/Server-CVS und auch lokal ohne Probleme.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-U</command>
+      <ul>
+       <li>
+Setzt das Locking auf <strong>nicht strikt</strong>. (Siehe auch <command>-l</command> und <command>-L</command> weiter oben.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-u[REV]</command>
+      <ul>
+       <li>
+Hebt die Sperrung der Revision REV auf (siehe <command>-l</command>.) Wird REV
+weggelassen, so entsperrt CVS die aktuellste durch den Aufrufer
+gesperrte Revision. Ist REV ein Entwicklungszweig, dann entsperrt CVS
+die aktuellste gesperrte Revision in dieser abgezweigten Version. Wenn
+jemand anders als der Sperrer einer Revision die Sperre wieder
+aufhebt, so wird an denjenigen, der die Sperrung vorgenommen hat, eine
+E-Mail verschickt. Die Person, welche die Sperre aufhebt, wird auf der
+Kommandozeile um eine Stellungnahme für die E-Mail gebeten. Zwischen
+<command>-u</command> und seinem Argument ist kein Leerzeichen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-VRCS_VERSIONSNUMMER (Überholt)</command>
+      <ul>
+       <li>
+Dies war einmal ein Weg, um CVS zur Erzeugung von RCS-Dateien zu
+bewegen, die zu früheren RCS-Versionen kompatibel waren. Inzwischen
+weicht das RCS-Format, das CVS benutzt, zunehmend von dem RCS-Format,
+das RCS verwendet, ab, sodass diese Option nutzlos geworden ist. Die
+Angabe dieser Option führt zu einer Fehlermeldung.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-xENDUNG (Überholt)</command>
+      <ul>
+       <li>
+Theoretisch kann man mittels dieser Option die Dateiendung der
+RCS-Dateien bestimmen. Leider verlassen sich CVS und seine Werkzeuge
+darauf, dass diese Endung standardmäßig ist (<strong>,v</strong>), daher bewirkt
+diese Option nichts.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+   </section>
+
+   <section>
+    <heading>
+annotate [OPTIONEN] [DATEIEN] (Überholt)
+    </heading>
+
+    <textblock>
+Alternativen: ann<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Nichts
+    </textblock>
+
+    <textblock>
+Zeigt Informationen darüber an, wer zuletzt welche Zeile jeder Datei
+geändert hat und wann. Jede Ausgabezeile entspricht einer Zeile der
+Datei. Von links nach rechts beinhaltet die Zeile die Revisionsnummer
+der letzten Modifikation der Zeile, einen in Klammern stehenden
+Ausdruck, der den Benutzer und das Datum der letzten Änderung
+beinhaltet, einen Doppelpunkt und den Inhalt der Zeile in der Datei.
+    </textblock>
+
+    <textblock>
+Wenn zum Beispiel eine Datei so aussieht:
+    </textblock>
+
+    <textblock>
+Dies ist eine Testdatei
+    </textblock>
+
+    <textblock>
+Sie hat nur zwai Zeilen
+    </textblock>
+
+    <textblock>
+Ich meine zwei
+    </textblock>
+
+    <textblock>
+dann können die Anmerkungen (<command>annotations</command>) für diese Datei so aussehen:
+    </textblock>
+
+    <shell>
+     <output>
+1.1 (jrandom 22-Aug-99): Dies ist eine Testdatei
+1.1 (jrandom 22-Aug-99): Sie hat nur zwai Zeilen
+1.2 (jrandom 22-Aug-99): Ich meine zwei
+     </output>
+    </shell>
+
+    <textblock>
+sodass Sie nun sehen, dass die ersten zwei Zeilen in der ersten
+Revision waren und die letzte Zeile in Revision 1.2 hinzugefügt oder
+geändert wurde (auch von jrandom).
+    </textblock>
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-D DATUM</command>
+      <ul>
+       <li>
+Zeigt die Anmerkungen der letzten Revision vor DATUM.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-f</command>
+      <ul>
+       <li>
+Erzwingt die Anzeige der ersten Revision, falls die angegebene
+Markierung oder ein angegebenes Datum nicht gefunden wurde. Sie können
+diese Option in Verbindung mit <command>-D</command> und <command>-r</command> verwenden, um
+sicherzustellen, dass in jedem Fall eine Ausgabe erfolgt, auch wenn es
+nur Revision 1.1 der Datei ist.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-l</command>
+      <ul>
+       <li>
+Lokal. Der Befehl bezieht sich nur auf das aktuelle
+Arbeitsverzeichnis. Eventuelle Unterverzeichnisse werden nicht
+behandelt.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-R</command>
+      <ul>
+       <li>
+Rekursiv. Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-r REV</command>
+      <ul>
+       <li>
+Zeigt nur Anmerkungen zur Revision REV (kann eine Revisionsnummer oder
+eine Marke sein).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+   </section>
+
+   <section>
+    <heading>
+checkout [OPTIONEN] PROJEKT(E)
+    </heading>
+
+    <textblock>
+Alternativen: co, get<br/>
+Erfordert: Archiv<br/>
+Ändert: Aktuelles Verzeichnis
+    </textblock>
+
+    <textblock>
+Extrahiert ein Modul aus dem Archiv in eine lokale Arbeitskopie. Die
+Arbeitskopie wird neu erzeugt, falls sie nicht existiert, und
+aktualisiert, falls sie bereits existiert (siehe auch <command>update</command>.)
+    </textblock>
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-A</command>
+      <ul>
+       <li>
+Setzt alle bindenden Markierungen (Sticky Tags), Datumsangaben oder
+Schlüsselwortersetzungs-Modi zurück. Diese Option entspricht der
+<command>-A</command>-Option für den <command>update</command>-Befehl und wird dort wahrscheinlich häufiger
+genutzt als hier bei <command>checkout</command>.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-c</command>
+      <ul>
+       <li>
+Bewirkt, dass praktisch kein <command>Checkout</command> stattfindet; nur die
+<command>CVSROOT/modules</command>-Datei wird sortiert auf die Standardausgabe
+ausgegeben. Dies ist eine gute Methode, um einen Überblick darüber zu
+bekommen, welche Projekte sich in einem Archiv befinden. Projekte ohne
+Eintrag in der modules-Datei werden jedoch nicht aufgelistet. (Das ist
+ganz normal, weil der Name des Hauptverzeichnisses eines Projektes im
+Archiv standardmäßig als der Modulname des Projektes dient.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-D DATUM</command>
+      <ul>
+       <li>
+Führt einen <command>Checkout</command> der letzten Revisionen bis DATUM aus. Diese
+Option ist bindend, d.h. Sie können anschließend aus der Arbeitskopie
+keinen <command>Commit</command> mehr durchführen, ohne das gebundene Datum
+zurückzusetzen (siehe <command>-A</command>). Diese Option impliziert <command>-P</command>, siehe unten.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-d VERZ</command>
+      <ul>
+       <li>
+Erzeugt die Arbeitskopie in einem Verzeichnis VERZ, anstatt ein
+Verzeichnis mit dem Namen des vom <command>Checkout</command> betroffenen Moduls zu
+erzeugen. Wenn Sie nur einen Teil eines Projektes behandeln und dieser
+Teil irgendwo unterhalb des Wurzelverzeichnisses des Projektes liegt,
+werden die lokalen leeren Zwischenverzeichnisse weggelassen. Sie
+können <command>-N</command> benutzen, um diese Sparmaßnahme zu unterbinden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-f</command>
+      <ul>
+       <li>
+Erzwingt einen <command>Checkout</command> der ersten Revision, falls die angegebene
+Marke oder das angegebene Datum nicht gefunden wurde. Wird häufig in
+Verbindung mit <command>-D</command> oder <command>-r</command> verwendet, um sicherzustellen, dass der
+<command>Checkout</command> in jedem Fall erfolgreich ist.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-j REV[:DATUM] oder -j REV1[:DATUM] -j REV2[:DATUM]</command>
+      <ul>
+       <li>
+Führt zwei Entwicklungslinien zu einer zusammen. Diese Option
+entspricht der <command>-j</command>-Option zu <command>update</command>, die wesentlich häufiger Verwendung
+findet (siehe <command>update</command> für weitere Details).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-k METHODE</command>
+      <ul>
+       <li>
+Setzt die Methode zur Schlüsselwortersetzung für RCS auf METHODE (so
+kann die standardmäßig eingestellte Methode für die behandelten
+Dateien verändert werden). Siehe auch den Abschnitt zur
+Schlüsselwortersetzung weiter hinten in diesem Kapitel. Die gewählte
+Methode wird permanent an die betroffenen Dateien gebunden - spätere
+<command>Updates</command> der Arbeitskopie werden sie beibehalten.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-l</command>
+      <ul>
+       <li>
+Lokal; führt lediglich einen <command>Checkout</command> auf die Hauptentwicklungslinie
+des Projektes aus. Unterverzeichnisse werden nicht behandelt.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-N</command>
+      <ul>
+       <li>
+Unterdrückt das Weglassen leerer Unterverzeichnisse mit der <command>-d</command>-Option.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-n</command>
+      <ul>
+       <li>
+Führt keines der <command>Checkout</command>-Programme aus, die in <command>CVSROOT/modules</command> mit
+der <command>-o</command>-Option angegeben sind. (Siehe auch den Abschnitt
+<strong>Archivverwaltungsdateien</strong> weiter hinten in diesem Kapitel für
+weitere Informationen.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-P</command>
+      <ul>
+       <li>
+Löscht leere Verzeichnisse in der Arbeitskopie (entsprechend der
+<command>-P</command>-Option zu <command>update</command>).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-p</command>
+      <ul>
+       <li>
+Führt einen <command>Checkout</command> auf die Standardausgabe durch, nicht in Dateien
+(entsprechend der <command>-p</command>-Option zu <command>update</command>).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-R</command>
+      <ul>
+       <li>
+Behandelt auch rekursiv Unterverzeichnisse (dies ist der Normalfall).
+Siehe auch die <command>-f</command>-Option.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-r MARKE</command>
+      <ul>
+       <li>
+Führt einen <command>Checkout</command> der mit MARKE bezeichneten Revision durch. (Es
+würde kaum Sinn haben, hier eine numerische Revision (REV) zu
+verwenden, möglich ist es dennoch!) Diese Option bindet die mit MARKE
+bezeichnete Revision und impliziert <command>-P</command>.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-s</command>
+      <ul>
+       <li>
+Wie <command>-c</command>, zeigt aber den Status jedes Moduls und sortiert nach Status.
+(Siehe auch <command>CVSROOT/modules</command> im Abschnitt
+<strong>Archivverwaltungsdateien</strong>.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+commit [OPTIONEN] [DATEIEN]
+    </heading>
+
+    <textblock>
+Alternativen: ci, comm<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Archiv (und Verwaltungsdateien der Arbeitskopie)
+    </textblock>
+
+    <textblock>
+Überträgt Änderungen einer Arbeitskopie in das Archiv.
+    </textblock>
+
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-F MITTEILUNGSDATEI</command>
+      <ul>
+       <li>
+Benutzt den Inhalt der MITTEILUNGSDATEI für den Log-Eintrag, anstatt
+einen Editor zu aktivieren. Diese Option kann nicht mit <command>-m</command> kombiniert
+werden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-f</command>
+      <ul>
+       <li>
+Erzwingt die Aktualisierung des Archivs mit einer neuen Revision, auch
+wenn keinerlei Änderungen in der Arbeitskopie gemacht wurden. <command>Commit</command>
+arbeitet mit dieser Option nicht rekursiv (d.h. es impliziert <command>-l</command>).
+Rekursion kann mit der Option <command>-R</command> erzwungen werden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <textblock>
+Bemerkung:
+    </textblock>
+
+    <quotation>
+Diese Bedeutung von <command>-f</command> stimmt mit der sonst üblichen Verwendung
+(<strong>erzwinge die Verwendung der ersten Revision</strong>) in den CVS-Kommandos
+nicht überein!
+    </quotation>
+
+    <ul>
+     <li>
+<command>-l</command>
+      <ul>
+       <li>
+Lokal; überträgt nur Änderungen aus dem aktuellen Verzeichnis.
+Unterverzeichnisse werden nicht berücksichtigt.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-m MITTEILUNG</command>
+      <ul>
+       <li>
+Verwendet MITTEILUNG als Log-Dateieintrag, anstatt einen Editor zu
+aktivieren. Diese Option kann nicht mit <command>-F</command> kombiniert werden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-n</command>
+      <ul>
+       <li>
+Startet kein Modulprogramm. (Siehe auch den Abschnitt <strong>Archivverwaltungsdateien</strong>
+in diesem Kapitel für weitere Informationen.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-R</command>
+      <ul>
+       <li>
+Überträgt Änderungen auch aus Unterverzeichnissen. Dies ist das
+normale Verhalten, und die Option findet nur zur Aufhebung von <command>-l</command> in
+.cvsrc-Dateien Verwendung.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-r REV</command>
+      <ul>
+       <li>
+Überträgt Änderungen der Arbeitskopie in die Revision REV, die
+entweder ein Entwicklungszweig sein muss oder eine Revision, die höher
+als alle bisherigen Revisionen ist. <command>Commits</command> auf einer abgezweigten
+Version werden immer an das Ende angehängt - Sie können eine früher
+übertragene Version nicht <strong>aktualisieren</strong>. Die Nutzung dieser Option
+bindet die Revision fest an die der übertragenen Dateien. Dies kann
+mit <command>update</command> <command>-A</command> gelöscht werden. Die <command>-r</command>-Option impliziert <command>-f</command>. Eine neue
+Revision wird auch dann übertragen, wenn keine Dateien in der
+Arbeitskopie verändert wurden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+diff [OPTIONEN] [DATEIEN]
+    </heading>
+
+    <textblock>
+Alternativen: di, dif<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Nichts
+    </textblock>
+
+    <textblock>
+Zeigt die Unterschiede zwischen zwei Revisionen (im Unix <command>diff</command>-Format)
+an. Wenn <command>diff</command> ohne weitere Optionen aufgerufen wird, dann zeigt CVS
+die (möglicherweise noch nicht durch einen <command>Commit</command> abgeglichenen)
+Unterschiede zwischen den Basisrevisionen im Archiv und der
+Arbeitskopie an. Die <strong>Basis</strong>-Revisionen bezeichnen dabei die letzten
+Revisionen, die aus dieser Arbeitkopie heraus vom Archiv bezogen
+wurden. Beachten Sie, dass es durchaus neuere Revisionen im Archiv
+geben könnte, nämlich dann, wenn jemand anderes zwischenzeitlich einen
+<command>Commit</command> irgendwelcher Änderungen vorgenommen hat, die noch nicht mit
+einem <command>Update</command> in diese Arbeitskopie übernommen wurden.
+    </textblock>
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-D DATUM</command>
+      <ul>
+       <li>
+Erzeugt ein <command>Diff</command> gegen die neueste Revision, die nicht älter als DATUM
+ist. Diese Option verhält sich wie <command>-r</command> REV, außer dass statt der
+Revision ein Datum Verwendung findet.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-k METHODE</command>
+      <ul>
+       <li>
+Expandiert RCS-Schlüsselwörter in den <command>Diffs</command> unter Verwendung der
+angegebenen METHODE. (Siehe auch den Abschnitt
+<strong>Schlüsselwortersetzung</strong> weiter hinten in diesem Kapitel.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-l</command>
+      <ul>
+       <li>
+Lokal; vergleicht nur Dateien aus dem aktuellen Verzeichnis.
+Unterverzeichnisse werden nicht berücksichtigt.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-r REV oder -r REV1 -r REV2</command>
+      <ul>
+       <li>
+Vergleicht entweder die aktuelle mit der angegebenen oder die beiden
+angegebenen Revisionen miteinander. Mit einer <command>-r</command>-Option wird die mit
+REV bezeichnete Revision aus dem Archiv mit der aktuellen Arbeitskopie
+verglichen. Bei Angabe zweier <command>-r</command>-Argumente wird der Unterschied
+zwischen den jeweils angegebenen Revisionen aus dem Archiv ermittelt.
+Im letzteren Fall spielt die Arbeitskopie keine Rolle, und die
+Revisionen können in beliebiger Reihenfolge angegeben werden - die
+Ausgabe spiegelt dann die <strong>Richtung</strong> des Vergleichsvorganges wider.
+Wird <command>-r</command> ganz weggelassen, so wird zwischen der Arbeitskopie und der
+Revision, worauf letztere basiert, verglichen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </section>
+<!-- 9.5.1 Kapitel-->
+   <section>
+    <heading>
+Diff-Kompatibilitätsoptionen
+    </heading>
+
+    <textblock>
+Zusätzlich zu den angegebenen Optionen verwendet <command>cvs diff</command> noch einige
+Optionen, die mit der GNU-Version des normalen
+Kommandozeilenprogrammes <command>diff</command> übereinstimmen. Es folgt eine komplette
+Liste dieser Optionen, zusammen mit einer Erklärung einiger der
+üblicherweise am häufigsten verwendeten. (Für weitere Informationen
+siehe auch die GNU <command>diff</command>-Dokumentation.)
+    </textblock>
+
+    <table>
+      <pdf-column/>
+     <tr>
+      <td>
+<command>--0 -1 -2 -3 -4 -5 -6 -7 -8 -9</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--binary</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--brief</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--changed-group-format=ARG</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-c</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-C NLINES</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--context[=LINES]</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-e --ed</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-t --expand-tabs</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-f --forward-ed</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--horizon-lines=ARG</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--ifdef=ARG</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-w --ignore-all-space</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-B --ignore-blank-lines</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-i --ignore-case</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-I REGEXP</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--ignore-matching-lines=REGEXP</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-h</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-b --ignore-space-change</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-T --initial-tab</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-L LABEL</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--label=LABEL</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--left-column</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-d --minimal</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-N --new-file</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--new-line-format=ARG</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--old-line-format=ARG</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--paginate</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-n --rcs</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-s --report-identical-files</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-p</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--show-c-function</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-y --side-by-side</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-F REGEXP</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--show-function-line=REGEXP</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-H --speed-large-files</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--suppress-common-lines</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-a --text</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--unchanged-group-format=ARG</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-u</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-U NLINES</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--unified[=LINES]</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-V ARG</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>-W COLUMNS</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>--width=COLUMNS</command>
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Folgende GNU <command>diff</command>-Optionen werden am häufigsten mit cvs <command>diff</command> benutzt:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-B</command>
+      <ul>
+       <li>
+Ignoriert Unterschiede, die auf das Einfügen oder Löschen leerer
+Zeilen hinauslaufen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-b</command>
+      <ul>
+       <li>
+Ignoriert Unterschiede in der Anzahl von Leerzeichen. Diese Option
+behandelt alle Folgen von Leerzeichen gleichwertig und ignoriert
+Leerzeichen am Zeilenende. Technischer ausgedrückt komprimiert diese
+Option alle Folgen von Leerzeichen auf je ein einziges und löscht
+Leerzeichen vom Zeilenende, bevor ein Vergleich stattfindet (siehe
+auch <command>-w</command>).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-c</command>
+      <ul>
+       <li>
+Erzeugt Ausgaben im Kontext, d.h. üblicherweise werden um jeden
+aufgelisteten Unterschied drei Zeilen des umgebenden Quelltextes (eben
+der Kontext) angezeigt. (Dies wird gemacht, damit das patch-Programm
+verwendet werden kann, das mindestens zwei Zeilen Kontext benötigt.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-C ANZ oder --context ANZ</command>
+      <ul>
+       <li>
+Wie <command>-c</command>, aber mit ANZ Zeilen an Kontext.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-i</command>
+      <ul>
+       <li>
+Der Vergleich nimmt mit <command>-i</command> keine Rücksicht auf Groß- und Kleinschreibung.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-u</command>
+      <ul>
+       <li>
+Zeigt die Ausgabe im so genannten unified <command>diff</command>-Format an.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-w</command>
+      <ul>
+       <li>
+Ignoriert alle Unterschiede bei Leerzeichen, sogar dann, wenn in der
+einen Datei an einer Stelle Leerzeichen sind, wo in der anderen
+überhaupt keine sind. Im Grunde eine verschärfte Version von <command>-b</command>.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <section>
+     <heading>
+edit [OPTIONEN] [DATEIEN]
+     </heading>
+
+     <textblock>
+Alternativen: Keine<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Zugriffsrechte in der Arbeitskopie, Watchliste im Archiv
+     </textblock>
+
+     <textblock>
+Signalisiert, dass Sie dabei sind, beobachtete Datei(en) zu
+bearbeiten. Sie werden außerdem als temporärer Beobachter der
+Beobachterliste der Datei hinzugefügt. (Wenn Sie cvs unedit ausführen,
+werden Sie von der Liste entfernt; siehe auch <command>watch</command>, <command>watchers</command>,
+<strong>unedit</strong> und <strong>editors</strong>.)
+     </textblock>
+
+     <textblock>
+Optionen:
+     </textblock>
+
+     <ul>
+      <li>
+<command>-a AKTIONEN</command>
+       <ul>
+        <li>
+Legt fest, für welche Aktionen Sie temporärer Beobachter sein möchten.
+AKTIONEN sollten entweder edit, unedit, <command>commit</command>, all oder none sein.
+(Bei Nichtbenutzung von <command>-a</command> wird automatisch all angenommen.)
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-l</command>
+       <ul>
+        <li>
+Lokal; signalisiert das Bearbeiten nur für Dateien im aktuellen Verzeichnis.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-R</command>
+       <ul>
+        <li>
+Rekursiv (dies ist die Standardeinstellung). Gegenteil von <command>-l</command>. <command>-R</command>
+nutzt nur, um ein <command>-l</command> in der <command>.cvsrc</command>-Datei rückgängig zu machen.
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </section>
+
+    <section>
+     <heading>
+editors [OPTIONEN] [DATEIEN]
+     </heading>
+
+     <textblock>
+Alternativen: Keine<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: nichts
+     </textblock>
+
+     <textblock>
+Zeigt an, wer im Moment eine beobachtete Datei editiert (siehe auch
+<command>watch</command>, <command>watchers</command>, <command>unedit</command> und <command>edit</command>).
+     </textblock>
+
+     <textblock>
+Optionen:
+     </textblock>
+
+     <ul>
+      <li>
+<command>-l</command>
+       <ul>
+        <li>
+Lokal; Anzeige nur für Dateien im aktuellen Verzeichnis.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-R</command>
+       <ul>
+        <li>
+Rekursiv (dies ist die Standardeinstellung). Sie könnten <command>-R</command> benötigen,
+um ein <command>-l</command> in einer <command>.cvsrc</command>-Datei rückgängig zu machen.
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </section>
+
+    <section>
+     <heading>
+export [OPTIONEN] PROJEKT(E)
+     </heading>
+
+     <textblock>
+Alternativen: exp, ex<br/>
+Erfordert: Archiv<br/>
+Ändert: Aktuelles Verzeichnis
+     </textblock>
+
+     <textblock>
+Exportiert Dateien aus dem Archiv, um einen Projektbaum zu erzeugen,
+der keine Arbeitskopie darstellt (d.h. alle <command>CVS/</command>-Verwaltungsdateien
+fehlen). Hauptsächlich nützlich, um ein Distributionsarchiv
+zusammenzustellen.
+     </textblock>
+
+     <textblock>
+Optionen:
+     </textblock>
+
+     <ul>
+      <li>
+<command>-D DATUM</command>
+       <ul>
+        <li>
+Exportiert die neueste Revision, die nicht älter ist als DATUM.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-d VERZ</command>
+       <ul>
+        <li>
+Exportiert in das Verzeichnis VERZ (andernfalls wird der
+Verzeichnisname aus dem Modulnamen des Projekts genommen).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-f</command>
+       <ul>
+        <li>
+Erzwingt die Verwendung der ersten Revision, falls eine gegebene
+Bezeichnung oder Revision nicht gefunden werden kann (zur Nutzung mit
+<command>-D</command> oder <command>-r</command>).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-k METHODE</command>
+       <ul>
+        <li>
+Expandiert RCS-Schlüsselwörter nach der angegebenen METHODE. (Siehe
+den Abschnitt über Schlüsselwortersetzung weiter hinten in diesem
+Kapitel.)
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-l</command>
+       <ul>
+        <li>
+Lokal; exportiert nur das Hauptverzeichnis, keine Unterverzeichnisse.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-N</command>
+       <ul>
+        <li>
+Verhindert das Weglassen leerer Unterverzeichnisse. Entspricht der
+Option <command>-N</command> beim <command>checkout</command>.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-n</command>
+       <ul>
+        <li>
+Startet keine modulspezifischen Programme, wie sie in CVSROOT/modules
+angegeben werden können. (Siehe auch den Abschnitt
+<strong>Archivverwaltungsdateien</strong> in diesem Kapitel für weitere
+Informationen.)
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-P</command>
+       <ul>
+        <li>
+Leere Verzeichnisse werden weggelassen (wie die <command>-P</command>-Option bei <command>checkout</command>
+oder <command>update</command>).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-R</command>
+       <ul>
+        <li>
+Rekursiv (dies ist die Standardeinstellung). Alle Unterverzeichnisse
+des aktuellen Verzeichnisses werden exportiert. Sie könnten <command>-R</command>
+benötigen, um ein <command>-l</command> in einer <command>.cvsrc</command>-Datei rückgängig zu machen.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-r REV</command>
+       <ul>
+        <li>
+Exportiert die Revision REV. REV ist fast immer ein Name, keine
+numerische Revision.
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </section>
+
+    <section>
+     <heading>
+gserver
+     </heading>
+
+     <textblock>
+Dies ist der GSSAPI-(Generic Security Services API-)Server. Dieses
+Kommando wird normalerweise nicht direkt von Benutzern ausgeführt. Es
+wird hingegen serverseitig gestartet, wenn ein Benutzer von einem
+Gastrechner mit der :gserver:-Zugriffsmethode eine Verbindung
+aufbaut:
+     </textblock>
+
+     <shell>
+      <user path="~">
+cvs -d :gserver:jrandom@floss.red-bean.com:/usr/local/repos checkout projekt
+      </user>
+     </shell>
+
+     <textblock>
+Bemerkung:
+     </textblock>
+
+     <quotation>
+GSSAPI verwendet, unter anderem, die Kerberos-Version 5; für die
+Kerberos-Version 4 verwenden Sie bitte die :kserver:-Methode.
+     </quotation>
+
+     <quotation>
+Die Konfiguration und Benutzung einer GSSAPI-Bibliothek auf Ihren
+Maschinen ist jenseits des Umfanges dieses Buches. (Für weitere
+Hinweise siehe auch den Abschnitt <strong>GSSAPI Authenticated</strong> im
+Cederqvist.)
+     </quotation>
+
+     <textblock>
+Optionen: Keine
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+history [OPTIONEN] [DATEINAMEN_BESTANDTEIL(E)]
+     </heading>
+
+     <textblock>
+Alternativen: hi, his<br/>
+Erfordert: Archiv, CVSROOT/history<br/>
+Ändert: Nichts
+     </textblock>
+
+     <textblock>
+Zeigt eine zeitlich geordnete Auflistung der Aktivitäten im Archiv.
+Genauer gesagt zeigt diese Option eine Auflistung der Verwendung aller
+folgenden Kommandos: <command>checkout</command>, <command>commit</command>, <command>rtag</command>, <command>update</command> und <command>release</command>.
+Standardeinstellung ist das Auflisten von <command>Checkouts</command> (siehe aber die
+Option <command>-x</command>). Dieses Kommando funktioniert nicht, wenn die Datei
+<command>CVSROOT/history</command> im Archiv nicht existiert.
+     </textblock>
+
+     <textblock>
+Das <command>history</command>-Kommando unterscheidet sich von anderen CVS-Kommandos auf
+mehrere Arten. Erstens benötigt es üblicherweise unbedingt Optionen,
+um etwas Sinnvolles zu tun (und einige dieser Optionen bedeuten hier
+etwas völlig anderes als bei den anderen CVS-Kommandos üblich).
+Zweitens nimmt es anstatt ganzer Dateinamen auch einen oder mehrere
+Wortbestandteile und listet dann alle Dateien auf, in deren Namen
+mindestens einer dieser Bestandteile vorkommt. Drittens sieht die
+Ausgabe von <command>history</command> ziemlich nach zufälligem Buchstabenmüll aus,
+solange man nicht gelernt hat, sie richtig zu interpretieren - daher
+wird das Ausgabeformat in einem eigenen Abschnitt im Anschluss an die
+Optionen erklärt (siehe auch <strong>log</strong>).
+     </textblock>
+
+     <textblock>
+Optionen:
+     </textblock>
+
+     <ul>
+      <li>
+<command>-a</command>
+       <ul>
+        <li>
+Zeigt eine Liste für alle Benutzer (normalerweise werden nur die
+eigenen Aktivitäten gelistet).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-b ZEICHENKETTE</command>
+       <ul>
+        <li>
+Listet alles bis zum ersten Eintrag, der ZEICHENKETTE im Modulnamen,
+Dateinamen oder Archivpfad enthält.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-c</command>
+       <ul>
+        <li>
+Commits werden mit aufgelistet.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-D DATUM</command>
+       <ul>
+        <li>
+Zeigt alle Daten seit DATUM (die üblichen CVS-Datumsformate sind
+anwendbar).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-e</command>
+       <ul>
+        <li>
+Alle Arten von Einträgen werden gelistet.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-f DATEI</command>
+       <ul>
+        <li>
+Zeigt die letzte aufgezeichnete Aktion an, die auf der Datei DATEI
+ausgeführt wurde. Diese Option kann mehrfach verwendet werden.
+Beachten Sie, dass hier <command>-f</command> eine andere Wirkung hat als bei den übrigen
+CVS-Kommandos: <strong>Erzwinge neuste Revision, wenn alles andere
+fehlschlägt.</strong>
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-l</command>
+       <ul>
+        <li>
+Letztes; listet den jeweils letzten (neuesten) Eintrag jedes Projektes. Beachten
+Sie, dass hier <command>-l</command> eine andere Wirkung
+hat als bei den übrigen CVS-Kommandos: <strong>Lokal ausführen, keine
+Unterverzeichnisse.</strong>
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-m MODUL</command>
+       <ul>
+        <li>
+Dies erzeugt einen kompletten Report über MODUL (ein Projektname).
+Diese Option kann mehrfach verwendet werden.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-n MODUL</command>
+       <ul>
+        <li>
+Listet das letzte (aktuellste) Ereignis, das für ein MODUL
+aufgezeichnet wurde. So ist, z.B. der <command>Checkout</command> eines Moduls ein
+Modulereignis, aber das Ändern oder Aktualisieren einer Datei
+innerhalb des Moduls ist ein Dateiereignis. Diese Option kann mehrfach
+verwendet werden. Beachten Sie, dass hier <command>-n</command> eine andere Wirkung hat
+als bei den übrigen CVS-Kommandos: <strong>Keine
+<command>CVSROOT/modules</command>-Modulprogramme starten.</strong>
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-o</command>
+       <ul>
+        <li>
+Listet <command>Checkout</command>-Einträge (dies ist die Standardeinstellung).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-p ARCHIV</command>
+       <ul>
+        <li>
+Zeigt die Daten für ein bestimmtes Verzeichnis im Archiv. Diese Option
+kann mehrfach verwendet werden. Beachten Sie, dass hier <command>-p</command> eine andere
+Wirkung hat als bei den übrigen CVS-Kommandos: <strong>Daten auf die
+Standardausgabe anstatt in eine Datei schreiben.</strong>
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <textblock>
+Bemerkung:
+     </textblock>
+
+     <quotation>
+Diese Option scheint zumindest teilweise fehlerhaft zu sein (Stand Sommer 1999).
+     </quotation>
+
+     <ul>
+      <li>
+<command>-r REV</command>
+       <ul>
+        <li>
+Listet Einträge, die sich auf Revisionen nach der ersten Revision
+beziehen, ab der die Revision oder Marke mit dem Namen REV in
+einzelnen RCS-Dateien zu finden ist. Jede RCS-Datei wird dazu nach REV
+durchsucht.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-T</command>
+       <ul>
+        <li>
+Listet alle Markierungsvorgänge.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-t MARKE</command>
+       <ul>
+        <li>
+Zeigt alle Einträge, seit MARKE das letzte Mal zur<command>history</command>-Datei
+hinzugefügt wurde. Im Unterschied zur <command>-r</command>-Option wird hier nur die
+Datei<command>CVSROOT/history</command> durchsucht, und die Option ist daher wesentlich
+schneller.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-u BENUTZER</command>
+       <ul>
+        <li>
+Zeigt alle Vorfälle, die mit einem BENUTZER in Zusammenhang stehen.
+Diese Option kann mehrfach verwendet werden.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-w</command>
+       <ul>
+        <li>
+Zeigt alle Einträge, die sich auf das Verzeichnis beziehen, aus dem
+Sie das <command>history</command>-Kommando aufrufen.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-X HISTORY-DATEI</command>
+       <ul>
+        <li>
+Benutzt HISTORY-DATEI anstatt <command>CVSROOT/history</command>. Diese Option dient
+hauptsächlich zur Fehlersuche und wird nicht offiziell unterstützt;
+Sie könnten sie trotzdem nützlich finden (z.B. um Reports aus alten
+<command>history</command>-Dateien zu erzeugen, die Sie aufgehoben haben).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-x ARTEN</command>
+       <ul>
+        <li>
+Listet Vorfälle der angegebenen ARTEN auf. Jede Art von Eintrag wird
+durch einen Buchstaben aus der Liste <strong>TOEFWUCGMAR</strong> repräsentiert;
+beliebige Kombinationen aus diesen Buchstaben sind erlaubt. Ihre
+Bedeutung ist:
+        </li>
+
+        <li>
+<strong>T</strong> MARKE
+        </li>
+
+        <li>
+<strong>O</strong> Checkout
+        </li>
+
+        <li>
+<strong>E</strong> Export
+        </li>
+
+        <li>
+<strong>F</strong> Release
+        </li>
+
+        <li>
+<strong>W</strong> Aktualisierung (bedeutungslos gewordene Datei aus Arbeitskopie gelöscht)
+        </li>
+
+        <li>
+<strong>U</strong> Aktualisierung (Datei wurde durch Checkout überschrieben)
+        </li>
+
+        <li>
+<strong>C</strong> Aktualisierung (Dateien wurden kombiniert, Konflikte traten auf)
+        </li>
+
+        <li>
+<strong>G</strong> Aktualisierung (Dateien wurden kombiniert, keine Konflikte)
+        </li>
+
+        <li>
+<strong>M</strong> Commit (Datei wurde verändert)
+        </li>
+
+        <li>
+<strong>A</strong> Commit (Datei wurde hinzugefügt)
+        </li>
+
+        <li>
+<strong>R</strong> Commit (Datei wurde entfernt)
+        </li>
+
+        <li>
+Die Standardeinstellung, falls <command>-x</command> nicht angegeben wird, ist <command>Checkouts</command>
+anzuzeigen (wie <command>-x</command> O).
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <ul>
+      <li>
+<command>-z ZONE</command>
+       <ul>
+        <li>
+Listet Zeiten in Übereinstimmung mit der Zeitzone ZONE auf. ZONE ist
+eine Abkürzung für die gewünschte Zeitzone wie zum Beispiel UTC, GMT,
+BST, CET.1 Eine vollständige Liste aller Zeitzonen ist in der Datei
+<command>lib/getdate.c</command> in der CVS Quelltext-Distribution enthalten.
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </section>
+   </section>
+<!--9.5.2 Kapitel-->
+   <section>
+    <heading>
+History-Ausgabe
+    </heading>
+
+     <textblock>
+Die Ausgabe des <command>history</command>-Befehls ist eine Folge von Zeilen; jede Zeile
+stellt ein Ereignis aus der <command>History</command>-Datei dar und beginnt mit einem
+einzelnen Symbolbuchstaben, der die Art des Ereignisses signalisiert.
+Zum Beispiel:
+     </textblock>
+
+     <shell>
+      <user path="~">
+cvs history -D yesterday -x TMO
+      </user>
+      <output>
+M 08/21 20:19 +0000 jrandom 2.2 baar myproj == &lt;remote&gt;
+M 08/22 04:18 +0000 jrandom 1.2 README myproj == &lt;remote&gt;
+O 08/22 05:15 +0000 jrandom myproj =myproj= ~/src/*
+M 08/22 05:33 +0000 jrandom 2.18 README.txt myproj == ~/src/myproj
+O 08/22 14:25 CDT jrandom myproj =myproj= ~/src/*
+O 08/22 14:26 CDT jrandom [99.08.23.19.26.03] myproj =myproj= ~/src/*
+O 08/22 14:28 CDT jrandom [Exotic_Greetings-branch] myproj =myproj= ~/src/*
+      </output>
+     </shell>
+
+     <textblock>
+Die Symbolbuchstaben sind dieselben wie bei der obigen <command>-x</command>-Option. Auf
+den Buchstaben folgt das Datum des Ereignisses (in der Zeitzone
+UTC/GMT, falls nicht <command>-z</command> verwendet wurde), gefolgt von dem Namen des
+Benutzers, der für das Ereignis verantwortlich ist.
+     </textblock>
+
+     <textblock>
+Hinter dem Benutzer kann eine Revisionsnummer, eine Marke oder ein
+Datum stehen, aber nur falls es dem entsprechenden Ereignis angemessen
+ist. (Datum oder Marke stehen in eckigen Klammern und sind wie oben
+gezeigt formatiert.) Beim <command>Commit</command> einer Datei steht dort die neue
+Revisionsnummer; wenn Sie mit <command>-D</command> oder <command>-r</command> einen <command>Checkout</command> machen, dann
+wird das gebundene Datum oder die angegebene Marke in eckigen Klammern
+angezeigt. Bei einem einfachen <command>Checkout</command> wird gar nichts angezeigt.
+     </textblock>
+
+     <textblock>
+Als Nächstes kommt der Name der Datei, auf die sich der Eintrag
+bezieht bzw. der Name des Moduls, falls sich das Ereignis auf ein
+Modul bezieht. Im ersteren Fall folgen als Nächstes der
+Modul-/Projektname und der Name und das Verzeichnis der Arbeitskopie
+im Home-Verzeichnis des Benutzers. Im letzteren Fall sind die nächsten
+zwei Dinge, die auf das Modul folgen, der Name der ausgecheckten
+Arbeitskopie des Moduls (zwischen zwei Gleichheitszeichen), gefolgt
+von deren Standort im Home-Verzeichnis des Benutzers. (Der Name des
+Moduls in der Arbeitskopie kann von dem im Archiv abweichen, falls die
+Option <command>-d</command> beim <command>Checkout</command> verwendet wurde.)
+     </textblock>
+
+     <section>
+      <heading>
+import [OPTIONEN] [ARCHIV] [EXTERNE MARKE] [RELEASE_MARKE]
+      </heading>
+
+      <textblock>
+Alternativen: im, imp<br/>
+Erfordert: Archiv, aktuelles Verzeichnis (das Quellverzeichnis)<br/>
+Ändert: Archiv
+      </textblock>
+
+      <textblock>
+Fügt neuen Quelltext in das Archiv ein, wobei entweder ein neues
+Projekt oder ein neuer Entwicklungszweig eines existierenden Projekts
+erzeugt wird. (Für eine grundlegende Erklärung von Entwicklungszweigen
+in <command>import</command> siehe auch Kapitel 6, das hilft Ihnen das Folgende zu
+verstehen.)
+      </textblock>
+
+      <textblock>
+Es ist normal, <command>import</command> dazu zu verwenden, viele Dateien oder
+Verzeichnisse auf einen Schlag einem Projekt hinzuzufügen oder um ein
+neues Projekt zu kreieren. Um einzelne Dateien hinzuzufügen, sollten
+Sie <command>add</command> verwenden.
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+        <li>
+<command>-b ZWEIG</command>
+         <ul>
+          <li>
+Importiert in den Entwicklungszweig ZWEIG. (ZWEIG ist eine echte
+Verzweigungsnummer, keine Marke.) Diese Option wird selten genutzt,
+kann aber nützlich sein, wenn man Quelltexte für dasselbe Projekt von
+unterschiedlichen Lieferanten erhält. Ein normales import-Kommando
+nimmt an, dass die Quelltexte in den Standardentwicklungszweig für
+externe Quelltexte importiert werden sollen, der <strong>1.1.1</strong> ist. Weil das
+üblich ist, macht sich meist keiner die Mühe, <command>-b</command> zu verwenden.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <shell>
+       <user path="~">
+cvs import -m "import von Lieferant 1" derenprojekt MARKE1 MARKE1-0
+       </user>
+      </shell>
+
+      <ul>
+       <li>
+        <ul>
+         <li>
+Um einen anderen Entwicklungszweig als den normalen zu importieren,
+müssen Sie die Nummer des Zweiges explizit angeben:
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <shell>
+       <user path="~">
+cvs import -b 1.1.3 -m "von Lieferant 2" derenprojekt MARKE2 MARKE2-0
+       </user>
+      </shell>
+
+      <ul>
+       <li>
+        <ul>
+         <li>
+Der 1.1.3-Zweig kann, wie jeder andere auch, weitere zukünftige
+Imports aufnehmen und ebenfalls wie jeder andere in die
+Hauptentwicklungslinie integriert werden. Dabei müssen Sie jedoch
+darauf achten, dass alle zukünftigen Imports, die <command>-b</command> 1.1.3 verwenden,
+auch dieselbe Marke (MARKE2) benutzen. CVS prüft nicht, ob die Nummer
+und die Marke einer abgezweigten Version übereinstimmen. Sollte dies
+jedoch nicht der Fall sein, werden unschöne und nicht vorhersagbare
+Dinge passieren.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <textblock>
+Bemerkung:
+      </textblock>
+
+      <quotation>
+Entwicklungszweige von externen Lieferanten [<strong>Vendor Branches</strong>,
+Anm.d.Übers.] werden normalerweise ungerade nummeriert, interne
+hingegen gerade.
+      </quotation>
+
+      <ul>
+       <li>
+<command>-d</command>
+        <ul>
+         <li>
+Vermerkt den Zeitpunkt der letzten Änderung der Quelldateien anstatt
+der aktuellen Zeit als Zeitpunkt des Imports. Dies funktioniert nicht
+mit Client/Server-CVS.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-I NAME</command>
+        <ul>
+         <li>
+Dateien mit dem Namen NAME werden beim Import ignoriert. Diese Option
+kann mehrfach verwendet werden. Wildcards werden unterstützt: Bei
+Angabe von <command>*.foo</command> werden alle Dateien ignoriert, die auf <command>.foo</command> enden.
+(Für weitere Details zu Wildcards siehe auch <command>CVSROOT/cvsignore</command> im Abschnitt
+<strong>Archivverwaltungsdateien</strong>.) Die folgenden Datei- und Verzeichnisnamen
+werden standardmäßig ignoriert:
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <table>
+       <pdf-column/>
+       <tr>
+        <td>
+.
+        </td>
+       </tr>
+       <tr>
+        <td>
+..
+        </td>
+       </tr>
+       <tr>
+        <td>
+.#*
+        </td>
+       </tr>
+       <tr>
+        <td>
+#*
+        </td>
+       </tr>
+       <tr>
+        <td>
+,*
+        </td>
+       </tr>
+       <tr>
+        <td>
+_$*
+        </td>
+       </tr>
+       <tr>
+        <td>
+*~
+        </td>
+       </tr>
+       <tr>
+        <td>
+*$
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.a
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.bak
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.BAK
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.elc
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.exe
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.ln
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.o
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.obj
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.olb
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.old
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.orig
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.rej
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.so
+        </td>
+       </tr>
+       <tr>
+        <td>
+*.Z
+        </td>
+       </tr>
+       <tr>
+        <td>
+.del-*
+        </td>
+       </tr>
+       <tr>
+        <td>
+.make.state
+        </td>
+       </tr>
+       <tr>
+        <td>
+.nse_depinfo
+        </td>
+       </tr>
+       <tr>
+        <td>
+core
+        </td>
+       </tr>
+       <tr>
+        <td>
+CVS
+        </td>
+       </tr>
+       <tr>
+        <td>
+CVS.adm
+        </td>
+       </tr>
+       <tr>
+        <td>
+cvslog.*
+        </td>
+       </tr>
+       <tr>
+        <td>
+RCS
+        </td>
+       </tr>
+       <tr>
+        <td>
+RCSLOG
+        </td>
+       </tr>
+       <tr>
+        <td>
+SCCS
+        </td>
+       </tr>
+       <tr>
+        <td>
+tags
+        </td>
+       </tr>
+       <tr>
+        <td>
+TAGS
+        </td>
+       </tr>
+      </table>
+
+      <ul>
+       <li>
+        <ul>
+         <li>
+Sie können das Ignorieren dieser sowie eventuell weiterer, in
+<command>.cvsignore</command>, <command>CVSROOT/cvsignore</command> oder der Umgebungsvariablen CVSIGNORE
+aufgelisteter Dateinamen unterdrücken, indem Sie die Option <command>-I</command> !
+verwenden. Das heißt,
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <shell>
+       <user path="~">
+cvs import -I ! -m "importiere das Universum" proj MARKE MARKE_0
+       </user>
+      </shell>
+
+      <ul>
+       <li>
+        <ul>
+         <li>
+importiert alle Dateien im aktuellen Verzeichnisbaum, auch solche, die
+normalerweise ignoriert werden würden.
+         </li>
+
+         <li>
+Die Benutzung von <command>-I</command> ! löscht jede eventuell vorher erstellte Liste
+von zu ignorierenden Dateien, auch vorher angegebene <command>-I</command>-Optionen. Alle
+darauf folgenden <command>-I</command>-Optionen werden jedoch berücksichtigt. Daher ist
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <shell>
+       <user path="~">
+cvs import -I ! -I README.txt -m "Mitteilung" projekt BLA BLA_0
+       </user>
+      </shell>
+
+      <ul>
+       <li>
+        <ul>
+         <li>
+nicht dasselbe wie
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <shell>
+       <user path="~">
+cvs import -I README.txt -I ! -m "Mitteilung" projekt BLA BLA_0
+       </user>
+      </shell>
+
+      <ul>
+       <li>
+        <ul>
+         <li>
+Im ersten Fall wird <command>README.txt</command> nicht importiert, im letzteren Fall schon.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-k METHODE</command>
+        <ul>
+         <li>
+Legt die Methode zur RCS-Schlüsselwortersetzung für die importierten
+Dateien fest. (Für eine Liste gültiger Methoden siehe auch
+<strong>Schlüsselwortersetzung</strong> später in diesem Kapitel.)
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-m MITTEILUNG</command>
+        <ul>
+         <li>
+Zeichnet die MITTEILUNG als die Import-Log-Mitteilung auf.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-W FILTER</command>
+        <ul>
+         <li>
+Spezifiziert dateinamenbasierte Filter, die für import gültig sein
+sollen. Diese Option kann mehrfach verwendet werden. (Zu Details über
+diese Filter siehe auch <strong>CVSROOT/cvswrappers</strong> im Abschnitt
+<strong>Archivverwaltungsdateien</strong>.)
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+init NEUES_ARCHIV
+      </heading>
+
+      <textblock>
+Alternativen: Keine<br/>
+Erfordert: Einen Platz für das neue Archiv<br/>
+Ändert: Archiv
+      </textblock>
+
+      <textblock>
+Erzeugt ein neues Archiv (also ein Hauptarchiv, in dem dann viele
+verschiedene Projekte abgelegt werden können). Fast immer werden Sie
+hier die globale Option <command>-d</command> verwenden wollen, so wie in
+      </textblock>
+
+      <shell>
+       <user path="~">
+cvs -d /usr/local/neues_archiv init
+       </user>
+      </shell>
+
+      <textblock>
+denn selbst wenn Sie eine CVSROOT-Umgebungsvariable gesetzt haben,
+zeigt diese wahrscheinlich auf ein bereit existentes Archiv, was im
+Zusammenhang mit diesem Befehl nutzlos oder gar gefährlich sein
+könnte. (Zu weiteren Schritten, die nach der Initialisierung eines
+Archivs unternommen werden sollten, siehe Kapitel 4.)
+      </textblock>
+
+      <textblock>
+Optionen: Keine
+      </textblock>
+     </section>
+
+     <section>
+      <heading>
+kserver
+      </heading>
+
+      <textblock>
+Dies ist der Kerberos-Server. (Falls Sie Kerberos-Bibliotheken Version
+4 oder kleiner haben - Version 5 verwendet nur GSSAPI, siehe
+<strong>gserver</strong>.) Dieses Kommando wird normalerweise nicht direkt von
+Benutzern gestartet. Es wird hingegen serverseitig gestartet, wenn ein
+Benutzer von einem Gastrechner mit der :kserver: Zugriffsmethode eine
+Verbindung aufbaut:
+      </textblock>
+
+      <shell>
+       <user path="~">
+cvs -d :kserver:jrandom@floss.red-bean.com:/usr/local/repos checkout projekt
+       </user>
+      </shell>
+
+      <textblock>
+Die Konfiguration und Benutzung von Kerberos auf Ihrer Maschine an
+dieser Stelle zu erläutern, würde den Umfanges dieses Buches
+überschreiten. (Für einige nützliche Hinweise siehe auch den Abschnitt
+<strong>Kerberos Authenticated</strong> im Cederqvist.)
+      </textblock>
+
+      <textblock>
+Optionen: Keine
+      </textblock>
+     </section>
+
+     <section>
+      <heading>
+log [OPTIONEN] [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: lo, rlog<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Nichts
+      </textblock>
+
+      <textblock>
+Zeigt Log-Einträge für ein Projekt oder Dateien innerhalb eines
+Projektes an. Die Ausgabe von log ist nicht gerade im selben Stil wie
+die Ausgaben anderer CVS-Kommandos, da log auf einem älteren
+RCS-Programm basiert (rlog). Sein Ausgabeformat enthält einen
+Kopfteil, in dem verschiedene, nicht revisionsspezifische Details über
+die Datei enthalten sind, gefolgt von den eigentlichen
+Log-Mitteilungen (geordnet nach Revision). Jede Revision enthält nicht
+nur die Revisionsnummer und eine Mitteilung, sondern auch den Autor
+und das Datum der Änderung sowie die Anzahl der hinzugefügten oder
+gelöschten Zeilen. Alle Zeitangaben werden in UTC (GMT) angegeben,
+nicht Lokalzeit.
+      </textblock>
+
+      <textblock>
+Da log-Ausgaben dateiweise erfolgen, muss ein einzelner <command>Commit</command>, der
+mehrere Dateien umfaßt, nicht unbedingt auch in geschlossener Form
+erscheinen. Wenn Sie jedoch alle Log-Mitteilungen und Daten aufmerksam
+verfolgen, dann ist es möglich zu rekonstruieren, was vorging. (Für
+Informationen über ein Programm, das mehrere Log-Dateien zu einer
+wesentlich lesbareren Form zusammenfassen kann, siehe auch <strong>cvs2cl.pl:
+die Erzeugung von Change-Logs im GNU-Stil aus CVS Logs</strong>
+in Kapitel 10; siehe auch <command>history</command>.)
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <textblock>
+Wenn Sie die folgenden Filteroptionen betrachten, wird möglicherweise
+nicht auf Anhieb klar, wie diese sich verhalten, wenn man sie
+kombiniert. Eine exakte Beschreibung des Verhaltens von log ist die,
+dass es stets die Schnittmenge der mit <command>-d</command>, <command>-s</command> und <command>-w</command> selektierten
+Revisionen, geschnitten mit der Vereinigungsmenge der mit <command>-b</command> und <command>-r</command>
+gewählten, anzeigt.
+      </textblock>
+
+      <ul>
+       <li>
+<command>-b</command>
+        <ul>
+         <li>
+Gibt nur Log-Informationen über den Standardentwicklungszweig aus
+(üblicherweise die höchste Abzweigung in der Hauptentwicklungslinie).
+Diese Option wird üblicherweise benutzt, um die Ausgabe von
+Log-Mitteilungen aus Seitenzweigen der Entwicklung zu unterdrücken.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-dDATUM</command>
+        <ul>
+         <li>
+Selektiert Log-Informationen für die Revisionen, deren Datum zu dem
+Datum oder zu dem Datumsbereich passt, der durch DATUM gegeben ist,
+einer durch Semikola separierten Liste. Die Datumsangaben können in
+jedem der üblichen Datumsformate gehalten sein (siehe <strong>Datumsformate</strong>
+weiter vorne in diesem Kapitel) und können wie folgt in Bereiche
+kombiniert werden:
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>DATUM1&lt;DATUM2</command>
+        <ul>
+         <li>
+Bezeichnet Revisionen, die zwischen DATUM1 und DATUM2 entstanden sind.
+Falls DATUM1 zeitlich auf DATUM2 folgt, sollte &gt; anstatt von &lt;
+verwendet werden; sonst bleibt die Anweisung wirkungslos.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+     <ul>
+       <li>
+<command>&lt;DATUM DATUM&gt;</command>
+        <ul>
+         <li>
+Alle Revisionen vonDATUM oder früher.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>&lt;DATUM DATUM&gt;</command>
+        <ul>
+         <li>
+Alle Revisionen vonDATUM oder später.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>DATUM</command>
+        <ul>
+         <li>
+Bezeichnet die einzige aktuellste Version vom DATUM oder früher.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <textblock>
+Sie können <strong>&lt;=</strong> und <strong>&gt;=</strong> anstatt von <strong>&lt;</strong> und <strong>&gt;</strong> verwenden, um einen
+inklusiven Bereich zu definieren (ansonsten sind die Bereiche
+exklusiv). Mehrere Bereiche können durch Semikola getrennt definiert
+werden, so selektiert zum Beispiel
+      </textblock>
+
+      <shell>
+       <user path="~">
+cvs log -d"199-06-01&lt;1999-07-01;1999-08-01&lt;1999-09-01"
+       </user>
+      </shell>
+
+      <textblock>
+alle Log-Mitteilungen für Revisionen, deren <command>Commit</command> im Juni oder August
+1999 durchgeführt wurde (wobei Juli ausgelassen wird). Es dürfen keine
+Leerzeichen zwischen <command>-d</command> und seinen Argumenten stehen.
+      </textblock>
+
+      <ul>
+       <li>
+<command>-h</command>
+        <ul>
+         <li>
+Gibt nur den Kopfteil der Information zu jeder Datei aus, der den
+Dateinamen, das Arbeitsverzeichnis, die aktuellste Revision, den
+Entwicklungszweig, die Zugriffsliste, Sperren (Locks), symbolische
+Namen (Marken) und die für diese Datei eingestellte Methode der
+Schlüsselwortersetzung enthält. Es werden keine Log-Mitteilungen
+ausgegeben.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+     <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal; bezieht sich nur auf Dateien im aktuellen Verzeichnis.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-N</command>
+        <ul>
+         <li>
+Lässt die Liste der symbolischen Namen (Marken) aus dem Kopfteil weg.
+Dies kann nützlich sein, wenn Ihr Projekt viele Markierungen
+beinhaltet, Sie aber nur an den Log-Mitteilungen interessiert sind.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Gibt den Namen der RCS Datei in dem Archiv aus.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <textblock>
+Bemerkung:
+      </textblock>
+
+      <quotation>
+Diese Bedeutung von <command>-R</command> unterscheidet sich von der sonst in
+CVS-Befehlen üblichen Funktion: <strong>Rekursiv</strong>. Daher gibt es keine
+Möglichkeit, ein in Ihrer <command>.cvsrc</command>-Datei für dieses Kommando vorhandenes
+<command>-l</command> aufzuheben. Schreiben Sie daher nicht log <command>-l</command> in Ihre <command>.cvsrc</command>-Datei.
+      </quotation>
+
+      <ul>
+       <li>
+<command>-rREVS</command>
+        <ul>
+         <li>
+Zeigt Log-Informationen zu den in REVS spezifizierten Revisionen -
+eine durch Kommata separierte Liste. REVS kann sowohl Revisionsnummern
+als auch symbolische Namen enthalten. Bereiche können wie folgt
+definiert werden:
+          <ul>
+           <li>
+<command>REV1:REV2</command>
+Revisionen von REV1 bis REV2 (auf demselben Entwicklungszweig!)
+           </li>
+
+           <li>
+<command>:REV</command>
+Revisionen vom Beginn der abgezweigten Version bis REV (inklusive)
+           </li>
+
+           <li>
+<command>REV:</command>
+Revisionen von REV bis zum Ende der abgezweigten Version
+           </li>
+
+           <li>
+<command>ZWEIG</command>
+Alle Revisionen einer abgezweigten Version von Anfang bis Ende
+           </li>
+
+           <li>
+<command>ZWEIG1:ZWEIG2</command>
+Mehrere Entwicklungszweige - alle Revisionen auf allen Zweigen im
+angegebenen Bereich
+           </li>
+
+           <li>
+<command>ZWEIG.</command>
+Die aktuellste Revision von ZWEIG
+           </li>
+          </ul>
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <textblock>
+Zudem selektiert ein allein stehendes <command>-r</command> ohne Argument die neueste
+Revision des Standardzweiges (normalerweise der
+Hauptentwicklungslinie). Leerzeichen zwischen <command>-r</command> und seinem Argument
+sind nicht gestattet.
+      </textblock>
+
+      <textblock>
+Bemerkung:
+      </textblock>
+
+      <quotation>
+Wenn das Argument zu <command>-r</command> eine Liste ist, muss diese durch Kommata
+getrennt sein, nicht durch Semikola wie in <command>-d</command>.
+      </quotation>
+
+      <ul>
+       <li>
+<command>-sSTATUS</command>
+        <ul>
+         <li>
+Findet Revisionen, deren Statusattribut mit einem der in STATUS
+angegebenen Zustände übereinstimmt, eine durch Kommata separierte
+Liste. Zwischen <command>-s</command> und seinem Argument darf kein Leerzeichen sein.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <textblock>
+Bemerkung:
+      </textblock>
+
+      <quotation>
+Wenn das Argument zu <command>-s</command> eine Liste ist, muss diese durch Kommata
+getrennt sein, nicht durch Semikola wie in <command>-d</command>.
+      </quotation>
+
+      <ul>
+       <li>
+<command>-t</command>
+        <ul>
+         <li>
+Wie <command>-h</command>, beinhaltet aber zusätzlich die Dateibeschreibung (die beim
+ersten Erstellen der Datei entstand).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-wBENUTZER</command>
+        <ul>
+         <li>
+Findet Revisionen, deren <command>Commit</command> die Benutzer veranlasst haben, die in
+der durch Kommata separierten Liste BENUTZER aufgelistet sind. Ein <command>-w</command>
+ohne Argumente bewirkt eine Suche nach dem Benutzer, der cvs log
+gestartet hat. Bedenken Sie, dass, wenn Benutzer-Aliasing aktiviert
+ist, CVS den CVS-Benutzernamen anstatt des Systembenutzernamens beim
+<command>commit</command> aufzeichnet. Leerzeichen zwischen <command>-w</command> und seinem Argument sind
+nicht möglich.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <textblock>
+Bemerkung:
+      </textblock>
+
+      <quotation>
+Wenn das Argument zu <command>-w</command> eine Liste ist, muss diese durch Kommata
+getrennt sein, nicht durch Semikola wie in <command>-d</command>.
+      </quotation>
+     </section>
+
+     <section>
+      <heading>
+login
+      </heading>
+
+      <textblock>
+Alternativen: logon, lgn<br/>
+Erfordert: Archiv<br/>
+Ändert: ~/.cvspass-Datei
+      </textblock>
+
+      <textblock>
+Kontaktiert einen CVS-Server und überprüft die Zugangsberechtigung für
+ein bestimmtes Archiv. Dieses Kommando beeinflusst weder das Archiv
+noch eine Arbeitskopie; es überprüft lediglich das Passwort (zur
+Nutzung mit der :pserver:-Zugriffsmethode) für ein Archiv und
+speichert das Passwort zur späteren Benutzung in der <command>.cvspass</command>-Datei in
+Ihrem Home-Verzeichnis. Zukünftige Kommandos, die auf dasselbe Archiv
+mit demselben Benutzernamen zugreifen, erfordern dann kein erneutes
+Starten von <command>login</command>, da Ihr CVS einfach die Datei<command>.cvspass</command> konsultiert,
+um das Passwort zu erfahren.
+      </textblock>
+
+      <textblock>
+Wenn Sie dieses Kommando verwenden, dann sollten Sie ein Archiv unter
+Verwendung der pserver-Zugriffsmethode angeben, beispielsweise
+      </textblock>
+
+      <shell>
+       <user path="~">
+cvs -d :pserver:jrandom@floss.red-bean.com:/usr/local/archiv
+       </user>
+      </shell>
+
+      <textblock>
+oder durch Setzen der CVSROOT-Umgebungsvariablen.
+      </textblock>
+
+      <textblock>
+Wenn sich das Passwort auf dem Server ändert, müssen Sie <command>login</command> erneut starten.
+      </textblock>
+
+      <textblock>
+Optionen: Keine
+      </textblock>
+     </section>
+
+     <section>
+      <heading>
+logout
+      </heading>
+
+      <textblock>
+Alternativen: Keine<br/>
+Erfordert: ~/.cvspass-Datei<br/>
+Ändert: ~/.cvspass-Datei
+      </textblock>
+
+      <textblock>
+Das Gegenteil von <command>login</command> - entfernt das Passwort für das angegebene
+Archiv aus der <command>.cvspass</command>-Datei.
+      </textblock>
+
+      <textblock>
+Optionen: Keine
+      </textblock>
+     </section>
+
+     <section>
+      <heading>
+pserver
+      </heading>
+
+      <textblock>
+Alternativen: Keine<br/>
+Erfordert: Archiv <br/>
+Ändert: Nichts
+      </textblock>
+
+      <textblock>
+Pserver ist der passwortauthentisierende Server. Dieser Befehl wird
+normalerweise nicht direkt von Benutzern ausgeführt. Er wird vielmehr
+durch /etc/inet.conf gestartet, wenn ein Benutzer von einem
+Gastrechner mit der :pserver:-Zugriffsmethode eine Verbindung aufbaut.
+(Siehe auch <command>login</command>, <command>logout</command> und <command>.cvspass</command> im Abschnitt
+<strong>Laufzeit-Kontrolldateien</strong> in diesem Kapitel. Für Details zur
+Konfiguration eines passwortauthentisierenden CVS-Servers siehe
+Kapitel 4.)
+      </textblock>
+
+      <textblock>
+Optionen: keine
+      </textblock>
+     </section>
+
+     <section>
+      <heading>
+rdiff [OPTIONEN] PROJEKTE
+      </heading>
+
+      <textblock>
+Alternativen: patch, pa<br/>
+Erfordert: Archiv<br/>
+Ändert: Nichts
+      </textblock>
+
+      <textblock>
+Wie das <command>diff</command>-Kommando, mit dem Unterschied, dass es direkt im Archiv
+arbeitet und daher keine Arbeitskopie erfordert. Dieses Kommando ist
+zur Ermittlung von Unterschieden zwischen verschiedenen Versionen
+Ihrer Projekte gedacht. Die Ausgabe erfolgt in einem Format, das als
+Eingabe für das patch-Programm verwendet werden kann (sodass Sie ggf.
+Patches für Benutzer verteilen können, die Ihre Programme aktualisieren
+möchten).
+      </textblock>
+
+      <textblock>
+Die Benutzung des Programmes patch liegt außerhalb des Themenbereiches
+dieses Buches. Seien Sie trotzdem darauf hingewiesen, dass die
+Verwendung der Option <command>-p</command> für patch erforderlich sein kann, wenn die
+Patch-Datei Änderungen für Dateien in Unterverzeichnissen enthält, um
+patch dazu zu bringen, die Aktualisierung erfolgreich durchzuführen.
+(Siehe die Dokumentation zu patch für weitere Informationen; siehe
+auch <command>diff</command>.)
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-c</command>
+        <ul>
+         <li>
+Erzeugt Ausgaben im context-<command>diff</command>-Format (Standardeinstellung).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-D DATUM oder -D DATUM1 -D DATUM2</command>
+        <ul>
+         <li>
+Mit einem Datum erzeugt diese Option die Unterschiede zwischen den
+Dateien zum Zeitpunkt DATUM und der aktuellsten Revision. Mit zwei
+Daten wird der Unterschied der Dateien zu den jeweiligen Daten
+festgestellt.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-f</command>
+        <ul>
+         <li>
+Erzwingt die Verwendung der ersten Revision, falls eine gegebene
+Revision mit <command>-D</command> oder <command>-r</command> nicht gefunden werden kann.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal; vergleicht nur Dateien aus dem aktuellen Verzeichnis.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Rekursiv; Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-r REV oder -r REV1 -r REV2</command>
+        <ul>
+         <li>
+Mit einer <command>-r</command>-Option wird die mit REV bezeichnete Revision aus dem
+Archiv mit der aktuellen Arbeitskopie verglichen. Bei Angabe zweier
+<command>-r</command>-Argumente wird der Unterschied zwischen den jeweilig angegebenen
+Revisionen aus dem Archiv ermittelt.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-s</command>
+        <ul>
+         <li>
+Zeigt eine Zusammenfassung der Unterschiede an. Es wird gezeigt,
+welche Dateien hinzugefügt, geändert oder entfernt wurden, ohne die
+konkreten Veränderungen am Inhalt aufzulisten. Die Ausgabe sieht so
+aus:
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <shell>
+       <user path="~">
+cvs -Q rdiff -s -D 1999-08-20 myproj
+       </user>
+       <output>
+File myproj/Random.txt is new; current revision 1.4
+File myproj/README.txt changed from revision 2.1 to 2.20
+File myproj/baar is new; current revision 2.3
+       </output>
+      </shell>
+
+      <ul>
+       <li>
+<command>-t</command>
+        <ul>
+         <li>
+Zeigt die Unterschiede zwischen den zwei aktuellsten Revisionen jeder
+Datei. Dies ist eine praktische Abkürzung zur Ermittlung der letzten
+Änderungen an einem Projekt. Diese Option kann nicht in Verbindung mit
+<command>-D</command> und <command>-r</command> verwendet werden.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-u</command>
+        <ul>
+         <li>
+Erzeugt Ausgabe im unified <command>diff</command>-Format. Ältere Versionen des
+Programmes patch können mit dem unified <command>diff</command>-Format nicht umgehen;
+darum verwenden Sie diese Option besser nicht, um einen
+distributionsfähigen Patch zu erzeugen; benutzen Sie hingegen <command>-c</command>.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-V (Überholt)</command>
+        <ul>
+         <li>
+CVS erzeugt eine Fehlermeldung, wenn Sie versuchen sollten, diese
+Option noch zu verwenden. Ich führe sie hier nur mit auf, falls Sie
+sie einmal in einem alten Skript finden sollten.
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+release [Optionen] VERZEICHNIS
+      </heading>
+
+      <textblock>
+Alternativen: re, rel<br/>
+Erfordert: Arbeitskopie<br/>
+Ändert: Arbeitskopie, CVSROOT/history
+      </textblock>
+
+      <textblock>
+Meldet eine Arbeitskopie vom Archiv ab (markiert sie als nicht länger
+in Gebrauch). Im Gegensatz zu den meisten anderen CVS-Befehlen, die
+auf eine Arbeitskopie wirken, wird dieser Befehl nicht aus dem
+Verzeichnis der Arbeitskopie heraus aufgerufen, sondern aus dem direkt
+darüber liegenden (dem Mutterverzeichnis). Sie müssen entweder
+Ihre <command>CVSROOT</command>-Umgebungsvariable setzen oder die globale Option <command>-d</command>
+verwenden, da CVS sonst nicht in der Lage ist, das Archiv von der
+Arbeitskopie herauszufinden.
+      </textblock>
+
+      <textblock>
+Die Benutzung von release ist nie erforderlich. Da CVS normalerweise
+keine Referenzen auf Arbeitskopien führt, können Sie Ihre Arbeitskopie
+auch einfach löschen.
+      </textblock>
+
+      <textblock>
+Falls Sie jedoch Änderungen in Ihrer Arbeitskopie haben, von denen Sie
+noch keinen <command>Commit</command> durchgeführt haben, oder wenn Sie möchten, dass das
+Beenden Ihrer Arbeit als Ereignis in der <command>CVSROOT/history</command>-Datei
+vermerkt wird (siehe das <command>history</command>-Kommando), dann sollten Sie release
+verwenden.
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-d</command>
+        <ul>
+         <li>
+Löscht die Arbeitskopie, wenn die Abmeldung erfolgreich war. Ohne <command>-d</command>
+bleibt die Arbeitskopie auf der Platte auch nach dem Release erhalten.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <textblock>
+Bemerkung:
+      </textblock>
+
+      <quotation>
+Falls Sie irgendwelche neuen Verzeichnisse innerhalb Ihrer
+Arbeitskopie erzeugt haben, diese aber nicht dem Archiv hinzugefügt
+wurden, dann werden sie zusammen mit dem Rest der Arbeitskopie
+gelöscht, wenn Sie <command>-d</command> verwenden.
+      </quotation>
+     </section>
+
+     <section>
+      <heading>
+remove [OPTIONEN] [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: rm, delete<br/>
+Erfordert: Arbeitskopie<br/>
+Ändert: Arbeitskopie
+      </textblock>
+
+      <textblock>
+Entfernt eine Datei aus einem Projekt. Normalerweise wird die Datei direkt von
+der Platte gelöscht, wenn Sie dieses
+Kommando aufrufen (siehe jedoch <command>-f</command>). Obwohl dieser Befehl normalerweise rekursiv
+arbeitet, ist es üblich, die zu löschenden
+Dateien einzeln explizit zu benennen. Beachten Sie die Merkwürdigkeit im letzten
+Satz: Üblicherweise starten Sie cvs remove
+für Dateien, die in Ihrer Arbeitskopie gar nicht mehr existieren.
+      </textblock>
+
+      <textblock>
+Obwohl das Archiv zur Bestätigung kontaktiert wird, werden die Dateien
+nicht wirklich gelöscht, bis später ein <command>commit</command> durchgeführt wird. Und
+selbst dann wird die RCS-Datei nicht wirklich aus dem Archiv gelöscht;
+wenn sie aus der Hauptentwicklungslinie stammt, wird sie lediglich in
+ein Attic/-Unterverzeichnis verschoben, wo sie noch immer für andere
+Entwicklungszweige zur Verfügung steht. Stammt sie aus einem Zweig,
+dann wird sie nicht bewegt, aber eine neue Revision mit dem Status
+<strong>dead</strong>2 auf der abgezweigten Version erzeugt (siehe auch add.)
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-f</command>
+        <ul>
+         <li>
+Löscht die Datei vor dem Löschen im CVS zunächst von der Platte. Diese
+Bedeutung von <command>-f</command> unterscheidet sich von der sonst in CVS-Befehlen
+üblichen Funktion: <strong>Erzwinge ggf. aktuellste Revision.</strong>
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal; der Befehl bezieht sich nur auf das aktuelle Arbeitsverzeichnis.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Rekursiv; Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+rtag [OPTIONEN] MARKE PROJEKT(E)
+      </heading>
+
+      <textblock>
+Alternativen: rt, rfreeze<br/>
+Erfordert: Archiv<br/>
+Ändert: Archiv
+      </textblock>
+
+      <textblock>
+Markiert ein Modul direkt im Archiv (erfordert keine Arbeitskopie).
+Sie sollten Ihre CVSROOT-Umgebungsvariable korrekt gesetzt haben oder
+die Option <command>-d</command> benutzen, damit dieses Kommando funktioniert (siehe
+auch tag).
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-a</command>
+        <ul>
+         <li>
+Entfernt Markierungen von allen <strong>gelöschten</strong> Dateien, da diese
+lediglich aus historischen Gründen noch im Archiv vorhanden sind,
+nicht aber länger als Bestandteil des aktiven Projektes betrachtet
+werden. Obwohl es nicht erlaubt ist, Dateien mit einem symbolischen
+Namen zu markieren, der bereits an anderer Stelle verwendet wird,
+sollte es keine Probleme geben, falls diese Marke nur noch in
+<strong>gelöschten</strong> Dateien Verwendung findet (die aus der Sicht des
+aktuellen Projektes ja nicht mehr länger existent sind).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-b</command>
+        <ul>
+         <li>
+Erzeugt eine neue abgezweigte Version mit dem Namen MARKE.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+     <ul>
+       <li>
+<command>-D DATUM</command>
+        <ul>
+         <li>
+Markiert die neuesten Revisionen, die nicht neuer als DATUM sind.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-d</command>
+        <ul>
+         <li>
+Löscht die Markierung mit dem symbolischen Namen MARKE. Diese Änderung
+wird nicht protokolliert - die Markierung verschwindet einfach. CVS
+führt keine Protokolle der Änderungen an Markierungen.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-F</command>
+        <ul>
+         <li>
+Erzwingt die Neuvergabe des symbolischen Namens, falls dieser bereits
+für irgendeine andere Revision in der Datei vergeben sein sollte.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-f</command>
+        <ul>
+         <li>
+Erzwingt die Verwendung der ersten Revision, falls eine gegebene
+Bezeichnung oder Revision nicht gefunden werden kann (siehe <command>-D</command> und
+<command>-r</command>).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal; der Befehl bezieht sich nur auf das aktuelle Arbeitsverzeichnis.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-n</command>
+        <ul>
+         <li>
+Verhindert die Ausführung von markierungsabhängigen Programmen, die in
+CVSROOT/modules angegeben sein könnten. (Siehe auch den Abschnitt
+<strong>Archivverwaltungsdateien</strong> für weitere Details zu diesen Programmen.)
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Rekursiv; Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-r REV</command>
+        <ul>
+         <li>
+Markiert Revision REV. (Dabei kann REV wieder ein symbolischer Name sein.)
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+server
+      </heading>
+
+      <textblock>
+Startet einen CVS-Server. Dieser Befehl wird niemals von Benutzern
+ausgeführt (außer sie versuchen, Fehler im Client/Server-Protokoll zu
+finden), daher vergessen Sie einfach, dass ich ihn überhaupt erwähnt
+habe.
+      </textblock>
+
+      <textblock>
+Optionen: Keine
+      </textblock>
+     </section>
+
+     <section>
+      <heading>
+status [OPTIONEN] [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: st, stat<br/>
+Erfordert: Arbeitskopie<br/>
+Ändert: Nichts
+      </textblock>
+
+      <textblock>
+Zeigt den Status von Dateien in der Arbeitskopie an.
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal; der Befehl bezieht sich nur auf das aktuelle
+Arbeitsverzeichnis. Eventuelle Unterverzeichnisse werden nicht
+behandelt.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Rekursiv; Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-v</command>
+        <ul>
+         <li>
+Zeigt symbolische Namen (Markierungen) für die Datei an.
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+tag [OPTIONEN] MARKIERUNG [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: ta, freeze<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Archiv
+      </textblock>
+
+      <textblock>
+Gibt einer bestimmten Revision oder einer Reihe von Revisionen eines
+Projektes einen symbolischen Namen. Oft nennt man diesen Vorgang auch
+<strong>eine Momentaufnahme des Projektes machen</strong>. Dieser Befehl wird
+ebenfalls dazu verwendet, neue Entwicklungszweige in CVS zu erzeugen
+(siehe die <command>-b</command>-Option; siehe auch rtag).
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+
+      <ul>
+       <li>
+<command>-b</command>
+        <ul>
+         <li>
+Erzeugt eine neue abgezweigte Version mit dem Namen MARKE.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-c</command>
+        <ul>
+         <li>
+Stellt sicher, dass die Arbeitskopie keine Änderungen beinhaltet, die
+noch nicht mit einem <command>Commit</command> bestätigt wurden. Sollte dies der Fall
+sein, wird eine Warnung ausgegeben und keine Markierung erzeugt.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-D DATE</command>
+        <ul>
+         <li>
+Markiert die neuesten Revisionen, die nicht neuer als DATUM sind.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-d</command>
+        <ul>
+         <li>
+Löscht die Markierung mit dem symbolischen Namen MARKE. Diese Änderung
+wird nicht protokolliert - die Markierung verschwindet einfach. CVS
+führt keine Protokolle der Änderungen an Markierungen.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-F</command>
+        <ul>
+         <li>
+Erzwingt die Neuvergabe des symbolischen Namens, falls dieser bereits
+für irgendeine andere Revision in der Datei vergeben sein sollte.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-f</command>
+        <ul>
+         <li>
+Erzwingt die Verwendung der ersten Revision, falls eine gegebene
+Bezeichnung oder Revision nicht gefunden werden kann (siehe <command>-D</command> und
+<command>-r</command>).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal; der Befehl bezieht sich nur auf das aktuelle Arbeitsverzeichnis.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Rekursiv; Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-r REV</command>
+        <ul>
+         <li>
+Markiert Revision REV (welche selber ein symbolischer Name sein kann).
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+unedit [OPTIONEN] [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: Keine<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Arbeitskopie
+      </textblock>
+
+      <textblock>
+Signalisiert Beobachtern, dass Sie mit dem Bearbeiten einer Datei
+fertig sind (siehe auch <command>watch</command>, <command>watchers</command>, <command>edit</command> und <command>editors</command>).
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal; signalisiert nur für Dateien im aktuellen Verzeichnis.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Rekursiv; Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+update [OPTIONEN] [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: up, upd<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Arbeitskopie
+      </textblock>
+
+      <textblock>
+Überführt Änderungen aus dem Archiv in Ihre Arbeitskopie. Als
+Seiteneffekt wird angezeigt, welche Dateien in Ihrer Arbeitskopie
+verändert wurden. (Falls jedoch die globale Option <command>-Q</command> verwendet wird,
+unterbleibt diese Anzeige; siehe auch <command>checkout</command>.)
+      </textblock>
+
+      <textblock>
+Optionen:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-A</command>
+        <ul>
+         <li>
+Löscht alle gebundenen Markierungen, Daten oder
+RCS-Schlüsselwortersetzungs-Methoden. Dies kann zu Veränderungen im
+Inhalt von Dateien führen, falls sich die aktuellsten Revisionen der
+Hauptentwicklungslinie von den bisher durch Bindungen festgelegten
+unterscheiden. (Sehen Sie <command>-A</command> einfach als einen neuen <command>Checkout</command> des
+Projekthauptzweiges an.)
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-D DATUM</command>
+        <ul>
+         <li>
+Aktualisiert bis zur letzten Revision, die nicht älter als DATUM ist.
+Diese Option wirkt bindend und impliziert <command>-P</command>. Sollte das Datum der
+Arbeitskopie gebunden sein, dann sind keine <command>Commits</command> möglich.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-d</command>
+        <ul>
+         <li>
+Holt fehlende Verzeichnisse, also Verzeichnisse, die im Archiv
+existieren, aber in der Arbeitskopie noch nicht vorhanden sind. Solche
+Verzeichnisse könnten im Archiv angelegt worden sein, nachdem die
+Arbeitskopie zuletzt per <command>Checkout</command> übertragen wurde. Ohne diese Option
+arbeitet <command>update</command> nur auf Verzeichnissen, die bereits in der
+Arbeitskopie vorhanden sind; neue Dateien werden aus dem Archiv
+geholt, neue Verzeichnisse aber nicht (siehe auch <command>-P</command>).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-f</command>
+        <ul>
+         <li>
+Erzwingt die Verwendung der aktuellsten Revision, falls eine mittels
+<command>-D</command> oder <command>-r</command> gegebene Revision nicht gefunden werden kann.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-I NAME</command>
+        <ul>
+         <li>
+Wie die <command>-I</command>-Option des Befehles import.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-j REV[:DATUM] oder -j REV1[:DATUM] -j REV2[:DATUM]</command>
+        <ul>
+         <li>
+Vereinigt zwei Entwicklungszweige. Wenn wir das optionale
+DATUM-Argument zunächst ignorieren (darauf wird später eingegangen),
+dann funktioniert <command>-j</command> so: Wenn nur ein <command>-j</command> gegeben ist, dann werden alle
+Veränderungen vom Zeitpunkt der Abspaltung des Entwicklungszweiges an
+bis zur Revision REV genommen und mit der Arbeitskopie vereinigt.
+Dabei entspricht der Zeitpunkt der Abspaltung der letzten Revision,
+die der Entwicklungszweig im Arbeitsverzeichnis und die abgezweigte
+Versionslinie von REV gemeinsam haben. Werden zwei <command>-j</command>-Optionen
+angegeben, werden die Veränderungen von REV1 bis REV2 in die
+Arbeitskopie integriert.
+         </li>
+
+         <li>
+Die speziellen Bezeichner HEAD und BASE dürfen als Argumente für <command>-j</command>
+verwendet werden; sie bezeichnen die aktuellste Revision im Archiv
+respektive die Revision im Archiv, auf der die aktuelle Arbeitskopie
+basiert.
+         </li>
+
+         <li>
+Was das optionale DATUM angeht: Falls sich REV auf eine abgezweigte
+Version bezieht, bezeichnet es normalerweise die neueste Revision auf
+diesem Zweig, Sie können jedoch diese auf die neueste Revision vor
+einem beliebigen DATUM beschränken. Das Datum sollte von der Revision
+durch einen Doppelpunkt ohne Leerzeichen abgetrennt sein wie in
+folgendem Beispiel:
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <shell>
+       <user path="~">
+cvs update -j einZweig:1999-07-01 -j einZweig:1999-08-01
+       </user>
+      </shell>
+
+      <ul>
+       <li>
+        <ul>
+         <li>
+In diesem Beispiel werden unterschiedliche Datumsangaben auf demselben
+Entwicklungszweig verwendet, sodass hier im Endeffekt die
+Veränderungen auf dem Entwicklungszweig <strong>einZweig</strong> zwischen Juli und
+August genommen und in die Arbeitskopie integriert werden. Beachten
+Sie jedoch, dass der Entwicklungszweig nicht notwendigerweise in
+beiden <command>-j</command>-Optionen derselbe sein muss.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-k METHODE</command>
+        <ul>
+         <li>
+Verwendet RCS-Schlüsselwortersetzung gemäß der angegebenen METHODE.
+(Siehe auch den Abschnitt zur Schlüsselwortersetzung weiter hinten in
+diesem Kapitel.) Die gewählte Methode wirkt für die betroffenen
+Dateien bindend - spätere Aktualisierungen der Arbeitskopie werden
+davon betroffen (siehe aber <command>-A</command>).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-l</command>
+        <ul>
+         <li>
+Lokal: aktualisiert nur das aktuelle Arbeitsverzeichnis.
+        </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-P</command>
+        <ul>
+         <li>
+Leere Verzeichnisse werden gelöscht. Alle CVS-kontrollierten
+Verzeichnisse, die am Ende der Aktualisierung keine Dateien mehr
+enthalten, werden aus der Arbeitskopie entfernt (siehe auch <command>-d</command>).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-p</command>
+        <ul>
+         <li>
+Gibt die Dateiinhalte auf die Standardausgabe aus, anstatt in die
+Dateien zu schreiben. Wird hauptsächlich verwendet, um zu einer
+früheren Revision zurückzugehen, ohne Bindungen (Sticky Tags) in der
+Arbeitskopie zu produzieren. Zum Beispiel:
+         </li>
+        </ul>
+       </li>
+      </ul>
+      <shell>
+       <user path="~">
+cvs update -p -r 1.3 README.txt >README.txt
+       </user>
+      </shell>
+      <ul>
+       <li>
+        <ul>
+         <li>
+Nun hat README.txt wieder den Inhalt seiner früheren Revision 1.3,
+gerade so, als hätten Sie die Änderungen von Hand zurückgenommen.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-R</command>
+        <ul>
+         <li>
+Rekursiv; Unterverzeichnisse werden ebenfalls behandelt. Da dies das
+Standardverhalten ist, dient <command>-R</command> lediglich zur Änderung des Verhaltens
+der <command>-l</command>-Option in <command>.cvsrc</command>-Dateien.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-r REV</command>
+        <ul>
+         <li>
+Aktualisiert (bzw deaktualisiert oder verzweigt) auf Revision REV.
+Wenn eine komplette Arbeitskopie aktualisiert wird, ist REV entweder
+einfach eine Marke oder die Markierung eines Zweiges. Bei der
+Aktualisierung einer einzelnen Datei kann es sich jedoch genauso gut
+um eine Revisionsnummer handeln.
+         </li>
+
+         <li>
+Diese Option wirkt bindend. Wenn die Dateien auf eine nicht zum
+aktuellen Entwicklungszweig gehörige Markierung oder Revision
+verändert werden, dann können Sie keinen <command>Commit</command> mehr durchführen, bis
+die Bindung aufgehoben wurde (siehe <command>-A</command>). Wenn REV der Name einer
+abgezweigten Version war, sind <command>Commits</command> jedoch möglich und neue
+Revisionen fließen in diesen Zweig ein.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>-WFILTER</command>
+        <ul>
+         <li>
+Spezifiziert dateinamenbasierte Filter, die für das <command>Update</command> gültig sein
+sollen. Diese Option kann mehrfach verwendet werden. (Siehe auch
+<command>CVSROOT/cvswrappers</command> im Abschnitt <strong>Archivverwaltungsdateien</strong> zu
+Details über diese Filter.) Zwischen <command>-W</command> und seinem Argument ist kein
+Leerzeichen.
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+watch on|off|add|remove [OPTIONEN] [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: Keine<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Watchliste im Archiv
+      </textblock>
+
+      <textblock>
+Schaltet die Beobachtung einer oder mehrerer Dateien ein. Anders als
+die meisten CVS-Befehle benötigt <command>watch</command> ein weiteres Subkommando, um
+etwas Sinnvolles zu bewirken. (Siehe auch <command>watchers</command>, <command>edit</command>,
+<command>editors</command>, <command>unedit</command> und <command>CVSROOT/users</command> im Abschnitt
+<strong>Archivverwaltungsdateien</strong> in diesem Kapitel.)
+      </textblock>
+
+      <textblock>
+Subkommandos:
+      </textblock>
+
+      <ul>
+       <li>
+<command>on</command>
+        <ul>
+         <li>
+Schaltet das Beobachten der Dateien ein. Das bedeutet, dass sie beim
+<command>Checkout</command> als nur lesbar markiert werden und Benutzer cvs edit benutzen
+sollten, um sie beschreibbar zu machen (wobei alle Beobachter darüber
+informiert werden, dass die Datei nun bearbeitet wird). Das
+Einschalten an sich bewirkt nicht, dass Sie zur Watchliste irgendeiner
+Datei hinzugefügt werden. (Siehe <command>watch add</command> und <command>watch remove</command> zu diesem
+Problem.)
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>off</command>
+        <ul>
+         <li>
+Das Gegenteil von <command>watch on</command>. Schaltet das Beobachten wieder ab.
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+        <li>
+<command>add</command>
+        <ul>
+         <li>
+Fügt Sie der Liste der Beobachter dieser Datei (Watchliste) hinzu. Sie
+werden benachrichtigt, sobald jemand einen <command>Commit</command> dieser Datei
+vornimmt, <command>cvs edit</command> oder <command>cvs unedit</command> ausführt (siehe jedoch die
+<command>-a</command>-Option).
+         </li>
+        </ul>
+       </li>
+      </ul>
+
+      <ul>
+       <li>
+<command>remove</command>
+        <ul>
+         <li>
+Das Gegenteil von <command>watch add</command>. Entfernt Sie aus der Watchliste dieser Datei.
+         </li>
+
+         <li>
+Optionen (zur Benutzung mit jedem der <command>watch</command>-Subkommandos). Alle drei
+Optionen haben dieselbe Bedeutung wie für <command>edit</command>:
+         </li>
+        </ul>
+
+        <ul>
+         <li>
+<command>-a AKTIONEN</command>
+         </li>
+
+         <li>
+<command>-l</command>
+         </li>
+
+         <li>
+<command>-R</command>
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </section>
+
+     <section>
+      <heading>
+watchers [OPTIONEN] [DATEIEN]
+      </heading>
+
+      <textblock>
+Alternativen: Keine<br/>
+Erfordert: Arbeitskopie, Archiv<br/>
+Ändert: Nichts
+      </textblock>
+
+      <textblock>
+Zeigt an, wer Dateien beobachtet.
+      </textblock>
+
+      <textblock>
+Optionen - Diese Optionen haben dieselbe Bedeutung wie für <command>edit</command>:
+      </textblock>
+
+      <ul>
+       <li>
+<command>-l</command>
+       </li>
+
+       <li>
+<command>-R</command>
+       </li>
+      </ul>
+    </section>
+   </section>
+  </section>
+ </split>
+<!--9.6 Kapitel-->
+ <split>
+  <section>
+   <heading>
+Schlüsselwortersetzung (RCS-Schlüsselwörter)
+   </heading>
+
+   <textblock>
+CVS kann bestimmte textuelle Ersetzungen in Dateien durchführen, die
+es Ihnen erlauben, einige Arten von Informationen automatisch
+innerhalb Ihrer Dateien auf dem aktuellsten Stand zu halten. Alle
+diese Ersetzungen werden durch ein spezielles Schlüsselwortmuster
+ausgelöst, das von Dollarzeichen eingeschlossen wird. Zum Beispiel
+wird
+   </textblock>
+
+   <textblock>
+<command>&#36;Revision&#36;</command>
+   </textblock>
+
+   <textblock>
+in einer Datei zu einem Ausdruck wie
+   </textblock>
+
+   <textblock>
+<command>&#36;Revision: 1.5 &#36;</command>
+   </textblock>
+
+   <textblock>
+und CVS wird bei jedem <command>Commit</command> einer neuen Revision diese Textstelle
+auf dem neuesten Stand halten.
+   </textblock>
+
+<!--9.6.1 Kapitel-->
+   <section>
+    <heading>
+Schlüsselwort-Expansion kontrollieren
+    </heading>
+
+    <textblock>
+Normalerweise expandiert CVS Schlüsselwörter, solange Sie ihm nicht
+befehlen, das nicht zu tun. Sie können die Schlüsselwortersetzung für
+eine Datei permanent verhindern, indem Sie die <command>-k</command>-Option angeben, wenn
+Sie die Datei dem Projekt hinzufügen, oder Sie können sie später
+deaktivieren, indem Sie den Befehl admin mit der Option <command>-k</command> aufrufen.
+Die <command>-k</command>-Option bietet mehrere verschiedene Methoden der
+Schlüsselwortkontrolle; üblicherweise werden Sie <command>o</command> oder <command>b</command> benötigen,
+wie zum Beispiel:
+    </textblock>
+
+    <shell>
+     <user path="~">
+cvs add -ko neue_datei.txt
+     </user>
+    </shell>
+
+    <textblock>
+Dieser Befehl fügte die Datei <command>neue_datei.txt</command> dem Projekt hinzu, wobei
+die Schlüsselwortersetzung abgeschaltet ist. Es setzt die
+Schlüsselwortersetzungs-Methode der Datei auf <command>o</command> fest, was so viel wie
+<strong>keine Ersetzung</strong> bedeutet. (Genau genommen steht das <strong>o</strong> für <strong>old</strong>3,
+was bedeutet, dass das Wort mit seinem alten Wert - also durch sich
+selbst - ersetzt wird, was effektiv in keiner Änderung resultiert. Ich
+bin sicher, diese Logik ergab zum damaligen Zeitpunkt für
+irgendjemanden einen Sinn.)
+    </textblock>
+
+    <textblock>
+Die Schlüsselwortersetzungs-Methode für jede einzelne Datei wird im
+Archiv gespeichert. Doch kann zudem jede Arbeitskopie ebenfalls ihre
+eigene lokale Einstellung besitzen - bewirkt durch die <command>-k</command>-Optionen zu
+<command>checkout</command> und <command>update</command>. Man kann außerdem Ersetzungsmethoden mit der
+<command>-k</command>-Option zu <command>diff</command> lediglich für die Dauer eines einzigen Befehls zur
+Anwendung bringen.
+    </textblock>
+
+    <textblock>
+Hier sind alle möglichen Methoden, angegeben mit vorne angefügter
+<command>-k</command>-Option (so, wie man sie auf der Kommandozeile schreiben würde).
+Jede dieser Optionen kann sowohl als standardmäßige als auch als
+lokale Schlüsselwortersetzungs-Methode für eine Datei verwendet
+werden:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-kkv</command>
+      <ul>
+       <li>
+Schlüsselwort und Wert; dies ist die normale
+Schlüsselwortexpansions-Methode, daher muss sie nicht explizit für
+neue Dateien mit angegeben werden. Sie könnten sie jedoch benötigen,
+um eine Datei mit einer anderen Methode zurückzusetzen.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-kkvl</command>
+      <ul>
+       <li>
+Wie <command>-kkv</command>, beinhaltet aber zusätzlich den Namen desjenigen, der die
+Revision gebunden hat, falls diese auf einem bestimmten Wert gehalten
+wird. (Siehe die <command>-l</command>-Option zum Befehl admin für mehr Informationen
+dazu.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-kk</command>
+      <ul>
+       <li>
+Schreibt keine Werte in Schlüsselwortfelder, sondern benutzt lediglich
+den Namen des Schlüsselwortes. Mit dieser Option würden zum Beispiel:
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <quotation>
+<command>&#36;Revision: 1.5 &#36;</command>
+    </quotation>
+
+    <textblock>
+und
+    </textblock>
+
+    <quotation>
+<command>&#36;Revision&#36;</command>
+    </quotation>
+
+    <textblock>
+beide <strong>expandiert</strong> (okay, eher <strong>kontrahiert</strong>) zu:
+    </textblock>
+
+    <quotation>
+<command>&#36;Revision&#36;</command>
+    </quotation>
+
+    <ul>
+     <li>
+<command>-ko</command>
+      <ul>
+       <li>
+Wiederverwendung des Wortes, das in der Datei gefunden wird (<strong>o</strong> für
+<strong>old</strong>, wie oben beschrieben), gerade so, wie es vor dem <command>commit</command> in der
+Arbeitskopie stand.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-kb</command>
+      <ul>
+       <li>
+Wie <command>-ko</command>, zusätzlich wird aber noch die sonst zwischen
+unterschiedlichen Plattformen übliche automatische Umwandlung von
+Zeilenendungen unterdrückt. Das <strong>b</strong> steht für <strong>binär</strong>; es ist die
+Methode, die für Binärdateien verwendet werden sollte.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-kv</command>
+      <ul>
+       <li>
+Ersetzt das Schlüsselwort durch seinen Wert, so wird zum Beispiel
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <quotation>
+<command>&#36;Revision&#36;</command>
+    </quotation>
+
+    <textblock>
+umgewandelt zu:
+    </textblock>
+
+    <quotation>
+<command>1.5</command>
+    </quotation>
+
+    <textblock>
+Natürlich wird in diesem Fall nach der ersten keine weitere Ersetzung
+stattfinden, sodass diese Methode mit Bedacht verwendet werden sollte.
+    </textblock>
+   </section>
+  </section>
+ </split>
+<!-- 9.7 Kapitel -->
+ <split>
+  <section>
+   <heading>
+Liste der Schlüsselwörter
+   </heading>
+
+   <textblock>
+Hier nun all die mit Dollarzeichen abgeschlossenen Schlüssewörter, die
+CVS kennt. Es folgt eine Liste mit je einem Schlüsselwort, einer
+kurzen Beschreibung und einem Beispiel seiner expandierten Form.
+   </textblock>
+
+   <ul>
+    <li>
+<command>&#36;Author&#36;</command>
+     <ul>
+      <li>
+Autor einer Änderung
+      </li>
+      <li>
+<strong>&#36;Author: jrandom &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+
+   <ul>
+    <li>
+<command>&#36;Date&#36;</command>
+     <ul>
+      <li>
+Datum und Zeit einer Änderung in UTC (GMT)
+      </li>
+      <li>
+<strong>&#36;Date: 1999/08/23 18:21:13 &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+
+   <ul>
+    <li>
+<command>&#36;Header&#36;</command>
+     <ul>
+      <li>
+Diverse Informationen, die von Nutzen sein könnten: Der volle Pfad zur
+RCS-Datei im Archiv, Revision, Datum (UTC), Autor, Status und
+eventuell Benutzer, die einen Lock auf die Datei halten. (Letzere sind
+selten; in folgendem Beispiel hält jedoch der User qsmith einen
+Lock.):
+      </li>
+      <li>
+<strong>&#36;Header: /usr/local/archiv/proj/hallo.c,v 1.1 1999/06/01 03:21:13 \</strong><br/>
+<strong>jrandom Exp qsmith &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;Id&#36;</command>
+     <ul>
+      <li>
+Wie <command>&#36;Header&#36;</command>, aber ohne den vollen Pfad zur RCS-Datei:
+      </li>
+      <li>
+<strong>&#36;Id: hallo.c,v 1.1 1999/06/01 03:21:13 jrandom Exp qmsith &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;Log&#36;</command>
+     <ul>
+      <li>
+Die Log-Mitteilung für diese Revision zusammen mit Revisionsnummer,
+Datum und Autor. Anders als bei anderen Schlüsselwörtern werden
+frühere Ersetzungen nicht ersetzt. Sie werden stattdessen nach unten
+verschoben, sodass die neueste Ersetzung immer ganz oben in einer
+ständig wachsenden Liste von <command>&#36;Log&#36;</command>-Nachrichten steht:
+      </li>
+      <li>
+<strong>&#36;Log: hallo.c,v &#36; Revision 1.12 1999/07/19 06:12:43 jrandom</strong>
+      </li>
+      <li>
+Halli hallo, eine Mitteilung
+      </li>
+      <li>
+Text, der vor dem <command>&#36;Log&#36;</command>-Schlüsselwort auf derselben Zeile steht, wird
+ebenfalls mit der &#36;Log-Mitteilung nach unten verschoben; das
+geschieht, damit alles, was später expandiert wird, ebenfalls
+auskommentiert ist, wenn Sie <command>&#36;Log&#36;</command> in einem Kommentar in einer
+Quelltextdatei verwenden.
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;Locker&#36;</command>
+     <ul>
+      <li>
+Name des Benutzers, der einen Lock auf diese Revision hält
+(normalerweise niemand):
+      </li>
+      <li>
+<strong>&#36;Locker: qsmith &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;Name&#36;</command>
+     <ul>
+      <li>
+Name der gebundenen Markierung:
+      </li>
+      <li>
+<strong>&#36;Name: release_1_14 &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;RCSfile&#36;</command>
+     <ul>
+      <li>
+Name der RCS-Datei im Archiv:
+      </li>
+      <li>
+<strong>&#36;RCSfile: hallo.c,v &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;Revision&#36;</command>
+     <ul>
+      <li>
+Revisionsnummer:
+      </li>
+      <li>
+<strong>&#36;Revision: 1.1 &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;Source&#36;</command>
+     <ul>
+      <li>
+Vollständiger Pfad zur RCS-Datei im Archiv:
+      </li>
+      <li>
+<strong>&#36;Source: /usr/local/archiv/proj/hallo.c,v &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+   <ul>
+    <li>
+<command>&#36;State&#36;</command>
+     <ul>
+      <li>
+Status dieser Revision:
+      </li>
+      <li>
+<strong>&#36;State: Exp &#36;</strong>
+      </li>
+     </ul>
+    </li>
+   </ul>
+
+  </section>
+ </split>
+<!-- 9.8 Kapitel -->
+ <split>
+  <section>
+   <heading>
+Archivverwaltungsdateien
+   </heading>
+
+   <textblock>
+Die Verwaltungsdateien eines Archivs werden im
+<command>CVSROOT</command>-Unterverzeichnis des Archivs gespeichert. Diese Dateien
+kontrollieren diverse Aspekte im Verhalten von CVS (selbstverständlich
+nur innerhalb dieses Archivs).
+   </textblock>
+
+   <textblock>
+Generell werden die Verwaltungsdateien genauso unter
+Revisionskontrolle gehalten wie alle anderen Dateien im Archiv
+(Ausnahmen werden extra angemerkt). Im Gegensatz zu anderen Dateien
+werden ausgecheckte Kopien der Verwaltungsdateien im Archiv jedoch
+direkt neben den korrespondierenden RCS-Dateien abgespeichert. Diese
+ausgecheckten Kopien üben die wirkliche Kontrolle über das Verhalten
+von CVS aus.
+   </textblock>
+
+   <textblock>
+Der normale Weg, um die Verwaltungsdateien zu modifizieren, ist der,
+einen <command>Checkout</command> auf eine Arbeitskopie des CVSROOT-Moduls durchzuführen,
+die Änderungen vorzunehmen und einen <command>Commit</command> zu machen. CVS
+aktualisiert die ausgecheckten Dateien im Archiv automatisch (siehe
+<command>checkoutlist</command>). In Notfällen ist es jedoch auch möglich, die
+ausgecheckten Kopien im Archiv direkt zu bearbeiten.
+   </textblock>
+
+   <textblock>
+Eventuell interessieren Sie sich auch für die Beschreibung von
+Verwaltungsdateien in Kapitel 4, die auch Beispiele umfasst.
+   </textblock>
+
+<!--9.8.1 Kapitel -->
+   <section>
+    <heading>
+Gemeinsame Syntax
+    </heading>
+
+    <textblock>
+In allen Verwaltungsdateien markiert ein # am Zeilenbeginn einen
+Kommentar; diese Zeile wird von CVS nicht beachtet. Ein Backslash <strong>\</strong>
+vor einem Zeilenende bewirkt das Ignorieren des Zeilenumbruchs.
+    </textblock>
+
+    <textblock>
+Einige der Dateien (<command>commitinfo</command>, <command>loginfo</command>, <command>taginfo</command> und <command>rcsinfo</command>) haben
+weitere syntaktische Konventionen gemeinsam. Innerhalb dieser Dateien
+befindet sich am linken Rand jeder Zeile ein regulärer Ausdruck (der
+mit einem Datei- oder Verzeichnisnamen verglichen wird), und der Rest
+der Zeile ist ein Programmaufruf, eventuell mit Argumenten, der
+ausgeführt wird, sobald irgendetwas mit der Datei geschieht, auf die
+der reguläre Ausdruck passt. Das Programm wird mit dem
+Hauptverzeichnis des Archivs als Arbeitsverzeichnis gestartet.
+    </textblock>
+
+    <textblock>
+In diesen Dateien dürfen zwei spezielle reguläre Ausdrücke verwendet
+werden: ALL und DEFAULT. Der Ausdruck ALL passt für jeden beliebigen
+Datei- oder Verzeichnisnamen, egal ob noch andere Ausdrücke dafür
+passen oder nicht, und DEFAULT wird nur verwendet, falls keiner der
+anderen Ausdrücke passt.
+    </textblock>
+   </section>
+<!--9.8.2 Kapitel-->
+   <section>
+    <heading>
+Gemeinsame Variablen
+    </heading>
+
+    <textblock>
+Die Info-Dateien erlauben des Weiteren die Expansion gewisser
+Variablen zur Laufzeit. Um eine Variable zu expandieren, muss ihr ein
+Dollarzeichen vorangestellt sein (und setzen Sie sie in geschweifte
+Klammern, um sicherzugehen). Es folgen die Variablen, die CVS bekannt
+sind:
+    </textblock>
+
+    <ul>
+     <li>
+<command>${CVSROOT}</command>
+      <ul>
+       <li>
+Das Hauptverzeichnis des Archivs
+       </li>
+      </ul>
+     </li>
+    </ul>
+    <ul>
+     <li>
+<command>${RCSBIN} (Überholt)</command>
+      <ul>
+       <li>
+Benutzen Sie diese Variable nicht. Sie findet nur noch in alten
+CVS-Versionen (1.9.18 und älter) Verwendung.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>${CVSEDITOR} ${VISUAL} ${EDITOR}</command>
+      <ul>
+       <li>
+Alle diese Variablen expandieren zu dem Editor, den CVS für
+Log-Mitteilungen verwendet.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>{USER}</command>
+      <ul>
+       <li>
+Der Benutzer, der CVS laufen lässt (auf der Serverseite).
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <textblock>
+Benutzervariablen
+    </textblock>
+
+    <textblock>
+Benutzer können zudem eigene Variablen setzen, wenn sie beliebige
+CVS-Kommandos starten (siehe die globale <command>-s</command>-Option). Auf diese
+Variablen kann aus den <command>*info</command>-Dateien zugegriffen werden, indem ihnen
+ein Gleichheitszeichen vorangestellt wird wie z.B. in <command>&#36;{=VAR}</command>.
+    </textblock>
+
+   </section>
+<!--9.8.3 Kapitel-->
+   <section>
+    <heading>
+Liste der Archivverwaltungsdateien
+    </heading>
+    <textblock>
+Es folgt eine Liste aller Archivverwaltungsdateien:
+    </textblock>
+
+
+    <textblock>
+<command>checkoutlist</command>
+    </textblock>
+
+    <textblock>
+Diese Datei enthält eine Liste von Dateien, von denen ausgecheckte
+Kopien im Archiv gehalten werden sollten. Jede Zeile enthält einen
+Dateinamen und eine Fehlermeldung, die CVS ausgeben soll, falls aus
+irgendeinem Grund die Datei nicht im Archiv ausgecheckt werden kann.
+    </textblock>
+
+    <textblock>
+DATEINAME FEHLERMELDUNG
+    </textblock>
+
+    <textblock>
+Da CVS bereits von sich aus ausgecheckte Kopien der existierenden
+Verwaltungsdateien behält, müssen diese nicht in der
+<command>checkoutlist</command>-Datei aufgeführt werden. Speziell die folgenden Dateien
+brauchen niemals in der <command>checkoutlist</command>-Datei zu stehen: <command>loginfo</command>,
+<command>rcsinfo</command>, <command>editinfo</command>, <command>verifymsg</command>, <command>commitinfo</command>, <command>taginfo</command>, <command>ignore</command>,
+<command>checkoutlist</command>, <command>cvswrappers</command>, <command>notify</command>, <command>modules</command>, <command>readers</command>, <command>writers</command> und
+<command>config</command>.
+    </textblock>
+
+
+    <textblock>
+<command>commitinfo</command>
+    </textblock>
+
+    <textblock>
+Spezifiziert Programme, die, in Abhängigkeit von den betroffenen
+Dateien, bei einem <command>Commit</command> gestartet werden sollen. Jede Zeile besteht
+aus einem regulären Ausdruck, gefolgt von einem Kommando:
+    </textblock>
+
+    <textblock>
+<command>REGULÄRER_AUSDRUCK PROGRAMM [ARGUMENTE]</command>
+    </textblock>
+
+    <textblock>
+Dem Kommando werden außer den in der Datei vermerkten Argumenten
+zusätzliche Parameter übergeben, und zwar der volle Pfad zum Archiv
+gefolgt von den Namen aller Dateien, die per <command>Commit</command> übertragen werden
+sollen. Diese Dateien können durch das PROGRAMM untersucht werden; ihr
+Inhalt entspricht dem der Dateien aus der Arbeitskopie, auf die <command>commit</command>
+angewendet werden soll. Beendet sich das PROGRAMM mit einem
+Rückgabewert ungleich null, so schlägt <command>commit</command> fehl; anderenfalls wird
+der <command>Commit</command> durchgeführt. (Siehe auch <strong>Gemeinsame Syntax</strong> weiter vorne
+in diesem Kapitel.)
+    </textblock>
+
+
+    <textblock>
+<command>config</command>
+    </textblock>
+
+    <textblock>
+Kontrolliert diverse globale (nicht projektspezifische)
+Archivparameter. Die Syntax jeder Zeile ist:
+    </textblock>
+
+    <textblock>
+<strong>ParameterName=yes|no</strong>
+    </textblock>
+
+    <textblock>
+mit Ausnahme des LockDir Parameters, der einen absoluten Pfadnamen als
+Argument benötigt.
+    </textblock>
+
+    <textblock>
+Die folgenden Parameter werden unterstützt:
+    </textblock>
+
+    <textblock>
+<strong>RCSBIN (normal: =no)</strong>
+    </textblock>
+    <textblock>
+(Überholt.) Diese Option wird aus Kompatibilitätsgründen
+stillschweigend akzeptiert, hat jedoch keinerlei Wirkung mehr.
+    </textblock>
+
+    <textblock>
+<strong>SystemAuth (normal: =no)</strong>
+    </textblock>
+    <textblock>
+Wenn <strong>yes</strong>, dann konsultiert die pserver Authentifizierung die
+Benutzerdatenbank des Systems - normalerweise <command>/etc/passwd</command> - falls ein
+Benutzer nicht in <command>CVSROOT/passwd</command> gefunden werden kann. Wenn <strong>no</strong>, muss
+der Benutzer in <command>CVSROOT/passwd</command> stehen, um Zugriff über die
+<command>:pserver:</command>-Methode zu erhalten.
+    </textblock>
+
+    <textblock>
+<strong>PreservePermissions (normal: =no)</strong>
+    </textblock>
+    <textblock>
+Wenn <strong>yes</strong>, dann versucht CVS Dateizugriffsrechte und andere spezielle
+Dateisysteminformationen (wie Device-Nummern und Ziele symbolischer
+Links) möglichst zu erhalten. Dies möchten Sie wahrscheinlich nicht,
+weil diese Option sich nicht unbedingt immer verhält wie erwartet.
+(Siehe auch den Abschnitt <strong>Special Files</strong> im <name>Cederqvist</name> mit weiteren
+Details.)
+    </textblock>
+
+    <textblock>
+<strong>TopLevelAdmin (normal: =no)</strong>
+    </textblock>
+    <textblock>
+Wenn <strong>yes</strong>, dann erzeugen <command>Checkouts</command> ein <command>CVS/</command>-Unterverzeichnis neben
+jedem Dateibaum der Arbeitskopie (im Mutterverzeichnis der
+Arbeitskopie). Dies kann nützlich sein, wenn Sie viele Arbeitskopien
+aus demselben Archiv auschecken; andererseits wird durch eine
+Einstellung an dieser Stelle jeder Benutzer des Archivs betroffen.
+    </textblock>
+
+    <textblock>
+<command>LockDir</command> (normal: nicht gesetzt)
+    </textblock>
+    <textblock>
+Das Argument nach dem Gleichheitszeichen ist der Pfad zu einem
+Verzeichnis, in dem CVS Lock-Dateien erzeugen kann. Wenn dies nicht
+gesetzt ist, werden Lock-Dateien innerhalb des Archivs jeweils bei den
+korrespondierenden RCS-Dateie jedes Projektes angelegt. Das bedeutet,
+dass Benutzern dieser Projekte auf Dateisystemebene Schreibzugriff auf
+diese Archivverzeichnisse gewährt sein muss.
+    </textblock>
+
+
+    <textblock>
+<command>cvsignore</command>
+    </textblock>
+
+    <textblock>
+Ignoriert bestimmte Dateien, wenn Aktualisierungen, <command>Imports</command> oder
+<command>Releases</command> durchgeführt werden. Normalerweise ignoriert CVS sowieso
+einige Arten von Dateien. (Für eine vollständige Liste siehe die <command>-I</command>
+Option zu import weiter vorne in diesem Kapitel.) Sie können diese
+Liste erweitern, indem Sie zusätzliche Dateinamen oder Wildcards in
+der <command>cvsignore</command>-Datei eintragen. Jede Zeile gibt einen Dateinamen oder
+ein Muster, z.B.:
+    </textblock>
+
+    <textblock>
+<command>README.msdos</command>
+    </textblock>
+    <textblock>
+<command>*.html</command>
+    </textblock>
+    <textblock>
+<command>blah?.out</command>
+    </textblock>
+
+    <textblock>
+Hierdurch wird CVS veranlasst, alle Dateien mit dem Namen
+<strong>README.msdos</strong>, alle Dateien, die auf <strong>.html</strong> enden, und alle Dateien,
+die mit <strong>blah</strong> anfangen und mit <strong>.out</strong> enden, zu ignorieren.
+(Theoretisch könnten Sie mehrere Dateien oder Wildcards in jeder Zeile
+durch Leerzeichen getrennt angeben, aber die Lesbarkeit ist bei einem
+Ausdruck pro Zeile besser. Bedauerlicherweise impliziert diese
+Tatsache auch, dass es keinen Weg gibt, Dateinamen, die Leerzeichen
+enthalten, zu spezifizieren, außer unter Verwendung von Wildcards.)
+    </textblock>
+
+    <textblock>
+Ein <strong>!</strong> an beliebiger Stelle innerhalb der Liste macht alle
+vorangehenden Einträge unwirksam. (Siehe <command>&#36;CVSIGNORE</command>  im bschnitt
+<strong>Umgebungsvariablen</strong> in diesem Kapitel für eine vollständigere
+Diskussion des Verhaltens von Ignore.)
+    </textblock>
+
+
+    <textblock>
+<command>cvswrappers</command>
+    </textblock>
+
+    <textblock>
+Definiert gewisse Filtermethoden, basierend auf dem Dateinamen. Jede
+Zeile enthält einen Dateinamen oder eine Wildcard, gefolgt von einer
+Option, die den Filtertyp festlegt, und ein Argument zu dieser Option.
+    </textblock>
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-m</command>
+      <ul>
+       <li>
+Spezifiziert eine Aktualisierungsmethode. Mögliche Argumente sind
+MERGE, was eine automatische Integration in die Arbeitskopie bewirkt,
+sowie COPY, was bewirkt, dass keine Integration versucht wird, sondern
+der Benutzer mit beiden Versionen einer Datei konfrontiert wird und
+das selber regeln muss. Standardeinstellung ist MERGE, außer bei
+Binärdateien (solche, deren Schlüsselwortersetzungs-Methode auf <command>-kb</command>
+gesetzt ist). (Siehe auch den Abschnitt <strong>Schüsselwortersetzung</strong> weiter
+vorne in diesem Kapitel.) Dateien, die als binär markiert sind, nutzen
+automatisch die <command>COPY</command> Methode, sodass kein Grund besteht, für diese
+extra einen <command>-m COPY-Wrapper</command> zu definieren.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-k</command>
+      <ul>
+       <li>
+Legt eine Schlüsselwortersetzungs-Methode fest. Alle üblichen Methoden
+sind erlaubt. (Siehe auch den Abschnitt <strong>Schüsselwortersetzung</strong> weiter
+vorne in diesem Kapitel mit einer vollständigen Liste.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <textblock>
+Hier ist ein Beispiel für eine <command>cvswrappers</command>-Datei:
+    </textblock>
+
+    <textblock>
+<command>*.blob -m COPY</command>
+    </textblock>
+    <textblock>
+<command>*.blink -k o</command>
+    </textblock>
+
+    <textblock>
+Diese <command>cvswrappers</command>-Datei legt fest, dass für Dateien, die auf <command>.blob</command>
+enden, keine automatische Integration versucht werden soll und für
+Dateien, die auf <command>.blink</command> enden, die Schlüsselwortersetzung
+unterdrückt wird. (Siehe auch <command>.cvswrappers</command> im Abschnitt <strong>Dateien in
+der Arbeitskopie</strong> in diesem Kapitel.)
+    </textblock>
+
+
+    <textblock>
+<command>editinfo</command>
+    </textblock>
+
+    <textblock>
+Diese Datei ist überholt. Sehr überholt.
+    </textblock>
+
+
+    <textblock>
+<command>history</command>
+    </textblock>
+
+    <textblock>
+Speichert eine ständig anwachsende Historie von Aktivitäten im Archiv,
+zur Benutzung durch das <command>cvs history</command>-Kommando. Um diese Funktion zu
+deaktivieren, löschen Sie einfach die <command>history</command>-Datei. Wenn sie
+existiert, sollte sie am besten für alle beschreibbar sein, um spätere
+Probleme mit Dateizugriffsrechten zu vermeiden.
+    </textblock>
+
+    <textblock>
+Der Inhalt dieser Datei ändert in keiner Weise das Verhalten von CVS
+(selbstverständlich mit Ausnahme der Ausgabe des Befehles <command>cvs
+history</command>).
+    </textblock>
+
+
+    <textblock>
+<command>loginfo</command>
+    </textblock>
+
+    <textblock>
+Spezifiziert Programme, welche die Log-Mitteilungen bei jedem <command>Commit</command>
+bearbeiten, abhängig davon, was von dem <command>Commit</command> betroffen ist. Jede
+Zeile setzt sich aus einem regulären Ausdruck, gefolgt von einem
+Befehlsausdruck, zusammen:
+    </textblock>
+
+    <textblock>
+<command>REGULÄRER_AUSDRUCK PROGRAMM [ARGUMENTE]</command>
+    </textblock>
+
+    <textblock>
+Dem PROGRAMM wird die Log-Mitteilung auf die Standardeingabe übermittelt.
+    </textblock>
+
+    <textblock>
+Einige spezielle Codes können in ARGUMENTE verwendet werden: <command>%s</command>
+symbolisiert die Namen der Dateien, die der <command>Commit</command> betrifft, <command>%V</command> steht
+für die alten Revisionen vor dem <command>Commit</command> und <command>%v</command> für die neuen
+Revisionen nach dem <command>Commit</command>. Wenn mehrere Dateien betroffen sind, ist
+jedes Element der Ersetzung durch Leerzeichen vom nächsten getrennt.
+Beispielsweise wird bei einem <command>Commit</command>, der zwei Dateien betrifft, <command>%s</command> zu
+<command>hallo.c</command> <command>README.txt</command>  und <command>%v</command> zu 1.17 1.12.
+    </textblock>
+
+    <textblock>
+Sie können die Codes in geschweiften Klammern kombinieren, wodurch
+jeder zu einem Namen gehörige Block intern durch Kommata, die Blöcke
+an sich durch Leerzeichen getrennt werden. Um das vorige Beispiel
+weiterzuführen, sähe beispielsweise die Expansion von <command>%{sv}</command> so aus:
+<command>hallo.c,1.17 README.txt,1.12</command>.
+    </textblock>
+
+    <textblock>
+Wenn überhaupt irgendeine % Expansion durchgeführt wird, dann wird der
+Pfad im Archiv vorangestellt. Das heißt, das letzte Beispiel ergäbe in
+Wirklichkeit:
+    </textblock>
+
+    <textblock>
+<command>myproj hallo.c,1.17 README.txt,1.12</command>
+    </textblock>
+
+    <textblock>
+Wenn PROGRAMM mit einem Rückgabewert ungleich null beendet wird, so
+schlägt <command>commit</command> fehl; anderenfalls wird die Aktion fortgeführt. (Siehe
+auch den Abschnitt <strong>gemeinsame Syntax</strong> weiter vorn in diesem Kapitel.)
+    </textblock>
+
+
+    <textblock>
+<command>modules</command>
+    </textblock>
+
+    <textblock>
+Diese Datei bildet Namen auf Archivverzeichnisse ab. Der generelle
+Aufbau der Dateizeilen ist:
+    </textblock>
+
+    <textblock>
+MODUL [OPTIONEN] [&amp;ANDERES_MODUL...] [VERZEICHNIS] [DATEIEN]
+    </textblock>
+
+    <textblock>
+VERZEICHNIS muss kein Top-Level-Projektverzeichnis sein - es kann
+genauso gut ein Unterverzeichnis sein. Werden irgendwelche DATEIEN
+angegeben, so besteht das Modul nur aus diesen DATEIEN in diesem
+VERZEICHNIS.
+    </textblock>
+
+    <textblock>
+Ein Und-Zeichen, gefolgt von einem Modulnamen, bewirkt, dass die
+Expansion jenes Moduls auf dieser Zeile übernommen wird.
+    </textblock>
+
+    <textblock>
+Optionen:
+    </textblock>
+
+    <ul>
+     <li>
+<command>-a</command>
+      <ul>
+       <li>
+Dies ist ein Modul-<strong>Alias</strong>, was heißt, es expandiert buchstäblich zu
+allem, was nach den OPTIONEN folgt. In diesem Falle ist das
+VERZEICHNIS/DATEIEN-Verhalten deaktiviert, und alles nach den OPTIONEN
+wird als andere Module oder Archivverzeichnisse angesehen. Wenn Sie
+die <command>-a</command>-Option verwenden, können Sie bestimmte Verzeichnisse von
+anderen Modulen ausnehmen, indem Sie ihnen ein Ausrufezeichen (!)
+voranstellen. Zum Beispiel bedeutet
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <shell>
+     <user path="~">
+top_proj -a !meinproj/a-verzeichnis !meinproj/b-verzeichnis meinproj
+     </user>
+    </shell>
+
+    <ul>
+     <li>
+      <ul>
+       <li>
+dass ein <command>Checkout</command> von <strong>top_proj</strong> alle Dateien in meinproj betrifft,
+außer denen in den Verzeichnissen a-verzeichnis und b-verzeichnis.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-d NAME</command>
+      <ul>
+       <li>
+Nennt das Arbeitsverzeichnis NAME, anstatt den Modulnamen zu verwenden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-e PROGRAMM</command>
+      <ul>
+       <li>
+Startet PROGRAMM, wenn Dateien in diesem Modul exportiert werden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-i PROGRAMM</command>
+      <ul>
+       <li>
+Startet PROGRAMM, wenn <command>Commits</command> von Dateien in diesem Modul
+stattfinden. Dem Programm wird ein Argument übergeben - der
+vollständige Pfad zu der fraglichen Datei innerhalb des Archivs.
+(Siehe auch <command>commitinfo</command>, <command>loginfo</command> und <command>verifymsg</command> für
+ausgeklügeltere Methoden zum Starten von Programmen bei einem <command>Commit</command>.)
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-o PROGRAMM</command>
+      <ul>
+       <li>
+Startet PROGRAMM, wenn Dateien in diesem Modul ausgecheckt werden.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-s STATUS</command>
+      <ul>
+       <li>
+Legt einen Status für dieses Modul fest. Wenn die modules-Datei
+ausgegeben wird (mit <command>cvs checkout -s</command>), dann werden die Module zunächst
+nach Status, dann nach Namen sortiert. Diese Option hat keine weitere
+Wirkung auf CVS, also nutzen Sie sie nach Belieben. Sie können Sie
+benutzen, um nach beliebigen Kriterien zu sortieren: beispielsweise
+Status, Verantwortliche für den Quelltext oder Sprache der Datei.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-t PROGRAMM</command>
+      <ul>
+       <li>
+Startet PROGRAMM, wenn Dateien in diesem Modul mittels <command>cvs rtag</command>
+markiert werden. Dem Programm werden zwei Argumente mitgegeben: der
+Name des Moduls und der symbolische Name der Markierung. Das Programm
+wird nur für rtag aufgerufen, nicht für <command>tag</command>. Ich habe keine Ahnung,
+warum diese Unterscheidung gemacht wird. Die <command>taginfo</command> -Datei könnte
+nützlicher für Sie sein, wenn Sie Programme durch tag starten möchten.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <ul>
+     <li>
+<command>-u PROGRAMM</command>
+      <ul>
+       <li>
+Startet PROGRAMM, immer wenn eine Arbeitskopie dieses Moduls aus
+seinem Hauptverzeichnis heraus aktualisiert wird. Dem Programm wird
+ein einzelnes Argument übergeben: Der vollständige Dateiname zum
+Archiv des Moduls.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <textblock>
+<command>notify</command>
+    </textblock>
+
+    <textblock>
+Kontrolliert, wie die Benachrichtigungen für beobachtete Dateien
+durchgeführt werden. (Möglicherweise möchten Sie hierzu auch bei den
+<command>watch</command>- und <command>edit</command>-Kommandos nachlesen oder den Abschnitt <strong>Watches</strong> in
+Kapitel 6 anschauen.) Jede Zeile hat die übliche Form:
+    </textblock>
+
+    <textblock>
+<command>REGULÄRER_AUSDRUCK PROGRAMM [ARGUMENTE]</command>
+    </textblock>
+
+    <textblock>
+Ein <command>%s</command> innerhalb der ARGUMENTE wird zu dem Namen des Benutzers
+expandiert, der benachrichtigt werden soll, während der Rest der
+Information bezüglich der Benachrichtigung dem PROGRAMM auf der
+Standardeingabe übergeben wird. Üblicherweise ist diese Information
+eine kurze Nachricht, die dazu geeignet ist, eine E-Mail an den
+Benutzer zu erzeugen. (Siehe auch den Abschnitt <strong>gemeinsame Syntax</strong>
+weiter vorne in diesem Kapitel.)
+    </textblock>
+
+    <textblock>
+In der Standardkonfiguration von CVS hat die <command>notify</command>-Datei eine Zeile:
+    </textblock>
+
+    <textblock>
+<command>ALL mail %s -s "CVS notification"</command>
+    </textblock>
+
+    <textblock>
+die meistens auch vollständig ausreicht.
+    </textblock>
+
+
+    <textblock>
+<command>passwd</command>
+    </textblock>
+
+    <textblock>
+Enthält Authentisierungsdaten zur Nutzung mit der
+pserver-Zugriffsmethode. Jede Zeile hat die Form:
+    </textblock>
+
+    <textblock>
+<command>BENUTZER:VERSCHLÜSSELTES_PASSWORT[:SYSTEM_BENUTZER]</command>
+    </textblock>
+
+    <textblock>
+Ist kein SYSTEM_BENUTZER gegeben, wird BENUTZER als der
+Systembenutzername angenommen.
+    </textblock>
+
+
+    <textblock>
+<command>rcsinfo</command>
+    </textblock>
+
+    <textblock>
+Definiert ein Formular, das für Log-Mitteilungen ausgefüllt werden
+sollte, die mit einem interaktiven Editor erstellt werden. Jede Zeile
+von rcsinfo sieht wie folgt aus:
+    </textblock>
+
+    <textblock>
+<command>REGULÄRER_AUSDRUCK DATEI_MIT_FORMULARVORLAGE</command>
+    </textblock>
+
+    <textblock>
+Die Vorlage wird an extern gelagerte Arbeitskopien übergeben, wenn
+diese einen <command>Checkout</command> durchführen, sodass eventuelle Änderungen an der
+Vorlage zunächst ohne Wirkung bleiben, da die externen Kopien die alte
+Version weiterverwenden. (Siehe auch den Abschnitt <strong>gemeinsame Syntax</strong>
+in diesem Kapitel.)
+    </textblock>
+
+
+    <textblock>
+<command>taginfo</command>
+    </textblock>
+
+    <textblock>
+Startet ein Programm beim Setzen von Markierungen. (Üblicherweise um
+zu überprüfen, dass die Markierungen einem bestimmten Schema folgen).
+Jede Zeile hat die Form:
+    </textblock>
+
+    <textblock>
+<command>REGULÄRER_AUSDRUCK PROGRAMM</command>
+    </textblock>
+
+    <textblock>
+Dem Programm wird ein Satz von Argumenten übergeben. In dieser
+Reihenfolge sind das der symbolische Name der Markierung, die
+Operation (siehe unten), das Archiv und so viele Paare aus
+Dateiname/Revision, wie Dateien von der Aktion betroffen sind. Die
+Datei/Revision-Paare sind durch Leerzeichen getrennt, wie der Rest der
+Argumente.
+    </textblock>
+
+    <textblock>
+Die Operation ist entweder add, mov oder del. (mov bedeutet, dass die
+<command>-F</command>-Option des <command>tag</command>-Befehls verwendet wurde.)
+    </textblock>
+
+    <textblock>
+Wenn PROGRAMM mit einem Rückgabewert ungleich null beendet wird, so schlägt der
+ <command>tag</command>-Befehl fehl;
+andernfalls wird er fortgeführt. (Siehe auch den Abschnitt <strong>gemeinsame Syntax</strong>
+ weiter vorn in diesem Kapitel.)
+    </textblock>
+
+
+    <textblock>
+<command>users</command>
+    </textblock>
+
+    <textblock>
+Verknüpft Benutzernamen mit E-Mail-Adressen. Jede Zeile sieht aus wie:
+    </textblock>
+
+    <textblock>
+<command>BENUTZERNAME:EMAIL_ADRESSE</command>
+    </textblock>
+
+    <textblock>
+Hiermit können Benachrichtigungen über beobachtete Dateien an EMAIL_
+ADRESSE anstatt an den BENUTZERNAMEN auf der Maschine mit dem Archiv
+versendet werden. (Alles, was hier gemacht wird, ist die Kontrolle der
+Expansion von <command>%s</command> in der <command>notify</command>-Datei.) Sollte die EMAIL_ADRESSE
+Leerzeichen enthalten, dann stellen Sie sicher, dass sie in
+Anführungszeichen steht.
+    </textblock>
+
+    <textblock>
+Wenn Benutzer-Aliasing in der passwd-Datei verwendet wird, dann ist
+der Benutzername, der hier verglichen wird, der CVS-Benutzername (der
+auf der linken Seite), nicht der Systembenutzername (rechts, falls
+vorhanden).
+    </textblock>
+
+
+    <textblock>
+<command>val-tags</command>
+    </textblock>
+
+    <textblock>
+Diese Datei dient als Zwischenspeicher für gültige Markierungen, um
+deren Auffindung zu beschleunigen. Es sollte nie notwendig sein, dass
+Sie diese Datei bearbeiten müssen, aber es könnte notwendig sein, die
+Zugriffs- oder Eigentumsrechte zu ändern, wenn Leute Probleme beim
+Zugriff auf oder bei der Erzeugung von Markierungen haben.
+    </textblock>
+
+
+    <textblock>
+<command>verifymsg</command>
+    </textblock>
+
+    <textblock>
+Wird in Verbindung mit <command>rcsinfo</command> verwendet, um das Format von
+Log-Mitteilungen zu verifizieren. Jede Zeile hat die Form:
+    </textblock>
+
+    <textblock>
+<command>REGULÄRER_AUSDRUCK PROGRAMM [ARGUMENTE]</command>
+    </textblock>
+
+    <textblock>
+Der vollständige Pfad zur aktuellen Vorlage für Log-Mitteilungen
+(siehe auch <strong>rcsinfo</strong> weiter vorne in diesem Kapitel) wird hinter dem
+letzten, in der verifymsg-Datei angegebenen Argument angefügt. Wenn
+PROGRAMM mit einem Rückgabewert ungleich null beendet wird, so schlägt
+<command>commit</command> fehl; andernfalls wird die Aktion fortgeführt. (Siehe auch den
+Abschnitt <strong>gemeinsame Syntax</strong> weiter vorn in diesem Kapitel.)
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+<!--9.9 Kapitel-->
+   <section>
+    <heading>
+Laufzeit-Kontrolldateien
+    </heading>
+
+   <textblock>
+Es gibt nur einige wenige Dateien auf der Client-Seite (Arbeitskopie),
+die das Verhalten von CVS beeinflussen können. In einigen Fällen
+entsprechen sie den Archivverwaltungsdateien; in anderen Fällen
+kontrollieren sie Verhaltensweisen, die nur für die Client-Seite von Bedeutung
+sind.
+   </textblock>
+
+   <section>
+    <heading>
+.cvsrc
+    </heading>
+
+    <textblock>
+Enthält Optionen, die Sie automatisch bei jedem Aufruf von
+CVS-Kommandos verwenden möchten. Das Format jeder Zeile ist
+    </textblock>
+
+    <textblock>
+<command>KOMMANDO OPTIONEN</command>
+    </textblock>
+
+    <textblock>
+wobei jedes KOMMANDO ein nicht abgekürzter CVS-Befehl ist, wie z.B.
+<command>checkout</command> oder <command>update</command> (und nicht <command>co</command> oder <command>up</command>). Die OPTIONEN sind jene,
+die Sie grundsätzlich anwenden möchten, wenn der Befehl verwendet
+wird. Hier eine übliche <command>.cvsrc</command>-Zeile:
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+update -d -p
+    </heading>
+
+    <textblock>
+um globale Optionen für jedes Kommando zu setzen, nehmen Sie einfach
+cvs als KOMMANDO.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+.cvsignore
+    </heading>
+
+    <textblock>
+Definiert zusätzliche Muster zum Ignorieren von Dateien. (Siehe
+<command>cvsignore</command> im Abschnitt <strong>Archivverwaltungsdateien</strong> in diesem Kapitel
+zur Syntax.)
+    </textblock>
+
+    <textblock>
+Sie können eine <command>.cvsignore</command>-Datei in Ihrem <command>Home</command>-Verzeichnis haben, die
+stets verwendet werden wird, wenn Sie CVS benutzen. Sie können zudem
+verzeichnisspezifische Dateien in jedem Projektverzeichnis einer
+Arbeitskopie haben. Letztere wirken dann nur auf das Verzeichnis, in
+dem sie abgelegt sind, und nicht in dessen Unterverzeichnissen. (Siehe
+auch <command>&#36;CVSIGNORE</command> im Abschnitt <strong>Umgebungsvariablen</strong> in diesem Kapitel.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+.cvspass
+    </heading>
+
+    <textblock>
+Speichert Passwörter für jedes Archiv, auf das Sie mit der
+pserver-Methode zugreifen. Jede Zeile hat die Form:
+    </textblock>
+
+    <textblock>
+<command>ARCHIV LEICHT_VERSCHLÜSSELTES_PASSWORT</command> 
+    </textblock>
+
+    <textblock>
+Im Grunde werden die Passwörter im Klartext gespeichert - lediglich
+eine leichte Verdrehung der Daten soll bewirken, dass nicht per Zufall
+(z.B. wenn root versehentlich den Dateiinhalt anzeigt) die Daten
+direkt sichtbar sind. Diese Maßnahme wird jedoch keine Person, die es
+ernsthaft darauf anlegt, davon abhalten, das Passwort zu
+entschlüsseln, falls sie Zugriff auf die Datei erhält.
+    </textblock>
+
+    <textblock>
+Die Datei <command>.cvspass</command> ist nicht an einen Rechner gebunden. Sie können es
+von einer Maschine auf eine andere kopieren und haben dann auch dort
+all Ihre CVS-Passwörter verfügbar, ohne dort jemals <command>cvs login</command> aufrufen
+zu müssen. (Siehe auch die Kommandos <command>login</command> und <command>logout</command>.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+.cvswrappers
+    </heading>
+
+    <textblock>
+Hierbei handelt es sich um eine client-seitige Version der
+<command>cvswrappers</command>-Datei. (Siehe den Abschnitt <strong>Archivverwaltungsdateien</strong> in
+diesem Kapitel.) Eine <command>.cvswrappers</command>-Datei darf sich in Ihrem
+<command>Home</command>-Verzeichnis sowie in jedem Verzeichnis der Arbeitskopie befinden,
+genau wie bei <command>.cvsignore</command>.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+<!--9.10 Kapitel-->
+  <section>
+   <heading>
+Dateien in der Arbeitskopie
+   </heading>
+
+   <textblock>
+Die <command>CVS/</command>-Verwaltungsunterverzeichnisse in jeder Arbeitskopie enthalten
+einige der folgenden Dateien:
+   </textblock>
+
+
+   <section>
+    <heading>
+CVS/Base/ (Verzeichnis)
+    </heading>
+
+    <textblock>
+Sollten <command>Watches</command> (siehe Kapitel 6) aktiviert sein, speichert <command>cvs edit</command>
+die Originalversion der Datei in diesem Verzeichnis. So kann cvs
+<command>unedit</command> auch dann funktionieren, wenn der Server gerade nicht
+erreichbar ist.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Baserev
+    </heading>
+
+    <textblock>
+Liste der Revisionen jeder Datei in <command>Base/</command>. Jede Zeile sieht so aus:
+    </textblock>
+
+    <textblock>
+<command>DATEI/REVISION/ERWEITERUNG</command> 
+    </textblock>
+
+    <textblock>
+ERWEITERUNG ist ein momentan nicht beachtetes Feld für, nun ja,
+zukünftige Erweiterungen eben.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Baserev.tmp
+    </heading>
+
+    <textblock>
+Die temporäre Datei zur vorhergehenden. (Siehe <command>CVS/Notify.tmp</command>  oder
+<command>CVS/Entries.Backup</command>  später in diesem Abschnitt zur Erklärung.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Checkin.prog
+    </heading>
+
+    <textblock>
+Nimmt den Namen des Programmes auf, das zu der <command>-i</command>-Option in der Datei
+modules angegeben ist. (Siehe auch den Abschnitt
+<strong>Archivverwaltungsdateien</strong> in diesem Kapitel.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Entries
+    </heading>
+
+    <textblock>
+Speichert die Revisionen für die Dateien in diesem Verzeichnis. Jede
+Zeile hat die Form:
+    </textblock>
+
+    <textblock>
+<command>[KÜRZEL]/DATEI/REVISION/DATUM/[SCHLÜSSELWORT_METHODE]/[GEBUNDENE_OPTION]</command> 
+    </textblock>
+
+    <textblock>
+Falls KÜRZEL vorhanden ist, muss er <command>D</command> für Directory (Verzeichnis) sein
+(alles andere wird von CVS ignoriert, um spätere Erweiterungen der
+Funktionalität zu erlauben), und der Rest der Bestandteile auf der
+Zeile fehlt. Diese Datei ist immer vorhanden.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Entries.Backup
+    </heading>
+
+    <textblock>
+Das ist nur eine temporäre Datei. Wenn Sie irgendein Programm
+schreiben, das die Datei <command>Entries</command> modifizieren soll, dann lassen Sie es
+das Ergebnis zunächst in die Datei <command>Entries.Backup</command> schreiben, und sie
+danach automatisch in <strong>Entries</strong> umbenennen.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Entries.Log
+    </heading>
+
+    <textblock>
+Hierbei handelt es sich im Grunde um einen Patch, der <command>Entries</command> 
+hinzugefügt wird, nachdem <command>Entries</command> gelesen wurde (ein Hack aus
+Effizienzgründen, um nicht wegen jeder Kleinigkeit die ganze
+<command>Entries</command>-Datei neu schreiben zu müssen). Das Format ist im Grunde
+dasselbe wie bei Entries, nur dass hier jede Zeile mit einem Kürzel
+beginnen muss: Ein <strong>A</strong> (<command>add</command>) bedeutet, dass diese Zeile dem Inhalt von
+Entries hinzugefügt werden muss; <strong>R</strong> (<command>remove</command>), dass sie dem Inhalt von
+Entries abgezogen werden soll. Andere Buchstaben werden ignoriert, um
+zukünftige Erweiterungen zu erlauben.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Entries.Static
+    </heading>
+
+    <textblock>
+Wenn diese Datei existiert, so wurde nur ein Teil des Verzeichnisses
+aus dem Archiv übertragen, und CVS wird keine weiteren Dateien in
+diesem Verzeichnis erzeugen. Dieser Zustand kann normalerweise durch
+ein <command>update-d</command> behoben werden.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Notify
+    </heading>
+
+    <textblock>
+Speichert Benachrichtigungen, die noch nicht an den Server geschickt wurden.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Notify.tmp
+    </heading>
+
+    <textblock>
+Die temporäre Datei zu <command>Notify</command>. Die übliche Vorgehensweise zur
+Modifikation von <command>Notify</command> ist <command>Notify.tmp</command> zu schreiben und dann in
+<strong>Notify</strong> umzubenennen.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Repository
+    </heading>
+
+    <textblock>
+Der Pfad zu dem projektspezifischen Unterverzeichnis im Archiv. Das
+kann eine absolute Angabe sein oder eine relativ zu dem Pfad, der in
+Root angegeben ist.
+    </textblock>
+
+    <textblock>
+Diese Datei ist immer vorhanden.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Root
+    </heading>
+
+    <textblock>
+Dies ist das Archiv; d.h. der Wert der <command>CVSROOT</command>-Umgebungsvariablen oder
+des Arguments zu der globalen Option <command>-d</command>.
+    </textblock>
+
+    <textblock>
+Diese Datei ist immer vorhanden.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Tag
+    </heading>
+
+    <textblock>
+Ist eine Markierung oder ein Datum an dieses Verzeichnis gebunden, so
+wird das in der ersten Zeile dieser Datei vermerkt. Das erste Zeichen
+ist ein einzelner Buchstabe, der den Typ der Bindung bestimmt: <strong>T</strong>,
+<strong>N</strong>, oder <strong>D</strong> bezeichnen, ob es sich um die Bezeichnung eines Zweiges,
+einen symbolischen Namen (Marke) oder ein Datum handelt. Der Rest der
+Zeile ist die Markierung respektive das Datum selbst.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Template
+    </heading>
+
+    <textblock>
+Enthält eine Vorlage für Log-Mitteilungen entsprechend der Vorgabe
+durch die <command>rcsinfo</command>-Datei. (Siehe den Abschnitt
+<strong>Archivverwaltungsdateien</strong> weiter vorn in diesem Kapitel.) Diese Datei
+ist nur für externe Arbeitskopien von Bedeutung; lokale Arbeitskopien
+auf demselben Rechner wie das Archiv lesen <command>rcsinfo</command> direkt aus dem
+Archiv.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+CVS/Update.prog
+    </heading>
+
+    <textblock>
+Enthält den Namen des Programmes, das mittels der <command>-u</command>-Option in der
+Datei modules angegeben wurde. (Siehe den Abschnitt
+<strong>Archivverwaltungsdateien</strong> in diesem Kapitel.)
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+<!--9.11 Kapitel-->
+   <section>
+    <heading>
+Umgebungsvariablen
+    </heading>
+
+
+   <textblock>
+Es folgt eine Liste aller Umgebungsvariablen, die CVS kennt.
+   </textblock>
+
+   <section>
+    <heading>
+$COMSPEC
+    </heading>
+
+    <textblock>
+Wird nur in OS/2 verwendet; sie enthält den Namen des
+Kommando-Interpreters. Standardwert ist: <strong>CMD.EXE</strong>.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVS_CLIENT_LOG
+    </heading>
+
+    <textblock>
+Wird zur Fehlerbeseitigung im Client/Server-Protokoll verwendet. Wenn
+Sie in diese Variable einen Dateinamen schreiben, bevor Sie CVS
+starten, so wird der gesamte eingehende Datenverkehr in Dateiname<command>.in</command>,
+der ausgehende in Dateiname<command>.out</command> abgespeichert.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVS_CLIENT_PORT
+    </heading>
+
+    <textblock>
+Wird für Kerberos-authentisierten Client/Server-Zugriff benötigt.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVSEDITOR
+    </heading>
+
+    <textblock>
+Enthält den Namen des Editors, der zum Erstellen von Log-Mitteilungen
+genutzt werden soll. Diese Variable hebt eventuelle Definitionen in
+<command>$EDITOR</command> oder <command>$VISUAL</command> auf.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVSIGNORE
+    </heading>
+
+    <textblock>
+Eine durch Leerzeichen getrennte Liste von Namen und Wildcards, die
+von CVS ignoriert werden sollen. (Siehe auch die <command>-I</command>-Option des
+<command>import</command>-Kommandos.) Der Inhalt dieser Variablen wird jeder Ignore-Liste
+eines Kommandos als Letztes angehängt. Letztere Liste wird in der
+folgenden Reihenfolge aufgebaut: <command>CVSROOT/cvsignore</command>, die Datei
+<command>.cvsignore</command> in Ihrem <command>Home</command>-Verzeichnis, die
+<command>$CVSIGNORE</command>-Umgebungsvariable, möglicherweise per <command>-I</command> angegebene
+Optionen und zuletzt der Inhalt der <command>.cvsignore</command>-Dateien in den jeweils
+bearbeiteten Unterverzeichnissen der Arbeitskopie. Ein <strong>!</strong> als
+Ignore-Muster an einem beliebigen Punkt dieser Liste löscht die
+gesamte Liste bis zu diesem Punkt.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+SCVS_IGNORE_REMOTE_ROOT
+    </heading>
+
+    <textblock>
+Seit kurzem überholt.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+SCVS_PASSFILE
+    </heading>
+
+    <textblock>
+Weist CVS an, eine andere Datei als <command>.cvspass</command> im <command>Home</command>-Verzeichnis für
+Authentisierungsdaten zu benutzen. (Siehe <strong>.cvspass</strong> im Abschnitt
+<strong>Laufzeit-Kontrolldateien</strong> in diesem Kapitel.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVS_RCMD_PORT
+    </heading>
+
+    <textblock>
+Spezifiziert die Port-Nummer, auf welcher der rcmd-Daemon auf dem
+Server kontaktiert werden kann. (Diese Variable wird momentan von Unix
+CVS-Clients ignoriert.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVSREAD
+    </heading>
+
+    <textblock>
+Setzt Dateien in der Arbeitskopie beim <command>Checkout</command> und <command>Update</command> nach
+Möglichkeit auf <strong>nur lesbar</strong>. Die Standardeinstellung ist <strong>lesen und
+schreiben</strong>. (Siehe auch die globale Option <command>-r</command>.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVSROOT
+    </heading>
+
+    <textblock>
+Diese Variable enthält den Pfad zum Archiv und kann durch die globale
+Option <command>-d</command> oder durch das innerhalb einer Arbeitskopie gespeicherte
+Archiv aufgehoben werden. Dem Pfad kann gemäß folgender Syntax eine
+Zugriffsmethode, ein Benutzer- und ein Rechnername vorangestellt
+werden:
+    </textblock>
+
+    <textblock>
+<command>[[:METHODE:][[BENUTZER@]RECHNER]:]/ARCHIV_PFAD</command> 
+    </textblock>
+
+    <textblock>
+Siehe auch die Beschreibung der globalen Option <command>-d</command> am Anfang dieses
+Kapitels für eine Liste möglicher Methoden.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVS_RSH
+    </heading>
+
+    <textblock>
+Enthält den Namen des externen Programmes, das zur Verbindung mit dem
+Server für die Zugriffsmethode <command>:ext:</command> verwendet wird. Normaler Wert ist
+<command>rsh</command>, aber <command>ssh</command> ist eine übliche Alternative dazu.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVS_SERVER
+    </heading>
+
+    <textblock>
+Enthält den Namen des Programms zum Aufruf von CVS auf der
+Serverseite. Ist natürlich standardmäßig auf cvs gesetzt.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVS_SERVER_SLEEP
+    </heading>
+
+    <textblock>
+Verzögert den Start des Serverprozesses beim Aufruf um die in dieser
+Variablen angegebene Zahl an Sekunden. Wird nur bei der Fehlersuche
+benötigt, damit der Debugger Zeit hat, die Kontrolle zu übernehmen.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVSUMASK
+    </heading>
+
+    <textblock>
+Enthält die Standardeinstellung für Schreib-/Lesezugriffe auf Dateien
+im Archiv. (Am besten gar nicht benutzen - es funktioniert sowieso
+nicht mit Client/Server-CVS.)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$CVSWRAPPERS
+    </heading>
+
+    <textblock>
+Eine durch Leerzeichen separierte Liste von Dateinamen, Wildcards und
+Argumenten, die CVS für so genannte Wrapper verwenden soll. (Siehe
+<command>cvswrappers</command> im Abschnitt <strong>Archivverwaltungsdateien</strong> in diesem
+Kapitel für mehr Informationen).
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$EDITOR
+    </heading>
+
+    <textblock>
+(siehe <command>$CVSEDITOR</command>)
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$HOME $HOMEDRIVE $HOMEPATH
+    </heading>
+
+    <textblock>
+Der Ort, wo Dateien wie <command>.cvsrc</command>, <command>.cvspass</command> gefunden werden können (unter
+Unix wird nur <command>HOME</command> beachtet). In Windows NT sollten <command>HOMEDRIVE</command> und
+<command>HOMEPATH</command> gesetzt sein, unter <name>Windows 95</name> kann es sein, dass sie noch
+von Hand eingestellt werden müssen.
+    </textblock>
+
+    <textblock>
+Bemerkung:
+    </textblock>
+
+    <quotation>
+In Windows 95 müssen Sie evtl. auch HOME setzen. Stellen Sie dabei
+sicher, dass der Pfad nicht in einem Schrägstrich endet; benutzen Sie
+set HOME=C: oder einen ähnlichen Ausdruck.
+    </quotation>
+
+   </section>
+
+   <section>
+    <heading>
+$PATH
+    </heading>
+
+    <textblock>
+Überholt.
+    </textblock>
+
+   </section>
+
+   <section>
+    <heading>
+$TEMP $TMP $TMPDIR
+    </heading>
+
+    <textblock>
+Der Ort, an dem temporäre Dateien gespeichert werden sollen. (Der
+Server benutzt TMPDIR; Windows NT benutzt TMP). Das Setzen dieser
+Variablen auf der Client-Seite beeinflusst den Server nicht. Generell
+beeinflusst das Setzen dieser Variablen nicht den Ort, an dem
+temporäre Locks abgespeichert werden. (Siehe auch den Abschnitt
+<strong>config</strong> im Abschnitt <strong>Archivverwaltungsdateien</strong> in diesem Kapitel für
+mehr Informationen.)
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+$VISUAL
+    </heading>
+
+    <textblock>
+siehe <strong>&amp;$CVSEDITOR</strong>
+    </textblock>
+
+
+    <textblock>
+1. Anm. d. Übers.: Die korrekte Zeitzone für Deutschland ist CET bzw.
+(im Sommer) CEST
+    </textblock>
+
+    <textblock>
+2. Anm. d. Übers.: tot
+    </textblock>
+
+    <textblock>
+3. Anm. d. Übers.: alt
+    </textblock>
+
+   </section>
+  </section>
+ </split>
+</chapter>
+

@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Das CD-Brennprogramm k3b</title>
+
+ <author>
+   <name>Jürgen Ellermann</name>
+   <mailto>chnusper@web.de</mailto>
+ </author>
+
+ <layout>
+   <name>Torsten Hemm</name>
+   <mailto>Sunshine@goldenergrund.de</mailto>
+ </layout>
+
+ <license>
+   GFDL
+ </license>
+
+ <index>k3b</index>
+
+<split>
+ <section>
+  <heading>
+Einleitung
+  </heading>
+  <textblock> 
+k3b ist, wie viele weitere ähnliche Vertreter auch, ein Frontend für
+die CD-Brennprogramme unter <name>Linux</name>, die man normalerweise von der 
+Konsole
+aus benutzt. Ich habe mir mit <command>man cdrecord</command> zwar ein paarmal die
+Optionen von cdrecord angesehen, benutzt habe ich es aber auf diese
+Weise nie: das schien mir - als ehemaligem Windows-User - doch 
+irgendwie
+zu unkomfortabel und vor allem zu fehleranfällig. Bei der Suche nach
+einem GUI-Programm, was zumindest ähnlich wie <name>Nero</name> unter <name>Windows</name> zu
+bedienen ist, stieß ich dann auf <name>k3b</name>, was ich im folgenden näher
+vorstellen möchte.
+  </textblock>
+  <textblock>
+Ich kann aufgrund des Funktionsumfangs nicht alles beschreiben, auch
+hängen besonders bei der Konfiguration zu viele Dinge vom
+individuellen Rechner und der bereits installierten Software ab, als
+dass ich auf alles eingehen kann. Da ich kein "Power-Burner" bin,
+sondern vor allem Daten-CDs für die Sicherung erstelle, bitte ich 
+schon
+mal um Nachsicht, wenn die Pinguin-DJs vielleicht nicht ganz auf ihre
+Kosten kommen sollten...
+  </textblock>
+  <section>
+   <heading>
+Wie kommt man an k3b?
+   </heading>
+   <textblock>
+Auf den <name>SuSE-Datenträgern</name> der Version 8 ist das Programm nicht dabei,
+deshalb muss man es unter folgender Adresse downloaden:
+Download-Seite des k3b-Projekts
+<ref lang="en" url="http://k3b.sourceforge.net/index.php?page=download.html">http://k3b.sourceforge.net/</ref>
+   </textblock>
+   <textblock>  
+Die Binaries gibt es aktuell auch für <name>RedHat 7.3</name> und <name>Mandrake</name>
+(Versionsangabe fehlt). Selbstverständlich kann man auch das
+tar.gz-File herunterladen. Es gibt für die Programmierer und 
+sonstigen in dieser Richtung Interessierten auch einen Direkt-Link zum
+CVS-Archiv, der lautet:
+direkt zur CVS-Seite von k3b 
+<ref lang="en" url="http://www.kde.org/anoncvs.html">http://www.kde.org/anoncvs.html</ref>
+   </textblock>
+  </section>
+  <section>
+   <heading>
+Die Entwickler von k3b
+   </heading>
+   <textblock>
+Die maßgeblichen Entwickler von k3b sind:<br/>
+<ref url="mailto:trueg@informatik.uni-freiburg.de">Sebastian Trueg</ref>  - Betreuer<br/>
+<ref url="mailto:tfroescher@gmx.de">Thomas Froescher</ref> - Entwickler<br/>
+   </textblock>
+   <textblock>
+Auf der üblichen Seite "über k3b" aus dem "Hilfe"-Menü sind noch 
+weitere Namen genannt.
+  </textblock>
+  </section>
+  <section>
+   <heading>
+Features von k3b
+   </heading>
+   <ul>
+    <li>
+Brennen von Daten-CDs (Zusammenstellung über Drag &amp; Drop, Brennen
+  on-the-fly usw.)
+    </li>
+    <li>
+Brennen von Audio-CDs (on-the-fly-Kopie [2 Geräte notwendig],
+Direkt-Kopie von mp3-CDs ohne Umweg über Decodieren/Encodieren
+möglich; wav-, mp3-, ogg-Format; CDDB; CD-Text und vieles mehr)
+    </li>
+    <li>
+Fast alle Optionen von <name>mkisofs</name> werden unterstützt
+    </li>
+    <li>
+DVD-Ripping und DivX/XviD Encoding
+    </li>
+    <li>
+BURNproof-Unterstützung
+    </li>
+   </ul>
+   <textblock>
+Viele weitere Features kann man der FAQ entnehmen, die ebenfalls auf
+der
+<ref lang="en" url="http://k3b.sourceforge.net/index.php">k3b-Homepage</ref> zu finden ist.
+   </textblock>
+  </section>
+ </section>
+</split>
+<split>
+ <section>
+  <heading>
+k3b installieren
+  </heading>
+  <section>
+   <heading>
+Voraussetzungen
+   </heading>
+   <textblock>
+Für die Benutzung von k3b müssen verschiedene Voraussetzungen erfüllt
+sein:<br/>
+   </textblock>
+   <ul>
+    <li>vorhandene ATAPI-Laufwerke als SCSI-Laufwerke emulieren (ich
+  denke, bei zwei ATAPI-Geräten ist es sicherer, beide mit der
+  SCSI-Emulation einzubinden: das dürfte immer funktionieren)</li>
+    <li>Natürlich die Programme <name>cdrecord</name>/<name>mkisofs</name>, <name>cdrdao</name> und
+  	<name>cdrparanoia</name></li>
+    <li>die Rechte an diesen Programmen sollten an die jeweiligen
+  Benutzer richtig vergeben sein</li>
+    <li>die Links auf die Laufwerke müssen richtig gesetzt sein</li>
+    <li>QT Bibliothek, Version 3.0.3 oder höher (<name>KDE 3</name>)</li>
+   </ul>
+   <textblock>
+<name>k3b</name> kann hier praktisch die ganze "fummelige" Arbeit abnehmen (mit
+dem Einrichtungsassistenten, s. u.), ich habe diese Schritte jedoch
+manuell ausgeführt. Im wesentlichen bin ich nach einer weiteren
+Seite,
+die auf <ref lang="de" url="http://www.pl-berichte.de/t_hardware/brenner.html">Pro-Linux.de</ref>
+zu finden ist, vorgegangen. Sie können aber auch unseren Text zur <ref chapter="cdrecord" iref="SCSI-Emulation">SCSI-Emulation</ref>
+verwenden.
+   </textblock>
+   <textblock>
+Optional braucht man für die Video-Funktionalitäten:
+   </textblock>
+<ul>
+<li>transcode</li>
+<li>Ogg Vorbis Bibliothek</li>
+</ul>
+   <textblock>
+Da ich keine TV-Karte habe und allgemein an diesem Thema (noch)
+nicht so
+interessiert bin, werde ich mich auf das Brennen von Daten- und
+Audio-CDs beschränken.
+   </textblock>
+  </section>
+  <section>
+   <heading>
+Installation
+   </heading>
+   <textblock>
+Die Installation mit dem für <name>SuSE 8</name> angepassten RPM-Paket ist ein
+"Kinderspiel". In der Konsole bzw. einem Terminal-Fenster (meine
+Vorgehensweise) läuft sie unter dem root-Account so ab:
+   </textblock>
+    <shell>
+     <root path="~">
+rpm -i [path/]k3b.rpm
+     </root>
+    </shell>
+   <textblock>
+Die Zeile ist tatsächlich so kurz, weil der Dateiname so kurz ist und
+ich im entsprechenden Verzeichnis war... Ich habe zusätzlich die
+Option v übergeben, die mögliche Fehlermeldungen anzeigt (v=verbose). Läuft
+alles wie geplant, wird zur Bestätigung "k3b-0.7-59" ausgegeben.
+   </textblock>
+   <textblock>
+Die Installation mit dem gezippten tar-Archiv habe ich nicht
+ausprobiert, da es für k3b das rpm-Binary gibt. Grundsätzlich sollte
+aber die übliche Vorgehensweise funktionieren:
+   </textblock>
+<ul>
+	 <li>das <path>tar.gz-file</path> in ein Verzeichnis kopieren, wo es mit <command>tar -xzvf
+  k3b-0.7.tar.gz</command> in ein Unterverzeichnis entpackt wird</li>
+	 <li><command>cd</command> in das angelegte Verzeichnis</li>
+	 <li><command>./configure </command>aufrufen</li>
+	 <li><command>make</command> aufrufen</li>
+	 <li><command>make install</command> aufrufen (als root)</li>
+</ul>
+  </section>
+ </section>
+</split>
+<split>
+ <section>
+  <heading>
+Konfiguration
+  </heading>
+  <textblock>
+Jeder hat eigene Geräte und Besonderheiten in seinem Rechner und
+ziemlich sicher auch Software, die nicht unbedingt jeder andere auch
+hat. Deshalb hier kurz das Wichtigste zu meiner Ausstattung, sofern 
+es
+hierfür relevant sein kann:<br/>
+Meine Linux-Version ist <name>SuSE 8 Prof, SuSE Kernel 2.4.18-4GB</name> (nicht
+selbst gepatcht), am ide1 (zweiter IDE-Strang) hängen beide
+CD-Laufwerke (Master: <name>Hitachi</name> GD7500 DVD-Laufwerk; Slave: Aopen
+CRW2440-Brenner mit Firmware 2.08).
+  </textblock>
+  <textblock>
+Die Hilfefunktion, die über den Menüpunkt <strong>Hilfe/Handbuch zu k3b</strong>
+aufgerufen werden soll, ist noch nicht impementiert: da ist sicher 
+noch
+eine Korrektur bzw. Nacharbeit seitens der Entwickler (oder anderer
+Freiwilliger...) nötig. In vielen Fenstern kann man auf das 
+Fragezeichen
+klicken und anschließend auf eine Stelle, die zum Ausfüllen oder
+Ankreuzen vorgesehen ist: dann sieht man einen Hilfetext (momentan 
+noch
+ausschließlich auf englisch), der in den meisten Fällen bereits gut
+weiterhilft.
+  </textblock>
+   <section>
+   <heading>
+Einrichtungsassistent, von root auszuführen
+   </heading>
+   <textblock>
+Startet man <name>k3b</name> das erste Mal, so wird der sogenannte
+"Einrichtungs-Assistent" automatisch gestartet; auch wenn die Datei
+<path>~/.kde/share/config</path> fehlt, startet er automatisch. Danach wird er 
+über das Menü aufgerufen: <strong>Einstellungen/k3b Einrichtungsassistent</strong>. Als
+normaler User wird zur Ausführung dann das root-Passwort abgefragt. 
+Bei falscher Eingabe kann man es übrigens nochmal versuchen. Die Sprache 
+in diesem Assistenten ist durchgängig englisch.
+Der <strong>Einrichtungs-Assistent</strong> führt nun durch insgesamt sechs 
+Bildschirme:
+</textblock>   
+   <image height="200">
+     <title>Schritt 1 - Startbildschirm</title>
+     <filename>k3b-einrichtung-schritt1.png</filename>
+    </image>
+<textblock>
+Schritt 2 - Speicherort der Programme,<br/>
+die die Arbeit unter der Oberfläche verrichten (<name>cdrdao, cdrecord und
+mkisofs</name>); bei mir lief das ohne Probleme automatisch. Sollte ein
+Programm am falschen Ort eingetragen sein, kann man das durch einen
+Doppelklick auf den entsprechenden Eintrag korrigieren. Dieser Fall 
+ist unwahrscheinlich, eher fehlt ein Programm, was dann nachinstalliert
+werden muss. Hier können auch weitere Hilfsprogramme, die mit 
+CD-Brennen zu tun haben (<name>tccat, transcode usw.</name>) mit ihrem Pfad angegeben werden.<br/>
+   </textblock>
+    <image height="200">
+     <title>Schritt 2 - Speicherort der Programme</title>
+     <filename>k3b-einrichtung-schritt2.png</filename>
+    </image>
+   <textblock>
+Schritt 3 - gefundene Laufwerke<br/>
+(/dev/sg0, zusätzlich /dev/sg1 bei zwei ATAPI-Laufwerken, die als
+SCSI-LW emuliert werden.
+   </textblock>
+    <image height="200">
+     <title>Schritt 3 - Gefundene Laufwerke</title>
+     <filename>k3b-einrichtung-schritt3.png</filename>
+    </image>
+   <textblock>
+Schritt 4 - Festlegen der "Einhängpunkte"<br/>
+für die Laufwerke, optional automatisches Eintragen in die Datei
+<name>/etc/fstab</name> (standardmäßig ist das angekreuzt)
+   </textblock>
+   <image height="200">
+     <title>Schritt 4 - Festlegen der Einhängepunkte</title>
+     <filename>k3b-einrichtung-schritt4.png</filename>
+    </image>
+    <textblock>
+Schritt 5 - Setup der Berechtigungen,<br/>
+damit die Funktionen auch von Usern (nicht-root) ausgeführt werden 
+können
+<strong>Benutzer hinzufügen</strong>, die <name>k3b</name> benutzen dürfen (Standard ist leer)
+<strong>Festlegen der Gruppe</strong>, bei der der <strong>Brenn-User</strong> Mitglied sein muss
+(Standard: <name>cdrecording</name>, bei mir <name>cdwrite</name>)
+/Änderung/ der benötigten /Zugriffsrechte/ für die Programme und
+für die Geräte (Standard: beide angekreuzt)
+    </textblock>
+	<image height="200">
+     <title>Schritt 5 - Berechtigung</title>
+     <filename>k3b-einrichtung-schritt5.png</filename>
+    </image>
+    <textblock>
+Schritt 6 - Sichern des Setup<br/>
+Bei Klicken auf "Finish" werden die Änderungen ausgeführt. Optionen, 
+die
+nicht angeklickt wurden, werden auch nicht ausgeführt.
+    </textblock>
+    <image height="200">
+     <title>Schritt 6 - Setup beenden</title>
+     <filename>k3b-einrichtung-schritt6.png</filename>
+    </image>
+    <textblock>
+Bei den Schritten 2-6 hat man mit "Back" immer die Möglichkeit, einen
+Schritt zurückzugehen, um die Eingaben nachträglich zu ändern.
+   </textblock>
+   <textblock>    
+Für meine Zwecke hat der Assistent nicht sehr viel gebracht: da die
+Hilfefunktion kaum vorhanden ist, konnte ich nicht herausfinden, wie 
+ich
+die Geräte-Namen (also die Links) anpassen kann. Habe ich 
+beispielsweise
+über "add device" versucht, ein neues Gerät hinzuzufügen, kam die
+Meldung, dass das Gerät bereits existiert. Das war im Prinzip auch
+logisch, denn es kann ja nur ein Gerät am SCSI-Knoten (0,0,0) bzw.
+(0,1,0) geben. Ich konnte vor dieser Eingabe auch kein Gerät 
+löschen, um
+sozusagen Platz zu machen; dadurch war ich zunächst in einem
+Teufelskreis gefangen.
+   </textblock>
+   <textblock>
+Ein weiterer Punkt ist die "Brenner-Gruppe" in der 
+Standardeinstellung:
+<name>cdrecording</name> ist mit 11 Zeichen länger als unter <name>SuSE</name> normalerweise
+erlaubt (8 Zeichen). Die Folge ist, dass z. B. bei <command>ls -l
+/usr/bin/cdrecord</command> in der Gruppenspalte statt "cdrecording" nur
+"cdrecord" angezeigt wird.
+   </textblock>
+   <textblock>
+Für <name>k3b</name> reicht es nicht aus, dass für alle CD-LWe die SCSI-Emulation
+läuft. Zusätzlich muss man sicherstellen, dass die Geräte über /dev/sgx
+angesprochen werden; x steht hier in der Regel für 0 bzw. 1 (bei zwei
+Laufwerken). Die Links müssen also auf die richtigen "Gerätedateien"
+zeigen, da man sie im Programm nicht anpassen kann (vgl. oben).
+   </textblock> 
+  </section>
+  <section>
+   <heading>
+Einstellungen des jeweiligen Users
+   </heading>
+   <textblock> 
+Es gibt auch etliche Einstellungen, die jeder von root eingetragene 
+User (s. o.) vornehmen darf. Dazu klickt man unter "Einstellungen" den 
+Punkt K3b einrichten..." an.
+Es geht hierbei vor allem um Optionen, die standardmäßig für alle
+eigenen neuen Projekte gelten sollen, z. B. für CD-Zusammenstellungen
+oder Best-of-CDs. Diese Optionen sind manuell vor jedem Brennvorgang
+noch veränderbar.
+   </textblock>
+   <textblock>     
+Schreiben:<br/>
+hier ist vermutlich die Einstellung der Rohlingsgröße im Reiter
+"Projekte" eine der wichtigsten; ich setze beispielsweise praktisch
+nurnoch 80-Minuten-Rohlinge (700 MB) ein, Standard wäre hier 74
+Minuten(650 MB). Im Reiter "Erweitert" kann man überbrennen
+ermöglichen (Allowoverburning).
+   </textblock>
+   <image height="200">
+     <title>Optionen-Schreiben</title>
+     <filename>k3b-optionen-schreiben.png</filename>
+   </image>
+  <textblock>
+Geräte:<br/>
+für mich waren hier die entscheidenden Einstellungen verborgen, und
+zwar der cdrdao-Treiber. Da meine Geräte nicht in der Liste
+auftauchen,
+musste ich bei beiden Geräten "generic-mmc" aus der Liste auswählen.
+   </textblock>
+   <image height="200">
+     <title>Optionen-Geraete</title>
+     <filename>k3b-optionen-geraete.png</filename>
+   </image>
+  <textblock>
+Programme:<br/>
+wenn man ausser den absolut notwendigen Programmen <name>cdrdao</name>, <name>cdrecord</name> 
+und <name>mkisofs</name> weitere Programme auf der Festplatte hat, kann man den Pfad
+manuell eingeben. Dazu klickt man doppelt unterhalb von "path" in das
+Feld und gibt dann den Namen über die Tastatur ein. [Ob die Eingabe
+wirklich akzeptiert wird, habe ich nicht ausprobiert.]
+  </textblock>
+  <image height="200">
+     <title>Optionen-Programme</title>
+     <filename>k3b-optionen-programme.png</filename>
+   </image>
+  <textblock>
+CDDB:<br/>
+Wie zu vermuten, nimmt man in dieser Abteilung die Einstellungen für
+den CDDB-/FreeDB-Server vor und gibt an ob und wo die Daten lokal 
+abgespeichert
+werden (als Standard ist hier bereits <name>~/.CDDB/</name> eingetragen).
+  </textblock>
+  <image height="200">
+     <title>Optionen-cddb</title>
+     <filename>k3b-optionen-cddb.png</filename>
+   </image>
+  <textblock>
+CD-Ripping:<br/>
+Einstellungen, nach welchem Muster gerippte Audio-Dateien auf die
+Platte geschrieben werden (mit Muster-Einblendung unten im Fenster).
+   </textblock>
+   <image height="200">
+     <title>Optionen-Ripping</title>
+     <filename>k3b-optionen-cd-ripping.png</filename>
+   </image>
+  <textblock>
+Diverses:<br/>
+für User, die nur ein CD-Laufwerk haben, oder die ein Image
+zwischenspeichern wollen, kann hier der Pfad angepasst werden (je 
+nach Partitionsgröße kann dies eine sehr wichtige Option sein).
+  </textblock>
+  <image height="200">
+     <title>Optionen-Diverses</title>
+     <filename>k3b-optionen-diverses.png</filename>
+   </image>
+  <textblock>
+In den Dialogen verbergen sich weitere, teils sehr spezielle Optionen
+und Funktionen; ich habe nur die augenfälligsten aufgeführt.
+  </textblock>
+  <textblock>
+Zusätzlich zu diesen Konfigurationen kann man sich mit der Anpassung 
+der
+Symbolleiste häufig gebrauchte Aktionen in "Klickreichweite" holen:
+"Einstellungen/Werkzeugleisten einrichten" und die gewünschten 
+Symbole
+im aufgegangenen Fenster auf die rechte Seite holen: Klick auf die
+gewünschte Funktion und Rechtspfeil-Schaltfläche. Allerdings 
+verändert
+sich dann auch die Ansicht der Leiste: nur noch die unbeschriftetetn
+Symbole sind dann zu sehen. Beim nächsten Programmstart sind die 
+Symbole
+dann wieder beschriftet (*). Analog kann man auch die meisten
+Funktionen aus dieser Leiste entfernen.
+  </textblock>
+  <textblock>
+(*) Vermutlich gehört dieses Verhalten zu den (verschmerzbaren)
+"Kinderkrankheiten" von k3b.
+  </textblock>
+ </section>
+</section>
+</split>
+<split>
+<section>
+ <heading>
+Endlich arbeiten mit k3b...
+ </heading>
+ <textblock>
+Nach all der grauen Theorie kann man nun mit der Arbeit - Erstellen 
+bzw.
+Kopieren von CDs - beginnen. Wie schon eingangs angedeutet, werde ich
+mich auf einige gängige Beispiele beschränken. Ich denke, weitere
+Optionen und Möglichkeiten kann man auch gut selbst ausprobieren.
+ </textblock>
+ <textblock> 
+Wie eigentlich in allen derartigen Brennprogrammen auch unter <name>Windows</name>
+üblich, kann man die jeweiligen Projekte (vgl. die Punkte 7.2 
+und 7.3)
+unter einem noch zu vergebenden Namen abspeichern. Den individuellen
+Projektnamen ändert man durch Rechtsklick auf den aktuellen - im
+Beispiel steht auf dem Reiter noch "Namenlos1" - und speichert ihn 
+durch einen
+Klick auf "Speichern unter" in einem Verzeichnis, in dem man
+Schreibrechte hat, ab. Das Speicherformat dieser Datei ist übrigens 
+XML;
+die Endung dieser Datei lautet <name>k3b</name>.
+ </textblock>
+ <textblock> 
+Auch die Füllanzeige der CD am unteren Fensterrand dürfte den meisten
+aus Windows-CD-Brennprogrammen bekannt sein (siehe unter Punkt 
+<ref iref="Während und nach dem Brennen">Während
+und nach dem Brennen</ref>).
+ </textblock>
+ <section> 
+  <heading>
+Eine CD kopieren
+  </heading>
+  <textblock>
+Grundsätzlich gibt es zwei Arten der /CD-Kopie/:<br/>
+1) on-the-fly, wofür man zwei Laufwerke benötigt und<br/>
+2) die Kopie mit der Festplatte als Zwischenspeicher, auf der die
+   Image-Datei gespeichert wird.
+  </textblock>
+  <textblock>
+Falls bei zwei Laufwerken beide am selben IDE-Kabel angeschlossen
+sind,
+kann es trotzdem unter Umständen günstiger sein, den Weg über eine
+Image-Datei auf der Festplatte zu gehen. Auch wenn der Brenner über
+keinen Extra-Puffer (Burnproof, JustLink oder ähnlich) verfügt, ist 
+es
+wohl meist besser, nicht on-the-fly zu brennen, da dann die Gefahr 
+eines
+Buffer-Underrun (Abreissen des Datenstroms vom Lese- zum
+Schreiblaufwerk) besteht.
+  </textblock>
+  <textblock> 
+Am praktischsten ist es, einfach auf das Symbol "Copy CD" in der 
+Leiste
+zu klicken. Es erscheint dann das folgende Dialogfenster:
+   </textblock>
+   <image height="200">
+     <title>Optionen-CD-Kopieren</title>
+     <filename>k3b-cd-kopieren.png</filename>
+   </image>
+  <textblock>
+Bevor man durch Klick auf "Kopieren" den Vorgang startet, sollte man
+noch die Einstellungen überprüfen (die Grundeinstellungen wurden 
+bereits
+unter "Einstellungen/k3b einrichten" vorgenommen). Wichtig bei
+on-the-fly-Kopien ist natürlich, das Leselaufwerk anzugeben; auch die
+Brenngeschwindigkeit sollte man berücksichtigen, v. a. wenn die CD-R
+auch von älteren CD-ROM-Laufwerken gelesen werden soll. Das
+"Temporärverzeichnis" gibt an, wo die Zwischenkopie des ISO-Files
+gespeichert wird.
+  </textblock>
+ </section> 
+ <section>
+  <heading>
+Eine (Daten-) CD zusammenstellen
+  </heading>
+  <textblock> 
+Um eine /Daten-CD/ zu erstellen, gibt es zwei Wege:<br/>
+1) Im Menü auf "Datei/Neues Projekt/New Data Project"<br/>
+2) In der Symbolleiste auf "Neues Projekt/New Data Project"<br/>
+  </textblock>
+  <textblock>
+Der obere Bildschirmteil gleicht nun der Ansicht im Konqueror in der
+Dateiansicht. Man kann nun durch Drag &amp; Drop ganze Verzeichnisse oder
+gezielt einzelne Dateien in den unteren Bereich ziehen. Offenbar 
+klappt
+das <strong>gleichzeitige Ziehen mehrerer Objekte</strong> nur bei Dateien: Klickt 
+man ein Verzeichnis auch bei gleichzeitig gedrückter 
+<keycomb mode="hold">
+	<key>Shift</key>
+</keycomb> 
+- oder 
+<keycomb mode="hold">
+	<key>Ctrl-Taste</key>
+</keycomb>
+an, wird sofort in dieses gewechselt. Dennoch geht die 
+Zusammenstellung
+in der Regel wohl schnell von der Hand.
+   </textblock>
+   <image height="200">
+     <title>Hauptfenster</title>
+     <filename>k3b-hauptfenster.png</filename>
+   </image>
+
+  <textblock>
+Wenn man mit dem Auswählen der Verzeichnisse und Dateien fertig ist 
+und
+alle Einstellungen stimmen, klickt man entweder in der Symbolleiste 
+auf
+"Brennen" oder mit der rechten Maustaste in den unteren 
+Fensterbereich
+und im aufklappenden Kontextmenü ebenfalls auf "Brennen".
+  </textblock>
+  <image height="200">
+     <title>CD-Schreiben</title>
+     <filename>k3b-cd-schreiben.png</filename>
+   </image>
+  <textblock>
+Wenn die zahlreichen Optionen auf den verschiedenen Reitern wie
+gewünscht eingestellt sind, startet man den eigentlichen 
+Brennvorgang, indem man auf "Schreiben" klickt. Insgesamt gibt es 
+vier Reiter, wovon der
+letzte (vgl. Screenshot oben) am meisten Optionen enthält. Einige 
+sind
+für die Kompatibilität mit Nicht-Unix-OSs sehr wichtig und aus 
+ähnlichen
+Programmen hinlänglich bekannt. Leider funktioniert die Hilfemethode 
+mit
+dem Fragezeichen <name>nur</name> auf dem Reiter "Brennen".
+  </textblock>
+ </section> 
+ <section>
+  <heading>
+Eine Best-of-CD (Audio) erstellen
+  </heading>
+  <textblock> 
+Ein neues <name>Audio-Projekt</name> erstellt man auf sehr ähnliche Art und
+Weise wie das einer Daten-CD:<br/>  
+1) entweder über das Symbol "Neues Projekt" und einem Klick auf 
+   "New Audio Project", oder<br/>
+2) im Menü "Datei/Neues Projekt" und wiederum "New Audio Project".<br/>
+  </textblock>
+  <textblock>
+Um nun überhaupt Audio-Tracks zu "sehen", muss man das Leselaufwerk 
+(ich
+in meinem Fall das <name>Philips-Laufwerk</name>) im linken oberen Fensterbereich 
+von
+k3b anklicken, um es zu aktivieren. Je nach CDDB-Einstellungen und ob
+man gerade ins Internet eingeloggt ist, wird versucht, die 
+Track-Infos
+vom eingestellten Server zu holen. Hat man diese Infos bereits
+irgendwann mal geholt, und befinden sich die Daten im konfigurierten
+Verzeichnis, wird zuerst im angegebenen Verzeichnis gesucht. Ist man
+offline und gibt es noch keine Daten, die für den Rechner erreichbar
+sind, gibt das Programm einen Warnhinweis aus.
+Die zu rippenden Tracks markiert man nun oben rechts, und mit der
+rechten Maustaste gelangt man ins Kontextmenü, wo man "Kopieren"
+anklickt (Alternative: Strg-C drücken). Das Verzeichnis, in das  man
+die Titel rippen will, kann man hier noch anpassen 
+(Verzeichnissymbol).
+Entsprechend den gemachten Voreinstellungen erscheinen nun die Titel
+entweder mit dem "Verzeichnis- und Dateinamenmuster" (z. B. Interpret
+und Titel) oder nur ganz formal als "Spur 1" usw., wenn man links 
+unten
+das Häkchen entfernt. Mit dem "Zahnradsymbol" gelangt man in das "CD
+Ripping"-Menü der k3b-Einstellungen (vgl. CD-Ripping ).
+Ist man mit allen Einstellungen zufrieden, genügt ein Klick auf 
+"Starte Rippen".
+  </textblock>
+   <image height="200">
+     <title>Track Rippen</title>
+     <filename>k3b-track-rippen.png</filename>
+   </image>
+  <textblock>
+Ähnlich wie beim Erstellen einer Daten-CD navigiert man nun im
+Verzeichnis-Baum, um die gerippten wav-Dateien zu suchen (sofern sie
+wegen evtl. ungünstiger "Patterns" nicht in einem Verzeichnis 
+liegen).
+Von rechts oben zieht man sie ins Projekt-Fenster. Je nach
+Voreinstellungen sind die Spalten für CD-Text leer oder ausgefüllt.
+Jeder Track ist einzeln editierbar, für den Fall, dass der CDDB-Server
+vielleicht falsche Daten geliefert hatte oder man die Einstellungen
+einfach anpassen möchte. Dazu klickt man mit der rechten Maustaste 
+auf
+den Titel und klickt im Kontextmenü auf Eigenschaften.
+  </textblock>
+   <image height="200">
+     <title>Track Eigenschaften</title>
+     <filename>k3b-track-eigenschaften.png</filename>
+   </image>
+  <textblock>
+Sind auch diese Anpassungen erledigt, gelangt man mit einem  Klick 
+auf
+"Brennen" (Symbolleiste oder 
+"Rechtsklick ins Projektfenster/Brennen")
+ins Brennmenü. Hier sind wie bereits oben auch nochmals Anpassungen
+abweichend von Standardeinstellungen möglich, bevor man mit dem 
+finalen
+Klick auf "Schreiben" den Brennvorgang startet.
+  </textblock>
+  <textblock>
+Eine kurze Erläuterung zur Option "on-the-fly" in diesem Fenster: das
+bedeutet, dass die WAV-Dateien direkt von der Festplatte gelesen 
+werden,
+ohne vorher nochmals in ein ISO-Image geschrieben zu werden. Ein
+ISO-Image ist hier eigentlich überflüssig, denn die gerippten Daten
+sind
+ja bereits auf der Platte.
+  </textblock>
+ </section>
+ <section>
+  <heading>
+Während und nach dem Brennen
+  </heading>
+  <textblock>Als Beispiel, wie die Anzeige während des Brennens aussieht, habe ich
+das Erstellen der Audio-CD gewählt. Bei Daten-CDs sieht sie sehr 
+ähnlich aus:<br/> für Windows-Umsteiger nichts Neues... 	
+  </textblock>
+
+  <textblock>
+Zum Abschluss des Brennvorgangs wird - sofern nicht
+umkonfiguriert - die
+fertige CD (bzw. die vorläufig fertige CD bei Multisession)
+ausgeworfen.
+Das Brennprotokoll, das man durch Klick auf "Zeige Debuggingausgabe"
+in
+einem neuen Fenster erhält, kann man jetzt mit "rechte
+Maustaste/alles
+markieren" kopieren und in einen Texteditor kopieren (dort meist
+"Bearbeiten/einfügen"). Den so erhaltenen Text kann man ggf.
+bearbeiten,
+um bspw. nur die relevanten Daten dauerhaft für evtl.
+Rückverfolgungszwecke zu archivieren. Das gleiche gilt für das
+Ripping-Protokoll beim Erstellen von Audio-CDs (hier allerdings ist
+es
+leer, wenn keine Fehler aufgetreten sind).
+  </textblock>
+ </section>
+</section>
+</split>
+<split>
+<section>
+ <heading>
+Vor- und Nachteile
+ </heading>
+ <textblock>
+Kein Programm ist perfekt, deshalb hier noch ein kleiner Überblick
+über
+einige Vor- und Nachteile bei <name>k3b</name>, wie sie mir aufgefallen sind:
+ </textblock>
+ <section>
+  <heading>
+Vorteile
+  </heading>
+  <textblock>
+Übersichtliche Oberfläche (erinnert an <name>WinOnCD</name>)
+Die Log-Datei kann mit "markieren/Strg-C/einfügen" in einen
+Editor unter einem individuellen Namen gespeichert werden
+Die Funktionen werden zuverlässig ausgeführt
+Während meinen Tests ist das Programm immer stabil gelaufen, ohne
+jeden Wackler oder Absturz
+  </textblock>
+ </section>
+ <section>
+  <heading>
+Nachteile
+  </heading>
+  <textblock>
+Konfiguration: zumindest unter <name>SuSE</name> muss man manuell noch diverse
+Links im /dev-Verzeichnis "umbiegen", damit die Geräte erkannt
+werden. Die Übersetzung der Programmtexte ist noch am Anfang
+(besser wäre durchgängig englisch oder durchgängig deutsch); da
+wartet noch etwas Arbeit auf Freiwillige...
+Es fehlt ein Audio-Editor mit Funktionen wie Normalisieren
+(Anpassung der Tracks an einen bestimmten Level) und um Dateien
+z.B. schneiden zu können
+  </textblock>
+ </section>
+</section> 
+<section>
+ <heading>
+Anmerkungen
+ </heading>
+ <textblock>
+<name>k3b</name> soll auch weiterhin als eigenständiges Projekt fortgeführt
+werden. Die Autoren geben auf der Webseite an, dass es nun zusätzlich
+ein Modul im CVS von <name>KDE</name> ist. Das bedeutet, dass <name>k3b</name> möglicherweise 
+in
+Zukunft direkt Bestandteil von <name>KDE</name> sein könnte (wie bspw. <name>kate</name>) und
+nicht mehr separat installiert werden müsste. Die CVS-Interessierten
+finden dazu natürlich Infos auf der k3b-Homepage
+<ref lang="en" url="http://k3b.sourceforge.net/index.php">http://k3b.sourceforge.net/index.php</ref>.
+ </textblock>
+</section>
+<section>
+ <heading>
+Meine Meinung zu k3b
+ </heading>
+ <textblock> 
+Bedenkt man, dass die Versionsnummer erst bei 0.7 angelangt ist, läuft
+das Programm sehr stabil; mir ist es nicht ein einziges Mal 
+abgestürzt.
+Zu spüren ist die niedrige Nummer allerdings bei der Konfiguration. 
+Auch
+eine Hilfefunktion fehlt in der getesteten Version noch weitgehend,
+obwohl der Menüpunkt bereits existiert. Klickt man diesen an, so wird
+die Startseite für die allg. KDE-Hilfe aufgerufen, was natürlich 
+nicht
+viel bringt, wenn man speziell zu <name>k3b</name> Hilfe braucht. Allerdings 
+gibt
+es in einigen Optionsfenstern Popup-Hilfen, was bei kleineren 
+Problemen
+weiterhilft. Trotz der "Kinderkrankheiten" ist <name>k3b</name> für mich jetzt
+schon allererste Wahl, wenn ich unter <name>Linux/KDE</name> CDs brennen möchte.
+ </textblock>
+</section> 
+</split>
+</chapter>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Grundlagen PDF</title>
+
+ <author>
+  <name>Alexander Fischer</name>
+  <mailto>Selflinux@tbanus.org</mailto>
+ </author>
+
+ <layout>
+  <name>Axel Gross</name>
+  <mailto>axelgross@web.de</mailto>
+ </layout>
+	
+ <license>GFDL</license>
+ <index>grundlagen_pdf</index>
+
+ <split>
+  <section>
+<!--1 Kapitel -->
+   <heading>
+   Was ist eine PDF Datei?
+   </heading>
+   
+   <textblock>
+Die Entwickler von PDF ("Portable Document Format")
+hatten es sich zum Ziel gesetzt, dem Computeranwender ein	
+papierloses Informationsmanagement zu ermöglichen. PDF-Dateien
+haben den Vorteil, dass der Speicherbedarf sehr gering gehalten
+wird (selbst wenn viel Grafik mit eingebunden ist). Die
+elektronischen Dokumente haben theoretisch viele Vorteile. Diese
+reichen vom einfachen Versand per EMail bis hin zur
+Archivierung.
+   </textblock>
+  </section>
+
+ 
+  <section>
+<!-- 1 Kapitel -->
+   <heading>
+   Welche Vorteile bieten PDF-Dateien?
+   </heading>
+   <ul>
+	<li>
+Das PDF-Format ist für seinen Bestimmungszweck hochgradig
+optimiert.
+	</li>
+	<li>
+Die Dateien sind plattformübergreifend.
+	</li>
+	<li>
+Bei einigen PDF-Betrachtern ist es möglich, ein Lesezeichen zu
+verknüpfen.
+	</li>
+	<li>
+Die Dateien können auch Thumbnails
+(<strong>Vorschaubilder</strong>) beinhalten, so dass die
+Navigation um ein erhebliches vereinfacht wird.
+	</li>
+	<li>
+Ein Bildausschnitt kann markiert und kopiert werden. Dieser wird
+dann in der Zwischenablage abgelegt und kann z.B. in ein
+Textverarbeitungsprogramm übernommen werden.
+	</li>
+   </ul>
+  </section>
+ </split>
+
+ <split>  
+  <section>
+<!-- 1 Kapitel -->
+   <heading>
+Wie betrachte ich PDF-Dateien?
+   </heading>
+   <textblock>
+Es gibt viele Viewer (Betrachter) auf dem Markt. Von
+<strong>nicht freien</strong> wie <command>Adobe Acrobat Reader</command>, bis zur Freien Software
+wie: <command>xpdf</command>, <command>Ghostview</command> (und deren Clones). Jedes dieser Programme
+hat seine Vor- wie auch Nachteile. Am besten probiert man einfach
+aus, welches am geeignetsten für die eigenen Anforderungen ist.
+   </textblock>
+   <image height="200">
+	<title>
+Der Hauptscreen von dem Programm xpdf
+	</title>
+	<filename>
+xpdf.png
+	</filename>
+   </image>
+
+   <textblock>
+In dem gewählten Viewer kann man dann im Menü
+<strong>File</strong> oder <strong>Datei</strong> den Unterpunkt
+<strong>Open</strong> oder <strong>Öffnen</strong> finden. Über
+den daraufhin folgenden Dialog wird die PDF-Datei geladen. Über
+das gleiche Menü können Einstellungen vorgenommen oder das
+Dokument gedruckt werden (so man wirklich z.B. 300 Seiten
+ausdrucken möchte, anstatt das Buch zu kaufen).
+   </textblock>
+  </section>
+	 
+  <section>
+<!-- 1 Kapitel -->
+   <heading>
+Wie erstelle ich PDF-Dateien?
+   </heading>
+  
+   <textblock>
+Es gibt mehrere Möglichkeiten:<br/> 
+Man kann diese mit einem
+kommerziellen Programm erstellen, oder aber auf ein
+<strong>normales</strong> Textverarbeitungsprogramm zurückgreifen,
+das mit Hilfe eines besonderen Treibers Texte im PDF-Format
+speichern kann. z.B. <command>pdftex</command>, <command>pdflatex</command>
+oder <command>ghostscript</command>. Es gibt außerdem die Möglichkeit,
+z.B. mit <command>ps2pdf</command> PostScript-Dokumente in PDF-Dateien zu
+konvertieren.
+   </textblock>
+  </section>
+
+  <section>
+	  <!-- 1 Kapitel -->
+   <heading>
+Wie navigiere ich in den Viewern?
+   </heading>
+  
+   <textblock>
+Um nicht auf jeden Betrachter eingehen zu müssen, halte ich es
+allgemein. Man kann meist mit der <strong>Bild auf</strong> und
+<strong>Bild ab</strong> Taste zur vorherigen/nächsten Seite
+springen, mit den Pfeiltasten jeweils einen kleinen Schritt. In
+der Statusleiste ist der Zoom-Faktor einstellbar. Auch hier kann
+zwischen den Seiten navigiert werden, was die Arbeit 
+erheblich vereinfacht.
+   </textblock>
+  </section>
+  </split>
+
+ <split>
+  <section>
+<!-- 1 Kapitel -->
+   <heading>
+HOWTO: Von der Erstellung über die Weitergabe bis hin zum
+Betrachten
+   </heading>
+   
+   <textblock>
+Wir nehmen folgenden Fall an:<br/>
+Man hat eine Datei im PostScript-Format vorliegen
+(oder wenn ASCII-Format: mit enscript ins PS Format bringen).
+Diese doch sehr umfangreiche Datei soll nun zu einem Kollegen
+in einem anderen Land geschickt werden, wobei der noch dazu mit einem
+anderen Betriebssystem arbeitet.
+Um diese Bedingungen ohne großen Aufwand zu erfüllen, nimmt man am
+besten das Format PDF.
+   </textblock>
+  
+   <section>
+<!-- 1.1 Kapitel -->
+    <heading>
+Die Konvertierung
+    </heading>
+    <textblock>
+Der PS Text wird mit dem Perl-Script <command>ps2pdf</command> in
+das entsprechende Format umgewandelt. Dazu ist es notwendig, daß
+das Paket <command>psutils</command> auf dem Linux-System
+installiert ist. Nach einer Eingabe von:
+    </textblock>
+   
+    <shell>
+     <user path="~">
+ps2pdf Ur-Text.ps neuer-Text.pdf
+     </user>
+    </shell>
+   
+    <textblock>
+hat man nun den fertigen PDF Text vor sich liegen. Eine kurze
+Kontrollansicht in einem Viewer kann bestimmt nicht schaden.
+    </textblock>
+   </section>
+
+   
+   <section>
+<!-- 1.1 Kapitel -->
+    <heading>
+Der Versand
+    </heading>
+
+    <textblock>
+Da die Datei nun um ein erheblicheres kleiner ist als zuvor,
+ist die Versendung des Dokumentes um ein gutes Stück einfacher
+geworden.<br/>
+Das Schriftstück muß man nun nur noch einfach an eine Email anhängen.
+Gegebenenfalls kann eine Kompression nicht schaden ( zip, tar.gz,
+usw.)
+    </textblock>
+   </section>
+
+   <section>
+<!-- 1.1 Kapitel -->
+    <heading>
+Das Betrachten
+    </heading>
+    <textblock>
+Da die Datei nun im PDF-Format bei dem Kollegen vorliegt,
+ist es ihm möglich, trotz eines anderen Betriebssystems,
+das Dokument zu betrachten.<br/>
+Wie unter Linux gibt es auch unter anderen Betriebssystemen
+zahlreiche PDF-Viewer, deren Bedienung keine grossen Unterschiede 
+aufweist.
+    </textblock>
+   </section>
+  </section>   
+ </split>
+</chapter>

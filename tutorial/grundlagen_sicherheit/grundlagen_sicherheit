@@ -1,0 +1,4984 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Grundlagen Sicherheit</title>
+
+ <author>
+  <name>Gabriel Welsche</name>
+  <mailto>gabriel.welsche@web.de</mailto>
+ </author>
+
+ <author>
+  <name>Karsten Schulz</name>
+  <mailto>kaschu@t800.ping.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+GFDL
+ </license>
+
+ <index>grundlagen_sicherheit</index>
+
+ <split>
+  <section>
+   <heading>
+Einleitung und Überblick
+   </heading>
+
+   <section>
+    <heading>
+Allgemeines
+    </heading>
+
+    <textblock>
+Dieses Kapitel soll einen groben aber möglichst umfassenden
+Überblick zur Systemsicherheit des Linux-Rechners
+vermitteln. Das Themengebiet Sicherheit ist sehr komplex
+und besitzt zahlreiche Facetten. In der Regel reicht es
+nicht aus, irgendwelche <strong>Firewall-Konfigurationsskripte</strong>
+zu kopieren und auf einem Linux-Rechner zu starten, um
+diesen <strong>sicher</strong> zu machen.
+    </textblock>
+
+    <textblock>
+Denn bevor man jedoch überstürzt loslegt, sollte man sich über
+verschiedene Dinge klar werden:
+    </textblock>
+
+    <ul>
+     <li>Was verstehe ich unter Sicherheit?</li>
+     <li>Was kann ich tun, um meine Sicherheit zu erreichen?</li>
+     <li>Wie kann ich meinen Erfolg messen?</li>
+     <li>Wie kann ich meine Sicherheit aufrechterhalten?</li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Was ist Sicherheit?
+    </heading>
+
+    <textblock>
+Der Begriff Sicherheit beschreibt keinen konkreten Zustand
+eines Systems. Sicherheit steht dafür, dass
+nichts und niemand unerwünschte Aktionen durchführt oder
+gewünschte Aktionen untersagt. Sicherheit herrscht also
+dann, wenn <strong>alles so bleibt, wie es sein soll</strong>.
+    </textblock>
+
+    <textblock>
+Man muss für seine eigene Sicherheit demnach nur noch
+definieren, was <strong>alles</strong>, <strong>so bleibt</strong> und <strong>sein soll</strong> bedeuten!
+    </textblock>
+
+    <textblock>
+Gehen wir der Reihe nach vor: was bedeutet <strong>alles</strong>?
+Vermutlich gehört dazu der Linux-Rechner, um den es hier
+geht. Außerdem gehören die Daten auf dem Rechner dazu. Alle
+Benutzer des Rechners, aber auch das LAN, in dem sich der
+Rechner vielleicht befindet, gehören dazu.
+    </textblock>
+
+    <textblock>
+Leider ist das Wörtchen <strong>alles</strong> damit noch nicht
+erschöpfend untersucht. Denn es gehört auch die Haustür, die
+nur diejenigen einlässt, die in die Nähe Ihres Rechners
+dürfen, dazu.<br/>
+Dazu gehört auch der Stromlieferant, der Ihren Rechner
+zuverlässig mit Energie versorgen soll. Und ganz besonders
+gehören auch Sie selbst dazu, der oder die den Linux-Rechner
+vernünftig konfigurieren will oder soll!
+    </textblock>
+
+    <textblock>
+Diese Überlegungen kann man noch beliebig fortsetzen, um
+festzustellen, was denn nun zu <strong>alles</strong> gehört.
+    </textblock>
+
+    <textblock>
+Spätestens jetzt wird hoffentlich deutlich, dass noch
+ein anderer Faktor eine Rolle bei der Sicherheit spielt:
+der Aufwand. Oder besser gesagt: das Verhältnis zwischen dem
+Aufwand, der betrieben werden muss, und dem Nutzen, der damit
+erreicht werden soll.
+    </textblock>
+
+    <image height="200">
+     <title>
+Kosten und Nutzen
+     </title>
+     <filename>
+kosten_nutzen.png
+     </filename>
+    </image>
+
+    <textblock>
+Bei der Beschäftigung mit dem Thema Sicherheit spielen also
+auch Kosten und Nutzen eine Rolle.
+    </textblock>
+
+    <textblock>
+Der erste Schritt, um sein System sicher zu machen, ist
+also, den Zustand zu definieren, den das System einhalten
+soll. Womit wir beim nächsten Aspekt der Überlegungen
+wären. Die Definition, wie das System sein soll, könnte
+beispielsweise folgende Punkte enthalten:
+    </textblock>
+
+    <ul>
+     <li>Es soll 24 Stunden am Tag, 7 Tage in der Woche arbeiten.</li>
+     <li>Es können sich nur legitime Systembenutzer anmelden.</li>
+     <li>Es werden keine externen Dateien vom Systembenutzer eingebracht.</li>
+     <li>Systembenutzer haben starke Passwörter.</li>
+     <li>Das System ist frei von Viren, Trojanern oder sonstigem Getier.</li>
+     <li>Der Datenzugriff erfolgt entsprechend der Berechtigung des Systembenutzers.</li>
+     <li>Es gibt keine Möglichkeit, sensible Daten zu stehlen.</li>
+     <li>Netzwerkzugriffe außerhalb der Geschäftszeiten werden protokolliert.</li>
+     <li>...</li>
+    </ul>
+
+    <textblock>
+Diese Auflistung sollte so umfangreich gehalten werden, dass
+sämtliche Aspekte des Systembetriebes durch solche Vorgaben
+beschrieben worden sind. Diese Vorgaben heißen auch
+Sicherheitsrichtlinien beziehungsweise <name>security policy</name>.
+    </textblock>
+
+    <textblock>
+Aus diesen Sicherheitsrichtlinien ergeben sich die Konfigurationen
+und die Maßnahmen, um diesen Soll-Zustand zu
+verwirklichen. Zu den oben angeführten Punkten passen
+demnach folgende Aktionen:
+    </textblock>
+
+    <ul>
+     <li>
+Rechner an einer unterbrechungsfreien Stromversorgung
+anschließen und ein Backup-System im Standby-Modus betreiben.
+     </li>
+     <li>
+korrekte Pflege der Benutzerdatenbank durch den Administrator
+     </li>
+     <li>
+physische Sicherung z.B. der internen Laufwerke (Schloss oder
+Ausbau), Absicherung der Schnittstellen (z.B. USB), Sicherung
+der Netzwerkdosen, am besten alle Server eines Bereiches in
+einem eigenen Raum
+     </li>
+     <li>
+organisatorische Sicherung (Putzkräfte stehen unter Kontrolle
+und arbeiten in sensiblen Bereichen wie Serverräumen nur
+tagsüber, am besten unter Aufsicht)
+     </li>
+     <li>
+Schulung der Systembenutzer, Überprüfen der Kennworte durch
+Passwort-Crackprogramm
+     </li>
+     <li>
+ständige Aktualisierung der Virenscanner
+     </li>
+     <li>
+Schutz vor Zugriff von Außen
+     </li>
+     <li>
+Anpassung der Topologie (Netzinfrastruktur)
+     </li>
+     <li>
+...
+     </li>
+    </ul>
+
+    <textblock>
+Erst jetzt können Sie feststellen, ob Ihr System sicher im
+Sinne Ihrer Vorgaben ist. Erst jetzt, wo Sie wissen,
+<name>wie</name> es sein soll, können Sie
+eine konkrete Aussage treffen. Entweder "ja, das System
+befindet sich in dem Zustand, in dem es sein soll" oder
+"Nein, ein Parameter ist nicht so, wie er sein soll, es
+besteht Handlungsbedarf!"
+    </textblock>
+
+    <textblock>
+Als abschließende Betrachtung fehlen nun nur noch die
+Maßnahmen, mit denen Sie dafür sorgen, dass alles auch so
+<strong>bleibt</strong>, wie Sie es eingerichtet haben. Dazu
+müssen Sicherungen und Protokollsysteme eingerichtet und
+aktiviert werden. Und merken Sie sich:
+    </textblock>
+
+    <quotation>
+<strong>Sicherheit ist kein Produkt, sondern ein Prozess!</strong>
+    </quotation>
+   </section>
+
+   <section>
+    <heading>
+Kapitelübersicht
+    </heading>
+
+<!--
+Hinweis: In den folgenden 11 Absätzen die Überschriften
+         der Unterkapitel, die in doppelte Anführungszeichen
+         gesetzt sind, bitte FETT  Danke!
+-->
+
+    <textblock>
+Dieses Grundlagenkapitel soll einen Einblick in das
+Thema IT-Sicherheit geben. Nach einer kurzen Einleitung wird
+im Abschnitt <ref iref="Sicherheitsprozess">Sicherheitsprozess</ref> eine systematische
+Vorgehensweise zur Durchsetzung und Aufrechterhaltung eines
+gewünschten Sicherheitsniveaus vorgestellt.
+    </textblock>
+
+    <textblock>
+Im darauf folgenden Unterkapitel soll ein Überblick über
+<ref iref="Bedrohungen und Schwachstellen">Bedrohungen</ref> vermittelt werden. Sicherlich kennen Sie
+<ref iref="Viren">Viren</ref> und haben auch schon einmal etwas über
+<ref iref="Trojanische Pferde">Trojanische Pferde</ref> gehört, aber wissen Sie auch, was
+ein <ref iref="Sniffer">Sniffer</ref> oder was <ref iref="Spoofing">Spoofing</ref> ist und wie man sich
+davor schützen kann? Wir werden in diesem Kapitelabschnitt
+auch <ref iref="Buffer Overflows">Buffer Overflows</ref> (Pufferüberläufe),
+<ref iref="Netzwerk-Scan-Techniken">Netzwerk-Scan-Techniken</ref>,
+<ref iref="Denial of Service (DOS Attacken)">DOS</ref>- und
+<ref iref="Distributed Denial of Service (DDOS Attacken)">DDOS-Attacken</ref>
+ansprechen.
+    </textblock>
+
+    <textblock>
+Im Unterkapitel <ref iref="Allgemeine Schutzmaßnahmen">Allgemeine Schutzmaßnahmen</ref> werden die
+Grundvoraussetzungen für die <strong>Härtung</strong> des Linux-Systems
+gegenüber potentiellen Angriffen geschaffen. Dazu gehören
+beispielsweise die Deinstallation nicht benötigter Pakete,
+die Absicherung des Boot-Vorgangs und der
+Schutz der Systemlogfiles.
+    </textblock>
+
+    <textblock>
+Fortgesetzt wird dieses Kapitel mit einem Abschnitt über
+<ref iref="Authentisierung, Autorisierung und Zugriffssteuerung mit PAM">Authentisierung, Autorisierung und Zugriffssteuerung mit PAM</ref>.
+PAM ist eine englische Abkürzung für "<strong>P</strong>lugable
+<strong>A</strong>uthentication <strong>M</strong>odules" heißt auf deutsch: steckbare
+Authentifikationsmodule.
+    </textblock>
+
+    <textblock>
+Anschließend folgt ein Unterkapitel zum
+<ref iref="Superserver xinetd">Superserver xinetd</ref>,
+indem auch die ältere Variante <command>xinetd</command> + TCP_Wrapper <command>tcpd</command>
+besprochen wird. Superserver steuern und überwachen
+Netzwerkdienste wie z.B. FTP, Login oder Samba. Trifft eine
+Anfrage auf einem vom Superserver verwalteten Port ein, so
+wird der entsprechende Serverprozess (z.B. der FTP-Server <command>ftpd</command>)
+gestartet. Zuvor wird jedoch nach bestimmten Regeln entschieden,
+ob der Netzwerkzugriff erlaubt ist oder nicht. Diese
+Zugriffssteuerung ist das Thema dieses Abschnittes.
+    </textblock>
+
+    <textblock>
+Ein weiteres Unterkapitel beschäftigt sich mit <ref iref="Die Firewall">Firewalls</ref>.
+Darin werden Paketfilter aber auch Kernelparameter und Proxies eine Rolle
+spielen.
+    </textblock>
+
+    <textblock>
+Nachdem in den vorangegangenen Abschnitten Methoden zur Verbesserung der
+System-Sicherheit behandelt wurden, ist das Thema eines
+weiteren Unterkapitels das <ref iref="Testen der Sicherheitsmaßnahmen">Testen der Sicherheitsmaßnahmen</ref>.
+    </textblock>
+
+    <textblock>
+Anschließend folgen zwei Unterkapitel, die sich mit dem
+Aufrechterhalten der Sicherheit beschäftigen.
+Wir beginnen mit dem <ref iref="Systemüberwachung (Logging und Accounting)">Logging und Accounting</ref>,
+also der Nachvollziehbarkeit dessen, was auf dem System
+passiert. Der für Systemmeldungen zuständige Syslog-Dienst
+wurde in einem <ref chapter="syslog">ausgegliederten Kapitel</ref> betrachtet,
+deshalb wollen wir uns hier auf die Verwaltung
+der Log-Dateien und deren Schutz vor Angriffen beschränken.
+    </textblock>
+
+    <textblock>
+Ein weiterer Abschnitt widmet sich dem Thema
+<ref iref="Einbruchserkennung (Intrusion Detection)">Einbruchserkennung
+(Intrusion Detection)</ref>, einem sehr jungen Teilgebiet der IT-Sicherheit,
+welches Methoden zur frühzeitigen Erkennung von Angriffen
+bereitstellt. Man kann dies auch mit einer Alarmanlage
+vergleichen.
+    </textblock>
+
+    <textblock>
+Sollte tatsächlich ein Einbruch festgestellt werden, hilft
+der Abschnitt <ref iref="Notfallplan im Falle einer Systemkompromittierung">Notfallplan im Falle einer
+Systemkompromittierung</ref> weiter. Um welche Maßnahmen es
+sich dabei im Einzelnen handeln könnte, soll in diesem
+vorletzten Unterkapitel behandelt werden.
+    </textblock>
+
+    <textblock>
+Am Ende steht ein kurzes <ref iref="Fazit">Fazit</ref> und eine Aufzählung der
+Themenbereiche, die zwar wichtig sind aber trotzdem (noch)
+keinen Eingang in dieses Kapitel gefunden haben.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Sicherheitsprozess
+   </heading>
+
+   <textblock>
+Um ein gewünschtes Sicherheitsniveau durchzusetzen und
+aufrechtzuerhalten, bedarf es einem geplanten und organisierten
+Vorgehen aller Beteiligten. Diese systematische Vorgehensweise
+wird in einem Prozessmodell beschrieben. Natürlich gibt es einige
+Sicherheitsprozesse, die jedoch meist an dem des <ref lang="de" url="http://www.bsi.de">BSI</ref>
+(Bundesamt für Sicherheit in der Informationstechnik) angelehnt
+sind. Wir wollen den folgenden Prozess vorstellen:
+   </textblock>
+
+   <image width="300">
+    <title>
+Sicherheitsprozess
+    </title>
+    <filename>
+sicherheitsprozess.png
+    </filename>
+   </image>
+
+   <textblock>
+Begonnen wird mit einer Bestandsaufnahme gefolgt von der
+Schwachstellenanalyse. Daraus ergeben sich mögliche Gefahren
+für das System, welche in einer Bedrohungsanalyse adressiert
+werden. Wenn die Bedrohungen des Systems bekannt
+sind, wird für jede Bedrohung das Risiko bestimmt und
+nach der zu erwartenden Schadenshöhe priorisiert.
+Aus dieser Risikoanalyse leiten sich die
+notwendigen Sicherheitsanforderungen ab, welche auch formal
+in einem Sicherheitsmodell spezifiziert werden können. Die
+Anforderungen werden durch Sicherheitsmechanismen wie
+   </textblock>
+
+   <ul>
+    <li>Zugriffssteuerung</li>
+    <li>Kryptographische Mechanismen</li>
+    <li>Authentisierungsverfahren</li>
+   </ul>
+
+   <textblock>
+umgesetzt. Letztendlich muss dieses damit erreichte
+Sicherheitsniveau gehalten werden. Dies passiert durch
+regelmäßige (automatisierte) Sicherheitskontrollen und
+das zyklische Durchlaufen dieses Sicherheitsprozesses.
+   </textblock>
+
+   <textblock>
+Da die genaue Beschreibung eines Sicherheitsprozesses dieses
+Kapitel sprengen würde, haben wir diese theoretischen Grundlagen
+in ein eigenständiges Kapitel ausgelagert, welches im nächsten
+Release erscheinen wird.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Bedrohungen und Schwachstellen
+   </heading>
+
+   <section>
+    <heading>
+Einführung Bedrohungen und Schwachstellen
+    </heading>
+
+    <textblock>
+Zu Beginn jedes Sicherheitsprozesses steht die Schwachstellen-
+und Bedrohungsanalyse. Dies erfordert allerdings genaues
+Wissen über potentielle Gefahren. Deshalb möchten wir in diesem
+Kapitel eine Übersicht vermitteln.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Systemanomalien
+    </heading>
+
+    <textblock>
+Um den Begriff der Systemanomalie beschreiben zu können, muss
+man sich über zwei Verhaltensweisen klar werden:
+    </textblock>
+
+    <ol>
+     <li>
+<name>normales Systemverhalten:</name><br/>
+Alle Systemkomponenten (Hardware + Software) erfüllen die an sie gestellten Erwartungen
+unter bestimmten Rahmenbedingungen.
+     </li>
+     <li>
+<name>anormales Systemverhalten:</name><br/>
+Die Abweichung vom normalen Systemverhalten bezeichnet
+man als anormales Systemverhalten
+     </li>
+    </ol>
+
+    <textblock>
+Schwierig gestaltet sich die Einordnung in eine dieser
+Kategorien, viele Nutzer können aufgrund ihrer geringen
+Kenntnisse zu Fehlentscheidungen gelangen. Anormales
+Systemverhalten ist das sichtbare Resultat von Anomalien.
+Anders ausgedrückt:
+Als Anomalien bezeichnet man Veränderungen an
+Hard- und/oder Software bzw. deren Konfiguration, die
+durchaus schwere Schäden nach sich ziehen können.
+Man unterscheidet Systemanomalien erster, zweiter und
+dritter Art:
+    </textblock>
+
+<!--
+***** mit quotations einrücken
+-->
+
+    <textblock>
+<strong>Systemanomalien der ersten Art</strong>
+    </textblock>
+
+    <quotation>
+Anormales Verhalten kann durch eine Vielzahl an Faktoren
+hervorgerufen werden. Wenn dieses Verhalten weder
+beabsichtigt noch spezifiziert oder gar durch
+gewollte Systemveränderungen hervorgerufen
+wurde, handelt es sich um
+Systemanomalien erster Art. Dazu zählen insbesondere
+Umwelteinflüsse wie Überspannung durch Blitzschlag
+oder Übertragungsfehler. Zu den Anomalien der ersten Art
+gehören aber auch menschliche Fehler, die zum Beispiel
+bei der Programmierung auftreten und durch Angreifer
+ausgenutzt werden können (z.B. Pufferüberläufe).
+    </quotation>
+
+    <textblock>
+<strong>Systemanomalien der zweiten Art</strong>
+    </textblock>
+
+    <quotation>
+Bei diesen Anomalien wurden Komponenten
+(Betriebssystemmodule, Softwareklassen, Bibliotheken,
+Hardwarekomponenten, ...)
+absichtlich durch zusätzliche, schädliche Funktionen
+erweitert. Bekannte Vertreter sind <ref iref="Trojanische Pferde">Trojanische Pferde</ref>,
+die das Systemverhalten nach den Wünschen des Angreifers
+manipulieren.
+    </quotation>
+
+    <textblock>
+<strong>Systemanomalien der dritten Art</strong>
+    </textblock>
+
+    <quotation>
+Aus Anomalien zweiter Art entstehen durch die Erweiterung um
+Funktionen zur Reproduktion Systemanomalien dritter Art. Dazu
+gehören Bakterien (Ausbreitung begrenzt auf lokales System),
+Viren und Computerwürmer.
+    </quotation>
+   </section>
+
+   <section>
+    <heading>
+Viren
+    </heading>
+
+    <textblock>
+Ein Computervirus ist ein Stück Selbstreplizierende Software,
+die sich jedoch immer in ein ausführbares Wirtsprogramm
+oder eine Systemkomponente hineinmogelt und auf einem
+beschreibbaren Medium abgespeichert ist.
+    </textblock>
+
+    <textblock>
+Viren stellen für Linux (noch) keine Bedrohung dar. Trotzdem
+gibt es bereits welche, und nicht nur das, man findet sogar
+eine Anleitung zum <ref lang="en" url="http://virus.enemy.org/virus-writing-HOWTO/_html/">Schreiben von Viren</ref>.
+Bekannteste Vertreter der Linux-Viren sind: Bliss, Staog, Telf, SIILOV.
+    </textblock>
+
+    <textblock>
+Gegenmaßnahmen sind einerseits Virenscanner, z.B.
+    </textblock>
+
+    <ul>
+     <li>fprot: <ref lang="de" url="http://www.fprot.org/">http://www.fprot.org/</ref></li>
+     <li>AvGate: <ref lang="de" url="http://antivir.de">http://antivir.de</ref></li>
+     <li>AMaViS Mail Scanner: <ref lang="en" url="http://www.amavis.org/">http://www.amavis.org/</ref></li>
+     <li>InterScan VirusWall von Trendmicro: <ref lang="de" url="http://de.trendmicro-europe.com/">http://de.trendmicro-europe.com/</ref></li>
+    </ul>
+
+    <textblock>
+und andererseits der Vergleich der Signaturen beim
+Installieren von Software, welche natürlich ausschließlich
+von vertrauenswürdigen Stellen stammen darf. Besonders
+vorsichtig sollte man als Superuser root agieren, aber das
+versteht sich ja von selbst.
+    </textblock>
+   </section>
+   <section>
+    <heading>
+Würmer
+    </heading>
+
+    <textblock>
+Würmer sind im Gegensatz zu Viren eigenständige Programme,
+die sich ebenfalls selbst replizieren können. Schon vor mehr als
+drei Jahrzehnten traten einzelne Exemplare auf Großrechnern auf.
+Diese wurden liebevoll "Kaninchen" genannt, weil sie sich so schnell
+vermehrten. Sie reproduzierten sich im Hauptspeicher und stahlen
+somit anderen Nutzern wertvolle Ressourcen. Sie wurden aber
+auch für nützliche Zwecke wie dem Einsammeln von Informationen
+eingesetzt, heute würde man solche Programme dann doch lieber
+als Vorfahren Mobiler Agenten ansehen.
+    </textblock>
+
+    <textblock>
+Einer der bekanntesten Schädlinge war der Morris Wurm (1988),
+welcher zwischen 2000 und 6000 Internetrechner lahm legte.
+Das war ein sehr großer Teil des damaligen Internet. Anfällig
+waren neben BSD-Unix-Systemen auch alle DEC-Rechner und
+SUN3-Systeme. Computer mit "UNIX System V" als Betriebssystem
+waren "nur" anfällig, wenn mit Sendmail, <command>fingerd</command> und <command>rexec</command>
+eine Kompatibilität zu BSD bestand. Der Entwickler des Wurmes,
+Robert Tappan Morris Jr, wurde zu 10.000 Dollar, 3 Jahren
+Haft und 400 Stunden gemeinnütziger Arbeit verurteilt.
+Zusätzlich musste er die 150.000 Dollar Gerichtskosten tragen.
+    </textblock>
+
+    <textblock>
+Man sieht, dass Computerwürmer ein wesentlich größeres
+Gefahrenpotential als Viren darstellen, gerade auch im Hinblick
+auf breitbandige Internetzugänge im privaten Bereich. Einen
+gezielten Schutz gegen Würmer gibt es nicht, man sollte
+versuchen, sein System so sicher wie möglich zu gestalten
+und kontinuierlich Sicherheitsupdates durchzuführen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Trojanische Pferde
+    </heading>
+
+    <textblock>
+Der Begriff des trojanischen Pferdes stammt aus der griechischen
+Sagenwelt (Odyssee des Homer).
+Nach der vergeblichen Belagerung der Stadt Troja boten
+die Griechen ein riesiges hölzernes Pferd als Friedensgeschenk
+an. Nachdem dieses Holzpferd in die Stadt geschafft worden war,
+sprangen aus dem Inneren des Pferdes dutzende Soldaten und griffen
+die Stadt aus dem Hinterhalt an. Nur so gelang es den Griechen
+die Stadt zu erobern.
+    </textblock>
+
+    <textblock>
+Genauso hinterhältig sind trojanische Pferde im Computerbereich.
+In durchaus nützliche Programme (wie z.B. <command>lsmod</command>) werden
+schädliche Funktionen eingebaut und durch den getäuschten
+Benutzer selbst aktiviert. Dabei muss der Schaden nicht gleich
+im Zerstören von Daten liegen, manchmal wird auch einfach nur
+die Ausgabe wichtiger Informationen unterdrückt. Einige
+Trojanische Pferde nisten sich direkt im Kernel ein (als Modul)
+und könnten mit <command>lsmod</command> sichtbar gemacht werden. Um dies zu
+verhindern, manipulieren trojanische Pferde das Programm <command>lsmod</command>
+derart, dass es den Eindringling nicht anzeigt.
+    </textblock>
+
+    <textblock>
+Es gibt dutzende Varianten, die hier niemals alle behandelt
+werden können. Als Schutzmaßnahmen kommen vor allem
+Einbruchserkennungssysteme zum Einsatz, insbesondere
+<strong>Hostbasierte Intrusion Detection Systeme</strong>. Des weiteren
+sollte man ausschließlich vertrauenswürdige Software
+installieren und vorher die digitale Signatur (Fingerprint)
+vergleichen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Sniffer
+    </heading>
+
+    <textblock>
+Als Sniffer bezeichnet man ein Programm (oder ein Gerät),
+welches den Netzwerkverkehr abhört, protokolliert und in
+einer menschenlesbaren Form ausgibt.
+Gefährlich sind Sniffer vor allem beim Austausch von
+unverschlüsselten Nachrichten wie Passwörtern,
+Kreditkartennummern und vertraulichen Dateien.
+    </textblock>
+
+    <textblock>
+Sniffer nutzen den <name>Promiscuous Mode</name> einer
+Netzwerkschnittstelle und empfangen so alle auf dem Netz
+übertragenen Daten, egal für wen diese bestimmt sind.
+Weder Sender noch Empfänger merken etwas von dieser
+Spionage.
+    </textblock>
+
+    <textblock>
+Sicherheitsmaßnahmen: Vertrauliche Daten wie Kennwörter
+oder Kreditkartennummern sollten stets über
+verschlüsselte Verbindungen übertragen werden (<command>https</command>, <command>ssh</command>).
+Durch sichere Netzwerktopologien (z.B. durch Trennung der
+Netzwerksegmente mittels Router, Switch, Bridge)
+und den Einsatz von Paketfiltern zur logischen
+Trennung kann man das Blickfeld eines potentiellen
+Sniffers stark einschränken. Um einen Sniffer
+ausfindig zu machen, fragt man an allen Rechnern des
+Netzwerkes den Status der Netzwerkkarte mit <command>ifconfig</command>
+ab. Das ist die einfachste Lösung. Es gibt aber auch
+AntiSniffer Werkzeuge wie beispielsweise
+<ref lang="en" url="http://sniffdet.sourceforge.net">SniffDet</ref>, oder
+kommerzielle Produkte wie AntiSniff.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Spoofing
+    </heading>
+
+    <textblock>
+Unter Spoofing versteht man das Erschleichen von Vertrauen
+unter Vorgabe einer falschen Identität. Im Computerbereich
+unterscheidet man:
+    </textblock>
+
+    <ul>
+     <li>
+<name>IP-Spoofing</name> (Vorgabe einer falschen IP-Adresse)<br/>
+Gegenmaßnahme: Paketfilter
+     </li>
+     <li>
+<name>DNS-Spoofing</name> (Einstreuen einer falschen IP-Namenszuordnung
+ins DNS-Kommunikationssystem - Cache pollution)<br/>
+Gegenmaßnahme:
+digitale Unterschriften beim Austausch von DNS-Einträgen
+     </li>
+     <li>
+<name>ARP-Spoofing</name> (Einstreuen einer falschen
+IP-MAC-Adressenzuordnung im Ethernet; Überschreiben durch
+Push-Technik)<br/>
+Gegenmaßnahme: Ersetzen des ARP-Cache durch eine in
+einer Datei gespeicherten Liste
+     </li>
+     <li>
+<name>RIP-Spoofing</name> (Umleiten der Datenströme durch Einstreuen
+falscher Routing-Informationen)<br/>
+Gegenmaßnahme: Setzen des
+entsprechenden Kernelparameters
+    </li>
+     <li>
+<name>WWW-Spoofing</name> (URL Rewriting, man in the middle
+attack)<br/>
+Gegenmaßnahme: Kontrolle der Zertifikate verschlüsselter
+Verbindungen
+     </li>
+    </ul>
+
+    <textblock>
+Der bekannteste Fall ist wohl die <name>Kevin Mitnick Attacke</name>, die
+1994 auf das Netz des Sicherheitsexperten Tsutomu
+Shimumura stattfand. <name>Mitnick</name> begann seinen Angriff mit mehreren
+Verbindungsanfragen an den <command>rlogin</command> Port des Servers seines
+Opfers, diese Anfragen besaßen allerdings gefälschte interne
+IP-Adressen. Aufgrund dieser Last brach der Server zusammen.
+Nachdem <name>Kevin Mitnick</name> die TCP-Sequenznummerngenerierung
+analysiert hatte, konnte er unter Vorgabe der Identität des
+zusammengebrochenen Servers eine TCP-Verbindung aufbauen
+und den Zugang für zukünftige Angriffe weit öffnen.
+    </textblock>
+
+    <textblock>
+<name>Kevin Mitnick</name> wurde verhaftet und bekam 1999 eine
+Haftstrafe von 48 Monaten (er saß aber schon zu diesem
+Zeitpunkt mehrere Jahre in Untersuchungshaft). Im
+Januar 2000 wurde er mit der Auflage entlassen, dass er
+drei Jahre lang (also bis Januar 2003) weder
+Computer noch Mobiltelefon oder ähnliche Gerätschaften
+benutzen durfte.
+    </textblock>
+
+    <textblock>
+Spoofing ist ein wichtiger Bestandteil der meisten
+Einbruchsversuche. Durch die Angabe einer falschen Identität
+können fremde Verbindungen entführt (Hijacking) oder beendet
+werden, und das Nachvollziehen eines Einbruchs /
+Einbruchversuchs
+gestaltet sich äußerst schwierig. Deshalb wird dieses Thema
+zukünftig in einem gesonderten Kapitel behandelt werden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Netzwerk-Scan-Techniken
+    </heading>
+
+    <section>
+     <heading>
+Netzwerk-Scan-Techniken Allgemeines
+     </heading>
+
+     <textblock>
+Als Scanning bezeichnent man den Versuch, möglich viele
+oder gar alle Rechner eines Netzwerkes zu verifizieren.
+Dies beinhaltet vor allem auch die Bestimmung der darauf
+laufenden Dienste. Folgende Informationen sind Ziel eines
+solchen Angriffs:
+     </textblock>
+
+     <ul>
+      <li>IP-Adressen von Rechnern (die ans Internet angeschlossen sind)</li>
+      <li>TCP/UDP Portnummern</li>
+      <li>Systemarchitektur (x86, PowerPC, Sparc)</li>
+      <li>Betriebssystem (Kernelversion, Windowsversion)</li>
+     </ul>
+
+     <textblock>
+Dem geht meist die Erstellung eines System- oder
+Netzwerkprofiles voraus, in dem allgemeine Informationen
+wie geographischer Standort, Namen, Telefonnummern,
+IP-Adressen (Bereiche) und Dienste wie DNS-Server,
+Mail-Server oder Web-Server festgehalten werden.
+     </textblock>
+
+     <textblock>
+Security Scanner bieten feinere Techniken zum Ausspionieren
+sicherheitsrelevanter Informationen eines Systems. Zu den
+damit gewonnenen Informationen zählen zum Beispiel:
+     </textblock>
+
+     <ul>
+      <li>Benutzer- und Gruppennamen</li>
+      <li>Schwachstellen, welche ausgenutzt werden können</li>
+      <li>Routing-Tabellen</li>
+      <li>SNMP-Informationen</li>
+     </ul>
+    </section>
+
+    <section>
+     <heading>
+Online-Check
+     </heading>
+
+     <textblock>
+Das Ziel dieses Angriffes besteht darin, herzufinden, welche
+Rechner des Opfernetzwerkes (eines bestimmten IP-Bereiches)
+gerade aktiv sind. Dies ist möglich durch
+     </textblock>
+
+     <ul>
+      <li>ICMP-Echo-Anfragen (Ping, Broadcast)</li>
+      <li>UDP /TCP Sweeps</li>
+     </ul>
+
+     <textblock>
+Beides kann durch Kernelparameter bzw. Paketfilter verhindert
+werden.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Port-Scanning
+     </heading>
+
+     <textblock>
+Wenn nach einem erfolgreichen Online-Check die aktiven
+Rechner bekannt sind, wird der Angreifer meist die
+angebotenen Dienste mittels Port-Scanning ermitteln.
+Dazu bedient er sich oftmals der <strong>TCP SYN Scan</strong> Methode,
+bei der eine TCP-Verbindung nur angefragt aber nicht
+aufgebaut wird. Deshalb sind solche Attacken nur schwer
+zu finden und werden sehr selten in Logfiles protokolliert.
+Eine "Weiterentwicklung" sind die so genannten
+<strong>Stealth Scans</strong>, die auch Paketfilter passieren und
+trotzdem im Netzwerkverkehr unentdeckt bleiben. Sie
+missachten einfach das <strong>Three Way Handshake</strong> Protokoll
+und interpretieren die Antworten der Opferrechner. Zu
+den Stealth Attacken gehören:
+     </textblock>
+
+     <ul>
+      <li>XMAS Scan</li>
+      <li>Null Scan</li>
+      <li>Syn/Ack Scan</li>
+      <li>Fin Scan</li>
+     </ul>
+
+     <textblock>
+Port-Scans können durch Port-Scan-Detektoren erkannt werden,
+zu den wichtigsten zählen: <ref lang="en" url="http://www.openwall.com/scanlogd/">Scanlogd</ref>
+<ref lang="en" url="http://sourceforge.net/projects/sentrytools/">PortSentry</ref>
+Natürlich gibt es auch wieder Möglichkeiten, diese Detektoren
+zu umgehen, darauf wollen wir an dieser Stelle nicht eingehen.
+Einen Hinweis zum Schluss: Theoretisch kann ein Angreifer
+einen Port-Scan-Detektor dazu benutzen, durch einen gefälschten
+Scan-Angriff (Vortäuschung eines Angriffs vom Gateway-Rechner
+--> Spoofing) den Opferrechner vom externen Netz zu trennen.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Nmap
+     </heading>
+
+     <textblock>
+Der Netzwerk-Scanner <command>nmap</command> unterstützt zahlreiche
+Angriffspraktiken zum Scannen von einzelnen Rechnern oder ganzen
+Netzwerken. Er bietet auch viele nützliche Funktionen für einen
+sinnvollen Einsatz. Denkbar wären beispielsweise die Überwachung
+der offenen Ports aller Netzwerkrechner oder
+das automatische Auslösen eines Alarms, wenn ein neuer Rechner
+ans Netz angeschlossen wird. Mit <command>nmap</command> und den zahlreichen
+Möglichkeiten wird sich ein eigenständiges Kapitel beschäftigen.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Betriebssystemerkennung
+     </heading>
+
+     <textblock>
+Systemschwachstellen sind meist an das verwendete Betriebssystem
+gebunden, deshalb sind Informationen darüber für den Angreifer
+äußerst wertvoll.
+     </textblock>
+
+     <textblock>
+Viele Dienste wie z.B. <command>telnet</command>, <command>ssh</command> oder <command>www</command> geben
+auch nicht autorisierten Benutzern Betriebssysteminformationen.
+Sie können dies einfach nachvollziehen:
+     </textblock>
+
+     <shell>
+      <user>
+telnet ip-opfer 80
+      </user>
+      <output>
+Trying 217.72.195.42...
+Connected to ha-42.web.de.
+Escape character is '^]'.
+      </output>
+      <user>
+  get
+      </user>
+      <output>
+http/1.0 400 Bad Request
+Date: Wed, 19 Jan 2000 15:33:21 GMT
+Server: Apache/1.3.3 (Unix)   (Red Hat/Linux)
+Connection: close
+....
+      </output>
+     </shell>
+
+     <textblock>
+Aus der vorletzten Ausgabezeile ist ersichtlich, dass
+es sich um einen Linux Rechner mit Red Hat handelt.
+Es gibt mittlerweile einige
+Betriebssystemerkennungsprogramme wie <command>queso</command> oder <command>nmap</command>.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Firewalking
+     </heading>
+
+     <textblock>
+Darunter versteht man eine Technik, um Informationen von
+Netzwerken hinter einer Firewall zu erlangen. <name>David
+Goldsmith</name> und <name>Michael Schiffmann</name> haben diese Technik im
+Oktober 1998 veröffentlicht.
+Firewalking benutzt <command>traceroute</command>, das eigentlich
+entwickelt wurde, den Weg einer Verbindung aufzuzeigen.
+Duch die Angabe eines Ausgangs- bzw Zielport können auch
+Firewalls passiert werden.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Inverse Mapping
+     </heading>
+
+     <textblock>
+Mit Inverse Mapping Techniken können Informationen über
+solche Rechner und Netzwerke erhalten werden, die als
+unerreichbar gelten (z.B. Rechner eines internen Netzwerkes).
+     </textblock>
+
+     <textblock>
+Beispiel ftp-Bounce-Attacke:
+     </textblock>
+
+     <textblock>
+Der Angreifer benutzt einen normalen ftp-Client und
+verbindet sich mit dem ftp-Server des Opfers. Er benutzt
+den ftp-Port-Befehl um die IP-Adresse und die Portnummer
+des anzugreifenden Dienstes anzugeben. Der Angreifer
+sendet nun in Kommandos, die der angegriffene Dienst
+versteht, in Form von Dateien an den ftp-Server
+und dieser leitet die Kommandos einfach an den verbundenen
+Dienst. Wenn der ftp-Server hinter der Firewall
+steht, sind durch diese Methode auch Scans des
+internen Netzwerkes möglich.
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+    <heading>
+Buffer Overflows
+    </heading>
+
+    <textblock>
+Die wohl am häufigsten auftretende Schwachstelle sind
+Programme, die Pufferüberläufe (Buffer Overflows) ermöglichen.
+Diese Programme werden zu einer gefährlichen Bedrohung, wenn
+sie unter privilegierten Rechten ablaufen. Ein Angreifer kann
+durch das Ausnutzen dieser Schwachstelle beliebigen
+Programmcode zur Ausführung bringen, und zwar mit den
+selben Privilegien wie die des fehlerhaften Programms. Wenn
+also beispielsweise der Web-Server <command>apache</command> unter root Rechten
+ablaufen würde und eine solche Schwachstelle existiert,
+so kann ein Angreifer dem System den denkbar größtmöglichen
+Schaden zufügen.
+    </textblock>
+
+    <textblock>
+Schutzmaßnahmen für Programmierer und Entwickler:
+    </textblock>
+
+    <ul>
+     <li>
+Sichere Programmierung, Einsatz von "Source Code Security Analyzer" zur Feststellung möglicher Fehler
+     </li>
+     <li>
+Libsafe ersetzt unsichere C-Funktionen (z.B. <command>sprintf</command>, <command>strcp</command>, <command>gets</command>)
+durch Bibliotheksfunktionen
+     </li>
+     <li>
+Openwall-Patch: nichtausführbarer Stack Array-Grenzüberwachung
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Denial of Service (DOS Attacken)
+    </heading>
+
+    <textblock>
+Angriffe mit dem Ziel, ein System oder einen Dienst lahm zu legen,
+bezeichnet man als DOS-Attacken. Oftmals handelt es sich um
+Netzwerkdienste, die beim Trennen der Netzverbindung nicht mehr
+nutzbar sind. Es werden entweder Schwachstellen im System (Rechner,
+Übertragungsprotokolle, ...) ausgenutzt oder begrenzte
+Systemressourcen (z.B. Bandbreite) aufgebraucht, um eine
+Dienstverweigerung zu erreichen.
+    </textblock>
+
+    <textblock>
+Manchmal geht es auch darum, sicherheitsrelevante Systeme
+(z.B. IDS, Loghosts) in einen instabilen Zustand zu versetzen
+und somit Einbruchsversuche zu ermöglichen. Prinzipiell
+werden DOS-Attacken in zwei Arten untergliedert: hostbasierte
+Denial of Service Attacken und netzwerkbasierte Denial of
+Service Attacken. Eine besonders gefährliche Weiterentwicklung
+der letztgenannten sind verteilte DOS-Attacken (Distributed
+Denial of Service). Das Opfer wird hierbei von mehreren
+(manchmal sogar tausenden) Rechnern angegriffen.
+    </textblock>
+
+    <textblock>
+<strong>Hostbasiert</strong>
+    </textblock>
+
+    <hint>
+Wenn der Angreifer bereits Zugang zum System besitzt, kann er
+mit meist sehr einfachen Mitteln das System handlungsunfähig
+machen. Dazu gehören beispielsweise
+    </hint>
+
+    <ul>
+     <li>Plattenplatz aufbrauchen (Sicherheitsmaßnahme: <command>quota</command>)</li>
+     <li>Arbeitsspeicher / CPU Reserven aufbrauchen (Sicherheitsmaßnahme: <command>ulimit</command>)</li>
+     <li>Hardwarefehler ausnutzen (Sicherheitsmaßnahme: neuer Kernel)</li>
+    </ul>
+
+    <textblock>
+<strong>Netzwerkbasiert</strong>
+    </textblock>
+
+    <hint>
+Die größere Gefahr geht im Allgemeinen von netzwerkbasierten
+DOS-Attacken aus. Diese sind schwerer nachvollziehbar, und ein
+Angreifer benötigt im Zweifelsfall nicht einmal einen direkten
+Zugang zum Opfernetzwerk. Zu diesen DOS-Attacken gehören:
+    </hint>
+
+
+    <hint>
+<name>Email-Bomben</name>
+    </hint>
+
+    <quotation>
+Die Speicherkapazität auf Mailservern ist sehr begrenzt, der
+Plattenplatz wird sehr schnell aufgebraucht. Außerdem können
+durch sehr große Mails die Netzwerkressourcen (Bandbreite)
+sehr schnell aufgebraucht werden.
+    </quotation>
+
+    <hint>
+<name>Broadcast-Angriff</name>
+    </hint>
+
+    <quotation>
+Ein Angreifer generiert pro Sekunde 100 Brodcast-Anfragen. Wenn
+angenommen 150 Rechner im Subnetz aktiv sind und deshalb
+antworten, müssen 15.000 Antwortpakete übertragen werden. Der
+Rechner, der diese Anfrage gestellt hat, ist mit den Antworten
+hoffnungslos überlastet und verliert im Extremfall seine
+Netzverbindung (meist in Kombination mit <ref iref="Spoofing">Spoofing</ref>).
+Gegenmaßnahmen können beispielsweise durch die Limit Option
+im Paketfilter oder durch das Herausfiltern von ICMP Paketen
+realisiert werden.
+    </quotation>
+
+    <hint>
+<name>Kernel-Angriff</name>
+    </hint>
+
+    <quotation>
+Auch die Netzwerkmodule des Kernels sind nicht vor Angriffen
+gefeit. So kann beispielsweise durch eine SYN-Flood-Attacke
+der Netzwerkpuffer zum Überlaufen gebracht werden.
+Kernelparameter bieten einen guten, meist ausreichenden Schutz.
+    </quotation>
+
+    <hint>
+<name>DOS-Angriffe auf TCP/IP-Ebene</name>
+    </hint>
+
+    <quotation>
+Durch Massenanfragen werden Schwachstellen im IP-Stack
+ausgenutzt. Die Schwachstellen lassen sich nur bedingt
+beseitigen, sodass solche Angriffe meist als DDOS Attacken
+durchgeführt werden. Zu solchen Attacken zählen:
+    </quotation>
+
+    <ul>
+     <li>IP-Fragmentangriff (teardrop, newtear, bonk)</li>
+     <li>IP-Bombing (meist als DDOS-Attacke)</li>
+     <li>SYN-Flood Attacken (massenhafte Verbindungsanfragen)</li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Distributed Denial of Service (DDOS Attacken)
+    </heading>
+
+    <textblock>
+Während bei <strong>normalen</strong> netzwerkbasierten DOS-Attacken
+viele Anfragen von <name>einem</name> Angriffsrechner ausgehen,
+kommen bei verteilten DOS-Attacken (Distributed Denial of
+Service = DDOS) sehr viele Computer zum Einsatz, die
+simultan einen DOS-Angriff auf einen Opferrechner
+durchführen. Ein DDOS-Angriff wird zentral kontrolliert,
+es gibt also einen oder mehrere Server (so genannte
+Master), die viele Clients (auch einfach als Daemons
+bezeichnet) kontrollieren.
+    </textblock>
+
+    <image height="100">
+     <title>
+ddos.png
+     </title>
+     <filename>
+ddos.png
+     </filename>
+    </image>
+
+    <textblock>
+Diese Angriffe sind erst seit 1999 bekannt. Die
+dokumentierten Angriffe gingen meistens von vier
+Softwaretools aus:
+    </textblock>
+
+    <ul>
+     <li>trinoo (englische Infos auf <ref lang="en" url="http://www.cert.org/incident_notes/IN-99-07.html">CERT</ref>www.cert.org/incident_notes/IN-99-07.html)</li>
+     <li>TFN Tribe Flood Network (englische Infos auf <ref lang="en" url="http://www.cert.org/incident_notes/IN-99-07.html">CERT</ref>)</li>
+     <li>stacheldraht (basiert auf trinoo und TFN)</li>
+     <li>shaft</li>
+    </ul>
+
+    <textblock>
+Die zu ergreifenden Schutzmaßnahmen sind
+    </textblock>
+
+    <ul>
+     <li>
+Einbruchserkennungssysteme (IDS)
+     </li>
+     <li>
+Paketfilter (ICMP-Filterung, Pakete &gt; 9 Byte)
+     </li>
+     <li>
+Verhinderung eines Einbruchs durch Kombination  von
+Sicherheitsmaßnahmen wie kontinuierliche Aktualisierung der
+Software, Einsatz von Proxies, Paketfiltern, Einbruchserkennung
+und Gegenmaßnahmen bei erfolgreichem Angriff.
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Root Kits
+    </heading>
+
+    <textblock>
+Root Kits sind Softwarepakete, in denen meist skriptbasierte
+Werkzeuge enthalten sind. Diese haben zum Ziel,
+    </textblock>
+
+    <ol>
+     <li>verschiedene Angriffsformen anzubieten,</li>
+     <li>Angriffe zu verschleiern sowie</li>
+     <li>Hintertüren einzubauen.</li>
+    </ol>
+
+    <textblock>
+Ein solcher automatisierter Angriff dauert typischerweise drei
+bis fünf Sekunden und erfordert keinerlei Fachwissen.
+    </textblock>
+
+    <textblock>
+Wie läuft ein Angriff mit einem Root Kit ab?<br/>
+Nach dem Ausnutzen einer Schwachstelle, durch die ein
+beliebiger Maschinencode zur Ausführung gebracht werden kann,
+steht dem Angreifer eine Ausführungsumgebung mit root-Rechten
+(daher der Name) zur Verfügung. Diese Privilegien werden
+benutzt, um auf dem angegriffenen System eine Hintertür zu
+installieren, die dem Angreifer in Zukunft jederzeit
+Administratorrechte verschafft. Abschließend werden
+sämtliche Spuren des Angriffs aus den Log-Dateien entfernt.
+Präventive Maßnahmen sollten bevorzugt zum Einsatz kommen,
+da erfolgreiche Einbrüche äußerst schwer zu finden
+und zu beseitigen sind. Bekannte Root Kits  können mit
+<ref lang="en" url="http://www.chkrootkit.org/">chkrootkit</ref> gefunden werden.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Allgemeine Schutzmaßnahmen
+   </heading>
+
+   <textblock>
+An dieser Stelle sollen nun ganz grundsätzliche
+Sicherungsmöglichkeiten aufgezeigt werden, die
+ohne komplexe Systemeingriffe nachvollzogen
+werden können. Sicherlich ist der Einsatzzweck
+des Rechners (Desktop-System, Mail-Server,
+Firewall, ...) relevant für die Auswahl geeigneter
+Methoden, deshalb können die hier vorgestellten
+Maßnahmen weder ausreichend noch vollständig sein!
+   </textblock>
+
+   <section>
+    <heading>
+Absicherung des Boot-Vorgangs (System-V-Init-Process)
+    </heading>
+
+    <textblock>
+Zuerst sollten die physischen Zugänge (Disketten,
+CD-ROM, USB/Netzwerk-Boot) gesichert werden. Das kann man ganz
+einfach im BIOS erledigen. (Passwortschutz für das BIOS ist
+ebenfalls zu aktivieren!) Einziges <strong>physisches Restrisiko</strong>
+bleibt der Ausbau der festplatte. Damit ist man allerdings noch
+längst nicht am Ende...
+    </textblock>
+
+    <textblock>
+Linux Systeme lassen sich im Single User Modus starten, indem
+man z.B. beim LILO-Bootmanager die Option single angibt:
+    </textblock>
+
+    <textblock>
+lilo: <command>linux single</command>
+    </textblock>
+
+    <textblock>
+Im ungünstigsten Fall benötigt man nicht einmal ein Passwort
+und erlangt Superuser-Rechte. Diese Schwachstelle ist
+folgendermaßen zu beseitigen:
+    </textblock>
+
+    <ul>
+     <li>Editieren der Datei <path>/etc/inittab</path></li>
+    </ul>
+
+    <file>
+     <title>
+/etc/inittab
+     </title>
+     <content>
+....
+id:3:initdefault:
+~~:S:wait:/sbin/sulogin
+....
+     </content>
+    </file>
+
+    <ul>
+     <li>Editieren der Datei <path>/etc/lilo.conf</path></li>
+    </ul>
+
+    <file>
+     <title>
+/etc/lilo.conf
+     </title>
+     <content>
+....
+prompt
+timeout=00
+default=linux
+restricted
+passwort=GEHEIM
+
+image=/boot/vmlinuz-2.4.20
+    label=linux
+....
+     </content>
+    </file>
+
+    <ul>
+     <li>bei Auswahlmöglichkeit aus mehreren Betriebssystemen z.B. Windows, Linux den Parameter <command>timeout</command> auf 50 setzen</li>
+     <li>Zugriffsrechte setzen (<command>chmod 600 /etc/lilo.conf</command>)</li>
+     <li>Die neue Boot-Konfiguration aktivieren (<command>lilo -v</command>)</li>
+     <li>Die /etc/lilo.conf vor Manipulation schützen (siehe Abschnitt "<ref iref="Erweiterte ext2-Dateiattribute">Erweiterte ext2-Dateiattribute</ref>")</li>
+    </ul>
+
+    <textblock>
+Jetzt sollte ein Einbruch durch Ausnutzen der
+Schwachstellen im Boot-Prozess wesentlich
+schwieriger zu realisieren sein.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Nicht benötigte Pakete
+    </heading>
+
+    <textblock>
+Die großen Distributionen <name>SuSE</name> und <name>RedHat</name> installieren
+standardmäßig dutzende Pakete, die zum nicht unbedingt
+notwendig sind und nur zusätzliche Funktionen bieten. Da
+sichere Systeme immer nach dem Prinzip des Minimalismus
+zu entwerfen sind, sollten diese Pakte deinstalliert
+werden. Solche Pakete sind bei <name>RedHat</name> z.B.
+    </textblock>
+
+    <textblock>
+<command>apmd</command>, <command>anacron</command>,
+<command>at</command>, <command>bc</command>,
+<command>eject</command>, <command>getty_ps</command>,
+<command>gd</command>, <command>gpm</command>,
+<command>isapnptools</command>,
+<command>kernel-pcmcia-cs</command>, <command>kudzu</command>,
+<command>linuxconf</command>, <command>mailcap</command>,
+<command>mouseconfig</command>, <command>mt-st</command>,
+<command>pump</command>, <command>pciutils</command>,
+<command>raidtools</command>, <command>redhat-logos</command>,
+<command>redhat-release</command>, <command>setserial</command>,
+<command>XFree86-SVGA</command>
+    </textblock>
+
+    <textblock>
+Hinweis: Natürlich beinhaltet jedes dieser Pakete sinnvolle
+Programme, und möglicherweise benötigen Sie sogar eines von
+den oben angegebenen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Nicht benötigte Benutzer und Gruppen
+    </heading>
+
+    <textblock>
+Die meisten Distributionen legen nicht benötigte Nutzer und
+Gruppen an bzw. vergessen beim Deinstallieren
+von Softwarepaketen (z.B. <command>apache-http-server</command>) das Entfernen
+der Einträge in den Passwortdateien.
+    </textblock>
+
+    <textblock>
+Solche Kennungen sind zum Beispiel: <command>adm</command>, <command>lp</command>, <command>sync</command>, <command>mail</command>
+(bei <command>sendmail</command> benötigt!), <command>ftp</command> (bei anonymous ftp benötigt),...
+Folgende Gruppen sind unter Umständen obsolet:
+<command>adm</command>, <command>lp</command>, <command>news</command>, <command>pppusers</command>, <command>popusers</command>.
+    </textblock>
+
+    <textblock>
+Man sieht, dass solche Benutzer manchmal doch benötigt werden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Differenzierter Superuser-Zugriff (root)
+    </heading>
+
+    <textblock>
+Die Sicherheit des root-Kennworts ist unbedingt an den Regeln
+im Kapitel <ref iref="shadow Passwörter">sichere Passwörter</ref> auszurichten.
+    </textblock>
+
+    <textblock>
+Viele Programme benötigen nicht unbedingt root-Rechte. Oftmals
+reicht es aus, eine privilegierte Gruppe anzulegen und mittels
+der Gruppenrechte den Zugriff zu ermöglichen.
+    </textblock>
+
+    <textblock>
+Wenn zum Beispiel das Wechseln der Benutzerkennung nur für
+bestimmte Benutzer erlaubt werden soll, legt man eine neue
+Gruppe "security" an und ändert die Zugriffsrechte des Programms
+<command>su</command>.
+    </textblock>
+
+    <shell>
+     <root>
+groupadd security
+     </root>
+     <root>
+chgrp security /bin/su
+     </root>
+     <root>
+chmod 4750 /bin/su
+     </root>
+    </shell>
+
+    <textblock>
+Feiner abgestimmte Restriktionen bieten Capability-Mechanismen des
+Kernels, die den root-Zugriff weiter einschränken.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Capability Mechanismus des Kernels
+    </heading>
+
+    <textblock>
+Der Entzug von Capabilities (Systemfähigkeiten)
+erlaubt bei Systemstart bestimmte Restriktionen
+durchzusetzen und ermöglicht damit unter anderem
+eine Beschränkung der Superuser-Rechte.
+Nach dem Boot-Vorgang sind standardmäßig alle
+Capabilities gesetzt.
+    </textblock>
+
+    <textblock>
+Der Capability Mechanismus wurde in POSIX 1003.1e
+und IEEE 1003.2c beschrieben und festgelegt.
+    </textblock>
+
+    <textblock>
+Folgende Übersicht beschreibt ganz kurz einige
+Capabilities (Systemfähigkeiten):
+    </textblock>
+
+    <table>
+     <pdf-column width="125"/>
+     <pdf-column/>
+     <tr>
+      <td>
+CAP_LINUX_IMMUTABLE
+      </td>
+     <td>
+Ändern von Dateiberechtigungen (siehe Abschnitt
+<ref iref="Erweiterte ext2-Dateiattribute">Erweiterte ext2-Dateiattribute</ref>)
+      </td>
+     </tr>
+     <tr>
+      <td>
+CAP_SYS_RAWIO
+      </td>
+     <td>
+direkten Zugriff auf Speichermedien (Festplatten)
+      </td>
+     </tr>
+     <tr>
+      <td>
+CAP_SETGID
+      </td>
+     <td>
+setgid setzen
+      </td>
+     </tr>
+     <tr>
+      <td>
+CAP_SETUID
+      </td>
+     <td>
+suid setzen
+      </td>
+     </tr>
+     <tr>
+      <td>
+CAP_SYS_MODULE
+      </td>
+     <td>
+Kernelmodule laden
+      </td>
+     </tr>
+     <tr>
+      <td>
+CAP_SYS_ADMIN
+      </td>
+     <td>
+mounten/unmounten und andere administrative Tätigkeiten
+      </td>
+     </tr>
+     <tr>
+      <td>
+CAP_NET_ADMIN
+      </td>
+     <td>
+Netzwerkkarten konfigurieren, Firewall administrieren, Routing administrieren
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Mittels des Programmes <command>lcap</command> können dem System
+einzelne Fähigkeiten entzogen werden:
+    </textblock>
+
+    <textblock>
+lcap CAP_LINUX_IMMUTABLE<br/>
+lcap CAP_SYS_RAWIO
+    </textblock>
+
+    <textblock>
+Nun ist es auch für root nicht mehr möglich,
+durch <command>+i</command> oder <command>+a</command> geschütze Dateien im ext2 Dateisystem
+zu löschen. (siehe Abschnitt
+<ref iref="Erweiterte ext2-Dateiattribute">Erweiterte ext2-Dateiattribute</ref>)
+    </textblock>
+
+    <textblock>
+An dieser Stelle sei darauf hingeweisen, dass
+CAP_SYS_RAWIO unbedingt sehr frühzeitig entfernt
+werden sollte, da ansonsten mittels direktem Zugriff
+auf das <path>/dev/kmem</path> device der Capability Schutz
+umgangen werden kann.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Pfadvariable PATH
+    </heading>
+
+    <textblock>
+Die Shell-Variable <command>PATH</command> beinhaltet eine Liste an
+Verzeichnissen, die beim Aufruf eines Programmes
+durchsucht werden.
+    </textblock>
+
+    <shell>
+     <user>
+echo $PATH
+     </user>
+     <output>
+/usr/local/bin:/usr/bin:/bin:/usr/bin/X11
+     </output>
+    </shell>
+
+    <textblock>
+Die Verzeichnisse werden mit einem Doppelpunkt
+getrennt. Aus Bequemlichkeit beinhaltet die
+Pfadvariable oftmals das aktuelle Verzeichnis.
+Es ist darauf zu achten, dass dieses immer am
+Ende steht (Bedrohung: Hackerprogramme in
+allgemein zugänglichen Verzeichnissen wie
+z.B. <path>/tmp</path> oder <path>/usr/share/firmaXYZ</path> tarnen
+sich als <command>su</command> oder <command>passwd</command>)
+    </textblock>
+
+    <shell>
+     <user>
+echo $PATH
+     </user>
+     <output>
+/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:.
+     </output>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+Namensauflösung
+    </heading>
+
+    <textblock>
+In der Datei <path>/etc/hosts.conf</path> wird festgelegt, WIE die Zuordnung
+der Namen zu IP-Adressen erfolgen soll. Das Beispiel zeigt
+eine relativ sichere Variante.
+    </textblock>
+
+    <file>
+     <title>
+/etc/hosts.conf
+     </title>
+     <content>
+# Reihenfolge der Domain Namens Auflösung
+#     (vorausgesetzt DNS/BIND verfügbar)
+order hosts, bind
+# Multiple IP Adressen werden nur bei Routern benötigt
+multi off
+#Anti IP-Spoofing
+nospoof on
+     </content>
+    </file>
+   </section>
+
+   <section>
+    <heading>
+Festlegung vertrauenswürdiger Rechner / Netzwerke
+    </heading>
+
+    <textblock>
+Aus Sicherheitsgründen ist von einer Benutzung der <strong>r-Dienste</strong>
+(z.B. <command>rsh</command>, <command>rcp</command>, <command>rexec</command>) unbedingt abzuraten. Demzufolge sollten
+auch keine <path>.rhosts</path> Dateien auf dem Rechner zu finden sein, dies
+kann man folgendermaßen überprüfen:
+    </textblock>
+
+    <shell>
+     <user>
+find /home -name .rhosts
+     </user>
+    </shell>
+
+    <textblock>
+Unbedingt sollte man sich mit allen Möglichkeiten
+von <command>ssh</command> vertraut machen, insbesondere mit dem Umgang
+von Schlüsselpaaren. Ein guter Einstieg in dieses
+Thema ist auf den Web Seiten des
+<ref lang="de" url="http://www.linux-magazin.de/Artikel/ausgabe/2002/05/openssh/openssh.html">Linux-Magazins</ref>
+zu finden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Festlegung (nicht) benötigter Protokolle (/etc/services)
+    </heading>
+
+    <textblock>
+In der Datei <path>/etc/services</path> werden alle
+Dienste ihren Ports zugewiesen. Eine Manipulation
+kann einem Angreifer Hintertürchen öffnen und
+sollte deshalb unbedingt unterbunden werden
+(siehe Abschnitt <ref iref="Erweiterte ext2-Dateiattribute">Erweiterte ext2-Dateiattribute</ref>).
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Verwaiste und rechtelose Dateien
+    </heading>
+
+    <textblock>
+Dateien, die von jedermann beschrieben werden
+können, stellen ein sehr großes Sicherheitsrisiko
+dar. Deshalb sollten so wenig wie möglich solcher
+Dateien existieren (Gruppenrechte einsetzen!).
+Mit <command>find</command> lassen sich solche Dateien aufspüren
+und nach sorgfältiger Kontrolle kontrolliert löschen:
+    </textblock>
+
+    <shell>
+     <root>
+find / -perm -o+w -a ! -type l -ls &gt;/tmp/rechtlose-files
+     </root>
+    </shell>
+
+    <textblock>
+Verwaiste Dateien gehören keinem Nutzer oder keiner
+Benutzergruppe an. Dies deutet auf einen erfolgreichen
+Einbruch hin und sollte kontinuierlich untersucht werden:
+    </textblock>
+
+    <shell>
+     <root>
+find  / -nouser -o -nogroup &gt;/tmp/verwaiste_files
+     </root>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+shadow Passwörter
+    </heading>
+
+    <textblock>
+Bei Verwendung der Shadow Suite werden Passwörter
+verschlüsselt in der Datei <path>/etc/shadow</path> abgelegt.
+Diese kann nur vom Superuser root und von der
+Gruppe <strong>shadow</strong> gelesen werden. Kein realer Benutzer
+hat also Zugang und kann die Passwörter lesen und
+versuchen, diese mit Hilfe eines Crack-Programmes
+(z.B. John the Ripper) zu entschlüsseln.
+Empfehlenswert ist das Abspeichern der Passwörter
+als MD5-Hash, da dadurch ein potentieller Angriff
+schwerer durchzuführen ist und längere Passwörter
+verwendet werden können. Weiterführende Informationen
+sind im Abschnitt <ref iref="Authentisierung, Autorisierung und
+Zugriffssteuerung mit PAM">Authentisierung, Autorisierung
+und Zugriffssteuerung mit PAM</ref> zu finden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Schutz der Protokolldateien (Systemlog-Files)
+    </heading>
+
+    <textblock>
+Eine einfache Absicherung bieten die erweiterten
+Dateiattribute wie beispielsweise das append-only Attribut
+bei ext2-Filesystemen (siehe Abschnitt
+<ref iref="Erweiterte ext2-Dateiattribute">Erweiterte ext2-Dateiattribute</ref>). Eine Alternative
+dazu besteht darin, die Logfiles auf einem dafür
+bestimmten Rechner zu sammeln. In diesem Zusammenhang
+sei auf den <command>ssyslogd</command> und den <command>syslog-ng</command> verwiesen, die
+zusätzlich Integrität und Verschlüsselung bieten.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Bastille Linux
+    </heading>
+
+    <textblock>
+Diese Sammlung von Perl-Skripten erhöht die Sicherheit
+durch eine automatische Änderung der
+Konfigurationseinstellungen. Vor jeder Modifikation
+wird man sehr ausführlich über die Konsequenzen informiert und
+kann nach dem Abschätzen des Für und Wider die Änderungen
+akzeptieren oder auch nicht. Das System ist kostenlos und
+kann unter <ref lang="en" url="http://bastille-linux.org">http://bastille-linux.org</ref> heruntergeladen werden.
+Das Ausführen sollte im Single-User Modus erfolgen:
+    </textblock>
+
+    <shell>
+     <root>
+mv Bastille-XXX.tar.gz /root
+     </root>
+     <root>
+cd /root
+     </root>
+     <root>
+tar zxvpf Bastille-XXX.tar.gz
+     </root>
+     <root>
+init 1
+     </root>
+     <root>
+cd /root/run-Bastille
+     </root>
+     <root>
+./Bastille1.pl
+     </root>
+    </shell>
+
+    <textblock>
+Zum Schluss noch ein Zitat, auf das mich <name
+email="steffen@dett.de">Steffen Dettmer</name>
+hingewiesen hat:
+    </textblock>
+
+    <quotation>
+"The only secure computer system in the world
+is unplugged, locked in a vault at the bottom
+of the ocean and only one person knows
+the location and combination of that vault.
+And he is dead."<br/>
+--Bruce Schneier in "Applied Cryptography"
+    </quotation>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Authentisierung, Autorisierung und Zugriffssteuerung mit PAM
+   </heading>
+
+   <textblock>
+Die meisten Linux-Systeme sind von anderen
+Netzwerkrechnern über verschiedene Zugänge
+wie beispielsweise <command>ssh</command>, <command>ftp</command> oder <command>pop3</command> erreichbar.
+Bevor ein solcher Zugang gewährt wird, muss die Identität
+des Benutzers zweifelsfrei festgestellt werden
+(Authentisierung). Jeder Zugangsdienst,
+also beispielsweise der FTP Server, muss nun diese
+Überprüfung selbst implementieren (i.d.R. Passwort).
+   </textblock>
+
+   <textblock>
+Soll aber nun zum Beispiel ein Zugang nur in festgelegten
+Zeitfenstern möglich sein oder eine
+Chipkarte bzw. ein biometrische Verfahren
+(Fingerabdruck, IRIS) das herkömmliche
+Passwortverfahren ersetzen, so müsste man
+alle Zugangsprogramme (<command>login</command>, <command>ftp</command>, <command>ssh</command>, ...)
+dementsprechend modifizieren. Ebenso schwierig gestaltet
+sich die Integration in Sicherheitsarchitekturen wie <name>DCE</name>
+oder <name>Kerberos</name>.
+   </textblock>
+
+   <textblock>
+Bereits Anfang der 90er Jahre erkannte Sun Microsystems
+diese Nachteile und entwickelte und implementierte
+den so genannten PAM-Standard in ihrem Betriebssystem
+Solaris. Seit Oktober 1995 gibt es den RFC 86.0, der PAM
+allgemein beschreibt. Was ist nun PAM?
+   </textblock>
+
+   <textblock>
+PAM steht für <strong>P</strong>luggable <strong>
+A</strong>uthentifikation <strong>M</strong>odule was auf
+deutsch heißt: steckbare Authentisierungsmodule. Es
+handelt sich also um ein modulares System, welches die
+Anwendungen (<command>login</command>, <command>ssh</command>, <command>ftp</command>) von den Mechanismen zur
+Benutzerauthentisierung trennt. Einzelne
+Authentifizierungsschritte können nacheinander
+durchgeführt werden, ohne dass der Benutzer davon etwas
+merkt.
+   </textblock>
+
+   <textblock>
+Für jede Anwendung (z.B. <command>login</command>) wird
+festgelegt, <name>welche</name> Sicherheitsmodule <name>wie</name>
+durchlaufen werden. Dazu existieren jeweils eigenständige
+Konfigurationsdateien im Verzeichnis <path>/etc/pam.d/</path> :
+   </textblock>
+
+   <shell>
+    <user>
+ls /etc/pam.d
+    </user>
+    <output>
+chfn  cron  kdm  passwd  ppp  su  chsh  cvs  login  other  ssh  wu-ftpd
+    </output>
+   </shell>
+
+   <file>
+    <title>
+/etc/pam.d/login
+    </title>
+    <content>
+# Modul auth: root kann sich nur an bestimmten
+# Konsolen anmelden (definiert in /etc/securetty)
+auth       required   /lib/security/pam_securetty.so
+
+# komplexe Passwörter erforderlich
+#   (mind. 8 Zeichen, max 3 Login-Versuche)
+password   required   /lib/security/pam_cracklib.so retry=3 minlen=8
+[...]
+
+# Zeitgesteuerte Zugangsberechtigungen
+#   (definiert in /etc/security/time.conf)
+account requisite pam_time.so
+[...]
+    </content>
+   </file>
+
+   <section>
+    <heading>
+Modultypen und Kontroll-Flags
+    </heading>
+
+    <textblock>
+Jeder Eintrag einer solchen Konfigurationsdatei besteht
+aus mindestens drei Elementen. Es beginnt mit einem
+<name>Modultyp</name> gefolgt von einem <name>Kontroll-Flag</name>.
+An dritter Stelle steht der Name des <name>Moduls</name>
+und optional dahinter weitere Argumente.
+Das Zusammenspiel
+    </textblock>
+
+    <hint>
+Modultyp - Kontroll-Flag - Modul
+    </hint>
+
+    <textblock>
+wird am Ende des Abschnittes in einem komplexen
+Beispiel verdeutlicht werden.
+    </textblock>
+
+    <textblock>
+Jedes Modul kann einen oder mehrere
+<strong>Modultypen</strong> implementieren:
+    </textblock>
+
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column width="125"/>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+Modultyp
+      </th>
+      <th>
+Beschreibung
+      </th>
+      <th>
+unterstützte Funktion
+      </th>
+      <th>
+Beschreibung
+      </th>
+     </tr>
+     <tr>
+      <td>
+<command>auth</command>
+      </td>
+      <td>
+Authentisierungsmanagement
+      </td>
+      <td>
+pam_authenticate() pam_setcred()
+      </td>
+      <td>
+Benutzerauthentisierung  Setzen, Erneuern oder Löschen von
+Berechtigungen
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>account</command>
+      </td>
+      <td>
+Zugangsmanagement
+      </td>
+      <td>
+pam_acct_mgmt()
+      </td>
+      <td>
+Entscheidung, ob Zugang    gestattet oder verweigert      wird
+(z.B. zeitliches Zugangslimit)
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>session</command>
+      </td>
+      <td>
+Sitzungsmanagement
+      </td>
+      <td>
+pam_open_session()   pam_close_session()
+      </td>
+      <td>
+z.B. Dauer einer Sitzung     kontrollieren /protokollieren
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>password</command>
+      </td>
+      <td>
+Passwort-Management
+      </td>
+      <td>
+pam_chauthtok()
+      </td>
+      <td>
+Kontrolle der   Passwortänderung
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Wie und in welcher Weise die aufgeführten Funktionen eines
+Moduls relevant sind, kontrollieren die sogenannten
+<strong>Kontroll-Flags</strong>:
+    </textblock>
+
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <th>
+control-flag
+      </th>
+      <th>
+Beschreibung
+      </th>
+     </tr>
+     <tr>
+      <td>
+<command>required</command>
+      </td>
+      <td>
+Modul muss zwingend durchlaufen werden.Auch bei nicht
+erfolgreichem Durchlaufen werden alle folgenden Module
+bearbeitet (damit ist nicht ersichtlich, welches Modul den
+Zugriff verweigert).
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>requisite</command>
+      </td>
+      <td>
+Bei einem Fehler (nicht erfolgreiches Durchlaufen) wird
+sofort zum Anwendungsprogramm (z.B. <command>login</command>)
+zurückgekehrt, ohne die folgenden Module abzuarbeiten.
+Ansonsten wird in der Abarbeitung der Kette fortgefahren.
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>optional</command>
+      </td>
+      <td>
+Bei Erfolg werden trotzdem alle nachfolgenden Module
+abgearbeitet.
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>sufficient</command>
+      </td>
+      <td>
+Bei Erfolg des Moduls wird sofort zur Anwendung
+zurückgekehrt, die Abarbeitung der anderen Module ist nicht
+notwendig.
+      </td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
+Erläuterung eines Konfigurationsbeispiels
+    </heading>
+
+    <textblock>
+Die folgende Konfiguration bezieht sich auf das Login und
+wird deshalb in der Datei <path>/etc/pam.d/login</path> gespeichert.
+(Die angegebenen Zeilennummern sind KEIN Bestandteil der
+Datei und dienen nur der besseren Orientierung.)
+    </textblock>
+
+    <file>
+     <title>
+/etc/pam.d/login
+     </title>
+     <content>
+ 1 # root kann sich nur an Konsolen aus /etc/securetty anmelden
+ 2 auth     required   /lib/security/pam_securetty.so
+ 3
+ 4 # bei Existenz von /etc/nologin darf sich nur root anmelden
+ 5 auth     required   /lib/security/pam_nologin.so
+ 6
+ 7 # Anmelden über Verzeichnisdienst LDAP
+ 8 auth     sufficient /lib/security/pam_ldap.so
+ 9
+10 # Anmeldung lokaler Benutzer
+11 auth     required   /lib/security/pam_unix.so use_first_pass
+12
+13 # Zeitgesteuerte Zugangsberechtigungen (definiert in /etc/security/time.conf)
+14 #account requisite pam_time.so
+15
+16 # Vergabe der Zugangsberechtigungen entsprechend der LDAP Einträge
+17 account  sufficient /lib/security/pam_ldap.so
+18
+19 # Standard Zugangsberechtigungen
+20 account  required   /lib/security/pam_unix.so
+21
+22 # Passworteinschränkungen bei Änderung
+23 password required   /lib/security/pam_cracklib.so minlen=5 dcredit=2 ocredit=2
+24
+25 # Benutze Shadow Suite und md5 Passwörter
+26 password required   /lib/security/pam_unix.so use_first_pass md5 shadow
+27
+28 # Weitergabe des Passwortes an LDAP
+29 password sufficient /lib/security/pam_ldap.so use_authtok
+30
+31 # generiere Fehler bei nicht erfolgreicher Passwortänderung
+32 password required   /lib/security/pam_deny.so
+33
+34 # Standard Sitzung
+35 session  required   /lib/security/pam_unix.so
+36
+37 # Standard Sitzung
+38 session  optional   /lib/security/pam_ldap.so
+39
+40 # Limits (definiert in /etc/security/limits.conf)
+41 # session required pam_limits.so
+     </content>
+    </file>
+
+<!--
+******* Einrückung mit &lt;quotation&gt;&lt;/quotation&gt;!!!!
+-->
+
+    <textblock>
+<strong>Authentisierungsmanagement</strong>
+    </textblock>
+
+    <quotation>
+In Zeile 2 überprüft das Modul <command>pam_securetty</command>, ob sich der
+Superuser root an der Konsole anmelden darf oder nicht.
+In der dazugehörenden Konfigurationsdatei <path>/etc/securetty</path>
+wird untereinander angegeben, wo dies möglich sein soll:
+    </quotation>
+
+    <quotation>
+#tty1<br/>
+#tty2<br/>
+#tty3<br/>
+#tty4<br/>
+tty5<br/>
+#tty6<br/>
+    </quotation>
+
+    <quotation>
+Da im obigen Beispiel alle Einträge außer tty5 auskommentiert
+wurden, kann sich root nur an dieser einen Konsole anmelden.
+In Zeile 5 wird das Modul <command>pam_nologin.so</command> durchlaufen, welches
+auf dem System nach der Datei <path>/etc/nologin</path> sucht. Bei
+Vorhandensein wird lediglich dem Superuser root das Anmelden
+gestattet.
+Zeile 8 integriert das Anmelden über LDAP mittels des Moduls
+<command>pam_ldap.so</command>. LDAP ist ein Verzeichnisdienst, der in einem
+eigenständigen <ref chapter="ldap">Selflinux-Kapitel</ref> näher beschrieben wurde.
+Sind Benutzerkennung und Passwort korrekt, so wird zum
+<command>login</command>-Programm zurückgekehrt. In Zeile 11 wird das
+Authentisierungsmodul <command>pam_unix.so</command> mit dem Passwort des
+LDAP-Moduls durchlaufen (<command>use_first_pass.so</command>).
+Somit können sich auch lokale Benutzer, die nicht im LDAP-Baum
+gelistet sind, am System anmelden.
+    </quotation>
+
+    <textblock>
+<strong>Zugangsmanagement</strong>
+    </textblock>
+
+    <quotation>
+Zeile 14: Zeitgesteuerte Berechtigungen werden mit dem Modul
+<command>pam_time</command> realisiert. <strong>Achtung!</strong> Um so näher das Ende eines
+Projektes naht, desto länger arbeiten auch die Mitarbeiter.
+In Zeile 17 und 20 werden die Zugangsberechtigungen vergeben.
+Dabei wertet das <command>ldap.so</command> Modul verschiedene Parameter aus dem
+Verzeichnisbaum aus (z.B. <command>LDAP_ATTRNAME_EXPIRATIONDATE</command>).
+Sollte das ldap Modul nicht erfolgreich durchlaufen
+werden, so ist für die Autorisierung das <command>pam_unix</command> Modul
+verantwortlich.
+    </quotation>
+
+    <textblock>
+<strong>Passwortmanagement</strong>
+    </textblock>
+
+    <quotation>
+In Zeile 22-32 werden Passwortänderungen kontrolliert. Das erste
+Modul <command>pam_cracklib</command> untersucht die Passwörter auf ihre Einfachheit.
+Die Optionen geben an, dass ein Passwort aus
+mindestens 5 Zeichen bestehen muss, wobei mindestens zwei
+Ziffern und zwei Sonderzeichen dabei sind. Das nächste Modul
+(<command>pam_unix</command>) übernimmt das Passwort vom <command>pam_cracklib</command> Modul und
+verwendet einen md5 Hash und die Passwort-Shadow-Suite.
+Anschließend wird das Passwort an das ldap Modul weitergereicht,
+und falls dieses es nicht erfolgreich verarbeiten kann, wird
+das <command>deny</command>-Modul in Zeile 31  einen Fehler generieren. Wozu
+muss aber überhaupt der <command>login</command>-Prozess das Passwort ändern können?
+Wie im Abschnitt zuvor angesprochen, können Passwörter verfallen,
+und dann wird der Benutzer beim Anmelden (also beim <command>login</command>-Prozess)
+aufgefordert, sein Passwort zu ändern.
+    </quotation>
+
+    <textblock>
+<strong>Sitzungsmanagement</strong>
+     </textblock>
+
+    <quotation>
+Im letzten Abschnitt befinden sich die Module für das
+Sitzungsmanagement. <command>Pam_unix</command> protokolliert in den Logfiles
+nicht nur den Beginn einer Sitzung sondern auch deren Ende
+und weitere sicherheitsrelevante Informationen. Das ldap
+Modul ist optional, das heißt ein erfolgreiches Durchlaufen
+ist nicht unbedingt erforderlich. Zum Schluss wird das Modul
+<command>limits</command> eingebunden, welches die Systemressourcen  wie
+beispielsweise Hauptspeicherbedarf, CPU-Zeit, Prozesse
+und Dateien für einzelne Benutzer bzw. Benutzergruppen
+begrenzt. Die Einstellungen dazu werden in der
+Konfigurationsdatei <path>/etc/security/limits.conf</path>
+vorgenommen:
+    </quotation>
+
+    <file>
+     <title>
+/etc/security/limits.conf
+     </title>
+     <content>
+#/etc/security/limits.conf
+# Maximal 4 Nutzer der Benutzergruppe "user" dürfen sich anmelden
+@users    -     maxlogins     4
+# Prozesse des Benutzers "www" werden mit nice-Level 17 ausgeführt
+www     -       priority       17
+# Prozesse der Gruppe "users" werden mit nice-Level 17 ausgeführt,
+# Priorität kann aber durch den Benutzer geändert werden
+@users    soft       priority       17
+# root darf nur einmal angemeldet sein
+root       hard    maxlogins     1
+     </content>
+    </file>
+   </section>
+
+   <section>
+    <heading>
+weitere wichtige PAM-Module
+    </heading>
+
+    <table>
+     <pdf-column width="125"/>
+     <pdf-column/>
+     <tr>
+      <td>
+<command>pam_access</command>
+      </td>
+      <td>
+eingeschränkte Zugangsberechtigungen (Benutzer &lt;-->
+Terminal)  Konfigurationsdatei: <path>/etc/security/access.conf</path>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_group</command>
+      </td>
+      <td>
+Zuweisung zu Benutzergruppen entsprechend bestimmter Kriterien
+(Benutzer, Zeit, Terminal).  Konfigurationsdatei:
+<path>/etc/security/group.conf</path>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_rhosts_auth.so</command>
+      </td>
+      <td>
+Unterbindung des Remote Zugriffs durch <path>.rhosts</path> Dateien
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_console.so</command>
+      </td>
+      <td>
+Räumt normalen Benutzern zusätzliche Rechte ein.(ACHTUNG:
+Dieses Modul sollte in abzusichernden Systemen NIE benutzt
+werden)
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_tally.so</command>
+      </td>
+      <td>
+Sperrung des Zugangs nach x fehlgeschlagenen Login-Versuchen
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_wheel.so</command>
+      </td>
+      <td>
+Begrenzung des <command>su</command> Kommandos auf kleine
+Benutzergruppe
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>xpam_time.so</command>
+      </td>
+      <td>
+zeitgesteuerte Zugangskontrolle
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_env.so</command>
+      </td>
+      <td>
+nicht veränderliche Umgebungsvariablen
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_pwdb.so</command>
+      </td>
+      <td>
+Authentifikation
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>mod_auth_pam</command>
+      </td>
+      <td>
+PAM Modul für apache Webserver
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_ftp.so</command>
+      </td>
+      <td>
+Anonymous Zugriff (testet Passwort auf "@"-Zeichen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_php.so</command>
+      </td>
+      <td>
+PAM Unterstützung für <command>PHP</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_krb5.so</command>
+      </td>
+      <td>
+Kerberos Modul
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>pam_radius.so</command>
+      </td>
+      <td>
+Radius=Remote Authentication Dial-In User Service
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Ein kurzer Hinweis zum Schluss: Das Modul
+<command>pam_console.so</command> sollte in allen Konfigurationsdateien
+auskommentiert werden. Dies übernimmt das folgende Skript:
+    </textblock>
+
+    <file>
+     <content>
+#!/bin/sh
+cd /etc/pam.d
+for i in *; do
+  sed ´/[^#].*pam_console.so/s/^/#/´ &lt; $i &gt;foo &amp;&amp; mv foo $i
+done
+rm -rf /etc/security/console.apps/*
+     </content>
+    </file>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Superserver xinetd
+   </heading>
+
+   <section>
+    <heading>
+Der Superserver inetd
+    </heading>
+
+    <textblock>
+Superserver sind für die Verwaltung vieler verschiedener Dienste
+(FTP, POP3, Telnet, Finger) zuständig. Erst wenn ein Dienst
+benötigt wird, startet der Superserver ein zugeordnetes Programm.
+Im Falle von FTP sieht das folgendermaßen aus: In der
+Konfigurationsdatei <path>/etc/inetd.conf</path> wird der FTP-Port dem
+FTP-Daemon zugewiesen. Wenn jemand versucht, eine Verbindung zu
+diesem Port aufzubauen, startet der Superserver den zugewiesenen
+FTP-Daemon.
+(Hinweis: Die Zuweisung der Port-Nummern erfolgt in <path>/etc/services</path>)
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Zugriffssteuerung mit TCP_Wrapper
+    </heading>
+
+    <textblock>
+Die Nutzung von Serverdiensten sollte aus Sicherheitsgründen
+kontrolliert erfolgen. Bestimmte Dienste wie NFS oder Samba
+sollten nur im Intranet bzw. nur in bestimmten Netzwerkbereichen
+zur Verfügung stehen. Diese Kontrollfunktion kann der
+TCP_Wrapper <command>tcpd</command> übernehmen. Wie kann man sich das nun
+vorstellen? Normalerweise sieht ein Eintrag in der
+Konfigurationsdatei des Superservers <path>/etc/inetd</path>
+folgendermaßen aus:
+    </textblock>
+
+    <file>
+     <title>
+/etc/inetd
+     </title>
+     <content>
+sshd stream tcp nowait root /usr/sbin/sshd sshd -i
+     </content>
+    </file>
+
+    <textblock>
+Eine Verbindungsanfrage zu dem ssh-Port soll angenommen werden
+und nach erfolgreichem Start des Programms <command>/usr/sbin/sshd</command>
+wird der TCP-Datenstrom an diesen Server weitergeleitet. Der
+Serverprozess läuft unter root-Rechten ab.
+    </textblock>
+
+    <textblock>
+Wenn man kontrollieren möchte, wer den ssh-Dienst ausführen
+darf, muß man folgende Änderung vornehmen:
+    </textblock>
+
+    <file>
+     <title>
+/etc/inetd
+     </title>
+     <content>
+ssh stream tcp nowait root    /usr/sbin/tcpd sshd
+     </content>
+    </file>
+
+    <textblock>
+Nun wird anstelle des ssh-Servers der TCP_Wrapper <command>tcpd</command>
+aufgerufen, und erst wenn dieser die Verbindungsanfrage positiv
+entscheidet, wird diese an den ssh-Dienst weitergegeben. In
+den Dateien<path> /etc/hosts</path>.<command>allow</command> und <path>/etc/hosts.deny</path> können
+Netzwerkbereiche für bestimmte Dienste freigeschaltet oder
+abgeschottet werden. Die folgenden Einträge
+zeigen einige Konfigurationsmöglichkeiten:
+    </textblock>
+
+    <file>
+     <title>
+/etc/hosts.allow
+     </title>
+     <content>
+#/etc/hosts.allow
+
+#Erlaube alle Dienste für das lokale Netz
+ALL:ALL:192.168.
+
+# Erlaube SSH für alle außer 192.168.1.5 und alle Rechner von Micrsoft.com
+sshd : ALL EXCEPT 192.168.1.5 .microsoft.com : ALLOW
+
+#Erlaube SSH für das lokale Netz
+sshd : 192.168.1.0/255.255.255.0 : ALLOW
+
+#Alle bis hierin noch nicht behandelten Anfragen werden an root gemailt
+ALL : ALL : (echo "Zugriff von %c auf %s" | mail -s "%d-Zugriff" root)
+     </content>
+    </file>
+
+    <textblock>
+Ein Nachteil des TCP_Wrappers ist der fehlende Schutz vor
+IP-Spoofing Attacken, in denen eine falsche Identität
+anderer Rechner vorgetäuscht wird. Ein anderer Nachteil
+ist, dass Dienste mit dem TCP_Wrapper zusammenarbeiten
+müssen (Unterstützung der Bibliothek <path>libwrap</path>).
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Die bessere Alternative xinetd
+    </heading>
+
+    <textblock>
+Der Superserver <command>xinetd</command> ist eine Weiterentwicklung des
+<command>inetd</command>-Konzeptes mit umfangreichen Sicherheitsoptionen.
+Es wurden zahlreiche Erweiterungen in folgenden
+Bereichen vorgenommen:
+    </textblock>
+
+    <ul>
+     <li>Zugriffskontrolle</li>
+     <li>Protokollierung</li>
+     <li>Dienst-Weiterleitung</li>
+     <li>Schutz vor DOS Attacken</li>
+     <li>IPv6 Unterstützung</li>
+    </ul>
+
+    <textblock>
+<strong>Zugriffskontrolle</strong>
+    </textblock>
+
+    <quotation>
+Netzwerkanfragen aus nicht vertrauenswürdigen Netzwerkbereichen
+können aufgrund ihrer Ursprungsadresse abgelehnt werden (ähnlich
+TCP_Wrapper). Die weitere Nutzung der Dateien <path>/etc/hosts.allow</path> und
+<path>/etc/hosts.deny</path> ist möglich. Außerdem unterstützt <command>xinetd</command> eine
+Zeitbegrenzung für Dienste (access-time). Es können sowohl die
+maximalen Netzwerkverbindungen für einen Client (per_source)
+als auch auch für einen Dienst (instances) limitiert werden.
+    </quotation>
+
+    <textblock>
+<strong>Log-Funktionen</strong>
+    </textblock>
+
+    <quotation>
+Die Protokollierung erfolgt entweder mittels <command>syslogd</command> oder in
+separaten Dateien. Im ersten Fall, sind verschiedene Log-Level
+für jeden einzelnen Netzwerkdienst möglich. Neben Benutzerkennung
+(userID) und Server-Prozessidentifikation (PID) kann auch die
+Client-IP (HOST) und die Dauer eine Verbindung protokolliert
+werden. Ausserdem beinhaltet der <command>xinetd</command> umfangreiche Funktionen
+zur Darstellung fehlgeschlagener Verbindungsanfragen.
+    </quotation>
+
+    <textblock>
+<strong>Dienst-Weiterleitung</strong>
+    </textblock>
+
+    <quotation>
+TCP-Datenströme können zu einem anderen Rechner weitergeleitet
+werden (redirect). Es können auch Dienste weitergeleitet werden,
+die normalerweise von Außen nicht erreichbar sind. Dies ist eine
+mögliche Schwachstelle, man sollte dieses Feature daher nur sehr
+überlegt einsetzen!
+    </quotation>
+
+    <textblock>
+<strong>Schutz vor DOS Attacken</strong>
+    </textblock>
+
+    <quotation>
+Durch eine Begrenzung der Verbindungsanzahl verlieren so genannte
+"PORT-Bomben" ihre Wirkung (per_source, instances).
+    </quotation>
+
+    <quotation>
+Wenn die Protokollierung nicht über den <command>syslogd</command> sondern in
+separaten Dateien erfolgt, kann eine Überflutung dieser Dateien
+durch Begrenzungen verhindert werden
+(log_type FILE datei soft_limit hard_limit).
+    </quotation>
+
+    <textblock>
+<strong>IPv6 Unterstützung</strong>
+    </textblock>
+
+    <quotation>
+Seit Version 2.1.8.8.pre wird das IPv6 Protokoll unterstützt.
+    </quotation>
+   </section>
+
+   <section>
+    <heading>
+Konfigurationsbeispiel (/etc/xinetd.conf):
+    </heading>
+
+    <file>
+     <title>
+/etc/xinetd.conf
+     </title>
+     <content>
+1  defaults
+2  {
+3     instances  = 10
+4     log_type   = SYSLOG auth
+5     log_on_success = HOST USERID DURATION
+6     log_on_failure = HOST USERID
+7     only_from = 192.168.1.0/24
+8  }
+9
+10 service ssh
+11 {
+12    socket_type  = stream
+13    protocol     = tcp
+14    wait         = no
+15    user         = root
+16    server       = /sbin/sshd
+17    server_args  = -i
+18 }
+19
+20 service ftp
+21 {
+22    socket_type  = stream
+23    protocol     = tcp
+24    wait         = no
+25    user         = root
+26    redirect     = 192.168.1.7 21
+27    per_source   = 2
+28    access_time  = 9:00-14:00
+29    log_type     = FILE /var/log/ftp_redir
+30 }
+     </content>
+    </file>
+
+    <textblock>
+Im obersten Block stehen die Standardeinstellungen. Mit <strong>instances</strong>
+wird die Anzahl der einkommenden Verbindungen pro Netzwerkdienst
+auf 10 limitiert. In den Zeilen 4-6 wird die Protokollierung durch
+den <command>Syslogd</command> eingestellt. Für erfolgreiche Verbindungen (Zeile 5)
+wird die IP-Adresse des Client, die Benutzerkennung des
+Client-Prozesses und die Dauer der Verbindung festgehalten, bei
+fehlerhaften Verbindungsaufbau beschränkt sich die Protokollierung
+auf die IP-Adresse und UserID. In Zeile 7 wird der Zugriff auf
+einen Teil des lokalen Netzwerkes beschränkt.
+    </textblock>
+
+    <textblock>
+In den Zeilen 10 bis 18 wird der ssh-Dienst konfiguriert, die
+Parameter sollten selbsterklärend sein.
+    </textblock>
+
+    <textblock>
+Im letzten Block sind die Einstellungen des FTP-Dienstes zu finden.
+Alle Anfragen werden auf einen anderen Rechner mit der
+IP-Adresse 192.168.1.7 weitergeleitet (Zeile 26). Außerdem werden
+pro Client nur 2 Verbindungen zugelassen (Zeile 27) und auf einen
+Zeitraum zwischen 9:00 und 14:00 Uhr beschränkt. Die Protokollierung
+erfolgt in der Datei <path>/var/log/ftp_redir</path> (Zeile 29).
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Sicherheit im Dateisystem
+   </heading>
+
+   <section>
+    <heading>
+Dateiattribute
+    </heading>
+
+    <textblock>
+Grundlage für die folgenden Unterabschnitte sind
+die Dateiattribute LESEN, SCHREIBEN, AUSFÜHREN
+und damit verbunden die Berechtigungsklasen
+USER, GROUP, OTHER. Diese wurden ausführlich im
+Abschnitt <ref iref="Benutzerklassen: user, group und others"
+chapter="nutzer_unter_linux">4</ref>
+und <ref iref="Berechtigungsklassen: Lesen, Schreiben und
+Ausführen " chapter="nutzer_unter_linux">5</ref> des Kapitels
+<ref chapter="nutzer_unter_linux">Benutzer- und Berechtigungskonzepte unter Linux</ref>
+erläutert.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+t-Bit (sticky Bit), SGID, SUID
+    </heading>
+
+    <textblock>
+Das sticky-Bit hat historischen Ursprung und
+wird heute nur noch auf Verzeichnisse
+angewendet (Früher blieben mit dem t-Bit versehene
+Programme auch nach Beendigung im Hauptspeicher).
+    </textblock>
+
+    <textblock>
+Ist das Sticky Bit auf einem Verzeichnis z.B. <path>/tmp</path>
+gesetzt, dann dürfen Dateien nur noch von dessen
+Besitzer und vom Verzeichnisbesitzer gelöscht
+werden.
+    </textblock>
+
+    <shell>
+     <root>
+chmod 1777 public_tmp
+     </root>
+     <root>
+ls -la public_tmp
+     </root>
+     <output>
+drwxrwxrwt    7 root     root         4096 2003-07-06 19:17 .
+     </output>
+    </shell>
+
+    <textblock>
+SUID und SGID sind nur für Programme sinnvoll.
+Diese werden mit der Benutzerkennung <br/>
+(SUID - Set User ID) bzw mit der Gruppenkennung <br/>
+(SGID - Set Group ID) der Programmdatei ausgeführt.
+    </textblock>
+
+    <textblock>
+Anwendung findet dies beisielsweise beim
+Programm <command>passwd</command>, welches ja Schreibrechte
+auf die Datei <path>/etc/shadow</path> benötigt um das
+Passwort zu ändern. Das Programm wird also von
+einem realen Nutzer aufgerufen, läuft aber
+unter root-Rechten ab:
+    </textblock>
+
+    <shell>
+     <root>
+ls -la /usr/bin/passwd
+     </root>
+     <output>
+-rwsr-xr-x    1 root  root  24248 2003-04-26 21:50  /usr/bin/passwd
+     </output>
+    </shell>
+
+    <textblock>
+# User ID bei Ausführung des apache setzen<br/>
+<command>chmod 4755 /usr/bin/passwd</command>
+    </textblock>
+
+    <textblock>
+#Gruppen ID bei Ausführung von my_script setzen<br/>
+<command>chmod 2755 /usr/bin/my_script</command>
+    </textblock>
+
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+Bit-Maske
+      </th>
+      <th>
+Bedeutung
+      </th>
+     </tr>
+     <tr>
+      <td>
+4000
+      </td>
+      <td>
+User ID setzen (bei Programmen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+2000
+      </td>
+      <td>
+Gruppen ID setzen (bei Programmen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+1000
+      </td>
+      <td>
+Lösch- und Überschreibschutz aktivieren (Verzeichnisse)
+      </td>
+     </tr>
+     <tr>
+      <td>
+400
+      </td>
+      <td>
+Eigentümer lesen
+      </td>
+     </tr>
+     <tr>
+      <td>
+200
+      </td>
+      <td>
+Eigentümer schreiben / modifizieren
+      </td>
+     </tr>
+     <tr>
+      <td>
+100
+      </td>
+      <td>
+Eigentümer ausführen /Verzeichnis wechseln
+      </td>
+     </tr>
+     <tr>
+      <td>
+      </td>
+      <td>
+      </td>
+     </tr>
+     <tr>
+      <td>
+40
+      </td>
+      <td>
+Gruppe lesen
+      </td>
+     </tr>
+     <tr>
+      <td>
+20
+      </td>
+      <td>
+Gruppe schreiben / modifizieren
+      </td>
+     </tr>
+     <tr>
+      <td>
+10
+      </td>
+      <td>
+Gruppe ausführen /Verzeichnis wechseln
+      </td>
+     </tr>
+     <tr>
+      <td>
+      </td>
+      <td>
+      </td>
+     </tr>
+     <tr>
+      <td>
+4
+      </td>
+      <td>
+alle lesen
+      </td>
+     </tr>
+     <tr>
+      <td>
+2
+      </td>
+      <td>
+alle schreiben / modifizieren
+      </td>
+     </tr>
+     <tr>
+      <td>
+1
+      </td>
+      <td>
+alle ausführen /Verzeichnis wechseln
+      </td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
+Erweiterte ext2-Dateiattribute
+    </heading>
+
+    <textblock>
+Seit dem Linux-Kernel 2.2 ist es möglich, für Dateien
+und Verzeichnisse erweiterte (Sicherheits-)Funktionen
+durch die Vergabe von Flags (Attributen) zu aktivieren.
+Diese betreffen auch den Superuser root.
+    </textblock>
+
+    <textblock>
+<strong>a (Append Only)</strong>
+    </textblock>
+
+    <quotation>
+Das System erlaubt das Öffnen dieser
+Datei nur zum Zwecke der Erweiterung und
+verbietet explizit allen Prozessen
+das Überschreiben bzw. Löschen bereits
+gespeicherter Daten (sinnvoll
+bei log-Dateien).
+Ebenfalls untersagt ist das Löschen,
+Umbenennen, Verschieben und "hartes"
+Linken der Datei.
+Wird das Flag auf einem Verzeichnis
+angewendet, dürfen darin keine
+Dateien angelegt oder gelöscht werden.
+    </quotation>
+
+    <textblock>
+<strong>i (Immutable)</strong>
+    </textblock>
+
+    <quotation>
+Das System verbietet jegliche Änderungen
+an der Datei. Im Falle eines Verzeichnisses
+können Dateien, die in diesem Verzeichnis
+bereits existieren, verändert werden.
+Weder das Löschen noch das Anlegen von
+Dateien ist möglich.
+    </quotation>
+
+    <textblock>
+<strong>d (No Dump)</strong>
+    </textblock>
+
+    <quotation>
+Das dump Programm soll diese Datei beim
+Backup ignorieren.
+    </quotation>
+
+    <textblock>
+<strong>c (Compress)</strong>
+    </textblock>
+
+    <quotation>
+Das System soll diese Datei "transparent"
+komprimieren. Beim Schreiben in die Datei
+wird deren Inhalt komprimiert und erst danach
+auf dem physischen Datenträger abgelegt, beim
+Lesen der Datei werden jedoch stets
+dekomprimierte Daten zurückgegeben.
+Diese Funktion ist derzeit noch nicht
+implementiert.
+    </quotation>
+
+    <textblock>
+<strong>s (Secure Delete)</strong>
+    </textblock>
+
+    <quotation>
+Wenn das System diese Datei löscht, werden
+alle Datenblöcke auf dem Datenträger
+zufällig überschrieben.
+    </quotation>
+
+    <textblock>
+<strong>u (Undelete)</strong>
+    </textblock>
+
+    <quotation>
+Wenn eine Anwendung das Löschen der Datei
+fordert, soll das System die Datenblöcke so
+"konservieren", dass das Löschen der Datei
+auch wieder rückgängig gemacht werden kann.
+Diese Funktion ist derzeit noch nicht
+impementiert.
+    </quotation>
+
+    <textblock>
+<strong>A (Atime)</strong>
+    </textblock>
+
+    <quotation>
+Das System soll die "atime" (access time)
+dieser Datei nicht aktualisieren.
+    </quotation>
+
+    <textblock>
+<strong>S (Sync)</strong>
+    </textblock>
+
+    <quotation>
+Wenn eine Anwendung gerade den
+Schreibprozess durchführt, soll das System
+alle Änderungen sofort und ungepuffert auf
+dem physischen Datenträger abspeichern.
+    </quotation>
+
+    <shell>
+     <root>
+chattr +a test.log
+     </root>
+     <root>
+chattr +i test.conf
+     </root>
+     <root>
+ls -al test*
+     </root>
+     <output>
+-rw-rw-r--    1 gwe  users           0 Nov 22 22:22 test.conf
+     </output>
+     <root>
+lsattr -a test*
+     </root>
+     <output>
+---i-------- test.conf
+----a------- test.log
+     </output>
+     <root>
+chattr -i test.conf
+lsattr -a test.conf
+     </root>
+     <output>
+------------ test.conf
+     </output>
+    </shell>
+
+    <textblock>
+In vielen Fällen ist der Schutz der
+folgenden Dateien/Verzeichnisse sinnvoll:
+    </textblock>
+
+    <shell>
+     <root>
+chattr -R +i /etc /bin /sbin /boot /lib
+     </root>
+     <root>
+chattr -R +i /usr/bin /usr/sbin /usr/lib /usr/src /usr/include
+     </root>
+     <root>
+chattr    +a /var/log/messages /var/log/secure
+     </root>
+     <root>
+(...)
+     </root>
+    </shell>
+
+    <textblock>
+Der Schutz folgender Verzeichnissen kann
+zu unerwünschten Nebeneffekten führen:
+    </textblock>
+
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+Verzeichnis
+      </th>
+      <th>
+Problemursache
+      </th>
+     </tr>
+     <tr>
+      <td>
+<path>/</path>
+      </td>
+      <td>
+syslog
+      </td>
+     </tr>
+     <tr>
+      <td>
+<path>/dev</path>
+      </td>
+      <td>
+Syslog will beim Start den Socket <path>/dev/log</path> anlegen
+      </td>
+     </tr>
+     <tr>
+      <td>
+<path>/tmp</path>
+      </td>
+      <td>
+versteht sich von selbst
+      </td>
+     </tr>
+     <tr>
+      <td>
+<path>/var</path>
+      </td>
+      <td>
+logrotate, sendmail,
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Mithilfe der oben beschriebenen
+<ref iref="Capability Mechanismus des Kernels">Capabilities</ref> kann das Rücksetzen der
+Sicherheitsattribute unterbunden
+werden. Die damit realisierten Restriktionen
+gelten für alle Benutzer (inkl. root)
+und werden nur bei Systemsneustart aufgehoben.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Partitionen
+    </heading>
+
+    <textblock>
+Das Einbinden von Partitionen kann sehr viel zur Sicherheit
+beitragen. Als Beispiel soll der folgende Eintrag in der
+<path>/etc/fstab</path> dienen:
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+/dev/hda9    /tmp    ext2    defaults,nosuid,noexec,nodev    0    2
+     </content>
+    </file>
+
+    <textblock>
+Aufgrund der Mount-Optionen werden gesetzte
+SUID- und GUID-Attribute komplett ignoriert.
+Weiterhin verbietet <command>noexec</command> das Ausführen von
+Programmen auf dieser Partition und <command>nodev</command>
+verhindert character und block-Devices.
+    </textblock>
+
+    <textblock>
+Die folgenden Einträge geben Überblick über
+eine mögliche Konfiguration:
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+/dev/sda5   /usr         ext3    defaults,ro,nodev                              0   2
+/dev/sda7   /usr/share   ext3    defaults,ro,nodev,nosuid                       0   2
+/dev/sda8   /var         ext3    defaults,nodev,usrquota,grpquota               0   2
+/dev/sda9   /tmp         ext3    defaults,nodev,nosuid,noexec,usrquota,grpquota 0   2
+/dev/sda10  /home        ext3    nosuid,nodev,auto,nouser,usrquota,grpquota     0   2
+/dev/hda1   /mnt/hda1    vfat    rw,nosuid,nodev,umask=000,uid=1000,gid=1000    0   0
+/dev/fd0    /mnt/fd0     ext2    defaults,users,nodev,nosuid,noexec             0   0
+/dev/hdd    /mnt/cdrom   iso9660 ro,users,nodev,nosuid,noexec                   0   0
+     </content>
+    </file>
+
+    <textblock>
+Die Optionen sind im Einzelnen in den
+man-Pages (<command>man 8 mount</command>) nachzulesen,
+deshalb gibt es hier nur eine kleine Auswahl:
+    </textblock>
+
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <td>
+defaults
+      </td>
+      <td>
+entspricht den voreingestellten Optionen rw, suid, dev, exec,
+auto, nouser, und async
+      </td>
+     </tr>
+     <tr>
+      <td>
+rw
+      </td>
+      <td>
+Einhängen des Dateisystems zum Lesen und Schreiben.
+      </td>
+     </tr>
+     <tr>
+      <td>
+ro
+      </td>
+      <td>
+Einhängen des Dateisystems ausschließlich zum Lesen,
+Schreiboperationen werden ignoriert.
+      </td>
+     </tr>
+     <tr>
+      <td>
+user
+      </td>
+      <td>
+Ein Normaluser darf das Dateisystem einhängen. Ansonsten darf
+dies nur root.
+      </td>
+     </tr>
+     <tr>
+      <td>
+nouser
+      </td>
+      <td>
+Nur root darf das Dateisystem einhängen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+dev / nodev
+      </td>
+      <td>
+das Nutzen von Gerätedateien auf der Partition ist (nicht)
+erlaubt.
+      </td>
+     </tr>
+     <tr>
+      <td>
+exec / noexec
+      </td>
+      <td>
+auf der Partition gespeicherte Programme können (nicht)
+ausgeführt werden.
+      </td>
+     </tr>
+     <tr>
+      <td>
+auto / noauto
+      </td>
+      <td>
+Partition wird beim Booten (nicht) automatisch eingehängt.
+      </td>
+     </tr>
+     <tr>
+      <td>
+atime / noatime
+      </td>
+      <td>
+die Zugriffszeit (atime) wird bei jedem Zugriff (nicht)
+gesetzt.
+      </td>
+     </tr>
+     <tr>
+      <td>
+suid / nosuid
+      </td>
+      <td>
+SUID und SGID Bits werden (nicht) interpretiert.
+      </td>
+     </tr>
+     <tr>
+      <td>
+sync / async
+      </td>
+      <td>
+Ein- und Ausgabeoperationen werden (a)synchron durchgeführt
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Jedes Dateisystem stellt selbst noch einige
+Optionen für zur Verfügung (z.B. usrquota,
+gid, uid, umask).
+Die Dokumentation dieser speziellen Optionen
+kann ebenfalls in den Manpages von <command>mount</command>
+nachgelesen werden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Festplattenkontingente mit Quota
+    </heading>
+
+    <textblock>
+Jeder Computernutzer weis, dass eine Festplatte,
+egal wie groß sie auch sein mag, immer zu klein
+ist. Auf Systemen, die von mehreren
+Personen genutzt werden, wird dies sehr oft zum
+Problem. Damit es gar nicht erst zu einem Streit
+kommt, kann der Administrator mit root-Rechten
+für jeden Nutzer bzw. für jede Nutzergruppe ein
+Kontingent (engl. Quota) an Speicherplatz zur
+Verfügung stellen. Dazu benötigt man Quota.
+    </textblock>
+
+    <textblock>
+Die Kontingente werden nicht global für
+das ganze System sondern für jede Partition
+separat vergeben. Wenn ein Nutzer Schreibrechte
+auf mehreren Partitionen besitzt, muss man
+auch mehrere Quota für diesen Benutzer setzen.
+    </textblock>
+
+    <textblock>
+Man kann sowohl Quotas auf Benutzerebene als auch
+auf Gruppenebene festlegen. Bei der Kombination
+von Benutzerebene und Gruppenebene haben Quotas
+auf Benutzerebene eine höhere Priorität.
+    </textblock>
+
+    <textblock>
+Mit den folgenden drei Parametern lassen sich
+Quotas einstellen:
+    </textblock>
+
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <td>
+Softlimit
+      </td>
+      <td>
+Der Benutzer darf diese Grenze nur kurz überschreiten und wird
+extra gewarnt.
+      </td>
+     </tr>
+     <tr>
+      <td>
+Grace Period
+      </td>
+      <td>
+Dieser Parameter legt den Zeitraum fest, den ein Benutzer das
+Softlimit überschreiten darf.
+      </td>
+     </tr>
+     <tr>
+      <td>
+Hardlimit
+      </td>
+      <td>
+Diese Grenze darf nicht überschritten werden.
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
+Bevor man Quotas festlegen kann, muss der
+Kernel mit der Option <command>Quota Support</command>
+kompilert werden. Weiterhin ist es erforderlich,
+die Dateisysteme darauf vorzubereiten (<command>mount</command> Option).
+Dazu wird die Datei <path>/etc/fstab</path> angepasst:
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+...
+/dev/sda7   /home  ext3    nosuid,nodev,auto,nouser,usrquota,grpquota  0   2
+...
+     </content>
+    </file>
+
+    <textblock>
+Nun müssen die Änderungen übernommen werden.
+Dazu ist nicht unbedingt ein reboot erforderlich
+es reicht durchaus, die Partition aus- und
+wieder einzuhängen.
+    </textblock>
+
+    <shell>
+     <root>
+mount -a -o remount
+     </root>
+    </shell>
+
+    <textblock>
+Weiterhin müssen die Dateien <path>aquota.user</path>
+und <path>aquota.group</path> im Wurzelverzeichnis der jeweiligen
+Partition erstellt werden. Dies übernimmt auch der
+erstmalige Aufruf des Programmes <command>quotacheck</command>. Damit
+die Benutzer auch den aktuellen Stand ihres
+Kontingentes erfragen können, ist der Lesezugriff
+auf diese <path>quota</path>-Dateien notwendig.
+    </textblock>
+
+    <shell>
+     <root>
+quotacheck -avugm
+     </root>
+     <root>
+chmod 644 /home/aquota.*
+     </root>
+     <root>
+chmod 644 /moutpoint/aquota.*
+     </root>
+    </shell>
+
+    <textblock>
+Das Starten und Beenden der Kontingentüberwachung
+übernehmen die Programme <command>quotaon</command> und <command>quotaoff</command>, die nach
+jedem Systemstart neu aufgerufen werden müssen.
+Wenn bei der Distribution ein entsprechendes
+SysV-Initskript fehlt, kann man folgendes benutzen:
+    </textblock>
+
+    <file>
+     <title>
+/etc/init.d/quota
+     </title>
+     <content>
+#! /bin/sh
+
+case "$1" in
+    start)
+        echo "Starte Quotaüberwachung:"
+        /sbin/quotaon -avug
+        ;;
+    stop)
+        echo "Stoppe Quotaüberwachung:"
+        /sbin/quotaoff -avug
+        ;;
+    *)
+        echo "Aufruf: $0 {start|stop}"
+        exit 1
+esac
+exit 0
+     </content>
+    </file>
+
+    <shell>
+     <root>
+cd /etc/init.d
+     </root>
+     <root>
+chmod +x quota
+     </root>
+     <root>
+ln -s ../init.d/quota /etc/rc0.d/K85quota
+     </root>
+     <root>
+ln -s ../init.d/quota /etc/rc1.d/K85quota
+     </root>
+     <root>
+ln -s ../init.d/quota /etc/rc2.d/S20quota
+     </root>
+     <root>
+ln -s ../init.d/quota /etc/rc3.d/S20quota
+     </root>
+     <root>
+ln -s ../init.d/quota /etc/rc4.d/S20quota
+     </root>
+     <root>
+ln -s ../init.d/quota /etc/rc5.d/S20quota
+     </root>
+     <root>
+ln -s ../init.d/quota /etc/rc6.d/K85quota
+     </root>
+    </shell>
+
+    <textblock>
+Zur Festlegung und Verwaltung der Kontingente
+existiert das Programm <command>edquota</command>.
+    </textblock>
+
+    <shell>
+     <root>
+  /edquota -u user007
+     </root>
+    </shell>
+
+    <textblock>
+Dieser Aufruf öffnet den Standardeditor
+(i.d.R. <ref chapter="vim">vi</ref>), mit Hilfe dessen man die
+Änderungen an den Parametern vornehmen
+kann.
+    </textblock>
+
+    <file>
+     <title>
+/tmp/EdP.auS8yzc
+     </title>
+     <content>
+Disk quotas for user user007 (uid 1000):
+Filesystem    blocks     soft    hard   inodes   soft    hard
+/dev/hda7      80579   100000  120000     3841  10000   12000
+     </content>
+    </file>
+
+    <textblock>
+Detaillierte Informationen findet man in
+den man-Pages, deshalb seien hier nur in
+Kurzform die wichtigsten Kommandos aufgezählt:
+    </textblock>
+
+<!--
+*****************console / Benutzer root!!!***************
+-->
+
+
+    <shell>
+     <output>
+# Ändern der Quota für Benutzergruppe users
+     </output>
+     <root>
+edquota -g users
+     </root>
+     <output>
+# Ändern der Grace Period (Zeitraum/Frist für Softlimit)
+     </output>
+     <root>
+edquota -t
+     </root>
+     <output>
+# Übernahme der Quotaeinstellungen von Benutzer user007
+# für alle User mit UID &gt; 1000
+     </output>
+     <root>
+edquota -p user007 `awk -F: '$3 &gt; 1000 {print $1}' /etc/passwd`
+     </root>
+     <output>
+# Erzeugen eines Reportes
+     </output>
+     <root>
+repquota -avug
+     </root>
+     <output>
+Report for user quotas on device /dev/hda2
+Block grace time: 7days; Inode grace time: 7days
+
+                        Block limits                File limits
+User            used    soft    hard  grace    used  soft  hard  grace
+----------------------------------------------------------------------
+root      --   69841       0       0           9226     0     0
+postgres  --       1       0       0              1     0     0
+ai114     --   80154   60000*  90000  6days    3841* 3840  7000   3days
+user007   --   80579  100000  120000           3841 10000 12000
+     </output>
+     <output>
+# Statusabfrage für einen Benutzer
+     </output>
+     <root>
+su user007
+     </root>
+     <user>
+quota
+     </user>
+     <output>
+Disk quotas for user user007 (uid 1000):
+Filesystem  blocks   quota   limit   grace   files   quota   limit   grace
+ /dev/hda7   80579   100000  120000          3841    10000   12000
+     </output>
+    </shell>
+
+    <textblock>
+Es sei darauf hingewiesen, dass nicht bei allen
+Dateisystemen Quotas unterstützt werden. Auf den
+<ref lang="en" url="http://www.namesys.com/">FAQ-Seiten</ref> des ReiserFS findet man weitere Informationen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Verschlüsselte Dateien
+    </heading>
+
+    <textblock>
+Im Kapitel "GnuPG Handbuch" wurde bereits detailliert
+auf das <ref iref="Ver- und Entschlüsseln von Dokumenten" chapter="gpg_handbuch_kapitel_2">Verschlüsseln von Dokumenten</ref> eingegangen.
+Deshalb soll an dieser Stelle nicht
+näher darauf eingegangen werden. Das folgende Kapitel
+beschäftigt sich deshalb mit der Einrichtung
+verschlüsselter Dateisysteme, die an jede beliebige
+Stelle im Verzeichnissbaum eingehängt werden können.
+Alle Dateien in einem solchen Verzeichnis werden
+automatisch ver- und entschlüsselt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Verschlüsselte Dateisysteme
+    </heading>
+
+    <textblock>
+Es gibt zwei Möglichkeiten, Dateisysteme zu verschlüsseln:
+    </textblock>
+
+    <ol type="a">
+     <li>Das Filesystem residiert in einer verschlüsselten Datei</li>
+     <li>Das Filesystem residiert auf einer verschlüsselten Partition</li>
+    </ol>
+
+    <textblock>
+Für beide Varianten sind Modifikationen am Kernel
+erforderlich, bei Kernel 2.6.XX werden alle passenden
+Module mitgliefert (Menü "Cryptographic Options").
+Für den Fall a) ist zusätzlich der
+"Loopback Device Support / Cryptoloop Support"
+im Menü "Block Devices" zu aktivieren. Bei älteren
+Kerneln ist ein spezieller <ref lang="en" url="http://www.kerneli.org/">Patch</ref>
+einzuspielen.
+    </textblock>
+
+    <textblock>
+Weiterhin ist es (noch) notwendig, einige wichtige Programme
+wie <command>mount</command> und <command>losetup</command>
+<ref url="http://www.kernel.org/pub/linux/utils/util-linux/">linux-utils</ref>
+zu modifizieren. Keine Probleme gab es mit dem Patch
+von <ref url="http://therapy.endorphin.org/patches/">http://therapy.endorphin.org/patches/</ref> .
+    </textblock>
+
+    <shell>
+     <root>
+tar zxvpf util-linux-2.11y.tar.gz
+     </root>
+     <root>
+patch -p0 &lt; util-linux-2.11y.losetup.diff
+     </root>
+     <root>
+cd util-linux-2.11y
+     </root>
+     <root>
+make &amp;&amp; make install
+     </root>
+    </shell>
+
+    <textblock>
+Die Verschlüsselung wird durch ein virtuelles Laufwerk
+(Loop-Device) realsiert. Dieses wird, wie jedes andere
+Laufwerk auch, in den Verzeichnisbaum eingehängt, z.B.
+an <path>/mnt/crypted</path>. Alle nach <command>/mnt/crypted</command> kopierten Dateien
+werden nun automatisch verschlüsselt.
+Natürlich muss dieses virtuelle Laufwerk mit einer
+real existierenden Datei oder Partition verbunden sein,
+die verschlüsselten Daten sollen ja schließlich
+nicht verloren gehen.
+    </textblock>
+
+    <shell>
+     <output>
+# Fall a) Erzeugen einer Datei (Größe 8MB)
+     </output>
+     <root>
+dd if=/dev/zero of=/home/user/crypedFile.dat bs=4096 count=2048
+     </root>
+     <output>
+# Erzeugen eines leeren Verzeichnisses, welches
+# sensible Daten aufnehmen soll
+     </output>
+     <root>
+mkdir /mnt/crypted
+     </root>
+     <output>
+# mit AES verschlüsseltes loop-Device mit dieser Datei verbinden
+     </output>
+     <root>
+losetup -e aes /dev/loop0 /home/user/crypedFile.dat
+     </root>
+     <output>
+
+# oder Partition mit loop-Device verbinden
+     </output>
+     <root>
+losetup -e aes /dev/loop0 /dev/hda7
+     </root>
+     <output>
+# auf dem virtuellen Laufwerk ein Dateisystem anlegen
+     </output>
+     <root>
+mkfs -t ext2 /dev/loop
+     </root>
+     <output>
+# virtuelles Laufwerk mounten
+     </output>
+     <root>
+mount /dev/loop0 /mnt/crypted
+     </root>
+     <output>
+# nun kann normal gearbeitet werden:
+     </output>
+     <root>
+cp datei /mnt/crypted
+     </root>
+     <output>
+# am Ende: unmount
+     </output>
+     <root>
+umount /dev/crypted
+     </root>
+     <output>
+# virtuelles Laufwerk (loop-Device) trennen
+     </output>
+     <root>
+losetup -d /dev/loop0
+     </root>
+    </shell>
+
+    <textblock>
+Um das Einhängen der Laufwerke zu automatisieren, kann
+die Datei <path>/etc/fstab</path> angepasst werden (letzte Zeile).
+    </textblock>
+
+    <file>
+     <title>
+/etc/fstab
+     </title>
+     <content>
+# &lt;Dateisystem&gt;           &lt;Mountpunkt&gt;  &lt;Typ&gt;  &lt;Optionen&gt;                  &lt;dump&gt;  &lt;pass&gt;
+/dev/hda2                 /             ext3    defaults,errors=remount-ro    0       1
+proc                      /proc         proc    defaults                      0       0
+/dev/fd0                  /floppy       auto    defaults,user,noauto          0       0
+/dev/cdrom                /cdrom        iso9660 defaults,ro,user,noauto       0       0
+/home/user/crypedFile.dat /mnt/crypted  ext2    defaults,loop,encryption=aes  0       0
+     </content>
+    </file>
+
+    <textblock>
+Natürlich gibt es auch Alternativen zu der hier
+vorgestellten Vorgehensweise, beispielsweise findet
+man auf pro-linux eine
+<ref lang="de" url="http://www.pl-forum.de/t_system/loop-aes.html">Anleitung</ref> zu
+<ref lang="en" url="http://loop-aes.sourceforge.net/">Loop-AES</ref>.
+    </textblock>
+
+    <textblock>
+Für die Zukunft bleibt zu hoffen, dass die
+Einrichtung von verschlüsselten Dateisystemen
+sich um Größenordnungen vereinfacht.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Die Firewall
+   </heading>
+
+   <section>
+    <heading>
+Was ist eine Firewall?
+    </heading>
+
+    <textblock>
+Lutz Donnerhacke schreibt in der FAQ zur Newsgroup
+<ref lang="de" url="http://www.iks-jena.de/mitarb/lutz/usenet/Firewall.html">de.comp.security.firewall</ref>
+    </textblock>
+
+    <quotation>
+Als Firewall bezeichnet man ein organisatorisches und
+technisches Konzept zur Trennung von Netzbereichen, dessen
+korrekte Umsetzung und dauerhafte Pflege. Ein oft benutztes
+Instrument der Umsetzung ist ein Stück Hardware, das zwei
+physisch getrennte Netzbereiche genau so verbindet, wie es
+im Konzept zugelassen wird. Dieses Stück Hardware bezeichnet
+man als Firewall-Rechner/System oder verkürzt als Firewall.
+    </quotation>
+   </section>
+
+   <section>
+    <heading>
+Paketfilter und Kernelparameter
+    </heading>
+
+    <textblock>
+Der Paketfilter ist ein Teilaspekt der Firewall, der
+Sicherheitsrichtlinien bezüglich des zu transportierenden
+Netzwerkverkehrs durchzusetzen versucht und idealerweise
+die einzige Verbindung zu einem nicht vertrauenswürdigen
+Netz darstellt. Dies beinhaltet
+natürlich auch den Netzwerkverkehr vom und ins Internet.
+Anhand festgelegter Regeln werden Datenpakete (Datagramme)
+gefiltert, protokolliert (logging), markiert und geändert.
+Bei der Formulierung dieser Regeln für das Netzwerk gelten
+beispielsweise folgende Überlegungen:
+    </textblock>
+
+    <ul>
+     <li>wer nutzt das Netzwerk?</li>
+     <li>welche Daten dürfen welche Wege nehmen?</li>
+     <li>welche Dienste werden von wem und für wen angeboten?</li>
+     <li>wann werden die Dienste angeboten?</li>
+     <li>...</li>
+    </ul>
+
+    <textblock>
+Bei der Beantwortung dieser Fragen werden auch die Maßnahmen
+klar, die zu treffen sind, um das Netzwerk korrekt zu
+konfigurieren. Es werden IP-Adressen vergeben, Routen
+gesetzt, Dienste in der Form konfiguriert, dass sie auch nur
+dort angeboten werden, wo sie genutzt werden sollen
+(Freigaben zum Beispiel nur im LAN und nicht im Internet).
+Erst wenn diese grundlegende Netzwerkkonfiguration getätigt ist,
+besteht die Möglichkeit, dass man die Hilfe des Paketfilters
+benötigt, um den Verkehr im Netzwerk zu steuern. Man sollte
+sich jedoch bewusst sein, dass Paketfilter auf Schicht 3 und 4
+des ISO/OSI Modells arbeiten. Um Entscheidungen aufgrund von
+Informationen der Applikationsebene (Schicht 7) wie z.B. <command>http</command>
+oder <command>irc</command> treffen zu können, werden Proxies eingesetzt, die das
+Thema des nächsten Abschnittes sind.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Proxy
+    </heading>
+
+    <textblock>
+Paketfilter sind aber bei weitem nicht die einzige
+Maßnahme, die zur Regelung des Netzwerkverkehrs
+zur Verfügung steht. Weitere Möglichkeiten bietet der
+Proxy (Application Level Gateway), der sich zwischen
+Client und Server befindet. Er arbeitet auf Applikationsebene
+(Schichten 5-7 des ISO/OSI Referenzmodells) und kennt die
+Interna der jeweiligen Protokolle (z.B. <command>http</command>, <command>irc</command>). Was
+bedeutet das? Der Client kommuniziert nicht direkt mit
+dem Server, sondern er verbindet sich zu dem Proxy und weist
+diesen an, eine Verbindung mit dem Server aufzunehmen. Der
+Proxy sendet und empfängt Daten vom Server, filtert diese
+nach bestimmten Regeln und leitet sie dann an den Client
+weiter, oder auch nicht. Proxies realisieren eine logische
+Trennung der Kommunikationspartner, es existieren also zwei
+unabhängige Verbindungen:
+Client-Proxy und Proxy-Server. Dadurch werden
+    </textblock>
+
+    <ul>
+     <li>Authentifizierung und Autorisierung (benutzerabhängige Nutzung von Diensten) </li>
+     <li>Zwischenspeicherung (Cache) von Daten</li>
+     <li>Filterung von Dateninhalten (Virenscanner, Kindersicherung)</li>
+     <li>Löschen der Datenherkunft (Anlegen von personenbezogenen Profildaten unterbinden)</li>
+    </ul>
+
+    <textblock>
+ermöglicht. Normalerweise muss der Proxy vom Client
+unterstützt werden, aufgrund des Design einiger
+Netzwerkprotokolle lassen sich diese nicht oder nur schwer
+über einen Proxy leiten. Es gibt aber auch generische
+Proxy-Protokolle, wie zum Beispiel SOCKS5. Eine
+interessante Lösung stellt ein transparenter Proxy dar: Die
+Client-Server Verbindung wird durch den Paketfilter
+über den Proxy umgeleitet, ohne dass der Client davon
+etwas merkt.
+    </textblock>
+
+    <textblock>
+Als repräsentative Vertreter seien an dieser Stelle
+    </textblock>
+
+    <ul>
+     <li>SOCKS (Dante) als generischer Proxy</li>
+     <li>squid und wwwoffle als HTTP-Proxies,</li>
+     <li>Exim und pop3gwd als Email-Proxies.</li>
+     <li>bnc und tircproxy als IRC-Proxies </li>
+    </ul>
+
+    <textblock>
+genannt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Was können Firewalls und was können sie nicht?
+    </heading>
+
+    <textblock>
+Eine Firewall kann unter anderem...
+    </textblock>
+
+    <ul>
+     <li>den Netzwerkverkehr zwischen Netzen kontrollieren und einschränken,</li>
+     <li>Netzwerkzugriffe auf Rechner bzw. Dienste zulassen oder blockieren,</li>
+     <li>den Netzwerkverkehr protokollieren,</li>
+     <li>den Netzwerkverkehr manipulieren (z.B. Umleitung auf andere Rechner bzw. Proxies).</li>
+    </ul>
+
+    <textblock>
+Ein Firewall kann nicht dazu beitragen,
+    </textblock>
+
+    <ul>
+     <li>alle Sicherheitslücken im System / Netzwerk zu schließen,</li>
+     <li>Konfigurations- oder Installationsfehler zu beseitigen,</li>
+     <li>Systemanomalien (Viren, Trojaner, Würmer,...) oder Einbrüche festzustellen und</li>
+     <li>Schwachstellen (z.B. einfache Passwörter) zu erkennen.</li>
+    </ul>
+
+    <textblock>
+Keine Firewall zu haben ist in jedem Falle ehrlicher, als eine
+Firewall aufzustellen, und damit zu glauben, man sei sicher!
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Testen der Sicherheitsmaßnahmen
+   </heading>
+
+   <textblock>
+Für das Testen der Sicherheitsmaßnahmen können aufgrund
+des sehr differenzierten Sicherheitsbedürfnisses und der
+sehr unterschiedlichen Ausrichtung der Systeme nur bedingt
+allgemeingültige Richtlinien festgelegt werden. Deshalb
+werden hier nur einige wenige Maßnahmen aufgeführt, die
+weder für alle Systeme gelten noch für alle Systeme
+ausreichend sind.  Sie sollen lediglich als Einstieg einer
+kontinuierlichen Prüfung angesehen werden.
+   </textblock>
+
+   <textblock>
+Der Systemtest erfolgt durch "Experimentelle Prozessanalyse",
+also durch (simulierte) Angriffe gegen den eigenen Rechner
+oder das eigene Netzwerk, die natürlich außerhalb des
+eigentlichen Systembetriebes stattfinden sollten. Damit können
+Einbruchserkennungssysteme (IDS), Firewalls (Paketfilter)
+und die Systemstabilität getestet werden. Allerdings werden
+auf diesem Weg niemals alle Schwachstellen gefunden,
+weil diese entweder noch nicht bekannt sind (z.B. <ref iref="Buffer Overflows">Buffer
+Overflows</ref>, unbekannte <ref iref="Viren">Viren</ref>) oder weil ein Angriff nicht zu
+verantworten ist (Elektrische Überspannung zerstört unter
+Umständen Hardware).
+   </textblock>
+
+   <textblock>
+Bei Netzwerksystemen sollte der erste Angriff ein Portscan
+(z.B. mit dem Tool <command>nmap</command>) sein. Anschließend ist eine
+Analyse des Datenverkehrs (<ref iref="Sniffer">Sniffer</ref>) denkbar, zumindest
+wenn vertrauliche Informationen über das Netzwerk übertragen
+werden. Eine Vielzahl an Angriffsszenarien bietet der
+Security Scanner Nessus. Die Schwachstellenanalyse erfolgt
+durch derzeit 1049 Plugins aus 23 Kategorien (Ende 2002),
+die natürlich auch andere Systeme wie Windows-Rechner
+oder Cisco Router untersuchen. Zu den interessantesten Plugins
+gehören:
+   </textblock>
+
+   <textblock>
+<strong>Backdoors</strong>
+   </textblock>
+
+   <ul>
+    <li><command>mstream</command>, <command>shaft</command>, <command>TFN</command>, <command>Trin00</command>, <command>trinityV3</command> (alles DDOS-Tools)</li>
+    <li>alya.cgi (verwendet von vielen root-Kits)</li>
+   </ul>
+
+   <textblock>
+<strong>Denial of Service</strong>
+   </textblock>
+
+   <ul>
+    <li>Teardrop</li>
+    <li>Bonk</li>
+    <li>BlackIce DoS (ping flood)</li>
+    <li>Generic flood</li>
+   </ul>
+
+   <textblock>
+<strong>Firewalls</strong>
+   </textblock>
+
+   <ul>
+    <li>icmp Angriffe</li>
+    <li>Proxy Angriffe entfernter Shell-Zugriff</li>
+    <li>Apache-SSL, Squid, SSH Buffer Overflows</li>
+    <li>MySQL Schwachstellen  entfernter Superuser-Zugriff</li>
+    <li>Samba: Entfernte Erstellung beliebiger Dateien</li>
+    <li>thttpd 2.04 buffer overflow</li>
+    <li>HTTP header overflow</li>
+   </ul>
+
+   <textblock>
+<strong>misc</strong>
+   </textblock>
+
+   <ul>
+    <li>X Server</li>
+    <li>Apache Serverstatus verfügbar</li>
+    <li>RedHat 6.2 inetd</li>
+   </ul>
+
+   <textblock>
+<strong>CGI Missbrauch</strong>
+   </textblock>
+
+   <ul>
+    <li>Apache Tomcat /servlet ...</li>
+    <li>Oracle 9iAS ...</li>
+    <li>phpMyAdmin Zugriff ...  </li>
+   </ul>
+
+   <textblock>
+Die Angriffe sollten selbstverständlich abgewährt und
+gegebenenfalls protokolliert werden. Eine detailliertere
+Beschreibung dieses Security-Scanners wird zu einem
+späteren Zeitpunkt in einem eigenständigem Kapitel
+erfolgen.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Systemüberwachung (Logging und Accounting)
+   </heading>
+
+   <section>
+    <heading>
+Einleitung Systemüberwachung
+    </heading>
+
+    <textblock>
+Eine Grundforderung an vertrauenswürdige Systeme ist die
+Nachvollziehbarkeit des Systemverhalten. Bei Linux werden
+verhaltensrelevante Ereignisse in so genannten Logfiles
+gespeichert, die meist unter <path>/var/log</path> zu finden sind. Die
+wichtigsten Systemlogfiles sind:
+    </textblock>
+
+    <ul>
+     <li>messages</li>
+     <li>auth.log</li>
+     <li>kern.log</li>
+    </ul>
+
+    <textblock>
+In den Protokolleinträgen finden sich Hinweise, warum sich
+z.B. ein Dienst nicht starten läßt oder das mehrere
+Login-Versuche fehlgeschlagen sind. Meist erfolgt zu jedem
+Protokolleintrag eine Zeitangabe.
+    </textblock>
+
+    <textblock>
+So wie der <command>xinetd</command> als Superserver für das Starten der
+Dienste zuständig ist, gibt es auch einen Protokolldienst,
+den <command>syslogd</command>. Dieser wurde äußerst detailliert in einem
+eigenständigen <ref chapter="syslog">Selflinux- Kapitel</ref>
+beschrieben und soll deshalb an dieser Stelle
+nicht nochmals betrachtet werden. Thema dieses Abschnittes
+sind Mechanismen zum Schutz der Logfiles.
+(Kernelmeldungen werden vom <command>klogd</command> entgegengenommen
+und verarbeitet, das Programm <command>dmesg</command> gibt diese Meldungen
+aus.)
+    </textblock>
+
+    <textblock>
+Weitaus mehr Schutzmöglichkeiten bietet die neue Variante
+von <command>syslog</command>, der <ref lang="en" url="http://www.balabit.com/products/syslog_ng/">syslog-ng</ref>.
+Dieser ist jedoch derart komplex,
+dass sich in Zukunft ein eigenständiges Kapitel damit
+beschäftigen wird.
+    </textblock>
+
+    <textblock>
+Sehr interessant auch die Kombination von <command>PHP</command>, <command>mySQL</command> und
+<command>syslog-ng</command>, mit welcher sich das Open Source Projekt
+<ref lang="en" url="http://freshmeat.net/projects/php-syslog-ng/">php-syslog-ng</ref> beschäftigt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Schutz vor "Überlaufen" der Logfiles
+    </heading>
+
+    <textblock>
+Eine Angriffsmöglichkeit gegen Protokollierungsmechanismen
+besteht darin, wahnsinnig viele Log-Einträge zu
+generieren, so das
+    </textblock>
+
+    <ol type="a">
+     <li>der begrenzte Speicherplatz aufgebraucht und</li>
+     <li>die Logfiles sehr unübersichtlich</li>
+    </ol>
+
+    <textblock>
+werden. Abhilfe verspricht das Programm <command>logrotate</command>, welches
+Log-Dateien rotieren lässt. Was heißt das? Wenn ein Logfile
+eine bestimmte Größe oder ein bestimmtes Alter erreicht hat,
+wird es komprimiert, gesichert und umbenannt. Die nun zu
+protokollierenden Meldungen werden in einem neu angelegten
+(leeren) Logfile gesichert. Die Anzahl der Rotationsvorgänge,
+nach denen ein Logfile-Backup endgültig gelöscht wird, kann
+man einstellen. In Kombination mit dem Schutz vor DOS-Attacken
+des <command>xinetd</command> (instances, per_source) kann ein Überlaufen der
+Logfiles verhindert werden, und die sicherheitsrelevanten
+Einträge bleiben bei einem versuchten Einbruch erhalten.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Schutz vor Löschen und Manipulation der Einträge
+    </heading>
+
+    <textblock>
+<strong>Drucker</strong>
+    </textblock>
+
+    <quotation>
+Falls ein alter Drucker zur Verfügung steht, kann man diesen
+für die Protokollierung besonders sensitiver Logfiles
+benutzen. Die Konfiguration erfolgt innerhalb der
+<path>/etc/syslogd.conf</path> beziehungsweise der <path>/etc/syslog-ng.conf</path> .
+    </quotation>
+
+    <textblock>
+<strong>Loghost</strong>
+    </textblock>
+
+    <quotation>
+Logfiles können auf einem dedizierten zentralen Server
+abgelegt werden. Einen solchen Rechner nennt man Loghost.
+Damit dieser Server auch Meldungen anderer Rechner
+entgegen nimmt, muss man den <command>syslogd</command> mit dem Parameter
+<command>-r</command> starten. Die Kommunikation zwischen Client und
+Loghost erfolgt auf Port 514/udp, und genau dies eröffnet
+einem Angreifer große Möglichkeiten
+(Beobachtung, Fälschen von Meldungen, DOS-Attacke).
+Deshalb sollte der Loghost niemals von außen erreichbar
+sein. Detaillierte Informationen zur Konfiguration und
+zu den damit verbundenen Gefahren finden Sie im
+<ref chapter="syslog">syslog</ref> Kapitel.
+    </quotation>
+
+    <textblock>
+Nun, welche Sicherheitsmaßnahmen sollten unbedingt erfolgen:
+    </textblock>
+
+    <ul>
+     <li>
+Der Loghost sollte nur per Konsole zugänglich sein (nicht
+<command>ssh</command>, <command>http</command>, <command>ftp</command> oder Ähnliches). Somit kann ein Angreifer von
+Außen keine Log-Einträge löschen.
+     </li>
+     <li>
+Der Loghost ist der Loghost und nichts als der Loghost. (also
+keine weiteren Dienste wie <command>Routing</command>, <command>Mail</command> oder <command>DNS</command>)
+     </li>
+     <li>
+Der Loghost sollte zusätzlich durch einen für seine
+Anforderungen angepassten Paketfilter abgeschottet sein.
+     </li>
+     <li>
+Der Loghost sollte "nicht sichtbar sein" und somit nicht auf
+PING-Anfragen (ICMP Messages) antworten. (<command>echo 1 &gt;
+/proc/sys/net/ipv4/icmp_echo_ignore_all</command>)
+     </li>
+    </ul>
+
+    <textblock>
+Folgende Maßnahmen erfordern relativ großen Aufwand:
+    </textblock>
+
+    <ul>
+     <li>
+Erlangt ein Angreifer die Macht über einen Client, so findet
+er in dessen <path>sylog.conf</path> den Hinweis auf den Server. Um diese
+Schwachstelle zu beseitigen, könnte man den <command>syslog</command> Dienst auf
+jedem Client derart manipulieren, dass dieser eine andere
+Konfigurationsdatei lädt. Dazu muss man natürlich den
+syslog-Quellcode patchen und neu übersetzen.... Darauf wird in
+einem später folgenden Artikel detaillierter eingegangen.
+     </li>
+     <li>
+Die Kommunikation zwischen Loghost und angeschlossenen
+Clients sollte verschlüsselt werden (z.B. <command>stunnel</command>).
+     </li>
+    </ul>
+
+    <textblock>
+Eine englischsprachige Kurzanleitung unter
+<ref lang="en" url="http://www.campin.net/newlogcheck.html">http://www.campin.net/newlogcheck.html</ref>
+beschreibt den Aufbau eines Loghosts mit <command>syslog-ng</command>, <command>mysql</command>,
+<command>swatch</command> und <command>stunnel</command>.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Überwachung der Verbindungen (Login / Connection Accounting)
+    </heading>
+
+    <textblock>
+Die Verbindungszeiten der Systembenutzer, also
+WANN WER WO eingeloggt war, werden in der Datei
+<path>/var/log/wtmp</path> gespeichert. Da diese jedoch binär
+vorliegt, benötigt man das Programm <command>last</command>.
+    </textblock>
+
+    <shell>
+     <user>
+last
+     </user>
+     <output>
+root   tty1     Sun Sep    3   11:45 -12:14 (00:29)
+ai114  tty7     Sun Sep    3   13:45 -15:56 (02:11)
+
+wtmp begins Tue Jan 15 13:54:09 2003
+     </output>
+    </shell>
+
+    <textblock>
+Mit <command>lastlog</command> wird die Datei <path>/var/log/lastlog</path> in
+menschenlesbarer Form ausgegeben.
+    </textblock>
+
+    <shell>
+     <user>
+lastlog
+     </user>
+     <output>
+Benutzer    Port   Von              Letzter
+root               tty1             Mon Jul 14 21:05:29 +0200 2003
+daemon                              **Nie angemeldet **
+bin                                 **Nie angemeldet **
+ai114       :0                      Die Jul 15 12:58:19 +0200 2003
+mysql                               **Nie angemeldet **
+     </output>
+    </shell>
+   </section>
+
+   <section>
+    <heading>
+Überwachung der Prozesse (Process Accounting)
+    </heading>
+
+    <textblock>
+Im Gegensatz zur Verbindungsüberwachung lassen
+sich beim Process Accounting genaue Aussagen
+über genutzte Systemressourcen (CPU, Speicher, IO)
+treffen.
+    </textblock>
+
+    <textblock>
+Die Programme aus dem Paket <command>acct</command> erlauben
+detaillierte Aufstellungen der verbrauchten Ressourcen
+sowie einer Zuordnung zu einem Systembenutzer und
+natürlich dem genauen Zeitpunkt (minutengenau).
+    </textblock>
+
+    <textblock>
+Connection Accounting muss explizit im Kernel
+aktiviert werden
+(General Setup --> BSD Process Accounting). Die
+eigentlichen Aufzeichnungen übernimmt jedoch wieder
+ein Daemon, er wird durch den Aufruf
+    </textblock>
+
+     <shell>
+     <root>
+accton /var/log/logfile
+     </root>
+    </shell>
+
+    <textblock>
+gestartet und kann durch
+den Aufruf ohne zusätzliche Optionen wieder
+deaktiviert werden.
+(Optional SysV-Initskript analog zu "<command>quota</command>")
+    </textblock>
+
+    <shell>
+     <output>
+# Start der Aufzeichnung
+     </output>
+     <root>
+accton /var/log/psacct
+     </root>
+     <output>
+# Ende der Aufzeichnung</output>
+     <root>
+accton
+     </root>
+    </shell>
+
+    <textblock>
+Für die Auswertung stehen drei Programme zur Verfügung:
+    </textblock>
+
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <td>
+lastcomm
+      </td>
+      <td>
+vollständige Aufzeichnung aller Prozesse (user, tty, CPU Zeit,
+Zeitpunkt)
+      </td>
+     </tr>
+     <tr>
+      <td>
+sa
+      </td>
+      <td>
+statistische Zusammenfassung (verschiedene Sortieroptionen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+ac
+      </td>
+      <td>
+Statistik der Verbindungszeiten
+      </td>
+     </tr>
+    </table>
+
+    <shell>
+     <output>
+#Ausgabe aller Prozesse für Benutzer user007
+     </output>
+     <root>
+lastcomm user007
+     </root>
+     <root>
+Eterm                   user007    ??         2.05 secs Wed Jul 16 17:34
+bash                    user007    ??         0.43 secs Wed Jul 16 17:34
+bash               F    user007    ??         0.00 secs Wed Jul 16 17:56
+tty                     user007    ??         0.03 secs Wed Jul 16 17:56
+mozilla-bin        F    user007    ??         0.00 secs Wed Jul 16 17:52
+mozilla-bin        F    user007    ??         0.00 secs Wed Jul 16 17:52
+mozilla-bin        F    user007    ??         0.00 secs Wed Jul 16 17:52
+mozilla-bin        F    user007    ??         0.02 secs Wed Jul 16 17:52
+quota                   user007    ??         0.04 secs Wed Jul 16 17:43
+rm                      user007    ??         0.15 secs Wed Jul 16 17:43
+     </root>
+     <output>
+# Statistik nach Nutzern
+     </output>
+     <root>
+sa -m
+     </root>
+     <output>
+ai114                 2644 14363398.28re    2248.20cp         0avio     10689k
+root                 22701  6829449.23re     314.14cp         0avio       552k
+mail                    54      984.15re       0.14cp         0avio      1006k
+user007                 15        3.78re       0.02cp         0avio       505k
+mysql                   20        0.35re       0.00cp         0avio     17392k
+     </output>
+     <output>
+# Statistik nach IO-Operationen sortiert:
+     </output>
+     <root>
+sa -ad
+     </root>
+     <output>
+25450 21211810.82re    2563.42cp         0avio      1621k
+  3508    4565.43re       8.46cp         0avio       340k   grep
+  2183   23553.40re       1.74cp         0avio       347k   mgetty
+  1999     272.72re       0.76cp         0avio       331k   mv
+  1973     320.78re       0.77cp         0avio       297k   basename
+  1957  162216.27re       6.55cp         0avio       644k   sh
+  1483 4579495.53re       6.76cp         0avio     18518k   mozilla-bin*
+   923     255.08re       0.47cp         0avio       363k   rm
+   793   19297.68re       0.57cp         0avio       373k   gcc
+   ...
+   ...
+     </output>
+     <output>
+# Verbindungszeiten
+     </output>
+     <root>
+ac -d
+     </root>
+     <output>
+Jul 15  total        9.29
+Jul 16  total       14.55
+Jul 16  total        1.20
+Jul 16  total        0.91
+Today   total        7.86
+    </output>
+     <output>
+#Verbindungszeiten aller Benutzer:
+     </output>
+     <root>
+ac -p
+     </root>
+     <output>
+root                             1.47
+user007                         32.37
+total       33.84
+     </output>
+    </shell>
+
+    <textblock>
+Weitere Informationen sind wie gewohnt in den
+man-Pages zu finden (<command>ac</command>(1), <command>accton</command>(8),
+<command>lastcomm</command>(1) und <command>sa</command>(8)).
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Einbruchserkennung (Intrusion Detection)
+   </heading>
+
+   <section>
+    <heading>
+Einführung Einbruchserkennung
+    </heading>
+
+    <textblock>
+Nachdem die bisher behandelten Schutzmaßnahmen getroffen
+wurden, gilt es nun, deren Effizienz kontinuierlich zu
+verbessern und Schwachstellen, Angriffsversuche oder gar
+erfolgreiche Einbrüche frühzeitig zu erkennen. Dabei
+helfen Einbruchserkennungssysteme (IDS), die entweder
+einzelne Rechner (Hostbasierte IDS) oder den Netzverkehr
+(Netzwerkbasierte IDS) überwachen. Das Ziel von IDS-Systemen
+besteht also im Aufdecken von unerlaubten Aktionen gegen
+ein Netzwerk oder einen Rechner. Normalerweise sind dazu
+die folgenden drei Schritte notwendig:
+    </textblock>
+
+    <ul>
+     <li>Datensammlung</li>
+     <li>Datenanalyse</li>
+     <li>Ergebnisdarstellung</li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Hostbasierte IDS (HIDS)
+    </heading>
+
+    <textblock>
+HIDS überwachen Daten und Prozesse auf einem einzelnen
+Rechner. Sie beobachten Logfiles, offene
+Netzwerkschnittstellen und Netzwerkverbindungen
+des Computers.
+    </textblock>
+
+    <textblock>
+Eine Möglichkeit der Einbruchserkennung stellen die
+sogenannten System Integrity Verifier (SIV) dar,
+welche Dateien und Verzeichnisse anhand von Hashwerten
+auf deren Echtheit und Originalität prüfen.
+Damit können Trojaner, Viren und
+Root-Kits gefunden werden. Eine ganz einfachen SIV  kann
+man mit dem <command>ls</command>-Kommando folgendermaßen selbst entwickeln:
+    </textblock>
+
+    <textblock>
+Das Ausführen von
+    </textblock>
+
+    <shell>
+     <root>
+ls -ailR /etc &gt;/root/etc.orginal
+     </root>
+    </shell>
+
+    <textblock>
+erzeugt eine Datei, welche neben Dateigröße und Dateirechten
+auch die Nummer der Inode enthält. Diese Datei wird auf
+einem Medium mit Schreibschutzmöglichkeit (Diskette, CD-ROM)
+abgelegt.
+    </textblock>
+
+    <textblock>
+Über Veränderungen informiert das folgende Kommando:
+    </textblock>
+
+    <shell>
+     <root>
+ls -ailR /etc | diff /root/etc.original
+     </root>
+    </shell>
+
+    <textblock>
+wobei hier natürlich der Ablageort der Datei angepasst werden
+muss. Wichtig sind neben dem <path>/etc</path> Verzeichnis auch die mit
+dem t-Bit (Sticky-Attribut) versehen Dateien, die mit
+    </textblock>
+
+    <shell>
+     <root>
+find / -type f -perm -6000 -exec /bin/ls -ail{} \; &gt;/root/original
+     </root>
+    </shell>
+
+    <textblock>
+gesichert werden. Die Auswertung der Log-Files gehört ebenfalls
+zu den Maßnahmen, die man ohne Weiteres realisieren kann. Zur
+Übertragung dieser Protokollinformationen sollte man den
+sichereren <command>ssyslog</command> in Betracht ziehen.
+Da ein Angreifer natürlich auch eine Datei modifizieren kann
+ohne die Dateigröße zu ändern, sollten bessere Mechanismen wie
+beispielsweise Hashwerte zum Einsatz kommen. Diesen Ansatz
+verfolgen beispielsweise die <command>md5-tools</command> und <command>debsums</command> sowie das
+mittlerweile auch in einer freien Version (GPL) verfügbare
+<command>Tripwire</command>. Letztgenanntes bietet sehr feingranulare
+Zugriffsmechanismen.
+So kann man mit mehr als 15 Dateiattributen detaillierte
+Richtlinien festlegen, z.B. schützt man mit<br/>
+<command>/sbin/iptables -> $(SEC_KRIT);</command><br/>
+<command>/tmp -> $(SEC_INVARIANT)</command><br/>
+den Paketfilter iptables vor jeglicher Manipulation und das
+temporäre Verzeichnis <path>/tmp</path> vor Änderung des Besitzers und der
+Zugriffsrechte. Solche Regeln sind bereits vordefiniert und
+müssen nur noch angepasst werden. Eine sehr gute Dokumentation
+findet man auf den Internet-Seiten des <ref lang="de" url="http://www.linux-magazin.de">Linux Magazins</ref>.
+    </textblock>
+
+    <textblock>
+Weiterhin sei an dieser Stelle auf LIDS (Linux Intrusion
+Detection System) verwiesen. LIDS versucht die Schwächen von
+Linux insbesondere die Allmacht des Superusers "root" zu
+beseitigen. Ein Kernel-Patch erweitert den Kernel um
+differenzierte Sicherheitseinstellungen, sodass Dateien,
+Prozesse und Teile der Systemverwaltung (Firewall-Regeln,
+Routing) besser geschützt werden können. Weitere
+Zugriffssteuerungsmodelle wurden in
+<ref lang="en" url="http://www.nsa.gov/selinux/">SELinux</ref> (Security Enhanced Linux) umgesetzt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Netzwerkbasierte IDS (NIDS)
+    </heading>
+
+    <textblock>
+NIDS erkennen Angriffe im Netzwerk indem sie den Netzwerkverkehr
+analysieren. Damit sind diese nicht nur auf den Rechner
+beschränkt, auf dem sie installiert wurden.
+    </textblock>
+
+    <textblock>
+Einen Überblick über das schützende Netzwerk erlangt man durch
+den Einsatz von Netzwerkmonitoren und Paketsniffern, zu denen
+<ref lang="en" url="http://www.ntop.org">ntop</ref> und <ref lang="en" url="http://www.ethereal.com">ethereal</ref>
+gehören. Als Vertreter für ein netzwerkbasiertes Einbruchserkennungssystem soll im Folgenden das freie
+<ref lang="en" url="http://www.snort.org/">snort</ref> kurz vorgestellt werden.
+    </textblock>
+
+    <textblock>
+<command>Snort</command> sucht im Netzwerk nach bekannten Angriffsmerkmalen
+und -mustern. Diese Merkmale werden in Form von paketbeschreibenden
+Regellisten (Signaturen) angegeben und können von der <command>snort</command>
+Webseite heruntergeladen werden. Mit Modulen, den sogenannten
+Präprozessoren, kann man <command>snort</command> jederzeit erweitern. Eines dieser
+Module ist <command>frag2</command>, das Paketfragmente zusammensetzt
+und somit die Grundlage einer erfolgreichen Mustererkennung für
+zerstückelte Angriffsmuster bietet.
+Ein weiteres wichtiges Modul ist <command>portscan</command>,
+durch das Ausspähungsversuche sichtbar werden. Der Präprozessor
+<command>spade</command> (Statistical Packet Anomaly Detection  Engine) ist ein
+selbstlernendes Modul, das nach einer Lernphase anormalen
+Netzwerkverkehr feststellen kann.
+    </textblock>
+
+    <textblock>
+Ein entscheidendes Kriterium für den Erfolg eines NIDS ist die
+Platzierung des Sensors (z.B. des <command>snort</command> Systems). Dazu sollte
+man sich erst einmal ein Bild von der Topologie des Netzes machen.
+(Stern, Bus, Ring, ...) und die Stellen im Netz markieren, die
+überwacht werden sollen. Bei dem Einsatz eines Switch (Stern)
+ergeben sich unweigerlich Probleme bei der Überwachung, da der
+Verkehr nicht zwangsläufig über den Sensor geleitet wird. Abhilfe
+schaffen hier Monitor-Ports, die allerdings nur an teuren Geräten
+zu finden sind. Eine billigere Variante wäre ein HUB, an dem die
+zu überwachenden Rechner und das NIDS-System (<command>snort</command>-Rechner)
+angeschlossen werden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+identd
+    </heading>
+
+    <textblock>
+Der <command>identd</command> Server beobachtet TCP-Verbindungen und ermittelt
+die Benutzerkennung des Prozesses, der die Verbindung benutzt.
+(Nähere Informationen <ref lang="en" url="http://www.ietf.org/rfc/rfc1413.txt">RFC 1.1</ref>)
+    </textblock>
+
+    <textblock>
+Mit diesen Informationen lassen sich Angriffe besser nachvollziehen
+und ausgenutzte Sicherheitslöcher besser lokalisieren. Allerdings
+dienen solche Informationen auch einem Angreifer, der damit z.B.
+die UID des Webservers abfragt. Läuft dieser Server mit
+root-Rechten, so ist er ein "lohnendes Ziel". Der Einsatz des
+<command>identd</command> sollte also immer genauestens abgewogen werden.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Notfallplan im Falle einer Systemkompromittierung
+   </heading>
+
+   <section>
+    <heading>
+Grundsätzliches
+    </heading>
+
+    <textblock>
+Wenn man einen erfolgreichen Einbruch entdeckt, ist
+es äußerst wichtig, die Spuren zu sichern, damit
+man den Tathergang nachvollziehen kann. Dies ist
+die Voraussetzung, um wirksame Gegenmaßnahmen bestimmen
+und durchführen zu können. Mit dieser Thematik
+beschäftigt sich die "Digitale Forensik", die an
+dieser Stelle nicht detailliert vorgestellt werden kann.
+Wir versuchen in dieser kurzen Einleitung lediglich,
+einige wichtige Grundaussagen mit praktischen Tipps
+zu verbinden.
+    </textblock>
+
+    <textblock>
+Nach der Entdeckung eines Einbruchs ist es besonders
+wichtig, Ruhe zu bewahren und möglichst
+keinerlei hastige Eingriffe zu tätigen, da bereits beim
+Eingeben von Kommandos wichtige Informationen zur
+Rekonstruktion des Angriffes verloren gehen können.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Protokollierung des Einbruches und der Gegenmaßnahmen
+    </heading>
+
+    <textblock>
+Es sollten einige grundsätzliche Informationen
+unbedingt schriftlich festgehalten werden, damit
+man später auch vor Gericht Beweise vorlegen kann:
+    </textblock>
+
+    <ul>
+     <li>Wann wurde der Einbruch festgestellt (Datum, Uhrzeit)?</li>
+     <li>Welche Systeme sind / waren betroffen?</li>
+     <li>Wer bemerkte den Einbruch?</li>
+     <li>Welche Maßnahmen wurden durch wen eingeleitet?</li>
+     <li>......</li>
+    </ul>
+
+    <textblock>
+Die Protokollierung sollte für jeden einzelnen Schritt
+der Angriffsrekonstruktion mit genauer Angabe von Datum
+und Uhrzeit beibehalten werden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Isolation des Rechners / Subnetzes
+    </heading>
+
+    <textblock>
+Bei besonders sensiblen Daten ist es unter Umständen
+das Wichtigste, das kompromittierte System vom Netz
+zu trennen, indem man einfach das Netzwerkkabel entfernt.
+Auf das Herunterfahren des Rechners sollte unbedingt
+verzichtet werden, da ansonsten vom Angreifer manuell
+gestartete Prozesse (oder eingebundene Kernelmodule)
+nach einem Neustart nicht mehr aktiv sind.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Backup und Rekonstruktion
+    </heading>
+
+    <textblock>
+Die Sicherung eines kompromittierten Systems ist die
+Grundlage für das Nachvollziehen eines Angriffes.
+Äußerst wichtig ist es, dass alle Textein- und
+Ausgaben aufgezeichnet werden. Graphische Ausgaben
+sollten per Screenshots gesichert werden (z.B.
+mit <command>xwd</command> oder <command>gimp</command>).
+    </textblock>
+
+    <textblock>
+Man sollte einen aktuellen Schnappschuss (Snapshot)
+des Systems auf einem Backup-Medium erzeugen.
+Die Sicherung der Daten sollte in Reihenfolge ihrer
+Vergänglichkeit erfolgen:
+    </textblock>
+
+    <ul>
+     <li>Cache, Hauptspeicher</li>
+     <li>Netzwerkverbindungen</li>
+     <li>Prozesse</li>
+     <li>Festplattendaten</li>
+     <li>Daten auf Disketten, CD-RW, Streamer, ...</li>
+     <li>Daten auf CD-R, Notizen, Post-It-Notes, ...</li>
+    </ul>
+
+    <textblock>
+Die "Spurensicherung" und Analyse wird durch verschiedene
+Softwaresammlungen unterstützt. Zu diesen gehören unter
+anderem
+<ref lang="en" url="http://www.porcupine.org/forensics/tct.html">TCT</ref>,
+<ref lang="en" url="http://www.sleuthkit.org/proj.php">TCTUtils</ref>,
+und  <ref lang="en" url="http://sourceforge.net/projects/cryptcat/">cryptcat</ref>.
+Auf keinen Fall sollten die
+möglicherweise kompromittierten Programme des Opferrechners
+zum Einsatz kommen, viele Root-Kits tauschen
+Systemprogramme wie ps und <command>lsmod</command> einfach aus.
+Die sichere Alternative besteht darin,
+eine "saubere" Rettungsdistribution von Diskette oder
+CD-Rom zu mounten und deren Systemprogramme zu verwenden.
+(Nicht Booten sondern nur Mounten!!!) Zu empfehlen sind
+hier neben <ref lang="de" url="http://www.knopper.net/knoppix/">Knoppix</ref>
+auch sogenannte "Business Cards",
+also Rettungs-CDs in Scheckkartengröße. Zwei Vertreter
+können als ISO-Image unter <ref lang="en" url="http://www.lnx-bbc.org/">http://www.lnx-bbc.org/</ref> bzw.
+<ref lang="en" url="http://lbt.linuxcare.com/">http://lbt.linuxcare.com/</ref> heruntergeladen werden.
+    </textblock>
+
+    <textblock>
+Folgende Maßnahmen sind bei den meisten
+Einbrüchen sinnvoll:
+    </textblock>
+
+    <textblock>
+Aufzeichnung aller Sicherungsaktionen auf einen anderen
+Rechner<br/>
+<command>mkfifo named_pipe</command><br/>
+<command>script -f named_pipe</command><br/>
+<command>cat named_pipe | nc LogHost LogPort</command>
+    </textblock>
+
+    <textblock>
+Datensammlung auf anderen Rechner mittels <command>nc</command> (netcat)
+    </textblock>
+
+    <ul>
+     <li>
+kompromittierter Rechner:<br/>
+<command>[Daten] | nc -w 2 [LogHost-IP] 6666</command>
+     </li>
+     <li>
+LogHost:<br/>
+<command>nc -l -p 6666 | gzip &gt;&gt; datei.gz</command>
+     </li>
+    </ul>
+
+    <textblock>
+Bei nicht vertrauenswürdigen Netzen sollte die Kommunikation
+verschlüsselt werden:
+    </textblock>
+
+    <ul>
+     <li>
+kompromittierter Rechner:<br/>
+<command>[Daten] | des -e -c -k [Schlüssel] | nc -w 2 [LogHost-IP] 6666</command>
+     </li>
+     <li>
+LogHost:<br/>
+<command>nc -l -p 6666 | des -d -c -k [Schlüssel] &gt;&gt; Datei</command>
+     </li>
+    </ul>
+
+    <textblock>
+z.B. Hauptspeicher:
+    </textblock>
+
+    <ul>
+     <li>
+kompromittierter Rechner:<br/>
+<command>dd if=/dev/mem | nc -w 2 192.168.1.5 6666</command>
+     </li>
+     <li>
+LogHost:<br/>
+<command>nc -l -p 6666 &gt; mem.img</command>
+     </li>
+     <li>
+Prozesse:<br/>
+<command>ps enf -Aelf --cols 1000   ls -lR /proc/[0-9]*</command></li>
+    </ul>
+
+    <textblock>
+Konfiguration der Netzwerkkarten<br/>
+<command>ifconfig -a</command><br/>
+<command>netstat -iea</command><br/>
+<command>ip addr show</command> (iproute2-Utilities)
+    </textblock>
+
+    <textblock>
+Routingtabellen<br/>
+<command>netstat -rn</command><br/>
+<command>iproute2-Utilities</command>
+    </textblock>
+
+    <ul>
+     <li>ip route show table main </li>
+     <li>ip rule show (iproute2-Utilities)</li>
+    </ul>
+
+    <textblock>
+Paketfilterregeln<br/>
+<command>iptables -L -vn --line-numbers</command>
+    </textblock>
+
+    <textblock>
+geöffnete Dateien<br/>
+<command>lsof</command><br/>
+aktuelle Netzwerkverbindungen<br/>
+<command>lsof -i</command><br/>
+Sockets<br/>
+<command>lsof -U</command><br/>
+Gelöschte aber noch offene Dateien<br/>
+<command>lsof +L1</command>
+    </textblock>
+
+    <textblock>
+Einbrecher können ein Programm auch nach dessen
+Start löschen. Man kann bei installiertem <path>proc</path>-
+Filesystem gerade ablaufende Programme wieder in
+eine Datei sichern:<br/>
+<command> cat /proc/[PID]/exe &gt; programm.bin</command>
+    </textblock>
+
+    <textblock>
+weiterhin:
+    </textblock>
+
+    <ul>
+     <li><command>last</command> (letzter eingeloggter Benutzer)</li>
+     <li><command>who</command> (aktuelle Benutzer)</li>
+     <li><command>w</command> (welcher Benutzer führt was aus?)</li>
+     <li><command>arp</command> </li>
+     <li><command>fdisk</command> </li>
+     <li>......</li>
+    </ul>
+
+    <textblock>
+Partition übers Netz sichern:
+    </textblock>
+
+    <ul>
+     <li>kompromittierter Rechner: <command>dd if=/dev/hda1 | nc -w 2 [LogHost-IP] 6666</command></li>
+     <li>LogHost: <command>nc -l -p 6666 | gzip &gt;&gt; hda1.img.gz</command></li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Analyse des Angriffs
+    </heading>
+
+    <textblock>
+Nun hat man alle wichtigen Informationen gesichert und
+kann selbst versuchen, den Einbruch nachzuvollziehen.
+Dadurch schafft man die Grundlage, um einem erneuten
+Eindringen vorzubeugen. Alternativ dazu kann man mit
+speziellen Überwachungsfunktionen einen wiederholten
+Einbruch automatisch und damit sehr schnell aufdecken.
+(honeypot / Honigtopf).
+    </textblock>
+
+    <textblock>
+Folgende Informationen müssen nun ausgewertet werden:
+    </textblock>
+
+    <ul>
+     <li>veränderte Konfigurationsdateien</li>
+     <li>veränderte Systemprogramme</li>
+     <li>eingeschleuste Programme (meistens in versteckten Ordnern)</li>
+     <li>Sniffer</li>
+     <li>Logfiles</li>
+     <li>Speicherinhalt / offene Netzwerkverbindungen</li>
+    </ul>
+
+    <textblock>
+In die Auswertung müssen natürlich alle vom Opfersystem
+erreichbaren Rechner einbezogen werden. Dies beinhaltet
+sowohl Netzwerkrechner als auch Systeme mit einem
+Remote-Zugang (z.B. Laptops).
+    </textblock>
+
+    <textblock>
+Zu den konkreten Maßnahmen, die durchzuführen sind, gehören
+unter anderem:
+    </textblock>
+
+    <ul>
+     <li>
+Auflisten aller Dateien / Verzeichnisse mit s-Bit (Finden von root-Shells)<br/>
+<command>find / -type f \(perm -04000 -o -perm -02000\) \exec ls -lg {}\;</command>
+     </li>
+     <li>
+Herausfinden von Dateien / Verzeichnissen mit ungewöhnlichen Namen<br/>
+<command>find / -name ".." -print    find / -name "..." -print   find / -name ".mail" -print</command>
+     </li>
+     <li>
+Herausfinden von Remote-Zugriffen des Superusers<br/>
+<command>grep "uid=0" /var/log/*</command>
+     </li>
+     <li>
+Herausfinden aller ssh-Verbindungen von unbekannten  Rechnern
+(Prinzipiell sollte der Remote Zugriff nur von bekannten Rechnern
+ausgehen)<br/>
+<command>grep "Connection" /var/log/*</command>
+     </li>
+     <li>
+Herausfinden einer gezielten Manipulation der Logfiles (abruptes Enden von Logfiles deutet auf Manipulation)<br/>
+<command>head /var/log/messages   head /var/log/secure</command>
+     </li>
+     <li>
+Kontrolle von <command>passwd</command>,
+<command>hosts</command>.<command>allow</command>,
+<path>hosts.deny</path>, <path>inetd.conf</path>,
+<path>xinetd.conf</path> auf mögliche Veränderungen
+(Systembenutzer wie z.B. <command>www-run</command>,
+<command>news</command>, <command>sync</command> dürfen keine
+Login-Shell besitzen)
+     </li>
+     <li>
+Feststellen eines Sniffers (Netzwerkschnittstelle im
+Promiscuous Modus) <command>ifconfig</command><br/>
+eth0 Linkverkapselung: Ethernet Hwaddr 08:FF:TF:i6:88:51:B9 <br/>
+inet addr 192.168.1.112 Bcast:192.168.1.255 Mask 255.255.255.0<br/>
+UP BROADCAST RUNNING <strong>PROMISC</strong><br/>
+Multicast MTU:1500 Metric:1<br/>
+Empfangene ...
+     </li>
+     <li>
+Überprüfung von <command>cron</command> und <command>at</command> Jobs
+     </li>
+     <li>
+Verdächtige Binaries mit "strings" ansehen
+     </li>
+     <li>
+Manche Angreifer sind ziemlich "blöd"<br/>
+<command>cat .bash_history</command>
+     </li>
+    </ul>
+
+    <textblock>
+Beim Überprüfen dieser und anderer Einbruchsspuren
+hilft auch das <ref lang="en" url="http://www.porcupine.org/forensics/tct.html">TCT (The Coroner's Toolkit)</ref>,
+welches skriptbasiert sämtliche Aufzeichnungen
+sammelt. Die gesammelten Informationen
+muss man allerdings noch manuell auswerten. Eine
+weitere interessante englischsprachige Quelle ist:
+  <ref lang="en" url="http://www.securityfocus.com/infocus/1503">http://www.securityfocus.com/infocus/1503</ref>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Meldung des Angriffs
+    </heading>
+
+    <textblock>
+Wen sollte man informieren?
+    </textblock>
+
+    <ul>
+     <li>
+den Systemadministrator, von dessen Rechner der Angriff ausging
+(Email an root@ip-Adresse oder root@systemdomain.de)
+     </li>
+     <li>
+alle möglicherweise betroffenen Systemadministratoren
+     </li>
+     <li>
+möglicherweise den ISP (z.B. AOL / T-Online)
+     </li>
+     <li>
+möglicherweise den <ref lang="de" url="http://www.cert.dfn.de/contact.html">CERT</ref>
+     </li>
+    </ul>
+
+    <textblock>
+Was soll wie gemeldet werden?
+    </textblock>
+
+    <textblock>
+Auf den Internetseiten des CERT findet man einen 
+<ref lang="en" url="http://www.cert.org/reporting/incident_form.txt">englischsprachigen Vordruck</ref>, deshalb sollen hier nur die
+wichtigsten Angaben aufgeführt werden:
+
+<ref lang="en" url="http://www.cert.org/reporting/incident_form.txt">englischsprachigen Vordruck</ref>,
+deshalb sollen hier nur die wichtigsten Angaben aufgeführt werden:
+    </textblock>
+
+    <ul>
+     <li>
+eigene Email-Adresse
+     </li>
+     <li>
+Firmenanschrift, Tel. und Fax
+     </li>
+     <li>
+eigene IP-Adresse, Hostname und Domain
+     </li>
+     <li>
+Liste aller am Angriff beteiligten Rechner (IP-Adressen) 
+     </li>
+     <li>
+genauer Zeitpunkt der Attacke
+     </li>
+     <li>
+detaillierte Beschreibung des Angriffs
+     </li>
+     <li>
+Angaben über Angriffserkennung
+     </li>
+     <li>
+wichtige Logfile-Einträge
+     </li>
+     <li>
+Auflistung der Forderungen (z.B. Bitte, die Angriffe 
+zu unterlassen oder Erklärung, wie es dazu kommen konnte)
+     </li>
+    </ul>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Fazit
+   </heading>
+
+   <textblock>
+Der Umfang dieses Kapitels zeigt die Komplexität des Themas
+sehr deutlich. Das Ziel des Kapitels bestand darin, einen
+groben aber möglichst umfassenden Überblick zur Sicherheit
+von Linux-Systemen zu vermitteln. Allerdings konnten einige
+sicherheitsrelevante Bereiche (noch)nicht behandelt werden.
+Dazu zählen:
+   </textblock>
+
+   <ul>
+    <li>IPSEC und IPv6 - Sicherheit auf IP-Ebene</li>
+    <li>Tunneling-Protokolle PPTP sowie L2TP </li>
+    <li>ssh</li>
+    <li>chroot Umgebung</li>
+    <li>BIOS-Sicherheit</li>
+    <li>Kerberos</li>
+    <li>NIS/NFS-Sicherheit</li>
+    <li>VPN - Virtuelle Private Netze</li>
+    <li>LIDS - Linux Intrusion Detection System</li>
+    <li>RAS-Sicherheit (RADIUS/TACACS) </li>
+    <li>Wireless Security (IEEE 802.11x)</li>
+   </ul>
+
+   <textblock>
+Diese Liste unterstreicht die Notwendigkeit, dieses Kapitel in
+Zukunft zu erweitern und zu pflegen, angedacht sind
+meinerseits halbjährliche Aktualisierungen.
+   </textblock>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>Zugriffe auf Laufwerke</title>
+
+ <author>
+  <name>Rüdiger Pretzlaff</name>
+  <mailto>rpretzlaff@users.sourceforge.net</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>zugriff_auf_laufwerke</index>
+
+ <description>
+  <textblock>
+Das vorliegende Kapitel behandelt den Zugriff auf Laufwerke mit
+wechselbaren Medien. Dabei wird es sich im Regelfall um Laufwerke
+für CD-ROMs, DVDs oder Disketten handeln, aber das hier Gesagte
+trifft auch für seltenere Laufwerks-Typen wie beispielsweise
+<ref chapter="zipdrives">ZIP-Laufwerke</ref>
+oder Bandlaufwerke zu. Die Behandlung von Festplatten
+schließen wir in diesem Kapitel aus. Obwohl die grundlegende
+Behandlung nahezu identisch ist, sind für den Umgang mit
+Festplatten-Partitionen weitere Kenntnisse erforderlich, die
+den Rahmen dieses Kapitels sprengen würden.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
+   
+   <section>
+    <heading>
+1.1 Grundsätzliches
+    </heading>
+    
+    <textblock>
+Die Verzeichnis- und Dateistruktur von Linux stellt einen Baum dar, 
+der mit dem Wurzelverzeichnis <path>/</path> beginnt. Der Baum selbst ist nicht
+mit dem verwendeten Dateisystem zu verwechseln. Tatsächlich kann
+der Baum gleichzeitig zahlreiche verschiedene Dateisysteme
+enthalten. Darüber hinaus gibt es Spezialdateien, die keine Daten
+im herkömmlichen Sinne enthalten und die auch nicht als Teil eines
+Dateisystems betrachtet werden können. Hierzu gehören auch die
+Gerätedateien.
+    </textblock>
+    
+    <textblock>
+Jedes Gerät, das unter Linux verwendet werden soll, durch eine 
+solche Gerätedatei innerhalb des Verzeichnis- und Dateibaumes 
+repräsentiert werden. Um sich eine ungefähre Vorstellung vom Sinn
+dieser Dateien zu machen, kann man sie sich als die Adresse
+innerhalb des Verzeichnisbaumes vorstellen, von welcher der Kernel
+liest oder auf die er schreibt, wenn er auf das Gerät zugreift.
+    </textblock>
+    
+    <textblock>
+In diesem Kapitel interessiert uns jedoch ein besonderer Typ
+von Geräten, den wir in der Überschrift als <strong>Laufwerke</strong> bezeichnet
+haben. Alle Laufwerke haben zweierlei gemeinsam: Zum einen 
+enthalten sie fixierte oder wechselbare Datenträger. Diese
+Datenträger enthalten die Daten, die gewissermaßen den eigentlichen
+Sinn des Laufwerks ausmachen. Zweitens müssen die Datenträger dieser
+Laufwerke mit einem bestimmten Dateisystem formatiert sein. Hier
+kommt also der Begriff des Dateisystems ins Spiel.
+    </textblock>
+    
+    <textblock>
+Wie hängt das Dateisystem eines Datenträgers mit dem oben
+beschriebenen Baum zusammen? Auch wenn ein Laufwerk bereits
+durch eine Gerätedatei repräsentiert wird, ist das Dateisystem
+seines Datenträgers noch nicht benutzbar. Der Kernel weiß
+von dem betreffenden Laufwerk nämlich bislang nur, dass es
+sich um ein blockorientiertes Gerät handelt (dass die Daten
+des Gerätes also blockweise zu lesen und zu schreiben sind)
+und hoffentlich auch, welchen Treiber er für Zugriffe auf
+das Gerät zu verwenden hat. Das verwendete Dateisystem ist
+dem Kernel noch unbekannt, und ohne diese Kenntnis machen
+blockweise Zugriffe auf das Gerät keinen großen Sinn. Den
+Typ des Dateisystems teilt man dem Kernel nun mit, indem
+man das Gerät (repräsentiert durch seine Gerätedatei) in
+den Verzeichnisbaum einhängt. In diesem Zusammenhang verwendet 
+man auch häufig den englischen Begriff <strong>mounten</strong>. Man sagt, 
+dass ein Laufwerk <strong>gemountet</strong> werden muss.
+    </textblock>
+    
+    <textblock>
+Beim Mounten geschieht also zweierlei: Zum einen wird
+dem Kernel mitgeteilt, welchen Dateisystem-Typ das neu
+eingehängte Gerät verwendet. Zweitens muss der Kernel
+wissen, an welcher Stelle im Dateibaum er das neue 
+Gerät einhängen soll. Ihm wird also ein Verzeichnispfad
+mitgeteilt, unter dem das Gerät fortan anzusprechen ist.
+    </textblock>
+    
+    <textblock>
+Nach so viel allgemeiner Erklärung fassen wir die zentralen
+Begriffe im Folgenden nochmals zusammen. Wenn Ihnen die ein
+oder andere Frage zunächst unbeantwortet geblieben ist, lesen
+Sie zunächst weiter - vieles wird sich bei der konkreten
+Betrachtung der Handhabung von Laufwerken später von selbst
+klären.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Kurze Zusammenfassung der wichtigsten Begriffe
+    </heading>
+    
+    <textblock>
+Mounten:
+    </textblock>
+    
+    <textblock>
+Das Englische <strong>to mount</strong> bedeutet so viel wie anbringen
+oder montieren. Man spricht anschaulich vom Einhängen
+in das Dateisystem. Als <strong>Mountpoint</strong> oder <strong>Mountpunkt</strong>
+wird auch die Stelle bezeichnet, an der ein Gerät in
+das Dateisystem eingehängt wird.
+    </textblock>
+    
+    <textblock>
+Gerät:
+    </textblock>
+    
+    <textblock>
+Linux verwendet eine einheitliche, abstrakte Schnittstelle
+für Geräte. Dabei handelt es sich um das Gerätedateisystem
+<path>/dev</path>. Wenn Sie ein Laufwerk verwenden möchten, so nutzen 
+Sie jedoch nicht direkt das Gerätedateisystem, sondern 
+hängen das entsprechende Gerät, das sich unter <path>/dev</path>
+befindet, an einer anderen Stelle in den Dateibaum ein.
+Dabei müssen Sie den Dateisystemtyp des verwendeten
+Datenträgers und den Mountpunkt angeben.
+    </textblock>
+    
+    <textblock>
+Verzeichnisbaum:
+    </textblock>
+    
+    <textblock>
+Der Linux-Verzeichnisbaum beginnt mit dem
+Wurzelverzeichnis <path>/</path>. Er bildet eine Abstraktion von
+den eigentlichen Verzeichnissen und Dateien sowie
+auch von allen tatsächlichen und virtuellen Geräten.
+    </textblock>
+    
+    <textblock>
+Dateisystem:
+    </textblock>
+    
+    <textblock>
+Ein Dateisystem legt die Strukturierung von Daten
+auf blockorientierten Datenträgern fest. Einen
+Datenträger mit einem Dateisystem zu formatieren
+heißt, den Datensträger mit dieser Strukturierung
+zu versehen.
+    </textblock>
+   </section>
+  </section>
+  
+  <section>
+   <heading>
+Theorie okay. Aber wie geht man mit mount um?
+   </heading>
+   
+   <textblock>
+Um das CD-ROM-Laufwerk ansprechen zu können, muss es also in das
+Dateisystem eingehängt werden. Normalerweise muss man sich nicht
+viele Gedanken machen, wie das geht. Eine kurze Zeile in der
+Bash erledigt das für Sie. Da das CD-ROM-Laufwerk unter <path>/mnt</path>
+eingehängt wird (wir nehmen wieder Red Hat als Beispiel), sieht 
+dies wie folgt aus.
+   </textblock>
+
+   <shell>
+    <user path="~">
+mount /mnt/cdrom
+    </user>
+   </shell>
+
+   <textblock>
+Nach dem oben Gesagten muss uns dieses Kommando irritieren, denn
+weder wird die erforderliche Gerätedatei angegeben noch der Typ des
+Dateisystems. Wenn das Kommando dennoch funktioniert, liegt das
+an einem Eintrag in der Datei <path>/etc/fstab</path>. <command>mount</command> schaut in dieser
+Datei nach, ob es einen Eintrag für den Mountpunkt /mnt/cdrom
+findet. Ist dies der Fall, liest es die zugehörige Gerätedatei
+sowie den Dateisystemtyp aus <path>/etc/fstab</path> und hängt das Gerät
+unter <path>/mnt/cdrom</path> ein.
+   </textblock>
+   
+   <textblock>
+Um das CD-ROM-Laufwerk auch ohne Eintrag in der <path>/etc/fstab</path>
+benutzen zu können, geben Sie die folgende Zeile ein:
+   </textblock>
+   
+   <shell>
+    <user path="~">
+mount -r -t iso9660 /dev/cdrom /mnt/cdrom
+    </user>
+   </shell>
+   
+   <textblock>
+Lassen Sie sich nicht durch die <command>-r</command> Option irritieren. Sie gibt
+lediglich an, dass wir hier ein ausschließlich lesbares
+Dateisystem einhängen wollen. Sie wäre nicht unbedingt notwendig
+gewesen, andernfalls hätte mount uns jedoch mitgeteilt, dass
+das eingehängte Dateisystem schreibgeschützt ist.
+   </textblock>
+
+   <textblock>
+Der Befehl <command>df</command> müsste Ihnen jetzt in etwa folgende Zeilen ausgeben:
+   </textblock>
+
+   <shell>
+    <user path="~">
+df
+    </user>
+    <output>
+Dateisystem  1k-Blöcke   Benutzt Verfügbar Ben% montiert auf
+/dev/hda3      4032124   2582084   1245212  68% /
+/dev/hda1        23302     10063     12036  46% /boot
+none             63244         0     63244   0% /dev/shm
+/dev/cdrom      506144    506144         0 100% /mnt/cdrom 
+    </output>
+   </shell>
+
+   <textblock>
+Interessant ist die letzte Zeile der Ausgabe:
+   </textblock>
+
+   <shell>
+    <output>
+/dev/cdrom     506144   506144          0  100%  /mnt/cdrom
+    </output>
+   </shell>
+
+   <textblock>
+<strong>1k-Blöcke</strong> zeigt das Fassungsvermögen der CD. <strong>Benutzt</strong> zeigt an, 
+wieviel Speicherplatz bereits belegt ist. <strong>Verfügbar</strong> zeigt die
+Menge des freien Speicherplatzes.  Bei CD-ROMs ist alles belegt 
+und nichts mehr frei, da wir nicht darauf schreiben können.
+   </textblock>
+
+   <textblock>
+Die Ausgabe zeigt uns, dass das CD-ROM-Laufwerk, welches über die
+Gerätedatei <path>/dev/cdrom</path> angesprochen wird, in das Dateisystem
+eingebunden ist, nämlich unter dem angegebenen Verzeichnis <path>/mnt/cdrom</path>.
+Mittels ls <path>/mnt/cdrom</path> können uns den Inhalt der CD ansehen. Hätte das
+Laufwerk keine CD enthalten, wäre es übrigens zu einer Fehlermeldung
+der folgenden Art gekommen:
+   </textblock>
+   
+   <shell>
+    <user path="~">
+mount -r -t iso9660 /dev/cdrecorder /media/dvd
+    </user>
+    <output>
+mount: Kein Medium gefunden
+    </output>
+   </shell>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Verbreitete Dateisystem-Typen bei Wechelmedien
+   </heading>
+   
+   <textblock>
+Wenn Sie oder der Systemverwalter für ein Gerät keinen Eintrag
+in der <path>/etc/fstab</path> vorgenommen haben, so müssen Sie den Typ - wie
+oben gesehen - mittels der <command>-t</command> Option beim Einhängen angeben.
+Eine Liste der insgesamt verfügbaren Typen liefert die Manpage
+von mount. Derzeit werden folgende Typen unterstützt: <strong>adfs</strong>, <strong>affs</strong>,
+<strong>autofs</strong>, <strong>coda</strong>, <strong>coherent</strong>, <strong>cramfs</strong>, <strong>devpts</strong>, <strong>efs</strong>, <strong>ext</strong>, <strong>ext2</strong>, <strong>ext3</strong>,
+<strong>hfs</strong>, <strong>hpfs</strong>, <strong>iso9660</strong>, <strong>jfs</strong>, <strong>minix</strong>, <strong>msdos</strong>, <strong>ncpfs</strong>, <strong>nfs</strong>, <strong>ntfs</strong>, <strong>proc</strong>,
+<strong>qnx4</strong>, <strong>reiserfs</strong>, <strong>romfs</strong>, <strong>smbfs</strong>, <strong>sysv</strong>, <strong>tmpfs</strong>, <strong>udf</strong>, <strong>ufs</strong>, <strong>umsdos</strong>,
+<strong>vfat</strong>, <strong>xenix</strong>, <strong>xfs</strong>, <strong>xiafs</strong>. Von diesen Typen kommt für Wechelmedien
+nur eine kleine Auswahl in Betracht. Wir wollen hier nur auf die
+meistverwendeten Typen für CDs und DVDs sowie Disketten für
+Floppy- und ZIP-Laufwerke eingehen.
+   </textblock>
+   
+   <textblock>
+Das übliche Format für CDs und DVDs wird durch die ISO Norm 9660
+standardisiert. Diese Norm definiert drei Konformitätsebenen. 
+Ebene 1 ist am restriktivsten, Ebene 3 am wenigsten restriktiv.
+Des weiteren gibt es verschiedene Erweiterungen (sogenannte
+Extensions), von denen <strong>Rock Ridge</strong> und <strong>Joliet</strong> die bekanntesten
+sind. Diese Erweiterungen heben einige der Restriktionen von 
+ISO 9660 auf und werden daher nicht selten verwendet. Linux
+unterstützt sowohl die Ebenen 1 bis 3 als auch die Erweiterungen
+<strong>Rock Ridge</strong> und <strong>Joliet</strong>. Beim Einhängen geben Sie unabhängig
+von der verwendeten Ebene oder Erweiterung einfach die Option
+<command>-t iso9660</command> an.
+   </textblock>
+   
+   <textblock>
+Disketten sind normalerweise mit einem MS-DOS-Dateisystem formatiert.
+Der Parameter lautet hier also <command>-t msdos</command>. Unix-Disketten können
+gelegentlich auch mit einem Minix-Dateisystem formatiert sein.
+Verwenden Sie dann <command>-t minix</command>. Die Disketten für ZIP-Laufwerke
+sind meist mit einem FAT32-Dateisystem formatiert, für das die
+Option <command>-t vfat</command> verwendet wird.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Die Datei /etc/fstab
+   </heading>
+   
+   <textblock>
+Damit man schnell Geräte an festgelegten Stellen einhängen kann,
+kann man sich die Arbeit erleichtern. Wie schon oben gesehen
+funktioniert die Zeile <command>mount /mnt/cdrom</command> nicht immer. Damit immer
+wieder kehrende Geräte und Mountpunkte nicht immer komplett angegeben
+werden müssen, kann man sich die Datei <path>/etc/fstab</path> zu Hilfe nehmen.
+   </textblock>
+
+   <textblock>
+<command>fstab</command> 
+   </textblock>
+
+   <shell>
+    <user path="~">
+cat /etc/fstab
+    </user>
+    <output>
+LABEL=/      /           ext3    defaults           1 1
+LABEL=/boot  /boot       ext3    defaults           1 2
+none         /dev/pts    devpts  gid=5,mode=620     0 0
+none         /proc       proc    defaults           0 0
+none         /dev/shm    tmpfs   defaults           0 0
+/dev/hda2    swap        swap    defaults           0 0
+/dev/fd0     /mnt/floppy auto    noauto,owner       0 0
+    </output>
+   </shell>
+
+   <textblock>
+Um das CD-ROM-Laufwerk jetzt immer mittels
+   </textblock>
+
+   <shell>
+    <user path="~">
+mount /mnt/cdrom 
+    </user>
+   </shell>
+   <textblock>
+oder 
+   </textblock>
+   <shell>
+    <user path="~">
+mount /dev/cdrom
+    </user>
+   </shell>
+
+   <textblock>
+(auch die direkte Angabe der Gerätedatei ist also möglich, 
+wenn ein Eintrag in <path>/etc/fstab</path> existiert) mounten zu können,
+tragen Sie einfach folgende Zeile in <path>/etc/fstab</path> ein:
+   </textblock>
+   
+   <shell>
+    <output>
+/dev/cdrom   /mnt/cdrom   iso9660 noauto,user,ro 0 0
+    </output>
+   </shell>
+   
+   <textblock>
+Hierfür benötigen Sie natürlich Systemverwalter-Rechte an
+dem betreffenden Rechner. Auf weitere Berechtigungsfragen gehen
+wir noch kurz im nächsten Abschnitt ein.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Rechte - Wer darf mounten?
+   </heading>
+   
+   <textblock>
+Auf Produktiv-Systemen ist das Mounten der Laufwerke meist nur root gestattet. Auf
+Systemen, die weniger sicherheitsrelevant sind, können häufig auch
+<ref chapter="nutzer_unter_linux" iref="Standardbenutzer">Standardbenutzer</ref>
+mounten. Dies ist dann aufgrund eines Eintrages in der <path>/etc/fstab</path>
+möglich. Wir möchten uns nun einen ersten Überblick in die Art der
+Vergabe von Berechtigungen beim Einhängen von Geräten verschaffen.
+   </textblock>
+   
+   <textblock>
+Grundsätzlich gilt: Ist für ein Gerät kein Eintrag in der <path>/etc/fstab</path>
+enthalten, so darf nur root dieses Gerät einhängen. Gibt es für das
+Gerät einen Eintrag in der <path>/etc/fstab</path>, so muss dort explizit die
+Berechtigung vergeben werden. Dies geschieht in der Liste der
+Optionen, welche in der vierten Spalte der <path>/etc/fstab</path> eingetragen
+wird. Diese Liste (als Separator zwischen den einzelnen Optionen
+dient ein Komma) muss dann einen der Einträge user oder users
+enthalten. Wir wiederholen die oben schon gezeigt Zeile als Beispiel:
+   </textblock>
+   
+   <shell>
+    <output>
+/dev/cdrom   /mnt/cdrom   iso9660 noauto,user,ro 0 0
+    </output>
+   </shell>
+   
+   <textblock>
+Die anderen Optionen interessieren uns nicht, aber der Eintrag
+<command>user</command> zwischen <command>noauto</command> und <command>ro</command> ermöglicht es auch 
+<ref chapter="nutzer_unter_linux" iref="Standardbenutzer">Standardbenutzern</ref>, das
+CD-ROM-Laufwerk einzuhängen. Das Aushängen des Gerätes ist dann
+übrigens nur dem Benutzer erlaubt, der das Gerät zuvor eingehängt
+hat. Wenn Sie diese Einschränkung nicht wünschen, tragen sie
+als Option <command>users</command> an Stelle von <command>user</command> ein. Das Gerät kann
+dann auch von Benutzern wieder ausgehängt werden, die das
+Einhängen nicht selbst vorgenommen haben. Mit diesen beiden
+Optionen sind übrigens die Optionen <command>nouser</command> und <command>owner</command> verwandt.
+Ersteres schließt 
+<ref chapter="nutzer_unter_linux" iref="Standardbenutzer">Standardbenutzern</ref>
+explizit vom Einhängen aus. Die Option <command>owner</command> ermöglicht es dem
+Besitzer der Gerätedatei, das Gerät einzuhängen. Die Eigentümerschaft
+an der Datei wird in diesem Fall explizit an den betreffenden
+Benutzer vergeben.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Mount wieder lösen und Medium freigeben
+   </heading>
+   
+   <textblock>
+Wir haben oben bereits vom Wieder-Aushängen eines Gerätes gesprochen.
+Hierzu wird der Befehl umount benutzt. Bei CD-ROM-Laufwerken macht es
+sich besonders bemerkbar, wenn man das Aushängen vergisst. Wenn ein
+CD-ROM-Laufwerk gemountet ist, wird der eine oder andere schon mal
+vergeblich den Eject-Knopf gedrückt haben. Das Laufwerk ließ sich
+nicht öffnen, und die CD wurde nicht ausgegeben. Um dies zu
+ermöglichen, muss das Laufwerk zunächst wieder aus dem Dateibaum
+ausgehängt werden.
+   </textblock>
+   
+   <textblock>
+Auch Disketten sollten Sie vor dem Entfernen aus dem Laufwerk
+zunächst mittels umount wieder aushängen. Es ist ansonsten nicht
+sichergestellt, dass alle Schreib- und Lesezugriffe, die auf dem
+Laufwerk ausgeführt werden sollten, tatsächlich auch erfolgt sind.
+Dies hängt damit zusammen, dass Linux solche Zugriffe aus
+Effizienzgründen puffert. Wenn Sie beispielsweise eine Datei
+auf einer Diskette abspeichern, so erfolgt der Schreibzugriff
+auf die Diskette nicht notwendigerweise sofort. Das System könnte
+beispielsweise gerade mit wichtigeren Aufgaben beschäftigt sein
+und daher den Schreibzugriff verzögern. Wenn Sie in diesem
+Augenblick einfach die Diskette aus dem Laufwerk entfernen,
+kann die betreffende Datei unvollständig oder inkonsistent
+beschrieben worden sein. Um dies zu vermeiden, hängen Sie also
+vor dem Entfernen die Diskette zunächst mittels umount aus dem
+Dateibaum aus. Linux wird dann alle ausstehenden Zugriffe tätigen
+und das Laufwerk aushängen. Die Diskette kann dann immer in
+konsistentem Zustand entnommen werden.
+   </textblock>
+   
+   <textblock>
+Ein Laufwerk kann übrigens nur dann ausgehängt werden, wenn
+es nicht verwendet wird. Zur Verwendung eines Laufwerkes gehört
+es auch, wenn man sich in einer Shell in einem Verzeichnis
+befindet, die zum Dateisystem des Laufwerkes gehört. Versucht
+man in einem solchen Fall, das Laufwerk auszuhängen, so wird
+man eine Fehlermeldung der folgenden Art erhalten:
+   </textblock>
+   
+   <shell>
+    <user path="~">
+umount /mnt/cdrom
+    </user>
+    <output>
+umount: /mnt/cdrom: Das Gerät wird momentan noch benutzt
+    </output>
+   </shell>
+   
+   <textblock>
+Der betreffende Benutzer muss dann zunächst sein aktuelles
+Arbeitsverzeichnis wechseln, bevor das Aushängen unternommen
+werden kann. Diese Situation kann auch <strong>versteckter</strong> sein,
+indem beispielsweise ein Programm auf eine Datei des
+eingehängten Laufwerkes zugreift. Die Datei muss dann
+innerhalb dieses Programmes geschlossen werden, bevor das
+Laufwerk ausgehängt werden kann.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Automatisches Einhängen
+   </heading>
+   
+   <textblock>
+Bei den neueren Distributionen geschieht das Einhängen von
+CD-ROM-Laufwerken häufig automatisch. Das Einlegen eines Datenträgers wird
+vom System erkannt und anhand der Angaben in <path>/etc/fstab</path>
+eingehängt. Der Benutzer sieht hier nicht mehr, was genau im
+Hintergrund läuft. Dies ändert jedoch nichts an den prinzipiellen
+Mechanismen, die wir oben beschrieben haben.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Weitere Information
+   </heading>
+   
+   <textblock>
+Spezielle Information zur Verwendung von ZIP-Laufwerken finden
+Sie im Kapitel <ref chapter="zipdrives">ZIP-Laufwerke</ref>.
+   </textblock>
+  </section>
+  </split>
+</chapter>  

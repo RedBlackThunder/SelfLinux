@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Verzeichnisse unter Linux</title>
+
+ <author>
+  <name>Frank Boerner</name>
+  <mailto>frank@frank-boerner.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>GPL</license>
+ <index>verzeichnisse_unter_linux</index>
+
+ <description>
+  <textblock>
+Die Linux-Verzeichnisstruktur und das Arbeiten mit Verzeichnissen
+  </textblock>
+ </description>
+
+
+ <split>
+  <section>
+<!--1. Kapitel -->
+   <heading>
+Linux-Verzeichnisstruktur
+   </heading>
+
+   <textblock>
+Linux speichert Dateien <strong>im Gegensatz zu MS-DOS und Windows</strong> in
+einem großen Verzeichnisbaum, der mit dem Wurzelverzeichnis <command>/</command>
+beginnt und sich schnell weit verzweigt.
+   </textblock>
+
+   <textblock>
+Die nachfolgende Grafik stellt nur einen Ausschnitt eines Systems
+dar und muss nicht in allen Einzelheiten auf jedes System zutreffen.
+   </textblock>
+
+   <image height="500">
+    <title>
+Ausschnitt eines Systems
+    </title>
+    <filename>
+baum.png
+    </filename>
+   </image>
+
+   <textblock>
+Die wichtigsten Verzeichnisse sind:
+   </textblock>
+ 
+   <table>
+    <pdf-column width="50"/>
+    <pdf-column/>
+    <tr>
+     <td>
+<path>/</path>
+     </td>
+     <td>
+Das Wurzelverzeichnis steht ganz oben in der Hierarchie.
+     </td>
+    </tr>
+    <tr>   
+     <td>
+<path>/bin</path>
+     </td>
+     <td>
+Hier befinden sich wichtige Programme für Anwender, die immer
+verfügbar sein müssen, z. B. die Shells.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/boot</path>
+     </td>
+     <td>
+Hier befinden sich die zum Hochfahren des Systems unbedingt
+erforderlichen Dateien. In der Hauptsache ist das der Kernel,
+im Normalfall eine Datei mit dem Namen <path>vmlinuz</path>. Aber auch
+andere Namen sind möglich.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/dev</path>
+     </td>
+     <td>
+Dieses Verzeichnis enthält nur Spezialdateien, sogenannte
+Gerätedateien. Diese stellen eine einfach zu nutzende
+Schnittstelle zur Hardware dar. Hier finden sich auch
+Einträge für alle Festplatten und ihre Partitionen:
+<path>/dev/hda</path> ist die erste EIDE-, <path>/dev/sda</path> die
+erste
+SCSI-Festplatte im System. Höhere Buchstaben (hdb, hdc)
+stellen weitere Festplatten dar, Zahlen am Ende (sda1, sda2)
+sind die Partitionen der Festplatten.<br/>
+<br/>
+Da auf einer Festplatte nur vier primäre Partitionen
+möglich sind, wird häufig eine erweiterte Partition
+angelegt, die den größten Teil der Festplatte umfasst. In
+der erweiterten Partition können dann "logische Laufwerke"
+angelegt werden. Diese erhalten grundsätzlich die
+Partitionsnummern ab 5. Enthält eine Festplatte also eine
+primäre und eine erweiterte Partition, in der sich
+wiederum zwei logische Laufwerke befinden, gibt es auf
+dieser Platte die Partitionen 1, 2, 5 und 6. Die primäre
+Partition ist 1, die erweiterte ist 2, und die beiden
+logischen Laufwerke sind 5 und 6.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/etc</path>
+     </td>
+     <td>
+Hier sind viele der Konfigurationsdateien untergebracht,
+welche die Einstellungen verschiedener Programme oder auch
+grundlegende Systeminformationen enthalten. Viele dieser
+Dateien haben ihre eigene Manpage in Kapitel 5.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/home</path>
+     </td>
+     <td>
+In diesem Verzeichnis liegen traditionell die
+Heimatverzeichnisse der Benutzer des Systems.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/lib</path>
+     </td>
+     <td>
+Hier befinden sich die wichtigsten Funktionsbibliotheken
+des Systems. Eigentlich gibt es nur eine Grundregel im
+Umgang mit diesem Verzeichnis: Finger weg!
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/proc</path>
+     </td>
+     <td>
+<path>/proc</path> ist eigentlich kein normales Verzeichnis, sondern
+stellt eine Schnittstelle zum Kernel dar. Jedes laufende
+Programm wird hier in einem Unterverzeichnis geführt,
+dessen Dateien viele Informationen z.B. über den aktuellen
+Programmstatus enthalten. Zudem gibt es eine umfangreiche
+Verzeichnisstruktur mit Daten über den Kernel und die
+Hardware des Systems.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/root</path>
+     </td>
+     <td>
+Dies ist das Heimatverzeichnis des Systemverwalters root.
+Es liegt traditionell im Wurzelverzeichnis, damit <command>root</command> auch
+dann auf seine Dateien (beispielsweise Diagnoseprogramme)
+zugreifen kann, wenn durch einen Fehler der Zugriff auf
+andere Partitionen nicht mehr möglich ist.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/sbin</path>
+     </td>
+     <td>
+Ähnlich wie <path>/bin</path> enthält auch <path>/sbin</path>
+wichtige Programme.
+Diese sind jedoch hauptsächlich für den Systemverwalter
+gedacht, da sie Funktionen erfüllen, auf die ein normaler
+Benutzer keinen Zugriff hat.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/tmp</path>
+     </td>
+     <td>
+Dieses Verzeichnis kann von jedem Benutzer und jedem
+Programm als temporäre Ablage für Dateien verwendet werden.
+Damit sich Benutzer nicht gegenseitig ihre Dateien löschen,
+ist das sogenannte <strong>Sticky-Bit</strong> dieses Verzeichnisses gesetzt.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/usr</path>
+     </td>
+     <td>
+Die umfangreichste Verzeichnisstruktur des Systems. Hier
+liegt der größte Teil der installierten Software. Auf vielen
+Systemen befinden sich in und unterhalb von  /usr mehr Daten
+als in allen anderen Dateien zusammen. Die Programmdateien
+sind meist in <path>/usr/bin</path>, die Spiele in
+<path>/usr/games</path>. In
+Netzwerken, an die viele gleichartige Systeme
+angeschlossen sind, wird dieses Verzeichnis häufig auf
+einem zentralen Server gespeichert, und alle anderen
+Computer greifen über das Netzwerk darauf zu.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/var</path>
+     </td>
+     <td>
+Unter diesem Verzeichnis werden hauptsächlich Dateien
+gespeichert, die sich ständig verändern. Der Name <path>/var</path>
+steht für <strong>variabel</strong>, also <strong>veränderlich</strong>. Hier
+befinden
+sich beispielsweise die Verzeichnisse für ausgehende
+E-Mail und noch ungelesene eingehende, wenn der jeweilige
+Benutzer nicht dafür gesorgt hat, dass neue E-Mails
+automatisch in sein Heimatverzeichnis übertragen werden.
+     </td>
+    </tr>
+    <tr>
+     <td>
+<path>/opt</path>
+     </td>
+     <td>
+(optionale Software)
+Kommerzielle Software oder sehr große Programme, die nicht
+unmittelbar zum System gehören, wie etwa <name>KDE</name>,
+<name>Netscape</name>,
+<name>Mozilla</name> usw. finden hier ihren Platz.
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Wenn Sie ein ext2- oder ext3-Dateisystem verwenden, kann es vorkommen, 
+dass ein Verzeichnis /lost+found in Ihrem Wurzelverzeichnis existiert. In
+dieses Verzeichnis werden Dateien abgelegt, die keinem anderen
+Verzeichnis mehr zugeordnet werden können. Solche Dateien, die in
+sehr seltenen Fällen z.B. bei Programmabstürzen oder Hardwarefehlern 
+entstehen können, werden von einem Prüfwerkzeug des Dateisystems gefunden
+und dann in /lost+found abgelegt. Es handelt sich hier um eine
+besondere Eigenschaft der ext-Dateisysteme.
+   </textblock>
+
+   <textblock>
+(Die Originalbeschreibung der Verzeichnisinhalte nach dem
+<name>Filesystem Hierarchy Standard - FHS</name> ist nachzulesen
+unter
+<ref lang="en" url="http://www.pathname.com/fhs/">http://www.pathname.com/fhs/</ref>
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!--2. Kapitel -->
+   <heading>
+Arbeiten mit Verzeichnissen
+   </heading>
+
+   <section>
+<!--2.1 Kapitel -->
+    <heading>
+das Kommando pwd
+    </heading>
+
+
+    <textblock>
+Das Kommando gibt den vollständigen Pfadnamen des im Moment aktuellen
+Arbeitsverzeichnisses an.
+    </textblock>
+
+    <shell>
+     <user path="~/cvs/tutorial/userbasics/konzepte_basic">
+pwd
+     </user>
+     <output>
+/home/user/cvs/tutorial/userbasics/konzepte_basic
+     </output>
+    </shell>
+   </section>
+
+   <section>
+<!--2.2 Kapitel -->
+    <heading>
+das Kommando cd
+    </heading>
+
+    <textblock>
+Ohne Aufruf von Argumenten wechselt das Kommando von jedem
+beliebigen Punkt des Dateisystems in das Homeverzeichnis des
+Benutzers.
+    </textblock>
+
+    <shell>
+     <user path="~/cvs/tutorial/userbasics/konzepte_basic">
+cd
+     </user>
+     <user path="~">
+     </user>
+    </shell>
+
+
+    <textblock>
+Wenn man ein Verzeichnis wechseln möchte, unterscheidet man zwischen
+relativer und absoluter Pfadangabe.
+    </textblock>
+
+    <textblock>
+Beispiel relativer Pfad:
+    </textblock>
+
+    <shell>
+     <user path="~">
+cd cvs/tutorial
+     </user>
+     <user path="~/cvs/tutorial">
+     </user>
+    </shell>
+
+    <textblock>
+Hier wechselt der Benutzer ausgehend von seinem Heimatverzeichnis 
+in das Verzeichnis <path>cvs/tutorial</path>.
+    </textblock>
+
+
+    <textblock>
+Beispiel absoluter Pfad:
+    </textblock>
+
+    <shell>
+     <user path="~">
+cd /home/linux/cvs/tutorial
+     </user>
+     <user path="~/cvs/tutorial">
+     </user>
+    </shell>
+
+    <textblock>
+Bei absoluter Pfadangabe wird vom Wurzelverzeichnis an jedes einzelne
+Verzeichnis angegeben.
+    </textblock>
+
+
+    <textblock>
+Mit dem Kommando <command>cd ..</command> wechseln Sie immer in das Elternverzeichnis
+Ihres aktuellen Verzeichnisses. Befinden Sie sich bereits im 
+Wurzelverzeichnis, bleibt dieses Kommando wirkungslos.
+    </textblock>
+
+    <shell>
+     <user path="~/cvs/tutorial">
+cd ..
+     </user>
+     <user path="~/cvs">
+     </user>
+    </shell>
+   </section>
+
+   <section>
+<!--2.3 Kapitel -->
+    <heading>
+das Kommando ls
+    </heading>
+
+    <textblock>
+Das Kommando <command>ls</command> ist das wahrscheinlich wichtigste und am
+häufigsten
+aufgerufene Kommando unter Linux überhaupt: Es zeigt den Inhalt
+eines Verzeichnisses an und ist damit die Entsprechung von DIR unter
+DOS.
+    </textblock>
+
+    <textblock>
+Ruft man <command>ls</command> ohne Optionen auf, so gibt es den Inhalt in der kürzesten
+möglichen Form aus:
+    </textblock>
+
+    <shell>
+     <user path="~">
+ls
+     </user>
+     <output>
+Desktop    OpenOffice.org641  playlists public_html         wrg
+Documents  cvs                nsmail    plugin131.trace     selflinux
+Mail       evolution          office52  plugin131_02.trace  selflinux-texte
+     </output>
+     <user path="~">
+
+     </user>
+    </shell>
+
+
+    <textblock>
+Die verschiedenen Optionen zu <command>ls</command> erlauben die Anzeige einer Vielzahl
+von Information in verschiedenen Formaten. Wir möchten hier nur auf
+die wichtigsten Optionen eingehen. Für weitere Möglichkeiten geben Sie
+einfach <command>ls --help</command> ein.
+    </textblock>
+
+
+    <textblock>
+<command>ls -a</command>
+    </textblock>
+
+    <quotation>
+Diese Option listet auch die sogenannten versteckten Dateien auf, die
+mit einem Punkt beginnen.
+    </quotation>
+
+    <shell>
+     <user path="~">
+ls -a
+     </user>
+     <output>
+.                     .fullcircle          .nautilus               .xsession
+..                    .gconf               .nautilus-metafile.xml  .xsession-errors
+.DCOPserver_linux_:0  .gconfd              .netscape               .xtalkrc
+.DCOPserver_linux__0  .gimp-1.2            .netscape6              .y2log
+.G-Force              .gnome               .ntrc                   .yast2
+.ICEauthority         .gnome-desktop       .opera                  Desktop
+.SuSENautilusPage     .gnome-help-browser  .pinerc                 Documents
+.Xauthority           .gnome_private       .profile                Mail
+     </output>
+    </shell>
+
+    <textblock>
+<command>ls -l</command>
+    </textblock>
+
+    <quotation>
+Diese Option liefert eine ausführlichere Ausgabe.  Sie bedeutet von
+links nach rechts: Dateityp, Zugriffsrechte, Linkzähler, Besitzer,
+Gruppe, Größe, Datum der letzten Änderung, Dateiname
+    </quotation>
+<!--
+    <hint>
+Ausführlichere Erklärung siehe <ref iref="Dateirechte">Dateirechte</ref>
+    </hint>
+-->
+    <shell>
+     <user path="~">
+ls -l
+     </user>
+     <output>
+insgesamt 18
+drwxr-xr-x    3 user    users         520 Mai 28 20:10 Desktop
+drwxr-xr-x    3 user    users        1072 Mai 28 21:41 Documents
+drwx------   29 user    users        4800 Mai 28 21:59 Mail
+drwxr-xr-x    3 user    users         320 Apr 13 00:58 OpenOffice.org641
+drwxr-xr-x    7 user    users         168 Mai 26 21:47 cvs
+drwx------    4 user    users         232 Apr 14 08:04 evolution
+drwxr-xr-x    2 root    root          208 Feb 24  2000 kuer_chm
+drwx------    2 user    users          48 Apr 13 01:09 nsmail
+drwxr-xr-x    3 user    users         232 Apr 14 08:07 office52
+drwxr-xr-x    2 user    users          80 Mai  4 07:39 playlists
+drwxr-xr-x    2 user    users          80 Apr 11 20:04 public_html
+drwxr-xr-x    5 user    users         208 Mai  8 20:42 selflinux
+drwxr-xr-x    2 user    users         352 Mär 16 13:48 selflinux-texte
+drwxr-xr-x    2 user    users         448 Mär 16 13:47 wrg
+     </output>
+    </shell>
+
+
+    <textblock>
+<command>ls -R</command>
+    </textblock>
+
+    <quotation>
+Diese Option gibt auch den Inhalt der Unterverzeichnisse mit aus.
+    </quotation>
+
+    <shell>
+     <user path="~/selflinux">
+ls -R
+     </user>
+     <output>
+.:
+Basisrelease  README  output  saxon  slcompile  styles
+
+./output:
+html  images
+
+./output/html:
+Basisrelease.html  Basisrelease01.html
+
+./output/images:
+10baset-netz.gif  img_transparent.gif  openfolder.gif
+shell_funktionsweise01.gif
+fddi.gif          kdm.gif              repeater_bridge.gif  thickethernet.gif
+img_document.gif  koaxialnetz.gif      selflinux.gif        tokenring.gif
+
+./saxon:
+README  doc  saxon.jar
+
+./saxon/doc:
+api-guide.html   conformance.html    extensions.html  patterns.html
+xsl-elements.html
+changes.html     dtdgen.html         history.html     samples.html
+changes5.html    expressions.html    index.html       suggestions.html
+conditions.html  extensibility.html  instant.html     using-xsl.html
+
+./styles:
+html
+
+./styles/html:
+files.xsl  format.xsl  lib.xsl  main.xsl  section.xsl  selflinux.xsd  toc.xsl
+     </output>
+    </shell>
+
+
+    <quotation>
+Sie können auch mehrere Optionen miteinander verbinden, zum Beispiel
+<command>ls -lR</command> oder <command>ls -la</command>.
+    </quotation>
+   </section>
+
+   <section>
+<!--2.4 Kapitel -->
+    <heading>
+das Kommando mkdir
+    </heading>
+
+
+    <textblock>
+Mit dem Kommando <command>mkdir</command> kann man Verzeichnisse anlegen.
+    </textblock>
+
+    <shell>
+     <user path="~/test">
+ls
+     </user>
+     <user path="~/test">
+mkdir a
+     </user>
+     <user path="~/test">
+ls
+     </user>
+     <output>
+a
+     </output>
+    </shell>
+
+    <textblock>
+Durch Verwendung der Option <command>-p</command> kann gleichzeitig auch noch
+Unterverzeichnisse anlegen.
+    </textblock>
+
+    <shell>
+     <user path="~/test">
+ls
+     </user>
+     <user path="~/test">
+mkdir -p a/b/c
+     </user>
+     <user path="~/test">
+ls
+     </user>
+     <output>
+a
+     </output>
+     <user path="~/test">
+cd a
+     </user>
+     <user path="~/test/a">
+ls
+     </user>
+     <output>
+b
+     </output>
+     <user path="~/test/a">
+cd b
+     </user>
+     <user path="~/test/a/b">
+ls
+     </user>
+     <output>
+c
+     </output>
+     <user path="~/test/a/b">
+
+     </user>
+    </shell>
+   </section>
+
+   <section>
+<!--2.5 Kapitel -->
+    <heading>
+das Kommando rmdir
+    </heading>
+
+
+    <textblock>
+Mit dem Kommando <command>rmdir</command> kann man (leere) Verzeichnisse
+löschen.
+    </textblock>
+
+    <shell>
+     <user path="~/test">
+ls
+     </user>
+     <output>
+a
+     </output>
+     <user path="~/test">
+rmdir a
+     </user>
+     <user path="~/test">
+ls
+     </user>
+     <user path="~/test">
+
+     </user>
+    </shell>
+
+
+    <textblock>
+Wenn Sie hier die Option <command>-p</command> verwenden, werden gleichzeitig auch die
+untergeordneten Verzeichnisse gelöscht (vorrausgesetzt, dass alle
+leer sind).
+    </textblock>
+
+    <shell>
+     <user path="~/test">
+ls
+     </user>
+     <output>
+a
+     </output>
+     <user path="~/test">
+rmdir -p a/b/c
+     </user>
+     <user path="~/test">
+ls
+     </user>
+     <user path="~/test">
+
+     </user>
+    </shell>
+   </section>
+  </section>
+ </split>
+</chapter>

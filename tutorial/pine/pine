@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Pine - Ein konsolenbasierter E-Mail - Client</title>
+
+ <author>
+   <name>Thomas Lerche</name>
+   <mailto>thomas.lerche@paedagogik.uni-regensburg.de</mailto>
+ </author>
+
+ <layout>
+  <name>Johnny Graber</name>
+  <mailto>linux@jgraber.ch</mailto>
+ </layout>
+
+ <license>GFDL</license>
+ <index>pine</index>
+
+<split>
+ <section>
+  <heading>
+Allgemeines
+  </heading>
+   
+  <textblock>
+Wer <command>Pine</command> das erste Mal startet, mag sich in längst vergessene Zeiten
+zurückversetzt sehen: <command>Pine</command> läuft im Konsolenmodus und kommt völlig
+ohne grafische Benutzeroberfläche oder Maus aus. Aber für die, die der
+Meinung sind, dass die Maus das überflüssigste
+Geldbeschaffungsinstrument aller Zeiten ist, wird <command>Pine</command> die
+Königslösung sein. Allen anderen sei geraten, <command>Pine</command> einfach mal
+auszuprobieren - die Zeitersparnis beim Managen der elektronischen
+Post im Vergleich zu GUI-basierten Programmen ist enorm.
+Persönliche Schätzungen gehen vom Faktor 2 aus.
+  </textblock>
+
+  <textblock>
+<command>Pine</command> ist am Anfang sehr gewöhnungsbedürftig. Aber nach der
+Eingewöhnungszeit ist <command>Pine</command> über die Tastatur sehr einfach zu bedienen.
+Wenn Sie jeden Tag große Mengen Emails verwalten müssen, werden Sie
+diesen Vorteil sehr schnell zu schätzen wissen.
+  </textblock>
+
+  <textblock>
+Der größte Vorteil ist jedoch, dass Sie <command>Pine</command> wegen des Konsolenmodus
+auch auf einem entfernten Server direkt starten können: Sie loggen
+sich einfach mit <command>SSH</command> auf dem Server ein (z.B. der
+Universitäts-Unix-Account), starten <command>Pine</command> und verwalten Ihre E-Mails.
+Dadurch können Sie zum einen von jedem vernetzten Rechner der Welt an
+Ihre E-Mails, zum anderen haben potenziell gefährliche oder
+auch nur nervende Dateien zunächst einmal keinen Zugriff auf den
+eigenen Dateibaum. Gut, unter Linux ist das kein großes Problem, wenn
+Sie allerdings einmal mit der Kombination Windows/Putty auf Ihre Mails
+zugreifen, wissen Sie diesen Vorteil zu schätzen.
+  </textblock>
+ </section>
+</split>
+
+
+
+
+<split>
+ <section>
+  <heading>
+Konfiguration
+  </heading>
+   
+  <textblock>
+<command>Pine</command> bietet Ihnen eine Fülle von Konfigurationsmöglichkeiten, die hier
+nicht alle vorgestellt werden können. Deshalb werden an dieser Stelle
+nur die wichtigsten Einstellungen beschrieben, für alles weitere sei
+auf die offizielle <command>Pine</command>-Dokumentation verwiesen.
+  </textblock>
+
+  <textblock>
+Das wichtigste vorweg: <command>Pine</command> ist kein Standalone-Programm, kann also
+nicht selbständig eine Verbindung ins Internet aufbauen und dort auf
+einem POP3-Server die neuen E-Mails abholen. <command>Pine</command> kann lediglich einen
+lokalen Ordner bzw. ein getunneltes Verzeichnis auf einem entfernten
+Server überwachen. Wenn Sie <command>Pine</command> verwenden wollen, müssen Sie dafür
+sorgen, dass Sendmail und Fetchmail Ihnen Ihre neuen E-Mails in Ihrem
+Mail-Folder ablegen.
+  </textblock>
+
+  <textblock>
+Ich verweise hier auf die entsprechenden Dokumentationen (z.B. man
+pine, <command>Pine</command> User-Guide unter 
+<ref lang="en" url="http://www.washington.edu/pine/user-guide/">http://www.washington.edu/pine/user-guide/</ref>
+
+oder auch die sehr gute Online-Hilfe in <command>Pine</command> selbst) und merke nur
+kurz an, dass Sie mit dem Programm Fetchmail die Emails von Ihrem
+Mail-Account holen können.  Fetchmail übergibt dann die gefundenen
+E-Mails an das lokale Sendmail, das die Emails dann auf die
+entsprechenden Folder verteilt (meist <command>/var/mail/username</command>).  Sie
+sollten also vor allem darauf achten, dass <command>Sendmail</command> seine Arbeit mit
+einer gewissen Regelmäßigkeit verrichtet. Hier können Sie ruhig
+einen kurzen Zeitrahmen einstellen, ohne Ihren Computer einzubremsen:
+Eine automatische Mailzustellung alle 60 Sekunden ist für <command>Sendmail</command>
+Leerlauf. 60 Sekunden sind also eine gute Wahl.
+  </textblock>
+
+  <textblock>
+Alle Konfigurations-Dateien werden in der lokalen Datei <strong>~/.pinerc</strong>
+gespeichert. Wenn Sie Einstellungen an <command>Pine</command> vornehmen wollen, können
+Sie diese Datei direkt ändern. Sie können aber auch den bequemeren und
+effektiveren Weg über die Setup-Funktion gehen.
+  </textblock>
+ </section>
+</split>
+
+
+
+
+<split>
+ <section>
+  <heading>
+Bedienung
+  </heading>
+   
+  <textblock>
+Wenn Sie <command>Pine</command> das erste Mal starten, werden Sie mit einem kurzen Text
+begrüßt. Dieser Text erscheint nur einmal, lesen Sie Ihn also, wenn
+Sie Interesse am Programm haben. Nach dem Drücken von Enter sehen Sie
+das erste Mal den <command>Pine</command>-Begrüßungsbildschirm, der Ihnen die Funktionen
+zur Auswahl anbietet.
+  </textblock>
+
+  <table>
+   <pdf-column width="25"/>
+   <pdf-column width="100"/>
+   <pdf-column/>
+    <tr>
+     <td><command>?</command></td>
+     <td>HELP</td>
+     <td>-  Get help using <command>Pine</command></td>
+    </tr>
+    <tr>
+     <td><command>C</command></td>
+     <td>COMPOSE MESSAGE</td>
+     <td>-  Compose and send a message</td>
+    </tr>
+    <tr>
+     <td><command>I</command>
+     </td>
+     <td>MESSAGE INDEX</td>
+     <td>-  View messages in current folder</td>
+    </tr>
+    <tr>
+     <td><command>L</command></td>  
+     <td>FOLDER LIST</td>      
+     <td>-  Select a folder to view</td>
+    </tr>
+    <tr>
+     <td><command>A</command></td>  
+     <td>ADDRESS BOOK</td>     
+     <td>-  Update address book</td>
+    </tr>
+    <tr>
+     <td><command>S</command></td>  
+     <td>SETUP</td>            
+     <td>-  Configure <command>Pine</command> Options</td>
+    </tr>
+    <tr>
+     <td><command>Q</command></td>  
+     <td>QUIT</td>            
+     <td>-  Leave the <command>Pine</command> program</td>
+    </tr>
+   </table>
+   
+  <textblock>
+Grundsätzlich gilt: Sie können <command>Pine</command> entweder durch Drücken der
+entsprechenden Taste steuern oder durch den Gebrauch der Cursor-Tasten
+und der Enter-Taste.
+  </textblock>
+
+  <textblock>
+Außerdem: Alle möglichen Befehle und deren Abkürzung sind in den
+untersten zwei Zeilen des <command>Pine</command>-Bildschirms aufgelistet. Meistens
+können Sie durch das Drücken von O sogar noch eine zweite Auswahl
+relevanter Befehle, die seltener benötigt werden, auflisten.  Hierbei
+steht das <command>^</command>-Zeichen für die Strg-Taste. Sehr wichtig ist auch das <command>&lt;</command>,
+das Sie in fast jedem Bildschirm wieder eine Hierarchiestufe nach oben
+bringt. Wenn Sie also einmal nicht wissen, wo Sie sind, drücken Sie
+einfach so lange die <command>&lt;</command>, bis Sie wieder am Startbildschirm sind.
+  </textblock>
+
+  <textblock>
+Probieren Sie es ruhig gleich mal aus und besuchen vom Startbildschirm
+aus durch das Drücken des <command>?</command> die Online-Hilfe.
+  </textblock>
+ </section>
+</split>
+
+
+
+
+<split>
+ <section>
+  <heading>
+Setup
+  </heading>
+   
+  <textblock>
+Eine Ihrer ersten Aktionen in <command>Pine</command> sollte sein, das Programm auf Ihre
+Bedürfnisse einzurichten. Hierzu drücken Sie auf dem Startbildschirm
+das <command>S</command>. Unter den vielen Möglichkeiten wählen Sie dann zunächst einmal
+<command>C</command> für die Konfiguration. Im Konfigurationsmenü gibt es ca. 200
+Einstellungsmöglichkeiten, die wirklich keinen Wunsch mehr offen
+lassen. Im Folgenden nun die wichtigsten Einstellungen:
+  </textblock>
+
+
+  <section>
+   <heading>
+Basiseinstellungen
+   </heading>
+
+   <textblock>
+<strong>personal-name</strong>: Ihr Name. Wenn Sie keinen Namen angeben, wird der Name
+aus der .passwd-Datei verwendet.
+   </textblock>
+
+   <textblock>
+<strong>user-domain</strong>: Die Domain Ihres Providers (z.B. t-online.de). Diese
+Angabe sollten Sie nur machen, wenn Ihre SMTP-Domain sich von Ihrem
+Internet-Service-Provider unterscheidet.
+   </textblock>
+
+   <textblock>
+<strong>smtp-server</strong>: Diese Angabe brauchen Sie nicht zu machen, da Sendmail
+die E-Mails im Allgemeinen problemlos weiterleitet.
+   </textblock>
+
+   <textblock>
+<strong>inbox-path</strong>: Hier legen Sie Ihren Ordner für die eingehende Mail fest
+(z.B. /var/mail/username)
+   </textblock>
+
+   <textblock>
+<strong>signature-file</strong>: Hier geben Sie an, wo Ihre Signatur-Datei liegt
+   </textblock>
+  </section>
+
+
+
+  <section>
+   <heading>
+Einige interessante zusätzliche Einstellungen:
+   </heading>
+
+   <textblock>
+<strong>character-set</strong>: Hier sollten Sie <command>ISO-8859-1</command> einstellen.
+   </textblock>
+
+   <textblock>
+<strong>editor</strong>: /usr/bin/vim, was sonst ;-) (Hier bestimmen Sie, welchen
+Editor Sie verwenden möchten, wenn Ihnen der <command>Pine</command>-eigene Editor Pico
+nicht genügt.
+Aktivieren Sie hierfür auch enable-alternate-editor-cmd)
+   </textblock>
+
+   <textblock>
+<strong>mail-check-interval</strong>: Wann überprüft <command>Pine</command> den eingestellten Ordner auf
+Veränderung? 60 ist hier ein guter Wert (Der Wert wird in Sekunden
+angegeben).
+   </textblock>
+
+   <textblock>
+Eine interessante Setup-Komponente bietet auch die <command>K</command> (Kolor)-Funktion.
+Hier können Sie die einzelnen <command>Pine</command>-Komponenten verschiedene Farben
+zuweisen, die Ihnen bei der Orientierung gute Dienste leisten.
+   </textblock>
+
+   <textblock>
+Mit diesen Einstellungen sollten Sie es nun bewenden lassen. Nun ist
+<command>Pine</command> fertig für die ersten Schritte. Für die weiteren Einstellungen
+sollten Sie sich mal ein Stündchen Zeit nehmen, wenn Sie wissen, das
+Sie <command>Pine</command> behalten wollen. Doch beim ersten Mal wollen Sie sicher erst
+mal was anderes machen als <command>Pine</command> zu konfigurieren.
+   </textblock>
+  </section>
+ </section>
+</split>
+
+
+
+
+<split>
+ <section>
+  <heading>
+Compose
+  </heading>
+   
+
+  <section>
+   <heading>
+E-Mails verfassen
+   </heading>
+
+   <textblock>
+Das erste, was Sie höchstwahrscheinlich tun wollen ist, eine E-Mail zu
+verfassen. Rufen Sie dafür mit <command>C</command> die Compose-Funktion auf (Compose =
+Verfassen). Sie können in dem Compose-Bildschirm sofort mit dem
+E-Mail-Schreiben beginnen. Die Bedeutung der verschiedenen Zeilen ist:
+   </textblock>
+
+   <textblock>
+<strong>To</strong>: Die Adresse(n) des/der Empfänger (Mehrere Adressen werden durch
+Komma voneinander getrennt)
+   </textblock>
+
+   <textblock>
+<strong>CC</strong> (Carbon Copy - Durchschlag): Die Adresse(n) der Empfänger einer
+Kopie dieser E-Mail (Mehrere Adressen werden durch Komma voneinander
+getrennt)
+   </textblock>
+
+   <textblock>
+<strong>Attachment</strong>: Dateien, die an die E-Mail angehängt (attached) werden
+sollen. Drücken Sie hierfür <command><keycomb mode="hold"><key>Strg</key><key>J</key></keycomb></command> , um in den Attach-Dialog zu
+gelangen, danach können Sie mit <command><keycomb mode="hold"><key>Strg</key><key>T</key></keycomb></command> in den Verzeichnisbaum
+wechseln, wo Sie die Datei auswählen können. Nach dem Auswählen fragt
+<command>Pine</command> Sie noch nach einem kurzen Kommentar zu dieser Datei, den Sie mit
+Enter abschließen. Danach ist die Datei angehängt.
+   </textblock>
+
+   <textblock>
+<strong>Subject</strong>: Die Betreff-Zeile
+   </textblock>
+
+   <textblock>
+Mit Strg-R können Sie den E-Mail Header um einige, nur selten benutzte
+Elemente erweitern. Besonders hervorzuheben ist hier die BCC (Blind
+Carbon-Copy) - Funktion, die man allerdings wirklich nur in Notfällen
+braucht. Wir wollen doch nicht Spammen...
+   </textblock>
+
+   <textblock>
+Sie können durch die einzelnen Zeilen mit Hilfe der Cursor-Tasten
+navigieren. Im Message-Text können Sie nun den E-Mail-Text editieren.
+Hierfür werden Sie in den allermeisten Fällen den <command>Pine</command>-eigenen Editor
+Pico verwenden. Wenn Sie es wünschen, können Sie auch durch Strg-_ in
+Ihren Lieblingseditor wechseln (z.B. <command>Vim</command>).
+   </textblock>
+
+   <textblock>
+Die E-Mail versenden Sie mit <command><keycomb mode="hold"><key>Strg</key><key>X</key></keycomb></command>. Mit <command><keycomb mode="hold"><key>Strg</key><key>C</key></keycomb></command> brechen Sie das
+Editieren ab, dies müssen Sie allerdings durch <command>Y</command> (Yes) bestätigen.
+   </textblock>
+  </section>
+
+
+  <section>
+   <heading>
+Der Editor Pico
+   </heading>
+
+   <textblock>
+Der Editor <command>Pico</command> ist nach kurzer Eingewöhnungszeit problemlos zu
+bedienen. Wenn Sie nicht mehr weiterwissen, bietet Ihnen <command>Pine</command> in den
+unteren zwei Zeilen des Bildschirms wie gewohnt die wichtigsten
+Kommandos als Orientierungshilfe.
+   </textblock>
+
+   <textblock>
+Sie können durch den editierten Text mit Hilfe der Cursor-Tasten
+navigieren. Auch die Backspace-Taste funktioniert wie gewünscht.
+Leider gilt das nicht für die Entf-Taste. Das Zeichen vor dem Cursor
+löschen Sie vielmehr mit <command><keycomb mode="hold"><key>Strg</key><key>D</key></keycomb></command>. Mit <command><keycomb mode="hold"><key>Strg</key><key>A</key></keycomb></command> gelangen Sie an den Anfang
+der Zeile, mit <command><keycomb mode="hold"><key>Strg</key><key>E</key></keycomb></command> an deren Ende. <command><keycomb mode="hold"><key>Strg</key><key>YJ</key></keycomb></command> Bringt Sie an den Anfang
+der Message, <command><keycomb mode="hold"><key>Strg</key><key>V</key></keycomb></command> an das Ende. Da Sie in <command>Pico</command> auf die Maus
+vollständig verzichten, müssen Sie das Kopieren und Einfügen auf
+andere Weise bewerkstelligen. Gehen Sie also an den Beginn der
+Stelle, die Sie markieren möchten und drücken Sie dann <command><keycomb mode="hold"><key>Strg</key><key>^</key></keycomb></command>. Gehen
+Sie nun bis zum Ende des zu kopierenden Textes und drücken Sie dann
+<command><keycomb mode="hold"><key>Strg</key><key>K</key></keycomb></command>. Der markierte Text verschwindet darauf hin in die
+Zwischenablage und kann von dort aus mit der <command><keycomb mode="hold"><key>Strg</key><key>U</key></keycomb></command> - auch mehrmals -
+wieder eingefügt werden. Wenn nach zu vielen Überarbeitungen der Text
+wie Kraut und Rüben aussieht, kann man ihn mit <command><keycomb mode="hold"><key>Strg</key><key>J</key></keycomb></command> wieder
+ausrichten (Die einzelnen Zeilen wieder möglichst nahe an die 72
+Zeichen bringen).
+   </textblock>
+
+   <textblock>
+Hier nochmal kurz alle Pico-Befehle zusammengefasst:
+   </textblock>
+
+   <table>
+   <pdf-column width="75"/>
+   <pdf-column/>
+     <tr>
+      <td><command><keycomb mode="hold"><key>Strg</key><key>A</key></keycomb></command></td>
+      <td>An den Anfang der Zeile</td>
+     </tr>
+     <tr>
+      <td><command><keycomb mode="hold"><key>Strg</key><key>E</key></keycomb></command></td>
+      <td>An das Ende der Zeile</td>
+     </tr>
+     <tr><td><command><keycomb mode="hold"><key>Strg</key><key>Y</key></keycomb></command></td>
+      <td>An den Anfang des Textes</td>
+     </tr>
+     <tr><td><command><keycomb mode="hold"><key>Strg</key><key>V</key></keycomb></command></td>
+      <td>An das Ende des Textes</td>
+     </tr>
+     <tr><td><command><keycomb mode="hold"><key>Strg</key><key>D</key></keycomb></command></td>
+      <td>Löscht das Zeichen unter dem Cursor</td>
+     </tr>
+     <tr><td><command><keycomb mode="hold"><key>Strg</key><key>H</key></keycomb></command></td>
+      <td>Löscht das Zeichen links neben dem Cursor</td>
+     </tr>
+     <tr><td><command><keycomb mode="hold"><key>Strg</key><key>^</key></keycomb></command></td>
+      <td>Setzt einen Markierungspunkt</td>
+     </tr>
+     <tr>
+      <td><command><keycomb mode="hold"><key>Strg</key><key>K</key></keycomb></command></td>
+      <td>Verschiebt markierten Text in die Zwischenablage</td>
+     </tr>
+     <tr>
+      <td><command><keycomb mode="hold"><key>Strg</key><key>U</key></keycomb></command></td>
+      <td>Fügt den Text aus der Zwischenablage ab der Cursorposition ein</td>
+     </tr>
+     <tr>
+      <td><command><keycomb mode="hold"><key>Strg</key><key>J</key></keycomb></command></td>
+      <td>Richtet den Text absatzweise aus</td>
+     </tr>
+   </table>
+  </section>
+ </section>
+</split>
+
+
+
+
+<split>
+ <section>
+  <heading>
+Address Book
+  </heading>
+   
+  <textblock>
+Das Adressbuch in <command>Pine</command> gehört zu den effektivsten aller
+E-Mail-Programme, wenn man sich ein Schema überlegt und dieses
+durchhält.
+  </textblock>
+
+  <textblock>
+In das Address Book gelangt man durch den Druck von <command>A</command>. Im
+Address Book kann man sich einzelne Adressen und Verteilerlisten
+einrichten. Hierzu drückt man im Address Book das <command>@</command> und richtet im
+Folgenden die neue Adresse ein. Hierzu befüllt man die Zeilen:
+  </textblock>
+
+  <textblock>
+<strong>Nickname</strong>: Der Nickname definiert die Abkürzung, mittels der man im To:
+der E-Mail-Funktion die Adresse schnell einfügen kann. Hier sollte man
+sich von Anfang an ein Schema überlegen, mit Hilfe dessen man Nickname
+und voller Name verknüpft. Im To:-Feld braucht man nämlich dann nur
+noch den Nickname eingeben, nach dem Zeilenwechsel setzt <command>Pine</command> dann die
+Adresse selbständig ein. Ich persönlich verwende als Nickname den
+ersten Buchstaben des Vornamens und die ersten zwei Buchstaben des
+Nachnamens. Das reicht ziemlich lange.
+  </textblock>
+
+  <textblock>
+<strong>Fullname</strong>: Der volle Name des Adressaten.
+  </textblock>
+
+  <textblock>
+<strong>Address</strong>: Die E-Mail-Adresse
+  </textblock>
+
+  <textblock>
+Mit <command><keycomb mode="hold"><key>Strg</key><key>X</key></keycomb></command> speichert man die neue Adresse. Im Adressbuch kann man auf
+einer Auswahl mit <command>C</command> dem entsprechenden Empfänger direkt eine E-Mail
+schreiben. In einer E-Mail kann man mit Hilfe von <command>T</command> alle Adressen
+einer E-Mail ins Adressbuch übernehmen.
+  </textblock>
+ </section>
+</split>
+
+
+
+<split>
+ <section>
+  <heading>
+Message Index / Folder List
+  </heading>
+   
+  <textblock>
+Nun zu den eingehenden E-Mails. Wenn man Fetchmail und Sendmail
+richtig konfiguriert hat, wird man bald die ersten E-Mails im Ordner
+inbox begrüßen dürfen. Sie können diesen Ordner aufrufen, indem Sie im
+Hauptmenü das <command>I</command> drücken. In jedem E-Mail-Ordner sehen Sie die dort
+gespeicherten E-Mails in der gewünschten Reihenfolge angeordnet.
+Ungelesene E-Mails sind links neben dem Absender mit einem <command>N</command>
+gekennzeichnet. Sie können eine E-Mail mit <command>R</command> direkt beantworten. Alle
+Schritte bei der Beantwortung sind danach identisch mit dem Schreiben
+einer E-Mail.
+  </textblock>
+
+  <textblock>
+Wenn Sie die E-Mail speichern wollen, drücken Sie <command>S</command>. <command>Pine</command> fragt Sie
+daraufhin nach dem Ordner, in dem Sie speichern wollen. Geben Sie den
+Ordnernamen an (Gibt es diesen Ordner noch nicht, wird <command>Pine</command> Sie
+fragen, ob es ihn erstellen soll. Im Gegenzug bietet <command>Pine</command> ab dem
+zweitem Mal eine Vervollständigung des Ordnernamens mit der <command>Tab</command>-Taste
+an. Nennen Sie also Ihre Ordner möglichst unterschiedlich, dann können
+Sie schneller vervollständigen.)
+  </textblock>
+
+  <textblock>
+Wenn Sie die E-Mail direkt in einem Ihrer Verzeichnisse speichern
+möchten, drücken Sie das <command>E</command> (Export). <command>Pine</command> wird Sie daraufhin nach dem
+Ziel fragen, dann können Sie die E-Mail exportieren.
+  </textblock>
+
+  <textblock>
+Hat die neue E-Mail ein Attachment, dann können Sie mit Hilfe von <command>V</command>
+sehen, welche Teile an Ihrer E-Mail angehängt sind. Wenn Sie für die
+entsprechende Datei eien Viewer konfiguriert haben, dann können Sie
+den Anhang direkt durch Auswahl und die Enter-Taste ansehen. Sollten
+Sie für diesen Typ keine Möglichkeit haben oder wünschen, die Datei
+aus <command>Pine</command> heraus zu öffnen, dann speichern Sie die ausgewählte Datei
+mit S und der anschließenden Angabe des Ziels auf Ihrer Festplatte.
+E-Mails die Sie nicht speichern oder exportieren wollen, können Sie
+löschen, wenn Sie in der E-Mail-Übersicht die entsprechende E-Mail mit
+Hilfe der Cursor-Tasten auswählen und mit <command>D</command> zum Löschen vormerken. Im
+Normalfall werden die E-Mails gelöscht, wenn Sie <command>Pine</command> verlassen. Sie
+können aber auch alle ausgewählten Mails direkt mit <command>X</command> löschen.
+  </textblock>
+
+  <textblock>
+Hier nochmal alle Folder-Befehle in der Übersicht:
+  </textblock>
+
+  <textblock>
+E-Mail-Übersicht
+  </textblock>
+
+  <table>
+   <pdf-column width="50"/>
+   <pdf-column/>
+    <tr>
+     <td valign="top"><command><keycomb mode="hold"><key>&lt;ENTER&gt;</key></keycomb></command></td>
+     <td> Öffnet die Mail, über der die Cursorzeile liegt (= Aktive Mail)</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>D</command></td>
+     <td>Markiert die aktive E-Mail zum Löschen</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>U</command></td>
+     <td>Hebt die Löschmarkierung wieder auf</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>S</command></td>
+     <td>Speichert die aktive Mail in einem Folder (muss noch angegeben werden)</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>E</command></td>
+     <td>Exportiert die aktive Mail in ein Verzeichnis</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>R</command></td>
+     <td> Beantwortet die E-Mail</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>F</command></td>
+     <td>Leitet die aktive Mail weiter</td>
+    </tr>
+   </table>
+
+
+
+  <textblock>
+E-Mail Ansicht
+  </textblock>
+
+  <table>
+   <pdf-column width="50"/>
+   <pdf-column/>
+    <tr>
+     <td valign="top"><command>D</command></td>
+     <td>Markiert die aktive E-Mail zum Löschen</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>S</command></td>
+     <td>Speichert die aktive Mail in einem Folder (muss noch angegeben werden)</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>E</command></td>
+     <td>Exportiert die aktive Mail in ein Verzeichnis</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>R</command></td>
+     <td>Beantwortet die E-Mail</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>F</command></td>
+     <td>Leitet die aktive Mail weiter</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>V</command></td>
+     <td>Zeigt eine Übersicht aller Elemente dieser E-Mail</td>
+    </tr>
+   </table>
+
+
+
+  <textblock>
+Im Übersichtsfenster aller E-Mail-Elemente
+  </textblock>
+
+  <table>
+   <pdf-column width="50"/>
+   <pdf-column/>
+    <tr>
+     <td valign="top"><command>V</command></td>
+     <td>Zeigt den aktiven Teil der E-Mail mit Hilfe des eingestellten
+     Viewers</td>
+    </tr>
+    <tr>
+     <td valign="top"><command>S</command></td>
+     <td>Speichert den aktiven Teil der E-Mail in ein Verzeichnis</td>
+    </tr>
+   </table>
+
+ </section>
+</split>
+
+
+
+<split>
+ <section>
+  <heading>
+Die wichtigste Frage zum Schluss
+  </heading>
+   
+  <textblock>
+Jeder Mensch schickt mir diese komischen Dateien, die mit dieser
+komischen Textverarbeitungssoftware erstellt wurden. Wie kann ich
+diese nervensparend angucken?
+  </textblock>
+
+  <textblock>
+Adri van Os' <command>Antiword</command> (<ref lang="en" url="http://www.winfield.demon.nl/">http://www.winfield.demon.nl/</ref>) extrahiert den
+Text aus einer Word-Datei und gibt ihn als Plain-Text oder als PS aus.
+Sie können also die Datei danach direkt mit <command>vi</command> weiterbearbeiten oder
+zurückschicken. (Und wenn Sie das ein paar mal machen, hat dies sogar
+einen sehr heilsamen Erziehungseffekt auf die anderen ;-) )
+  </textblock>
+
+  <textblock>
+Copyright (c)  2002 <name email="thomas.lerche@paedagogik.uni-regensburg.de">
+Thomas Lerche</name>
+  </textblock>
+
+  <textblock>
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+  </textblock>
+ </section>
+</split>
+</chapter>

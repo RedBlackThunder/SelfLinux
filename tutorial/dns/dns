@@ -1,0 +1,3071 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<chapter>
+ <title>Domain Name System</title>
+
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+
+ <layout>
+  <name>Peter Schneewind</name>
+  <mailto>peter@schneewind.net</mailto>
+ </layout>
+
+ <license>
+  GFDL
+ </license>
+
+ <index>dns</index>
+
+<description>
+ <textblock>
+Dieses Dokument soll den Einstieg in DNS erleichtern. Es wendet
+sich an zukünftige DNS-Administratoren von kleinen Netzwerken.
+ </textblock>
+ <textblock>
+Kommentare, Korrekturen und Hinweise sind willkommen! Dazu bitte
+eine kurze eMail an: <name>Steffen Dettmer</name>
+<ref url="mailto:steffen@dett.de">&lt;steffen@dett.de&gt;</ref>
+schicken.
+ </textblock>
+</description>
+
+<split>
+ <section>
+  <heading>
+Einführung
+  </heading>
+
+  <textblock>
+Da sich ein Mensch IP-Nummern schlecht merken kann, benutzt man
+lieber Namen. Nun braucht man einen Dienst, der diese irgendwie
+in IP-Adressen übersetzen kann.
+  </textblock>
+
+  <textblock>
+Zunächst führte man (auf jedem Host) die Datei
+<command>/etc/hosts</command> ein, in der,
+durch Whitespace getrennt, eine IP-Adresse, ein Name und beliebig
+viele Aliasnamen stehen. Der Name ist der &quot;erste, wirkliche, echte
+Systemname&quot;, die Aliasnamen sind zusätzliche. In der Praxis kann
+das natürlich auch umgekehrt sein, denn manche Administratoren
+verwechseln die Namen und geben dem System mit dem Kommando
+<command>hostname</command> einen
+Namen, der eigentlich &quot;nur&quot; ein Alias ist. Dies kann unter
+Umständen zu Problemen führen.
+  </textblock>
+
+  <textblock>
+Eine <command>/etc/hosts</command> kann zum Beispiel so aussehen:
+  </textblock>
+
+ <file>
+  <title>/etc/hosts</title>
+  <content>
+127.0.0.1    localhost
+192.168.1.1  ns1.selflinux.de
+192.168.1.2  ns2.selflinux.de
+192.168.1.3  rebecca.selflinux.de www.selflinux.de
+  </content>
+ </file>
+
+  <textblock>
+Neben dem <command>localhost</command> Eintrag, der stets eingetragen sein sollte,
+sind hier noch zwei Namesserver und ein Webserver eingetragen.
+Der Webserver heißt eigentlich <command>rebecca</command>, <command>www</command> ist ein Zweit-
+oder Aliasname.
+  </textblock>
+
+  <textblock>
+Damit Namen auf allen Maschinen bekannt sind, müssen die Einträge
+in allen <command>/etc/hosts</command> auf allen
+Maschinen stehen.
+In den Anfängen des ARPA-Net wurde diese Datei als
+<command>hosts.txt</command>
+dann auf alle Maschinen verteilt. Diese wurde schnell groß und
+unübersichtlich. Um Konflikte zu vermeiden, kam man auf die
+Idee, jeder Organisation einen Namen zu geben, der durch einen
+Punkt dahinter geschrieben wurde. Damit blieben die Namen
+eindeutig, auch wenn zwei Organisationen einen Host Namens
+<command>FTP</command> haben wollten, denn hinter dem Punkt waren sie
+unterschiedlich.<br/>
+Später kam noch eine weitere Unterteilung hinzu, nämlich die
+nach Ländern. So gibt es jetzt einen Server www in der
+Organisation selflinux in Deutschland, kurz www.selflinux.de. Die
+Organisation bezeichnet man allgemeiner als
+<strong>Domain</strong>, was im mathematischen Sinne das
+&quot;Gemeinsame&quot; bedeutet.
+ </textblock>
+			
+ <textblock>
+Da das für tausende von Maschinen nicht mehr wartbar ist, erfand
+man eine verteilte Datenbank, die das verwaltet, und nannte es
+das <strong>Domain Name System</strong>, kurz
+<strong>DNS</strong>.
+Verteilte Datenbank bedeutet, dass jeder nur einen Teil
+verwaltet. Eine einfache und hier günstige Struktur ist die
+Baumstruktur, die angewendet wird.<br/>
+An der Wurzel stehen die
+sogenannten <strong>Top Level Domains</strong>,
+<strong>TLD</strong>s, z.B.
+<command>de</command>, <command>com</command>, <command>org</command>. Diese werden
+von Wurzelservern bedient, also dem Teil der Datenbank, der
+darüber Informationen hat. Englisch heißen diese
+<strong>ROOT-SERVERS</strong>.<br/>
+Darunter kommen dann die Server, welche die 
+TLD-Datenbanken haben, es sind mehere, um ausfallsicher zu sein
+und die Last zu verteilen. Diese haben dann Informationen über
+die Organisations-Domains, die man zusammen mit der TLD kurz mit
+<strong>Domain</strong> bezeichnet, eine Domain wäre z.B.
+<command>selflinux.de</command>.<br/>
+Eine Domain hat in der Regel einen Namensserver, der nun endlich
+die Namen wie <command>www</command> kennt. Das nennt man
+<strong>Delegation</strong>.
+ </textblock>
+
+ <textblock>
+Da DNS-Server aus Performancegründen Namen cachen (also
+zwischenspeichern), kann es auch sein, dass ein anderer
+Namensserver <command>www.selflinux.de</command> kennt, aber er hat die
+Information &quot;aus zweiter Hand&quot;. Die Server, die die
+Daten wirklich haben, meist eine Datei auf einer Platte, und
+deren Antwort verbindlich ist, nennt man
+<strong>autoritativ</strong>. Bekommt man von einem
+DNS-Server eine Antwort aus dem Cache, so ist sie als
+<strong>non-autorativ</strong> gekennzeichnet, d.h, sie
+ist vielleicht nicht mehr gültig.
+ </textblock>
+
+ <definition>
+Ein TLD Server ist für eine TLD (z.B. <command>de</command>) autoritativ.
+ </definition>
+
+ <textblock>
+Die &quot;Rootdomain&quot;, die Vater/Mutterdomain, nennt man
+&quot;.&quot;.
+ </textblock>
+
+ <definition>
+Ein ROOT-SERVER ist also für &quot;.&quot; autoritativ.
+ </definition>
+
+ <textblock>
+Die ROOT-SERVER delegieren nun die Autorität zu den TLD-Servern.
+Der ROOT-SERVER &quot;weiß&quot; (und bestimmt), welcher
+DNS-Server für z.B. <command>de</command> autoritativ ist. Ein
+ <command>de</command>-Server enthält nun auch nicht die Daten über
+ <command>www</command> der Domain <command>selflinux</command>, sondern er
+delegiert die Autorität zu einem anderen DNS-Server, der nun
+unter <command>selflinux.de</command>; eintragen kann, was er will,
+z.B. <command>www</command>. 
+ </textblock>
+</section>
+</split>
+	
+<split>
+<section>
+
+ <heading>
+Resolver
+ </heading>
+ 
+ <textblock>
+Ein Programm, z.B. ein WWW-Browser, muß nun natürlich so einen
+DNS-Server fragen können.  Damit das nicht jedes Programm von
+sich aus implementieren muß, ist das Bestandteil der libc. Dies
+nennt man <strong>Resolver</strong>, zu deutsch:
+&quot;Auflöser&quot;. Die Funktionen verwenden
+Konfigurationsdateien (bzw. bei Win entsprechende
+Registryeinträge), um z.B. die IP Adresse des zu verwenden
+Namensservers zu ermitteln. Der Resolver sendet eine Anfrage an
+einen DNS-Server, und erwartet die (endgültige) Antwort. Der
+DNS-Server muß nun hinten beginnend den Namen
+auflösen. Soll er z.B. <command>www.selflinux.de</command> für den
+Klienten auflösen, muß er sich dabei rekursiv durch die
+DNS-Struktur hangeln. 
+ </textblock>
+
+ <textblock>
+Er fragt zuerst einen ROOT-SERVER nach den DNS-Servern (falls
+noch nicht im Cache), die für <command>de.</command> autoritativ sind.
+Dann fragt er einen dieser nach den für <command>selflinux.de.</command>
+autoritativen, und einen von diesen nach
+<command>www.selflinux.de.</command>. Hat er die Antwort im Cache, oder
+hatte ein anderer DNS-Server (der von &quot;unserem&quot; als
+<strong>Forwarder</strong> benutzt wird, der also die Anfragen
+weitergereicht bekommt) die Antwort im Cache, so wird sie dem
+Client als <strong>non-authoritative</strong> gekennzeichnet
+übermittelt. Diese Information bekommt das Programm
+normalerweise allerdings nicht zu sehen.
+ </textblock>
+
+ <hint>
+Es gibt auch DNS-Server, die diese rekursiven Resolveranfragen
+nicht auflösen. Diese können von einem Client nicht als
+DNS-Server benutzt werden. Das reduziert die Belastung dieser
+DNS-Server, was z.B. bei den ROOT-Servern wichtig ist.
+ </hint>
+
+ <textblock>
+Häufig wird unter UN*X der BSD-Resolver verwendet. Dieser wird
+mit der Datei <command>/etc/resolv.conf</command> konfiguriert.
+Hier können einige
+Optionen gesetzt werden. Eine ist natürlich die zu verwendenden
+Namensserver. Diese werden einfach untereinander (jeder in einer
+Zeile) aufgezählt (z.B.: &quot;nameserver 127.0.0.1&quot; usw.).
+Zusätzlich wird hier die DNS-Domain eingetragen (z.B.:
+&quot;domain self-linux.de&quot;), und eine Suchliste (z.B.:
+&quot;search selflinux.de de com&quot; - ein benutzerfreundliches
+Beispiel).
+ </textblock>
+
+ <definition>
+Es wird immer der erste Namenserver gefragt, außer
+wenn dieser ausfällt. Nach einem großzügigen Timeout wird dann
+der zweite verwendet.
+ </definition>
+
+ <textblock>
+Es gibt eine Erweiterung, der
+<strong>Splitted Resolver</strong>. Hier kann man zusätzlich
+angeben, für welche Domains der Namesserver verwendet wird (die
+Option &quot;nameserver&quot; erhält dies als weiteren
+Parameter). Diese Erweiterung ist allerdings relativ selten
+anzutreffen. Die Suchliste funktioniert wie folgt:<br/>
+Wird ein Name nicht gefunden,
+so wird der erste Teil der Suchliste angehängt (also
+selflinux.de). Wird auch der so erweitere Name nicht gefunden, so
+wird dem ursprünglichen der zweite Teil angehängt, und eine
+dritte Anfrage gestartet usw. Der Client (also das Programm)
+bemerkt davon nichts. So kann man sich etwas Schreibarbeit
+sparen. Eine Beispieldatei wäre also:
+ </textblock>
+
+ <file>
+  <title>/etc/resolv.conf</title>
+  <content>
+domain selflinux.de
+search selflinux.de de com
+nameserver 127.0.0.1
+nameserver 192.168.1.53
+  </content>
+ </file>
+   
+ <hint>
+Sicherheitshalber sollte man stets mehrere Nameserver angeben.
+ </hint>
+			
+ <textblock>
+Verwendet man Windows-Clients, so sind diese Paramter im
+entsprechenden Fenster einzustellen. Dabei ist zu beachten, dass
+Windows Namen grundsätzlich zuerst über das
+Windows-Namensprotokoll aufzulösen versucht, was zu unerwarteten
+Effekten führen kann.
+ </textblock>
+   
+ <textblock>
+In einer weiteren Datei (<command>/etc/nsswitch.conf</command>)
+legt man unter
+moderneren UN*X-Varianten fest, in welcher
+Reihenfolge welche
+Methoden zur Namensauflösung verwendet werden (lokale Dateien,
+DNS oder NIS). Die entsprechende Option heißt &quot;hosts&quot;.
+In einer
+typischen DNS-Konfiguration (ohne NIS) ist sie meist auf
+ </textblock>
+
+ <file>
+  <title>/etc/nsswitch.conf</title>
+  <content>
+hosts:  files dns
+  </content>
+ </file>
+
+ <textblock>
+gesetzt (erst lokale Datei: <command>/etc/hosts</command>, dann
+DNS verwenden).
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Bind
+ </heading>
+
+ <textblock>
+Im folgenden wird <command>bind</command> in einer 8er-Version
+vorrausgesetzt. <command>bind</command> ist der Nameserver-Deamon, 
+der vom Internet Software Consortium gepflegt und
+entwickelt wird. Es sind zwar noch hier und da Versionen 4.x
+im Einsatz, diese sterben jedoch aus. Neue Server sollten immer 
+eine aktuelle Version erhalten, und auch bestehende sollten 
+hin und wieder geupdatet werden, insbesondere, wenn 
+Sicherheitslücken bekannt geworden sind!
+ </textblock>
+
+</section>
+
+
+<section>
+ <heading>
+Zonen
+ </heading>
+
+ <textblock>
+Nun gibt es einen weiteren wichtigen Begriff:
+<strong>Zone</strong>. Ein Zone wird gerne mit einer Domain
+verwechselt, da muß man aufpassen, die Unterschiede sind wichtig.
+ </textblock>
+
+ <definition>
+In Kurzform: Eine Zone ist das, für das ein DNS-Server
+authoritativ ist, also etwas <strong>Delegiertes</strong>.
+ </definition>
+
+ <textblock>
+Ein DNS-Server ist immer für eine oder mehrere Zones autoritativ
+(nämlich die, die zu ihm delegiert wurden). Umgekehrt gibt es zu
+jeder Zone einen DNS-Server, der für diese authorativ ist. Nun
+gibt es aber sehr große Zones, z.B. die der Universität Berkeley
+<command>berkeley.edu</command>. Die DNS-Admins von Berkeley delegieren
+also weiter.<br/>Zum Beispiel könnte man die großen Zweige
+<command>cs</command> und <command>math</command> delegieren. Die bekommen
+einen eigenen Server und der Admin von <command>cs</command> muß nicht
+immer die Admins von Berkeley auffordern, einen Namen
+einzutragen, das kann er selbst machen. Damit sind
+<command>cs</command> und <command>math</command> Zonen der Domain Berkeley.
+Diese bezeichnet man auch als <strong>Subdomains</strong>,
+da sie unter Berkeley liegen.
+ </textblock>
+
+ <textblock>
+Wir haben nun eine Domain, die aus mehreren Zonen besteht, und
+jede Zone gehört zu genau einer Domain (nämlich Berkeley).
+Berkeley selbst ist auch eine Zone, aber diese enthält nur wenige
+Informationen, nämlich die Adressen der DNS-Server, die für
+<command>cs</command> und <command>math</command> authoritativ sind, und
+vielleicht noch ein paar Namen aus kleinen Subdomains wie z.B.
+<command>art</command>. Diese Subdomain liegt nun - im Gegensatz zu
+<command>cs</command> - in der Zone Berkeley! Das heißt also,
+<command>cs</command> hat einen eigenen Namensserver, ist also eine Zone,
+<command>art</command> jedoch nicht. Hier liegt also der Unterschied,
+denn beides sind Subdomains, aber nur <command>cs</command> ist eine
+Subzone.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+DNS-Datenbank und deren Einträge
+ </heading>
+
+ <textblock>
+Eine DNS-Datenbank besteht aus zwei wichtigen Typen von
+Einträgen: Zuordnung von Namen zu Adressen (Addressrecords
+&quot;A&quot;), und Einträgen, die einer Adresse einen Namen
+zuordnen, also Zeigern auf einen Namen (Reverserecords
+&quot;PTR&quot;). Daneben gibt es aber noch weitere. Diese
+Einträge liegen in einer Zone, die von einem Namensserver
+authoritativ verwaltet werden. Diese Einträge selbst nennt man
+<strong>Resource Record</strong>, kurz <strong>RR</strong>.
+ </textblock>
+
+ <textblock>
+Neben Namen und IP-Adressen gibt es einen RR (also
+&quot;Typ&quot;) für die Eigenschaften einer Zone. Es gibt 
+RRs, die Textinformationen beinhalten, die geographische 
+Position festlegen und weitere.
+ </textblock>
+
+ <definition>
+Die DNS-Datenbank ist also eine verteilte Datenbank, die in Zonen
+unterteilt ist. Diese Zonen werden von DNS-Servern bedient. Eine
+Zone besteht aus Einträgen, die man Resource Records nennt.
+ </definition>
+
+</section>
+
+<section>
+
+ <heading>
+Meister und Sklaven
+ </heading>
+ 
+ <textblock>
+Da man für große Zones mehere DNS-Server benötigt, können diese
+Datenbanken übertragen werden. Auf einer Maschine werden die
+Dateien gepflegt, und dann auf die anderen kopiert. Diese eine
+Maschine nennt man &quot;Master&quot; oder
+<strong>Primary</strong>, die anderen &quot;Slave&quot; oder
+<strong>Secondary</strong>. Die letzteren sind die moderneren
+Formen.
+&quot;Slave&quot; ist irreführend, denn ein Slave kann für einen
+anderen &quot;Slave&quot; auch &quot;Master&quot; sein, und
+außerdem ist ein Slave auch authoritativ für diese Zone.
+ </textblock>
+
+ <hint>
+Die DNS-Server von großen Zonen kann man in der Regel gar nicht
+fragen, da sie stark abgesichert sind, dazu sind die
+Secondaries da.
+ </hint>
+
+ <textblock>
+Von &quot;außen&quot; kann man nicht erkennen, ob man einen
+Master oder einen Slave fragt, beide sind genauso authoritativ für
+die Zone. Ein Slave legt die Zonendaten auch auf seiner Platte
+ab, damit er auch nach einem Neustart Antworten liefern kann,
+wenn der Master nicht erreichbar ist. Hier liegt der große
+Unterschied zum Caching. Daten aus dem Cache werden beim
+Neustart verworfen.
+ </textblock>
+
+ <hint>
+Daten aus dem Cache können niemals authoritativ sein.
+ </hint>
+
+ <textblock>
+Der DNS-Server bestimmt auch einige Eigenschaften der Zone
+selbst, z.B. wie lange die Zone gecached werden darf, und in
+welchen Zeitabständen die Secondaries prüfen sollen, ob sich die Zone
+geändert hat. Diese Daten liegen in einem ganz speziellen
+Record, dem <strong>Start of Authority</strong>, kurz
+<strong>SOA</strong>. Dieser legt den Beginn und die
+Eigenschaften einer Zone fest.
+   </textblock>
+ </section>
+</split>
+
+<split>
+ <section>
+  <heading>
+Resource Records
+  </heading>
+
+  <textblock>
+Ein Record besteht aus mehreren Teilen: dem
+<strong>Objekt</strong> (Datenbankleute nennen es auch das
+Schlüsselfeld), der <strong>TTL</strong> (Time to live, die
+maximale Zeit, die es gecacht werden darf), der
+<strong>Klasse</strong>, zu der der Record gehört, der
+<strong>Typ</strong> des Records (z.B. &quot;A&quot; für eine
+Namen-Address-Zuordnung) und dem <strong>Inhalt</strong>.
+  </textblock>
+
+  <textblock>
+Die TTL gibt an, wie lange ein Objekt gecached werden darf, also
+wie lange es in einem Cache lebt. Üblich sind Werte von drei oder
+besser acht Stunden.
+  </textblock>
+
+  <textblock>
+Die Klasse gibt an, zu welcher Netzwerkart der Name gehört.
+Das Internet heißt <strong>IN</strong>, das ist in 99,99% der
+Fälle die verwendete Klasse, die wenigen Ausnahmen (Chaosnet
+und Hesiod - damit man es mal gehört hat, früher gab es auch mal
+CSNET) werden hier nicht behandelt, bis auf eine kleine Ausnahme.
+  </textblock>
+
+  <textblock>
+Der Typ wurde schon erwähnt: Es gibt Namen, Adressen, Texte (die
+wichtige Zusatzinformationen enthalten können), Aliasnamen,
+Hostinformationen, Mailserver und andere. Einige davon gibt es
+praktisch fast nur &quot;auf dem Papier&quot;.
+  </textblock>
+ </section>
+
+<section>
+ <heading>
+Start of Authority - Ein Beispiel
+ </heading>
+ <textblock>
+Die Zone <command>selflinux.de.</command> (ab jetzt schreiben wir immer, wenn wir
+sicher sind, den vollen Namen zu meinen, einen
+&quot;.&quot; hinten dran, den Namen der Root-Zone) könnte so
+aussehen (nur der SOA RR):
+ </textblock>
+
+ <quotation>
+selflinux.de.  IN SOA [Inhalt]
+ </quotation>
+
+  <textblock>
+Das Objekt ist die Zone. Es gehört zur Klasse Internet, und es handelt
+sich um eine Zone, genauer gesagt, um den Start einer Autorität. 
+  </textblock>
+
+  <textblock>
+Nun müssen hier etliche Informationen drinstehen: 
+  </textblock>
+
+  <ul>
+    <li>
+Der Name des primären Nameservers (Ursprungsserver)
+    </li>
+
+    <li>
+Eine EMailadresse, falls jemand mal eine Frage
+  oder einen Hinweis hat. Hier wird anstatt des &quot;@&quot; Zeichens ein
+  &quot;.&quot; verwendet (ja, hier darf eine EMailadresse im ersten Teil
+  keinen Punkt enthalten!)
+    </li>
+  </ul>
+
+  <textblock>
+Dann in Klammern:
+  </textblock>
+
+  <ul>
+    <li>
+Eine Seriennummer der Zonenversion, an der die Secondaries
+  erkennen, ob sich was geändert hat
+    </li>
+
+    <li>
+Informationen, wann die Secondaries diese Zonendaten
+  aktualisieren sollen (refresh)
+    </li>
+
+    <li>
+Wie lange sie warten sollen, wenn das nicht klappt (retry)
+    </li>
+
+    <li>
+Nach welcher Zeit die Daten definitiv ungültig sind (expire)
+    </li>
+
+    <li>
+Wie lange ein RR mindestens gültig ist (min. TTL).
+    </li>
+  </ul>
+
+  <textblock>
+Die Zeiten werden alle in Sekunden angegeben.
+Da sich die Seriennummer stets erhöhen muß, hat es sich bewährt,
+das aktuelle Datum im Format JJJJMMTT und eine zweistellige
+tägliche laufende Nummer zu verwenden. So erkennt man auch
+gleich, wann die Zone zum letzten Mal verändert wurde. 
+  </textblock>
+
+  <textblock>
+Damit sieht ein SOA so aus (&quot;;&quot; trennt Kommentare):
+  </textblock>
+
+  <file>
+   <title>named.hosts</title>
+   <content>
+selflinux.de. IN SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	10800	   ; Refresh (Aktualisierung) 3 Stunden
+	3600	   ; Retry (neuer Versuch)
+	864000	   ; Expire (ungültig nach 10 Tagen)
+	86400 )    ; min. TTL (Mindestgültigkeit) 1 Tag
+   </content>
+  </file>
+
+  <textblock>
+DNS ist nicht case-sensitv, <command>.de.</command>, <command>.De.</command>;,
+<command>.DE.</command> ist also das gleiche. Deshalb schreibe ich RR-Typen und Klassen 
+
+groß, Namen
+klein, um besser unterscheiden zu können.
+			</textblock>
+		</section>
+</split>
+<split>
+ <section>
+ <heading>
+Die benötigten Resource Records für unsere Zone
+ </heading>
+
+ <textblock>
+In dieser Zone gibt es selbstverständlich DNS-Server, die diese
+Angaben weitergeben können. Diese RR's heißen <strong>NS</strong>
+- Name Server, das sieht dann so aus:
+ </textblock>
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+selflinux.de. IN NS ns1.selflinux.de.
+selflinux.de. IN NS ns2.selflinux.de.
+  </content>
+ </file>
+
+ <textblock>
+Wir könnten auch noch pri-ns dazuschreiben, aber wir möchten
+nicht, dass dieser viel gefragt wird, also lassen wir ihn weg.
+ </textblock>
+
+ <textblock>
+Nun finden sich in der <command>/etc/hosts</command> (beispielsweise) folgende
+Einträge:
+ </textblock>
+
+ <file>
+  <title>/etc/hosts</title>
+  <content>
+192.168.1.1  ns1.selflinux.de
+192.168.1.2  ns2.selflinux.de
+192.168.1.3  rebecca.selflinux.de www.selflinux.de
+  </content>
+ </file>
+
+ <textblock>
+Der &quot;localhost&quot; Eintrag paßt nicht in die Zone &quot;selflinux.de&quot;, da
+&quot;localhost&quot; ja nicht mit &quot;selflinux.de&quot; endet.
+ </textblock>
+
+ <textblock>
+rebecca hat einen Zweinamen &quot;www&quot;. Zweitnamen sind
+vom RR Type <strong>CNAME</strong> (canonical name). Dabei
+gilt es zu beachten, dass CNAMEs nie &quot;auf der rechten
+Seite stehen dürfen&quot;. Das bedeutet, es gibt keine
+CNAMEs von CNAMEs, MX- oder NS-Records &quot;zeigen&quot; nicht
+auf CNAMEs, sondern immer auf <strong>A</strong>-Address-Records.
+ </textblock>
+
+ <textblock>
+Diese nun übersetzt in RRs:
+ </textblock>
+
+ <file>
+  <title>
+selflinux.zone
+  </title>
+  <content>
+ns1.selflinux.de.     IN A 192.168.1.1  
+ns2.selflinux.de.     IN A 192.168.1.2  
+rebecca.selflinux.de. IN A 192.168.1.3  
+www.selflinux.de.     IN CNAME rebecca.selflinux.de.
+  </content>
+ </file>
+
+ <textblock>
+Hier sind keine TTLs (Cache-Zeiten) angegeben, es wird die min TTL
+aus dem SOA Record verwendet. Wir könnten das aber machen, z.B.:
+ </textblock>
+
+ <file>
+  <title>
+selflinux.zone
+  </title>
+  <content>
+www.selflinux.de.     3600 IN CNAME rebecca.selflinux.de.
+  </content>
+ </file>
+
+ <textblock>
+Der WWW-Name darf nur eine Stunde gecached werden (vielleicht
+steht die Umstellung auf eine andere Maschine bevor?). Das senkt
+die Performance, führt zu höherem Traffic, darf also nicht
+versehentlich drin stehen bleiben.
+ </textblock>
+
+ <textblock>
+Für die gesamte Zone sei ein Mailserver verantwortlich, z.B.
+rebecca. Mit dem <strong>MX</strong>-RR definiert man einen Mail Exchanger und
+dessen Priorität. Niedrigere Prioritäten werden dabei vorgezogen.
+Ein Eintrag könnte demnach lauten:
+ </textblock>
+
+ <file>
+  <title>
+selflinux.zone
+  </title>
+  <content>
+selflinux.de.	       IN MX 10 rebecca.selflinux.de.
+  </content>
+ </file>
+
+ <textblock>
+Damit bekommt rebecca Mail für &lt;user&gt;@selflinux.de.
+Natürlich muß das dortige Mailprogramm eMail dieses Aussehens 
+annehmen, und nicht weitersenden (z.B. Klasse &quot;Cw&quot;
+bei <command>sendmail</command> muß diese Namen
+&quot;selflinux.de&quot; [als Hostnamen] beinhalten).
+Zusätzlich kann für jeden Host mittels Wildcard
+&quot;*&quot; dieser Mailexchanger erzwungen werden:
+ </textblock>
+
+ <file>
+  <title>
+selflinux.zone
+  </title>
+  <content>
+*.selflinux.de.	       IN MX 10 rebecca.selflinux.de.
+  </content>
+ </file>
+ 
+ <textblock>
+Dabei ist zu beachten, dass das auch für garnicht existierende
+Hosts matched, man kann also EMail an sowas wie
+&lt;user&gt;@halleluja.ax123.selflinux.de senden.
+ </textblock>
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Die andere Seite - Reverse Lookups
+ </heading>
+
+ <textblock>
+Nun kann hosts aber mehr, und zwar auch rückwärts: IP in Namen
+&quot;auflösen&quot;. Das nennt man
+<strong>reverse-lookups</strong>. Um nicht ein neues
+Schema (neben Domains und Zones) zu benötigen, hat man einfach
+die Zones benutzt, das Konzept ist ja flexibel - schließlich kann
+man nicht alle Domains durchfragen, bis man die Adresse gefunden
+hat! 
+ </textblock>
+
+ <textblock>
+Diese Art der Auflösung wird vor allem bei
+sicherheitsempfindlichen Diensten verwendet. Das Tool
+<command>nslookup</command>
+(siehe auch Abschnitt "Testen der Konfigurationen")
+beispielsweise prüft, ob die IP-Adresse zu einem DNS-Server
+existiert (macht also ein Reverse Lookup), und auch NFS-Server
+lösen Client-IP-Adressen rückwärts auf. Der Sinn darin ist, DNS
+Spoof-Angriffe zu erschweren.<br/>
+Bei diesen Angriffen werden
+DNS-Namen gefälscht, beispielsweise durch einen Eindringling auf
+einem DNS-Server. Da häufig für Vorwärts- und Rückwärtsauflösung
+verschiedene Server und vor allem verschiedene Delegationen
+verwendet werden, muß ein Angreifer häufig die Kontrolle über
+zwei DNS-Server erlangen, hat also etwas schlechtere Chancen.
+ </textblock>
+ 
+ <textblock>
+Dafür gibt es einen neuen Domain-Namensraum, der nicht Namen
+als Domains benutzt, sondern IP-Adressen. Dieser ist ziemlich
+unabhängig vom &quot;normalen&quot; Namensraum! Diese Domain
+hat man &quot;arpa&quot; genannt (eben aus historischen Gründen).
+Da es für alle Klassen (z.B. Internet) eigene Adressen gibt,
+ist auch diese Teil des Namens. Internet-Adressen sind
+<strong>in-addr</strong>, also heißt die Domain
+&quot;in-addr.arpa.&quot;. Dieser Baum enthält dann letztlich
+alle IP-Adressen. Diese muß man natürlich delegieren können!<br/>
+Dabei gibt es eine Besonderheit: die allgemeineren, die
+Netzwerknamen (Domainnamen) stehen ja hinten,
+z.B. ist &quot;www&quot; ein Host im Netzwerk
+&quot;selflinux.de.&quot;. Bei IP-Adressen steht das Netzwerk
+aber vorn, der Hostanteil hinten! Bei der
+Delegation wird ein bestimmter Teil (etwas
+&quot;Allgemeineres&quot;, z.B. eine Domain) delegiert.
+Wenn man das jetzt mit IP-Adressen macht, kann man nicht den
+ersten Teil einer IP-Adresse delegieren, denn dann hätte man
+ein &quot;Loch&quot; - den Hostanteil - das erst in einer
+tieferen Instanz gefüllt werden könnte! Also muß man die
+IP-Adresse byteweise umdrehen, so wird aus
+&quot;192.168.1.2&quot; &quot;2.1.168.192&quot;.
+Nun steht der Netzwerkanteil hinten, und man kann einen Teil
+delegieren, wie auch bei Domainnamen.<br/>Das kann
+man wie bei Namen an jedem &quot;.&quot; machen. Die Zone
+&quot;in-addr.arpa.&quot; enthält also 255 Zonen, eine davon ist
+&quot;192.in-addr.arpa.&quot;, diese enthält wiederum 255 Zonen
+usw. Rebecca liegt also in Zone
+&quot;1.168.192.in-addr.arpa.&quot;. Diese benötigt erst einmal
+einen SOA Record. Namensserver und EMail seien wie oben.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Eine Reverse Lookup Zone
+ </heading>
+
+ <file>
+  <title>1.168.192.zone</title>
+  <content>
+1.168.192.in-addr.arpa. IN SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	10800	   ; Refresh (Aktualisierung) 3 Stunden
+	3600	   ; Retry (neuer Versuch)
+	864000	   ; Expire (ungültig nach 10 Tagen)
+        86400 )    ; min. TTL (Mindestgültigkeit) 1 Tag
+  </content>
+ </file>
+
+ <textblock>
+Die Nameserver schreibt man auch einfach dazu:
+ </textblock>
+ 
+ <file>
+  <title>1.168.192.zone</title>
+  <content>
+1.168.192.in-addr.arpa. IN NS ns1.selflinux.de.
+1.168.192.in-addr.arpa. IN NS ns2.selflinux.de.
+  </content>
+ </file>
+
+ <textblock>
+Nun die drei eigentlichen Einträge. Man hat jetzt
+<strong>PTR</strong>-Records, weil wir ja rückwärts auflösen:
+ </textblock>
+
+ <file>
+  <title>1.168.192.zone</title>
+  <content>
+1.168.192.in-addr.arpa.1.	IN PTR	ns1.selflinux.de.
+1.168.192.in-addr.arpa.2.	IN PTR	ns2.selflinux.de.
+1.168.192.in-addr.arpa.3.	IN PTR	rebecca.selflinux.de.</content>
+ </file>
+
+ <textblock>
+(wieder ohne TTLs)
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Zonefiles
+ </heading>
+
+ <textblock>
+Da das später Zonefiles für <command>bind</command> werden
+sollen, müssen diese in Dateien geschrieben werden.
+Standardmäßig liegen diese in <command>/var/named/</command>
+- auch die von Primären Servern. Über die Namen der Dateien
+gehen die Meinungen auseinander, insbesondere, wenn es um
+Reverse-Lookup-Dateien geht. Viele sind gewoht, bei Dateien einen
+Postfix anzuhängen (&quot;.txt&quot;, &quot;.c&quot;), deshalb
+kann man hier &quot;.zone&quot; verwenden.<br/>
+Hier wird der Domainname + &quot;.zone&quot; verwendet, also
+&quot;selflinux.zone&quot; und &quot;1.168.192.zone&quot; (wenn
+man nur in-addr für Reverse braucht, also vermutlich alle bis
+auf ein paar Jungs vom MIT).
+ </textblock>
+
+ <textblock>
+Bei Secondary Servern (Slaves) werden diese Dateien nicht per
+Hand angelegt.  Sie werden vom Primary geholt, wenn es nötig ist,
+also wenn die Refresh-Zeit um ist, oder der Primary eine
+entsprechende Nachricht schickt. Die Daten werden dann in die
+Dateien geschrieben, damit sie notfalls auch einen Neustart
+&quot;überleben&quot;.
+ </textblock>
+
+ <textblock>
+Für jede Zone gibt es eine Datei, und in jeder Datei darf nur ein
+SOA vorkommen. Wir brauchen also bereits zwei, und da wir auch
+vermutlich &quot;localhost&quot; auflösen können möchten, wie im
+Prinzip fast jeder DNS-Server, sind wir schon bei vier.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Abkürzungen
+ </heading>
+
+ <textblock>
+Unsere Zonefiles sind nun ziemlich unübersichtlich, aber bei
+<command>bind</command>
+sind einige Abkürzungen möglich. <command>bind</command> weiß ja
+(wir werden es ihm später sagen), welche Domain in welcher Datei
+liegt.
+ </textblock>
+
+
+ <textblock>
+bei dem Eintrag:
+ </textblock>
+ 
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+ns1.selflinux.de.     IN A 192.168.1.1
+  </content>
+ </file>
+
+ <textblock>
+Beispielsweise ist ja klar, dass er zu &quot;.selflinux.de.&quot;
+gehört (sonst wäre es die falsche Datei!). Das kann man
+weglassen. Auch die Klasse kann man weglassen, dann wird
+&quot;IN&quot; angenommen, man erhält:
+ </textblock>
+
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+ns1	A	192.168.1.1
+  </content>
+ </file>
+
+ <textblock>
+Die Domain wird an alle Namen angehängt, nicht jedoch an 
+IP-Adressen, die hinter einem &quot;A&quot; stehen. Aber an Namen,
+die z.B. hinter einem &quot;CNAME&quot; stehen, es sei denn,
+diese sind explizit als vollständig angegeben und enden mit
+einem &quot;.&quot;.<br/>
+Beim SOA Record ist das ähnlich:
+ </textblock>
+
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+selflinux.de. IN SOA pri-ns.selflinux.de. admin.selflinux.de.  (...)
+  </content>
+ </file>
+ 
+ <textblock>
+Für die Domain &quot;selflinux.de&quot;, in deren Datei wir uns
+ja befinden, kann man auch &quot;@&quot; schreiben, also:
+ </textblock>
+
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+@ IN SOA pri-ns.selflinux.de. admin.selflinux.de.  (...)
+  </content>
+ </file>
+			
+ <textblock>
+Die Domain wird auch hier angehängt, deshalb geht auch:
+ </textblock>
+		       
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+@	SOA	pri-ns admin (...)
+  </content>
+ </file> 
+
+ <textblock>
+aber es sieht nicht mehr sehr gut aus...  Der Autor mag z.B. gar
+keine Abkürzungen in SOA Records, aber das ist Geschmackssache. 
+ </textblock>
+ 
+ <textblock>
+Es gibt noch eine weitere Abkürzung: Gibt es mehrere RRs für
+dasselbe Objekt, so muß dieses nur einmal (beim ersten RR)
+genannt werden. Die weiteren werden dann so angenommen, also ist
+auch erlaubt:
+ </textblock>
+ 
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+selflinux.de. IN NS ns1.selflinux.de.
+	      IN NS ns2.selflinux.de.
+  </content>
+ </file>
+
+ <textblock>
+Da hier diese Einträge direkt nach dem SOA Record kommen (der ja
+ein RR für &quot;selflinux.de.&quot; ist), kann man bei 1. NS RR
+(also beim 2. RR der Zone) dieses auch noch weglassen, was in
+der Praxis meistens gemacht wird.
+ </textblock>
+
+ <textblock>
+Auch muß man (für <command>bind</command>, andere DNS-Server
+machen das vielleicht anders!) die Zeiten im SOA und TTLs nicht
+unbedingt in Sekunden angeben, man schreibt statt
+&quot;3600&quot; einfach &quot;3H&quot;.
+Es gibt für Tage (days) &quot;D&quot;, für Wochen (weeks)
+&quot;W&quot; und für Minuten (minutes) &quot;M&quot;.
+ </textblock>
+
+ <textblock>
+Verwendet man keine TTL-Angaben bei den Records, wird ein
+Defaultwert verwendet. Ältere <command>bind</command>-Versionen
+verwenden hierzu stets min. TTL aus dem SOA Record, neuere
+kennen dazu die Direktive <strong>$TTL</strong>, die im Zonefile
+eingestellt wird. In den Beispielen wird hier immer eine
+Default-TTL von einem Tag verwendet: <strong>$TTL 1d</strong>.
+ </textblock>
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Die fertigen Dateien
+ </heading>
+
+ <textblock>
+Nun seien die folgenden beiden Dateien in
+<command>/var/named</command>:
+ </textblock>
+
+ <file>
+ <title>/var/named/selflinux.zone</title>
+  <content>
+$TTL 1d
+
+selflinux.de.	IN  SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	3H	   ; Refresh (Aktualisierung)
+	1H	   ; Retry (neuer Versuch)
+	1M	   ; Expire (ungültig nach)
+	1D )	   ; min. TTL (mindeste Gültigkeit)
+
+		IN  NS    ns1.selflinux.de.
+		IN  NS    ns2.selflinux.de.
+
+ns1		IN  A	  192.168.1.1  
+ns2		IN  A	  192.168.1.2  
+rebecca		IN  A	  192.168.1.3  
+www		IN  CNAME rebecca.selflinux.de.
+ </content>
+ </file>
+
+ <file>
+  <title>/var/named/1.168.192.zone</title>
+  <content>
+$TTL 1d
+
+1.168.192.in-addr.arpa. IN SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	3H	   ; Refresh (Aktualisierung)
+	1H	   ; Retry (neuer Versuch)
+	1M	   ; Expire (ungültig nach)
+	1D )	   ; min. TTL (mindeste Gültigkeit)
+
+		IN  NS    ns1.selflinux.de.
+		IN  NS    ns2.selflinux.de.
+
+1		IN  PTR	  ns1.selflinux.de.
+1 		IN  PTR	  ns2.selflinux.de.
+1		IN  PTR	  rebecca.selflinux.de.
+  </content>
+ </file>
+
+ <textblock>
+(ein hohes Expire ist in der Praxis durchaus sinnvoll)
+ </textblock>
+
+ <textblock>
+Diese sollen nun von <command>bind</command> als Primäre Zonen
+verwaltet werden, er
+soll autorativ sein, dafür sind die Dateien entwickelt worden.
+ </textblock>
+
+</section>
+</split>
+	
+<split>
+<section>
+ <heading>
+Konfiguration des Bind
+ </heading>
+			
+ <textblock>
+Nun müssen wir <command>bind</command> entsprechend konfigurieren.
+Wie schon im ersten Teil wird dabei auf <command>bind</command>-Version 8
+und höher eingegangen.
+ </textblock>
+			
+ <hint>
+Bei Neuinstallationen sollte keinesfalls mehr
+<command>bind</command> 4 verwendet werden!
+ </hint>
+			
+ <textblock>
+Beginnen wir mit einer typischen Konfiguration für ein kleines
+Netzwerk. Wir stellen nur einen DNS-Server auf, also soll dieser
+alle DNS-Funktionen erfüllen: Er soll unsere Zones halten, von
+Clients/Resolvern als DNS-Server verwendet werden können, und
+einen Cache aufbauen können, um Datenverkehr zu sparen.
+ </textblock>
+ 
+ <textblock>
+Die Syntax der Konfigurationsdatei ist ähnlich zu C++. Die Datei
+besteht aus Anweisungen, die jeweils mit einem Semikolon
+abgeschlossen werden. Anweisungen können auch Blöcke sein. Es
+gibt Blöcke, die einen Namen haben. Der Block selbst wird in {}
+geklammert.<br/>Eine wichtige Anweisung bzw. ein wichtiger Block
+ist <strong>options {};</strong>. Hier stehen die globalen
+Optionen. Der andere wichtige Blockname ist
+<strong>zone</strong>.
+Zwischen Zone und den {} Klammern steht der Name der Zone,
+also &apos;zone &quot;selflinux.de&quot; {};&apos;.<br/>
+Kommentare können wie in C++ in &quot;/*&quot; und &quot;*/&quot;
+gefaßt werden, oder nach &quot;//&quot; bis zum Zeilenende
+reichen.<br/>Wichtige Anweisungen im Optionsblock sind:
+ </textblock>
+
+ <file>
+  <title>/etc/named.conf</title>
+  <content>
+    directory "/var/named" ;    // Verzeichnis mit den Zonefiles
+    forwarders {1.2.3.4;        // Welche DNS Server als
+                1.2.3.5;};      // Forwarder verwenden?
+    // forward only;            // nicht selbst auflösen,
+                                // sondern den Forwarder das
+                                // machen lassen
+    forward first;              // den Forwarder fragen, wenn
+                                // der es nicht weiß, selbst
+				// rekursiv nachfragen
+  </content>
+ </file>
+
+ <textblock>
+Den Rest lassen wir erstmal weg, verwenden also die Defaults.
+Diese wurden beim Compilieren festgelegt. Wenn man ein Paket
+seiner Distribution verwendet, sollten diese gut zu den anderen
+passen.
+ </textblock>
+
+ <hint>
+Es sei an dieser Stelle ausdrücklich darauf hingewiesen,
+dass man keine Forwarders verwenden muß.
+ </hint>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+ROOT-SERVERS konfigurieren
+ </heading>
+
+ <textblock>
+Wenn der DNS-Server selbst rekursiv fragen können soll (also in
+allen Fällen, außer &quot;forward only;&quot;), muß er natürlich
+die ROOT-SERVER kennen. Das sind die Server für die Zone
+&quot;.&quot;. Diese Zone konfiguriert man in der Regel wie
+folgt:
+			</textblock>
+			<file>
+				<title>/etc/named.conf</title>
+				<content>
+zone "." {
+        type hint;                 // ist keine "richtig" Zone
+	file "root.hint";          // Datei mit den  ROOT-SERVERS 
+	};
+  </content>
+ </file>
+
+ <textblock>
+In &quot;root.hint&quot; stehen die &quot;A&quot; (Address)
+Records (RRs) der ROOT-SERVER, das sieht z.B. so aus:
+ </textblock>
+
+ <file>
+  <title>/var/named/root.hint</title>
+  <content>
+.                        3600000  IN  NS    A.ROOT-SERVERS.NET.
+A.ROOT-SERVERS.NET.      3600000      A     198.41.0.4
+
+.                        3600000      NS    B.ROOT-SERVERS.NET.
+B.ROOT-SERVERS.NET.      3600000      A     128.9.0.107
+  </content>
+ </file>
+
+ <textblock>
+Das sollte jetzt verständlich sein: Für &quot;.&quot; gibt es in
+der Klasse IN einen Nameserver mit sehr langer TTL, der
+A.ROOT-SERVERS.NET. heißt, und dessen IP-Adresse.
+ </textblock>
+
+ <textblock>
+Da sich die IP-Adressen auch ändern können, muß diese Datei
+gepflegt werden. Dazu eignet sich das Dienstprogramm
+<command>dig</command> aus der
+<command>BIND</command>-Distribution.<br/>Hat man
+bereits ein System, das funktionierend Namen auflösen kann
+(z.B. wenn es einfach einen DNS-Server vom Provider in der
+/etc/resolv.conf konfiguriert hat, die &quot;dns&quot; in
+/etc/nsswitch.conf hinter &quot;hosts&quot; steht), braucht
+man nur ein:
+ </textblock>
+
+ <shell>
+  <user>dig . ns</user>
+ </shell>
+
+ <textblock>
+zu machen, und erhält eine aktuelle Liste. Man kann auch
+explizit einen DNS-Server angeben, mit:
+ </textblock>
+
+ <shell>
+  <user>dig @ns.isp.com . ns</user>
+ </shell>
+
+ <textblock>
+Betreibt man einen nur cachenden Server (mindestens ein solcher
+gehört eigentlich in jedes Netzwerk, um die Performance zu
+erhöhen), ist damit die Konfiguration im Prinzip fertig. Hat man
+gute Verbindung zu DNS-Servern mit gutem Cache (also DNS-Server,
+die häufig gefragt werden), so kann man diese als Forwarder
+konfigurieren. Hat man die besondere Situation eines sich über
+Wählleitungen einwählenden Netzes oder auch Hosts, macht es Sinn,
+die DNS-Server des Providers als Forwarders zu verwenden (wie man
+es auch als Client tun würde - außer natürlich, diese sind
+überlastet). Forwarders sind auch nützlich, wenn der DNS-Server
+öfter herruntergefahren wird. Verwendet man mehrere verschiedene
+Provider, so verwendet man am besten keine Forwarder, um Probleme
+mit Zugriffsbeschränkungen zu vermeiden.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Eigene Zones konfigurieren
+ </heading>
+
+ <textblock>
+Die Zones, für die der Server authoritative ist (also wenn er
+Primary oder Secondary ist, das hieß früher irreführend Master
+bzw. Slave), müssen jetzt in der Konfigurationsdatei aufgeführt
+werden:
+ </textblock>
+
+ <file>
+  <title>/etc/named.conf</title>
+  <content>
+zone "selflinux.de" {
+	type master;	        // wir sind Primary
+	file "selflinux.zone";  // in der Datei stehen die Zone-RRs
+};
+
+zone "1.168.192.in-addr.arpa" {
+	type master;
+	file "1.168.192.zone";
+	};
+  </content>
+ </file>
+
+ <textblock>
+Bei Secondaries konfiguriert man &quot;type slave;&quot; und
+ebenfalls ein File (z.B. file &quot;slave/myzone.zone&quot;;).
+Zusätzlich muß man dann aber noch den (die) Masterserver
+angeben: &quot;masters {1.2.3.4;};&quot;.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+<heading>
+Eine Zone für &quot;localhost&quot;
+</heading>
+ 
+ <textblock>
+Der Name &quot;localhost&quot; sollte immer mit der IP 127.0.0.1
+verknüpft sein. Um dies per DNS zu erreichen, gibt es zwei
+grundlegende Herangehensweisen, die in der Praxis auftauchen.
+Einmal denkt man sich &quot;localhost&quot; zu einer Zone
+zugehörig, zum Beispiel als &quot;localhost.selflinux.de.&quot;.
+In diesem Fall wird der Name einfach als Address-Record in das
+entsprechende Zonefile eingetragen.
+ </textblock>
+
+ <textblock>
+Eine andere Möglichkeit ist, den Namen als &quot;localhost.&quot;
+zu interpretieren. Aus Sicht des DNS handelt es sich dabei um
+eine Toplevelzone (mit einer IP-Adresse, aber keinen weiteren
+darunterliegenden Records). Das verletzt allerdings etwas das
+Konzept von den Toplevel-Domains, funktioniert in der Praxis
+jedoch sehr gut. Um dies zu erreichen, erzeugt man ein
+entsprechendes Zonefile:
+ </textblock>
+
+ <file>
+  <title>/var/named/localhost.zone</title>
+  <content>
+$TTL 1d
+
+localhost. IN SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	3H	   ; Refresh (Aktualisierung)
+	1H	   ; Retry (neuer Versuch)
+	1M	   ; Expire (ungültig nach)
+	1D )	   ; min. TTL (mindeste Gültigkeit)
+
+		IN  NS    ns1.selflinux.de.
+		IN  NS    ns2.selflinux.de.
+
+		IN  A     127.0.0.1
+  </content>
+ </file>
+
+ <textblock>
+Eine zugehörige Reverse-Zone:
+ </textblock>
+
+ <file>
+  <title>/var/named/0.0.127.zone</title>
+  <content>
+$TTL 1d
+
+0.0.127.in-addr.arpa. IN SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	3H	   ; Refresh (Aktualisierung)
+	1H	   ; Retry (neuer Versuch)
+	1M	   ; Expire (ungültig nach)
+	1D )	   ; min. TTL (Mindestgültigkeit)
+
+		IN  NS    ns1.selflinux.de.
+		IN  NS    ns2.selflinux.de.
+
+1               IN  PTR   localhost.
+  </content>
+ </file>
+
+ <textblock>
+In der named.conf werden beide Zonen eingetragen:
+ </textblock>
+
+ <file>
+  <title>/etc/named.conf</title>
+  <content>
+zone "localhost" {
+        type master;
+        file "localhost.zone";
+};
+
+zone "0.0.127.in-addr.arpa" {
+        type master;
+        file "0.0.127.zone";
+};
+  </content>
+ </file>
+
+ <textblock>
+Wird die erste Methode verwendet, also localhost als Host einer
+Domain interpretiert, so wird nur die Reverse-Zone benötigt (da
+es ja keine Toplevel-Zone &quot;localhost.&quot; gibt). In dieser
+muß der PTR-Record dann konsistenterweise auf die Domain zeigen,
+beispielsweise &quot;localhost.selflinux.de.&quot;. Man kann auch
+eine Mischung aus beiden Methoden konfigurieren. Dazu wird eine
+Zone &quot;localhost.&quot; erzeugt, und ein Hosteintrag in der
+Domain. Dieser Eintrag im Zonefile der Domain ist
+sinnvollerweise ein CNAME auf &quot;localhost.&quot;:
+ </textblock>
+
+ <file>
+  <title>/var/named/localhost.zone</title>
+  <content>
+localhost	IN CNAME localhost.
+  </content>
+ </file>
+
+ <textblock>
+Die Reverse-Zone sieht damit wie im Beispiel aus. 
+<br/>
+Vergleicht man beide Methoden, stellt man fest, dass deren
+Funktion von der Konfiguration der Clients abhängt. Normalerweise
+muß eine Maschine in der Lage sein, &quot;localhost&quot;
+aufzulösen. Verwendet man die erste Methode, muß also eine
+Suchliste definiert sein, bei der unter mindestens einer Domain
+der Host &quot;localhost&quot; existiert. Hier liegt also ein
+Vorteil der zweiten Methode.<br/>Der Hauptnachteil der zweiten
+Methode ist, dass man eine &quot;localhost.&quot;-Topleveldomain
+definiert, was das Toplevel-Konzept etwas verletzt, und dadurch
+von einigen Administratoren als unsauber bezeichnet wird. In
+der Praxis hat sich jedoch die zweite Methode bewährt, die
+zudem etwas performanter ist, und findet breiten Einsatz.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Weitere wichtige Konfigurationsoptionen
+ </heading>
+
+ <textblock>
+Hier ganz kurz noch ein paar wichtige Optionen:
+ </textblock>
+
+ <file>
+  <title>named.conf</title>
+  <content>
+listen-on port 53 { 1.2.3.4; }; //Port 53 des angebenen
+				//Interfaces verwenden. Sinnvoll,
+				//wenn man z.B. Dialup-Interfaces 
+				//hat, die nicht von Clients
+				//verwendet werden sollen
+query-source address * port 53; //Port 53 beim _Senden_ verwenden
+				//sinnvoll hinter Firewalls.
+				//Zusätzlich kann auch eine
+				//Interfaceaddresse angeben
+				//werden, sinnvoll bei Multihomed-Hosts
+notify yes;			//bei Änderungen an den
+				//Datenbanken dies den
+				//Secondaries mitteilen
+recursion no;			//Verwendet man am besten
+				//bei
+				//Servern, die nur Primary sind
+				//Clienten können
+				//diesen Namen nicht verwenden!
+check-names master warn;	//sind Zone-RRs falsch, nur warnen,
+				//nicht abbrechen
+check-names master fail;	//Abbruch, wenn Zone fehlerhaft ist
+allow-query { any; };		//Jeder darf fragen
+allow-update { none; };		//keiner darf updaten (ändern)
+allow-update { 1.2.3.4; };	//1.2.3.4 darf updaten
+allow-transfer { 1.2.3/24; };   //nur Netz 1.2.3.0/24 darf
+				//Zonetransfers machen
+  </content>
+ </file>
+
+ <textblock>
+Die ersten vier Optionen dürfen nur im
+&quot;options {};&quot;-Block auftreten, die anderen hier
+genannten Optionen können auch in &quot;zone {};&quot;-Blöcken
+auftauchen, so dass sich beispielsweise
+Zugriffsrechte pro Zone einstellen lassen. &quot;notify&quot;
+sollte bei Slaves auf &quot;no&quot; stehen, da diese sonst
+dem Primary Zonenänderungen überflüssigerweise mitteilen.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Starten
+ </heading>
+
+ <textblock>
+<command>bind</command> wird normalerweise über ein kleines
+rc-script gestartet. Man kann <command>bind</command> starten,
+indem man &quot;/pfad/named&quot; aufruft, z.B.
+<command>/usr/sbin/named</command>. Beenden geht unter Linux
+einfach mit <command>killall named</command>. Aber dabei ist zu
+beachten, dass andere Systeme wie z.B. Solaris ein anderes
+<command>killall</command> haben - dieses killt wirklich alles,
+hier müßte man mit <command>ps -ef|grep named</command> die PID
+des Prozesses ermitteln, und diesen mit
+<command>kill &lt;pid&gt;</command> beenden.
+ </textblock>
+
+ <hint>
+Eleganter geht das mit dem Dienstprogramm <command>ndc</command>:
+zum Starten verwendet man <command>ndc start</command>, zum
+Beenden <command>ndc stop</command>. 
+ </hint>
+
+ <textblock>
+Man muß nun sorgfältig die Logfiles des
+<command>syslogd</command> prüfen, um Fehler
+zu erkennen. Die Fehlermeldungen sind in der Regel sehr
+aussagekräftig, und führen schnell zur Ursache. Schwierig zu
+erkennen ist aber z.B. eine vergessene geschweifte Klammer in der
+<command>named.conf</command>, besonders für ungeübte und
+nicht-C++-Kenner. Wird eine Zone angemeckert, so muß das
+Zonefile untersucht werden. 
+ </textblock>
+
+ <textblock>
+Sehr ungünstige Werte innerhalb des SOA-Records führen z.B. zu
+einer Warnung. In diesem Fall sagt <command>bind</command> aber
+sogar, was ihn stört, so dass man den Fehler schnell
+korrigieren kann. Problematischer sind Fehler in der Art von
+&quot;Cannot find NS on...&quot;. Das deutet darauf hin, dass der
+NS für eine Zone nicht erreichbar ist, oder nicht existiert.
+Es muß hier der Name eines DNS-Servers stehen, der authoritativ
+für die Zone ist! Dieser Fehler wird häufig nicht sofort erkannt.
+ </textblock>
+
+ <textblock>
+Wird ein Server von einem anderen als authoritativ für diese Zone
+genannt, und ist dieser genannte Server aber selbst nicht der
+Meinung, authoritativ für diese Zone zu sein, nennt man ihn
+<strong>lame server</strong>. Wären alle &quot;lame&quot;,
+verfällt die Zone mit Ablauf der Cache- bzw. Expirezeiten,
+man merkt es also nicht unbedingt sofort, aber es ist ein
+schweres Problem.
+ </textblock>
+
+ <textblock>
+Hat man die Zonefiles geändert, und die Seriennummer erhöht,
+müssen die Datenbanken neu geladen werden, dazu macht man ein:
+ </textblock>
+
+ <shell>
+  <user>ndc reload</user>
+ </shell>
+
+ <textblock>
+und prüft natürlich wieder die Logfiles.
+ </textblock>
+
+</section>
+
+<section>
+ <heading>
+Zoneänderungen und Secondaries 
+ </heading>
+
+ <textblock>
+Ist &quot;notify yes;&quot; konfiguriert, so sendet
+<command>BIND</command> bei
+jedem Reload eine Nachricht an die Secondaries, dass die
+Zone modifiziert wurde. Die Secondaries holen daraufhin den
+SOA-Record, und schauen, ob sich die Seriennummer erhöht hat.
+Wenn ja, so wird die Zone vom Primary transferiert,
+ansonsten passiert nichts. Deshalb darf man nie vergessen,
+die Seriennummer zu erhöhen!
+ </textblock>
+
+ <definition>
+Der Vorgang, der von den Secondaries beim Empfang einer Notify
+Message stattfindet, ist der selbe wie der, der beim Erreichen
+der Refresh-Time einer Zone stattfindet.
+ </definition>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Testen der Konfigurationen
+ </heading>
+
+ <textblock>
+Es gibt ein Tool, mit dem man fast beliebige DNS-Anfragen machen
+kann, um z.B. Konfigurationen zu testen. Dieses ist Teil der
+<command>bind</command>-Distribution und heißt
+<command>nslookup</command>. Dieses
+versteht viele Optionen als Parameter, kann aber auch
+interaktiv verwendet werden.<br/>Um die Wirkung der Searchlist zu
+unterdrücken, sollten wiederum vollqualifizierte Hostnamen mit
+einem anschließenden Punkt verwendet werden. Mit diesem Tool
+fragt man nach Daten der Zone, z.B. &quot;www.selflinux.de.&quot;
+Folgende Optionen stehen im interaktiven Modus zur Verfügung
+(hier teilweise abgekürzt):
+ </textblock>
+
+ <ul>
+  <li>
+&quot;server &lt;server&gt;&quot;, z.B.
+<command>server ns.selflinux.de</command><br/>
+Die Anfragen werden an &lt;server&gt; gesendet.
+  </li>
+  <li>
+&quot;set querytype=&lt;RR Typ&gt;&quot;, z.B.
+<command>set q=any</command><br/>
+Anfragen nach RR-Typ machen
+  </li>
+  <li>
+&quot;set debug&quot; / &quot;set nodebug&quot;<br/>
+Es werden viele zusätzliche Informationen angezeigt, sehr
+hilfreich bei der Fehlersuche
+  </li>
+  <li>
+&quot;set recurse&quot; / &quot;set norecurse&quot;<br/>
+Rekursive oder nicht rekursive Anfragen machen
+  </li>
+  <li>
+&quot;ls &lt;zone&gt;&quot;, z.B.
+<command>ls selflinux.de</command><br/>
+Zonentransfer machen, und diese auflisten<br/>
+<command>ls</command> kennt mehrere Optionen, z.B.
+&quot;-t &lt;RR Type&gt;&quot;
+  </li>
+ </ul>
+
+ <textblock>
+Beim Testen muß natürlich auch nach IP-Adressen gefragt werden,
+um zu testen, ob diese richtig zurück in Hostnamen übersetzt
+werden.
+ </textblock>
+
+ <textblock>
+Ein sehr gutes automatisches Tool für derartige Tests ist
+<command>dnswalk</command>, insbesondere bei großen Zones ist
+es sehr nützlich. Dieses erfordert <command>Perl5</command>, und
+das Modul <command>Net::DNS</command>.
+Dieses kann, falls erforderlich, mit der CPAN-Shell
+einfach und meist unproblematisch installiert werden
+(<command>perl -MCPAN -e shell</command>, nach der
+Konfiguration genügt in der Regel ein
+ <command>install Net::DNS</command>).<br/>
+<command>dnswalk</command> findet man unter:
+ <ref lang="en" url="http://www.cis.ohio-state.edu/~barr/dnswalk/">
+http://www.cis.ohio-state.edu/~barr/dnswalk/</ref>
+Beim Aufruf übergibt man mindestens die zu testende Zone (mit
+abschließendem Punkt). DNSwalk kann auch rekursiv delegierte
+Zones durchlaufen.
+ </textblock>
+
+ <textblock>
+Das Tool <command>nslookup</command> hat aber auch einige
+Nachteile, die das Debugging erschweren können.
+Beispielsweise versucht <command>nslookup</command> stets, 
+zumindest in neueren Versionen, den Namen des DNS-Servers
+rückwärts aufzulösen. Dies ist oft sinnvoll, um
+DNS-Spoof-Angriffe zu erschweren.
+Bei Aufsetzen eines DNS-Systems funktioniert damit
+das Tool jedoch erst, wenn die Reverse-Zonen konfiguriert sind,
+und die DNS-IPs richtig auflösen. Um &quot;nur&quot; einfache
+Tests der Namen zu machen, kann man jedoch andere Tools
+verwenden, zum Beispiel die, die den normalen Resolver verwenden
+(beispielsweise zeigt auch <command>ping</command> die IP-Adresse
+an).
+ </textblock>
+
+ <textblock>
+<command>bind</command> kann auch sämtliche Anfragen via
+<command>syslog</command>(3) loggen. Dazu
+verwendet man das Dienstprogramm <command>ndc</command> (das
+Kontroll-Interface), um es einzuschalten:
+ </textblock>
+
+ <shell>
+  <user>
+ndc querylog
+  </user>
+ </shell>
+
+ <textblock>
+Nun kann man verfolgen, welche Namen aufgelöst werden sollen,
+welche Server dazu verwendet werden, usw. Das ist auch bei
+Dial-On-Demand-Verbindungen hilfreich. Ein Blick in die Manpage
+von <command>ndc</command> verrät außerdem weitere Kommandos.
+Eines davon ist <command>dumpdb</command>:
+ </textblock>
+
+ <shell>
+  <user>
+ndc dumpdb
+  </user>
+ </shell>
+
+ <textblock>
+Das sorgt dafür, dass die gesamte Datenbank in eine
+Datei geschrieben wird. Deren Name kann mit der
+&quot;dump-file&quot;-Direktive im &quot;options {};&quot;-
+Block gesetzt werden, ansonsten wird
+<command>/var/tmp/named_dump.db</command> verwendet. Diese Datei
+enthält alle autoritativen Zonendaten und den gesamten Cache,
+d.h. sie ist ziemlich groß (ein normaler Server produziert dabei
+einige tausend Zeilen!). Dort kann man z.B. die Zonen überprüfen,
+oder nach evtl. falsch gecachten Einträge suchen (wenn z.B. zu
+klären ist, welcher Server eine bestimmte Anfrage falsch
+beantwortet),
+in der Praxis wird das aber vermutlich die Ausnahme sein.
+ </textblock>
+
+</section>
+
+<section>
+ <heading>
+Spielzonen
+ </heading>
+
+ <textblock>
+Nach <name>RFC 2606</name> darf man &quot;.test&quot;,
+&quot;.example&quot;, &quot;.localhost&quot;
+und &quot;.invalid&quot; als TLD verwenden.
+Diese TLDs sind für entsprechenden Gebrauch reserviert, wobei
+&quot;.example&quot; für Beispiele und Dokumentationen
+und &quot;.test&quot; für Software-Tests empfolen ist.
+&quot;.localhost&quot; ist für 127.0.0.1 reserviert und sollte
+nicht anders verwendet werden.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Mehr Informationen als Namen und Adressen
+ </heading>
+
+ <textblock>
+Es gibt RR-Typen, die weniger technischen Aufgaben dienen,
+sondern allgemeine Informationen liefern. Zunächst gibt es den
+Typ <strong>HINFO</strong>, das steht für
+&quot;Host Information&quot;.
+Damit besteht die Möglichkeit, einen Maschinennamen
+(Hardware-Namen) und einen Betriebsystemnamen aufzunehmen.
+Historisch gesehen sollte es dazu dienen, um Dienste von den
+richtigen Maschinen zu verlangen (z.B. HTTP vom WWW-Server),
+deshalb sollten diese Werte Abkürzungen aus <name>RFC 1700</name>
+(oder
+Nachfolger) sein, oder auch eigene Abkürzungen. In der Praxis
+findet dieser RR-Typ nicht die breite Verwendung. 
+ </textblock>
+
+ <hint>
+Die Verwendung dieses Records veröffentlicht Informationen, die
+die Sicherheit beeinflussen können, da ein potentieller Attacker
+mehr Informationen besitzt, die er gegen das Netz einsetzen kann.
+ </hint>
+
+ <textblock>
+Ein Beispiel wäre:
+ </textblock>
+
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+sun12		IN HINFO "Sun Enterprise 450" "SunOS 5.6"
+  </content>
+ </file>
+
+ <textblock>
+Für die Dienstzuordnung dient auch der
+<strong>SRV</strong>-Record, der in <name>RFC 2052</name>
+beschrieben wird. Dabei wird eine zu einem Namen
+<strong>Assigned Number</strong>
+(d.h. laut <name>RFC 1700</name>) verwendet,
+die als Prefix vor den Namen gesetzt wird. Sucht ein Client z.B.
+einen FTP-TCP/IP-Dienst in der Domain selflinux.dx, so würde er
+nach ftp.tcp.selflinux.de fragen. Ein solcher Datensatz enthält
+dann die folgenden Felder: Priorität (niedrige werden
+vorgezogen),
+Wichtung (größere Server bekommen höhere Nummern), Portnummer
+(auf der Zielmaschine), Zielmaschine. Ein Beispiel wäre:
+ </textblock>
+
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+nntp.tcp	IN SRV   10 0 119   sun12
+  </content>
+ </file>
+
+ <textblock>
+Dieser RR findet anscheinend in der Praxis kaum Verwendung.
+ </textblock>
+
+ <textblock>
+Eine weitere Art der Information ist der geographische Standort.
+Dieser kann mit einem <strong>LOC</strong>-RR dargestellt werden.
+Dieser enthält
+dabei geographische Breite, Länge und die Höhe über dem
+Meeresspiegel. Das Format des
+Datensatzes ist Grad, Minuten, Sekunden, N/S (Nord/Süd), Grad,
+Minuten, Sekunden (Komma erlaubt, z.B. &quot;4.12&quot;), W/E
+(West/East), Höhe (in Metern). Sekunden und Minuten dürfen
+weggelassen werden.
+				<br/>
+Bei der Ermittlung der Werte hilft
+				<ref lang="en" url="http://www.ckdhr.com/dns-loc/">
+http://www.ckdhr.com/dns-loc/
+				</ref>
+und sehr gut ist auch
+				<ref lang="en" url="http://www.mapblast.com/">
+http://www.mapblast.com/
+				</ref>
+. Ein Beispiel (Der Ort sei Lat.: 52 56&apos; (etwa 52,9) N,
+Long.: 12 49&apos; (12,8) E:
+ </textblock>
+
+ <file>
+  <title>selflinux.zone</title>
+  <content>
+selflinux.de	LOC    52 55 N    12 50 E    100m
+  </content>
+ </file>
+
+ <textblock>
+Dahinter kann dann noch die Größe, die vertikale, die horizontale
+Genauigkeit kommen (alle drei in Metern). Damit kann man z.B. die
+Genauigkeit senken, in dem man sie nur grob auf ein paar tausend
+Meter angibt, um Sicherheitsrisiken zu vermeiden. Näheres siehe
+<name>RFC 1876</name>.
+ </textblock>
+
+ <textblock>
+Diese Informationen können dann z.B. von graphischen
+<command>traceroute</command>-ähnlichen
+Programmen verwendet werden, die dann auf einer
+(Welt-)Karte die Routenwege einzeichnen. 
+ </textblock>
+
+</section>
+
+<section>
+ <heading>
+Quickstart
+ </heading>
+
+ <textblock>
+Es gibt noch einen ganz anderen, &quot;unorthodoxen&quot; Weg zu
+einem DNS-Server. Man schreibt einfach alle Daten in die
+<command>/etc/hosts</command>, und verwendet das Tool
+<command>h2n</command>.
+Dieses erzeugt aus der hosts Zonefiles und sogar ein
+Konfigurationsfile für <command>bind</command>. Es ist durchaus
+keine schlechte
+Idee, dieses Tool zum ersten Erstellen der Files zu verwenden,
+und diese dann weiterzupflegen. Der Autor hat es jedoch nie
+benutzt, so dass an dieser Stelle nicht näher darauf eingegangen
+werden kann.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Ein Produktivsystem
+ </heading>
+
+ <textblock>
+Bis jetzt war alles Spaß. Für einen Produktionsserver sind noch
+einige Dinge zu beachten. Im folgenden ein paar Tips, die das
+Leben hoffentlich vereinfachen.
+ </textblock>
+
+ <textblock>
+Im Allgemeinen muß man natürlich vor allem sorgfältig arbeiten.
+Die meisten Leute sind es sowieso gewohnt, dass DNS-Einträge bis zu
+drei Tage dauern. Man sollte sich also Zeit lassen, nicht
+&quot;eben mal auf die Schnelle ein paar RRs einfügen&quot;.
+Man sollte immer Backups von den Datenbanken haben. Dabei bietet
+sich ein Revision Control System an, z.B. <command>rcs</command>
+oder <command>cvs</command>. Verwaltet man mehrere Zonen,
+so kann man darüber nachdenken, ein Script zu erstellen, das
+<command>dnswalk</command> für alle Zonen automatisch machen
+kann.
+Evtl. kann man den Primary direkt nach ausgesuchteten, sehr
+wichtigen Adressen per <command>cron</command> fragen, um im
+Fehlerfalle schnell eine EMail zu bekommen.
+ </textblock>
+
+ <hint>
+Es ist auch zu beachten, dass sich unter Umständen Fehler erst
+nach einigen Tagen zeigen, da die Cachezeiten u.U. relativ groß
+sind.
+ </hint>
+
+ <textblock>
+Es ist sinnvoll, die Option &quot;check-names fail;&quot; beim
+Primary zu setzen, um Fehler schnellstmöglich festzustellen, bevor
+ebtl. falsche Daten von Secondaries geholt werden. Im Extremfalle
+verwenden diese diese Option, und werfen die fehlerhafte Zone
+nach dem Transfer sofort weg!
+ </textblock>
+
+ <textblock>
+Um sicher zugehen, nach jeder Änderung die Serial richtig zu
+setzen, kann ein kleines Script verwendet werden. Dies erscheint
+sinnvoll, da die Serial eine wichtige Rolle spielt. Da man in der
+Regel das Datum im Format JJJJMMTT plus eine zweistellige
+laufende Nummer verwendet (falls man mehrmals am Tag etwas
+ändert), wird diese zwangsläufig immer größer. Ein großes Problem
+aber ist z.B., wenn man sich vertippt, und eine Ziffer zuviel
+verwendet. Dann hat man eine Serial, die so groß ist, dass sie nie
+&quot;richtig&quot; erreicht wird. Eine Serial zurückzusetzen, ist
+so einfach jedoch nicht möglich.
+ </textblock>
+
+ <textblock>
+Ein derartiges Script könnte z.B. nach der Zeichenkette
+&quot;; Serial&quot; suchen, die nach einem entsprechenden
+Datumscode steht (dieser Kommentar wurde auch hier in den
+Beispielen verwendet). Verwendet man dazu <command>perl</command>,
+könnte man zu folgender Lösung kommen:
+ </textblock>
+
+ <file>
+  <title>new_serial.pl</title>
+  <content>
+#!/usr/bin/perl -pi.ser
+#Y2K stable - Perl RULES :) &lt;steffen@dett.de&gt;
+
+#Starten mit einem Bind Zone File als Paramter. Es wird ein
+#Backup erzeugt (Endung .ser), und alle Zeilen der Form
+#"JJJJMMTTNN ; Serial", z.B. "2000012501 ; Serial" angepaßt
+#aufs aktuelle Datum bzw. die laufende Nummer erhöht.
+
+#start with bind zone files, it will replace serial of the form
+#"YYYYMMDD00 ; Serial"  i.e. "2000012501 ; Serial"
+#to new date or incrementing last two digits
+
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
+localtime(time);
+my $date = sprintf("%4d%02d%02d", 1900+$year, $mon+1, $mday);
+
+if (m/((20|19)\d{6})(\d{2})(\s+\;\s+[Ss]erial\s+)$/) {
+    my $old_date = $1;
+    my $old_serial = $3;
+    my $rest = $4;
+    my $serial = $old_serial;
+    if ($old_date eq $date) {
+        $serial++;
+    } else {
+        $serial = 0;
+    }
+    $serial = sprintf("%02d", $serial);
+    s/${old_date}${old_serial}${rest}/${date}${serial}${rest}/;
+    print STDERR "Serial found! Old: [$old_date $old_serial]  --> ",
+        "Changed to [$date $serial]\n";
+}
+  </content>
+ </file>
+
+ <textblock>
+Es mag Sinn machen, das so aktualisierte File von diesem Script
+auch gleich ins RCS/CVS einzuchecken bzw. zu
+ &quot;committen&quot; (<command>ci -l &lt;file&gt;</command> /
+<command>cvs commit &lt;file&gt;</command> - letzteres geht in der
+Regel allerdings nicht als &quot;root&quot;).
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Sinnvolle SOA-Values
+ </heading>
+
+ <textblock>
+Viele machen sich kaum Gedanken um die Wahl günstiger SOA-Werte.
+Um Ressourcen zu sparen, sollten diese nicht zu klein sein. Hohe
+TTLs haben dafür den Nachteil, dass im Falle einer Umstellung viel
+Zeit vergeht, bis die neuen Namen verteilt sind. Da man oft schon
+im vorraus weiß, wann eine solche Umstellung beginnt, kann man
+z.B. drei Tage vorher die TTL für die betroffenen RRs senken,
+z.B. von acht auf zwei Stunden. Einen Tag nach der Umstellung
+erhöht man sie einfach wieder (Erhöhung der Seriennummer nicht
+vergessen). 
+ </textblock>
+
+ <textblock>
+Bei sehr statischen Zonen kann man das Refresh auch relativ hoch
+ansetzen, und auch, wenn das Notify von allen Secondaries
+unterstützt und in der Zone eingesetzt wird. Hier sind dann
+durchaus Werte von 24 Stunden sinnvoll. Kann man Notify nicht zu
+allen Secondaries einsetzen, muß man allerdings für einen zügigen
+Betrieb diesen Wert senken, z.B. auf drei Stunden.
+ </textblock>
+
+ <textblock>
+Das Expire sollte immer hoch angesetzt werden. Kann ein
+Secondary seinen Primary nicht erreichen, wird nach diesem
+Zeitraum die Zone ungültig, d.h. sie wird nicht mehr beantwortet.
+Bei einem geringen Expire, z.B. nur zwei Tage, könnte ein
+Ausfall eines einzigen Servers, nämlich des Secondaries, über das
+Wochenende das DNS-System lahmlegen, ein sehr unangenehmer
+Gedanke. Deshalb sollte man als absolutes Minimum eine Woche
+setzen!
+ </textblock>
+
+</section>
+
+<section>
+ <heading>
+Secondaries betreiben
+ </heading>
+
+ <textblock>
+Stellt man DNS für eine Zone, so sind die Vorschriften des
+Betreibers der übergeordneten Zone zu beachten. Betreibt man z.B.
+eine &quot;de.&quot;-Domain, wie &quot;selflinux.de.&quot;, so
+gelten die Vorschriften des <ref lang="de" url="http://www.denic.de/">DENIC</ref>. Eine sehr
+sinnvolle ist z.B.,
+dass eine Zone über mindestens zwei, über verschiedene Wege zu
+erreichende authorative Server verfügen muß.
+ </textblock>
+			
+ <textblock>
+Normalerweise hat man einerseits den Primary und andererseits
+braucht man mindestens einen Secondary in einem anderen Netzwerk.
+Für einen guten ISP sollte es kein Problem darstellen, einen
+Secondary zu betreiben. Es scheint auch eine gute Idee zu sein,
+zwei Secondaries vom ISP machen zu lassen, was diesem technisch
+keine Probleme bereiten sollte, da er vermutlich auch selbst
+Zonen bedient. Damit kann man diese beiden als NS-Einträge
+verwenden, so dass er Primary gar nicht gefragt wird. Das
+ermöglicht, die Firewall entsprechend scharf einzustellen.
+ </textblock>
+
+ <textblock>
+DNS ist sicherheitsempfindlich. Gefälschte Datenbanken können es
+einem Eindringling z.B. ermöglichen, auf NFS- Shares zuzugreifen,
+wenn er die entsprechende in-addr.arpa.-Zone modifiziert. Auch
+mit dem Verändern der lokalen DNS-Server kann er
+Sicherheitslücken erzeugen, so z.B. Anfragen zu einer anderen
+Maschine umleiten, und so z.B. Passwörter stehlen, von einer
+Vielzahl von Denial-Of-Service-Attacken ganz zu schweigen.
+ </textblock>
+
+ <textblock>
+Betreibt man selbst Secondaries, so sollten auf diesen Maschinen
+möglichst wenig andere Dienste laufen (das gilt
+selbstverständlich ganz besonders für Primaries!). 
+ </textblock>
+
+ <textblock>
+Secondaries sollten &quot;check-names warn;&quot; verwenden, um
+einen Ausfall durch einen Tippfehler oder ähnliches möglichst zu
+verhindern.
+ </textblock>
+
+</section>
+</split>
+
+<split>
+<section>
+
+ <heading>
+Zugriffsbeschränkungen konfigurieren
+ </heading>
+
+ <textblock>
+Nach Möglichkeit sollte der Zugriff so weit wie möglich
+beschränkt werden. Verwendet man kein dynamisches Update, so
+sollte man die option &quot;allow-update { none; };&quot;
+verwenden, ansonsten die IP-Adresse von jeder berechtigten
+Maschine aufzählen.
+Steht diese Option im &quot;options {};&quot;-Block, so
+gilt sie für alle Zones. Hat eine Zone einen eigenen Eintrag, so
+überschreibt dieser den globalen im &quot;Options {};&quot;-Block
+stehenden.
+ </textblock>
+
+ <textblock>
+Ein Primary, der nirgendwo als &quot;NS&quot;-Record auftritt,
+wird normalerweise nie Anfragen erhalten, außer Zonetransfers von
+seinen Secondaries. Deshalb kann man in diesem Falle die Option
+&quot;allow-query { none; };&quot; setzen, diese darf ebenfalls
+im &quot;options {};&quot;-Block stehen, und damit global gelten.
+ </textblock>
+
+ <textblock>
+Sehr häufig erlauben die Server Zonetransfers nur ihren
+Secondaries. Damit erlaubt auch ein Secondary (der von keinem als
+Primary verwendet wird, theoretisch lassen sich die Server aber
+<strong>kaskadieren</strong>) überhaupt keine Zonetransfers,
+höchstens zu ein, zwei Maschinen zu Testzwecken (wo z.B.
+<command>dnswalk</command> läuft, das Zonetransfres benötigt).
+Das konfiguriert man mit der Option
+&quot;allow-transfer { none; };&quot;, bzw. bei Primaries durch
+Aufzählen der IP-Adressen der Secondaries (und evtl. Testhosts),
+z.B. &quot;allow-transfer { 1.2.3.4; 1.2.3.5; };&quot;. Anstatt
+einzelner Adressen können selbstverständlich auch Netzwerke
+angegeben werden.
+ </textblock>
+
+ <textblock>
+<command>bind</command> (ab Version 8) unterstützt auch
+<strong>ACL</strong>s (Access Control Lists),
+was die Übersicht erhöht. Hier kann man symbolische Namen
+für IP Adressen und Netzwerke vergeben, ein Beispiel:
+ </textblock>
+			
+ <file>
+ <title>/etc/named.conf</title>
+  <content>
+acl fremde_clients { !1.2.3/24; any; };    // alle, außer 1.2.3.0/24
+acl locals  { 1.2.4.0/24; };               // eigenes Netz
+acl transfer { 1.2.10.53; 1.2.11.53; };    // Secondaries
+acl clients { locals; transfer; };	   // Resolver
+acl dhcp { 1.2.4.254; };                   // DHCP-Server 
+
+allow-transfer { transfer; };
+allow-query { clients; };
+allow-update { dhcp; };
+  </content>
+ </file>
+			
+ <textblock>
+Das ist dann besser lesbar.
+ </textblock>
+ 
+ <textblock>
+Dabei müssen die ACLs natürlich vor deren Verwendung definiert
+werden. Sollen diese bereits im &quot;options {};&quot;-Block
+verwendet werden, müssen diese davor (also außerhalb dieses
+Blockes) definiert werden. Finden die ACLs in den
+&quot;zone {};&quot;-Blöcken Anwendung, so können nach dem
+&quot;options {};&quot;-Block (und vorzugsweise vor dem ersten
+&quot;-zone {};&quot;-Block) definiert werden.
+Die Struktur sähe z.B. so aus:
+ </textblock>
+			
+ <file>
+  <title>/etc/named.conf</title>
+  <content>
+acl transfer { 1.2.10.53; 1.2.11.53; };    // Secondaries
+
+options {
+	....
+	allow-transfer { transfer; };
+};
+
+acl locals  { 192.168.0.0/16; };           // eigenes Netz
+
+zone "my.play.net.de" {
+	....
+	allow-query { locals; };
+	};
+  </content>
+ </file>
+
+ <textblock>
+Damit könnte man dann eventuell eine interne, private Zone für
+private IP-Adressen auf dem normalen DNS-Server konfigurieren,
+aber den Zugriff aus dem Internet verbieten. Ansonsten kann es zu
+Störungen fremder Clienten führen, da Namen u.U. falsch aufgelöst
+werden könnten.
+ </textblock>
+
+</section>
+</split>
+	
+<split>
+<section>
+ <heading>
+Betrieb hinter einer Firewall
+ </heading>
+		
+ <textblock>
+Hierbei gibt es zwei zu trennenden Dinge: DNS-Server, die
+Clientanfragen bearbeiten, und Autoritative-Server. Man kann
+diese auf getrennten Maschinen unterbringen, denn DNS-Server, die
+Clientanfragen beantworten, sind von Denial-Of-Service Attacken
+nicht so stark betroffen, wie Authoritative-Server. Mit der Option
+ </textblock>
+ <quotation>
+query-source address * port 53;
+ </quotation>
+ <textblock>
+kann man <command>bind</command> anweisen, alle Anfragen von
+Port 53 aus zu machen.
+Damit kann man die Firewall für die hohen Ports (&gt;1023) auch
+noch sperren. Zusätzlich kann man auch die Zieladdressen
+begrenzen, wenn man den Server &quot;forward-only;&quot;
+konfiguriert. Dann
+gibt man ihm z.B. drei Forwarder, und erlaubt nur Verbindungen zu
+diesen. Diese Verbindungsregeln müssen für UDP und TCP gelten, da
+<command>bind</command> bei Anfragen, die nicht mehr in ein einzelnes UDP-Paket
+passen, TCP verwendet. Selbstverständlich sollte die Firewall
+Regelverstöße loggen.
+ </textblock>
+
+ <textblock>
+Betreibt man einen Primary, und läßt die Secondaries vom ISP
+machen, so muß mit diesem abgesprochen werden, von welchen
+Maschinen aus welche Art von Zugriff zu erlauben ist. Einige
+verwenden z.B. <command>ping</command> für Tests, außerdem wird
+evtl. von einer anderen Maschine zu Testzwecken ein Zonetransfer
+probiert, bevor der Eintrag in den &quot;richtigen&quot; Server
+gemacht wird. Erhält man ungenügende Auskunft, so erstellt man
+eine Firewallregel, die alle Anfragen durchläßt, aber dabei
+loggen (Es reicht aus, Pakete mir gesetztem SYN-Bit zu loggen,
+allerdings macht das in der Praxis selten Sinn, da zu verbotenen
+Ports sowieso nur SYN-Pakete kommen werden, und der Aufwand für
+die zusätzlichen Regeln [die für TCP] kaum Nutzen bringt, sofern
+man keine &quot;ACCEPTS&quot; loggt).
+Dann kann man das Logfile analysieren, und erkennt, welche
+Maschinen Daten austauschen.
+ </textblock>
+
+ <textblock>
+Leider kann man DNS nicht durch den <command>rinetd</command>
+redirecten, da dieser kein UDP unterstützt.
+ </textblock>
+
+ <textblock>
+Da mindestens ein Slave außerhalb des Netzes steht, muß also
+mindestens dieser durch die Firewall dürfen. Um das testen zu
+können, sollte immer ein zusätzlicher Host erlaubt werden, also
+sowohl durch die Firewall dürfen, als auch einen Zonentransfer
+machen dürfen. Dann kann man <command>nslookup</command> auf
+diesem Host verwenden, um mit
+<command>ls &lt;Zonenname&gt;</command> einen
+Test-Zonetransfer durchzuführen.
+ </textblock>
+			
+ <textblock>
+Beim ersten Zugriff der Secondaries sollte man immer das Firewall-
+Log im Auge behalten, da die Provider gern einen Host, der
+Zugriff benötigt, vergessen. Das ist z.B. die Testmaschine, an
+dem die Zonen geprüft werden. So sieht man das Problem sofort,
+und kann eine entsprechende Regel evtl. schnell einfügen.
+ </textblock>
+</section>
+</split>
+
+<split>
+<section>
+
+ <heading>
+Classless Routing (CIDR)
+ </heading>
+			
+ <textblock>
+Bei der klassischen Struktur des Internet gab es als kleinstes
+Netzwerk ein &quot;Class C&quot;-Netz mit 8 Bit Hostanteil, also für 254
+Maschinen. Da viele kleinere Firmen existieren, wäre das eine
+große Verschwendung von IP-Adressen, deshalb vergibt man auch
+Teilnetze davon (z.B. mit 4-7 Bit Hostanteil, also /25 bis /29
+Netze mit 6 bis 126 nutzbaren Adressen). Diese Technik nennt man
+<strong>CIDR</strong> (Classless Internet Domain Routing -
+Klassenloses
+Internetrouting), weil man nicht mehr an Klasse-A/B/C-Netze
+gebunden ist, und ein klassisches A-Netz z.B. wie 256 B-Netze
+routen und vergeben kann. 
+ </textblock>
+
+ <textblock>
+Dabei tut sich dann ein Problem auf: die Auflösung der
+IP-Adressen in Namen in der in-addr.arpa Zone. Da Delegation ja
+nur an den &quot;Punkten&quot;, also an der Bytegrenze einer 
+IP-Adresse möglich ist, muß das C-Netz, das zu verschiedenen 
+Teilen von verschiedenen Firmen verwendet wird, vom Provider 
+verwaltet werden, da erstmal keine Delegation möglich ist. Das 
+ist dann unpraktisch, da eine Firma jede Veränderung über diesen 
+Umweg durchführen muß.
+ </textblock>
+
+ <textblock>
+Mit einem Trick, der auf ein Newsposting von
+<name>G.A. Herrmannsfeldt</name> zurückgeht (und inzwischen in
+<name>RFC 2317</name> beschrieben ist), lassen sich die Adressen
+eines solchen
+Teilnetzes dann aber doch delegieren. Die Idee dabei ist, dass in
+der eigentlichen in-addr.arpa die Adressen CNAME-Records sind 
+(also Aliasnamen), die auf andere Zonen zeigen. Diese anderen 
+Zonen lassen sich dann &quot;delegieren&quot;, bzw. 
+werden dort und dafür die entsprechenden Nameserver eingesetzt. 
+Im klassischen Falle sähe die unpraktische Zone beim Provider ja 
+so aus (zu den Netzen 192.168.2.0/30, 192.168.2.4/30 usw.):
+ </textblock>
+
+<file>
+  <title>
+2.168.192.zone
+  </title>
+  <content>
+$TTL 1d
+
+2.168.192.in-addr.arpa. IN SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	3H	   ; Refresh (Aktualisierung)
+	1H	   ; Retry (neuer Versuch)
+	1M	   ; Expire (ungültig nach)
+	1D )	   ; min. TTL (mindeste Gültigkeit)
+
+		IN  NS		ns1.selflinux.de.
+		IN  NS		ns2.selflinux.de.
+
+1		IN  PTR		lisa.simpson.net.
+2		IN  PTR		bart.simpson.net.
+
+5		IN  PTR		ernie.sesam.org.
+6		IN  PTR		bert.sesam.org.
+  </content>
+ </file>
+			
+ <textblock>
+usw. Nun möchte man das also über CNAMES in andere Zonen zeigen
+lassen. Als Namen für diese Zone könnte man die Netzwerknummer
+verwenden (also 0.2.168.192.in-addr.arpa und
+[kurz] &quot;4&quot; - die Telekom macht das z.B. so), oder auch
+noch die Broadcastaddressen dazunehmen (also &quot;0-3&quot;),
+oder die Netzmaske (&quot;0-3&quot;, oder auch &quot;0/30&quot;,
+was genau genommen nicht verboten ist, da es sich hierbei nicht
+um einen Hostnamen handelt, wäre der &quot;/&quot; erlaubt), also
+erhält man z.B. (nur diese Records):
+ </textblock>
+			
+ <file>
+  <title>
+2.168.192.zone
+  </title>
+  <content>
+1		IN  CNAME	1.0-3.2.168.192.in-addr.arpa.
+2		IN  CNAME	2.0-3.2.168.192.in-addr.arpa.
+
+5		IN  CNAME	5.4-8.2.168.192.in-addr.arpa.
+6		IN  CNAME	6.4-8.2.168.192.in-addr.arpa.
+  </content>
+ </file>
+
+ <textblock>
+Der Zone 0-3.2.168.192.in-addr.arpa. müssen dann natürlich noch
+NS-RRs hinzugefügt werden. Diese müssen in der zu &quot;0-3&quot;
+übergeordneten Zone eingetragen werden - also in der, in der auch
+die CNAMES stehen. Das ist günstig, man erhält zusätzlich z.B.:
+ </textblock>
+			
+ <file>
+  <title>
+  2.168.192.zone
+  </title>
+  <content>
+0-3.2.168.192.in-addr.arpa. IN NS ns1.simpson.net.
+0-3.2.168.192.in-addr.arpa. IN NS ns2.simpson.net.
+  </content>
+ </file>
+			
+ <textblock>
+In diesen delegierten Zonen werden dann vom DNS-Admin von
+simpson.net die PTR Records untergebracht. Das sieht dann z.B. so
+aus:
+ </textblock>
+ 
+ <file>
+  <title>
+0-3.2.168.192.zone
+  </title>
+  <content>
+$TTL 1d
+
+0-3.2.168.192.in-addr.arpa. IN SOA pri-ns.simpson.net. admin.simpson.net. (
+	2000012501 ; Serial (Seriennummer)
+	3H	   ; Refresh (Aktualisierung)
+	1H	   ; Retry (neuer Versuch)
+	1M	   ; Expire (ungültig nach)
+	1D )	   ; min. TTL (Mindestgültigkeit)
+
+		IN NS ns1.simpson.net.
+		IN NS ns2.simpson.net.
+
+1		IN  PTR		lisa.simpson.net.
+2		IN  PTR		bart.simpson.net.
+  </content>
+ </file>
+
+ <textblock>
+Es ist auch nicht zwingend notwendig, die &quot;erfundenen&quot; neuen
+Zones unter die in-addr.arpa.-Zone zu legen, man könnte auch 
+0-3.simpson.net. verwenden, oder gar arpa.simpson.net. Das muß je
+nach Fall entschieden werden. Diese Entscheidung liegt beim
+übergeordneten Provider. 
+			</textblock>
+			<textblock>
+Leider kann man dieses Verfahren nicht mehrfach anwenden, um
+weiter zu delegieren, da in diesem Fall ein CNAME auf einen CNAME
+zeigt, was nicht sein soll (und was damit zu Problemen führen
+kann).
+ </textblock>
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Umgang mit Störungen
+ </heading>
+
+ <textblock>
+Schäden durch DNS-Serverausfälle lassen sich durch redundante
+Systeme weitgehend vermeiden. Clienten sind so zu konfigurieren,
+dass sie mehrere Server kennen. Fällt ein solcher Server aus (der
+ja ein caching-only Nameserver sein kann, also einer, der für
+keine Zone authoritative ist), wechselt der Resolver einfach auf
+einen anderen, bis auf etwas Zeitverlust kein weiterer Nachteil. 
+Die Reihenfolge der Server ist von Client zu Client zu mischen,
+um Lastverteilung zu erreichen.
+ </textblock>
+			
+ <textblock>
+Es sind ausreichend viele Secondaries bereitzustellen, ansonsten
+wird der Betrieb u.U.  durch Überlast gestört. Verwenden lokale
+Clienten andere DNS-Server, so wird das u.U. spät bemerkt. Fällt
+ein Secondary aus, stellt das kurzfristig kein allzu großes
+Problem dar, solange noch mindestens ein Secondary verfügbar ist.
+Dabei muß vermieden werden, dass in diesem Falle der oder die
+verbleibenden Secondaries überlastet werden.
+ </textblock>
+			
+ <textblock>
+Fällt ein Primary aus, und ist dieser nur Primary, aber keiner
+mit einem NS-RR aufgeführter (auch
+<strong>hidden primary</strong>; genannt), so verläuft der Ausfall 
+vollkommen transparent, bis die Secondaries die Zone expiren 
+(also wegwerfen), was so um die zwei bis sechs Wochen dauern 
+sollte (je nach Konfiguration der SOA-Records der Zone). 
+Nach dieser Zeit ist die Zone jedoch vollkommen unbekannt! In 
+der Praxis ist das jedoch mehr als genug Zeit, um einen neuen 
+Server aufzusetzen, ein Backup einzuspielen, und so notfalls 
+einfach den kompletten Server zu wechseln.
+ </textblock>
+			
+ <textblock>
+Da DNS auf verteilten Datenbanken beruht, muß bei einer Kontrolle
+bzw. beim Debugging beachtet werden, welcher Server (welcher
+Secondary, welcher Forwarder etc.) welche Antwort gibt. So kann
+es z.B. sein, dass ein Secondary fehlerhaft arbeitet. Ein Test
+kann aber die richtige Antwort liefern, falls dieser zufällig
+nicht gefragt wird. Diese Antwort wird dann evtl. noch von einem
+Forwarder gecached. Deshalb sollte man bei Tests die Secondaries
+einen nach dem anderen direkt fragen. Widersprechen sich z.B.
+zwei Secondaries, können die Fehler diffus und versteckt
+auftreten.
+ </textblock>
+			
+ <textblock>
+Haben sich die Zonendateien in letzter Zeit geändert, ist es auch
+möglich, dass ein Secondary den Transfer noch nicht durchführen
+konnte. Deshalb muß als erstes geprüft werden, ob die SOA-Serial
+überhaupt die aktuelle ist. Eventuell gibt es Probleme mit der
+Notification (wenn alles funktioniert, sollten die aktualisierten
+Zonen in wenigen Minuten den Secondaries bekannt sein).
+ </textblock>
+ 
+ <textblock>
+Es gibt auch Fehler, die eigentlich in anderen Zonen liegen, als
+in der sie bemerkt werden. So ist es zum Beispiel denkbar, dass
+ein NS-Record fehlerhaft scheint, in Wirklichkeit aber der
+dazugehörige A-Record aus der Zone, zu der der DNS-Server gehört,
+fehlerhaft ist oder nicht existiert. Diese Zone wird dann
+eventuell auch noch von anderen verwaltet...
+ </textblock>
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Root-Rechte
+ </heading>
+
+ <textblock>
+Häufig wird <command>BIND</command> unter root-Rechten gestartet.
+Das ist natürlich ein Sicherheitsrisiko und sollte vermieden
+werden. Bei aktuellen Versionen ist das sehr einfach. Zunächst
+müssen eine eigene Gruppe und ein eigener Benutzer eingerichtet
+werden. Unter Linux kann man diese ganz einfach mit den folgenden
+beiden Kommandos anlegen:
+ </textblock>
+
+ <shell>
+  <root>
+groupadd named
+  </root>
+  <root>
+useradd -d /var/named -g named named
+  </root>
+ </shell>
+
+ <textblock>
+Nun muß das Verzeichnis <command>/var/named</command> an diesen
+Benutzer &quot;verschenkt&quot; werden:
+ </textblock>
+			
+ <shell>
+  <root>
+chown -R named:named /var/named
+  </root>
+ </shell>
+
+ <textblock>
+Eigentlich besteht kein Grund, eigene, primäre Zonenfiles (also
+die, für die der Server authorativ und kein Secondary ist) zu
+verschenken. <command>bind</command> muß aber in der Lage sein,
+sekundäre Zonefiles
+zu schreiben, nachdem sie vom Primary geladen wurden. Dazu kann
+man aber auch ein Unterverzeichnis verwenden, und nur dieses
+schreibbar machen. Dann kann im Falle des Mißbrauches der
+Benutzerkennung (z.B. durch einen erfolgreichen Angriff) kein
+primäres Zonefile verändert werden.
+ </textblock>
+
+ <textblock>
+Nun muß der Startaufruf um zwei Parameter erweitert werden, damit
+bind weiß, das er unter anderen Benutzerrechten laufen soll:
+ </textblock>
+			
+ <shell>
+  <root>/usr/sbin/named -u named -g named</root>
+ </shell>
+			
+ <textblock>
+Nach der Initialisierung werden dann die root-Rechte abgelegt.
+Beim Start sind diese natürlich noch kurz erforderlich, da sonst
+der Port 53 nicht verwendet werden könnte (privilegierte Ports
+dürfen nur von root verwendet werden).
+ </textblock>
+</section>
+</split>
+
+<split>
+<section>
+
+ <heading>
+Chroot-Umgebung
+ </heading>
+
+ <textblock>
+Um es noch sicherer zu bekommen, kann man <command>bind</command>
+auch in einer <command>chroot</command>-Umgebung laufen lassen.
+Das macht allerdings etwas mehr Arbeit, denn alle von
+<command>bind</command> benötigten Dateien müssen dann unterhalb
+dieses <command>chroot</command>-Verzeichnisses liegen. Dazu sind
+dann einige Schritte notwendig. Vorallem muß
+<command>bind</command> als eigener User laufen, da
+<command>chroot</command> mit Root-Rechten nicht sinnvoll
+funktioniert.
+ </textblock>
+			
+ <textblock>
+Zunächst muß einen minimale Verzeichnisstruktur erzeugt werden,
+die <command>bind</command> verwenden kann. Sie kann z.B. unter
+<command>/var/named.chroot</command>
+erzeugt werden. Dazu folgendes Kommando (als root!):
+ </textblock>
+
+ <shell>
+  <root>mkdir -p /var/named.chroot/etc</root>
+  <root>mkdir -p /var/named.chroot/var/named</root>
+  <root>mkdir -p /var/named.chroot/var/run</root>
+  <root>mkdir -p /var/named.chroot/bin</root>
+  <root>mkdir -p /var/named.chroot/usr/sbin</root>
+  <root>mkdir -p /var/named.chroot/dev</root>
+  <root>mkdir -p /var/named.chroot/lib</root>
+ </shell>
+			
+ <textblock>
+Nun müssen die Konfigurationsdatei und die Datenbanken kopiert
+werden:
+ </textblock>
+
+ <shell>
+  <root>
+cp -p  /etc/named.conf /var/named.chroot/etc/
+  </root>
+  <root>
+cp -pR /var/named /var/named.chroot/var
+  </root>
+ </shell>
+			
+ <textblock>
+Nun sind die Rechte der Dateien zu korrigieren:
+ </textblock>
+
+ <shell>
+  <root>
+chown -R root:root /var/named.chroot/
+  </root>
+  <root>
+chmod 755 /var/named.chroot
+  </root>
+  <root>
+chmod 755 /var/named.chroot/*
+  </root>
+  <root>
+chown -R named:named /var/named.chroot/var/named/
+  </root>
+  <root>
+chown -R named:named /var/named.chroot/var/run/
+  </root>
+  <root>
+chmod 644 /var/named.chroot/etc/*
+  </root>
+  <root>
+chmod 755 /var/named.chroot/lib/*
+  </root>
+  <root>
+chmod 755 /var/named.chroot/usr/sbin
+  </root>
+  <root>
+chmod 755 /var/named.chroot/usr/sbin/*
+  </root>
+ </shell>
+
+ <textblock>
+Normalerweise verwendet man dynamisch gelinkte Binärdateien, und
+so müssen die Bibliotheken kopiert werden. Zuerst muß man schauen,
+welche Libs benötigt werden:
+ </textblock>
+
+ <shell>
+  <root>ldd `which named`</root>
+ </shell>
+
+ <textblock>
+Eine Ausgabe könnte sein:
+ </textblock>
+
+ <shell>
+  <output>
+libc.so.6 => /lib/libc.so.6 (0x4001d000)
+/lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x40000000)
+  </output>
+ </shell>
+
+ <textblock>
+Es kann bei anderen Unix-Derivaten sein, dass das Kommando
+<command>ldd</command> oder <command>which</command> nicht
+verfügbar ist. Dann muß ein anderer Weg gefunden werden.
+				<br/><br/>
+Diese Dateien werden kopiert:
+ </textblock>
+
+ <shell>
+  <root>
+cp -p /lib/libc.so.6 /var/named.chroot/lib/
+  </root>
+  <root>
+cp -p /lib/ld-linux.so.2 /var/named.chroot/lib/
+  </root>
+ </shell>
+			
+ <textblock>
+Dann benötigt <command>BIND</command> die Gerätedatei
+<command>/dev/null</command>. Hat man ein modernes
+<command>/bin/cp</command>, so reicht ein:
+ </textblock>
+
+ <shell>
+  <root>
+cp -a /dev/null /var/named.chroot/dev/
+  </root>
+ </shell>
+			
+ <textblock>
+andernfalls muß man das Gerät neu anlegen:
+ </textblock>
+
+ <shell>
+  <root>
+mknod /var/named.chroot/dev/null c 1 3
+  </root>
+ </shell>
+
+ <textblock>
+(Die konkreten Parameter können wiederum bei anderen
+Unix-Derivaten abweichen).
+ </textblock>
+			
+ <textblock>
+<command>BIND</command> benötigt die Datei
+<command>/etc/localtime</command>:
+ </textblock>
+
+ <shell>
+  <root>
+cp /etc/localtime /var/named.chroot/etc/
+  </root>
+ </shell>
+
+ <textblock>
+und natürlich seine eigenen
+<command>/etc/passwd</command>-Einträge. Diese können
+z.B. mit folgenden Einzeilern erzeugt werden:
+ </textblock>
+
+ <shell>
+  <root>
+cat /etc/passwd | grep 'named' > /var/named.chroot/etc/passwd
+  </root>
+  <root>
+cat /etc/group  | grep 'named' > /var/named.chroot/etc/group
+  </root>
+ </shell>
+
+ <textblock>
+Wenn <command>bind</command> über <command>syslogd</command>(8)
+loggt, und nicht nur über eigene
+logfiles, muß hier noch weiter angepaßt werden. Normalerweise
+greift <command>BIND</command> auf <command>/dev/log</command> zu.
+Diese Datei ist nun aber nicht mehr erreichbar.
+<command>syslogd</command> muß also eine Datei zusätzlich
+verwenden, die erreichbar ist.
+Ein halbwegs moderes <command>syslogd</command> kennt dazu den
+Parameter &quot;-a&quot;, der nun beim Start des Syslogdeamons
+angegeben werden muß. Dazu muß u.U. das Startscript angepaßt
+werden. Bei einer SuSE-Distribution kann man aber auch den
+Parameter SYSLOGD_PARAMS in <command>/etc/rc.config</command>
+verwenden:
+ </textblock>
+
+ <file>
+  <title>
+/etc/rc.config
+  </title>
+  <content>
+SYSLOGD_PARAMS="-a /var/named.chroot/dev/log"
+  </content>
+ </file>
+			
+ <textblock>
+Sonst muß der &quot;-a&quot;-Parameter an der entsprechenden
+Stelle im Startscript hinzugefügt werden. Danach ist
+<command>syslogd</command> neu zu starten.
+dabei sollte <command>syslogd</command> nun diese Datei erzeugt
+haben. Leider neigen scheinbar einige
+<command>syslogd</command>-Versionen dazu,
+hier Bugs zu besitzen, und nur noch diesen Socket auzuwerten
+oder dergleichen. Ein Update sollte dem abhelfen.
+ </textblock>
+
+ <textblock>
+Soll <command>bind</command> nicht über <command>syslogd</command>
+loggen, sondern in Dateien schreiben, kann folgendes
+konfiguriert werden:
+ </textblock>
+
+ <file>
+  <title>
+/etc/named.conf
+  </title>
+  <content>
+logging {
+
+        channel file_log {
+                file "named.log";
+                severity info;
+        };
+
+        channel file_debug {
+                file "named.run";
+                severity dynamic;
+        };
+
+        category default {
+                file_log; file_debug;
+        };
+};
+  </content>
+ </file>
+
+ <textblock>
+Nun müssen die Programme selbst kopiert werden, mindestens
+<command>named</command> und <command>named-xfer</command> (mit
+<command>which named</command> kann herrausgefunden werden, wo
+sich diese befinden). Dabei muß beachtet werden, dass der Pfad zu
+<command>named-xfer</command> &quot;hardcoded&quot; im
+Binärprogramm steht. Dieser Pfad muß dann um den chroot-Pfad
+erweitert werden, damit das Programm von <command>bind</command>
+gefunden wird. Liegen <command>named</command> und
+<command>named-xfer</command> z.B. in <command>/usr/sbin</command>
+(wie bei SuSE), so müssen sie nach
+<command>/var/named.chroot/usr/sbin</command> kopiert werden:
+ </textblock>
+			
+ <shell>
+  <root>
+cp /usr/sbin/named* /var/named.chroot/usr/sbin/
+  </root>
+ </shell>
+
+ <textblock>
+Man kann natürlich auch in ein anderes Verzeichnis kopieren, muß
+dann aber in der Konfigurationsdatei den Pfad entsprechend
+angeben, z.B.:
+ </textblock>
+
+ <file>
+  <title>
+/etc/named.conf
+  </title>
+  <content>
+options {
+	...
+	named-xfer "/bin/named-xfer";
+};
+  </content>
+ </file>
+			
+ <textblock>
+Dabei ist wieder zu beachten, dass die benötigten Libs geladen
+werden können. Der hier angegebene Pfad ist natürlich um das
+Chroot-Verzeichnis gekürzt anzugeben, da <command>BIND</command>
+dann von dieser nichts mehr sieht, also unter
+<command>/bin</command> etwas anderes
+versteht, als ein nicht ge-chrooteter Prozeß.
+ </textblock>
+			
+ <textblock>
+Der Startaufruf für <command>BIND</command> muß nun nur noch um
+den Parameter &quot;-t&quot; erweitert werden:
+ </textblock>
+			
+ <shell>
+  <root>
+/usr/sbin/named -u named -g named -t /var/named.chroot
+  </root>
+ </shell>
+			
+ <textblock>
+Nun sollte überprüft werden, ob Anfragen noch richtig beantwortet
+werden, und ob ein Zonetransfer funktioniert.
+ </textblock>
+ 
+ <textblock>
+Da (ein älteres) <command>ndc</command> das pid-File in
+<command>/var/run</command> erwartet, und nicht in
+<command>/var/named.chroot/var/run</command>, kann hier ein
+Symlink helfen, der vom Startscript nach dem Starten jeweils
+erzeugt wird:
+ </textblock>
+
+ <shell>
+  <root>
+ln -s /var/named.chroot/var/run/named.pid /var/run/
+  </root>
+ </shell>
+
+ <textblock>
+Beim Beenden kann der Link dann einfach gelöscht werden:
+ </textblock>
+			
+ <shell>
+  <root>
+rm -f /var/run/named.pid
+  </root>
+ </shell>
+
+ <textblock>
+Es ist zu beachten, dass <command>ndc restart</command> und
+<command>ndc start</command> nicht mehr verwendet werden
+sollten, da hier die Parameter aus unserem Startscript nicht
+verwendet werden! Dann wird <command>bind</command> unter
+root-Rechten ohne <command>chroot</command> ausgeführt!<br/>
+Modernere <command>ndc</command>-Versionen handhaben die
+Verbindung anders. Es wird ein <strong>control channel</strong>
+verwendet, defaultmäßig ist das <command>/var/run/ndc</command>.
+Das kann über Parameter geändert werden. Ein modernes
+<command>ndc</command> kann aber auch über Parameter dazu
+veranlaßt werden, ein pid-File zu verwenden. Diese Defaults
+können beim Compilieren allerdings geändert werden. Sonst
+lautet der Aufruf von <command>ndc</command> wie folgt:
+ </textblock>
+			
+ <shell>
+  <root>
+ndc -c /var/named.chroot/var/run/ndc 
+  </root>
+ </shell>
+
+ <textblock>
+Es ist wohl eine gute Idee, hierauf einen Shell-"Alias" zu
+setzen, z.B. in <command>~/.profile</command>:
+ </textblock>
+
+ <file>
+  <title>~/.profile</title>
+  <content>
+alias ndc='ndc -c /var/named.chroot/var/run/ndc'
+  </content>
+ </file>
+
+ <textblock>
+Es sollte mindestens ein <command>reload</command> probiert
+werden, um zu sehen, ob z.B. <command>bind</command> jetzt
+noch seine Konfigurationsdatei lesen kann. Beim ersten Start
+funktioniert das immer, da vor dem Setzen der
+<command>chroot</command> Umgebung noch root-Rechte
+vorhanden sind, was bei <command>reload</command>
+ja nicht mehr der Fall ist. Gegebenenfalls sind die Rechte zu
+kontrollieren. Hierbei gilt, <command>bind</command> darf ruhig
+viel (alles) lesen können, aber nur die Slave-Zones schreiben
+(also darf dem User nur wenig gehören - nur das
+Slave-Zonen-Verzeichnis).
+ </textblock>
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Versionen
+ </heading>
+
+ <textblock>
+Da <command>bind</command> leider immer wieder Sicherheitslücken 
+enthält, ist es ein beliebter Angriffspunkt für Angreifer. Da zu 
+vielen <command>bind</command>-Versionen Sicherheitslücken 
+bekannt sind, kann eine Angreiferin auf die Idee kommen, 
+einfach die Version abzufragen, und dann kann sie die nun bekannten 
+Sicherheitslücken ausnutzen.
+ </textblock>
+			
+ <hint>
+Deshalb mag es günstig sein, die Versionsnummer nicht zu
+verraten, um der Angreiferin das Leben etwas schwerer zu machen.
+ </hint>
+
+ <textblock>
+Die Version läßt sich erfahren, wenn man einen
+<command>BIND</command>-Server nach
+&quot;version.bind&quot;, Type TXT, in der Klasse CHAOS fragt.
+Das geschieht z.B. mit folgendem Kommando:
+ </textblock>
+
+ <shell>
+  <root>
+dig @&lt;server&gt; version.bind TXT CHAOS
+  </root>
+ </shell>
+
+ <textblock>
+Eine Antwort sieht dann (gekürzt) so aus:
+ </textblock>
+
+ <shell>
+  <output>
+VERSION.BIND.           0S CHAOS TXT    "8.1.2"
+  </output>
+ </shell>
+
+ <textblock>
+Man kann dazu natürlich auch <command>nslookup</command>
+verwenden:
+ </textblock>
+
+ <shell>
+  <root>
+nslookup -class=CHAOS -query=txt version.bind.
+  </root>
+ </shell>
+
+ <textblock>
+Neuere <command>BIND</command>-Versionen kennen eine
+Konfigurationsoption, um die dabei angezeigte Zeichenkette zu
+setzen. Man kann sich damit dann eine Version 10.100.1000
+basteln, oder auf etwas ganz anderes setzen Das kann dann so
+aussehen:
+ </textblock>
+
+ <file>
+  <title>
+/etc/named.conf
+  </title>
+  <content>
+options {
+	...
+        version "[Secured]";   
+};
+  </content>
+ </file>
+
+  <textblock>
+Dann wird mit dem Kommando das auch angezeigt:
+  </textblock>
+
+  <shell>
+  <output>
+VERSION.BIND.           0S CHAOS TXT    "[Secured]"
+  </output>
+ </shell>
+
+ <textblock>
+Und Rückschlüsse auf die Version sind so nicht mehr möglich.
+Diese Änderung kann natürlich auch gemacht werden, in dem der RR
+&quot;version.bind&quot; in einer Zone gesetzt wird. Dabei können dann, wie
+für jede andere Zone auch, ACL-Berechtigungen konfiguriert
+werden. Diese Zone wird so konfiguriert, wie auch die Zonen der
+normalen Namen der Klasse IN. Dazu benötigt man z.B. folgenden
+Eintrag in der Konfigurationsdatei:
+ </textblock>
+			
+ <file>
+  <title>
+/etc/named.conf
+  </title>
+  <content>
+zone "bind" CHAOS {
+	type master;
+	file "bind.zone";
+	allow-query { none; };     //Zugriff verweigern
+	allow-transfer { none; };  //damit AXFR auch nicht geht.
+			};
+  </content>
+ </file>
+ 
+ <textblock>
+Natürlich kann man auch Ausgewählten den Zugriff erlauben. Nun 
+muß noch die Datenbank selbst angelegt werden. Sie kann folgenden
+Inhalt haben:
+ </textblock>
+
+ <file>
+ <title>
+bind.zone
+ </title>
+ <content>
+bind. CHAOS SOA pri-ns.selflinux.de. admin.selflinux.de. (
+	2000012501 ; Serial (Seriennummer)
+	3H	   ; Refresh (Aktualisierung)
+	1H	   ; Retry (neuer Versuch)
+	100D	   ; Expire (ungültig nach)
+	1D )	   ; min. TTL (Mindestgültigkeit)
+
+	CHAOS   NS      dns
+version CHAOS   TXT     "[Secured]"
+ </content>
+ </file>
+</section>
+</split>
+
+<split>
+<section>
+ <heading>
+Wachstum
+ </heading>
+
+ <textblock>
+Wichtig ist vor allem, Störungen schnell zu erkennen und so
+beseitigen zu können. Auch die Auslastung in Spitzenzeiten ist zu
+überwachen. Wird diese zu hoch, kann man über eine Delegation von
+Teilen der Domain nachdenken, oder weitere Secondaries
+einsetzen. Sind cachende Server überlastet, so ist es
+aufwendiger, neue einzusetzen, da diese ja bei den Clienten
+konfiguriert werden müssen. Eventuell ist aber die Hardware
+ausreichend erweiterbar (vielleicht hilft auch erstmal ein
+Hauptspeicherausbau).
+ </textblock>
+			
+ <textblock>
+Um einen reibungslosen Betrieb zu erhalten, ist es wichtig, den
+Überblick zu haben. Deshalb sollte man sich die Zeit nehmen,
+Adresspläne zu pflegen, Topologiediagramme aktuell zu halten und
+Änderungen mit anderen Beteiligten zu synchronisieren und
+abzusprechen. Normalerweise sollte ein DNS-Admin wissen, wer für
+eine bestimmte Maschine verantwortlich ist, und der weiß, wo sie
+physikalisch steht. Im Idealfall erfährt der DNS-Admin auch, wenn
+Maschinen aus dem Betrieb genommen werden. Leider werden dessen
+IP-Adressen teilweise einfach stillschweigend für neue Maschinen
+verwendet. Erstmal kein Problem. Aber in drei Jahren
+vielleicht...
+ </textblock>
+</section>
+
+<section>
+ <heading>
+Keep it running
+ </heading>
+ <textblock>
+Dieser goldene Satz gilt natürlich auch für den DNS-Administrator.
+Läuft <command>BIND</command> einmal, so muß mit nur wenig
+Wartungsaufwand gerechnet werden. Hin und wieder sollte man die
+Root-Server Einträge erneuern, da sich deren IP-Adressen mit der 
+Zeit ändern können. Sicherheitshinweise sollten verfolgt
+werden, und so ist evtl. die Software zu updaten.
+Routineprüfungen schaden selbstverständlich nicht, insbesondere
+ein Beobachten der Logfiles (dazu verwendet man am besten ein
+Tool, wie <command>logsurfer</command> oder
+<command>logmail</command>).  
+ </textblock>
+</section>
+</split>
+</chapter>

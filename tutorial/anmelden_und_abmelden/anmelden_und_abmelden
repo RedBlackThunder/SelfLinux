@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>An- und Abmelden</title>
+
+ <author>
+  <name>Matthias Kleine</name>
+  <mailto>kleine_matthias@gmx.de</mailto>
+ </author>
+
+ <layout>
+  <name>Johnny Graber</name>
+  <mailto>selflinux@jgraber.ch</mailto>
+ </layout>
+
+ <license>
+  GPL
+ </license>
+
+ <index>anmelden_und_abmelden</index>
+
+ <description>
+  <textblock>
+In diesem Kapitel sollen alle wesentlichen Konzepte erläutert
+werden, die man für die Benutzung von Linux kennen sollte. Im
+Blickpunkt steht der Anwender, der Linux kennenlernen und so schnell
+wie möglich als seine Arbeitsplattform nutzen möchte. Die vermittelten
+Kenntnisse sind elementar und für ein effizientes Arbeiten unbedingt
+notwendig. Sie sind gleichzeitig auch Grundvorraussetzung für eine
+sinnvolle Systemverwaltung. Dennoch wird hier davon ausgegangen, dass
+ein installiertes und funktionsfähiges Linux-System vorhanden ist,
+sei es durch die Hilfe eines Administrators oder durch die Weihen 
+benutzerfreundlicher Distributionen.
+  </textblock>
+ </description> 
+
+ <split>
+  <section>
+   <heading>
+Anmelden und Abmelden
+   </heading>
+
+   <section>
+    <heading>
+Nach dem Bootvorgang
+    </heading>
+
+    <textblock>
+Linux hat gebootet und wartet auf die Anmeldung eines Benutzers.
+Der schlichte Login-Prompt soll jedoch nicht darüber hinwegtäuschen,
+dass ein Linux-System bereits zu diesem Zeitpunkt voll einsatzfähig ist.
+Befindet sich der Rechner beispielsweise in einem Netzwerk, ist er
+jetzt schon in der Lage, Netzwerkanfragen anderer Rechner pflichtgemäß zu
+beantworten. Diese Dienste im Hintergrund sind von der Anmeldung eines
+Benutzers, auch der des Benutzers <ref chapter="nutzer_unter_linux" iref="root">root</ref>, völlig unabhängig.
+    </textblock>
+
+    <textblock>
+Wenn Linux Sie mit einer <ref chapter="was_ist_x">grafischen Oberfläche</ref> zum
+Anmelden empfängt, wurde bereits Vorarbeit von anderer Seite
+geleistet. Die neueren Distributionen bieten dies
+meist an, damit Benutzer gar nicht erst mit der gefürchteten
+Kommandozeile (<ref chapter="was_ist_shell">Shell</ref>) in Kontakt treten. Da wir Linux jedoch
+auf den Grund gehen wollen, betrachten wir den Anmeldevorgang am 
+Prompt etwas genauer.
+Das Thema <ref iref="Display Manager">Display Manager</ref> wird weiter unten behandelt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Das erste Einloggen
+    </heading>
+
+    <textblock>
+Ein Benutzerkonto in der EDV besteht immer mindestens aus einem Benutzernamen
+und einem <ref chapter="passwoerter">Passwort</ref>. Diese beiden Daten sind auch unter Linux
+erforderlich, um sich erfolgreich anmelden zu können.
+Hier <ref chapter="win_vs_linux">unterscheidet</ref> sich Linux von einigen der Betriebssysteme Microsofts,
+bei denen man ohne Anmeldung sofort den Rechner benutzen kann.
+Die <ref chapter="userverwaltung" iref="Einleitung">Mehrbenutzerfähigkeiten</ref> von Linux machen Benutzerkonten notwendig.
+
+Wenn Sie Ihren
+Linux-Rechner selbst installiert haben, mussten Sie während des
+Installationsvorgangs zu irgendeinem Zeitpunkt ein Passwort für den
+Benutzer root angeben. root ist auf jedem Linux-System zu finden und
+mit besonders weitreichenden Rechten zur Systemadministration ausgestattet.
+Vorläufig können Sie sich ausschließlich als der Benutzer root
+beim System anzumelden. Geben Sie daher ein:
+   </textblock>
+
+    <shell>
+     <output>
+login:
+     </output>
+     <input>
+root
+     </input>
+     <output>
+password:
+     </output>
+     <input>
+***
+     </input>
+    </shell>
+
+    <textblock>
+wobei *** für das Passwort steht, das Sie während des Installationsvorganges
+angegeben haben. Die Eingabe des Passwortes wird dabei in der Konsole aus
+Sicherheitsgründen in aller Regel nicht angezeigt.
+Einige Distributionen geben Ihnen während der Installation
+auch die Möglichkeit, einen Beispielnutzer anzulegen. Wenn Sie dies getan
+haben, sollten Sie sich zunächst nur unter diesem Konto anmelden. Ein
+<ref chapter="admin_richtlinien">Grundsatz</ref> für die Arbeit mit Linux, den ein Linux-Neuling gar nicht ernst genug
+nehmen kann, lautet: <strong>Arbeite niemals als root, wenn es nicht unbedingt
+notwendig ist!</strong> Dieser Grundsatz gilt wohlgemerkt auch für erfahrene
+Linux-Benutzer. Der Neuling sollte sich dies jedoch ganz besonders zu Herzen
+nehmen,
+um das frisch installierte Linux-System vor allzu großem Erkundungstrieb zu
+schützen. Sollte Ihr System von einem Administrator eingerichtet worden sein,
+hat dieser sicherlich ein Konto für Sie vorbereitet und Ihnen die Anmeldedaten
+mitgeteilt. Auch dann können Sie dem folgenden Beispiel folgen:
+    </textblock>
+
+    <shell>
+     <output>
+login:
+     </output>
+     <input>
+&lt;beispielname&gt;
+     </input>
+     <output>
+password:
+     </output>
+     <input>
+***
+     </input>
+    </shell>
+
+    <textblock>
+Verfügen Sie jedoch lediglich über einen root-Zugang, so wird Ihre erste (und
+vorläufig hoffentlich letzte) Handlung als root das Anlegen eines neuen
+Benutzers sein.
+    </textblock>
+
+    <textblock>
+Wird die Anmeldung vom System akzeptiert, startet eine sogenannte Benutzersitzung.
+Darin startet zunächst ein Kommandozeileninterpreter, auch <ref chapter="was_ist_shell">Shell</ref> genannt. Die Shell
+signalisiert ihre Bereitschaft für eine Eingabe mit dem sogenannten <ref chapter="was_ist_shell">Prompt</ref> und
+erwartet die Eingabe von Kommandos oder das Starten von Programmen per Tastatur
+durch den Benutzer.
+    </textblock>
+   </section>
+   <section>
+    <heading>
+Einen Standardbenutzer anlegen
+    </heading>
+
+    <textblock>
+Die meisten Distributionen bieten das Anlegen neuer Benutzer über die
+komfortable Oberfläche ihrer eigenen, spezifischen Konfigurationswerkzeuge an.
+Hier soll das Anlegen eines neuen Benutzers per Kommando beschrieben werden:
+    </textblock>
+
+    <textblock>
+Das Kommando zum Anlegen eines Benutzers ist useradd. Die notwendigen
+Benutzerinformationen werden <command>useradd</command> als <ref chapter="allgemeine_kommandosyntax">Parameter</ref> übergeben:
+    </textblock>
+
+    <shell>
+     <root path="~">
+useradd -g users -d /home/&lt;benutzername&gt; -m &lt;benutzername&gt;
+     </root>
+    </shell>
+
+    <textblock>
+Die Option <command>-g</command> (group) ordnet den neuen Benutzer einer Gruppe mit bestimmten
+Rechten zu. <command>-d</command> (directory) gibt ein Heimatverzeichnis für den Benutzer an, und
+<command>-m</command> sorgt dafür, dass dieses <ref chapter="nutzer_unter_linux" iref="Das Heimatverzeichnis">Heimatverzeichnis</ref> inklusive einer Reihe wichtiger
+Initialisierungsdateien sofort angelegt wird. Nach dem Aufruf von <command>useradd</command> ist
+der neu angelegte Benutzer jedoch noch deaktiviert. Um ihn zu aktivieren,
+müssen Sie ihm noch ein Passwort zuweisen. Dies geschieht mittels des Kommandos
+    </textblock>
+
+    <shell>
+     <root path="~">
+passwd &lt;benutzername&gt;
+     </root>
+     <root path="~">
+Kennwort eingeben
+     </root>
+     <root path="~">
+Kennwort bestätigen
+     </root>
+    </shell>
+
+    <textblock>
+Nach dem Absetzen des Kommandos fordert Linux Sie auf, ein Passwort einzugeben.
+Wie üblich muss die Eingabe danach noch einmal bestätigt werden. Stimmen die
+Passworte überein, ist der neue Benutzer vollständig eingerichtet und
+aktiviert. Sie können sich nun mittels <command>exit</command> als root
+<ref iref="Wieder abmelden">abmelden</ref> und mit diesen neuen Benutzerdaten wieder anmelden. Als gewöhnlicher Nutzer
+ohne die <ref chapter="nutzer_unter_linux" iref="root">Administrationsrechte von root</ref> können Sie
+sich sicher sein, keine wichtigen Systemdateien zu beschädigen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Textkonsolen
+    </heading>
+
+    <textblock>
+Linux bietet Ihnen standardmäßig die Möglichkeit, bis zu 6 Textkonsolen zu
+benutzen. Auf jeder Konsole ist eine separate Anmeldung
+erforderlich. Der Wechsel zwischen den Konsolen erfolgt mittels der
+Tastenkombinationen <keycomb mode="hold"><key>Alt</key><key>F1</key></keycomb> bis <keycomb mode="hold"><key>Alt</key><key>F6</key></keycomb>. Die Anzahl von 6 Konsolen (auch
+<strong>virtuelle Terminals</strong>) wird in der Datei <path>/etc/inittab</path> festgelegt.
+Der Vorteil dieser Möglichkeit ist,
+die Arbeit durch die Nutzung mehrerer
+Konsolen besser zu strukturieren. Möglich ist dabei die Verteilung der
+Arbeit eines Benutzers auf mehrere Arbeitsflächen ebenso wie die Anmeldung
+mehrerer unterschiedlicher realer Benutzer. Ihrer Fantasie beim Einsatz der
+Konsolen sind dabei keine Grenzen gesetzt.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Technische Hintergründe
+    </heading>
+
+    <textblock>
+Linux bietet Ihnen sogenannte virtuelle Terminals zur Benutzung an.
+Der Begriff Terminal stammt aus der Großrechnerwelt und bezeichnet dort den
+Anschluss eines Bildschirms mit Tastatur an einen Rechner. Aufgrund der hohen
+Kosten für diese Rechenanlagen waren meist viele Benutzer über solche
+Terminals mit einem Rechner verbunden. Terminals unterscheiden sich jedoch auf
+elektronischer Ebene stark von der heute üblichen Monitor/Tastatur-Konstruktion.
+    </textblock>
+
+    <textblock>
+Linux emuliert diese gleichsam historische Situation durch seine
+virtuellen Terminals. Die gemeinsame Beschränkung virtueller Terminals
+und klassischer Terminals liegt in der geringen Fähigkeit zur Darstellung
+grafischer Information.
+    </textblock>
+
+    <textblock>
+Nach dem Booten startet der <ref chapter="kernel">Kernel</ref> das Programm <command>/sbin/init</command>,
+das eine Vielzahl
+von Aufgaben zu erledigen hat. Eine dieser Aufgaben ist der Aufruf des
+Programmes <command>mingetty</command>. <command>mingetty</command> ist eine minimale Version des Programms <command>getty</command>,
+Es ist für die
+Öffnung der einzelnen virtuellen Terminals zuständig und legt deren Modus
+fest. Die Terminals sind jeweils als tty1, tty2 (tty für "Teletype") usw.
+bezeichnet und intern speziellen Gerätedateien zugeordnet. <command>mingetty</command> erzeugt auch
+die Ausgabe einer Zeile wie:
+    </textblock>
+
+    <shell>
+     <output>
+Welcome to SuSE Linux 7.3 (i386) - Kernel 2.4.14 (tty1)
+     </output>
+    </shell>
+
+    <textblock>
+die es aus der Datei <path>/etc/issue</path> liest. Schließlich ruft es das
+Programm <command>/bin/login</command> auf, das die eigentliche Anmeldung des
+Benutzers übernimmt. <command>login</command> gibt einen <ref chapter="was_ist_shell">Prompt</ref> auf dem Bildschirm aus und wartet
+auf die Eingabe des Benutzernamens. War die Anmeldung erfolgreich, so 
+zeichnet sich login für eine Ausgabe wie
+    </textblock>
+    
+    <shell>
+     <output>
+1 failure since last login. Last was 14:07:35 on tty1.
+You have new mail in /var/spool/mail/&lt;benutername&gt;
+Last login Wed Dez 22 11:15:24 on tty1
+Have a lot of fun...
+     </output>
+    </shell>
+
+
+   <textblock>
+verantwortlich. Wie Sie sehen, erhalten Sie eine Reihe nützlicher Auskünfte über
+fehlgeschlagene Anmeldeversuche, neue E-Mail und die letzte Anmeldung, und natürlich
+ist auch diese Ausgabe konfigurierbar. Schließlich startet <command>login</command> das Programm,
+das dem Benutzer in der Datei <path>/etc/passwd</path> zugeordnet ist. Im allgemeinen wird
+dies eine Shell sein, unter Linux praktisch immer die <ref chapter="bash_basic">Bourne again shell</ref>
+(<command>bash</command>). Von all dem müssen Sie als Benutzer eigentlich nichts wissen. Es soll
+jedoch verdeutlicht werden, dass schon die einfachsten Vorgänge häufig
+komplizierte technische Hintergründe haben. Während andere Betriebssysteme es
+häufig gar nicht ermöglichen, auf solche Vorgänge Einfluss zu nehmen, erweist
+sich Linux in dieser Hinsicht als hochgradig konfigurierbar. Von einem
+gewissen technischen Verständnis werden auch Sie als Benutzer profitieren.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Display Manager
+    </heading>
+
+    <textblock>
+Auch wenn Linux Sie bereits in grafischem Gewand empfängt, kommen Sie um eine
+ordnungsgemäße Anmeldung nicht herum. Die Anmeldung wird in diesem Fall
+lediglich von anderen Programmen bereitgestellt. Bevor diese Programme jedoch in
+Aktion treten können, müssen Grafikkarte und Monitor der Arbeitsstation
+korrekt angesteuert werden, um überhaupt eine grafische Oberfläche erzeugen zu
+können. Unter Linux wird dies immer über das sogenannte <ref chapter="was_ist_x">X Window System</ref>
+erledigt. X ist ein Programm wie jedes
+andere und vom eigentlichen Betriebssystem unabhängig.
+    </textblock>
+
+    <textblock>
+Parallel zu X ist auch
+weiterhin eine Anmeldung auf den Textkonsolen über den Mechanismus
+init-mingetty-login möglich. Sie gelangen zu den Konsolen,
+indem Sie eine der Tastenkombinationen Strg-Alt-F1 bis Strg-Alt-F6
+ausführen. Dort empfängt Sie wieder der oben
+beschriebene Login. Zwischen den einzelnen tty's können Sie
+nun wieder mit <keycomb mode="hold"><key>Alt</key><key>F1</key></keycomb> bis <keycomb mode="hold"><key>Alt</key><key>F6</key></keycomb> wechseln. Aus dem Textmodus zurück in die Fensterwelt
+gelangen Sie über die Tastenkombination <keycomb mode="hold"><key>Alt</key><key>F7</key></keycomb>.
+    </textblock>
+
+    <textblock>
+X ist keineswegs in der Lage eine Benutzeranmeldung durchzuführen, es ist allein
+für die Darstellung grafischer Elemente zuständig. Hierzu ist ein
+sogenannter Display Manager notwendig, welcher allerdings die Dienste
+von X in Anspruch nimmt. Ein übliches Programm für diese Zwecke ist der X
+Display Manager <command>xdm</command>. Nahe Verwandte des <command>xdm</command>, die immer mehr Verbreitung
+finden, sind der <command>kdm</command> und der <command>gdm</command>. Folgende Abbildung zeigt den K 
+Display Manager <command>kdm</command>:
+    </textblock>
+
+    <image height="150">
+     <title>
+KDM
+     </title>
+     <filename>
+kdm.png
+     </filename>
+    </image>
+
+    <textblock>
+Der Anmeldung mittels eines Display Managers liegt ein
+grundlegend anderer Mechanismus zugrunde. Als Benutzer geben Sie
+jedoch in beiden Fällen Ihren Benutzernamen und ein Passwort
+ein und öffnen damit eine Benutzersitzung. Da es sich bei diesem Prozedere im
+einen wie im anderen Fall lediglich um ablaufende Programme handelt, ist klar,
+dass der Lauf des Betriebssystems von einer Anmeldung oder Abmeldung völlig
+unabhängig ist. Schauen wir uns zum Abschluss dieses Themas nun also an, wie
+Sie eine Sitzung beenden können.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Wieder abmelden
+    </heading>
+
+    <textblock>
+Zur Abmeldung existiert ein eigenes Kommando, das Kommando <command>logout</command>. Dabei
+handelt es sich um ein sogenanntes eingebautes Kommando der <command>bash</command>. Wenn Sie
+<command>logout</command> eingeben, wird Ihre Login-Shell beendet, und das login Programm
+übernimmt wieder die Kontrolle über das jeweilige tty. Das <command>logout</command> Kommando wirkt
+nur bei einem Aufruf von der eigentlichen Login-Shell aus. Haben
+Sie innerhalb Ihrer Login-Shell weitere Shells geöffnet, was problemlos
+möglich ist, funktioniert das Kommando <command>logout</command> nicht. In diesem Fall müssen
+Sie stattdessen <command>exit</command> eingeben.
+    </textblock>
+
+    <textblock>
+Was bedeutet es, dass <command>login</command> wieder die
+Kontrolle über das tty übernimmt? Woher weiß <command>login</command> überhaupt von seinem Glück?
+Vereinfacht gesagt meldet jedes Programm unter Linux (und auch anderen
+Betriebssystemen) an seinen Aufrufer zurück, dass es beendet wurde. Zu diesem
+Zweck schickt es einen sogenannten Rückgabewert an das aufrufende Programm. In
+unserem Fall wurde die <command>bash</command> von <command>login</command> gestartet. <command>login</command> erhält also einen
+Rückgabewert, der ihm anzeigt, dass die Benutzersession ordnungsgemäß beendet
+wurde. Es reagiert auf diese Rückmeldung, indem es sofort wieder eine
+Aufforderung zur Anmeldung auf dem Bildschirm ausgibt.
+    </textblock>
+
+    <textblock>
+Wenn die Anmeldung über einen <ref iref="Display Manager">Display Manager</ref> erfolgt ist, können Sie sie in
+praktisch allen Umgebungen über die rechte Maustaste und dann das
+Listenelement <strong>Abmelden</strong>, <strong>Exit</strong>, <strong>Logout</strong> oder ähnliche Einträge
+beenden. Der technische Ablauf unterscheidet sich wieder von einer
+gewöhnlichen Abmeldung, da ein Display Manager die Verwaltung einer
+Benutzersitzung, wie schon angedeutet, auf ganz andere Weise durchführt. In
+jedem Fall versetzt er sich wieder in einen Zustand, der eine neue
+Anmeldung ermöglicht. Wir haben damit alle Vorbereitungen 
+getroffen, um einige weitere Linux-Eigenschaften zu erkunden. 
+Im <ref chapter="allgemeine_kommandosyntax">nächsten Abschnitt</ref> beginnen wir mit einigen Bemerkungen zu der Verwendung
+von Kommandos.
+    </textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,2009 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>DVDs rippen</title>
+
+ <author>
+  <name>Moritz Bunkus</name>
+  <mailto>moritz@bunkus.org</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+ <license>
+GFDL
+ </license>
+
+ <index>dvd-rippen</index>
+
+ <description>
+  <textblock>
+DVD-Rippen und -Wandlung mit Linux
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+   <heading>
+Einführung
+   </heading>
+
+   <textblock>
+Da hast Du nun also die schöne neue DVD gekauft. Du findest sie absolut
+Klasse und möchtest sicher sein, dass, was immer auch passiert, Du auf
+jeden Fall eine Kopie dieses Films besitzt. Aber, zum Kuckuck, wie
+bekommst Du ihn von der großen DVD auf so eine kleine CD? Und
+wohlgemerkt in guter Qualität? Lies einfach weiter.
+   </textblock>
+
+   <textblock>
+<strong>WARNUNG!</strong> Diese Anleitung ist nichts für das mutlose Gemüt. Sie umfasst
+Dinge wie das Kompilieren von Code, Installieren von Software und die
+Benutzung der Kommandozeile. Wenn Du nicht weißt, wie <command>configure</command>; <command>make</command>;
+<command>make install</command> auszuführen ist, dann lese zunächst andere Dokumentationen
+und lerne es. Wenn Du das nicht willst, dann installiere Windows und
+benutze eines jener guten DVD-Ripping-Programme, die es dafür gibt. Ich
+möchte keinen Flame-Krieg <strong>Linux gegen Windows</strong>. Es ist einfach so, dass
+dieser Vorgang unter Linux etwas schwieriger ist.
+   </textblock>
+
+   <textblock>
+Du bist immer noch dabei? Wunderbar! Du bist dabei, eine Reise durch ein
+wunderschönes Land anzutreten...
+   </textblock>
+
+   <section>
+    <heading>
+Copyright
+    </heading>
+
+    <textblock>
+Copyright (c) 2002 <name email="moritz@bunkus.org">Moritz Bunkus</name>.
+Es ist erlaubt, dieses Dokument unter Einhaltung der GNU Free
+Documentation License, Version 1.2 oder neuer, wie sie von der Free
+Software Foundation herausgegeben wird, zu verteilen und/oder zu
+modifizieren.
+Originaltext wurde von Moritz Bunkus in englischer Sprache verfasst. Die
+vorliegende deutsche übersetzung stammt von <name>Nicolai Lissner</name>.
+    </textblock>
+
+    <textblock>
+Für SelfLinux bearbeitet von <name email="webmaster@arnulfpelzer.de">Arnulf Pelzer</name>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Notwendige Software
+    </heading>
+
+    <textblock>
+Zunächst möchte ich Dir einige Werkzeuge vorstellen, die Du benutzen
+wirst:
+    </textblock>
+
+    <ul>
+     <li>
+<command>MPlayer</command> ist ein Movie-Player, der eine große Zahl von
+Dateiformaten und Media-Codecs unterstützt: MPEG1, AVIs
+(einschließlich aller Windows-Codecs und alle DivX-Codecs), DVDs,
+VCDs, SVCDs usw. Ich benutze ihn zum Betrachten aller Arten von
+Dateien.
+     </li>
+     <li>
+<command>MEncoder</command> ist Teil des MPlayer-Pakets und wird zum Kodieren von
+Video und Sound verwendet. MEncoder ist in der Lage, DVDs zu wandeln.
+     </li>
+     <li>
+<command>transcode</command> ist ein Satz von Werkzeugen, die es erlauben, eine
+lange Liste von Dateiformaten in eine lange Liste von anderen
+Dateiformaten zu wandeln, einschließlich von DVD zu AVI oder (S)VCD.
+     </li>
+     <li>
+Wie du weißt, sind die meisten DVDs verschlüsselt. <path>libdvdcss</path> ist
+eine Library, die DVD-Inhalte entschlüsselt.
+     </li>
+     <li>
+DVDs enthalten Informationen über Titel, Kapitel, Angles und
+Sprachen, die in den Dateien enthalten sind. Diese Informationen
+werden in <path>.IFO</path>-Dateien gespeichert. <path>libdvdread</path> wird häufig
+verwendet, um diese Dateien zu analysieren und die nötigen
+Informationen zu extrahieren.
+     </li>
+     <li>
+<command>lame</command> (Lame Ain't an MP3 Encoder) kodiert MP2/WAV-Audio in das
+MP3-Format.
+     </li>
+     <li>
+<command>vobcopy</command> kann dazu benutzt werden, VOBs von der DVD zu kopieren.
+Die Entschlüsselung geschieht dabei 'on the fly'.
+     </li>
+     <li>
+<command>dvd::rip</command> ist die grafische Benutzeroberfläche für <command>transcode</command>.
+     </li>
+    </ul>
+
+    <textblock>
+Ich werde Dir zwei Methoden zur DVD-Wandlung zeigen - eine unter
+Verwendung von <command>MEncoder</command> und eine unter Verwendung von <command>transcode</command>.
+Nichtsdestotrotz benötigst du für beide Methoden einige Dateien.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Ein Wort zu Codecs
+    </heading>
+
+    <textblock>
+In einer idealen Welt würde es nur ein Codec geben - das beste. Aber
+diese Welt ist weit vom Ideal entfernt. Das Ergebnis ist, dass es eine
+große Anzahl von Video- und Audio-Codecs zur Auswahl gibt. Zunächst
+werde ich die verschiedenen Arten von Codecs erklären:
+    </textblock>
+
+    <ul>
+     <li>
+Native Codecs sind normale Linux-Binärdateien (meistens <path>shared
+ objects</path>, <path>libCODECNAME.so</path>). Ihre Unterstützung ist trivial.
+     </li>
+     <li>
+Windows-Codecs sind die originalen oder leicht modifizierten
+Windows dynamic libraries (DLLs, AX u.ä.) Diese Codecs
+funktionieren nicht von Haus aus unter Linux - Du benötigst eine
+spezielle Library, um diese Codecs verwenden zu können. Diese
+Library nennt sich <path>avifile</path>. Noch vor einigen Monaten war dies
+die einzige Möglichkeit, AVIs unter Linux anzusehen.
+     </li>
+    </ul>
+
+    <textblock>
+Heute erscheinen die meisten Codecs mit einer speziellen Linux-Version
+(wie z.B. XviD, DivX 4/5/) und andere.
+    </textblock>
+
+    <section>
+     <heading>
+Video Codecs
+     </heading>
+
+     <textblock>
+Hier ist eine Liste der unterstützten Video-Codecs
+     </textblock>
+
+     <ul>
+      <li>
+<strong>MPEG4</strong> ist ein offizieller Video-Kompressions-Standard. Es gibt
+keinen Codec, dessen Name einfach MPEG4 ist. Wenn Du über MPEG4
+sprichst, sprichst Du nicht über einen spezifischen Codec - Du
+sprichst über einen Sammlung von Techniken, Videos zu
+komprimieren. MPEG4-kompatibel meint, dass ein Codec Dateien
+erzeugt, die mit anderen MPEG4-kompatiblen abgespielt werden können.
+      </li>
+      <li>
+<strong>DivX</strong> ;-) ist der <strong>original</strong> gehackte Microsoft MPEG4-Codec, mit
+dem all diese <strong>Ripperei</strong> anfing. Er unterstützt nicht alle
+MPEG4-Features wie z.B. B-Frames oder global motion compensation
+GMC). Einige benutzen diesen Codec noch immer unter Windows mit
+dem exzellenten Werkzeug <command>Nandub</command>. Er  wird unter Linux seltener
+benutzt, da es Codecs gibt, die eine bessere Qualität zur
+Verfügung stellen. Der Codec kommt als  Windows dynamic library
+daher (<path>divx.dll</path> und einige andere) und benötigt unter Linux
+<path>avifile</path>.
+      </li>
+      <li>
+<strong>DivX 4</strong> und <strong>5</strong> sind die offiziellen Nachfolger. DivX 5 ersetzt DivX 4.
+Das ist der Grund, warum Du nicht beide Codecs zur gleichen Zeit
+installieren kannst (nun - technisch ist das möglich, aber Du
+solltest das aus ersichtlichen Gründen nicht tun). Dies sind native
+Linux shared objects - genannt <path>libdivxdecore.so</path> und <path>libdivxencore.so</path>.
+Die Sourcen dazu liegen nicht offen. Für Windows gibt es andere
+Versionen, und nur die kommerzuelle Version unterstützt sämtliche
+Optionen wie B-Frames, GMC oder Quarter PEL. Die kostenlose
+Version kann aber Dateien abspielen, auch solche, die mit der
+kommerziellen Version erstellt wurden. Leider gibt es nur eine
+kostenlose Version für Linux, die all diese netten Möglichkeiten
+nicht zur Verfügung stellt. DivXNetworks denkt darüber nach, auch
+für Linux eine kommerzielle Lösung zu Verfügung zu stellen. Aber
+erwarte nicht, dass dieser Codec in Naher Zukunft erscheinen wird.
+      </li>
+      <li>
+<strong>XviD</strong> (das ist DivX rückwärts gelesen) ist eine OpenSource
+MPEG4 Implementierung, die im Hinblick auf Kompression und
+Bildqualität wirklich gut ist. An der Unterstützung erweiterter
+MPEG4-Funktionen (b-frames , GMC) wird gearbeitet oder sind bereits
+implementiert.
+      </li>
+      <li>
+<strong>libavcodec</strong> oder kurz <strong>lavc</strong> ist ein weiterer Open Source
+MPEG4-kompatibler Video-Codec, der in Performance und Qualität
+DivX 5 und auch XviD überlegen ist. Dieser Codec unterstützt
+B-Frames. Er ist Teil des <command>ffmpeg</command>-Projekts.
+      </li>
+      <li>
+Natürlich gibt es MPEG1-kompatible Codecs, die Du für VCDs
+benötigst und MPEG2-kompatible Codecs für SVCDs oder DVDs. Im
+Moment zielt diese Anleitung auf die Erzeugung von AVIs, daher
+werde ich zu keinem dieser Codecs ins Detail gehen.
+      </li>
+      <li>
+Die meisten anderen Codecs sind entweder veraltet (wie Intel Indeo 5)
+oder andere gecrackte Version von Microsofts MPEG4-Codec
+wie AngelPotion). Es gibt weitere Codecs (wie VP4), die aber
+noch in der Entwicklungsphase sind und noch keine funktionierenden
+Lösungen für uns hier bieten.
+      </li>
+     </ul>
+
+     <textblock>
+Die Anleitung richtet ihr Hauptaugenmerk auf zwei Codecs: <strong>XviD</strong> und
+<strong>lavc</strong>. Die Gründe dafür sind, dass beide eine exzellente Qualität
+bieten, beide schnell sind und Du nur einen MPEG4-kompatiblen Decoder
+(wie DivX 5 oder XviD) auf einem Windowssystem zum Abspielen
+brauchst. Die Wiedergabe unter Linux ist überhaupt kein Problem -
+<strong>MPlayer</strong> oder <strong>Xine</strong> spielen fröhlich DivX 4/5, XviD und lavc-kodierte
+Filme.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Audio Codecs
+     </heading>
+
+     <textblock>
+Wieder eine Liste, dieses mal für Audio-Codecs:
+     </textblock>
+
+     <ul>
+      <li>
+<strong>MP3</strong> ist die Kurzform für MPEG1 layer 3 und ist ein offizieller
+Kompressions-Standard. Wenn Du über MP3 sprichst, sprichst Du
+ber eine Kompressions-Technik, nicht über einen speziellen Codec.
+Es gibt mehr Codecs für MP3 als ich an einem Tag aufzählen könnte.
+      </li>
+      <li>
+<strong>lame</strong> ist eine Abkürzung für <strong>Lame Ain't an MP3 Encoder</strong> (<strong>Lame
+ist kein MP3-Encoder</strong> - auch wenn es einer ist ;-)) <command>lame</command> bietet
+einen Encoder der der MP3-Dateien in sehr guter Qualität
+produziert. Sowohl <command>transcode</command> als auch
+<command>MEncoder</command> nutzen <command>lame</command> zur Audio-Kompression.
+      </li>
+      <li>
+<strong>AC3</strong> ist wieder ein offizieller Audio-Kompressions-Standard.
+Nahezu alle DVDs enthalten AC3-kodierte Audiospuren. Es gibt
+heute Dekoder sowohl für Windows als auch für Linux, die mit
+AC3-Ton innerhalb von AVIs arbeiten. Der Vorteil ist, dass keine
+erneute Komprimierung nötig ist (eine erneute Komprimierung ist
+immer mit einem Verlust an Qualität verbunden) und das
+Mehrkanal-Ton (Dolby Surround und ähnliches) erhalten bleibt. Der
+Nachteil ist, dass AC3-Ton mehr Speicherplatz als  MP3-kodierter Ton
+benötigt.
+      </li>
+      <li>
+<strong>Vorbis</strong> ist ein neuer Open Source Audio-Kompressions-Codec. Er
+ist sowohl für Windows als auch Linux erhältlich. Die Vorteile
+sind ein besseres Qualität-zu-Größe-Verhältnis verglichen mit
+MP3 und Mehr-Kanal-Unterstützung. Leider kann man Vorbis-Audio
+nicht vernünftig in AVIs einbetten - aber ich arbeite an einem
+Programm, das Video und Vorbis-Audio zusammen in einer <path>OGG</path>-Datei
+speichern kann. Sobald dieses fertig ist werde ich es in diese
+Anleitung aufnehmen.
+      </li>
+     </ul>
+
+     <textblock>
+Ich hoffe, dies hat die Dinge ein bischen geklärt.
+     </textblock>
+    </section>
+   </section>
+
+
+   <section>
+    <heading>
+Allgemeine Libraries / Codecs
+    </heading>
+
+    <textblock>
+Ich werde in diesem Kapitel nicht all zu sehr ins Detail gehen. Es gibt
+in jedem Paket weitere Dokumentation zur Installation. Siehe dort, falls
+Du Probleme haben solltest. Beachte, dass <command>MPlayer</command> ziemlich
+umfangreiche Anforderungen bezüglich der Versionen von <command>gcc</command>, <command>binuntils</command>
+und anderen zentralen System-Komponenten hat. Siehe Die
+<ref chapter="mplayer" iref="Installation">MPlayer-Installations-Dokumentation</ref>.
+    </textblock>
+
+    <textblock>
+<strong>Beachte:</strong> Prüfe vor dem Download der Software, ob Deine Distribution
+bereits diese Software enthält. Ich verwende Debian Woody (testing) und
+habe festgestellt, dass sehr viel Software bereits als fertiges Paket
+vorhanden ist.
+    </textblock>
+
+    <ul>
+     <li>
+<path>libdvdcss</path> - Gehe zu the <ref lang="en" url="http://www.dtek.chalmers.se/groups/dvd/downloads.shtml">Ogle project page</ref>
+und lade
+<path>libdvdcss-0.0.3.ogle3.tar.gz</path> herunter (die Versionsnummer könnte
+abweichen, da die Sofware sich in der Entwicklung befindet).
+Un-tar-gz sie, compiliere sie, and installiere sie unter <path>/usr/local</path>.<br/>
+Beachte das verschiedene Versionen dieser Library im Umlauf sind
+(0.0.3, 1.0.1). <command>MPlayer</command> empfiehlt immer noch Version <strong>0.0.3</strong>.
+     </li>
+     <li>
+<path>libdvdread</path> - erhälst Du von der gleichen Website wie
+<path>libdvdcss</path>. Beachte das Debian Woody <path>libdvdread</path> bereits
+enthält. Ein einfaches <command>apt-get install libdvdread2
+libdvdread2-dev</command> sollte genügen.
+     </li>
+     <li>
+<path>XviD-Codec</path> - wird gebraucht, wenn Du <command>transcode</command> benutzen willst.<br/>
+Eine kurze Anleitung aus der <strong>MPlayer</strong>-Dokumentation:
+      <ul>
+       <li>
+<command>cvs -z3 -d:pserver:anonymous@cvs.xvid.org:/xvid login</command> Wenn
+Du nach einem Passwort gefragt wirst, drücke einfach Enter
+       </li>
+       <li>
+<command>cvs -z3 -d:pserver:anonymous@cvs.xvid.org:/xvid co xvidcore</command>
+       </li>
+       <li>
+<command>cd xvidcore/build/generic</command>
+       </li>
+       <li>
+Passe <path>Makefile.linux</path> Deinem System an.
+       </li>
+       <li>
+<command>make -f Makefile.linux</command>
+       </li>
+       <li>
+Kopiere die Datei <path>xvidcore/src/divx4.h</path> nach
+<path>/usr/local/include/decore.h</path> und nach
+<path>/usr/local/include/encore2.h</path>|. Erstelle ein Backup der
+Dateien, die Du überschreibst
+       </li>
+       <li>
+Kopiere <path>libxvidcore.so</path> und <path>libcore.a</path> nach
+<path>/usr/local/lib/</path>
+       </li>
+      </ul>
+Zum Compilieren brauchst du möglicherweise eine spezielle Version
+von <command>nasm</command>, die Du unter
+<ref url="http://homepage1.nifty.com/herumi/soft/petit/nasmsse2.tgz">http://homepage1.nifty.com/herumi/soft/petit/nasmsse2.tgz</ref> bekommst.
+     </li>
+     <li>
+<command>vobcopy</command> - Erhälst Du von der Homepage
+<ref lang="en" url="http://linux-programming-newbie.org/">http://linux-programming-newbie.org/</ref>.
+     </li>
+     <li>
+<command>avifile</command> - wie bereits erklärt wird es gebraucht, um
+Windows-Codecs zu verwenden, für die es keine linuxeigenen
+Binärdateien gibt. Gehe zur Homepage
+<ref lang="en" url="http://avifile.sourceforge.net/">http://avifile.sourceforge.net/</ref>. Bevor Du das tust, prüfe, ob
+Deine Linux-Distribution nicht bereits avifile enthält (Debian
+Woody enthält avifile). Außerdem benötigst Du die Windows-Codecs
+von der <command>avifile</command>-Homepage oder direkt von der MPlayer's
+Homepage
+<ref lang="en" url="http://www2.mplayerhq.hu/MPlayer/releases/codecs/">http://www2.mplayerhq.hu/MPlayer/releases/codecs/</ref>.
+     </li>
+     <li>
+<command>DivX 5</command> - obwohl diese Anleitung sich nicht mit DivX 5
+beschäftigt, kannst Du das Codec bei <ref lang="en" url="http://www.divx.com/">
+http://www.divx.com/</ref> erhalten. Falls Du ein wenig Zeit übrig
+hast, schlage ich vor, dass Du selbst einige Vergleiche zwischen
+DivX 5 und XviD oder lavc vornimmst und selbst siehst, dass
+es schlechter als die letzten beiden Codecs ist.
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+MPlayer
+    </heading>
+
+    <textblock>
+Du brauchst <ref chapter="mplayer">MPlayer</ref>. Es ist egal, ob Du später <command>MEncoder</command> oder
+<command>transcode</command> verwenden willst - Du brauchst in jedem Fall <ref chapter="mplayer">MPlayer</ref>. Also
+besorge MPlayer von <ref lang="en" url="http://www.mplayerhq.hu/">
+http://www.mplayerhq.hu/</ref>. Ich bevorzuge die CVS-Version, da sie
+häufig Features besitzt, die dem offiziellen Release fehlen. Tatsächlich
+basiert diese Anleitung auf Features seit wenigen Tagen in der
+CVS-Version existieren (heute ist der 30. April 2002). Tu einfach das
+Gleiche - sei tapfer und nimm die CVS-Version.
+    </textblock>
+
+    <textblock>
+Wenn Du <command>MEncoder</command> zum Kodieren verwenden möchtest, empfehle ich
+außerdem die Verwendung von <path>libavcodec</path>. Bei Verwendung der CVS-Version
+von MPlayer musst Du <path>libavcode</path> herunterladen, die Release-Version von
+MPlayer beinhaltet bereits <path>libavcodec</path>. Die Anweisungen sind aus der
+MPlayer-Dokumentation entnommen:
+    </textblock>
+
+    <ul>
+     <li>
+Lade das <strong>ffmpeg</strong>-Project über CVS:
+<command>cvs -d:pserver:anonymous@cvs.ffmpeg.sourceforge.net:/cvsroot/ffmpeg
+login</command>. Drücke einfach ENTER, wenn Du nach einem Login oder
+Passwort gefragt wirst.
+     </li>
+     <li>
+<command>cvs -d:pserver:anonymous@cvs.ffmpeg.sourceforge.net:/cvsroot/ffmpeg co
+ffmpeg</command>
+     </li>
+     <li>
+Verschiebe das <path>libavcodec</path>-Verzeichnis von den FFmpeg-Sourcen in
+das Wurzelverzeichnis des MPlayer-CVS-Pfads. Symlink reicht nicht
+aus, Du musst das Verzeichnis bewegen oder kopieren.
+     </li>
+    </ul>
+
+    <textblock>
+<strong>Eine Bemerkung zum Kompilieren:</strong> Stelle sicher, nicht XviD support
+einzubinden. Stattdessen binde die Unterstützung für den <path>libavcodec</path>
+ein. Installations-Anweisungen stehen in der MPlayer-Dokumentation zur
+Verfügung. Ja, Du hast richtig gelesen: Kompiliere <command>transcode</command> mit
+XviD und MPlayer ohne XviD aber mit <path>libavcodec</path>. Der Grund
+dafür ist, dass MPlayer nicht für beide Codecs zur gleichen Zeit
+Unterstützung enthalten kann, da beide Codecs Variablen mit dem gleichen
+Namen verwenden.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Transcode
+    </heading>
+
+    <textblock>
+Besorge <command>transcode</command> von der
+<ref lang="en" url="http://www.theorie.physik.uni-goettingen.de/~ostreich/transcode/">Homepage</ref>.
+Stelle sicher, dass es mit XviD-Unterstützung und Unterstützung für
+MPlayer's post processing-Funnktionen compiliert wird. Nochmals: Ich
+empfehle die Verwendung der CVS-Version.
+    </textblock>
+
+    <textblock>
+Außerdem willst Du <command>dvd::rip</command> herunterladen, eine exzellente, Gtk+
+basierte Benutzerobefläche für <command>transcode</command>. Du
+bekommst sie <ref lang="en" url="http://www.exit1.org/dvdrip/">hier</ref>.
+Installations-Anweisungen sind enthalten.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+RPMs erhalten
+    </heading>
+
+    <textblock>
+Ich kenne zumindest zwei Adressen, an denen du einige RPMs für die oben
+erwähnte Software erhälst.
+    </textblock>
+
+    <ul>
+     <li>
+Penguin Liberation Front lair <ref lang="en" url="http://plf.zarb.org/">http://plf.zarb.org/</ref> - RPMs für Mandrake
+     </li>
+     <li>
+<ref lang="en" url="http://ftp.falsehope.com/home/rathann/mplayer/">http://ftp.falsehope.com/home/rathann/mplayer/</ref> - RPMs für Redhat 7.x
+     </li>
+    </ul>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Rippen der VOBs
+   </heading>
+
+   <textblock>
+Dieser Teil ist ziemlich einfach. Alles was Du brauchst ist etwas freier
+Speicherplatz (eigentlich viel freien Speicherplatz). In Abhängigkeit
+davon, was Du wandeln willst, brauchst Du etwa 10GB freien Speicher.
+Solltest Du den nicht haben, investiere etwas Geld in ein neues
+Laufwerk, sie sind wirklich günstig zur Zeit (ca. 100 ? für ein
+80GB-Laufwerk).
+   </textblock>
+
+   <textblock>
+Bevor Du fortsetzt, mache Dir Gedanken über den Regional-Code. Alle
+heute erhältlichen Laufwerke haben den sogenannten RPC-mode-2-Schutz.
+Das bedeutet, dass Du nur fünf mal den Regional-Code ändern kannst,
+bevor er gesperrt wird. Du erhältst Informationen über das Entfernen des
+Regional-Codes Deines Laufwerkes bei <ref lang="en" url="http://www.digital-digest.com/">Digital Digest</ref>.
+Warum also erwähne ich dies? Die
+Ripping-Methoden, die hier erläutert werden, beruhen auf einer korrekten
+Wahl des Regional-Codes (lies: der gleiche Code, den auch die eingelegte
+DVD beinhaltet) oder gar keinen Regional-Code. Alle diesbezüglichen
+Fehlermeldungen beim Rippen sind eher kryptisch, und oftmals ist es
+nicht sehr klar, dass es sich um ein Regional-Code-Problem handelt.
+Behalte dies also im Hinterkopf.
+   </textblock>
+
+   <textblock>
+Teste zunächst die DVD. Starte MPlayer und schau Dir den ersten Titel
+an: <command>mplayer -dvd 1</command>. Gefällt es Dir? Cool. Stelle fest, ob das Video
+interlaced ist oder nicht (siehe unten). Schließe den MPlayer.
+   </textblock>
+
+   <section>
+    <heading>
+Interlaced Video
+    </heading>
+
+    <textblock>
+Was Du auf einem Fernseher siehst, ist nicht 25 Bilder pro Sekunde. In
+Wirklichkeit siehst Du 50 Halb-Bilder pro Sekunde. Ein Bild enthält die
+ungeraden Zeilen, ein Bild die geraden Zeilen. Auf diese Art und Weise
+siehst Du 25 Bilder pro Sekunde (frames per second=fps). Das Problem
+ist, das diese Halb-Bilder zu unterschiedlichen Zeiten aufgenommen sind.
+Wenn Du schnelle horizontale Bewegung in Deinem Film hast, wirst Du ein
+Objekt oder eine Person in den ungeraden Zeilen an einer Position und in
+den geraden Zeilen an einer anderen Position sehen. Das ist für das
+endgültige Video nicht erwünscht. Schau Dir dieses <strong>interlaced</strong> Bild
+    </textblock>
+
+    <image height="200">
+     <title>
+interlaced
+     </title>
+     <filename>interlaced_beispiel.png</filename>
+    </image>
+
+    <textblock>
+an, es stammt von meiner Ally McBeal DVD. Mit
+den geeigneten Filtern kannst Du den diesen Interlacing-Effekt abstellen
+(genannt de-interlacing... was für eine überraschung ;)) Hier ist das
+gleiche Bild mit aktiviertem de-interlacing.
+    </textblock>
+
+    <image height="200">
+     <title>
+de-interlacing
+     </title>
+     <filename>first_deinterlaced_picture.png</filename>
+    </image>
+
+    <textblock>
+Da Du nun eine Vorstellung davon besitzt, wie ein interlaced-Bild
+aussieht, solltest Du in der Lage sein, selbst zu entscheiden, ob Deine
+DVD Dateien mit oder ohne Interlacing enthält.
+    </textblock>
+
+    <textblock>
+Bis zum Ende dieser Anleitung nehme ich folgendes an:
+    </textblock>
+
+    <ul>
+     <li>
+Das DVD-Laufwerk ist verfügbar unter <path>/dvd</path>. Es gibt einen Eintrag
+in <path>/etc/fstab</path> für <path>/dvd</path>.
+     </li>
+     <li>
+Du besitzt genügend freien Speicher unter <path>/space</path>.
+     </li>
+     <li>
+Der DVD-Titel 1 ist derjenige, den Du kopieren möchtest (Robos,
+Autor von vobcopy, sagte mir, dass die meisten DVDs den
+Haupttitel unter 2 beinhalten. Dein Ergebnis kann anders sein.).
+     </li>
+    </ul>
+
+    <textblock>
+Bitte ersetze diese Pfade mit Pfaden, die zu Deinem System passen.
+    </textblock>
+
+    <textblock>
+Es gibt viele Wege, die VOBs zu rippen. Ich werde zwei vorstellen:
+Benutzen des Kommandozeilen-Werkzeugs (<command>vobcopy</command>) und die Benutzung der
+<command>transcode</command>-GUI <command>dvd::rip</command>. Du musst nicht beides vornehmen :-)
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Benutzung des Kommando-Zeilen-Interfaces
+    </heading>
+
+    <textblock>
+Starte <command>vobcopy</command>. Es wird automagisch den Inhalt der DVD auf Deine
+Festplatte kopieren.
+    </textblock>
+
+    <ul>
+     <li>
+Als erstes binde Dein DVD ein: <command>mount /dvd</command>
+     </li>
+     <li>
+Dann lass <command>vobcopy</command> seine Arbeit tun: <command>vobcopy -i /dvd -m</command>
+     </li>
+    </ul>
+
+    <textblock>
+Dies wird die VOBs von der DVD kopieren, sie entschlüsseln (das ist die
+Stelle, an der <path>libdvdcss</path> benötigt wird) und sie in das aktuelle
+Verzeichnis schreiben (was Du z.B. mit <command>-o /space</command> ändern kannst). Die
+Dateinamen werden nach dem DVD-Titel benannt (z.B. habe ich
+<path>ALLY_MCBEAL_DISC21-1.vob</path>, <path>ALLY_MCBEAL_DISC21-2.vob</path> etc.). Die Option
+<path>-m</path> veranlasst <command>vobcopy</command>, die komplette DVD zu kopieren, inklusive der
+<path>.IFO</path>-Datein. Dies ist nützlich, da sowohl MPlayer/MEncoder als auch
+<command>transcode</command> die kopierten Dateien genauso wie eine echte DVD behandeln
+können. Das dauert seine Zeit. Sei einfach geduldig.
+    </textblock>
+
+    <textblock>
+Bemerkung des Autors (Robos):
+    </textblock>
+
+    <hint>
+<command>vobcopy</command> hat einige Probleme beim
+Folgen von Angles. Möglicherweise erhälsts Du doppelte Szenen z.B. in
+<strong>The Matrix</strong>. Ich arbeite daran.
+    </hint>
+
+    <textblock>
+Noch eine Bemerkung von Robos:
+    </textblock>
+
+    <hint>
+Es gibt inzwischen ein neues Programm
+namens <ref lang="en" url="http://dvd-create.sourceforge.net/">dvdbackup</ref>, das ebenfalls
+DVDs kopieren kann.
+    </hint>
+   </section>
+
+   <section>
+    <heading>
+Benutzen von dvd::rip
+    </heading>
+
+    <textblock>
+<strong>dvd::rip</strong> kann fast das gleiche für Dich tun.
+Starte dvd::rip durch Eingabe von <command>dvdrip</command>. Du siehst dann das
+Haupt-Fenster. Wähle Edit / Preferences und dvd::rip zeigt Dir den
+Voreinstellungen-Dialog.
+    </textblock>
+
+    <image height="150">
+     <title>
+Voreinstellungen-Dialog
+     </title>
+     <filename>dvdrip-voreinstellungen.png</filename>
+    </image>
+
+    <textblock>
+Hier musst Du Deine Pfadangaben eingeben. Das erste ist der Pfad zum DVD-Gerät
+(device) und nicht zum mount point. Häufig ist dies <path>/dev/dvd</path>,
+welches ein symbolischer Link zu dem tatsächlichen Laufwerk sein kann,
+z.B. <path>/dev/hdc</path>.
+    </textblock>
+
+    <textblock>
+Schliesse den Dialog. Nun starte ein neues Projekt (File / New
+Project). Es beginnt mit der Speicher-Tabelle
+    </textblock>
+
+    <image height="250">
+     <title>
+Speicher-Tabelle
+     </title>
+     <filename>dvdrip-speicher_einstellungen.png</filename>
+    </image>
+
+    <textblock>
+Gib wieder die korrekten Pfade ein.
+Beachte wie die anderen Namensfelder sich ändern, wenn Du den
+Projekt-Titel änderst.
+    </textblock>
+
+    <textblock>
+Wechsel zur Rip Title tab
+    </textblock>
+
+    <image height="250">
+     <title>
+Rip Title tab
+     </title>
+     <filename>dvdrip-riptitle_tab.png</filename>
+    </image>
+
+    <textblock>
+und klicke auf den Read DVD Table of Contents (lies DVD-Inhaltsverzeichnis)-Knopf.
+Nach ein oder zwei Sekunden wird die Liste darunter mit Titeln, die auf
+der DVD gespeichert sind, gefüllt, Wähle nun einfach die Titel, die Du
+rippen möchtest (Du kannst mehrere Titel durch Drücken von
+     <keycomb mode="hold">
+      <key>Strg</key>
+      <key>klicken auf die Titel</key>
+     </keycomb>
+auswählen) Wähle Sprache und Angle. Lasse Specify
+Chapter Mode auf No (Nein).<br/>
+Letzter Schritt: Drücke Rip selected
+Title(s)/Chapter(s). Wiederum: Sei geduldig, trink etwas Milch, habe
+eine nette Unterhaltung mit Deiner Freundin.
+    </textblock>
+
+    <textblock>
+Der Rest von dvd::rip wird später behandelt.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Wandlung der DVD in eine AVI-Datei
+   </heading>
+
+   <textblock>
+Hier hast Du die Wahl zwischen zwei Möglihckeiten - entweder <command>transcode</command>
+oder <command>MEncoder</command>. Beide haben Pro und Contras. Hier ist eine kurze Liste,
+die zumindest für die CVS-Versionen vom 28. April 2002 zutrifft.
+   </textblock>
+
+   <ul>
+    <li>
+<command>MEncoder</command> kann keine Audio-Verzögerungen korrigieren. Falls Audio
+und Video nicht beim Abspielen mit MPlayer synchron laufen,
+solltest Du <command>transcode</command> stattdessen verwenden.
+    </li>
+    <li>
+<command>transcode</command> kann keine VBR- MP3, nur CBR-MP3 . Solltest Du wirklich
+VBR MP3 audio benötigen, dann bist Du an <command>MEncoder</command> gebunden.
+Beachte, dass die AVI tools, die mit <command>transcode</command> zusammen kommen,
+nicht mit AVIs, die VBR MP3 enthalten, arbeiten. Daher kannst Du keine
+sync-Probleme in von <command>MEncoder</command> erzeugten AVIs mit dem
+<command>avisync</command>-utility beheben. Gemäß der Dokumentation sollte
+<command>MEncoder</command> nur mit VBR/ABR MP3 Kodierung verwendet werden. CBR
+kodierte Dateien werden nicht unter Windows-Systemen laufen
+(während MPlayer sie problemlos abspielt)
+    </li>
+    <li>
+Es gibt im Moment noch keine GUI für <command>MEncoder</command>. Das macht
+Schneiden oder Größe verändern ziemlich mühselig.
+    </li>
+    <li>
+Siehe auch <ref iref="Glossar">Glossar</ref>
+    </li>
+   </ul>
+
+   <section>
+    <heading>
+Seitenverhältnisse
+    </heading>
+
+    <textblock>
+Bevor wir anfangen, möchte ich Dich in die meist gebräuchlichen
+Seitenverhältnisse, die Dir begegnen könnten, einführen. DVDs sind immer
+kodiert als 720x576 (5:4), obgleich das Bild beim Abspielen skaliert
+wird. übliche Video-Formate sind 4:3 = 1.33 für TV, 16:9 = 1.78 für
+normale Kinofilme und 2.35:1 für Cinemascope.
+    </textblock>
+
+    <textblock>
+Hier eine Liste der üblichen Szenarien:
+    </textblock>
+
+    <ul>
+     <li>
+<strong>4:3 Filme</strong>, die das gesamte Bild ausfüllen (kein letterboxing)
+: scale 5:4 to 4:3 16:9 Filme, die das gesamte Bild ausfüllen
+(wiedrum kein letterboxing): scale   5:4 to 16:9
+     </li>
+     <li>
+<strong>16:9 Filme</strong>, die "letterboxed" sind : scale 5:4 to 4:3 und schneide
+einen Teil der schwarzen Balken ab
+     </li>
+     <li>
+<strong>2.35 Filme</strong>, die "letterboxed" sind : scale 5:4 to 16:9 und
+schneidet einen Teil der schwarzen Balken ab
+     </li>
+    </ul>
+
+    <textblock>
+Keine Sorge, falls Du das nicht auf Anhieb verstehst. Schau dir
+dvd::rip's <command>clipping</command> und <command>scaling</command> Optionen für einen eher intuitiven
+überblick an.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Benutzung von dvd::rip
+    </heading>
+
+    <textblock>
+Die Benutzung von dvd::rip ist mit Abstand die beste und einfachste
+Methode Dein AVI-File zu erstellen. Wie bereits zuvor erwähnt, beruht es
+stark auf <command>transcode</command>, dass die eigentliche Aufgabe erledigt.
+    </textblock>
+
+    <textblock>
+Nach dem Start von dvd::rip ripst Du die Titel, die Du wandeln
+möchtest auf Deine Festplatte.
+    </textblock>
+
+    <section>
+     <heading>
+Schneiden und Zoomen
+     </heading>
+
+     <textblock>
+Nun wirf einen Blick auf die Clip &amp; Zoom</textblock>
+
+     <image height="300">
+      <title>
+      </title>
+      <filename>dvdrip-clip_zoom.png</filename>
+     </image>
+
+     <textblock>
+Tabelle. Hier kannst Du alle Parameter bezüglich Bildgröße und
+Ausschnitt einstellen. Zunächst hole ein Bild zum damit Arbeiten: Gib
+einfach eine Frame-Zahl (wie z.B. 200) in die Grab Preview Frame
+Eingabezeile und drücke auf Grab Frame from ripped VOB. Nach wenigen
+Sekunden zeigen die 3 Anzeigen darunter den angeforderten Frame.
+     </textblock>
+
+     <textblock>
+<command>transcode</command> verwendet drei Schritte um das Bild zu seiner endgültigen
+Größe zu bringen: Erst schneidet es das nichtskalierte Bild, dann ändert
+es die Größe und schließlich schneidet es nochmals. Jeder dieser
+Schritte kann ausgelassen werden; durch Auswahl von 0 für Clipping und
+durch die Original-Breite und Höhe für das ändern der Größe. Jedes
+Fenster zeigt das Ergebnis eines dieser drei Schritte. Wenn Du sehen
+willst, wie groß die Bilder tatsächlich sind, klicke einfach auf eines
+von ihnen und ein PopUp-Fenster öffnet sich mit dem Ergebnis.
+     </textblock>
+
+     <textblock>
+Möglicherweise hast Du die drop-down-listbox unter den drei
+Vorschau-Fenstern bemerkt. dvd::rip biete eine große Zahl an
+Voreinstellungen zum Arbeiten an. Die einfache Auswahl eine dieser
+Voreinstellungen gibt Dir eine gute Startposition. Alle Voreinstellungen
+die <strong>autoadjust...</strong> heißen, versuchen die korrekte Schnitt-Region
+automatisch zu ermitteln. Nach der Auswahl einer Voreinstellung drücke
+den Apply Preset Values Knopf. Nun verstelle die Werte bis du mit dem
+Ergebnis zufrieden bist.
+     </textblock>
+
+     <textblock>
+Die big frame, medium frame und small frame Teile beziehen sich
+auf die endgültige Bildgröße, die erreicht werden soll. big erhält
+fast die volle DVD-Auflösung, medium liegt irgendwo zwischen 500 und
+600 für die Breite und small liegt irgendwo um 350.
+     </textblock>
+
+     <textblock>
+Eine Anmerkung zum Verändern der Größe: Use fast resizing (benutze
+schnelle Größenänderung) hat großen Einfuß auf die Bildverarbeitung
+aber erfordert, dass die Ziel- Breite und Höhe durch 32 teilbar ist.
+Keine Sorge dvd::rip wird Dir sagen, wenn Du kein <strong>Fast Resizing</strong>
+nutzen kannst.<br/>
+Beachte: Wenngleich es möglich ist, tatsächlich die
+Bilder zu vergrößern, rate ich stark davon ab. Es gibt mehrere
+Nachteile: Zum einen braucht der Encoder viel mehr Bits um die gleiche
+Qualität zu erreichen, die Du auch erreichst, wenn Du ein kleineres Bild
+kodierst und dieses dann beim Abspielen vergrößerst, und zudem kann es
+auch zu Bildverzerrungen kommen (Peter Schuller berichtete mir von einem
+solchen Fall). Skaliere immer nach unten (=kleiner).
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Wahl der Kodierungs-Parameters
+     </heading>
+
+     <textblock>
+Wir sind fertig mit dieser Tabelle. öffne die
+<command>Transcode</command>
+     </textblock>
+
+     <image height="300">
+      <title>
+      </title>
+      <filename>dvdrip-transcode_tabelle.png</filename>
+     </image>
+
+     <textblock>
+Tabelle. Entscheide zuerst welches
+Video-Codec Du verwenden möchtest. Wenn Du DivX5 für Linux installiert
+hast, kannst Du es verwenden, aber ich würde die Verwendung von XviD
+empfehlen. Wenn Du die CVS-Version von XviD heruntergeladen hast, dann
+ist dazu die Option <command>xvidcvs</command> (offensichtlich) zu wählen. Sollte
+<command>transcode</command> später mit einigen obskuren Fehlermeldungen abbrechen,
+kannst Du <command>xvid</command> ausprobieren.
+     </textblock>
+
+     <textblock>
+Erinnerst Du Dich, dass ich Dich bat, zu prüfen, ob das Video interlaced
+ist? Jetzt brauchen wir diese Information. Falls Dein Video nicht
+interlaced ist, lasse einfach deinterlacing und antialias auf off.
+Andernfalls wähle 3 - Zoom To Full Frame. Dies ist der langsamste aber
+am besten aussehende Deinterlacer. Hier ist nochmal das Interlaced
+     </textblock>
+
+     <image height="200">
+      <title>
+      </title>
+      <filename>interlaced_beispiel.png</filename>
+     </image>
+
+     <textblock>
+Bild-Beispiel aus Ally McBeal. Du kannst das
+Ergebnis aus 3 - Zoom To Full Frame unter first deinterlaced picture
+     </textblock>
+
+     <image height="200">
+      <title>
+      </title>
+      <filename>first_deinterlaced_picture.png</filename>
+     </image>
+
+     <textblock>
+betrachten.
+     </textblock>
+
+     <textblock>
+Ein weiterer De-Interlacing-Filter steht durch ein externes Plugin zur
+Verfügung (keine Sorge, Du hast es bereits beim Installieren von
+<command>transcode</command> selbst mitinstalliert). Schau nach unten rechts. Dort ist ein
+Eingabefeld mit der Bezeichnung <command>transcode</command> options. Alle hier
+eingegebenen Optionen werden einfach an <command>transcode</command> weitergegeben. Das
+können wir für das De-Interlacing nutzen. Hier ist das gleiche Bild wie
+oben deinterlaced mit einem anderen Deinterlacer
+     </textblock>
+
+     <image height="200">
+      <title>
+      </title>
+      <filename>dvd_ripping_2_deinterlaced-tc.png</filename>
+     </image>
+
+     <textblock>
+Dieser Deinterlacer ist
+schneller als die 3 - Zoom To Full Frame-Option. Wenn Du diesen
+Deinterlacer verwenden willst, dann setze deinterlace auf off und
+gebe <command>-J dilyuvmmx</command> in die Eingabezeile ein.
+     </textblock>
+
+     <textblock>
+dvd::rip versucht die Bildrate automatisch zu ermitteln. Falls dies
+fehlschlägt kannst Du es hier korrigieren. Use YUV internal sollte
+immer auf yes stehen, es sei denn der Ausgabe-Codec unterstützt keine
+YUV-Modes. XviD unterstützt aber YUV. Es angeschaltet zu lassen gibt
+einen großen Geschwindigkeitsschub. DivX multipass sollte auch auf
+yes stehen, es sei denn, Du möchtest lediglich eine Vorschau. Für das
+endgültige AVI-File solltest Du immer 2-Pass-Kodierung verwenden. Auch
+wenn diese Option DivX multipass bezeichnet ist, arbeitet sie auch
+prima mit XviD
+     </textblock>
+
+     <textblock>
+Die Audio-Optionen sollten selbsterkärend sein. Du wählst entweder die
+Tonspur in MP3 umzukodieren (unter Verwendung der angegebenen Bitrate)
+oder die Original AC3-Tonspur ohne Veränderung beizubehalten. AC3-Audio
+stellt Surround-Sound zur Vefügung und all diese Vorteile, aber benötigt
+mehr Platz als MP3-Sound. Es ist wirklich Deine Wahl. Wenn Du MP3
+wählst, stelle sicher, dass die MP3 Quality auf 2 steht. Gemäß der
+<command>lame</command>-Dokumentation (<command>lame</command> wird zur MP3-Kompression verwendet) höhere
+Qualitätseinstellungen wie 1 oder 0 - beste aber langsamste sind
+viel langsamer aber erzeugen keine bezeichnend bessere Qualität. Volume
+rescale erlaubt die Normalisierung des Tons, die kein separates
+(externes) Programm benötigt. dvd::rip scant automatisch die Tonspur und
+stellt einen rescale-Wert zur Verfügung
+     </textblock>
+
+     <textblock>
+Oben rechts befindet sich die Bitraten-Option. Du kannst einfach die
+Rip-Größe durch Wahl der Anzahl und Größe der CDs, die Du verwenden
+willst einstellen. Verändern der Target Size (Zielgröße) oder der
+Video Bitrate funktioniert auch. dvd::rip aktualisiert automatisch die
+errechneten Werte darunter, sodass es einfach ist, die optimale Bitrate
+zu ermitteln.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Erstellen einer schnellen Vorschau
+     </heading>
+
+     <textblock>
+In den meisten Fällen solltest Du dvd::rip eine kleine Vorabansicht
+erstellen lassen. Das tust Du duch Angabe eine Frame Range. Ich
+verwende meist ein 30 Sekunden-Sample, das entspricht 750 Bildern bei 25
+fps (Anzahl der Sekunden * Bildrate = Anzahl der zu kodierenden
+Frames) und starte irgendwo im Film (so bei 200 oder 300 frames). Gute
+Werte könnten z.B. 200 - 950 sein. Du solltest außerdem <command>transcode</command>
+einen hohen nice-Wert (was einer niedrigen Prozess-Priorität entspricht)
+geben, sodass es nur freie CPU-Zeit verwendet. Wenn Du wirklich dein
+Preview jetzt und sofort haben möchtest, kannst Du auch vorübergehend
+DivX Multipass abschalten. Vergiss nicht, es später wieder
+einzuschalten!
+     </textblock>
+
+     <textblock>
+Wenn Du fertig bist klicke auf <command>Transcode</command>. Nach einigen Minuten wird
+Dein AVI/MPEG fertig sein. Nun schau es Dir an (z.B. mit <command>mplayer
+my-new-file.avi</command>) Dies ist ein guter Moment um zu sehen, ob
+deinterlacing wie erwartet arbeitet und um zu prüfen ob Audio und Video
+synchron laufen. Wenn ja, bist Du bereit. Andernfalls lies weiter:
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Verhindern von Audio/Video Desynchronisation
+     </heading>
+
+     <textblock>
+Wenn Deine Audio- und Videospur bei der Vorschau nicht synchron
+zueinander abgespielt werden (oder auch beim Abspielen der DVD selbst),
+kannst Du <command>transcode</command> einen Frame-Offset für die A/V-Synchronisation
+geben. Das tust Du durch Angabe des Parameters <command>-D nr</command> in der <command>transcode</command>
+options Eingabezeile in der Transcode Tabelle. <command>nr</command> ist die Anzahl der
+Frames die die Audiospur verzögert ist. Diese Zahl kann auch negativ
+sein. Ein Frame ist 40ms lang bei 25 fps. Im Allgemeinen ist die
+Frame-Länge (1000 / fps) ms lang. Für meine Ally McBeal-DVD benötige ich
+eine Korrektur von -2, was -80ms entspricht: -D -2. Nun erstelle
+erneut eine Vorschau (die anderen Parameter sollten die gleichen
+bleiben) und prüfe die Tonspur erneut. Falls nötig wiederhole diesen
+Schritt bis Du mit dem Ergebnis zufrieden bist.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Das Ganze ausführen
+     </heading>
+
+     <textblock>
+Wenn die Vorschau gut ist, kannst Du mit der Wandlung beginnen. Stelle
+sicher, dass DivX Multipass wieder eingeschaltet ist, falls Du es für
+die Vorschau abgestellt hast. Klicke dann entweder auf <command>Transcode</command> oder
+auf <command>Transcode + Split</command>  falls Du Deine Dateien automagisch nach den
+Angaben unter Video Bitrate Calculation geteilt haben möchtest.
+     </textblock>
+
+     <textblock>
+Jetzt ist eine gute Zeit für soziale Kontakte :-)
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Für fortgeschrittene Benutzer: transcode Kommandozeilen-Argumente
+     </heading>
+
+     <textblock>
+Dieses Kapitel erklärt die <command>transcode</command> Kommandozeilen-Optionen, die von
+dvd::rip genutzt werden. Dies ist nicht entscheidend für den
+Wandlungs-Prozess, Du kannst diesen Teil also auch überspringen. Ich
+schreibe ihn für diejenigen, die einen tieferen Einblick haben
+möchten,
+was dvd::rip und <command>transcode</command> tun.
+     </textblock>
+
+     <textblock>
+In dvd::rip drücke
+      <keycomb mode="hold">
+       <key>Strg</key>
+       <key>t</key>
+      </keycomb>,
+um die Kommandos, die dvd::rip
+ausführt, zu sehen. Im Moment wollen wir uns auf die letzten Kommandos
+konzentrieren, <command>Transcode</command> command.<br/>
+Hier ein Beispiel für meine Star
+Trek: The Next Generation DVD ohne die ganzen <command>mkdir</command> und <command>cd</command> Kommandos:
+     </textblock>
+
+     <shell>
+      <user path="~">
+transcode -i /space/tng-biggoodbye/vob/004 -w 4357,250,100 -a 1
+-b 128,0,0 -s 3.311 -V -f 25 -B 12,10,8 -R 1 -x vob,null -o
+/dev/null -y xvidcvs,null
+      </user>
+      <user>transcode -i /space/tng-biggoodbye/vob/004 -w 4357,250,100 -a 1
+-b 128,0,0 -s 3.311 -V -f 25 -B 12,10,8 -R 2 -x vob -o
+/space/tng-biggoodbye/avi/004/tng-biggoodbye-004.avi -y xvidcvs
+      </user>
+     </shell>
+
+     <textblock>
+Ein Blick auf das erste Kommando und seine Parameter:
+     </textblock>
+
+     <ul>
+      <li>
+<command>-i /space/tng-biggoodbye/vob/004</command> teilt offensichtlich
+<command>transcode</command> mit, wo es die Dateien findet. Das kann eine Datei,
+ein Gerät oder ein Verzeichnis mit Dateien sein.
+      </li>
+      <li>
+<command>-w 4357,250,100</command> setzt die Video-Kodierungs-Parameter: Bitrate,
+maximales Keyframe-Interval und Crispness.
+      </li>
+      <li>
+<command>-a 1</command> wählt Audio-Track Nummer 1 (beginnend mit 0).</li>
+      <li>
+<command>-b 128,0,0</command> setzt die Audio-Kodierungs-Parameter für lame: bit
+rate, vbr und Qualität. Siehe auch lame's man page für eine
+Erklärung der Parameter -V and -q.
+      </li>
+      <li>
+<command>-s 3.311</command> veranlasst lame die Tonspur zu verstärken und damit
+<strong>on the fly</strong> zu normalisieren
+      </li>
+      <li>
+<command>-V</command> veranlasst <command>transcode</command> die Bildverarbeitung im YUV Farbraum
+vorzunehmen. Ohne <command>-V</command> würden die Bilder in den RGB Farbraum
+konvertiert werden. Beachte, dass einige externe Filter einen der
+beiden Farbräume voraussetzen. YUV processing erhöht die
+Geschwindigkeit stark.
+      </li>
+      <li>
+<command>-f 25</command> setzt die Bildrate.
+      </li>
+      <li>
+<command>-B 12,10,8</command> setzt die fast scaling (schnelle Skalierung)
+Optionen: das Bild wird herunterskalier auf Höhe - 12 * 8 Zeilen
+und auf Breite - 10 * 8 Spalten.
+      </li>
+      <li>
+<command>-R 1</command> ist der Marker für den ersten (von zwei)
+Kodierungs- Durchgang
+      </li>
+      <li>
+<command>-x vob,null</command> - Die Video Eingabe kommt aus VOB-Dateien und die
+Audio-Eingabe wird übersprungen (sie ist im ersten Durchgang
+ohnehin unnötig)</li>
+      <li>
+<command>-o /dev/null</command> - Wir brauchen die Ausgabe des
+  ersten Durchgangs nicht.
+      </li>
+      <li>
+<command>-y xvidcvs,null</command> - Ausgabe Video unter Verwendung von XviD und
+  ohne audio.
+      </li>
+     </ul>
+
+     <textblock>
+Die zweite Kommandozeile weicht nicht so sehr davon ab. Sie überspringt
+alle Optionen die die Ausgabe abschalten würden (wie <command>-o real-file-name</command>
+und <command>-y xvidcvs</command>). Für eine vollständige Kommandoreferenz siehe die
+<command>transcode</command> und <command>lame</command> man pages.
+     </textblock>
+
+     <textblock>
+Eine letzte Anmerkung: Du wirst sehen, dass <command>transcode</command> seit Version
+0.6.0pre6-20020529 Unterstützung für das <path>libavcodec</path> über ein von mir
+geschriebenes noch expermentelles Export-Modul enthält. Du kannst dies
+aktivieren durch Verwendung von <command>-y ffmpeg4</command> (zur Erinnerung:
+<path>libavcodec</path> ist Teil von ffmpeg) anstelle des vorherigen Codecs.
+dvd::rip unterstützt dies zur Zeit noch nicht (lies: der Codec ist
+nicht in der Liste der auswählbaren Codecs).
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+    <heading>
+Benutzung von MEncoder
+    </heading>
+
+    <textblock>
+Wie zuvor erwähnt, gibt es im Moment noch keine GUI für den MEncoder.
+Daher werde ich keine Screenshots zeigen und Du musst alles von Hand
+machen. Es ist ein Prozess der <strong>3-Pass-Kodierung</strong> genannt wird.
+    </textblock>
+
+    <section>
+     <heading>
+Kodierung der Tonspur
+     </heading>
+
+     <textblock>
+Der erste Schritt ist die Kodierung der Tonspur. Stelle sicher, dass du
+weisst, welche Sprache Du verwenden willst - Du benötigst entweder die
+Audio ID (d.h. 128 für den ersten Stream, 129 für den zweiten, usw.)
+      oder den zwei-Buchstaben-Länder-Code (wie <strong>en</strong> für Englisch oder <strong>de</strong> für
+Deutsch). Du kannst diese Codes durch Ausführen von MPlayer im
+      Verbose-Mode ermitteln: <command>mplayer -dvd 1 -v</command>. Das Programm sollte eine
+      Menge Zeilen ausgeben. Suche nach Zeilen die diesen
+      ähneln:<br/><br/>
+      [open] audio stream: 0 audio format: ac3 language: en aid:
+      128<br/>
+      [open] audio stream: 1 audio format: ac3 language: de aid:
+      129<br/>
+      [open] audio stream: 2 audio format: ac3 language: es aid:
+      130<br/><br/>
+Hier habe ich drei Audio-Streams: Englisch, Deutsch, Spanisch und ihre
+IDs
+     </textblock>
+
+     <textblock>
+Rufe nun MEncoder auf, um die Tonspur für dich zu kodieren
+     </textblock>
+
+     <shell>
+      <user>
+nice -+19 cat /space/*vob | nice -+19 mencoder -ovc frameno -o
+frameno.avi -oac mp3lame -lameopts abr:br=128 -alang de -
+      </user>
+     </shell>
+
+     <textblock>
+Hier ist eine Erklärung der verwendeten Kommandozeilen-Argumente:
+     </textblock>
+
+     <ul>
+      <li>
+       <command>nice -+19</command>
+       <ul>
+        <li>
+Gibt MEncoder die niedrigste Prozess-Priorität,
+sodass er die normale Arbeit nicht stört
+        </li>
+       </ul>
+      </li>
+      <li>
+       <command>-ovc frameno</command>
+       <ul>
+        <li>
+Ausgabe-Video-Codec ist frameno was bedeutet,
+dass gar keine Video-Daten geschrieben oder verarbeitet werden.
+        </li>
+       </ul>
+      </li>
+      <li>
+       <command>-o frameno.avi</command>
+       <ul>
+        <li>
+Schreibe die Ausgabe in eine Datei mit Namen
+frameno.avi. Die Tonspur muss in eine Datei mit diesem Namen
+geschrieben werden, da MEncoder die Tonspur genau aus dieser
+Datei im nächsten Schritt lesen wird.
+        </li>
+       </ul>
+      </li>
+      <li>
+       <command>-oac mp3lame</command>
+       <ul>
+        <li>
+Ausgabe-Audio-Codec ist die lame
+encoder library.
+        </li>
+       </ul>
+      </li>
+      <li>
+       <command>-lameopts abr:br=128</command>
+       <ul>
+        <li>
+Optionen für <command>lame</command>. Veranlasst <command>lame</command> eine
+Datei unter Verwendung von ABR (average bitrate (durchschnittliche
+Bitrate, eine variable Bitrate mit dem vom Benutzer angegeben
+Durchschnitt) mit einer durchschnittlichen Bitrate von 128kbits/s
+zu erzeugen.
+        </li>
+       </ul>
+      </li>
+      <li>
+       <command>-alang de</command>
+       <ul>
+        <li>
+verwendet die deutsche Tonspur. Alternativ könnte <command>-aid 129</command>
+verwendet werden.
+        </li>
+       </ul>
+      </li>
+     </ul>
+
+     <textblock>
+Warte eine Weile und Du hast Deine Tonspur. MEncoder gibt auch einige
+Vorschläge für die Video-Bitrate an:<br/><br/>
+Recommended video bitrate for 650MB CD: 1845<br/>
+Recommended video bitrate for 700MB CD: 1992<br/>
+Recommended video bitrate for 800MB CD: 2287<br/><br/>
+
+Wie Du erkennst, sind diese Werte ziemlich hoch - aber das ist darauf
+zurückzuführen, dass eine Ally-McBeal-Folge nur 41 Minuten lang ist.
+Also würde ich zwei Episoden pro CD erzeugen und dem Video eine Bitrate
+von etwa 1000 geben.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Erstellen einer Vorabansicht (Erster Durchgang)
+     </heading>
+
+     <textblock>
+Nun ist es Zeit sich zu entscheiden, welcher Video-Codec verwendet
+werden soll. Ich nehme an, dass eine AVI-Datei mit einem der
+verschiedenen DivX-Encoder erstellt werden soll. MEncoder
+unterstützt DivX 4 oder DivX 5 (das gilt auch für Windows - Du
+hast entweder v4 oder v5 installiert) genauso wie XviD oder lavc.
+Obwohl die meisten von Euch nichts von <path>libavcodec</path> oder dem
+      ffmpeg-projekt zuvor gehört haben, sei Dir angeraten dass <command>lavc</command> den
+Codecs DivX 4 or 5 weit überlegen ist und mindestens so gut ist wie
+      XviD. Daher will ich nur Beispiele für <command>lavc</command> zur Verfügung stellen,
+zumal Du dafür keine speziellen Codecs zum späteren Abspielen benötigst.
+MPlayer spielt sie (natürlich) prima ab, und für Windows benötigst Du
+einfach DivX 5 (die kostenlose Ausgabe ist absolut ausreichend). Auf
+geht's.
+     </textblock>
+
+     <textblock>
+Wir wollen nun die Kommandozeilen-Optionen zusammenstellen:
+     </textblock>
+
+     <ul>
+      <li>
+       <command>-oac copy</command>
+       <ul>
+        <li>
+MEncoder braucht die Informationen des ersten
+// Durchgangs, um Audio &amp; Video synchron zu halten. Du darfst auf
+keinen fall <command>-nosound</command> benutzen, auch wenn ich das in früheren
+Versionen dieser Anleitung empfohlen habe. Wenn dich die
+technischen Details dazu interessieren, dann schau bei der
+MPlayer-Mailliste
+<ref lang="en" url="http://mplayerhq.hu/pipermail/mplayer-users/2002-August/019551.html">MPlayer-Mailliste</ref>
+nach. <command>-o /dev/null</command> - Wir brauchen auch die Ausgabe des ersten
+Durchgangs nicht.
+        </li>
+       </ul>
+      </li>
+      <li>
+<command>-ovc lavc</command>
+       <ul>
+        <li>
+wählt <command>lavc</command> als Ausgabe-Video-Codec
+        </li>
+       </ul>
+      </li>
+      <li>
+       <command>-lavcopts vcodec=mpeg4:vbitrate=1000:vhq:vqmin=1:vqmax=31:vpass=1</command>
+       <ul>
+        <li>
+libavcodec unterstützt tatsächlic eine handvoll
+verschiedener Video-Codecs. Mit <command>vcodec=mpeg4</command> wählen wir den
+MPEG4-kompatiblen Encoder. <command>vbitrate=1000</command> ist die gewünschte
+Bitrate. <command>vhq</command> (very high quality / sehr hohe Qualität) veranlasst
+den Kodierer eine Menge Zeit mit der Optimierung des Ergebnisses
+zu verbringen. Es ist den Aufwand wert. <command>vpass=1</command> teilt
+schließlich dem Encoder mit, dass dies nur der erste Durchgang
+ist. Die Benutzung von <command>vqmin</command> und <command>vqmax</command> teilt dem Codec mit,
+wie stark das Video mindestens und maximal komprimiert werden
+soll. Diese Werte auf ihren Voreinstellungen zu lassen (siehe (see
+man mencoder) beschränkt die erreichbare Ausgabe-Bitrate sehr,
+daher empfehle ich eine größere Reichweite. 
+        </li>
+       </ul>
+      </li>
+      <li>
+       <command>-vop scale=640:480</command>
+       <ul>
+        <li>
+Skaliert das Bild herunter auf 640x480
+Pixel. Ich habe in der Mailing-Liste gelesen dass es einen neuen
+Parameter gibt, der automatisch die Höhe von der angegebenen
+Breite und umgekehrt errechnet, sodass das Seitenverhältnis
+erhalten bleibt. Ich habe es selbst nicht probiert, aber das
+sollte so aussehen: <command>-vop scale -xy 640</command>. Beachte wenngleich es
+möglich ist, tatsächlich die Bilder zu vergrößern, rate ich stark
+davon ab. Es gibt mehrere Nachteile: Zum einen braucht der Encoder
+viel mehr Bits um die gleiche Qualität zu erreichen, die Du auch
+erreichst, wenn Du ein kleineres Bild kodierst und dieses dann
+beim Abspielen vergrößerst, und zudem kann es auch zu
+Bildverzerrungen kommen (Peter Schuller berichtete mir von einem
+solchen Fall). Skaliere immer nach unten (=kleiner).
+        </li>
+       </ul>
+      </li>
+      <li>
+Falls Dein Bild interlaced ist, kannst Du es durch Angabe des
+Parameters <command>-npp lb</command> de-interlaced ausgeben.
+      </li>
+      <li>
+Wir möchten nur eine Vorabansicht, daher geben wir eine
+Startposition und die gewünschte Länge mit an: <command>-ss 0:20</command>
+bezeichnet 20 Sekunden nach Filmbeginn als Anfang, und <command>-endpos
+0:30</command> sagt, dass wir 30 Sekunden bearbeiten wollen. Dieser
+Parameter wurde ungünstig benannt, da es sich nicht um die
+End-Position, sondern um die Länge des zu kodierenden Ausschnitts
+handelt.
+      </li>
+     </ul>
+
+     <textblock>
+Füge die gesamte Kommandozeile zusammen:
+     </textblock>
+
+     <shell>
+      <user path="~">
+nice -+19 mencoder -nosound -o /dev/null -ovc lavc -lavcopts
+vcodec=mpeg4:vbitrate=1000:vhq:vpass=1 -vop scale=640:480 -npp lb -ss
+0:20 -endpos 0:30 /space/first.vob
+      </user>
+     </shell>
+    </section>
+
+    <section>
+     <heading>
+Erstellen einer Vorabansicht (zweiter Durchgang)
+     </heading>
+
+     <textblock>
+Für dieses Schritt können wir den größten Teil der vorhergehenden
+Kommandozeile beibehalten. Natürlich ändern wir <command>vpass=1</command> in <command>vpass=2</command>
+um dem Encoder mitzuteilen, dass es diesmal der zweite Durchgang ist.
+Natürlich sollten wir diesmal die endgültige Ausgabe speichern und
+ersetzen daher <command>-o /dev/null</command> mit etwas Brauchbarem,
+z.B. <command>-o ally-preview.avi</command>.
+     </textblock>
+
+     <textblock>
+Hier die Kommandozeile:
+     </textblock>
+
+     <shell>
+      <user path="~">
+nice -+19 mencoder -oac copy -o ally-preview.avi -ovc lavc -lavcopts
+vcodec=mpeg4:vbitrate=1000:vhq:vpass=2 -vop scale=640:480 -npp lb -ss
+0:20 -endpos 0:30 /space/first.vob
+      </user>
+     </shell>
+
+     <textblock>
+Nachdem MEncoder fertig ist, sehen wir uns die Vorabansicht an.
+Berichtige, sofern nötig, die Einstellungen. Wiederhole die Erstellung
+der Vorabansicht, bis Du zufrieden damit bist.
+     </textblock>
+    </section>
+
+    <section>
+     <heading>
+Erstellen der endgültigen AVI-Datei (beide Durchgänge)
+     </heading>
+
+     <textblock>
+Die Aufrufe der endgültigen Optionen lassen einfach die Optionen <command>-ss</command>
+und <command>-endpos</command> weg. Unglücklicherweise kann MEncoder nicht mehrere
+Eingabe-Dateien von der Kommandozeile lesen. Daher verwenden wir das
+<command>cat</command>-Kommando. Gib einfach
+     </textblock>
+
+     <shell>
+      <user path="~">
+cat /space/*vob | nice -+19 mencoder -oac copy -o /dev/null -ovc lavc
+-lavcopts vcodec=mpeg4:vbitrate=1000:vhq:vpass=1:vqmin=1:vqmax=31 -vop
+scale=640:480 -npp lb -
+      </user>
+      <user>
+cat /space/*vob | nice -+19 mencoder -oac copy -o ally.avi -ovc lavc
+-lavcopts vcodec=mpeg4:vbitrate=1000:vhq:vpass=2:vqmin=1:vqmax=31 -vop
+scale=640:480 -npp lb -
+      </user>
+     </shell>
+
+     <textblock>
+ein.<br/>
+Beachte, dass <command>-ss</command> scheinbar nicht zusammen mit der <command>cat *vob
+mencoder...</command>-Variante funktioniert. Also muß für die Vorschau einfach
+die erste VOB-Datei als letztes Argument angegeben werden (siehe oben)
+     </textblock>
+
+     <textblock>
+Nun geh und hol Dir ein Bier und ein gutes Buch.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Zusätzliche Tricks
+   </heading>
+
+   <textblock>
+Es gibt einige weitere Themen bezüglich der Video-Produktion.
+   </textblock>
+
+   <section>
+    <heading>
+Reparieren einer nichtsynchronen Audio-Spur
+    </heading>
+
+    <textblock>
+Dies funktioniert nicht mit AVIs die VBR/ABR MP3s verwenden. Dieser
+Schritt benutzt <command>avisync</command>, welches Teil des <command>transcode</command>
+Pakets ist.
+    </textblock>
+
+    <textblock>
+<command>avisync</command> ist leicht zu benutzen: gib einfach eine Eingabe-Datei (<command>-i
+name.avi</command>), eine Ausgabe-Datei (<command>-o newname.avi</command>) und den Sync-Offset in
+Frames (<command>-n count</command>) an. Aus der <command>avisync</command>-Hilfe: <command>count>0</command>: Audio startet
+mit frame 'count'. count&lt;0: stelle 'count' audio frames voran. Ein
+Beispiel:
+    </textblock>
+
+    <shell>
+     <user path="~">
+avisync -i ally-not-synched.avi -o ally-synched.avi -n -2
+     </user>
+    </shell>
+
+   </section>
+
+   <section>
+    <heading>
+Zerteilen von AVIs
+    </heading>
+
+    <textblock>
+Dies funktioniert nicht mit AVIs, die VBR/ABR MP3s benutzen. Dieser
+Schritt benutzt <command>avisplit</command>, welches Teil des <command>transcode</command>-Paketes ist.
+Benutze es nur mit AVIs, die von <command>transcode</command> erzeugt wurden.
+    </textblock>
+
+    <textblock>
+<command>avisplit</command> ist leicht zu benutzen: Gib einfach eine Eingabe-Datei (<command>-i
+name.avi</command>) an und an welcher Stelle die Datei aufgeteilt werden soll. Du
+kannst die Datei nach einer festen Größe spalten: (<command>-s
+Größe_in_Megabyte</command>), nach einer Anzahl von Frames (<command>-f f1-f2</command>) oder nach
+einer Anzahl von Sekunden <command>-t s1-s2</command>). Ein Beispiel:
+    </textblock>
+
+    <shell>
+     <user path="~">
+avisplit -i ally-big-file.avi -o ally -s 100
+     </user>
+    </shell>
+
+    <textblock>
+Dies erzeugt Dateien mit den Namen <path>ally-0000.avi</path>, <path>ally-0001.avi</path> etc.,
+die jeweils maximal eine Größe von 100 MByte haben.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Extrahieren des Tons aus VOBs MPEGs AVIs
+    </heading>
+    <textblock>
+MPlayer kann leicht dazu verwendet werden, den Ton zu extrahieren. Die
+Option -vo null veranlasst MPlayer, die Videospur nicht auszugeben.
+    </textblock>
+
+    <ul>
+     <li>
+<command>VOB -> AC3: mplayer -vo null -nogui -alang de -dumpaudio
+ -dumpfile lang-de.ac3 *vob</command><br/>
+Dies extrahiert die deutsche Tonspur in eine Datei namens
+      <path>lang-de.ac3</path>.
+     </li>
+     <li>
+<command>VOB -> WAV: mplayer -vo null -nogui -aid 128 -ao pcm -aofile
+lang-de.wav *vob</command><br/>
+Dies extrahiert die Tonspur Nr. 128, mischt den AC3-Ton herunter
+in PCM und schreibt das Ergebnis in <path>lang-de.wav</path>.
+     </li>
+     <li>
+<command> MPG -> MP2: mplayer -vo null -nogui -dumpaudio -dumpfile
+audio.mp2 myvideo.mpg</command><br/>
+Dies extrahiert die Tonspur in eine Datei namens <path>audio.mp2</path>.
+     </li>
+     <li>
+<command>AVI -> WAV: mplayer -vo null -nogui -ao pcm -aofile audio.wav
+myvideo.avi</command><br/>
+Die extrahiert die Tonspur, konvertiert sie in PCM und schreibt
+die entstehende <path>.WAV</path> in <path>audio.wav</path>.
+     </li>
+    </ul>
+
+    <textblock>
+Ich liste nicht alle möglichen Optionen auf. Im Allgemeinen verwende
+<command>-dumpaudio -dumpfile newaudio.extension</command> wenn du die Tonspur ohne
+Bearbeitung extrahieren willst und <command>-ao pcm -aofile newaudio.wav</command> Wenn
+Du die Datei als <path>.WAV</path> benötigst.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Benutzung separater Audio-Dateien
+    </heading>
+
+    <textblock>
+Manchmal willst Du eine andere Ton-Datei zusammen mit Deinem Video
+abspielen. MPlayer macht dies ziemlich einfach: <command>mplayer -audiofile
+anotherlang.mp3 myvideo.avi</command> spielt das Video aus <path>myvideo.avi</path>
+und den Ton aus <path>anotherlang.mp3</path>. Eine Menge Windows media player unterstützen
+ebenfalls externe Audio-Dateien. Auf diese Art und Weise kannst Du
+mehrere Sprach-Versionen als separate Audio-Dateien verfügbar machen.
+Eine häufig verwendete Kombination ist die Verwendung des englischen
+Audio-Tracks im AVI-File und die zusätzliche Erzeugung anderer
+Audio-Tracks als separate Files.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Ein grafischer AVI-Editor: avidemux
+    </heading>
+
+    <textblock>
+Wenn Du schon einmal unter Windows Videobearbeitung gemacht hast, dann
+kennst Du wahrscheinlich auch den exzellente OpenSource-Videoeditor
+<ref lang="en" url="http://www.virtualdub.org/">VirtualDub</ref>. Ein OpenSource-Werkzeug für
+Linux, das darauf abzielt, dem Benutzer eine ähnliche Funktionsvielfalt
+     wie <command>VirtualDub</command> zu bieten, ist
+<ref lang="en" url="http://fixounet.free.fr/avidemux/">avidemux</ref>. Damit kannst du ganz einfach
+bestimmte Teile deines Films herausschneiden, verschiedene Filter
+anwenden, Filme erneut enkodieren und noch eine ganze menge mehr machen.
+Ich empfehle Dir, dass Du es Dir einfach einmal anschaust, auch wenn die
+Benutzung der Kommandozeile für Dich so natürlich ist wie sie es für
+mich ist.
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Links
+   </heading>
+
+   <section>
+    <heading>
+Libraries, codecs
+    </heading>
+
+    <ul>
+     <li>
+      <path>libdvdread</path> and <path>libdvdcss</path>:<br/>
+        <ref lang="en" url="http://www.dtek.chalmers.se/groups/dvd/downloads.shtml">http://www.dtek.chalmers.se/groups/dvd/downloads.shtml</ref>
+     </li>
+     <li>
+      <command>DivX 5</command>:<br/>
+      <ref lang="en" url="http://www.divx.com/">http://www.divx.com/</ref>
+     </li>
+     <li>
+      <command> XviD</command>:<br/>
+      <ref lang="en" url="http://www.xvid.org/">http://www.xvid.org/</ref>
+     </li>
+     <li>
+      <command>ffmpeg</command> (the home of
+      <path>libavcodec</path>):<br/>
+      <ref lang="en" url="http://ffmpeg.sourceforge.net/">http://ffmpeg.sourceforge.net/</ref>
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Media players
+    </heading>
+
+    <ul>
+     <li>
+<strong><ref chapter="mplayer">MPlayer</ref></strong>:<br/>
+      <ref lang="en" url="http://www.mplayerhq.hu/">http://www.mplayerhq.hu/</ref>
+     </li>
+     <li>
+<strong><ref chapter="xine">Xine</ref></strong>:<br/>
+      <ref lang="en" url="http://xine.sourceforge.net/">http://xine.sourceforge.net/</ref>
+     </li>
+     <li>
+<strong>Ogle</strong>:<br/>
+      <ref lang="en" url="http://www.dtek.chalmers.se/groups/dvd/index.shtml">http://www.dtek.chalmers.se/groups/dvd/index.shtml</ref>
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Media encoders
+    </heading>
+
+    <ul>
+     <li>
+<command><ref chapter="mplayer">MEncoder</ref></command> (part of MPlayer):<br/>
+      <ref lang="en" url="http://www.mplayerhq.hu/">http://www.mplayerhq.hu/</ref>
+     </li>
+     <li>
+<command>transcode</command>:<br/>
+      <ref lang="en" url="http://www.theorie.physik.uni-goettingen.de/~ostreich/transcode/">http://www.theorie.physik.uni-goettingen.de/~ostreich/transcode/</ref>
+     </li>
+     <li>
+<command>dvd::rip</command> (GUI for <command>transcode</command>):<br/>
+      <ref lang="en" url="http://www.exit1.org/dvdrip/">http://www.exit1.org/dvdrip/</ref>
+     </li>
+    </ul>
+   </section>
+
+   <section>
+    <heading>
+Andere Dokumentation
+    </heading>
+
+    <textblock>
+Sowohl <command>MPlayer</command> als auch <command>transcode</command> bringen normale Unix-man-pages
+mit:<command> man mplayer</command>, <command>man mencoder</command>
+und <command>man transcode</command> zeigen diese Seiten. Zusätzlich
+liefert die Angabe von <command>-h</command> oder <command>--help</command> als
+einzigem Parameter zu einem dieser Programme eine Liste der
+Kommandozeilenoptionen (die allerdings evtl. nicht komplett ist).
+    </textblock>
+
+    <textblock>
+MPlayer-Dokumentation:<br/>
+<ref chapter="mplayer">http://www.mplayerhq.hu/DOCS/</ref> transcode-Dokumentation und
+Beispiele:<br/><ref lang="en" url="http://www.theorie.physik.uni-goettingen.de/~ostreich/transcode/html/index.html">http://www.theorie.physik.uni-goettingen.de/~ostreich/transcode/html/index.html</ref>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Mail Listen
+    </heading>
+
+    <textblock>
+Ich empfehle sehr, dass Du die Mailing-Listen nach Informationen
+durchsuchst/durchstöberst und sie Dir selbst abonnierst. Eine Menge
+Informationen sind dort verfügbar, die nicht in der Haupt-Dokumentation
+oder der Kommandozeilen-Referenz auftauchen.
+    </textblock>
+
+    <ul>
+     <li>
+<command>MPlayer's</command> user mailing list:<br/>
+      <ref lang="en" url="http://mplayerhq.hu/mailman/listinfo/mplayer-users">http://mplayerhq.hu/mailman/listinfo/mplayer-users</ref> <br/>
+<command>MPlayer's</command>developer mailing list:<br/>
+      <ref lang="en" url="http://mplayerhq.hu/mailman/listinfo/mplayer-dev-eng">http://mplayerhq.hu/mailman/listinfo/mplayer-dev-eng</ref>
+     </li>
+     <li>
+<command>transcode</command>'s user mailing list:<br/>
+      <ref lang="en" url="http://www.theorie.physik.uni-goettingen.de/pipermail/transcode-users/">http://www.theorie.physik.uni-goettingen.de/pipermail/transcode-users/</ref>
+     </li>
+     <li>
+<command>dvd::rip's</command> mailing list:<br/>
+      <ref lang="en" url="http://www.exit1.org/dvdrip/list.cipp">http://www.exit1.org/dvdrip/list.cipp</ref>
+     </li>
+    </ul>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Glossar
+   </heading>
+
+   <section>
+    <heading>
+CBR, VBR und ABR
+    </heading>
+
+    <textblock>
+Diese drei Abkürzungen stehen für Constant Bit Rate, Variable Bit
+Rate und Average (=durchschnittliche) Bit Rate.
+    </textblock>
+
+    <textblock>
+Mit <strong>CBR</strong> verwendet der Encoder die gleiche Anzahl von Bits in jedem
+Frame, unabhängig davon, wieviele Bits er tatsächlich bräuchte. Dies hat
+den Nachteil, das z.B. ein komplett schwarzes Bild oder absolute Stille
+in einem Audio-Frame eine Menge Bits veschwendet, während Bilder oder
+Audio-Frames mit einer Menge Elementen von diesen Bits profitieren
+könnten.
+    </textblock>
+
+    <textblock>
+<strong>VBR</strong> nimmt nun soviele Bits, wie tatsächlich gebraucht werden. So
+bekommt ein komplett schwarzes Bild nur einige wenige Bits und ein
+komplexes Bild bekommt soviele Bits wie es benötigt. Während dies die
+beste Qualität erzeugt, ist die endgültige Dateigröße nicht mehr
+vorhersagbar.
+    </textblock>
+
+    <textblock>
+Das ist die Stelle, an der <strong>ABR</strong> in Spiel kommt. Du gibst eine
+durchschnittliche Bitrate an,die Du erreichen möchtest, und der <command>Encoder</command>
+verteilt die Bits, die ihm zur Verfügung stehen. So spart der <command>Encoder</command>
+bei schwarzen Bildern Bits ein, die dann komplexeren Bildern zur
+Verfügung stehen. Es ist somit ein Kompromiss zwischen Qualität und
+Vorhersagbarkeit der Dateilänge.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Global Motion Compensation (GMC)
+    </heading>
+
+    <textblock>
+Global motion compensation (GMC) hilft beim Zoomen und Schwenken der
+Kamera, wenn sich Objekte nur in ihrer Größe oder Position verändern,
+ihren Typ dabei aber beibehalten. Die Aktivierung von GMC ist für
+Naturfilme oder Landschafts-Dokumentationen zu empfehlen, die
+komprimiert werden sollen.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Letterboxing
+    </heading>
+
+    <textblock>
+Vielleicht ist Dir aufgefallen, dass Videos manchmal vor dem Kodieren
+mit schwarzen Balken eingerahmt sind. Dieser Vorgang nennt sich
+letterboxing. Er kann bei einigen Abspielern dabei helfen, das korrekte
+Seitenverhältnis zu erhalten. Andere nutzen die schwarzen Balken zum
+Anzeigen von Untertiteln. Der Nachteil ist, dass diese schwarzen Balken
+das Bild vergrößern und daher mehr Bandbreite zum Kodieren benötigen,
+obgleich komplett schwarze Teile nicht sehr viel Platz beanspruchen -
+aber gerade die Übergänge zwischen dem Bild und den schwarzen Streifen
+brauchen sehr viele Bits.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+P/I/B-Frames, GOPs
+    </heading>
+
+    <textblock>
+<strong>GOP</strong>:
+    </textblock>
+    <ul>
+     <li>
+beginnt mit einem "I"-Frame, gefolgt normalerweise von einer
+Anzahl von "P" und "B"-Frames
+     </li>
+     <li>
+jede GOP ist unabhängig: alle Frames, die für Hochrechnungen
+benötigt werden, sind in jedem GOP vorhanden.
+     </li>
+     <li>
+GOPs können so klein sein wie ein einzelner I-Frame oder so groß
+wie gewünscht, aber normalerweise nicht mehr als 15 Frames für
+MPEG2. MPEG4 GOPs können so groß wie das maximale
+Keyframe-Intervall sein (üblicherweise 200-300 frames). Die
+meisten Codecs erlauben GOPs beliebiger Länge.
+     </li>
+     <li>
+Je länger eine GOP, desto effizienter aber unrobuster die Kodierung.
+     </li>
+    </ul>
+
+    <textblock>
+<strong>I-frame</strong>:
+    </textblock>
+
+    <ul>
+     <li>
+  "Intra-coded" frames: Durchschnittliche 7:1-Reduzierung.
+     </li>
+     <li>
+ wie JPEG, jedes Video-Bild ist unterteilt in Blöcke zu 8x8 Pixeln
+  aus Y, R-Y, and B-Y
+     </li>
+     <li>
+ Blöcke sind in "macroblocks" zu 16x16 gruppiert.
+     </li>
+     <li>
+ Die Standards besagen, dass Macroblocks horizontal in Scheiben
+  gruppiert werden, die eine ähnliche durchschnittlichen Blockhöhe
+  besitzen, obgleich tatsächlich vorhandene Codecs dieser Regel
+  nicht notwendigerweisefolgen.
+     </li>
+     <li>
+ Außerdem besagen die Standards, dass mehrere Scheiben einen Frame
+  formen, und dass diese Frames die sich ergebenden "I"-Frames sind,
+  obgleich Codecs auch dieser Vorgabe nicht folgen.
+     </li>
+    </ul>
+
+    <textblock>
+<strong>P-frame</strong>:
+    </textblock>
+
+    <ul>
+     <li>
+ P-Frames sind auf der Basis vorhergehender I- oder P-Frames
+  zuzüglich der Daten veränderter Macroblocks vorhergesagte Frames.
+     </li>
+     <li>
+ Durchschnittlich etwa 20:1 Reduzierung, oder etwa die Hälfte der
+  Größe eine I-frames
+     </li>
+    </ul>
+
+    <textblock>
+<strong>B-frame</strong>:
+    </textblock>
+
+    <ul>
+     <li>
+ Bidirektional vorhersagbare Frames basierend auf dem Aussehen und
+  der Position vergangener und folgender Frame-Macroblöcke.
+     </li>
+     <li>
+ B-Frames benötigen weniger Daten als P-Frames, durchschnittlich
+  etwa 50:1 Reduzierung.
+     </li>
+     <li>
+ BFrames benötigen mehr decoder-buffer-Speicher da zwei Frames
+  während der Rekonstruktion miteinander verglichen werden.
+     </li>
+     <li>
+ B frames benötigen außerdem einer änderung der
+  Kodierungsreihenfolge: Frames, die sich vom Encoder zum Decoder
+  bewegen, sind NICHT in der Reihenfolge der Präsentation.
+     </li>
+    </ul>
+
+    <textblock>
+Für jeden Macroblock in einem P-Frame entscheidet der Encoder, ob er
+diesen Block bereits aus dem vorhergeheneden Frame kennt, oder ob es
+sich um einen komplett neuen Frame handelt. Im ersten Fall codiert er
+nur die Unterschiede (INTER mode). Im letzten Fall codiert er den
+gesamten Macroblock (INTRA mode).
+    </textblock>
+
+    <textblock>
+Die Situation für B-Frames ist wie die folgende: "Ich kennen diesen
+Block nicht" (INTRA mode), "Ich kenne diesen Block vom vorhergehenden I-
+oder P-Frame (backward mode)", "dieser Block sieht aus wie ein Block im
+nächsten Frame (forward mode)", oder "dieser Block sieht aus wie eine
+Mischung des vorhergehenden und des nachfolgenden Frames (bidirectional
+mode".
+    </textblock>
+
+    <textblock>
+MPEG1 GOPs sind immer "IBBPBBPBBPBB" (dies ist die Reihenfolge in der
+die Frames angezeigt werden, nicht notwendigerweise die Reihenfolge in
+der sie kodiert/gespeichert werden). MPEG2 GOPs sehen genauso aus. Sie
+können auch drei B-frames enthalten. Der DivX5 MPEG4 codec benutzt nur
+"IBPBPBPBPB", da es leichter zu implementieren ist, und weil
+B-Frame-Support for MPEG4-Codecs ziemlich neu ist. Du kannst in Zukunft
+mehr B-Frames erwarten.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Quarter Pixel (QP)
+    </heading>
+    <textblock>
+Quarter pel oder Quarter Pixel wirkt auf die Präzision beim Filtern von
+Macroblöcken. DivX 4 arbeitet mit Half Pel (1.5, 1.5); 1.25, 1.75, etc.
+sind beginnend mit DivX 5 möglich. Die konventionelle Teilung eines
+Bildes in Macroblöcke wird auf der Basis von Integer-Zahlen - 16x16 oder
+8x8 - unter Verwendung der ergänzenden Information von dem, was als
+Virtual Block bekannt ist, verfeinert. Dies erlaubt es, Bewegungen von
+Objekten in Bildern realistischer wiederzugeben.
+    </textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

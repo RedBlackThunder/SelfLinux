@@ -1,0 +1,2005 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Benutzer- und Berechtigungskonzepte unter Linux</title>
+ 
+ <author>
+  <name>H. Degenhardt</name>
+  <mailto>hede@pingos.org</mailto>
+ </author>
+ 
+ <author>
+  <name>J. Meinhold</name>
+  <mailto>j.meinhold@imail.de</mailto>
+ </author>
+ <author>
+  <name>M. Kleine</name>
+  <mailto>kleine_matthias@gmx.de</mailto>
+ </author>
+ 
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+ 
+ <license>
+GPL
+ </license>
+ 
+ <index>nutzer_unter_linux</index>
+ 
+ <description>
+  <textblock>
+Dieser Text ist den grundlegenden Konzepten des
+Benutzer- und Berechtigungssystems von Linux gewidmet.
+Das Thema <strong>Benutzerverwaltung</strong> baut auf diesen Konzepten
+auf, wird hier aber nicht explizit behandelt. Vielmehr
+soll eine Kenntnis der wichtigsten Begriffe und ein
+Verständnis für das große Ganze vermittelt werden,
+welches in der Benutzerverwaltung seine Anwendung
+findet. Den praktischen Aspekten der Benutzerverwaltung
+ist ein <ref chapter="userverwaltung">separates Kapitel</ref> gewidmet.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Die Nutzung von Informationssystemen ist üblicherweise mit
+einem Zugangssystem verbunden, welches die Verwendung des
+Systems auf eine bekannte Benutzergruppe beschränkt, Daten
+über die registrierten Benutzer speichert und die Verteilung
+der Ressourcen auf die Benutzer steuert. Häufig ist die
+Konzeption des Zugangssystems für den einzelnen Benutzer
+transparent - außer seinem Benutzernamen und einem Passwort
+benötigt der Benutzer kaum weitere Kenntnisse, um das System
+in Anspruch zu nehmen. Für die Arbeit mit einem Linux-System
+sollten Sie sich dennoch einige elementare Kenntnisse über
+dessen Benutzer- und Berechtigungskonzept aneignen.
+   </textblock>
+
+   <textblock>
+Die Notwendigkeit für diese Konzepte ergibt sich für
+Linux aus seiner Mehrbenutzerfähigkeit. Ein erster wichtiger
+Aspekt ist der Schutz des Systems vor den Handlungen seiner
+Benutzer. Weiterhin müssen auch die einen Benutzer vor den
+Handlungen der anderen geschützt werden. Und schließlich darf
+bei allem Schutz des Systems und der Benutzer voreinander das
+Miteinander-Arbeiten nicht allzusehr erschwert werden. Um all
+dies zu gewährleisten, bedarf es eines feinkörnigen Systems
+der Einschränkungen und Erlaubnisse. Dieses System ideal an
+die jeweiligen Gegebenheiten anzupassen, ist die Aufgabe des
+Systemverwalters. Es bleibt zu hoffen, dass er diese Aufgabe
+in Absprache mit den Benutzern vornimmt.
+   </textblock>
+
+   <textblock>
+Dieser Text ist derzeit in fünf Hauptabschnitte gegliedert.
+Im ersten Abschnitt <ref iref="Was ist ein Benutzer?">Was ist ein Benutzer?</ref> wird erläutert,
+was einen Benutzer unter Linux ausmacht. Der zweite Abschnitt
+<ref iref="Benutzertypen">Benutzertypen</ref> behandelt die Unterschiede zwischen
+Standardbenutzern, Systembenutzern und dem Superuser root.
+Abschnitt drei <ref iref="Benutzerklassen: user, group und others">Benutzerklassen: user, group und others</ref>
+widmet sich den für das Berechtigungskonzept zentralen
+Benutzerklassen unter Linux. In Abschnitt vier
+<ref iref="Berechtigungsklassen: Lesen, Schreiben und Ausführen">Berechtigungstypen: Lesen, Schreiben und Ausführen</ref>
+werden die Berechtigungstypen für diese Benutzerklassen
+im Detail ausgeführt. Abschnitt fünf schließlich beschreibt
+überblicksweise die für die <ref iref="Die zentralen
+Benutzerdateien">Benutzerverwaltung zentralen Konfigurationsdateien</ref>.
+   </textblock>
+
+<!-- Die in Anführungszeichen gesetzten Überschriften beim
+     Layout hervorheben, z.B. kursiv setzen -->
+
+   <textblock>
+Die Autoren sind sich der Tatsache bewusst, dass damit
+wesentliche Themen, die in dieses Kapitel gehören, noch
+nicht abgehandelt wurden.
+   </textblock>
+
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Was ist ein Benutzer?
+   </heading>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Benutzername und Passwort
+	</heading>
+
+	<textblock>
+Ein Benutzerkonto besteht in der Informationstechnik
+aus einer Benutzername/Passwort-Kombination. Von einer weiteren
+Verkomplizierung des Zugangssystems, etwa durch Einsatz von
+Verschlüsselungstechnologien aus Gründen erhöhter
+Sicherheitsanforderungen, soll in diesem Kapitel nicht
+die Rede sein.
+	</textblock>
+
+	<textblock>
+Erwartungsgemäß melden Sie sich auch bei Linux durch die 
+Angabe Ihres Benutzernamens und des zugehörigen Passwortes 
+an. Mehr muss der Anwender im allgemeinen nicht wissen.
+Aus Systemsicht sind jedoch noch einige weitere Attribute
+Ihres Benutzerkontos interessant.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Benutzer-ID (UID) und Gruppen-ID (GID)
+	</heading>
+	<textblock>
+Während Sie üblicherweise einfach einen Benutzernamen angeben,
+um sich auf einen bestimmten Benutzer zu beziehen, verwendet
+Linux intern lediglich eine Identifikationsnummer, die
+sogenannte <strong>Benutzer-ID</strong> (<name>UID</name> für User-ID,
+engl. user: der Benutzer). Betrachten Sie die (verkürzte) 
+Ausgabe des folgenden Kommandos:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+id
+	 </user>
+	 <output>
+uid=500(matthias)
+	 </output>
+	</shell>
+
+	<textblock>
+In Klammern sehen Sie den vertrauten Benutzernamen, hier
+<strong>matthias</strong>. Die <name>UID</name> ist 500. Für interne Zwecke findet
+nahezu ausschließlich die <name>UID</name> Verwendung. Selbst wenn Sie
+Kommandos absetzen, welche den Benutzernamen als Parameter
+erwarten, findet zunächst eine Zuordnung des Namens auf die <name>UID</name>
+statt, bevor die gewünschte Aktion ausgeführt wird. Umgekehrt
+sollten Sie sich nicht täuschen lassen, wenn Ihnen ein Kommando
+den Benutzernamen anstelle der <name>UID</name> liefert. Betrachten Sie
+z.B. die folgende (wiederum etwas komprimierte) Ausgabe:
+	</textblock>
+
+	<shell>
+	 <user path="~">
+ps -aux
+	 </user>
+	 <output>
+USER       PID %CPU %MEM   VSZ  RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0   448   64 ?        S    Jun21   0:07 init [3]
+root         2  0.0  0.0     0    0 ?        SW   Jun21   0:00 [keventd]
+nobody     650  0.0  0.1  5680  716 ?        S    Jun21   0:00 /usr/sbin/in.identd -e
+nobody     653  0.0  0.1  5680  716 ?        S    Jun21   0:01 /usr/sbin/in.identd -e
+lp         746  0.0  0.1  1944  712 ?        S    Jun21   0:00 lpd Waiting
+matthias 15971  0.0  0.2  2528 1188 tty1     S    01:09   0:00 /bin/sh/usr/X11R6/bin/startx
+matthias 16097  0.0  0.3  2816 1576 pts/1    S    01:09   0:00 /bin/bash
+	 </output>
+	</shell>
+
+	<textblock>
+In der ersten Spalte listet <command>ps</command> bereitwillig die vertrauten
+oder weniger vertrauten Namen diverser Benutzer (root, nobody,
+lp, matthias) auf. Das System verwaltet allerdings die Prozesse
+nicht unter den Benutzernamen, sondern ausschließlich unter
+deren <name>UIDs</name>. <command>ps</command> hat hier eigenständig eine Zuordnung von den <name>UIDs</name>
+auf die Benutzernamen vorgenommen.
+	</textblock>
+
+<!-- ps als Kommandoname hervorheben. Auch in weiteren Textverlauf
+     kommen immer wieder Kommandonamen vor (ls, rm usw.), die
+     entsprechend hervorgehoben werden sollen. -->
+
+	<textblock>
+Neben der <name>UID</name> ist jedem Benutzer eine weitere Nummer zugeordnet,
+die sogenannte <strong>Gruppen-ID</strong> (<name>GID</name>). Auch diese Nummer liefert das <command>id</command>
+Kommando (hier die etwas längere, aber immer noch verkürzte
+Ausgabe):
+	</textblock>
+
+	<shell>
+	 <user path="~">
+id
+	 </user>
+	 <output>
+uid=500(matthias) gid=100(users)
+	 </output>
+	</shell>
+
+	<textblock>
+Jeder Prozess trägt <name>UID</name> und <name>GID</name> seines Erzeugers. Wie diese beiden
+Kennzahlen bei der Ermittlung von Berechtigungen verwendet werden,
+wird <ref iref="Benutzerklassen: user, group und others">später</ref> im Detail erläutert.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Nach der Anmeldung - die Shell
+	</heading>
+
+	<textblock>
+Nach der Anmeldung möchte sich der Benutzer in einer Umgebung
+wiederfinden, welche ihm das Arbeiten ermöglicht. Erfolgt die
+Anmeldung nicht über einen Display-Manager, so wird 
+für gewöhnliche Benutzer eine Shell gestartet. Um welche Shell
+es sich handelt, wird dabei für jeden Benutzer einzeln
+festgelegt. In der Tat kann man für einzelne Benutzer auch
+festlegen, dass sie keine Shell erhalten - z.B. wenn man sie
+temporär vom System aussperren möchte oder wenn für einzelne
+Benutzer generell keine Shell-Umgebung ermöglicht werden soll.
+Wie <ref iref="Systembenutzer">später</ref> noch gezeigt wird, kann dies sehr sinnvoll sein und
+kommt durchaus häufig vor.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Das Heimatverzeichnis
+	</heading>
+
+	<textblock>
+Die Login-Shell startet im sogenannten Heimatverzeichnis des
+Benutzers. Dieses und alle seine Unterverzeichnisse <strong>gehören</strong>
+dem Benutzer. Was genau damit gemeint ist, wird in einigen
+Augenblicken erläutert. Im Wesentlichen bietet das Heimatverzeichnis
+seinem Besitzer Platz für die Ablage von Dateien, welche meist
+oder auschließlich von ihm verwendet werden. Neben den Arbeitsdateien
+und -verzeichnissen selbst liegen im Heimatverzeichnis noch eine
+Reihe (meist unsichtbarer) Dateien, welche applikationsspezifische
+Einstellungen des Benutzers enthalten. Es ist somit der
+Dreh- und Angelpunkt der Aktivitäten des Benutzers - eine
+gewohnte, vor anderen Benutzern geschützte Umgebung.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Was ist nun also ein Benutzer?
+	</heading>
+
+	<textblock>
+Benutzername und Passwort, <name>UID</name>, Login-Programm (üblicherweise
+eine Shell) und Heimatverzeichnis sind es also, die zusammengenommen
+einen Benutzer auf einem Linux-System ausmachen. All diese Daten
+werden in einer zentralen Benutzerdatei verwaltet. Bevor diese
+näher beschrieben wird, folgt eine Einteilung der auf einem
+Linux-System möglichen Benutzer in Benutzertypen.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Benutzertypen
+   </heading>
+
+   <textblock>
+Hier nochmals die verkürzte Ausgabe eines <command>ps</command> Kommandos als Beispiel:
+   </textblock>
+
+   <shell>
+	<user path="~">
+ps -aux
+	</user>
+	<output>
+USER       PID %CPU %MEM   VSZ  RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0   448   64 ?        S    Jun21   0:07 init [3]
+root         2  0.0  0.0     0    0 ?        SW   Jun21   0:00 [keventd]
+nobody     650  0.0  0.1  5680  716 ?        S    Jun21   0:00 /usr/sbin/in.identd -e
+nobody     653  0.0  0.1  5680  716 ?        S    Jun21   0:01 /usr/sbin/in.identd -e
+lp         746  0.0  0.1  1944  712 ?        S    Jun21   0:00 lpd Waiting
+matthias 15971  0.0  0.2  2528 1188 tty1     S    01:09   0:00 /bin/sh/usr/X11R6/bin/startx
+matthias 16097  0.0  0.3  2816 1576 pts/1    S    01:09   0:00 /bin/bash
+	</output>
+   </shell>
+
+   <textblock>
+Die Benutzer <strong>root</strong>, <strong>nobody</strong>,
+<strong>lp</strong> und <strong>matthias</strong> sind als Inhaber
+der jeweiligen Prozesse gelistet. Die Autoren versichern Ihnen jedoch,
+dass zum Zeitpunkt dieses Kommandos lediglich ein einziger Benutzer
+auf dem System angemeldet war, nämlich der Benutzer <strong>matthias</strong>. Die
+Tatsache, dass dennoch einige Prozesse auf dem System unter der Kennung
+anderer Benutzer laufen, zeigt bereits an, dass es verschiedene Typen
+von Benutzern geben muss. Gewöhnlichen Benutzern wäre es nämlich
+unmöglich, ohne vorherige Anmeldung einen Prozess zu starten. Wir
+unterscheiden daher drei Benutzertypen: Erstens den Systemverwalter
+oder Superuser <strong>root</strong>, zweitens alle Standardbenutzer und drittens
+die Systembenutzer.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+root
+	</heading>
+	
+	<textblock>
+Der Benutzer <strong>root</strong> ist mit allen Rechten ausgestattet, die ihm die
+Administration (bei Unachtsamkeit natürlich auch die Beschädigung!)
+des Systems erlauben. Diesem auch als <strong>Superuser</strong> bezeichneten
+Benutzer ist immer die <name>UID</name> <strong>0</strong> zugeordnet:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+id
+	 </root>
+	 <output>
+uid=0(root) gid=0(root) Gruppen=0(root) [...]
+	 </output>
+	</shell>
+	
+	<textblock>
+Dieses Benutzerkonto dient ausschließlich Eingriffen in die Konfiguration
+des Systems und sollte nur dann verwendet werden, wenn kein anderer
+Benutzer die für eine Aufgabe notwendigen Rechte innehat. <strong>Der unter
+Einsteigern beliebteste Fehler ist es, sich zunächst ausschließlich
+als root anzumelden.</strong> Da nach der Systeminstallation ohnehin noch
+häufig administrative Aufgaben erledigt werden müssen, wird es als
+lästig empfunden, permanent zwischen einem Benutzer- und dem
+Superuser-Konto hin- und herzuwechseln. Die Bequemlichkeit wird
+oft mit einer Beschädigung des Systems bezahlt.
+	</textblock>
+
+<!-- Den Satz "Der unter Einsteigern beliebteste Fehler ist es,
+     sich zunächst ausschließlich als root anzumelden." im Layout
+     hervorheben. -->
+
+	<textblock>
+Es gibt Prozesse, die immer unter der Kennung des Superusers laufen
+und auch laufen müssen. Das einfachste Beispiel ist der Prozess <name><strong>init</strong></name>,
+der auch in der obigen Ausgabe erscheint. <name><strong>init</strong></name> ist der erste Prozess,
+der nach dem Booten des Kernels die Kontrolle übernimmt und wird
+daher auch als "Vater aller Prozesse" bezeichnet. Dies drückt sich
+in der Prozess-ID 1 aus. Da zum Zeitpunkt des Startens von <name><strong>init</strong></name>
+freilich noch kein Benutzer auf dem System angemeldet sein kann,
+andererseits aber jedem Prozess eine gültige Benutzerkennung zugeordnet
+sein muss, und da <name><strong>init</strong></name> des weiteren zur Erledigung seiner Aufgaben
+mit weitreichenden Rechten ausgestattet sein muss, läuft <name><strong>init</strong></name> unter
+der Kennung des Superusers <strong>root</strong>. Dass dies nicht nur für <name><strong>init</strong></name> gilt,
+zeigt das folgende Kommando:
+	</textblock>
+
+<!-- Wenn es einer vereinbarte Mimik gibt, um Prozessnamen oder
+     andere Eigennamen aus dem System hevorzuheben, kann im obigen
+     Absatz die Verwendung von Anführungszeichen um "init" herum
+     beseitigt und durch diese Hervorhebung ersetzt werden. -->
+
+	<shell>
+	 <root path="~">
+ps aux | grep root
+	 </root>
+	 <output>
+root         1  0.0  0.0   448   76 ?        S    Oct25   0:07 init
+[...]
+root         4  0.0  0.0     0    0 ?        SW   Oct25   0:01 [keventd]
+[...]
+root       602  0.0  0.1  1356  552 ?        S    Oct25   0:01 /sbin/syslogd
+[...]
+root      1651  0.0  0.6  4856 3232 ?        S    Oct25   0:08 /usr/sbin/cupsd
+[...]
+root      2063  0.0  0.0  1260    4 tty1     S    Oct25   0:00 /sbin/mingetty --noclear tty1
+[...]
+	 </output>
+	</shell>
+
+	<textblock>
+Diese nach Prozessnummern geordnete, verkürzte Liste zeigt im oberen Bereich
+zunächst den Vater aller Prozesse <command>init</command>. Danach folgen kernelnahe Prozesse,
+welche bereits früh während des Bootvorganges gestartet werden. Später kommen
+einige Dienst- und Serverprozesse hinzu, darunter der Log-Daemon <command>syslogd</command>, der
+Druckdienst <command>cupsd</command> sowie einige Terminalprozesse (<command>mingetty's</command>), welche das
+Einloggen auf den verschiedenen Konsolen ermöglichen. All diese Prozesse
+wurden nicht etwa von einem eingeloggten Benutzer <strong>root</strong> gestartet, sondern
+automatisch beim Hochfahren des Systems - allerdings unter der Kennung von
+<strong>root</strong>, d.h. mit <name>UID</name> <strong>0</strong>.
+	</textblock>
+   </section>
+   
+
+<!-- Die Eigennamen syslogd, cupsd und mingetty hervorheben. -->
+
+
+   <section>
+<!-- *.* Kapitel -->
+	<heading>
+Systembenutzer
+	</heading>
+
+	<textblock>
+Je nach System kann eine Vielzahl von Prozessen und Diensten
+erwünscht sein, die bereits beim Hochfahren des Systems
+verfügbar sein sollen. Nicht jeder dieser Prozesse benötigt
+jedoch die volle Rechteausstattung des Superusers. Man möchte
+natürlich so wenige Prozesse wie nur möglich unter einer <strong>root</strong>
+Kennung starten, da die weitreichenden Rechte solcher Prozesse
+unnötige Möglichkeiten für Missbrauch und Beschädigung des
+Systems liefern.
+	</textblock>
+
+	<textblock>
+Ein Systembenutzerkonto ist in diesem Sinne ein Benutzerkonto, 
+das jedoch (nahezu) ausschließlich zur Ausführung von Programmen unter
+einer speziellen Benutzerkennung verwendet wird. Kein menschlicher
+Benutzer meldet sich normalerweise unter einem solchen Konto an.
+Die oben bereits gezeigte Ausgabe eines <command>ps</command> Kommandos zeigt zwei häufige
+Beispiele: Der Drucker-Daemon <strong>lpd</strong> wurde unter der Benutzerkennung
+<strong>lp</strong> gestartet. Zwei Prozesse werden unter der Kennung des Benutzers
+<strong>nobody</strong> gelistet. <strong>nobody</strong> wird generell dann von Prozessen als
+Benutzerkennung verwendet, wenn nur ein Minimum an Rechten
+vergeben werden soll. Da <strong>nobody</strong> (laut Konvention, aber keineswegs
+notwendigerweise) keiner Gruppe angehört, wird er gewöhnlich der
+Benutzerklasse <strong>others</strong> angehören und somit die geringstmöglichen
+Rechte besitzen. Mehr zu Benutzerklassen folgt <ref iref="Benutzerklassen: user, group
+und others">unten</ref>.
+	</textblock>
+
+<!-- Den Eigennamen lpd hervorheben. -->
+
+	<textblock>
+Ein Blick in die zentrale Benutzerdatei (Details zu dieser Datei
+folgen <ref iref="Die zentralen Benutzerdateien">später</ref>) zeigt, dass vielen Systembenutzern explizit keine
+Shell zugeordnet wird:
+	</textblock>
+
+	<shell>
+	 <root path="~">
+cat /etc/passwd | grep false
+	 </root>
+	 <output>
+firewall:x:41:31:Firewall account:/var/lib/firewall:/bin/false
+postfix:x:51:51:Postfix daemon:/var/spool/postfix:/bin/false
+mysql:x:60:2:MySQL database admin:/var/lib/mysql:/bin/false
+dpbox:x:61:56:DpBox account:/var/spool/dpbox:/bin/false
+zope:x:64:2:Zope daemon:/var/lib/zope:/bin/false
+vscan:x:65:65534:Vscan account:/var/spool/vscan:/bin/false
+wnn:x:66:100:Wnn system account:/var/lib/wnn:/bin/false
+pop:x:67:100:POP admin:/var/lib/pop:/bin/false
+perforce:x:68:60:Perfoce admin:/var/lib/perforce:/bin/false
+	 </output>
+	</shell>
+
+	<textblock>
+Das Programm <command>/bin/false</command> beendet sich ohne weitere Arbeit
+selbst, sodass ein gewöhnlicher Login als einer der aufgeführten
+Benutzer nicht zu einer Shellsession führen kann. Prozesse unter
+dieser Kennung werden somit nicht von einer Benutzershell gestartet,
+sondern über andere, systemeigene Mechanismen (beispielsweise über
+Startskripte während des Bootens).
+	</textblock>
+
+<!-- /bin/false als Kommandoname hervorheben -->
+
+	<textblock>
+Es soll jedoch nochmals ausdrücklich erwähnt werden, dass die
+Unterscheidung zwischen Systembenutzern und Standardbenutzern
+willkürlich ist und nicht durch das Linux-Rechtesystem selbst
+festgelegt wird. Es hilft jedoch beim Verständnis diverser
+Rechtekonzepte, wenn man sich der Tatsache bewusst ist, dass
+es zahlreiche Benutzerkonten gibt, welche ausschließlich
+im Zusammenhang mit bestimmten Diensten verwendet werden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Standardbenutzer
+	</heading>
+	
+	<textblock>
+Dies ist das <strong>normale</strong> Benutzerkonto, unter welchem jeder
+überlicherweise arbeiten sollte.
+	</textblock>
+   </section>
+  </section>
+ </split>
+
+ 
+ 
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Benutzerklassen: user, group und others
+   </heading>
+
+   <textblock>
+Aus der Sicht des Systems existieren drei Benutzerklassen, wenn
+entschieden werden soll, ob die Berechtigung für einen Dateizugriff
+existiert oder nicht. Soll beispielsweise eine Datei gelöscht werden,
+so muss das System ermitteln, ob der Prozess, welcher die Datei
+löschen möchte, das erforderliche Recht besitzt:
+   </textblock>
+
+   <shell>
+	<user path="~">
+rm testdatei
+	</user>
+	<output>
+rm: Entfernen (unlink) von "testdatei" nicht möglich: Keine Berechtigung
+	</output>
+   </shell>
+
+   <textblock>
+In diesem Fall wurde dem <command>rm</command> Kommando der beabsichtigte löschende
+Zugriff auf die Datei verwehrt - der ausführende Benutzer hatte
+nicht das Recht, die Datei zu löschen. Um diese Entscheidung zu
+treffen, verwendet das System das Konzept der Benutzerklassen.
+Drei Benutzerklassen werden unterschieden:
+<strong>user</strong>, <strong>group</strong> und
+<strong>others</strong>.
+Jede dieser Benutzerklassen ist wiederum in ein Lese-, Schreib-
+und Ausführrecht unterteilt. Diese werden im Folgenden als
+Berechtigungsklassen bezeichnet. Somit ergibt sich folgende Körnung
+für die einfachen Zugriffsrechte einer Datei:
+   </textblock>
+
+<!-- Die folgenden Sätze hervorheben (z.B. kursiv): "Drei
+     Benutzerklassen werden unterschieden: user, group und others.
+     Jede dieser Benutzerklassen ist wiederum in ein Lese-, Schreib-
+     und Ausführrecht unterteilt. Diese werden im Folgenden als
+     Berechtigungsklassen bezeichnet." -->
+
+   <table>
+    <pdf-column/>
+    <pdf-column/>
+	<tr>
+	 <td>
+	  <strong>user-read</strong>
+	 </td>
+	 <td>
+Leserecht für Dateieigentümer
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong>user-write</strong>
+	 </td>
+	 <td>
+Schreibrecht für Dateieigentümer
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong>user-execute</strong>
+	 </td>
+	 <td>
+Ausführrecht für Dateieigentümer
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong>group-read</strong>
+	 </td>
+	 <td>
+Leserecht für Gruppe des Dateieigentümers
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong>group-write</strong>
+	 </td>
+	 <td>
+Schreibrecht für Gruppe des Dateieigentümers
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong>group-execute</strong>
+	 </td>
+	 <td>
+Ausführrecht für Gruppe des Dateieigentümers
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong>other-read</strong>
+	 </td>
+	 <td>
+Leserecht für alle anderen Benutzer
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong>other-write</strong>
+	 </td>
+	 <td>
+Schreibrecht für alle anderen Benutzer
+	 </td>
+	</tr>
+	<tr>
+	 <td>
+	  <strong> other-execute</strong>
+	 </td>
+	 <td>
+Ausführrecht für alle anderen Benutzer
+	 </td>
+	</tr>
+   </table>
+   
+   <hint>
+Tabelle 1: Einfache Zugriffsrechte für Dateien.
+   </hint>
+
+   <textblock>
+Benutzerklassen sind also eng mit der Eigentümerschaft von
+Dateien verbunden. Jede Datei und jedes Verzeichnis ist sowohl
+einem Benutzer (einer <name>UID</name>) als auch einer Gruppe (einer <name>GID</name>)
+zugeordnet. <name>UID</name> und <name>GID</name> gehören zur elementaren 
+Verwaltungsinformation von Dateien und Verzeichnissen 
+und werden in der sogenannten <strong>Inode</strong> gespeichert.
+   </textblock>
+
+<!-- Falls ein erläuterndes Kapitel über Inodes bereits
+     in SelfLinux vorhanden ist, das Wort "Inode" als
+     Link auf dieses Kapitel umsetzen. -->
+   
+   <textblock>
+Beim Zugriff auf eine Datei werden nun <name>UID</name> und <name>GID</name> des
+zugreifenden Prozesses mit <name>UID</name> und <name>GID</name> der Datei verglichen.
+Ist <strong>other-read</strong> gesetzt, darf jeder Benutzer lesend zugreifen
+und ein weiterer Vergleich erübrigt sich. Ist lediglich
+<strong>group-read</strong> gesetzt, muss der Zugreifende mindestens der Gruppe 
+des Dateieigentümers angehören, d.h. eine identische <name>GID</name>
+aufweisen. Ist ausschließlich <strong>user-read</strong> gesetzt, so darf
+nur der Eigentümer selbst die Datei lesen. <strong>root</strong> ist von
+dieser Einschränkung freilich ausgenommen. ("Ich bin root,
+ich darf das!"). Von sehr speziellen Ausnahmen abgesehen,
+die sich außerhalb der hier besprochenen Rechteklassen
+bewegen, ist root in seinen Aktionen in keinerlei Weise
+eingeschränkt.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Berechtigungsklassen: Lesen, Schreiben und Ausführen
+   </heading>
+
+   <textblock>
+Da unter Unix letztlich alle Ein- und Ausgabeoperationen
+mit denselben Systemrufen vorgenommen werden, hat sich der 
+Ausspruch <strong>Alles ist eine Datei!</strong> etabliert. Beispielsweise
+sind auch Verzeichnisse letztlich - wie alle anderen Einträge
+im Dateisystem - eine besonderer Typ Datei. Weitere Typen sind 
+etwa Character- und Blockdevices, benamte Pipes, reguläre
+Dateien, symbolische Links und Sockets. Für jeden dieser
+Dateitypen haben die unterschiedlichen Rechte (Lesen, Schreiben
+und Ausführen) eine unterschiedliche Bedeutung.
+   </textblock>
+
+<!-- "Alles ist eine Datei!" hervorheben -->
+
+   <textblock>
+Im Sinne einer minimalistischen Philosophie wurde dennoch die 
+Abstraktion vorgenommen, alle diese unterschiedlichen Operationen 
+unter dem Begriff der Datei zusammenzufassen und einheitliche
+Zugriffsmethoden bereitzustellen. Sowohl für den Entwickler
+wie auch für den Administrator bedeutet diese Abstraktion
+eine Vereinfachung seiner Aufgaben. Beispielsweise erfolgt die
+Vergabe des Leserechtes für reguläre Dateien auf exakt dieselbe
+Weise wie die Vergabe des Leserechtes für ein Sounddevice.
+   </textblock>
+
+   <textblock>
+Da die Bedeutung der Lese-, Schreib- und Ausführrechte für
+die einzelnen Dateitypen im einzelnen besser bei den verschiedenen
+Spezialthemen besprochen werden kann, sollen im Folgenden 
+lediglich die unterschiedlichen Bedeutungen dieser Rechte für
+reguläre Dateien und Verzeichnisse erläutert werden. Reguläre
+Dateien sind Dateien mit definierten Dateiformaten, darunter
+etwa gewöhnliche Textdateien, Bildformate, Sounddateien, aber
+auch Programmdateien (Executables). Die Anzahl an Dateiformaten
+füllt ganze Enzyklopädien. Verzeichnisse sind Dateien, die einen
+Katalog von Dateien und Unterverzeichnissen enthalten können.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Lesen
+	</heading>
+
+	<section>
+<!-- *.*.* Kapitel -->	 
+	 <heading>
+Leserecht für Dateien
+	 </heading>
+
+	 <textblock>
+Für Datendateien aller Art, wie z.B. Textdateien, Bilder usw.,
+leuchtet das Leserecht unmittelbar ein: Die Datei kann zur Ansicht
+geöffnet und ihr Inhalt angezeigt oder abgespielt werden. Für
+Programmdateien ist das Leserecht weniger intuitiv verständlich.
+Manchen mag es überraschen, dass für die Ausführung eines Programms
+nicht das Leserecht gesetzt sein muss:
+	 </textblock>
+	 
+	 <shell>
+	  <user path="~">
+su
+	  </user>
+	  <input>
+Password: (Eingabe)
+	  </input>
+	  <root path="~">
+chmod a-r /bin/echo
+	  </root>
+	  <root path="~">
+ls -l /bin/echo
+	  </root>
+	  <output>
+--wx--x--x    1 root     root         7064 2002-09-09 20:05 /bin/echo
+	  </output>
+	  <root path="~">
+exit
+	  </root>
+	  <user path="~">
+echo hallo
+	  </user>
+	  <output>
+hallo
+	  </output>
+	 </shell>
+
+	 <textblock>
+Mittels des <command>chmod</command> Kommandos wurde der Programmdatei des <command>echo</command> Kommandos
+temporär das Leserecht entzogen. Dennoch ist <command>echo</command> weiterhin
+verwendbar. Für manchen erscheint dies widersprüchlich, da zur
+Ausführung eines Programmes schließlich die Programmdatei <strong>eingelesen</strong>
+werden muss. Dies ist jedoch nicht notwendig. Das Laden eines
+Programmes ist sowohl technisch als auch konzeptionell ein
+völlig anderer Vorgang als das Lesen einer Datei. Dass <strong>root</strong> eine
+Sonderstellung einnimmt, zeigen übrigens die folgenden Kommandos:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+wc /bin/echo
+	  </user>
+	  <output>
+wc: /bin/echo: Keine Berechtigung
+	  </output>
+	  <user path="~">
+su
+	  </user>
+	  <input>
+Password: (Eingabe)
+	  </input>
+	  <root path="~">
+wc /bin/echo
+	  </root>
+	  <output>
+     36     234    7064 /bin/echo
+	  </output>
+	  <root path="~">
+chmod a+r /bin/echo
+	  </root>
+	  <root path="~">
+exit
+	  </root>
+	  <user path="~">
+wc /bin/echo
+	  </user>
+	  <output>
+     36     234    7064 /bin/echo
+	  </output>
+	 </shell>
+
+	 <textblock>
+Trotz fehlendem Leserecht durfte <strong>root</strong> mittels des <command>wc</command> Kommandos die
+Datei <strong>lesen</strong>, nämlich die Anzahl der Zeilen, Worte und Zeichen in
+der Datei zählen (eine nicht unbedingt sinnvolle Aktion, die hier
+nur zur Demonstration der Sonderstellung von root durchgeführt wurde).
+Der angemeldete Standardbenutzer durfte <command>wc</command> nicht auf die Datei
+anwenden und erhielt einen Berechtigungsfehler.
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->	 
+	 <heading>
+Leserecht für Verzeichnisse
+	 </heading>
+
+	 <textblock>
+Da Verzeichnisse keine Daten im eigentlichen Sinne enthalten, sondern
+lediglich Information über Dateien und Unterverzeichnisse, hat das
+Leserecht hier freilich eine andere Bedeutung. Das klassische Kommando
+zum Auslesen von Verzeichnisinformation ist <command>ls</command>. Betrachten wir ein
+Verzeichnis <path>testdir</path>, das eine Textdatei <path>textfile</path> und das Programm
+<command>tipptrainer</command> enthält.
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+ls -l | grep testdir
+	  </user>
+	  <output>
+drwxr-xr-x    2 matthias users         104 2002-11-05 23:43 testdir
+	  </output>
+	  <user path="~">
+ls -l testdir
+	  </user>
+	  <output>
+insgesamt 408
+-rw-r--r--    1 matthias users           0 2002-11-05 23:43 testfile
+-rwxr-xr-x    1 matthias users      417072 2002-11-05 23:43 tipptrainer
+	  </output>
+	 </shell>
+
+	 <textblock>
+Das erste Kommando zeigt die aktuellen Berechtigungen für das
+Testverzeichnis. Die Leserechte sind für alle drei Benutzerklassen
+gesetzt. Folglich ist das zweite Kommando beim Auslesen des
+Verzeichnisses erfolgreich und gibt den Verzeichnisinhalt aus. Das
+Entfernen des Leserechtes hat ebenfalls den erwarteten Effekt:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+chmod a-r testdir
+	  </user>
+	  <user path="~">
+ls -l testdir
+	  </user>
+	  <output>
+ls: testdir: Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+Es ist jedoch wichtig festzuhalten, dass damit keineswegs das Leserecht
+für die enthaltenen Dateien entfernt wurde:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+ls -l testdir/testfile
+	  </user>
+	  <output>
+-rw-r--r--    1 matthias users           0 2002-11-05 23:43 testdir/testfile
+	  </output>
+	  <user path="~">
+cat testdir/testfile
+	  </user>
+	  <output>
+Dies ist eine Testdatei.
+	  </output>
+	  <user path="~">
+testdir/tipptrainer &amp;
+	  </user>
+	  <output>
+[1] 7761
+	  </output>
+	 </shell>
+
+	 <textblock>
+Es dürfen sowohl die Berechtigungen der Testdatei wie auch ihr Inhalt
+ausgelesen werden. Das Programm <command>tipptrainer</command> lässt sich ebenfalls
+problemlos starten. Das Entfernen des Leserechtes für ein Verzeichnis
+wirkt sich also keineswegs auf die Dateien und Unterverzeichnisse aus,
+welche in dem Verzeichnis abgelegt sind. Es ist wichtig, dies zu
+verstehen, da ansonsten die Illusion entstehen könnte, mit dem
+Entfernen des Leserechtes für ein Verzeichnis schütze man auch dessen
+Inhalt vor dem Zugriff.
+	 </textblock>
+
+	 <textblock>
+Es ist hilfreich, sich ein Verzeichnis als einen Katalog vorzustellen:
+Sein Inhalt ist eine Liste der Knoten, die sich innerhalb des
+Dateibaumes unterhalb des Verzeichnisses befinden. Das Leserecht
+ermöglicht das Auslesen der Kataloginformation, beispielsweise
+mittels des <command>ls</command> Kommandos. Ein Entfernen des Leserechtes verbietet
+zwar das Auslesen des Kataloges, nicht aber den Zugriff auf
+die katalogisierten Inhalte.
+	 </textblock>
+
+	 <textblock>
+Das Leserecht eines Verzeichnisses hat auch keinerlei Auswirkung
+darauf, ob Verzeichnisinhalte gelöscht oder angelegt werden dürfen.
+Da bei diesen Operationen kein lesender, sondern ein schreibender
+Zugriff auf den "Kataloginhalt" erfolgt, spielt das Leserecht hier
+keine Rolle:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+rm testdir/testfile
+	  </user>
+	  <user path="~">
+touch testdir/testfile2
+	  </user>
+	 </shell>
+
+	 <textblock>
+Eine interessante Ausnahme bildet die Verwendung von Wildcards:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+rm testdir/*</user>
+	  <output>
+rm: Entfernen von "testdir/*" nicht möglich: Datei oder Verzeichnis nicht gefunden
+	  </output>
+	  <user path="~">
+chmod a+r testdir
+	  </user>
+	  <user path="~">
+rm testdir/*
+	  </user>
+	  <user path="~">
+ls -l testdir
+	  </user>
+	  <output>
+insgesamt 0
+	  </output>
+	 </shell>
+
+	 <textblock>
+Um den <path>*</path> durch Dateinamen zu ersetzen, welche schließlich dem <command>rm</command>
+Kommando übergeben werden, muss die Shell lesend auf das Verzeichnis
+zugreifen können. Da kein Leserecht gesetzt war, liefert dieser
+Zugriff kein Ergebnis, und das <command>rm</command> Kommando schlägt mangels übergebener
+Argumente (d.h. Dateinamen) fehl. Nach Vergabe des Leserechtes wird
+der <path>*</path> durch die Dateinamen im Testverzeichnis ersetzt und diese an
+das <command>rm</command> Kommando zum Löschen übergeben. Die Verwendung von Wildcards
+zur Dateinamensubstituation erfordert folglich ein Leserecht für das
+betroffene Verzeichnis.
+	 </textblock>
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Schreiben
+	</heading>
+
+	<section>
+<!-- *.*.* Kapitel -->	 
+	 <heading>
+Schreibrecht für Dateien
+	 </heading>
+
+	 <textblock>
+Das Schreibrecht für reguläre Dateien ist ebenso intuitiv verständlich
+wie das Leserecht. Ist dieses Recht gesetzt, darf die Datei überschrieben
+oder weiterer Inhalt an sie angehängt werden. Das Schreiben auf
+Spezialdateien wie z.B. Sockets, Framebuffer oder Gerätedateien
+erfordert ebenfalls ein hundsgemeines Schreibrecht. Insbesondere
+wenn man solche Dateien selbst erzeugt hat (z.B. um ein ungewöhnliches
+Gerät in das System zu integrieren) sollte man nicht vergessen, das
+Schreibrecht zu setzen - ein trivialer Umstand, der schon so manche
+Arbeitsstunde gekostet hat.
+	 </textblock>
+	</section>
+	
+	<section>
+<!-- *.*.* Kapitel -->	 
+	 <heading>
+Schreibrecht für Verzeichnisse
+	 </heading>
+	 <textblock>
+Erwartungsgemäß bezieht sich das Schreibrecht für Verzeichnisse
+auf das Anlegen und Löschen von Dateien in Verzeichnissen. Ohne
+Schreibrecht ist weder das eine noch das andere möglich.
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+ls -l | grep testdir
+	  </user>
+	  <output>
+drwxr-xr-x    2 matthias users          48 2002-11-06 00:08 testdir
+	  </output>
+	  <user path="~">
+touch testdir/testfile
+	  </user>
+	  <user path="~">
+chmod a-w testdir
+	  </user>
+	  <user path="~">
+rm testdir/testfile
+	  </user>
+	  <output>
+rm: Entfernen von "testdir/testfile" nicht möglich: Keine Berechtigung
+	  </output>
+	  <user path="~">
+touch testdir/testfile2
+	  </user>
+	  <output>
+touch: Erzeugen von "testdir/testfile2": Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+Eine andere Bedeutung kommt dem Schreibrecht für Verzeichnisse nicht
+zu. Insbesondere benötigt man kein Schreibrecht in einem Verzeichnis,
+um eine darin enthaltene Datei oder auch nur deren Rechte zu ändern.
+Da diese Information direkt in die Datei bzw. deren Inode geschrieben
+wird, ist das Schreibrecht des Verzeichnisses ohne Belang:
+	 </textblock>
+	 
+	 <shell>
+	  <user path="~">
+echo hallo > testdir/testfile
+	  </user>
+	  <user path="~">
+chmod +r testdir/testfile
+	  </user>
+	 </shell>
+	 
+	</section>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Ausführen
+	</heading>
+
+	<section>
+<!-- *.*.* Kapitel -->	 
+	 <heading>
+Ausführrecht für Dateien
+	 </heading>
+
+	 <textblock>
+Programme und Skripte sind es, die ausgeführt werden können. Programme
+liegen in Binärformaten vor - unter Linux hat sich das <strong>Executable and
+Linking Format</strong> (ELF) durchgesetzt, aber auch andere Formate werden
+unterstützt. Skripte werden von Interpretern ausgeführt und liegen in
+Textformat vor.
+	 </textblock>
+
+<!-- "Executable and Linking Format" als Eigenname hervorheben. -->
+
+	 <textblock>
+Bei Programmen, d.h. Dateien in einem ausführbaren Binärformat, liegt
+die Sache einfach. Ist das Ausführrecht gesetzt, darf das Programm
+aufgerufen und ausgeführt werden. Zunächst wird die Berechtigung
+geprüft und danach versucht, das Programm zu laden. Diese Reihenfolge
+zeigt der Versuch, eine Datei eines nicht ausführbaren Binärformates
+auszuführen, hier ein Gif-Bild:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+ls -l ./test.gif
+	  </user>
+	  <output>
+-rw-r--r--    1 matthias users       15568 2002-11-07 15:03 ./test.gif
+	  </output>
+	  <user path="~">
+test.gif
+	  </user>
+	  <output>
+bash: ./test.gif: Keine Berechtigung
+	  </output>
+	  <user path="~">
+chmod +x test.gif
+	  </user>
+	  <user path="~">
+./test.gif
+	  </user>
+	  <output>
+bash: ./test.gif: cannot execute binary file
+	  </output>
+	 </shell>
+
+	 <textblock>
+Bei Skripten muss feiner differenziert werden. Welcher Interpreter
+für ein Skript gestartet wird, ist durch die erste Zeile eines
+Skriptes hinter dem sogenannten Shebang (amerikanisch "the whole
+shebang": der ganze Plunder) definiert. Die Bezeichnung "Shebang"
+ist vermutlich von "shell bang" abgeleitet. Es handelt sich um die
+Zeichenfolge <command>#!</command>, z.B.
+	 </textblock>
+
+	 <file>
+	  <title>
+Beispiel
+	  </title>
+	  <content>
+	   <![CDATA[
+#! /bin/sh
+#
+kommando1
+kommando2
+...
+	   ]]>
+	  </content>
+	 </file>
+
+	 <textblock>
+In der ersten Zeile findet sich der Shebang nebst Angabe des zu
+verwendenden Interpreters. Im obigen Fall ist <command>/bin/sh</command> definiert.
+Es könnten dort auch andere Shells oder Interpreter verschiedener
+Skriptsprachen wie <name>Perl</name> oder <name>Tcl</name> verwendet werden.
+	 </textblock>
+
+	 <textblock>
+Weshalb wird dies hier überhaupt erläutert? Der Grund ist, dass Skripte
+auf verschiedene Weisen aufgerufen werden können und es von dieser
+Aufrufart abhängt, in welcher Weise sich das Ausführrecht
+auswirkt. Als Beispiel soll das folgende Skript dienen:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+pwd
+	  </user>
+	  <output>
+/home/matthias
+	  </output>
+	  <user path="~">
+cat testscript.sh
+	  </user>
+	  <output>
+#! /bin/sh
+echo "Hallo!"
+	  </output>
+	  <user path="~">
+ls -l testscript.sh
+	  </user>
+	  <output>
+-rw-r--r--    1 matthias users          24 2002-11-07 23:04 testscript.sh
+	  </output>
+	 </shell>
+
+	 <textblock>
+Wie zu sehen, referenziert das Skript auf <command>/bin/sh</command> als Interpreter,
+gibt im Falle einer Ausführung die Zeichenfolge "Hallo!" aus und
+besitzt derzeit keinerlei Ausführrechte. Trotzdem kann es auf
+verschiedene Weisen ausgeführt werden:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+sh testscript.sh</user>
+	  <output>
+Hallo!
+          </output>
+	  <user path="~">
+source testscript.sh</user>
+	  <output>
+Hallo!
+	  </output>
+	  <user path="~">
+. testscript.sh
+	  </user>
+	  <output>
+Hallo!
+	  </output>
+	 </shell>
+
+	 <textblock>
+Versucht man jedoch, das Skript namentlich aufzurufen, scheitert
+dies an der mangelnden Berechtigung. Hier die drei verschiedenen
+Möglichkeiten, das zu tun:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+testscript.sh
+	  </user>
+	  <output>
+bash: ./testscript.sh: Keine Berechtigung
+	  </output>
+	  <user path="~">
+./testscript.sh
+	  </user>
+	  <output>
+bash: ./testscript.sh: Keine Berechtigung
+	  </output>
+	  <user path="~">
+/home/matthias/testscript.sh
+	  </user>
+	  <output>
+bash: /home/matthias/testscript.sh: Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+Zuerst durch simple Angabe des Namens (das <path>.</path> Verzeichnis muss hierfür
+in <path>PATH</path> aufgeführt sein), dann relativ, dann absolut. In allen drei
+Fällen fehlt das Ausführrecht.
+	 </textblock>
+
+	 <textblock>
+Der Unterschied kann so erklärt werden: Geben Sie ein Kommando ein,
+so prüft die Shell, ob für dieses Kommando die Berechtigung zur
+Ausführung besteht. Dabei stellt jeweils das erste Wort Ihrer
+Eingabezeile das Kommando dar, die restlichen Worte bilden die
+Parameter. In den drei Beispielen unter Verwendung von <command>sh</command>, <command>source</command>
+und <command>.</command> wird also die Berechtigung dieser drei Kommandos geprüft und
+nicht diejenige des Skriptes selbst. Der Skriptname wird dann nur
+noch als Parameter an das Kommando übergeben und von diesem
+entsprechend behandelt. In diesem Fall muss nur noch das Leserecht
+gesetzt sein, denn das Kommando muss die Datei natürlich zumindest
+einlesen können:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+chmod -r testscript.sh
+	  </user>
+	  <user path="~">
+sh testscript.sh
+	  </user>
+	  <output>
+testscript.sh: testscript.sh: Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+Referenzieren Sie hingegen das Skript in einer der drei genannten
+Arten direkt unter der Ausnutzung des Shebang-Mechanismus, prüft
+die Shell das Ausführrecht und verweigert u.U. die Ausführung.
+Das Leserecht muss freilich auch hier bestehen - Ausführen impliziert
+für Skripte (im Gegensatz zu Programmdateien) vorheriges Einlesen!
+	 </textblock>
+	</section>
+
+	<section>
+<!-- *.*.* Kapitel -->	 
+	 <heading>
+Ausführrecht für Verzeichnisse
+	 </heading>
+
+	 <textblock>
+Das Ausführrecht für Verzeichnisse bezeichnet das elementare
+Recht, dieses Verzeichnis zu betreten. Hier das grundlegende Beipiel:
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+chmod -x testdir
+	  </user>
+	  <user path="~">
+ls -l | grep testdir
+	  </user>
+	  <output>
+drw-r--r--    2 matthias users          48 2002-11-07 23:50 testdir
+	  </output>
+	  <user path="~">
+cd testdir
+	  </user>
+	  <output>
+bash: cd: testdir: Keine Berechtigung
+	  </output>
+	  <user path="~">
+chmod +x testdir
+	  </user>
+	  <user path="~">
+cd testdir
+	  </user>
+	  <user path="~/testdir">
+pwd
+	  </user>
+	  <output>
+/home/matthias/testdir
+	  </output>
+	 </shell>
+
+	 <textblock>
+Das "Betreten" eines Verzeichnisses ist jedoch allgemeiner zu
+verstehen als das bloße Wechseln des <strong>current working directory</strong>.
+Es ist vielmehr die grundlegende Voraussetzung für alle weiteren
+Operationen auf dem Verzeichnis und seinen Inhalten. Lesen von
+Dateien, Anlegen und Löschen von Dateien und auch Ausführen von
+Dateien in einem Verzeichnis erfordern ein Ausführrecht auf
+diesem Verzeichnis. Dies gilt übrigens rekursiv auch für
+alle Unterverzeichnisse und deren Inhalte.
+	 </textblock>
+
+	 <textblock>
+	  <strong>Auslesen des Verzeichnisses:</strong>
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+ls testdir
+	  </user>
+	  <output>
+testscript.sh
+	  </output>
+	  <user path="~">
+chmod -x testdir
+	  </user>
+	  <user path="~">
+ls testdir
+	  </user>
+	  <output>
+ls: testdir/testscript.sh: Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+Hierbei ist interessant, dass sich die Fehlermeldung nicht auf das 
+Lesen des Verzeichnisses selbst bezieht. Die im Verzeichnis enthaltene
+Datei <path>testscript.sh</path> wird sogar in der Fehlermeldung genannt und konnte
+also aus dem Verzeichniskatalog ausgelesen werden. Das ist auch nicht
+verwunderlich, denn das Leserecht für das Verzeichnis ist ja weiterhin
+gesetzt. Die Fehlermeldung bezieht sich vielmehr auf den Versuch,
+Information über die Datei <path>testscript.sh</path> auszulesen. Hierzu müsste auf
+diese Datei zugegriffen werden. Um auf die Datei eines Verzeichnisses
+zugreifen zu können, muss jedoch das Aussführrecht für das Verzeichnis
+gesetzt sein. Da dies nicht der Fall war, wurde <command>ls</command> der Zugriff
+verweigert.
+	 </textblock>
+
+	 <textblock>
+	  <strong>Lesen einer Datei:</strong>
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+chmod +x testdir
+	  </user>
+	  <user path="~">
+echo "Neue Testdatei." > testdir/lesetest.txt
+	  </user>
+	  <user path="~">
+cat testdir/lesetest.txt
+	  </user>
+	  <output>
+Neue Testdatei.
+	  </output>
+	  <user path="~">
+chmod -x testdir
+	  </user>
+	  <user path="~">
+cat testdir/lesetest.txt
+	  </user>
+	  <output>
+cat: testdir/lesetest.txt: Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+	  <strong>Anlegen und Löschen einer Datei:</strong>
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+touch testdir/testfile
+	  </user>
+	  <output>
+touch: Erzeugen von "testdir/testfile": Keine Berechtigung
+	  </output>
+	  <user path="~">
+rm testdir/lesetest.txt
+	  </user>
+	  <output>
+rm: Aufruf von lstat für "testdir/lesetest.txt" nicht möglich: Keine Berechtigung
+	  </output>
+	  <user path="~">
+chmod +x testdir
+	  </user>
+	  <user path="~">
+touch testdir/testfile
+	  </user>
+	  <user path="~">
+rm testdir/lesetest.txt
+	  </user>
+	 </shell>
+
+	 <textblock>
+	  <strong>Ausführen einer Datei:</strong>
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+ls -l testdir/testscript.sh
+	  </user>
+	  <output>
+-rwxr-xr-x    1 matthias users          25 2002-11-07 23:56 testdir/testscript.sh
+	  </output>
+	  <user path="~">
+./testdir/testscript.sh
+	  </user>
+	  <output>
+Hallo!
+	  </output>
+	  <user path="~">
+chmod -x testdir
+	  </user>
+	  <user path="~">
+./testdir/testscript.sh
+	  </user>
+	  <output>
+bash: ./testdir/testscript.sh: Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+	  <strong>Auch für Unterverzeichnisse sind die Einschränkungen wirksam:</strong>
+	 </textblock>
+
+	 <shell>
+	  <user path="~">
+mkdir testdir/subdir
+	  </user>
+	  <user path="~">
+touch testdir/subdir/testfile
+	  </user>
+	  <user path="~">
+ls testdir/subdir
+	  </user>
+	  <output>
+testfile
+	  </output>
+	  <user path="~">
+chmod -x testdir
+	  </user>
+	  <user path="~">
+ls testdir/subdir
+	  </user>
+	  <output>
+ls: testdir/subdir: Keine Berechtigung
+	  </output>
+	 </shell>
+
+	 <textblock>
+Damit soll die ausführliche Behandlung der Dateirechte hier
+abgeschlossen werden. Wie zu erkennen ist, ergeben sich aus dem
+an sich einfachen Konzept aus drei Benutzerklassen (<strong>user</strong>, <strong>group</strong>,
+<strong>others</strong>) und drei Berechtigungsklassen
+(<strong>read</strong>, <strong>write</strong>, <strong>execute</strong>)
+durchaus komplexe Zusammenhänge und Möglichkeiten zur Abstufung
+von Berechtigungen. Die Kombination der verschiedenen Rechte und
+ihre Anwendung auf unterschiedliche Dateitypen (wobei hier bereits
+eine Einschränkung auf reguläre Dateien und Verzeichnisse vorgenommen
+wurde) bietet ein breites Experimentierfeld und ist immer wieder
+für Überraschungen gut.
+	 </textblock> 
+
+	 <textblock>
+Am besten spielen Sie selbst einmal mit den vielfältigen
+Möglichkeiten, um eine gewisse Intuition im Umgang mit den Rechten 
+zu gewinnen. Für die Zusendung besonders interessanter Beispiele 
+sind die Autoren dankbar und werden sie gerne in dieses Kapitel
+aufnehmen.
+	 </textblock>
+	 
+	 <textblock>
+Richten Sie nun - nach einer angemessenen Pause - Ihre Aufmerksamkeit
+auf die zentralen Benutzerdateien im Rahmen der Benutzerkonzeption.
+	 </textblock>
+	</section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+<!-- * Kapitel -->
+   <heading>
+Die zentralen Benutzerdateien
+   </heading>
+
+   <textblock>
+Um das Kapitel abzurunden und Ihnen einen Einblick in die
+Registratur von Benutzern unter Linux zu geben, werden im
+Folgenden die zentralen Benutzerdateien beschrieben, welche
+notwendige Information über Benutzernamen, Passwörter,
+Gruppenzugehörigkeiten und andere Benutzerattribute enthalten.
+Den Abschluss bildet der Verweis auf ein System zur zentralen
+Benutzerverwaltung in Netzwerken, das NIS (Network Information
+System).
+   </textblock>
+
+<!-- bitte die Großbuchstaben bei der ausgeschriebenen
+Abkürzung NIS in der Klammer unterstreichen -->
+
+
+   <textblock>
+Die Dateien zur Benutzerverwaltung finden Sie unter Linux
+im Verzeichnis <path>/etc</path>. Es handelt sich dabei um die Dateien <path>/etc/passwd</path>,
+<path>/etc/shadow</path> und <path>/etc/group</path>.
+   </textblock>
+
+<!-- bitte die Großbuchstaben bei der ausgeschriebenen
+Abkürzung NIS in der Klammer unterstreichen -->
+
+   <textblock>
+An dieser Stelle sei nochmals darauf hingewiesen, dass die meisten
+Linux-Distributionen komfortable Werkzeuge zur Benutzerverwaltung 
+mitliefern und es auch eine Reihe von Befehlen gibt, die für die 
+Benutzerverwaltung verwendet werden können. Diese werden jedoch
+nicht hier, sondern in dem Kapitel 
+<ref chapter="userverwaltung">Benutzerverwaltung</ref> erläutert. 
+Im Folgenden soll Ihnen lediglich grundlegendes Wissen über den Aufbau, 
+Inhalt und die Funktionen der Dateien erläutert werden, die für die 
+Benutzerverwaltung unter Linux von Bedeutung sind.
+   </textblock>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Die Datei /etc/passwd
+	</heading>
+
+	<textblock>
+Die Datei <path>/etc/passwd</path> ist die zentrale Benutzerdatenbank.
+	</textblock>
+
+	<textblock>
+Mit <command>cat /etc/passwd</command> können Sie einen Blick in diese zentrale
+Benutzerdatei werfen. Hier werden alle Benutzer des Systems
+aufgelistet. Zu beachten ist, dass alle Benutzertypen eingetragen
+sind, also sowohl der Superuser <strong>root</strong> als auch die Standard- und 
+Systembenutzer.
+	</textblock>
+
+	<textblock>
+Ein Benutzerkonto in der Datei <path>/etc/passwd</path> hat generell folgende Syntax:
+	</textblock>
+
+	<table>
+	 <pdf-column/>
+	 <tr>
+	  <td>
+	   <strong>Benutzername : Passwort : UID : GID : Info : Heimatverzeichnis : Shell</strong><br/>
+	  </td>
+	 </tr>
+	</table>
+
+<!-- farblich untermalen oder in einem Rahmen kennzeichnen -->
+
+	<table>
+	 <pdf-column width="75"/>
+	 <pdf-column/>
+	 <tr>
+	  <td>
+<strong>Benutzername</strong>
+	  </td>
+	  <td>
+Dies ist der Benutzername in druckbare Zeichen, meistens in
+Kleinbuchstaben.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Passwort</strong>
+	  </td>
+	  <td>
+Hier steht verschlüsselt das Passwort des Benutzers (bei
+alten Systemen). Meist finden Sie dort ein <strong>x</strong>. Dies bedeutet,
+dass das Passwort verschlüsselt in der Datei <path>/etc/shadow</path> steht.
+Es ist auch möglich, den Eintrag leer zu lassen. Dann erfolgt die
+Anmeldung ohne Passwortabfrage (in der Datei <path>/etc/shadow</path> muss
+dann an Stelle des verschlüsselten Passwortes ein <path>*</path>
+stehen).
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>UID</strong>
+	  </td>
+	  <td>
+Die <strong>Benutzer-ID</strong> des Benutzers. Die Zahl hier sollte größer als
+100 sein, weil die Zahlen unter 100 für Systembenutzer
+vorgesehen sind. Weiterhin muss die Zahl aus technischen
+Gründen kleiner als 64000 sein.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>GID</strong>
+	  </td>
+	  <td>
+Die <strong>Gruppen-ID</strong> des Benutzers. Auch hier muss die Zahl wie bei
+der UID kleiner als 64000 sein.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Info</strong>
+	  </td>
+	  <td>
+Hier kann weitere Information vermerkt werden, wie z.B. der
+vollständige Name des Benutzers und persönliche Angaben
+(Telefonnummer, Abteilung, Gruppenzugehörigkeit u.ä.).
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Heimatverzeichnis</strong>
+	  </td>
+	  <td>
+Das Heimatverzeichnis des Benutzers bzw. das
+Startverzeichnis nach dem Login.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Shell</strong>
+	  </td>
+	  <td>
+Die Shell, die nach der Anmeldung gestartet
+werden soll. Bleibt dieses Feld frei, dann wird die Standardshell
+<command>/bin/sh</command> gestartet.
+	  </td>
+	 </tr>
+	</table>
+
+   <hint>
+Tabelle 2: Die Felder der Datei /etc/passwd
+   </hint>
+
+
+<!-- als Tabelle aufarbeiten -->
+
+	<textblock>
+Hier ein Beispiel für einen Systembenutzer:
+	</textblock>
+
+	<shell>
+	 <output>
+ uucp:x:10:14:Unix-to-Unix CoPy system:/etc/uucp:/bin/bash
+	 </output>
+	</shell>
+
+	<textblock>
+Der Benutzer heißt <name>uucp</name>, das Passwort ist in der Datei <path>/etc/shadow</path>
+gespeichert (x), die <name>UID</name> ist 10, die <name>GID</name> 14, als erläuternde Bezeichnung trägt der
+Benutzer den Namen "Unix-to-Unix CoPy system", das Startverzeichnis nach der
+Anmeldung ist <path>/etc/uucp</path>, und die vorgeschlagene Shell ist die bash.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Die Datei /etc/shadow
+	</heading>
+
+	<textblock>
+Bei früheren Versionen von Linux speicherte man die die Passwörter
+direkt in die <path>passwd</path>-Datei. Allerdings war dies durch einen sogenannten
+<strong>Wörterbuchangriff</strong> und der beispielsweise mit Hilfe des Programmes <command>crypt</command> 
+möglich, diese Passwörter in vielen Fällen zu entschlüsseln und 
+auszulesen.<br/>
+Deshalb hat man die Datei <path>/etc/shadow</path> eingeführt, in der die Angaben
+über die Passwörter durch ein spezielles System besser geschützt werden.
+	</textblock>
+
+	<textblock>
+Der Eintrag in diese Datei erfolgt nach einem ähnlichen Schema, wie
+in der Datei <path>/etc/passwd</path>:
+	</textblock>
+
+	<table>
+	 <pdf-column/>
+	 <tr>
+	  <td>
+	   <strong>Benutzername : Passwort : DOC : MinD : MaxD : Warn : Exp : Dis : Res</strong><br/>
+	  </td>
+	 </tr>
+	</table>
+
+
+	<table>
+	 <pdf-column width="75"/>
+	 <pdf-column/>
+	 <tr>
+	  <td>
+	 <strong>Benutzername</strong>
+	  </td>
+	  <td>
+Dies ist der Benutzername in druckbaren Zeichen, meistens in
+Kleinbuchstaben.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Passwort</strong>
+	  </td>
+	  <td>
+Hier steht verschlüsselt das Passwort des Benutzers. Wenn
+hier ein <strong>*</strong> oder <strong>!</strong> steht, dann bedeutet
+dies, dass kein Passwort vorhanden bzw. eingetragen ist.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>DOC</strong>
+	  </td>
+	  <td>
+<strong>Day of last change</strong>: der Tag, an dem das Passwort zuletzt
+geändert wurde. Besonderheit hier: Der Tag wird als Integer-Zahl in
+Tagen seit dem 1.1.1970 angegeben.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>MinD</strong>
+	  </td>
+	  <td>
+Minimale Anzahl der Tage, die das Passwort gültig ist.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>MaxD</strong>
+	  </td>
+	  <td>
+Maximale Anzahl der Tage, die das Passwort gültig ist.
+	  </td>
+	 </tr>	 
+	 <tr>
+	  <td>
+<strong>Warn</strong>
+	  </td>
+	  <td>
+Die Anzahl der Tage vor Ablauf der Lebensdauer, ab der vor
+dem Verfall des Passwortes zu warnen ist.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Exp</strong>
+	  </td>
+	  <td>
+Hier wird festgelegt, wieviele Tage das Passwort trotz
+Ablauf der MaxD noch gültig ist.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Dis</strong>
+	  </td>
+	  <td>
+Bis zu diesem Tag (auch hier wird ab dem 1.1.1970 gezählt)
+ist das Benutzerkonto gesperrt
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Res</strong>
+	  </td>
+	  <td>
+<strong>Reserve</strong>, dieses Feld hat momentan keine Bedeutung.
+	  </td>
+	 </tr>
+	</table>
+
+   <hint>
+Tabelle 3: Die Felder der Datei /etc/shadow
+   </hint>
+
+
+<!-- die gleiche Formatierung anwenden wie oben im Abschnitt
+/etc/passwd -->
+
+	<textblock>
+Es folgt wieder ein Beispiel:
+	</textblock>
+
+	<shell>
+	 <output>
+ selflinux:/heSIGnYDr6MI:11995:1:99999:14:::
+	 </output>
+	</shell>
+
+	<textblock>
+Der Benutzer heißt <name>selflinux</name>, das Passwort lautet
+verschlüsselt "/heSIGnYDr6MI". Es wurde zuletzt geändert,
+als 11995 Tage seit dem 1.1.1970 vergangen waren. Das
+Passwort ist minimal einen Tag gültig, maximal 99999 Tage (was man
+als <strong>immer</strong> deuten kann - 99999 Tage sind ca. 274 Jahre). Es soll ab
+14 Tage vor Ablauf des Passwortes gewarnt werden. Die anderen Werte
+sind vom Administrator nicht definiert und bleiben daher leer.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Die Datei /etc/groups
+	</heading>
+
+	<textblock>
+In dieser Datei finden Sie die Benutzergruppen und ihre Mitglieder. In
+der Datei <path>/etc/passwd</path> wird mit der <name>GID</name> eigentlich schon eine
+Standardgruppe für den Benutzer festgelegt. In der <path>/etc/group</path>
+können Sie weitere Gruppenzugehörigkeiten definieren. Das hat in der
+Praxis vor allem in Netzwerken eine große Bedeutung, weil Sie so in
+der Lage sind, z.B. Gruppen für Projekte oder Verwaltungseinheiten zu
+bilden. Für diese Gruppen kann man dann entsprechend die
+Zugriffsrechte einstellen. Dies hat dann wiederum den Vorteil, dass man
+die Daten gegen eine unbefugte Benutzung absichern kann.
+	</textblock>
+
+	<textblock>
+Der Eintrag einer Gruppe in die Datei sieht so aus:
+	</textblock>
+
+	<table>
+	 <pdf-column/>
+	 <tr>
+	  <td>
+	   <strong> Gruppenname : Passwort : GID : Benutzernamen (Mitgliederliste)</strong><br/>
+	  </td>
+	 </tr>
+	</table>
+
+	
+	<table>
+	 <pdf-column width="75"/>
+	 <pdf-column/>
+	 <tr>
+	  <td>
+<strong>Gruppenname</strong>
+	  </td>
+	  <td>
+Der Name der Gruppe in druckbare Zeichen, auch hier
+meistens Kleinbuchstaben.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Passwort</strong>
+	  </td>
+	  <td>
+Die Besonderheit hier ist folgende: Wenn das Passwort
+eingerichtet ist, können auch Nichtmitglieder der
+Gruppe Zugang zu den Daten der Gruppe erhalten, wenn
+ihnen das Passwort bekannt ist. Ein <strong>x</strong> sagt hier aus,
+das das Passwort in <path>/etc/shadow</path> abgelegt ist. 
+Der Eintrag kann
+auch entfallen, dann ist die Gruppe nicht durch ein
+Passwort geschützt. In diesem Fall kann jedoch auch
+kein Benutzer in die Gruppe wechseln, der nicht in diese Gruppe
+eingetragen ist.
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>GID</strong>
+	  </td>
+	  <td>
+<strong>Gruppen-ID</strong> der Gruppe
+	  </td>
+	 </tr>
+	 <tr>
+	  <td>
+<strong>Benutzernamen</strong>
+	  </td>
+	  <td>
+hier werden die Mitglieder der Gruppe
+eingetragen. Diese sind durch ein einfaches Komma
+getrennt.
+	  </td>
+	 </tr>
+	</table>
+
+   <hint>
+Tabelle 4: Die Felder der Datei /etc/group
+   </hint>
+
+
+<!-- Formatierung wie bei /etc/shadow und etc/passwd -->
+
+	<textblock>
+Für einen korrekten Eintrag in die <path>/etc/group</path> reicht eigentlich der
+Gruppenname und die <name>GID</name> aus. Damit ist die Gruppe dem System bekannt
+gemacht. Die Felder für das Passwort und die Benutzernamen können frei
+bleiben. 
+	</textblock>
+
+	<textblock>
+Wenn allerdings ein Benutzer in mehr als einer Gruppe (außer
+in seiner Standardgruppe, welche in der <path>/etc/passwd</path> fesgelegt wurde)
+Mitglied sein soll, so muss er in die entsprechenden Gruppen
+eingetragen werden. Wollen Sie, dass mehrere Mitglieder in einer
+Gruppe zusammenarbeiten und diese Gruppe ist nicht die Standardgruppe
+dieser Mitglieder, dann müssen Sie ebenfalls jedes dieser Mitglieder
+in die gewünschte Gruppe eintragen.<br/>
+Nochmal zur besseren Veranschaulichung mit anderen Worten.
+Soll der Benutzer nur in seiner Standardgruppe
+bleiben, ist kein Eintrag in die /etc/group notwendig. Hier reicht der
+Eintrag in die /etc/passwd völlig aus, weil dort die Standardgruppe
+schon mit angegeben wird. Nur wenn der Benutzer in weiteren
+bzw. mehreren Gruppen Mitglied sein soll, muss dies in die
+<path>/etc/group</path>-Datei eingetragen werden.<br/>
+Für Passwörter gilt das oben in der Tabelle Gesagte.
+	</textblock>
+
+	<textblock>
+Hier sehen Sie ein Beispiel für einen Eintrag:
+	</textblock>
+
+	<shell>
+	 <output>
+dialout:x:16:root,tatiana,steuer,selflinux
+	 </output>
+	</shell>
+
+	<textblock>
+Sie sehen eine Gruppe mit der <name>GID</name> "16" und den Namen <name>dialout</name>. (Zur
+Information: <name>dialout</name> erlaubt es normalen Benutzern einen
+<command>ppp</command>-Verbindungsaufbau zu starten, normalerweise hat nur <strong>root</strong> dieses
+Recht). Das <strong>x</strong> bedeutet hier, dass das Passwort in <path>/etc/shadow</path> abgelegt 
+ist. Da in <path>/etc/shadow</path> hier bei Passwort ein <strong>*</strong> steht, ist also kein
+Passwort für die Gruppe vorhanden (Das bedeutet wiederum, das nur die
+eingetragenen Mitglieder Zugang zu dieser Gruppe haben).
+Mitglieder der Gruppe sind: <name>root</name>, <name>tatiana</name>, <name>steuer</name>, <name>selflinux</name>.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Das Verzeichnis /etc/skel
+	</heading>
+
+	<textblock>
+Dieses Verzeichnis hat mit der Benutzerverwaltung im engeren Sinn
+nichts zu tun. Es soll hier aber trotzdem erwähnt werden, denn in
+diesem Verzeichnis haben Sie die Möglichkeit, die "Erstausstattung" an
+Konfigurationsdateien, die ein neuer Benutzer erhalten soll,
+festzulegen. Jedes Mal, wenn Sie einen neuen Benutzer einrichten,
+können Sie durch einfaches Kopieren des Verzeichnisses <path>/etc/skel</path> dem
+neuen Nutzer eine vorgefertigte, einheitliche Umgebung bereit
+stellen.
+	</textblock>
+
+	<textblock>
+In der Praxis wird von dem <path>/etc/skel</path>-Verzeichnis sehr oft
+Gebrauch gemacht, denn sie müssen dieses Verzeichnis nur einmal
+anlegen und können dann eine große Anzahl von Benutzern auf einfache
+Weise einrichten. Bei den meisten Linux-Distributionen wird dieses
+Verzeichnis schon standardmäßig angelegt und kann dann nach den
+eigenen Wünschen verändert werden.
+	</textblock>
+   </section>
+
+   <section>
+<!-- *.* Kapitel -->	 
+	<heading>
+Network Information Service (NIS)
+	</heading>
+	<textblock>
+Wenn mehrere Linux- und Unix-Systeme in einem Netzwerk auf gemeinsame
+Ressourcen zurückgreifen wollen, dann muss sichergestellt sein, dass
+die Benutzer- und Gruppenkennungen aller Rechner in diesem Netzwerk
+miteinander harmonieren und es zu keinen Konflikten kommt. Das ist
+die Aufgabe des Network Information Service (NIS).
+	</textblock>
+
+	<textblock>
+Sie können NIS als Datenbanksystem verstehen, das Zugriff auf die
+Dateien <path>/etc/passwd</path>, <path>/etc/shadow</path> und <path>/etc/group</path> in dem gesamten
+angeschlossenen Netzwerk ermöglicht.
+	</textblock>
+   </section>
+  </section>
+ </split>
+</chapter>

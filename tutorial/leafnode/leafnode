@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+<title>Leafnode - ein Newsserver unter Linux</title>
+
+
+<author>
+ <name>Johnny Graber</name>
+ <mailto>selflinux@jgraber.ch</mailto>
+</author>
+<layout>
+ <name>Johnny Graber</name>
+ <mailto>selflinux@jgraber.ch</mailto>
+</layout>
+
+<license>GFDL</license>
+<index>leafnode</index>
+
+<description>
+ <textblock>
+Der folgende Text soll zeigen, wie man mit einfachen Mitteln einen eigenen,
+lokalen Newsserver aufsetzen kann. Wie dies geht, und wozu man sich überhaupt
+die Arbeit macht, wird hier erklärt.
+ </textblock>
+</description>
+
+<split>
+<section>
+ <heading>
+Einleitung
+ </heading>
+
+  <section>
+   <heading>
+ Was ist News?
+ </heading>
+
+ <textblock>
+News ist ein alter Dienst des Internets. Schon lange vor dem WWW wurden
+kleine Textbotschaften ausgetauscht. Über das Usenet wurden und werden
+auch heute noch diese Nachrichten einer grossen Masse von Leuten zugänglich
+gemacht.
+ </textblock>
+
+ <textblock>
+Das Usenet ist streng hierarchisch aufgebaut, was erst ein Zurechtfinden
+darin ermöglicht. Damit man nicht von der Menge der Nachrichten erschlagen
+wird, ist das Usenet in Gruppen unterteilt. Eine Gruppe in Deutsch wird 
+meistens mit <command>de.*</command> beginnen.
+Eine deutsche Linuxgruppe findet man z.B. unter <command>de.comp.os.unix.linux.misc</command>. 
+Dabei steht <command>de</command> für deutsch, <command>comp</command> für Computer, os.unix weil es um 
+Betriebssysteme auf Unixbasis geht und <command>linux.misc</command>, also Verschiedenes zum
+Thema Linux, ist schließlich unser 
+Ziel. Durch diese feine Gliederung kann der Newsfluss einigermassen gebändigt
+werden.
+ </textblock>
+
+ <textblock>
+Da so viele Leute im Usenet unterwegs sind, wird sehr viel Wert auf das 
+Einhalten von Regeln gelegt. Da diese Regeln den Umfang dieses Dokumentes 
+sprengen würden, erfolgt hier nur ein Verweis auf entsprechende Webseiten 
+oder Gruppen:
+ </textblock>
+
+ <ul>
+  <li><ref lang="de" url="http://www.kirchwitz.de/~amk/dni/usenet-einfuehrung">http://www.kirchwitz.de/~amk/dni/usenet-einfuehrung</ref></li>
+  <li><ref lang="de" url="http://www.kirchwitz.de/~amk/dni/erste-schritte">http://www.kirchwitz.de/~amk/dni/erste-schritte</ref></li>
+  <li><ref lang="de" url="http://www.kirchwitz.de/~amk/dni/erst-lesen-dann-schreiben">http://www.kirchwitz.de/~amk/dni/erst-lesen-dann-schreiben</ref></li>
+  <li><ref url="news://de.newusers.infos">de.newusers.infos</ref></li>
+  <li><ref url="news://de.newusers.questions">de.newusers.questions</ref></li>
+ </ul>
+</section>
+
+<section>
+ <heading>
+ Warum einen eigenen Server?
+ </heading>
+
+
+ <textblock>
+Es gibt viele Gründe, die für einen eigenen Server, und auch etliche, 
+dagegen sprechen. In der heutigen Zeit spielt die Grösse des Datentransfers
+oft keine wichtige Rolle mehr. Da außerdem immer mehr Newsreader unter Linux 
+ohne
+lokalen Newsserver zurecht kommen, könnte man darauf verzichten.
+ </textblock>
+
+ <textblock>
+Ein lokaler Newsserver bietet aber Vorteile. Benutzen mehrere Leute
+einen Computer und lesen in den gleichen Gruppen, müssen die Daten nur einmal
+übertragen werden. Wenn man ganze Gruppen längere Zeit verfügbar haben will,
+kann man dies nur bei einem eigenen Server einstellen (jeder Provider löscht 
+nach
+gewisser Zeit die News).<br/>
+Ein weiterer Pluspunkt für einen eigenen Server ist natürlich der
+Lernfaktor. Man erfährt nicht nur etwas mehr über das Usenet, sondern kommt
+auch Linux näher.
+ </textblock>
+
+ </section>
+
+<section>
+ <heading>
+ Wieso gerade Leafnode?
+ </heading>
+
+
+ <textblock>
+<command>Leafnode</command> ist ein relativ einfach zu bedienender Newsserver.
+<command>Leafnode</command> verhält
+sich gegenüber dem Newsserver des Providers wie ein Newsreader. Dadurch fallen
+viele komplexe Kommandos und Einstellungen weg.<br/>
+Dies fordert aber auch Kompromisse. So kann man z.B. keine eigenen Newsgroups
+erstellen. Da dies von den meisten Benutzern aber eh nicht angestrebt wird,
+stört es auch nicht. Wenn man dennoch darauf angewiesen ist, empfiehlt sich
+der Newsserver <command>INN</command>. <!--Eine ausführliche Beschreibung dazu 
+kann
+"hier" gefunden
+werden.-->
+ </textblock>
+
+<!--
+Quality/Nachbearbeitung:
+"hier" durch Link zum Text advance Newsserver von Selflinux ersetzen
+oder entsprechende Passage auskommentieren
+-->
+
+</section>
+<section>
+ <heading>
+ Vorarbeiten
+ </heading>
+
+
+ <textblock>
+Aus Gründen der Sicherheit sollte <command>leafnode</command> nicht als root
+sondern als Benutzer
+news laufen. Wenn news noch nicht existiert, muss dieser angelegt werden. Dies
+geschieht am Besten über das entsprechende Tool der gewählten Distribution.
+ </textblock>
+</section>
+</section>
+</split>
+
+
+
+<split>
+<section>
+ <heading>
+Installation und Konfiguration
+ </heading>
+
+ <section>
+ <heading>
+Download
+ </heading>
+
+ <textblock>
+Bevor man mit der Installation beginnen kann, muss man sich
+<command>leafnode</command> natürlich
+zuerst einmal besorgen. Wenn keine aktuelle Version mit der Distributions-CD
+mitgekommen ist, kann man Leafnode von <ref lang="en" url="http://www.leafnode.org">http://www.leafnode.org</ref> herunterladen.
+ </textblock>
+
+ <textblock>
+Wenn man <command>leafnode</command> nicht über das distributionsspezifische
+Installationstool
+installieren kann, muss man dies halt von Hand machen. Es empfiehlt sich dabei
+die Verwendung eines RPM-Paketes.<br/>
+Es ist wichtig, dass ein zur Distribution gehörendes RPM heruntergeladen wird.
+Wenn RPMs gemischt werden, kann dies zu grösseren Problemen führen. Ein RPM
+für Mandrake wird kaum auf SuSE laufen. Dies ist darin begründet, dass die
+Pfade zu Programmen und Diensten nicht gleich sind.
+ </textblock>
+
+ </section>
+
+
+
+<section>
+ <heading>
+Installieren
+ </heading>
+
+ <textblock>
+Je nach grafischer Oberfläche für RPM erfolgt die Installation unterschiedlich.
+Da dies keine Probleme bereitet, beschreibe ich hier den Weg über die Konsole.
+ </textblock>
+
+ <textblock>
+Als erstes wechselt man mit cd in das Verzeichnis, indem das Leafnode RPM liegt.
+Da <command>rpm</command> nur als root funktioniert, wechselt man mit Hilfe von
+<command>su</command> den Benutzer.
+Über den Befehl <command>rpm -ihv leafnode.rpm</command> wird das Paket
+installiert. leafnode.rpm
+muss natürlich vorher durch den entsprechenden Namen ersetzt werden.
+ </textblock>
+
+ <textblock>
+Hier währe ein ausführliches Beispiel. Es wird davon ausgegangen, das sich das
+RPM-Paket im Verzeichnis download liegt:
+ </textblock>
+  <shell>
+   <user path="~">
+cd download
+   </user>
+   <user path="~/download">
+su
+   </user>
+   <input>
+&lt;passwort&gt;
+   </input>
+   <root>
+rpm -ihv leafnode.rpm
+   </root>
+  </shell>
+ <textblock>
+Wenn dies ohne Fehlermeldung funktioniert hat, ist
+<command>Leafnode</command>
+nun installiert.
+Damit ist es aber noch nicht getan. <command>Leafnode</command> ist ein
+Netzwerkdienst und muss
+daher über ein Netzwerk - und sei es nur ein lokales - erreichbar sein. Da
+alles, was mit Netzwerk zu tun hat, vom inetd (Internet Daemon) oder xinetd
+(Weiterentwicklung von inetd) gestartet werden kann, muss leafnode noch dort
+eingetragen werden.
+ </textblock>
+
+ <textblock>
+Je nach Verwendung von <command>inetd</command> oder <command>xinetd</command>
+muss für die weitere Installation
+die entsprechende Anleitung verwendet werden.
+ </textblock>
+
+ <textblock>
+Nach der entsprechenden Konfiguration kann zur Kontrolle über
+<command>telnet</command> eine
+Verbindung zu leafnode aufgebaut werden.
+ </textblock>
+
+  <shell>
+   <user path="~">
+telnet localhost nntp
+   </user>
+   <output>
+Trying 127.0.0.1...
+Connected to localhost.localdomain (127.0.0.1).
+Escape character is '^]'.
+200 Leafnode NNTP Daemon, version 1.9.19 running at jgraber.ch
+   </output>
+  </shell>
+
+  <textblock>
+Wenn eine solche Meldung kommt, hat es geklappt. Bei Fehlermeldungen sollte
+man als erstes nachsehen, ob alle genannten Dateien news gehören.
+ </textblock>
+</section>
+
+
+
+<section>
+ <heading>
+inetd
+ </heading>
+
+ <textblock>
+Wenn die Distribution <command>inetd</command> verwendet, müssen wir die Datei
+/etc/inetd.conf
+bearbeiten. In dieser Datei sollte es bereits einen auskommentierten Eintrag
+für nntp geben. Diese Zeile muss gesucht und das # am Zeilenanfang entfernt
+werden. Die entsprechende Zeile sollte danach so aussehen (Pfade sind
+natürlich wieder anzupassen):
+  </textblock>
+
+  <file>
+   <title>
+/etc/inetd.conf
+   </title>
+   <content>
+   <![CDATA[
+nntp stream tcp nowait news /usr/sbin/tcpd /usr/local/sbin/leafnode
+   ]]>
+   </content>
+  </file>
+
+  <textblock>
+Nachdem diese Änderung gespeichert wurde, hat <command>inetd</command> diese
+aber noch nicht übernommen. Erst mit der Eingabe von
+  </textblock>
+
+  <shell>
+   <root path="~">
+killall -HUP inetd
+   </root>
+  </shell>
+
+  <textblock>
+als root wird das Konfigurationsfile neu eingelesen.
+ </textblock>
+</section>
+
+
+<section>
+ <heading>
+xinetd
+ </heading>
+
+ <textblock>
+xinetd ist, wie wir gleich bemerken werden, komplett anders aufgebaut als inetd.
+Wir wechseln ins Verzeichnis /etc/xinetd.d und finden dort je nach RPM-Paket
+bereits eine Datei mit Namen leafnode. Diese Datei sollte so aussehen:
+ </textblock>
+
+  <file>
+   <title>
+/etc/xinetd.d/leafnode
+   </title>
+   <content>
+    <![CDATA[
+service nntp
+{
+        flags           = REUSE
+        socket_type     = stream
+        wait            = no
+        user            = news
+        server          = /usr/sbin/leafnode
+        log_on_failure  += USERID
+}
+# End of nntp   ]]>
+    </content>
+   </file>
+
+ <textblock>
+Ist diese Datei nicht vorhanden, muss sie manuell erstellt werden.
+ </textblock>
+
+ <textblock>
+Damit die Konfigurationsdatei neu eingelesen wird, muss nachher dieses
+Kommando ausgeführt werden:
+ </textblock>
+
+  <shell>
+   <root path="~">
+/etc/init.d/xinetd reload
+   </root>
+  </shell>
+</section>
+<!-- </section -->
+
+
+<section>
+ <heading>
+Konfiguration Leafnode
+ </heading>
+
+ <textblock>
+Konfiguriert wird Leafnode über die Datei /etc/leafnode/config.
+ </textblock>
+
+  <file>
+   <title>
+/etc/leafnode/config
+   </title>
+   <content>
+   <![CDATA[
+
+## This is the NNTP server leafnode fetches its news from.
+## You need read and post access to it. Mandatory.
+server = <servername>
+
+## Unread discussion threads will be deleted after this many days if
+## you don't define special expire times. Mandatory.
+expire = 20
+
+##
+## All the following parameters are optional
+##
+
+## I have free access to my news server. If you don't have, comment out
+## the following two lines and change them accordingly.
+#username = <benutzername>
+#password = <passwort>
+   ]]>
+   </content>
+  </file>
+
+ <textblock>
+Wie wir sehen, ist das Config-File sehr gut dokumentiert. Für Leafnode sind
+eigentlich nur die ersten 2 Parameter notwendig: server und expire.
+ </textblock>
+
+ <textblock>
+Bei server muss &lt;servername&gt; durch den entsprechenden Server ausgetauscht
+werden.
+expire definiert die Aufbewahrungszeit der Newsartikel. Vorgegeben sind 20 Tage,
+
+
+was aber beliebig geändert werden kann. Man sollte aber beachten, dass mehr Tage
+mehr Postings bedeuten und diese wiederum mehr Platz beanspruchen.
+ </textblock>
+
+ <textblock>
+Falls der Newsserver eine Identifizierung durchführen will, muss das # vor
+username und passwort entfernt und die entsprechenden Werte eingetragen werden.
+ </textblock>
+
+ <textblock>
+Da das Passwort im Klartext vorliegt, muss nach dem Ändern die Datei auf den
+Benutzer news übertragen werden.
+ </textblock>
+
+  <shell>
+   <root path="/etc/leafnode/">
+chmod 600 config
+   </root>
+
+   <root path="/etc/leafnode/">
+chown news config
+   </root>
+
+   <root path="/etc/leafnode/">
+chgrp news config
+   </root>
+
+   <root path="/etc/leafnode/">
+ll
+   </root>
+
+   <output>
+-rw---------    1 news     news         4468 Dez 26 17:34 config
+   </output>
+  </shell>
+</section>
+
+
+<section>
+ <heading>
+Feinabstimmung von Leafnode
+ </heading>
+
+ <textblock>
+Wer mit Leafnode in der Standardkonfiguration nicht zufrieden ist, kann bei
+der Feinabstimmung noch viel erreichen. Dazu öffnet man wieder die Datei
+/etc/leafnode/config.
+ </textblock>
+
+ <textblock>
+Wenn man ein wenig tiefer nachschaut als wir es oben getan haben, findet man
+noch eine grosse Anzahl von Variablen. Auf die wichtigsten gehe ich hier nun
+ein:
+ </textblock>
+
+ <textblock>
+hostname = &lt;Domain in der MID, die von <command>leafnode</command> angehängt
+wird&gt;
+ </textblock>
+
+ <textblock>
+maxfetch = n <br/>
+Maximal n Postings pro Group auf einmal abholen
+ </textblock>
+
+ <textblock>
+initialfetch = n <br/>
+Beim abonnieren einer Newsgroup nur n Postings abholen
+ </textblock>
+
+ <textblock>
+maxcrosspost = n <br/>
+Nur Postings abholen, die in max. n Groups gepostet werden
+ </textblock>
+
+ <textblock>
+maxage = n <br/>
+Nur Postings die nicht älter als n Tage sind abholen
+ </textblock>
+
+ <textblock>
+maxlines = n <br/>
+Nur Postings mit max. n Zeilen Länge abholen
+ </textblock>
+
+ <textblock>
+maxbytes = n <br/>
+Nur Postings bis zu einer Größe von n Bytes abholen
+ </textblock>
+
+ <textblock>
+timeoutshort = n <br/>
+Wenn versehentlich eine Group geöffnet wurde, nur n Tage diese
+Gruppe abholen. Default sind 2 Tage
+ </textblock>
+
+ <textblock>
+timeoutlong = n <br/>
+wenn eine Gruppe n Tage nicht mehr gelesen wurde, werden keine
+News aus dieser Gruppe mehr abgeholt
+ </textblock>
+
+ <hint>
+Wie oben schon erwähnt muss an diesen Variablen nichts geändert werden. Sie
+dienen nur zur Feinabstimmung und die Default-Werte sind für die meisten
+Benutzer in Ordnung.
+ </hint>
+</section>
+ 
+<section>
+ <heading>
+fetchnews und texpire
+ </heading>
+
+ <textblock>
+<command>fetchnews</command> und <command>texpire</command> sind zwei Programme
+für den Unterhalt von <command>leafnode</command>. Ohne
+die beiden ist <command>leafnode</command> relativ nutzlos.
+ </textblock>
+
+ <textblock>
+<command>fetchnews</command> dient, wie der Name verrät, zum Herunterladen der 
+News. Der erstmalige
+Aufruf von <command>fetchnews</command> lädt die Liste der Newsgroups vom Server 
+
+
+herunter. Ist
+dies getan, besorgt er die Newsartikel. Da diese Arbeit je nach Server und
+Gruppe
+länger dauern kann, bietet <command>fetchnews</command> die Option
+<command>-v</command> zur Anzeige der aktuellen
+Arbeit. <command>-v</command> steht für verbose (ausführlich) und kann durch die
+Anzahl <command>-v</command>s
+gesteigert werden.
+ </textblock>
+
+  <shell>
+   <root path="/etc/leafnode/">
+fetchnews -vvv
+   </root>
+  </shell>
+
+ <textblock>
+liefert eine angenehm ausführliche Liste.
+ </textblock>
+
+ <textblock>
+<command>texpire</command> dient zum Löschen veralteter News. Die News werden
+von <command>leafnode</command> solange
+aufbewahrt, wie in /etc/leafnode/config unter expire eingestellt ist. Ist diese
+Zeit überschritten, werden die News von <command>leafnode</command> intern
+entsprechend markiert und
+beim nächsten ausführen von <command>texpire</command> gelöscht.
+ </textblock>
+
+ <textblock>
+Der Datenmenge in den Newsgroups entsprechend häufig muss
+<command>texpire</command> ausgeführt
+werden. Wenn nur wenig gepostet wird, nutzt das tägliche
+<command>texpire</command> nicht sehr viel.
+Bei einer grossen Flut von Nachrichten wird man aber mit einem wöchentlichen
+<command>texpire</command> auch nicht glücklich. Nach einigen Versuchen wird man
+
+aber einen für
+sich passenden Rhythmus finden.
+ </textblock>
+</section>
+</section>
+</split>
+
+
+
+<split>
+
+<section>
+
+ <heading>
+Einrichten des Newsreaders
+ </heading>
+
+ <textblock>
+Wenn <command>leafnode</command> richtig konfiguriert wurde und
+<command>fetchnews</command> die Liste mit Gruppen geholt
+hat, kann man zum Einrichten des Newsreaders übergehen. Da es unzählige
+Newsreader gibt, beschränke ich mich hier nur auf die grundlegenden
+Einstellungen. Für detaillierte Informationen zum selber benutzten Reader
+empfiehlt sich ein Blick in die dazugehörende Hilfe.
+ </textblock>
+
+ <textblock>
+Meist wird der Newsreader unter Einstellungen die Newsserver verwalten. Dort
+fügt man einen neuen Server hinzu. Ins Feld für die Serveradresse kann man
+localhost oder 127.0.0.1 eingeben (beide Angaben führen zum gleichen Ergebnis).
+Als Port sollte man 119 verwenden, da <command>inedt/xinetd</command> darauf auf 
+
+
+Verbindungen zu
+<command>leafnode</command> warten.
+ </textblock>
+
+ <textblock>
+Nach dem erfolgreichen Erfassen des Servers muss man die Gruppenliste holen.
+Diese kommt nun nicht vom Newsserver des Providers, sondern von 
+<command>leafnode</command> (der
+diese mit <command>fetchnews</command> vom Provider geholt hatte). Da so eine
+Liste mehrere MB gross
+sein kann, ist man sehr froh, wenn diese nur einmal übertragen werden muss.
+ </textblock>
+
+ <textblock>
+Der Newsreader liest diese Liste ein, und man kann mit dem Abonnieren der 
+Gruppen
+beginnen. Nun weiss der Reader was wir lesen wollen, allerdings hat 
+<command>leafnode</command>
+davon noch nichts mitbekommen. Wenn man eine der gerade abonnierten Gruppen
+öffnet, sieht man einen Beitrag mit Titel "Leafnode placeholder for group
+&lt;gruppenname&gt;". Nun muss man diesen Beitrag öffnen und findet eine kurze
+Erklärung über den Sinn dieses Postings. Durch das lesen dieses Postings hat
+<command>leafnode</command> erfahren, dass wir uns für diese Gruppe 
+interessieren. Beim nächsten
+Aufruf von <command>fetchnews</command> wird er uns die dazugehörigen Postings
+holen.
+ </textblock>
+
+ <textblock>
+Wenn man sich eine Übersicht über die von <command>leafnode</command> betreuten
+Gruppen holen will,
+sollte in den meisten Fällen folgender Befehl genügen:
+ </textblock>
+
+ <shell>
+  <user path="~">
+$ ls -l /var/spool/news/interesting.groups/
+  </user>
+  <output>
+-rw-rw-r--  1 news   news   0 Dez 27 16:53 de.comp.os.unix.apps.gnome
+-rw-rw-r--  1 news   news   0 Dez 27 16:53 de.comp.os.unix.apps.kde
+-rw-rw-r--  1 news   news   0 Dez 27 16:53 de.comp.os.unix.apps.misc
+-rw-rw-r--  1 news   news   0 Dez 26 17:54 de.comp.os.unix.linux.infos
+-rw-rw-r--  1 news   news   0 Dez 26 17:54 de.comp.os.unix.linux.misc
+-rw-rw-r--  1 news   news   0 Dez 27 13:24 de.comp.os.unix.linux.moderated
+  </output>
+ </shell>
+
+
+ <textblock>
+Die darin aufgelisteten Gruppen hat man abonniert, und
+<command>leafnode</command> kümmert sich darum.
+ </textblock>
+
+
+</section>
+</split>
+
+<split>
+<section>
+
+ <heading>
+Automatisieren von Aufgaben
+ </heading>
+
+ <section>
+
+  <heading>
+ Alte News löschen
+  </heading>
+
+  <textblock>
+Man kann <command>texpire</command> zwar manuell aufrufen, doch ist dies auf die
+
+Dauer mühsam. Da
+Linux viele Dinge für einen automatisch machen kann, soll es doch auch die alten
+News löschen.
+  </textblock>
+
+  <textblock>
+Mit Hilfe von <command>Cron</command> müssen wir uns nur einmal ein paar Minuten
+
+Zeit nehmen und dann
+klappt dies automatisch. Da bisher immer news alles machen sollte, soll er nun
+auch
+wieder zum Zuge kommen. Als root führen wir folgenden Befehl aus:
+  </textblock>
+
+  <shell>
+   <root path="~">
+crontab -u news -e
+   </root>
+  </shell>
+
+  <textblock>
+Dieser Befehl öffnet die bestehende crontab von news zum Editieren. Darin fügen
+wir auf der nächsten freien Zeile folgendes hinzu:
+  </textblock>
+
+  <file>
+   <title>
+crontab von news
+   </title>
+   <content>
+   <![CDATA[
+0 20 * * * /usr/sbin/texpire
+   ]]>
+   </content>
+  </file>
+
+  <textblock>
+Damit wird jeden Tag um 20 Uhr der Befehl /usr/sbin/texpire ausgeführt. Da wir
+uns
+in der Crontab von news befinden, müssen wir den Benutzer nicht noch explizit
+angeben.
+  </textblock>
+
+  <hint>
+Hinweis zu <command>vi</command>:<br/>
+Standardmässig wird der Editor VI verwendet. Wer sich damit nicht auskennt, bekommt
+hier eine kleine Erklärung:<br/>
+Um zu editieren, müssen wir über <keycomb mode="hold"><key>Insert</key></keycomb> in den Schreibmodus wechseln. 
+Nach dem Editieren wechseln wir mit <keycomb><key>ESC</key></keycomb> in den Kommandomodus. Der Befehl <command>:wq</command>
+speichert die Änderung und schließt <command>vi</command>.
+Weitere Informationen findet man im Kapitel Editoren hier bei SelfLinux.
+</hint>
+<hint>
+Weitere Informationen findet man im <ref chapter="vim">Kapitel Editoren</ref>
+hier
+bei SelfLinux.
+</hint>
+ </section>
+
+ <section>
+
+  <heading>
+Automatisch News holen
+  </heading>
+
+  <textblock>
+Um fetchnews automatisch ausführen zu lassen, empfiehlt sich die Datei 
+/etc/ppp/ip-up. ip-up wird jedes Mal nach dem Aufbau einer Dial-up 
+Verbindung ausgeführt.
+  </textblock>
+
+  <textblock>
+Dieser Datei müssen nur die folgenden 2 Zeile hinzugefügt werden, und schon 
+sollte es
+funktionieren:
+  </textblock>
+
+  <file>
+   <title>
+/etc/ppp/ip-up
+   </title>
+   <content>
+   <![CDATA[
+# neue News von Newsserver holen
+/usr/sbin/fetchnews
+   ]]>
+   </content>
+  </file>
+
+  <section>
+   <heading>
+  Leafnode und Standleitungen
+   </heading>
+
+   <textblock>
+Wenn man über eine Standleitung oder eine Flatrate permanent eine Verbindung 
+zum
+Internet hat, so wird man nur wenig Freude an ip-up haben. Da macht
+<command>Cron</command> schon
+mehr Sinn. Also editieren wir nochmals als root die crontab von news:
+   </textblock>
+
+   <shell>
+    <root path="~">
+crontab -u news -e
+    </root>
+   </shell>
+
+   <textblock>
+Nun können wir dort eintragen, wann fetchnews ausgeführt werden soll. Durch
+   </textblock>
+
+   <file>
+    <title>
+crontab von news
+    </title>
+    <content>
+    <![CDATA[
+15 * * * * /usr/sbin/fetchnews
+    ]]>
+    </content>
+   </file>
+
+   <textblock>
+wird fetchnews jeweils um x:15 ausgeführt.(Also 12:15, 13:15, 14:15 usw). Wenn
+dies nicht genügt, können natürlich noch weitere Einträge gemacht werden.
+   </textblock>
+  </section>
+ </section>
+
+</section>
+</split>
+</chapter>

@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+
+ <title>Linux als WWW-Server</title>
+
+ <author>
+  <name>Dirk Hebenstreit</name>
+  <mailto>dirk.hebenstreit@epost.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Nuessler</name>
+  <mailto>m.nuessler@web.de</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>apache</index>
+
+ <description>
+  <textblock>
+Linux bietet sich als Betriebssystem zum Betreiben eines Webservers geradezu an.
+Die am weitesten verbreitete Webserver-Software, der Apache, ist ebenso wie Linux
+frei verfügbar.
+  </textblock>
+
+  <textblock>
+Deshalb erfolgt hier eine kurze Einführung in dessen Konfiguration
+mit Beschreibung der wichtigsten Konfigurationdateien.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+   <heading>
+Was ist eigentliche der Apache?
+   </heading>
+
+   <textblock>
+Der bekannteste Dienst des Internet ist zweifelsohne das <strong>WWW</strong> oder <strong>World Wide
+Web</strong> (Welt Weites Warten ;-) ). Es ist eine klassische Client-Server-Anwendung,
+bei welcher der Client passiv Informationen vom Server bezieht und diese in
+der Regel nicht verändern kann. Grundlage sind ein zustandsloses Protokoll (<strong>HTTP</strong>=Hypertext
+Transfer Protocol) und die Seitenbeschreibungssprache <strong>HTML</strong> (Hypertext Markup
+Language).
+   </textblock>
+
+   <textblock>
+Der Server hat die Aufgabe, die Anfragen der Form
+<command>Dienst://server.in.domäne/Pfad_zur_Seite</command> zu beantworten und die gewünschte
+Seite auszuliefern. Ferner können dynamische Seiten generiert werden, z.B. durch
+eine Datenbankanwendung, welche vom WWW-Server abgefragt wird. Um besondere Dienste
+zu realisieren, können auch komplette Programme auf dem Webserver gestartet werden,
+in der Regel über das <strong>CGI</strong> (Common Gateway Interface). Dies erlaubt es, vom Client
+aus bestimmte Prozesse auf einem Server anzustoßen.
+   </textblock>
+
+   <textblock>
+Seit der Erfindung des WWW Ende der 80iger Jahre am <ref lang="en" url="http://www.cern.ch">CERN</ref> in der Schweiz, hat sich
+der Dienst vom reinen Userinterface für Informationssysteme zu einer globalen
+und plattformübergreifenden Benutzeroberfläche gewandelt. Damit wurden die Inhalte
+und Aufgaben der Web-Server immer weiter ausgedehnt, und es entstanden verschiedene
+Lösungsansätze und Programme.
+   </textblock>
+
+   <textblock>
+Der am weitesten verbreitete Server im Internet ist mit über 60% der <strong>Apache</strong>.
+Er ist als <strong>GNU</strong>-Software frei verfügbar und hat sich als &quot;A patchy Server&quot;
+aus dem NCSA-Server entwickelt, der auch die Basis für andere Entwicklungen
+darstellt. Zwischenzeitlich ist er auf nahezu alle Plattformen portiert worden,
+auch eine NT-Variante ist verfügbar.
+   </textblock>
+
+   <textblock>
+Der Apache stellt in der SuSE-Distribution den Standard-Webserver dar und wird
+in der Serie <strong>n</strong> installiert.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Grundkonfiguration
+   </heading>
+
+   <textblock>
+Die Konfigurationsdateien des Apache befinden sich im Verzeichnis <path>&quot;/etc/httpd&quot;</path>
+Dort liegt nach der Installation die Datei <path>httpd.conf</path>.
+   </textblock>
+
+   <textblock>
+Bei älteren Installationen gibt es darüber hinaus noch weitere
+Dateien:
+   </textblock>
+
+   <ul>
+    <li>
+     <path>access.conf</path>
+    </li>
+    <li>
+     <path>magic</path>
+    </li>
+    <li>
+     <path>mime.types</path>
+    </li>
+    <li>
+     <path>srm.conf</path>
+    </li>
+   </ul>
+
+   <section>
+    <heading>
+Übersicht der Konfigurationsdateien
+    </heading>
+
+    <textblock>
+Der Apache verwendet eine Konfigurationsdatei
+<path>httpd.conf</path>.
+Hier werden die Grundeinstellungen für den Server vorgenommen.
+    </textblock>
+
+    <textblock>
+Manchmal, besonders in älteren Installationen, sieht man noch
+weitere Dateien:
+    </textblock>
+
+    <ol>
+     <li>
+<path>access.conf</path><br/>
+Wie der Name es erahnen läßt, werden hier die Zugriffsrechte auf den
+Server vergeben.
+     </li>
+     <li>
+<path>httpd.conf</path><br/>
+Hier werden die Grundeinstellungen für den Server vorgenommen.
+     </li>
+     <li>
+<path>magic</path><br/>
+Diese Datei wird vom Apache benutzt, um den Typ einer auszuliefernden Datei
+zu ermitteln.
+     </li>
+     <li>
+<path>mime.type</path><br/>
+Hier stehen die MIME-Typen (Multipurpose Internet Media Extensions).
+     </li>
+     <li>
+<path>srm.conf</path><br/>
+Ergänzungen zur Grundkonfiguration (Server Ressource Management).
+     </li>
+    </ol>
+
+    <textblock>
+Nach der Installation mittels <command>YaST</command>,
+<command>rpm</command> oder einem anderen Verfahren
+ist der Server bereits
+einsatzbereit. Er wird beim Starten des Rechners automatisch in Runlevel 2 gestartet
+und kann per Hand über das Script <command>/etc/rc.d/apache</command> beeinflußt werden.
+Dieses wertet die Variable <command>START_HTTPD</command> aus, welche
+in <path>rc.config</path> auf <command>YES</command> gesetzt werden muß (ist standardmäßig der Fall). Danach benutzt
+der Apache das Verzeichnis <path>/usr/local/httpd/htdocs</path> als Basisverzeichnis
+für die HTML-Dateien. Der Aufruf vom Browser aus sollte dann bereits folgendes
+Ergebnis liefern:
+    </textblock>
+
+    <textblock>
+Um den Server herunterzufahren geben sie
+<command>&quot;/etc/rc.d/apache stop&quot;</command>
+ein.<br/>
+Wenn Sie ihn wieder starten wollen, so geht dies analog mit
+<command>&quot;/etc/rc.d/apache start&quot;</command>.<br/>
+Um im laufenden Betrieb Änderungen an den Konfigurationsdateien wirksam werden
+zu lassen, können Sie mit
+<command>&quot;/etc/rc.d/apache restart&quot;</command>
+einen Neustart des Servers veranlassen.<br/>
+Entgegen älteren Versionen des Apache wird hierbei lediglich der Vaterprozeß
+von der Änderung informiert (mittels <command>kill -HUP PID-des-Vater-httpd</command>) und nicht
+die gesamte Prozeßgruppe gekillt und neu gestartet.
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Wichtige globale Parameter in der httpd.conf
+    </heading>
+
+    <textblock>
+Wie Sie bereits gesehen haben, ist der Apache bereits direkt nach der Installation
+funktionsbereit. Um ihn in das lokale Netz einzubinden und auf die zu erwartende
+Last einzustellen, sollten aber einige Änderungen erfolgen. Folgende Parameter
+in der Datei <path>httpd.conf</path> sind interessant:
+    </textblock>
+    
+    <textblock>
+<strong>LoadModule, modulname Pfad zum Modul</strong>
+    </textblock>
+
+    <quotation>
+Wie eingangs erwähnt, zeichnet sich der Apache
+durch Modularität und leichte Erweiterbarkeit aus. Über diese Parameter in <path>httpd.conf</path>
+kann der Leistungsumfang des Apache bestimmt werden, indem einzelne Module ein- oder
+ausgeblendet werden. Dies kann in sensiblen Bereichen (Internet-Server) besonders
+interessant werden, wenn sich z.B. ein Modul als potentielle Sicherheitslücke erwiesen
+hat. Anstatt den gesamten Server vom Netz zu nehmen (was einem Verlust der Web-Präsenz
+und damit geschäftlichen Verlusten gleichkommt) muß lediglich das betroffene Modul
+deaktiviert und der Apache neu gestartet werden. Damit fehlt zwar ein Teil der
+Funktionalität, aber nicht das gesamte System.
+    </quotation>
+               
+
+    <textblock>
+<strong>ServerType standalone</strong>
+    </textblock>
+
+    <quotation>
+Standardmäßig läuft der <command>httpd</command> bei SuSE als Standalone-Server,
+d.h. er wird über die rc-Skripte gestartet und bleibt bis zum Beenden durch
+Aufruf des Shutdown-Skriptes im Speicher. Alternativ hierzu kann auf Servern,
+welche lediglich für besondere Zwecke und nur zeitweise als Webserver laufen,
+auch ein Start über den inetd erreicht werden. Neben der entsprechenden
+Einrichtung in der Datei <path>/etc/inetd.conf</path> muß in der <path>httpd.conf</path>
+der Wert <command>standalone</command> durch <command>inetd</command> ersetzt werden.
+    </quotation>
+
+    <textblock>
+<strong>Port 80</strong>
+    </textblock>
+
+    <quotation>
+Der Standard-Port für das HTTP ist 80. Ist es aus besonderen Gründen erforderlich,
+hiervon abzuweichen, kann hier ein alternativer Port angegeben werden. Beachten
+Sie dabei, daß diese Änderung den Clients bekannt gemacht wird (Browser-Konfiguration)
+und das der gewünschte Port auf der Servermaschine auch frei ist.
+    </quotation>
+    
+    <textblock>
+<strong>User wwwrun</strong><br/>
+<strong>Group nogroup</strong>
+    </textblock>
+
+    <quotation>
+Der <command>httpd</command>-Prozeß sollte aus Sicherheitsgründen nicht unter root-Kennung
+laufen. Da aber für die Benutzung von Ports unterhalb von 1023 eben dieses notwendig
+ist, startet lediglich der Vaterprozeß als root und wechselt anschließend
+nach User und Group. Der Standarduser <command>wwwrun</command> ist
+bei SuSE bereits eingerichtet, der Wert <command>-2</command> führt in die Gruppe <command>nogroup</command>,
+welche ebenfalls auf Ihrem System vorhanden sein sollte.
+    </quotation>
+
+    <textblock>
+<strong>ServerAdmin you@your.address</strong>
+    </textblock>
+
+    <quotation>
+Fehler und Probleme sendet der <command>httpd</command> per Mail an diese Adresse. Sie taucht auch in
+den automatisch generierten Fehlerseiten für den Benutzer auf und sagt ihm,
+an wen er sich wenden soll, falls Probleme auftauchen. Im Internet hat sich
+die Konvention <strong>webmaster@ihre.domain</strong> durchgesetzt, wobei webmaster
+in der Datei <path>/etc/aliases</path> auf einen realen Benutzer verweist.
+    </quotation>
+    
+    <textblock>
+<strong>ServerName www@ihre.domain</strong>
+    </textblock>
+
+    <quotation>
+Hier tragen Sie den qualifizierten Namen Ihres Servers ein. Beachten Sie dabei,
+daß dieser aufgelöst werden können muß, d.h., entweder über DNS oder in der
+Datei <path>/etc/hosts</path> zugeordnet wird.
+    </quotation>
+
+    <textblock>
+<strong>ServerRoot &quot;/usr/local/httpd&quot;</strong>
+    </textblock>
+
+    <quotation>
+Dies ist das Basisverzeichnis der <command>httpd</command>-Installation.
+Wenn nicht anders angegeben (s.u.) werden Logdateien u.ä. abwärts von diesem
+Verzeichnis gesucht.
+    </quotation>
+
+    <textblock>
+<strong>ErrorLog /var/log/httpd/error_log</strong>
+    </textblock>
+
+    <quotation>
+Der Pfad zu der Fehler-Logdatei des Apache.
+    </quotation>
+
+    <textblock>
+<strong>LogLevel warn</strong>
+    </textblock>
+
+    <quotation>
+LogFormat: <strong>UNIX</strong>-Programme können sehr gesprächig sein, was ihren Zustand und eventuelle
+Fehler betrifft. Hierfür existiert seit BSD-UNIX der Mechanismus des SYSLOG-Schreibers,
+der diese Meldungen protokolliert. Daneben erzeugen wichtige Serverprozesse
+aber auch eigene Log-Dateien und geben diesen ein entsprechendes Format. Mittels
+LogLevel kann die &quot;Gesprächigkeit&quot; des <command>httpd</command> von wenig
+(<command>emerg</command> = emergency; nur &quot;Lebensbedrohliche&quot; Meldungen werden generiert),
+bis viel (<command>debug</command> = debugging; jede Kleinigkeit wird protokolliert) beeinflußt
+werden. Standard ist <command>warn</command>, was im Normalbetrieb ausreichend ist.
+Hinsichtlich des Formates der Log-Dateien hat sich das <name>Common Log Format</name>
+(CLF) durchgesetzt, welches von vielen Auswertungsprogrammen unterstützt wird.
+Änderungen an den Standardwerten sind nicht ratsam, es sei den, man ist sich
+der Auswirkungen bewußt.
+    </quotation>
+    
+    <textblock>
+<strong>CustomLog /var/log/httpd.access_log common</strong>
+    </textblock>
+
+    <quotation>
+Diese Log-Datei hat eine Sondestellung, da in ihr sämtliche Zugriffe auf den
+Server protokolliert werden.
+    </quotation>
+    
+    <textblock>
+<strong>StartServers 5</strong><br/>
+<strong>MinSpareServers 5</strong>
+    </textblock>
+
+    <quotation>
+Gibt die Anzahl der anfangs zu startenden und danach mindestens verfügbaren
+Child-Prozesse an. Der Apache erzeugt nach dem Start die hier angegebene Anzahl
+von Subprozessen und teilt die Anfragen danach dynamisch auf diese auf, so daß
+eine entsprechende Lastverteilung erfolgt.
+    </quotation>
+    
+    <textblock>
+<strong>MaxSpareServers 10</strong>
+    </textblock>
+
+    <quotation>
+Wenn die vorhandenen Childprozesse nicht mehr ausreichen, erzeugt der Vaterprozeß
+weitere Kinder. Geht die Last dann wieder zurück, können die nunmehr leerlaufenden
+Prozesse wieder beendet werden. Wenn mehr als die hier angegebenen Child-Prozesse
+im Leerlauf sind, werden sie bis zu diesem Wert hin wieder beendet.
+    </quotation>
+   
+    <quotation>
+Die Datei <path>httpd.conf</path> bietet noch weitere Einstellungsmöglichkeiten.
+Zu Details sei hier auf die entsprechende Literatur und die mitgelieferte Dokumentation
+unter <path>/usr/doc/packages/apache</path>, sowie die HTML-Online-Hilfe verwiesen.
+    </quotation>
+   </section>
+
+   <section>
+    <heading>
+Wichtige Webserverparameter
+    </heading>
+
+    <textblock>
+Bei älteren Installationen sind diese Parameter in der Datei
+<path>srm.conf</path> zu finden, normalerweise stehen diese jedoch auch in der
+<path>httpd.conf</path>.
+    </textblock>
+
+    <textblock>
+<strong>DocumentRoot &quot;/usr/local/httpd/htdocs&quot;</strong>
+    </textblock>
+    
+    <quotation>
+Hier wird das Wurzelverzeichnis für die HTML-Dokumente festgelegt (Document
+Root). Alle Anfragen der Clients werden relativ zu diesem Verzeichnis beantwortet
+(http://www.your.domain/path_to_file/file.html). Bei eine Anfrage
+der Form http://www.your.domain wird in diesem Verzeichnis die Index-Datei
+(s.u.) gesucht.
+    </quotation>
+    
+    <textblock>
+<strong>UserDir public_html</strong>
+    </textblock>
+
+    <quotation>
+Auf öffentlichen Webservern, aber auch in Unternehmen, wird die Möglichkeit
+angeboten, Benutzerseiten von Anwendern in das Netz zu stellen. Dazu wird in
+deren Home-Verzeichnis ein Unterverzeichnis <path>public_html</path> angelegt
+und mit der <command>URL http://www.server.name/~username/</command> kann dann auf
+dieses Verzeichnis zugegriffen werden. Wenn uns der Eintrag <path>public_html</path>
+nicht gefällt, so können wir ihn hier ändern.
+    </quotation>
+
+    <textblock>
+<strong>DirectoryIndex index.html</strong>
+    </textblock>
+
+    <quotation>
+Mit dieser Einstellung legen Sie fest, welche Dateien als sog. Indexdateien
+betrachtet werden. Bei Aufruf einer URL, die nur einen Pfad als Ziel enthält
+(z.B. http://www.my.domain/verzeichnis/) sucht der Apache in &lt;verzeichnis&gt;
+nach einer Datei, die einen der unter <command>DirectoryIndex</command> aufgeführten Namen
+hat. Mehrere Möglichkeiten können durch Leerzeichen getrennt angegeben werden,
+z.B. <command>index.html Index.html index.htm anfang.html</command>.
+    </quotation>
+               
+<!--            <textblock>
+<command>&quot;FancyIndexing&quot;</command><br/>
+                </textblock>
+                <textblock>
+<command>&quot;AddIconByEnconding&quot;</command><br/>
+                </textblock>
+                <textblock>
+<command>&quot;AddIconByType&quot;</command><br/>
+                </textblock>  -->
+
+    <textblock>
+<strong>AddIcon [Pfad_zum_Icon]</strong>
+    </textblock>
+
+    <quotation>
+Diese Einstellungen betreffen die Zuordnung von Icons zu einzelnen Dateien/MIME-Typen.
+Wenn vom Client auf ein Verzeichnis zugegriffen wird, in dem keine Datei <path>index.html</path>
+(s.o.) liegt, so bekommt er ein Inhaltsverzeichnis angezeigt. Mit den genannten
+Einträgen können die auszuliefernden Symbole beeinflußt oder geändert werden.
+Im Normalfall sind die voreingestellten Werte aber ausreichend und aufgrund
+der weiten Verbreitung des Apache eine Art Quasi-Standard. Man kann aber Symbole
+für eigene Dateitypen nach belieben hinzufügen.
+    </quotation>
+     
+<!--            <textblock>
+<command>&quot;ReadmeName README&quot;</command><br/>
+                </textblock>  -->
+
+    <textblock>
+<strong>HeaderName HEADER</strong>
+    </textblock>
+
+    <quotation>
+Um dem Anwender eine kurze Erläuterung des Verzeichnisinhaltes zu geben, kann
+dort eine README-Datei angelegt werden. Apache stellt diese dann dem
+eigentlichen Verzeichnisinhalt voran.
+    </quotation>
+
+    <quotation>
+Mit diesen einfachen Hilfsmitteln kann z.B. eine einfache Erklärung für die
+Verzeichnisstruktur eines FTP-Servers aufgebaut werden.
+    </quotation>
+
+    <textblock>
+<strong>AccessFileName .htaccess</strong>
+    </textblock>
+
+    <quotation>
+Der Name der bereits erwähnten <path>.htaccess</path>-Datei ist ebenfalls frei wählbar.
+Inhaltlich entsprechen diese Dateien den Directory-Anweisungen aus der Datei
+<path>httpd.conf</path> und dürfen demnach die gleichen Inhalte besitzen. Um zu
+verhindern, daß Anwender eigenmächtig riskante Einstellungen für ihr
+<path>public_html</path>
+vornehmen ist die Auswertung dieser Dateien aber in
+<path>httpd.conf</path> in
+der Regel gesperrt (s. <command>AllowOverride</command>). Ist die Benutzung von <path>.htaccess</path>-Dateien
+erlaubt, so könnten diese folgenden Inhalt haben:
+    </quotation>
+    
+    <file>
+     <title>
+      .htaccess
+     </title>
+     <content>
+order deny,allow
+deny from all
+allow from localhost
+     </content>
+    </file>
+
+    <quotation><br/>
+Damit erlauben wir nur dem Rechner <command>localhost</command> den Zugriff auf unser
+Verzeichnis NSG.
+    </quotation>
+   </section>
+   
+   <section>
+    <heading>
+Wichtige Zugriffsberechtigungsparameter
+    </heading>
+
+    <textblock>
+Bei älteren Installationen sind diese Parameter in der Datei
+<path>access.conf</path> zu finden, normalerweise stehen diese jedoch auch in der
+<path>httpd.conf</path>.
+    </textblock>
+
+    <textblock>
+Es wird der Zugriff auf Dateien und Verzeichnisse geregelt. Sie
+korreliert dabei mit den <path>.htaccess</path>-Dateien in den Verzeichnissen, welche
+einen User-bezogenen Zugriff gewähren.
+    </textblock>
+
+    <textblock>
+Jede der nun folgenden Anweisungen kann für einzelne Unterverzeichnisse (ab
+<command>DocumentRoot</command>) gesetzt werden. Hierfür ist das betroffene Verzeichnis jeweils
+mit <command>&lt;Directory "Pfad"&gt;</command>
+einzuleiten und die Beschreibung mittels
+<command>&lt;/Directory&gt;</command>
+als Block zu beenden. Die Datei <path>access.conf</path> beginnt mit einem Abschnitt für
+die Grundeinstellungen ab DocumentRoot und setzt dabei restriktive Werte:
+    </textblock>
+
+    <file>
+     <title>
+      Auszug httpd.conf
+     </title>
+     <content>
+&lt;Directory&gt;
+Options None
+AllowOverride None
+&lt;/Directory&gt;
+     </content>
+    </file>
+
+    <textblock>
+Hierfür wird die Wirkung von <path>.htaccess</path>-Dateien
+für <command>DocumentRoot</command> festgelegt.
+Default (des Apache, nicht SuSE!) ist <command>All</command>,
+d.h., die <path>.htaccess</path>-Dateien werden
+gelesen und der komplette Inhalt wird interpretiert.
+Wenn auf dem Server das Erstellen privater Benutzerseiten gewünscht ist, dann
+ist dieser Wert aber nicht zu empfehlen, da die Anwender sonst z.B. die Nutzung
+von eigenen CGI-Scripten einschalten könnten. Daher ist bei SuSE diese Einstellung
+auf <command>None</command> gesetzt, d.h., <path>.htaccess</path>-Dateien werden ignoriert.
+    </textblock>
+
+    <textblock>
+Jetzt werden mit<command>&lt;Directory &quot;/usr/local/httpd/htdocs&quot;&gt;</command> die Einstellungen
+für <path>/usr/local/httpd/htdocs</path>
+(also wieder unser <command>DocumentRoot</command>)genauer bestimmt.
+    </textblock>
+
+    <textblock>
+<strong>Options Indexes FollowSymLinks</strong>
+    </textblock>
+
+    <quotation>
+Mit der Options-Anweisung werden verschiedene Einstellungen eingeleitet.
+In diesem Beispiel bedeutet <command>Indexes</command>, daß der Server bei Aufruf einer
+URL mit einem Directory als Ziel (z.B. http://www.my.domain/Verzeichnis/)
+in <command>&lt;DocumentRoot/Verzeichnis&gt;</command> eine Datei <path>index.html</path> sucht
+und diese zurückliefert, ist diese nicht vorhanden, aber mit einer Fehlermeldung
+(Document not found) antwortet.<br/>
+Die Option <command>FollowSymLinks</command> erlaubt es, aus dem <command>DocumentRoot</command> mittels
+symbolischer Links auszubrechen, sofern die Zugriffsrechte entsprechend gesetzt
+sind. Damit können Sie bei Platzproblemen einen Teilbaum Ihres Webservers auf
+eine andere Partition oder gar ein über <strong>NFS/SAMBA</strong> gemountes Verzeichnis legen.
+   </quotation>
+
+    <file>
+     <title>
+      Auszug httpd.conf
+     </title>
+     <content>
+order allow,deny
+allow from all
+     </content>
+    </file>
+
+    <quotation><br/>
+Hiermit legen Sie fest, wer alles auf Ihren Server zugreifen darf. Zuerst wird
+die Reihenfolge bestimmt, in der die folgenden Regeln ausgewertet werden. Bei
+<command>order allow,deny</command> werden zuerst die unter <command>allow</command> aufgeführten Regeln und danach
+erst die unter <command>deny</command> stehenden angewendet. Der Eintrag <command>order deny,allow</command> dreht
+diese Reihenfolge um.
+    </quotation>
+
+    <quotation>
+Die einzelnen Regeln besitzen die Grundsyntax <command>allow|deny from domain|all</command>
+Wollen wir z.B. nur den Rechnern aus unserer eigenen Domain den Zugriff
+erlauben, so schreibe man:
+    </quotation>
+
+    <file>
+     <title>
+      .htaccess
+     </title>
+     <content>
+order deny,allow
+deny from all
+allow from my.domain
+     </content>
+    </file>
+
+    <quotation><br/>
+Um nur bestimmten Domains den Zugriff zu verweigern schreibe man:
+    </quotation>
+
+    <file>
+     <title>
+      Auszug httpd.conf
+     </title>
+     <content>
+order allow,deny
+allow from all
+deny from bad.domain other.domain 123.123.40
+     </content>
+    </file>
+
+    <quotation><br/>
+Wie man sieht ist neben der Angabe des symbolischen Namens auch die Netzadresse
+des (un)erwünschten Netzes möglich.
+    </quotation>
+   </section>
+
+   <section>
+    <heading>
+Zugriffsschutz für Verzeichnisse
+    </heading>
+
+    <textblock>
+Aus der Kombination von <path>httpd.conf</path>
+(beziehungsweise <path>access.conf</path>)
+und <path>.htaccess</path>-Dateien
+ergibt sich der Zugriffsschutz für die Verzeichnisstruktur. Um nur einer bestimmten
+Benutzergruppe oder einzelnen Anwendern den Zugriff auf Verzeichnisse zu gewähren,
+sind folgenden Einstellungen notwendig:
+    </textblock>
+
+    <textblock>
+In der Datei <path>access.conf</path> wird das Verzeichnis aus den allgemeingültigen
+Einstellungen herausgelöst.
+    </textblock>
+
+    <file>
+     <title>
+      Eintrag in access.conf:
+     </title>
+     <content>
+&lt;Directory /usr/local/httpd/htdocs/NSG&gt;
+AllowOverride All
+AuthName NSG
+AuthType Basic
+AuthUserFile /etc/httpd/passwd
+AuthGroupFile /etc/httpd/group
+Require user hebi;nsg
+&lt;/Directory&gt;
+     </content>
+    </file>
+
+    <textblock>
+<strong>AllowOverride</strong>
+    </textblock>
+
+    <quotation>
+All ermöglicht es, mittels <path>.htacces</path> weitere
+Einstellungen innerhalb des Verzeichnisses anzulegen.
+    </quotation>
+    
+    <textblock>
+<strong>AuthName NSG</strong>
+    </textblock>
+
+    <quotation>
+legt einen Namen für das Login-Feld an.
+    </quotation>
+
+    <textblock>
+<strong>AuthType</strong>
+    </textblock>
+
+    <quotation>
+Basic stellt den Authorisierungsmechanismus ein (s.u.).
+    </quotation>
+
+    <textblock>
+ <strong>AuthUserFile</strong>
+    </textblock>
+
+    <quotation>
+sagt, wo die Paßwortdatei zu suchen ist.
+    </quotation>
+
+    <textblock>
+<strong>AuthGroupFile</strong>
+    </textblock>
+
+    <quotation>
+legt fest, in welcher Datei die Usergruppen zu suchen sind.
+    </quotation>
+    
+    <textblock>
+<strong>Require user</strong>
+    </textblock>
+
+    <quotation>
+legt fest, welche Benutzer (aus <command>AuthUserFile</command>) Zugriff haben sollen.
+Der Apache setzt bei der Authorisierung auf verschiedene Mechanismen. Bereits
+in der Standardausführung enthält er die Verfahren<br/><br/>
+
+<command>Basic (mod_auth)</command><br/>
+<command>dbm (mod_auth_dbm)</command><br/>
+<command>db (mod_auth_db)</command><br/>
+    </quotation>
+    
+    <quotation>
+Weitere Möglichkeiten können über Module eingebunden werden. Die verbreiteste
+ist wohl der Weg über eine Datenbank, wobei die für nicht-kommerzielle Zwecke
+freie Implementierung <strong>mSQL</strong> bereits als Module <command>mod_auth_msql</command> zum Standardumfang
+des Apache gehört.
+    </quotation>
+
+    <quotation>
+Um die für das Verfahren Basic notwendigen Dateien anzulegen benötigt
+man das Programm <command>htpasswd</command> und einen beliebigen Editor. Das Anlegen
+einer Paßwortdatei erfolgt mit
+    </quotation>
+
+    <shell>
+     <root>
+      htpasswd -c [Pfad_zur_Datei] Username
+     </root>
+    </shell>
+
+    <quotation>
+Danach kann ohne den Schalter <command>-c</command> ein neuer Benutzer angelegt werden.
+Hierbei wird der bei UNIX standardmäßig implementierte crypt(3)-Mechanismus
+verwendet. Das Ergebnis sieht dann wie folgt aus:
+    </quotation>
+
+    <file>
+     <title>
+      [Pfad_zur_Datei]
+     </title>
+     <content>
+nobody:8Y0H8cYsTFzNw
+hhebi:wN95S.UxOOZH6
+hhe:.NQ/RSk5MnfvQ
+     </content>
+    </file>
+
+    <quotation><br/>
+Für eine Gruppendatei benötigt man lediglich einen Editor wie z.B. den<ref chapter="vim">vi</ref>:
+    </quotation>
+
+    <file>
+     <title>
+      Gruppendatei 
+     </title>
+     <content>
+admin:hebi he
+other:he nobody
+     </content>
+    </file>
+
+    <quotation><br/>
+Im Verzeichnis (hier: <path>/usr/local/httpd/htdocs/NSG</path>) kann mit der Datei
+<path>.htaccess</path> der Zugriff weiter kontrolliert werden:
+    </quotation>
+
+    <textblock>
+<strong>Satisfy All</strong>
+    </textblock>
+
+    <textblock>
+<strong>Order deny,allow</strong>
+    </textblock>
+
+    <textblock>
+<strong>deny from all</strong>
+    </textblock>
+
+    <textblock>
+<strong>allow from my.domain</strong>
+    </textblock>
+
+    <quotation>
+Damit können jetzt nur noch Clients aus der Domain <command>my.domain</command> auf das
+Verzeichnis zugreifen. Ersetzt man bei <command>Satisfy</command> den Wert <command>All</command>
+durch <command>Any</command> ist aus der Domain <command>my.domain</command> der Zugriff ohne Einschränkung
+erlaubt, alle anderen Rechner benötigen eine gültige Kombination aus Username
+und Password.
+    </quotation>
+   </section>
+  </section>
+ </split>
+ 
+ <split>
+  <section>
+   <heading>
+Aufgaben
+   </heading>
+
+   <ol>
+    <li>
+Installieren Sie den Apache von der CD, indem Sie <command>YaST</command> benutzen. Kontrollieren
+Sie, ob sich alle Dateien an den richtigen Orten befinden.<br/><br/>
+    </li>
+    <li>
+Starten Sie den Apache über das Script <path>/etc/rc.d/apache</path>. Was müssen
+Sie beachten? Wie können Sie verhindern, daß der Apache beim Hochfahren des
+Rechners gestartet wird?<br/><br/>
+    </li>
+    <li>
+Ändern Sie folgende Einstellungen in der Datei <path>httpd.conf</path>:
+
+     <file>
+      <title>
+       Änderungen in httpd.conf
+      </title>
+      <content>
+ServerName = wwwXY.nsg.edu
+        (Wobei XY Ihrer Platznummer entspricht)
+
+ServerAdmin = webmaster@wwwYX.nsg.edu
+      </content>
+     </file>
+
+Was müssen Sie beachten, damit diese Einstellungen auch funktionieren?<br/><br/>
+    </li>
+    <li>
+Ändern Sie folgenden Einstellungen:
+
+     <file>
+      <title>
+       Änderungen in httpd.conf
+      </title>
+      <content>
+StartServer = 10
+MinSpareServers = 15
+      </content>
+     </file>
+
+Stoppen Sie den Apache und starten Sie ihn erneut. Wie können Sie die Auswirkungen
+Ihrer Änderungen kontrollieren und wie sehen diese aus?<br/><br/>
+    </li>
+    <li>
+Erzeugen Sie im &quot;DocumentRoot&quot; ein Verzeichnis <path>Eigene_Dateien</path>
+und erstellen Sie darin eine Datei <path>index.html</path>. Benutzen Sie hierfür
+die Vorlage <path>/home/ablagen/ZENTRAL/html_body.html</path>. Arbeiten Sie dabei
+als root.<br/><br/>
+    </li>
+    <li>
+Versuchen Sie, mittels Netscape die eben erstellte Datei aufzurufen.
+Benutzen Sie dabei sowohl eine absolute URL (<ref url="http://localhost/Eigene_Dateien/index.html">http://localhost/Eigene_Dateien/index.html</ref>)
+als auch den einfachen Verzeichnisaufruf (<ref url="http://localhost/Eigene_Dateien/">http://localhost/Eigene_Dateien/</ref>).
+Erfolg?<br/><br/>
+    </li>
+    <li>
+Ergänzen Sie die Voreinstellungen für Indexdateien um die Einträge <command>index.htm</command>
+und <command>anfang.html</command>. Erzeugen Sie durch Kopieren diese Dateien in <path>Eigene_Dateien</path>
+und verändern Sie diese, so daß man einen Unterschied erkennt. Versuchen Sie
+auf <ref url="http://localhost/Eigene_Dateien/">http://localhost/Eigene_Dateien/</ref> mit dem Netscape zuzugreifen
+und stellen Sie fest, welche Datei angezeigt wird. Verändern Sie die Reihenfolge
+der Indexdateien in <path>httpd.conf</path> und versuchen Sie es erneut. Was stellen
+Sie fest?<br/><br/>
+    </li>
+    <li>
+Legen Sie einen Benutzer <name>&quot;Peter Maier&quot;</name> (Username: pmaier, Homeverzeichnis: <path>/home/pmaier</path>)
+an und erzeugen Sie ein Unterverzeichnis <path>/home/pmaier/public_html</path>.
+Erzeugen Sie eine Datei <path>index.html</path> in diesem Unterverzeichnis
+(benutzen Sie hierfür wieder die Vorlage <path>html_body.html</path>) und versuchen
+Sie, mit Netscape auf diese zuzugreifen.<br/><br/>
+    </li>
+    <li>
+Ergänzen Sie die Datei <path>httpd.conf</path> um folgende Zeilen:
+
+     <file>
+      <title>
+       Ergänzung in httpd.conf
+      </title>
+      <content>
+&lt;Directory /usr/local/httpd/htdocs/NSG&gt;
+        AllowOverride All
+        AuthName NSG
+        AuthType Basic
+        AuthUserFile /etc/httpd/passwd
+        AuthGroupFile /etc/httpd/group
+        Require user hebi nsg
+&lt;/Directory&gt;
+       </content>
+     </file>
+     
+Legen Sie die darin beschriebenen Paßwort- und Gruppendateien mit den entsprechenden
+Benutzern an. Starten Sie den Apache neu und versuchen Sie, auf das Verzeichnis
+zuzugreifen.<br/><br/>
+    </li>
+   </ol>
+  </section>
+ </split>
+</chapter>

@@ -1,0 +1,1674 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>xine - Ein freier Video-Player</title>
+
+ <author>
+   <name>Stephan Walter</name>
+   <mailto>stephan.walter@gmx.ch</mailto>
+ </author>
+
+ <layout>
+   <name>Torsten Hemm</name>
+   <mailto>Sunshine@goldenergrund.de</mailto>
+ </layout>
+
+ <license>
+   GFDL
+ </license>
+
+ <index>xine</index>
+ <description>
+  <textblock>
+Übersetzung dieses Textes ins Deutsche: <name email="stephan.walter@gmx.ch">Stephan Walter</name>
+  </textblock>
+  <textblock>
+FAQ Aktualisiert von: <name email="pmhahn@users.sourceforge.net">Philipp Hahn</name>
+  </textblock>
+  <textblock>
+Überarbeitet für SelfLinux: <name email="webmaster@arnulfpelzer.de">Arnulf Pelzer</name>
+  </textblock>
+ </description>
+
+
+ <split>
+  <section><!--1-->
+   <heading>
+Dokumentation
+   </heading>
+   <section><!--1.1-->
+    <heading>
+Ziel dieses Dokuments
+    </heading>
+    <textblock>
+Dieser Text (README_de) ist an die Endbenutzer von xine
+gerichtet. Weitere Information finden Sie im Verzeichnis
+<name>doc/</name> in den <name>xine-lib</name> und <name>xine-ui</name> Paketen.
+Bitte nehmen Sie sich auch Zeit, die FAQs (Frequently Asked
+Questions = häufig gestellte Fragen) weiter unten im Text zu lesen.
+    </textblock>
+   </section>
+  </section>
+ </split>
+ <split>
+  <section><!--2-->
+   <heading>
+Was ist xine?
+   </heading>
+   <textblock>
+<name>xine</name> (gesprochen "ksin") ist ein GPL-lizenzierter Video-Player
+für Unix, Linux und andere Systeme. Es werden u.a. folgende
+Formate unterstützt:
+   </textblock>
+   <ul>
+    <li>MPEG-1 Audio und Video</li>
+    <li>MPEG-2 Audio und Video</li>
+    <li>MP3</li>
+    <li>AVI (verschiedene Formate, auch DivX)</li>
+    <li>Ogg Vorbis</li>
+    <li>QuickTime (eingeschränkt, da diese Formate proprietär sind)</li>
+   </ul>
+   <textblock>
+<name>xine</name> spielt sowohl Audio- und Videodaten eines Streams. Die
+dazu benötigte Hardware-Leistung ist abhängig vom Format des
+Streams. Die untere Grenze für MPEG-2 bei voller Bildrate ist
+ein Pentium II mit 400MHz.
+   </textblock>
+   <textblock>
+"Von Haus aus" kann <name>xine</name> Video CDs, SVCDs und DVDs abspielen.
+Leider ist in vielen Ländern das Abspielen verschlüsselter DVDs
+durch "nichtauthorisierte" Software verboten oder rechtlich
+unklar. Aus diesem Grund besitzt xine keine Funktion zum
+Abspielen verschlüsselter DVDs. Um solche DVDs abzuspielen,
+benötigen Sie zusätzliche Software, wie z.B. <name>libdvdread</name> und
+das <name>dvdnav</name>-Plugin.
+   </textblock>
+   <textblock>
+Die Entwickler von <name>xine</name> lehnen jede Verantwortung für Folgen
+einer solchartigen Benutzung von xine ab.
+Durch die Möglichkeit, Plug-Ins zu laden, kann <name>xine</name> weitere
+Stream-Formate und Ausgabegeräte unterstützen.
+   </textblock>
+   <section><!--2.1-->
+    <heading>
+Unterstützte Systeme und Voraussetzungen
+    </heading>
+    <textblock>
+Software-Voraussetzungen (werden von allen aktuellen
+Distributionen erfüllt):
+    </textblock>
+    <ul>
+     <li>Linux oder FreeBSD. xine sollte aber auch auf Solaris, IRIX
+     und Apple PPC laufen.</li>
+     <li>X-Server X11 empfehlenswert: MIT-Xv oder MIT-Shm</li>
+     <li>aktuelle GNU-Versionen von make, gcc und binutils</li>
+     <li>OSS, ALSA, ESD oder artsd (KDE) für Sound-Wiedergabe</li>
+     <li>optional: aalib für ASCII-Art Video :-)</li>
+    </ul>
+    <textblock>
+Hardware-Voraussetzungen:
+    </textblock>
+    <ul>
+     <li>von X11 unterstützte Grafikkarte mit 8, 15, 16, 24 oder 32
+     Bit Farbtiefe. Dringend empfohlen: Xv- oder XShm-Unterstützung.
+     Folgende Karten wurden erfolgreich mit Xv oder XShm getestet:
+     nVidia Riva TNT und Riva TNT2
+     Matrox G400
+     ATI Rage128, M64 und Rage II
+     3dfx Voodoo 3
+     Trident 9660
+     </li>
+    </ul>
+    <textblock>
+Wenn Ihre Karte Xv nicht unterstützt, sollten Sie 16 Bit Farbtiefe
+verwenden, da sonst die Performance drastisch sinkt. Xv läuft mit
+jeder Farbtiefe okay.
+    </textblock>
+    <ul>
+     <li>mind. Pentium II 400MHz für DVD-Wiedergabe, schnellerer Prozessor
+     dringend empfohlen.</li>
+     <li>empfohlen: DMA-Unterstützung für Festplatten und DVD-Laufwerke</li>
+    </ul>
+   </section>
+   <section><!--2.2-->
+    <heading>
+Von xine verwendete Software
+    </heading>
+    <textblock>
+<name>xine</name> verwendet folgende, unter der <name>GPL</name> veröffentlichte
+Software:
+    </textblock>
+    <ul>
+     <li>liba52 (von Aaron Holtzman und Michel Lespinasse)</li>
+     <li>libmpeg2 (von Aaron Holtzman und Michel Lespinasse)</li>
+     <li>libmad (von Robert Leslie)</li>
+     <li>libffmpeg (von Gerard Lantau)</li>
+    </ul>
+    <textblock>
+Ohne diese Programme wäre xine nicht das, was es heute ist!
+Ein grosser Dank gebürt auch dem "Linux Video and DVD Project"
+(LiViD)<br/>.
+    <ref lang="en" url="http://www.linuxvideo.org">http://www.linuxvideo.org</ref>
+    </textblock>
+   </section>
+   <section><!--2.3-->
+    <heading>
+Entwickler
+    </heading>
+    <textblock>
+Hauptentwickler: <name>Günter Bartsch</name><br/>
+viele Ideen und Fehlerbehebung, ALSA Plugin, Bedienoberfläche
+(GUI): <name>Daniel Caujolle-Bert</name><br/>
+Audio Programmierung: <name>Siegfried "Siggi" Langauf</name><br/>
+libmpeg2 und libac3 "Hacks": <name>Michael Lespinasse</name><br/>
+... u.v.a.m., siehe Datei xine-lib-x.x.x/AUTHORS
+    </textblock>
+   </section>
+   <section><!--2.4-->
+    <heading>
+Benutzung
+    </heading>
+    <textblock>
+Sie können <name>xine</name> ohne Optionen starten. Geben Sie dazu einfach
+<name>xine</name> In einem X-Terminal ein. <name>xine</name> überprüft, ob
+Ihr System <name>Xv</name> unterstützt und wenn nicht, benutzt es <name>XShm</name>.
+Sollte diese Überprüfung nicht funktionieren, können Sie mit der <strong>-V</strong>
+Option das Output-Plugin auswählen, z.B:
+    </textblock>
+    <shell><user path="~">xine -V XShm</user></shell>
+    <textblock>
+So verwendet xine das XShm Plugin.
+    </textblock>
+    <textblock>
+Sie können als Option eine Datei oder ein sog. "Media Resource
+Locator" angeben. Ein Media Resource Locator (MRL) ist dem von
+Internet her bekannten URL ähnlich. Er hat folgendes Format:
+Zuerst müssen Sie eine Eingabequelle angeben, gefolgt von
+"://" und der Angabe, welchen Ausschnitt/Kapitel der Quelle
+Sie sehen möchten.
+    </textblock>
+    <textblock>Beispiel: Kapitel 3 einer VCD abspielen</textblock>
+    <shell><user path="~">xine vcd://3</user></shell>
+    <textblock>Beispiel: Direktzugriff auf eine DVD</textblock>
+    <shell><user path="~">xine dvd://VTS_01_1.VOB</user></shell>
+    <textblock>
+Das Standard-Plugin zum Abspielen von DVDs (wie im oberen
+Beispiel) unterstützt weder Menüs noch verschlüsselte DVDs.
+Bessere DVD-Plugins sind <name>xine-dvdnav</name>, <name>xine-dmd</name> und
+<name>xine-d5d</name>.
+    </textblock>
+    <textblock>
+Die möglichen Eingabeformate sind abhängig von den Input-Plugins.
+Geben Sie folgendes ein, um einen Überblick über die Benutzung
+von <name>xine</name> zu erhalten:
+    </textblock>
+    <shell><user path="~">xine --help</user></shell>
+    <textblock>
+<name>xine</name> unterstützt "Drag'n'Drop" (xdnd Protokoll Version 3). Sie
+können Dateien mit der Maus auf xine ziehen, um diese abzuspielen.
+Wenn Sie den Sound per ESD über ein Netzwerk senden wollen,
+müssen Sie die Umgebungsvariable ESPEAKER setzen, bevor Sie
+xine starten.
+    </textblock>
+    <section><!--2.4.1-->
+     <heading>
+Bedienung mit der Tastatur
+     </heading>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column/>
+      <tr><th>Taste</th><th>Funktion</th></tr>
+      <tr><td>ENTER</td><td>abspielen</td></tr>
+      <tr><td>LEERTASTE</td><td>Pause</td></tr>
+      <tr><td>AUF / AB</td><td>schnell vorspulen / Zeitlupe</td></tr>
+      <tr><td>0</td><td>gehe zum Anfang des Streams</td></tr>
+      <tr><td>1 - 9</td><td>gehe zu 10 - 90% des Streams</td></tr>
+      <tr><td>LINKS / RECHTS</td><td>+/- 15 Sekunden (mit STRG: +/- 60 Sek.)</td></tr>
+      <tr><td>BILD-AUF</td><td>gehe zum vorherigen Eintrag in der Liste</td></tr>
+      <tr><td>BILD-AB</td><td>gehe zum nächsten Eintrag in der Liste</td></tr>
+      <tr><td>f</td><td>Vollbild an/aus</td></tr>
+      <tr><td>a</td><td>Seitenverhältnis (AUTO/16:9/4:3/DVB)</td></tr>
+      <tr><td>i</td><td>Interlace-Modus an/aus</td></tr>
+      <tr><td>z  Z</td><td>hinein-/herauszoomen (+STRG: Zoom horizontal, +ALT: Zoom vertikal)</td></tr>
+      <tr><td>EINFG</td><td>Mauscursor "gefangenhalten" (nützlich für Virtual Screen)</td></tr>
+      <tr><td>&lt; &gt;></td><td>Fenstergrösse verändern</td></tr>
+      <tr><td>+  - (nicht auf dem Ziffernblock)</td><td>Audiokanal (Sprache) wechseln</td></tr>
+      <tr><td>,  .</td><td>Sprache der Untertitel wechseln</td></tr>
+      <tr><td>n  m</td><td>Audio und Video synchronisieren</td></tr>
+      <tr><td>POS1</td><td>Audio- und Video-Synchronisation auf Standardwert setzen</td></tr>
+      <tr><td>q</td><td>xine beenden</td></tr>
+      <tr><td>h</td><td>Video-Fenster deaktivieren (nur Ton-Wiedergabe)</td></tr>
+      <tr><td>g</td><td>(oder rechte Maustaste) Player-Fenster deaktivieren</td></tr>
+      </table>
+      <textblock>
+Tastenfunktionen ändern:<br/>
+Sie können die Tastenzuordnungen ändern, indem Sie die Datei
+~/.xine/keymap bearbeiten. Die Syntax lautet wie folgt:
+     </textblock>
+     <textblock>
+WindowReduce {<br/>
+ key = less<br/>
+ modifier = none<br/>
+}<br/>
+     </textblock>
+     <textblock>
+Vor der Klammer <strong>{</strong> steht die auszuführende Funktion. Nach <strong>key</strong>
+= " kommt die Bezeichnung der Taste. Um die Bezeichnung einer
+bestimmten Taste zu erfahren, verwenden Sie das Programm <name>xev</name>.
+Starten Sie es in einem X-Terminal und drücken Sie die Taste.
+Im Terminalfenster erscheint ungefähr folgendes:
+     </textblock>
+     <textblock>
+KeyPress event, serial 27, synthetic NO, window 0x1a00001,<br/>
+root 0x53, subw 0x0, time 3574935687, (-204,707),<br/>
+root:(544,731), state 0x10, keycode 99 (keysym 0xff55,<br/>
+Prior), same_screen YES,<br/>
+^^^^^ Bezeichnung der Taste
+     </textblock>
+     <textblock>
+Die "modifier"-Taste (Zusatztaste) kann eine der folgenden sein:
+     </textblock>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column/>
+      <tr><td>"none"</td><td>keine Zusatztaste</td></tr>
+      <tr><td>"control" oder "ctrl"</td><td>Strg-Taste</td></tr>
+      <tr><td>"meta" oder "alt"</td><td>Alt-Taste</td></tr>
+      <tr><td>"mod3", "mod4" oder "mod5"</td><td>Spezialtasten auf einigen Systemen.</td></tr>
+     </table>
+     <textblock>
+Es können mehrere Zusatztasten angegeben werden (durch Kommas
+getrennt). Wenn Sie die Zeile "modifier" weglassen, wird keine
+Zusatztaste verwendet.
+Um ein sog. "Alias" (zweite Taste für dieselbe Funktion)
+festzulegen, geben Sie folgendes ein:
+     </textblock>
+     <textblock>
+Alias {<br/>
+entry = Pause<br/>
+key = p<br/>
+modifier = meta<br/>
+}<br/>
+     </textblock>
+     <textblock>
+Die aktuellen Tastenzuordnungen anzeigen:
+     </textblock>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column/>
+      <tr><td>xine --keymap</td><td>(Standard-Zuordnung)</td></tr>
+     </table>
+     <textblock>oder</textblock>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column/>
+      <tr><td>xine --keymap=default</td><td>(Standard-Zuordnung)</td></tr></table>
+     <textblock>oder</textblock>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column/>
+      <tr><td>xine --keymap=remapped</td><td>(von Ihnen definierte Zuordnung)</td></tr></table>
+     <textblock>
+Sie können die Ausgabe in die Datei ~/.xine/keymap umlenken und
+diese Datei dann bearbeiten.
+     </textblock>
+    </section>
+    <section><!--2.4.2-->
+     <heading>
+Audio-Kanäle (Sprachen)
+     </heading>
+     <textblock>
+Mit der "-a" Option können Sie einen Audio-Kanal wählen. Vor
+allem bei DVDs werden die Kanäle für die verschiedenen Sprachen
+benutzt.
+     </textblock>
+     <shell><user path="~">xine -a 3 test.mpg</user></shell>
+     <textblock>
+spielt das Video test.mpg und dessen dritte Tonspur.
+Der Audio-Kanal kann auch mit der Bedienoberfläche ausgewählt
+werden.
+     </textblock>
+    </section>
+    <section><!--2.4.3-->
+     <heading>
+Untertitel
+     </heading>
+     <textblock>
+Die verschiedenen Untertitel (-sprachen) können Sie mit der
+Option "-u" auswählen.
+     </textblock>
+<shell><user path="~">xine -u 0 test.vob</user></shell>
+     <textblock>
+Zeigt die Standard-Untertitel (Nr. 0) an. Auch die Untertitel
+können mit der Bedienoberfläche gewählt werden.
+     </textblock>
+    </section>
+    <section><!--2.4.4-->
+     <heading>
+LIRC
+     </heading>
+     <textblock>
+Sie können <name>xine</name> mit einer herkömmlichen Fernbedienung steuern.
+Dazu benötigen Sie <name>LIRC</name> <ref lang="en" url="http://www.lirc.org">http://www.lirc.org</ref>.
+Sie sollten Folgendes in die Datei ~/.lircrc schreiben
+(natürlich angepasst an Ihre IR-Hardware):
+     </textblock>
+     <file>
+      <title>~/.lircrc</title>
+      <content>
+        <![CDATA[begin
+                remote = SAMSUNG
+                button = Button_Play
+                prog   = xine
+                repeat = 0
+                config = Play
+           end
+           begin
+                remote = SAMSUNG
+                button = Button_1
+                prog   = xine
+                repeat = 0
+                config = SetPosition10%
+           end]]>
+      </content>
+     </file>
+     <textblock>
+<name>xine</name> kann die nötigen Eintrage erzeugen, wenn Sie es mit der
+Option <command>--keymap=lirc</command> starten und die Ausgabe in eine Datei
+lenken. Die Datei müssen Sie aber noch nachbearbeiten und die
+Namen der Fernbedienung und der zuzuweisenden Knöpfe eingeben.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+ <split>
+  <section><!-- 3 -->
+   <heading>
+Sonstiges
+   </heading>
+   <section><!-- 3.1 -->
+    <heading>
+Was DVDs mit Freiheit zu tun haben
+    </heading>
+    <textblock>
+<name>xine</name> ist freie Software. "Freie Software" hat mit <name>Open Source</name>
+zu tun, doch es ist mehr: Es bedeutet Freiheit für die Anwender der
+Software. Wenn Sie etwas Zeit und Englischkenntnisse haben, sollten
+Sie diesen Text der <name>Free Software Foundation</name> (FSF) über Freiheit und
+Software lesen: <ref lang="en" url="http://www.gnu.org/philosophy/free-sw.html">http://www.gnu.org/philosophy/free-sw.html</ref>
+    </textblock>
+    <textblock>
+Dieser Freiheit geht es an den Kragen, wenn Sie DVDs abspielen
+wollen: Die Filmindustrie scheut keine noch so grossen
+Bemühungen, das Abspielen von DVDs auf "authorisierte" und
+kontrollierte Geräte zu beschränken. Die meiste heutzutage
+verkauften DVDs sind deshalb mit einem proprietären Verfahren
+verschlüsselt, und es ist vielen Ländern (u.a. in den USA) verboten,
+sie zu entschlüsseln, auch für den privaten Gebrauch.
+    </textblock>
+    <textblock>
+Es werden hoffentlich möglichst viele Leute einsehen, dass dies eine
+sehr fragwürdige Art ist, Kunden zu "behandeln". Das <name>xine</name> Projekt
+Team verurteilt diese Praktiken der Filmindustrie. Diese Versuche,
+Umsatzverluste einzudämmen, sind ein Zeichen mangelnden Respekts
+gegenüber ehrlichen Kunden. Das <name>xine</name> Projekt Team will aber nicht
+dazu aufrufen, bestehende Gesetze zu brechen. Es ist nicht genau
+bekannt, ob das Schreiben, Besitzen, Verteilen und Benutzen von
+Software zum Abspielen verschlüsselter DVDs verboten ist, in welchem
+Staat auch immer.
+    </textblock>
+    <textblock>
+Da hier also rechtlich alles andere als Klarheit herrscht,verfügt
+<name>xine</name> nicht über eine Funktion, um verschlüsselte DVDs abzuspielen.
+Allerdings haben andere Programmierer Erweiterungen für <name>xine</name>
+entwickelt, um das zu ermöglichen.
+So oder so: <name>xine</name> allein spielt keine verschlüsselten DVDs ab. Es
+handelt sich hier also nicht um einen "Bug", sondern um ein rein
+rechtliches Problem.
+    </textblock>
+    <textblock>
+Die einzige Lösung für dieses Problem wäre, Staatsbehörden (allen
+voran die der Vereinigten Staaten) und/oder die Filmindustrie davon
+zu überzeugen, dass der heutige Weg ein unnötiger und ungerechter
+ist.
+    </textblock>
+   </section>
+  </section>
+ </split>
+ <split>
+  <section><!-- 4 -->
+   <heading>
+Kontakt zum xine Projekt Team
+   </heading>
+   <textblock>
+Sie finden die Internetseite des xine Projekts unter folgender
+Adresse:
+   </textblock>
+   <textblock>
+<ref lang="en" url="http://xine.sourceforge.net">http://xine.sourceforge.net</ref><br/>
+Brauchen Sie Hilfe? Möchten Sie beim <name>xine</name> Projekt mithelfen?
+Dann abonnieren Sie eine der Mailing-Listen:
+   </textblock>
+   <textblock>
+xine-user@lists.sourceforge.net  englisch, für Anwender <br/>
+xine-user.de@lists.sourceforge.net deutsch, für Anwender <br/>
+xine-devel@lists.sourceforge.net   englisch, für Entwickler<br/>
+   </textblock>
+  </section>
+ </split>
+ <split>
+  <section><!-- 5 -->
+   <heading>
+FAQ
+   </heading>
+   <section><!-- 5.1 -->
+    <heading>
+Was ist das Ziel dieses Textes?
+    </heading>
+    <textblock>
+Diese Datei enthält sog. "FAQs" (Frequently Asked Questions
+= häufig gestellte Fragen) zu allem, was die Verwendung von xine betrifft.
+    </textblock>
+   </section>
+   <section><!-- 5.2 -->
+    <heading>
+Meine Frage wird hier nicht beantwortet. Was soll ich tun?
+    </heading>
+    <textblock>
+Zuerst stellen Sie bitte wirklich sicher, dass Ihre Frage nicht
+beantwortet wird.
+Aber Sie dürfen Ihre Fragen natürlich in der Mailing-List stellen:<br/>
+  xine-user@lists.sourceforge.net     (nur english)<br/>
+  xine-user.de@lists.sourceforge.net  (deutsch)<br/>
+Diese Mailing-Lists können Sie auf der Homepage von xine
+(<ref lang="en" url="http://xine.sourceforge.net">http://xine.sourceforge.net</ref>) abonnieren.
+    </textblock>
+    <textblock>
+Bitte liefern Sie einige Informationen zu ihrer Installation, damit
+man Ihnen helfen kann. Machen Sie insbesondere Angaben zu Ihrer
+Audio/Video-Hardware, den verwendeten Treibern, dem Betriebssystem,
+dem CPU-Typ und den aufgetretenen Fehlern bzw. Meldungen. Geben Sie
+bitte auch die von Ihnen verwendeten Kommandozeilenparameter und
+nach Möglichkeit den Typ des Datenstroms an, den Sie versucht haben
+abzuspielen. Besonders wichtig ist die von Ihnen verwendete Version
+von <name>xine</name> und Informationen zu allen zusätzlichen Plugins, die Sie
+auf ihrem System installiert haben könnten.
+    </textblock>
+   </section>
+  </section>
+ </split>
+ <split>
+  <section><!-- 6 -->
+   <heading>
+Allgemeine Fragen
+   </heading>
+   <section><!-- 6.1 -->
+    <heading>
+Wofür sind diese "xine-lib" und "xine-ui" Module?
+    </heading>
+    <textblock>
+Früher war <name>xine</name> lediglich ein Programm. Dieses wurde aber zu komplex
+und deshalb wurde <name>xine</name> in zwei Teile aufgeteilt.
+<name>xine-lib</name> ist der "Motor" von <name>xine</name>. Es enthält alle Plugins und ist
+in jedem Fall notwendig. <name>xine-ui</name> ist die Bedienoberfläche (User Interface).
+<name>xine-plugin</name> ist ein Plugin für Browser, dass es ihnen ermöglicht,
+ihre beliebten Video-Streams innerhalb ihres Browsers (z.B. mozilla)
+mit Hilfe von <name>xine</name> ansehen.
+<name>gnome-xine</name> ist eine gnome-Bedienoberfläche, die als Ersatz für
+<name>xine-ui</name> verwendet werden kann. Sie konzentriert sich mehr auf die
+allgemeinen Medienwiedergabe-Aspekte von <name>xine</name>, im Gegensatz zu der
+vollständigen einem DVD-Spieler ähnlichen Oberfläche <name>xine-ui</name>.
+    </textblock>
+   </section>
+   <section><!-- 6.2 -->
+    <heading>
+Wie bekomme ich die neuste Version?
+    </heading>
+    <textblock>
+Aktuelle stabile Version:<br/>
+  <ref lang="en" url="http://xine.sourceforge.net">http://xine.sourceforge.net</ref><br/>
+Entwicklungsversionen per CVS:<br/>
+  cvs -d :pserver:anonymous@cvs.xine.sourceforge.net:/cvsroot/xine<br/>
+  login (als eine Zeile einzugeben)<br/>
+  &lt;leeres Passwort&gt;<br/>
+  cvs -d :pserver:anonymous@cvs.xine.sourceforge.net:/cvsroot/xine<br/>
+  co xine-lib (als eine Zeile einzugeben)<br/>
+  cvs -d :pserver:anonymous@cvs.xine.sourceforge.net:/cvsroot/xine<br/>
+  co xine-ui (als eine Zeile einzugeben)<br/>
+    </textblock>
+   </section>
+   <section><!-- 6.3 -->
+    <heading>
+Wo gibt es fertig übersetzte Versionen, z.B. RPMs?
+    </heading>
+    <textblock>
+Das <name>xine-Projekt</name> stellt aus rechtlichen Gründen keine fertig
+übersetzten Versionen zur Verfügung (einige Teile von xine  unterliegen
+in einigen Ländern Patenten). Einige
+Betriebssystemprojekte/Distributoren (insbesondere debian,
+freebsd, ...) bieten Binärprogramme für
+ihre Distributionen an - bitte fragen Sie bei diesen nach weiteren
+Informationen nach. Sie können außerdem auf der xine-Homepage einige
+Links zu Drittanbietern finden, die xine-RPMs zur Verfügung stellen.
+Sehen Sie in Abschnitt 3 dieser FAQ nach, wie xine aus den Quellen
+übersetzt werden kann
+    </textblock>
+   </section>
+  </section>
+ </split>
+ <split>
+  <section><!-- 7 -->
+   <heading>
+Kompilieren (Build-Prozess)
+   </heading>
+   <section><!-- 7.1 -->
+    <heading>
+Was benötige ich, um xine fehlerfrei zu kompilieren?
+    </heading>
+    <textblock>
+Sie benötigen eine offizielle und stabile Version von GCC.
+Verwenden Sie keine gepatchten GCC-Version, sonst werden Sie
+xine nicht korrekt kompilieren können (libmpeg2 kann mit pgcc
+nicht fehlerfrei kompiliert werden).
+Ausserdem benötigen Sie GNU make. Auf den meisten Linux-Systemen wird
+GNU make mit dem Befehl "make" aufgerufen, auf allen anderen Systemen
+müssen Sie "gmake" verwenden.
+    </textblock>
+   </section>
+   <section><!-- 7.2 -->
+    <heading>
+Wie kompiliere ich xine?
+    </heading>
+    <section><!-- 7.2.1 -->
+     <heading>
+Einfache Übersetzungsanweisungen für Anfänger
+     </heading>
+     <textblock>
+Laden Sie die neusten TAR-Archive <name>"xine-lib"</name> und <name>"xine-ui"</name> herunter
+und folgen Sie den weiteren Anweisungen. Um die TAR-Archive zu entpacken,
+benutzen Sie <command>tar xzvf xine-XXX.tar.gz</command>
+Die folgenden Anweisungen werden xine für alle Benutzer zugänglich
+nach /usr/local installieren. Sie benötigen dafür auf den meißten Systemem
+root-Rechte. Entpacken Sie zunächst xine-lib, danach:
+     </textblock>
+     <shell>
+      <root path="~/xine-XXX">./configure</root>
+      <root path="~/xine-XXX">make install</root>
+     </shell>
+     <textblock>
+Stellen Sie sicher, dass /etc/ld.so.conf "/usr/local/lib" enthält,
+danach
+     </textblock>
+     <shell>
+      <root path="~/xine-XXX">ldconfig</root>
+     </shell>
+     <textblock>
+Nun entpacken Sie xine-ui, danach:
+     </textblock>
+     <shell>
+      <root path="~/xine-XXX">./configure</root>
+      <root path="~/xine-XXX">make install</root>
+     </shell>
+    </section>
+    <section><!-- 7.2.2 -->
+     <heading>
+Vollständige Übersetzungsanweisungen
+     </heading>
+     <textblock>
+Der Ablauf des Build-Prozesses ist bei allen Modulen identisch
+(siehe 2.1).
+     </textblock>
+     <textblock>
+Zuerst müssen Sie <name>xine-lib</name> installieren. Wenn Sie es korrekt
+kompiliert UND installiert haben, können Sie <name>xine-ui</name> und/oder
+<name>xine-plugin</name> kompilieren.
+     </textblock>
+     <textblock>
+Wenn Sie <name>xine-lib</name> nicht mit dem Standard-Verzeichnispräfix
+/usr/local/bin installiert haben haben, müssen Sie dafür sorgen,
+dass $prefix/bin in der <strong>PATH-Variable</strong> vorhanden ist und das der Linker die
+Bibliotheken in $prefix/lib finden kann. Anderenfalls wird das Erzeugen
+von Modulen, die xine-lib benötigen, fehlschlagen und Sie werden
+Fehlermeldungen bezüglich fehlender Module von <name>xine-lib</name> bekommen.
+     </textblock>
+     <textblock>
+Verwenden Sie in der bash folgende Befehle, um die Verfügbarkeit
+sicherzustellen:
+     </textblock>
+     <shell>
+      <user path="~">export PATH="$PATH:$prefix/bin"</user>
+      <user path="~">export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$prefix/lib"</user>
+     </shell>
+     <textblock>
+Wenn die Variable $prefix nicht gesetzt ist, müssen Sie sie in
+den obigen Befehlen durch den echten Pfad ersetzen.
+Und so kompilieren Sie xine schlussendlich: (Wie oben bereits
+bemerkt, gilt dieser Ablauf für alle Module von xine; siehe 2.1)
+     </textblock>
+     <textblock>
+(nur notwendig, wenn Sie den Quellcode über CVS bezogen haben)
+     </textblock>
+     <shell>
+      <user path="~">./cvscompile.sh</user>
+     </shell>
+     <shell>
+      <user path="~">./configure</user>
+      <user path="~">make</user>
+      <user path="~">make install</user>
+     </shell>
+    </section>
+    <section><!-- 7.2.3 -->
+     <heading>
+Eigene RPM-Packete erzeugen (xine-lib, xine-ui)
+     </heading>
+     <textblock>
+Im Prinzip müssen Sie nur ein einziges Kommando ausführen, wenn Sie
+die Quellcode-tar-Dateien von der WWW-Seite heruntergeladen haben:
+     </textblock>
+     <shell>
+      <root path="~">rpm -ta DER_NAME_DES_TAR_ARCHIVES</root>
+     </shell>
+     <textblock>
+Dies wird das Erzeugen der Binär-RPMs und Quellen-RPMs starten. Nach
+dem Übersetzen finden Sie das Binär-RPM in ihrem
+RPM-Binärverzeichnis,
+welches normalerweise /usr/src/RPM/RPMS/[IHRE_CPU_ARCHITEKTUR] ist.
+     </textblock>
+     <textblock>
+Das Quellen-RPM wird in ihr RPM-Quelldateienverzeichnis geschrieben
+(normalerweise /usr/src/RPM/SRPMS/).
+     </textblock>
+     <textblock>
+Falls Sie eine frische CVS-Version verwenden, müssen Sie zunächst
+folgendes ausführen, um ein tar-Archiv zu erzeugen, dass Sie dann
+wie oben beschrieben mit <command>rpm -ta</command> benutzen können:
+ ./cvscompile.sh &amp;&amp; make clean &amp;&amp; make dist
+     </textblock>
+     <textblock>
+Auf jeden Fall sollten Sie nicht vergessen, dass Sie xine-lib
+übersetzen und installieren müssen, bevor Sie mit xine-ui fortfahren.
+     </textblock>
+    </section>
+   </section>
+   <section><!-- 7.3 -->
+    <heading>
+Wie kann ich den Build-Prozess mit CFLAGS steuern?
+    </heading>
+    <textblock>
+Ja, Sie können mit der Variable GLOBAL_CFLAGS die Optionen für den
+Compiler setzen. Anschließend müssen Sie configure erneut starten.
+Damit können Sie zusätzliche Pfade für Bibliotheken oder 
+Include-Dateien angeben.
+Beispiel:
+    </textblock>
+    <shell>
+     <user path="~">export GLOBAL_CFLAGS="-I/usr/include -L/home/guenter/xine_libs"</user>
+    </shell>
+   </section>
+   <section><!-- 7.4 -->
+    <heading>
+Gibt es für den AMD K7 optimierte Binaries?
+    </heading>
+    <textblock>
+Wenn Sie eine aktuelle Version von GCC haben (3.x), können Sie
+versuchen, xine mit "mehr" K7-Unterstützung zu kompilieren.
+Falls configure Ihren Prozessor oder Ihre GCC-Version nicht korrekt
+erkennt, können Sie mit der Variable xine_BUILD die Konfiguration
+explizit angeben, z.B.:
+    </textblock>
+    <shell>
+     <user path="~">export xine_BUILD=k7-pc-linux-gnu</user>
+     <user path="~">rm -f config.cache</user>
+     <user path="~">./cvscompile.sh</user>
+    </shell>
+    <textblock>
+oder wenn Sie xine als Tarball bezogen haben:
+    </textblock>
+    <shell>
+     <user path="~">./configure</user>
+     <user path="~">make</user>
+     <user path="~">make install</user>
+    </shell>
+   </section>
+   <section><!-- 7.5 -->
+    <heading>
+xine-lib lässt sich nicht kompilieren
+    </heading>
+    <section><!-- 7.5.1 -->
+     <heading>
+Das Paket xine-lib lässt sich überhaupt nicht kompilieren
+     </heading>
+     <textblock>
+Damit Sie xine-lib kompilieren können, benötigen Sie u.a. die
+<name>zlib</name> Bibliothek inklusive des Headers. Beides finden Sie
+normalerweise im Paket <name>zlib-devel</name> (nicht Bestandteil des xine Projekts).
+     </textblock>
+    </section>
+    <section>
+     <heading><!-- 7.5.2 -->
+Das Xv-Plugin lässt sich nicht kompilieren
+     </heading>
+     <textblock>
+Die <name>Xv</name> Bibliothek ist normalerweise nur in der Static-Version
+vorhanden. Einige Versionen von <name>xine-lib</name> benötigen allerdings
+die Shared-Version. Überprüfen Sie mit dem Befehl
+     </textblock>
+     <shell>
+      <user path="~">ls /usr/X11R6/lib/libXv*</user>
+     </shell>
+     <textblock>
+ob die Shared-Bibliothek vorhanden ist (erkennbar an der Endung
+".so" oder ".so.1"). Falls nicht, und wenn Ihre Version von
+libtool älter als 1.4 ist (überprüfen mit "<command>libtool --version</command>"),
+können Sie die Shared-Bibliothek mit folgenden Befehlen erstellen:
+     </textblock>
+     <shell>
+      <user path="~">ld --whole-archive -shared -o libXv.so.1 libXv.a</user>
+      <user path="~">ln -s libXv.so.1 libXv.so</user>
+      <user path="~">ldconfig</user>
+     </shell>
+     <textblock>
+Nun können Sie das Xv-Plugin für xine kompilieren.
+     </textblock>
+    </section>
+   </section>
+   <section><!-- 7.6 -->
+    <heading>
+xine-ui lässt sich nicht kompilieren
+    </heading>
+    <section><!-- 7.6.1 -->
+     <heading>
+Ich habe xine-lib installiert, aber xine-ui findet es nicht
+     </heading>
+     <textblock>
+Bitte lesen Sie (noch einmal) den Abschnitt über <name>xine-lib</name>
+Möglicherweise haben Sie etwas übersehen.
+     </textblock>
+     <textblock>
+Überprüfen Sie, dass Sie $prefix/bin in der <name>PATH</name> Variable haben
+und dass der Linker die Bibliotheken in $prefix/lib finden kann.
+$prefix ist dasselbe Verzeichnis, in das Sie davor xine-lib
+installiert haben sollten (ja, xine-lib mit <command>make install</command> zu
+installieren wäre wirklich nicht schlecht...)
+     </textblock>
+    </section>
+   </section>
+   <section><!-- 7.7 -->
+    <heading>
+Läßt sich xine im Benutzerverzeichnis ohne root-Rechte installieren ?
+    </heading>
+    <textblock>
+Ja. Zuerst erzeugen Sie ein Unterverzeichnis, in dem Sie ihre private
+Software installieren wollen, zum Beispiel
+    </textblock>
+    <shell>
+     <user path="~">mkdir ~/usr</user>
+    </shell>
+    <textblock>
+Danach müssen Sie einige Umgebungsvariablen setzten - eventuell
+ist es
+sogar eine gute Idee, diese dauerhaft in Ihre ~/.bashrc oder
+ähnliches
+zu setzen:
+    </textblock>
+    <file>
+     <title>~/.bashrc</title>
+     <content><![CDATA[
+ export PATH="$HOME/usr/bin:$PATH"
+ export LD_LIBRARY_PATH="$HOME/usr/lib:$LD_LIBRARY_PATH"
+ export CFLAGS="-I$HOME/usr/include -L$HOME/usr/lib -O3"
+ export ACLOCAL_FLAGS="-I $HOME/usr/share/aclocal"
+   ]]></content>
+    </file>
+    <textblock>
+Nun können Sie die TAR-Archive entpacken, zum Beispiel in "~/usr/src"
+(ggf. <command>mkdir ~/usr/src</command> ausführen), und danach folgendes tun:
+    </textblock>
+    <shell>
+     <user path="~">./configure --prefix=$HOME/usr</user>
+     <user path="~">make install</user>
+    </shell>
+   </section>
+  </section>
+ </split>
+ <split>
+  <section><!-- 8 -->
+   <heading>
+Installation
+   </heading>
+   <section><!-- 8.1 -->
+    <heading>
+Können die Windows DLLs als codes in xine benutzt werden?
+    </heading>
+    <textblock>
+Ja, <name>xine</name> kann einige <name>win32-DLLs</name> (von Windows) benutzen, um einige
+obskure Formate zu dekodieren. Wir heißen solche Binär-Codecs nicht
+für gut, und Sie als Benutzer sind daür verantwortlich, eventuelle
+Lizenzkonflikte zu beachten.
+Hier einige funktinoierende CODECs (keine vollständige Liste):
+    </textblock>
+    <ul>
+     <li>mpg4c32.dll - Microsoft MPEG-4 v1/v2</li>
+     <li>ir50_32.dll - Indeo Video 5 format</li>
+     <li>ir41_32.dll - Indeo Video 4.1 format</li>
+     <li>ir32_32.dll - Indeo Video 3.2 format</li>
+     <li>iccvid.dll - Cinepak video</li>
+     <li>wmvds32.ax - Windows Media Video 7</li>
+     <li>wmv8ds32.ax - Windows Media Video 8</li>
+     <li>vp31vfw.dll - VP32 Video format</li>
+     <li>divxa32.acm - DivX audio (WMA)</li>
+     <li>voxmsdec.ax - Voxware Metasound</li>
+    </ul>
+    <textblock>
+Diese win32-DLLs funktionieren nur auf x86-Systemen.
+    </textblock>
+   </section>
+   <section><!-- 8.2 -->
+    <heading>
+Wo müssen die Windows DLLs hin?
+    </heading>
+    <textblock>
+<name>xine</name> verwendet als Standard das Verzeichnis
+/usr/lib/win32 für die DLLs. Sie können aber im Konfigurationsfenster (Tipp: auf den
+Schraubenschlüssel klicken) diese Einstellung ändern.
+(Seite "Codec" => "path to win32 codec dlls")
+    </textblock>
+    <textblock>
+Alternativ können Sie auch die Konfigurationsdatei ~/.xine/config
+editieren und den Eintrag codec.win32_path:/usr/lib/win32
+direkt anpassen.
+    </textblock>
+   </section>
+   <section><!-- 8.3 -->
+    <heading>
+Fantastisch! Warum werden die DLLs nicht mitgeliefert?
+    </heading>
+    <textblock>
+Nein. Der Code in diesen DLLs ist propietäre Software (gehört
+Microsoft, Intel und anderen). Einige können kostenlos aus dem WWW
+heruntergeladen werden, aber aus rechtlichen Gründen können wir diese
+nicht mitliefern (wegen Lizenzeinschränkungen, sowohl von xine als
+auch von den CODECs selbst).
+    </textblock>
+   </section>
+  </section>
+  </split>
+  <split>
+  <section> <!-- 9 -->
+   <heading>
+Jetzt gehts richtig Los...
+   </heading>
+   <section> <!-- 9.1 -->
+    <heading>
+Nochmal Allgemeine Fragen
+    </heading>
+    <section><!-- 9.1.1 -->
+     <heading>
+Ich habe lauter "dropped frames". Was tun?
+     </heading>
+     <textblock>
+Ihre Hardware ist für xine zu langsam. Versuchen Sie, Ihren PC auf
+optimale Leistung einzustellen:
+     </textblock>
+     <ul><li>
+     Zu allererst führen Sie bitte das xine-check Skript aus, dass bei
+     xine-ui dabei ist (Evtl. bereits auf ihrem System installiert).
+     xine-check kann einige der am meisten vorkommenden Probleme
+     finden und melden. Wenn alles stimmt, sollte die Ausgabe von
+     xine-check so aussehen:
+     </li></ul>
+     <shell>
+       <user path="¯">xine-check</user>
+       <output>
+Please be patient, this script may take a while to run...
+[ good ] you're using Linux, doing specific tests
+[ good ] looks like you have a /proc filesystem mounted.
+[ good ] You seem to have a reasonable kernel version (2.4.18)
+[ good ] intel compatible processor, checking MTRR support
+[ good ] you have MTRR support and there are some ranges set.
+[ good ] found the player at /usr/local/bin/xine
+[ good ] /usr/local/bin/xine is in your PATH
+[ good ] found /usr/local/bin/xine-config in your PATH
+[ good ] plugin directory /usr/local/lib/xine/plugins exists.
+[ good ] found input plugins
+[ good ] found demux plugins
+[ good ] found decoder plugins
+[ good ] found video_out plugins
+[ good ] found audio_out plugins
+[ good ] skin directory /usr/local/share/xine/skins exists.
+[ good ] found logo in /usr/local/share/xine/skins
+[ good ] I even found some skins.
+[ good ] /dev/cdrom points to /dev/hdc
+[ good ] /dev/dvd points to /dev/hdc
+[ good ] DMA is enabled for your DVD drive
+[ good ] found xvinfo: X-Video Extension version 2.2
+[ good ] your Xv extension supports YUV overlays (improves MPEG performance)
+[ good ] your Xv extension supports packed YUV overlays
+[ good ] Xv ports:  YUY2 YV12 I420 UYVY
+      </output>
+     </shell>
+     <ul>
+      <li>verwenden Sie einen aktuellen, für Ihre Hardware optimierten
+        Kernel (2.4.x).</li>
+      <li>verwenden Sie die neueste Version von gas und GCC.</li>
+      <li>beenden Sie alle nicht benötigten Programme (verwenden Sie
+        "top", um eine Übersicht über alle "CPU-fressenden" Programme
+        zu erhalten)</li>
+      <li>Falls Sie nicht Xv verwenden: Stellen Sie für den X-Server
+        16 Bit Farbtiefe ein. 24 Bit oder mehr benötigen wesentlich mehr
+        Bandbreite.</li>
+      <li>Stellen Sie sicher, dass Ihre Festplatte/CDROM-/DVD-Laufwerk DMA
+        unterstützt und dass es eingeschaltet ist.</li>
+     </ul>
+     <textblock>
+Bei den meisten Linux-Systemen können Sie <name>hdparm</name> verwenden, um
+das zu überprüfen. Beispiel:
+     </textblock>
+     <shell>
+      <root path="~">hdparm /dev/hda</root>
+      <output>
+ ...
+              using_dma    =  1 (on)
+...
+      </output>
+     </shell>
+     <textblock>
+Zeigt hdparm "0 (off)" an, können Sie DMA so aktivieren:
+     </textblock>
+     <shell><root path="~">hdparm -d1 /dev/hda</root></shell>
+     <textblock>
+Ersetzen Sie "/dev/hda" in den obigen Beispielen durch den
+Namen des Geräts, von dem die Videodaten kommen. Weitere
+Informationen über hdparm finden Sie mit dem Befehl
+<command>man hdparm</command> oder unter dieser Adresse:<br/>
+<ref lang="en" url="http://linux.oreillynet.com/lpt/a/linux/2000/06/29/hdparm.html">
+ http://linux.oreillynet.com/lpt/a/linux/2000/06/29/hdparm.html
+</ref>>
+     </textblock>
+     <ul>
+      <li>
+     auf Ihr eigenes Risiko: CPU Übertakten, BIOS Setup optimieren.
+     xine benötigt schnelle RAM-Bausteine, also aktivieren Sie alle
+     Optionen für mehr Geschwindigkeit.
+     Vor allem der <name>VIA Apollo Pro</name> Chipsatz ist berüchtig für seine
+     schlechte RAM-Ansteuerung (entgegen meinen Ehrfahrungen, Anm.
+     d. Übers.). Wenn Sie die Ansprechung des RAMs mit dem BIOS
+     Setup nicht einstellen können, können Sie ein paar wüste Tricks
+     versuchen, die auf folgender Seite erwähnt werden:<br/>
+     <ref lang="en" url="http://www.overclockers.com/tips105/index03.asp">http://www.overclockers.com/tips105/index03.asp</ref>
+     Die Seite dreht sich hauptsächlich um ein Windows-Programm, mit
+     dem Sie den Chipsatz "frisieren" können, under <name>FreeBSD</name> können
+     Sie dasselbe mit <name>pciconf</name> erreichen. Manche Linux-
+     Distributionen enthalten ähnliche Tools.
+      </li>
+      <li>
+     Verwenden Sie PowerTweak, ein gutes "Frisierwerkzeug":
+     <ref lang="en" url="http://powertweak.sourceforge.net">http://powertweak.sourceforge.net</ref>
+      </li>
+      <li>
+     Aktivieren Sie die MTRR Unterstützung (wenn Sie XFree 3.x
+     verwenden, lesen Sie bitte das DVD-HOWTO für Details über
+     MTRR Unterstützung mit XFree 3.x).
+     Falls Sie XFree 4.x benutzen, sollte die Aktivierung der
+     MTTR-Unterstützung im Kernel genügen.
+     Verwenden Sie <command>cat /proc/mtrr</command>, um die Unterstützung zu überprüfen
+     (es sollte nicht "No such file or directory" angezeigt werden).
+     Falls Sie einen Eintrag passend zur Größe des Speichers Ihrer
+     Grafikkarte finden, sollte alles in Ordnung sein.
+      </li>
+      <li>
+     Verwenden Sie sog. "raw devices", um auf DVD-Laufwerke
+     zuzugreifen.
+     Dazu benötigen Sie einen 2.4er Kernel oder, wenn Sie einen
+     älteren Kernel einsetzen wollen, einen passenden Patch von
+     dieser Seite:<br/>
+     <ref url="ftp://ftp.kernel.org/pub/linux/kernel/people/sct/raw-io/">ftp://ftp.kernel.org/pub/linux/kernel/people/sct/raw-io/</ref>
+     Damit Sie ein Raw-Gerät verwenden können, müssen Sie es zuerst
+     mit Ihrem DVD-Laufwerk verbinden:<br/>
+     <command>raw /dev/raw1 /dev/hdc</command>
+      </li>
+     </ul>
+     <textblock>
+   (vorausgesetzt, dass hdc das DVD-Laufwerk ist) und dann sollten
+   Sie einen Link wie folgt erstellen:
+     </textblock>
+     <shell>
+      <root path="~">
+       ln -s /dev/raw1 /dev/rdvd
+      </root>
+     </shell>
+    </section>
+    <section><!-- 9.1.2 -->
+     <heading>
+Wie kann ich Streams von der Standardeingabe (stdin) spielen?
+     </heading>
+     <textblock>So:</textblock>
+     <shell>
+      <user path="~">cat stream.mpg | xine stdin://mpeg1</user>
+     </shell>
+     <textblock>oder (wenn Sie einen MPEG-2 Stream spielen wollen):</textblock>
+     <shell>
+      <user path="~">cat stream.vob | xine stdin://mpeg2</user>
+     </shell>
+    </section>
+    <section><!-- 9.1.3 -->
+     <heading>
+Wie kann ich das Aussehen der Bedienoberfläche ändern?
+     </heading>
+     <textblock>
+Verwenden Sie den Konfigurationsdialog (auf das
+Schraubenschlüssel-Symbol klicken). Im Feld "gui skin theme"
+geben Sie den Namen des "Skins" ein.
+     </textblock>
+     <textblock>
+In neueren Versionen von <name>xine</name> wird nur noch ein Skin mitgeliefert.
+     </textblock>
+     <textblock>
+Weitere Skins finden Sie auf der <name>xine</name> Homepage unter<br/>
+<ref lang="de" url="http://xinehq.de/index.php/skins">http://xinehq.de/index.php/skins</ref>
+     </textblock>
+     <textblock>
+<name>"sinek"</name> ist kein Skin, sondern ein GTK+ Frontend<br/>
+<ref lang="en" url="http://sinek.sourceforge.net">http://sinek.sourceforge.net</ref>
+     </textblock>
+    </section>
+    <section><!-- 9.1.4 -->
+     <heading>
+Was ist "aalib"? Wie kann ich es mit xine verwenden?
+     </heading>
+     <textblock>
+aalib ist ein Programmbibliothek für <name>ASCII Art</name>. <name>ASCII Art</name> ist die
+Bezeichnung für die "Kunst", mit herkömmlichen Textzeichen
+(ASCII-Zeichen) Bilder darzustellen. Einfachstes Beispiel dafür
+sind die Smileys :-) :-(
+     </textblock>
+     <textblock>
+<name>xine</name> verfügt über ein Output-Plugin für <name>aalib</name>, so dass Sie Filme
+im X-Terminal, mit der Konsole oder auf einem alten VT100 schauen
+können - cooool ;-)
+     </textblock>
+     <textblock>
+Dazu müssen Sie sicherstellen, dass Sie zuerst <name>aalib</name> und dann
+<name>xine-lib</name> und <name>xine-ui</name> installieren. Neben dem <name>xine</name> Programm wird
+nun auch eines mit dem Namen <name>aaxine</name> erstellt, welches Sie z.B.
+so aufrufen:
+     </textblock>
+     <shell><user path="~">aaxine film.mpeg</user></shell>
+    </section>
+    <section><!-- 9.1.5 -->
+     <heading>
+Was bedeutet dieses Zeugs in der Datei "~/.xine/config"?
+     </heading>
+     <textblock>
+Lesen Sie dazu die Datei xine-ui-x.x.x/doc/README.config_en
+(Zur Zeit leider nur in englischer Sprache)
+     </textblock>
+    </section>
+    <section><!-- 9.1.6 -->
+     <heading>
+Wie verwende ich das DVD-Plugin?
+     </heading>
+     <textblock>
+Erster Hinweis: Das z.Z. mit <name>xine</name> ausgelieferte DVD-Plugin
+unterstützt keine verschlüsselten bzw. kopiergesperrten DVDs.
+Sie benötigen zusätzliche Programme oder ein "verbessertes"
+DVD-Plugin, um solche DVDs mit <name>xine</name> abzuspielen. Natürlich können Sie
+den Film abspielen, wenn Sie ihn mit zusätzlicher Software
+entschlüsseln.
+     </textblock>
+     <textblock>
+Das standard DVD-Plugin von <name>xine</name> unterstützt auch keine Menüs. Für
+weitere Informationen zur Menüunterstützung schauen Sie bitte auf
+<ref lang="en" url="http://dvd.sf.net/">http://dvd.sf.net/</ref> nach.
+     </textblock>
+     <textblock>
+Wenn Sie ein anderes oder "erweitertes" DVD-Plugin installieren,
+wird ein zusätzlicher Knopf in xine-ui erscheinen. Der "DVD"-Knopf
+wird weiterhin das alte Plugin (ohne Menüunterstützung und
+Entschlüsselung/Entsperrung) aktivieren.
+     </textblock>
+     <textblock>
+Da die rechtliche Situation in diesem Bereich alles andere als
+klar ist, verfügt <name>xine</name> nicht über irgendwelche Software(teile)
+für diesen Zweck. Das <name>xine</name> Projekt Team unterstützt nicht
+grundsätzlich die Verwendung solcher Software. Überprüfen Sie
+bitte die rechtliche Situation in Ihrem Land, bevor Sie Software
+zum Entschlüsseln von DVDs verwenden.
+     </textblock>
+     <textblock>
+Wir hoffen, dass dieser Konflikt bald und zu Gunsten der
+Konsumenten gelöst wird.
+     </textblock>
+     <textblock>
+Zweiter Hinweis: Das Standard-Plugin unterstützt keine Menüs
+sowie das nahtlose Abspielen eines Films. Verwenden Sie dazu die
+Plugins <name>dvdnav</name> oder <name>d5d</name>.
+     </textblock>
+     <textblock>
+Das <name>xine</name> eigene Plugin verwenden Sie folgendermassen: Mounten Sie
+zuerst die DVD, um einen Überblick über die Dateien darauf zu
+erhalten. Sie sollten folgende Dateien finden:<br/>
+ [...]/VIDEO_TS/VTS_xx_x.VOB           (x sind Ziffern)
+     </textblock>
+     <textblock>
+Suchen Sie grosse VOB-Dateien. In ihnen ist der Film gespeichert.
+Um diese Datei abzuspielen, geben Sie folgendes ein:
+     </textblock>
+     <shell><user path="~">xine dvd://VTS_xx_x.VOB</user></shell>
+     <textblock>
+Achten Sie darauf, den Pfadnamen nicht anzugeben und
+Grossbuchstaben zu tippen.
+     </textblock>
+     <textblock>
+<name>xine</name> verwendet /dev/cdrom oder /dev/dvd, um auf das DVD-Laufwerk
+zuzugreifen.
+     </textblock>
+    </section>
+    <section><!-- 9.1.7 -->
+     <heading>
+Kann ich mit xine (S)VCDs abspielen?
+     </heading>
+     <textblock>
+Ja. Verwenden Sie eine solche MRL:
+     </textblock>
+     <shell><user path="~">xine VCD://&lt;Track-Nummer&gt;</user></shell>
+    </section>
+    <section><!-- 9.1.8-->
+     <heading>
+Wie kann ich Filme mit externen AVI Untertiteln ansehen?
+     </heading>
+     <textblock>
+Verwenden Sie eine solche MRL:
+     </textblock>
+     <shell><user path="~">xine foo.avi%bar.sub</user></shell>
+    </section>
+   </section>
+   <section><!-- 9.2 -->
+    <heading>
+Fragen zu Audio
+    </heading>
+    <section><!-- 9.2.1 -->
+     <heading>
+Ich sehe das Bild, aber der Ton kommt nicht!
+     </heading>
+     <textblock>
+Dieser Fall kann bei MPEG-2-Videos (z.B. DVDs) auftreten.
+Versuchen Sie, einen anderen Audio-Kanal zu wählen:
+     </textblock>
+     <shell><user path="~">xine -a &lt;Kanal&gt; stream.vob</user></shell>
+     <textblock>
+Oder verwenden Sie die Tasten + und - (nicht die auf dem
+Ziffernblock!), oder wählen Sie mit der Maus den Audio-Kanal
+(im Feld "Aud:")
+     </textblock>
+     <textblock>
+Einige VOB-Dateien haben den Ton auf unüblichen Kanälen
+(z.B. 3, 7, 10)
+     </textblock>
+    </section>
+    <section><!-- 9.2.2 -->
+     <heading>
+Wie bringe ich ALSA 0.9.x zum laufen?
+     </heading>
+     <textblock>
+Versuchen Sie, folgende Zeilen in die Datei ~/.xine/config
+einzufügen:
+     </textblock>
+     <file>
+      <title>
+~/.xine/config
+      </title>
+      <content><![CDATA[
+ alsa_pcm_device:plughw:0,0
+ alsa_ac3_device:plughw:0,2
+     ]]></content>
+     </file>
+    </section>
+    <section><!-- 9.2.3 -->
+     <heading>
+Und was ist mit ALSA 0.5.x?
+     </heading>
+     <textblock>
+Obwohl es möglich ist, <name>xine</name> mit <name>ALSA 0.5.x</name> laufen zu lassen, ist
+es nicht empfehlenswert. Verwenden Sie stattdessen <name>ALSA 0.9.x</name>.
+     </textblock>
+     <textblock>
+Wollen Sie trotzdem 0.5.x verwenden, versuchen Sie folgendes
+(Tipp von Benjamin Pierce &lt;bpierce815@yahoo.com&gt;):
+Öffnen Sie die Datei /etc/modules.conf und entfernden Sie folgende
+Zeile (falls vorhanden):<br/>
+alias sound-slot-0 Ihr_OSS_Modul<br/>
+     </textblock>
+     <textblock>
+Fügen Sie dann diese zwei Zeilen hinzu:<br/>
+alias char-major-116 snd<br/>
+alias snd-card-0 Ihr_ALSA_Modul<br/>
+     </textblock>
+    </section>
+    <section><!-- 9.2.4 -->
+     <heading>
+Kann xine Surround-Sound ausgeben?
+     </heading>
+     <textblock>
+Ja, mit <name>OSS</name> oder <name>ALSA</name> kann <name>xine</name> 4-/5-Kanal Surround-Sound
+ausgeben. Voraussetzung ist, dass der Sound-Treiber dies
+unterstützt. Beim Starten zeigt <name>xine</name> die Modi zur Soundausgabe an,
+z.B.:
+     </textblock>
+     <shell>
+      <output>
+audio_alsa_out : supported modes are mono stereo (4-channel not
+enabled in xine config) (5-channel not enabled in xine config)
+(5.1-channel not enabled in xine config) (a/52 and DTS pass-through not enabled in xine config)
+      </output>
+     </shell>
+     <textblock>
+Hier ist 4-Kanal Surround-Sound möglich. Da <name>xine</name> aber nicht
+sicherstellen kann, ob auch wirklich Lautsprecher angeschlossen
+sind, müssen Sie diesen Modus von Hand aktivieren.
+    </textblock>
+    <textblock>
+Sie können dies entweder im Konfigurationsdialog während der
+Laufzeit von xine machen (Drücken Sie den Konfigurationsknopf und
+wechseln Sie auf die AUDIO-Karte) oder direkt die Konfigurationsdatei
+~/.xine/config ändern:
+    </textblock>
+    <file>
+     <title>~/.xine/config</title>
+     <content>
+   <![CDATA[
+# 4-channel:
+audio.four_channel:1
+# 5-channel:
+audio.five_channel:1
+# 5.1-channel
+audio.five_lfe_channel:0
+	]]>
+	</content>
+    </file>
+    </section>
+    <section><!-- 9.2.5 -->
+     <heading>
+Kann xine AC3 über S/P DIF ausgeben?
+     </heading>
+     <textblock>
+Selbstverständlich... Aber auch hier gilt dasselbe wie bei
+Surround-Sound: Sie müssen die Option manuell aktivieren. Benutzen
+Sie den Konfigurationsdialog oder editieren Sie folgende Zeile in
+der Datei ~/.xine/config:<br/>
+audio.ac3_pass_through:1
+     </textblock>
+    </section>
+    <section><!-- 9.2.6 -->
+     <heading>
+Ich kann die Lautstärke nicht mit den Knöpfen ändern!
+     </heading>
+     <textblock>
+Einige Treiber unterstützen diese Funktion nicht, auch wenn
+die Knöpfe zum Ändern der Lautstärke angezeigt werden.
+Dies ist kein "Bug". aRts (das Sound-System von KDE) hat z.B.
+diese Funktion nicht.
+     </textblock>
+    </section>
+   </section>
+   <section><!-- 9.3 -->
+    <heading>
+Fragen zu Video
+    </heading>
+    <section><!-- 9.3.1 -->
+     <heading>
+Ich höre den Ton - aber wo ist das Bild?
+     </heading>
+     <textblock>
+Möglicherweise ist Ihre Hardware einfach zu langsam. Lesen Sie
+im Abschnitt "dropped frames" wie Sie Ihren PC etwas "frisieren"
+können.
+     </textblock>
+    </section>
+    <section><!-- 9.3.2 -->
+     <heading>
+Wie kann ich xine dazu bringen, den Xv-Treiber zu verwenden?
+     </heading>
+     <textblock>
+Wenn <name>Xv</name> verfügbar ist, wählt <name>xine</name> automatisch diesen Treiber.
+<br/>
+In gewissen Fällen möchten Sie aber <name>Xv</name> manuell wählen (etwa dann,
+wenn in der config-Datei XShm angegeben ist):
+     </textblock>
+     <shell><user path="~">xine -V Xv film.mpg</user></shell>
+     <textblock>
+Wenn das nicht funktioniert, ist auf Ihrem System <name>Xv</name>
+wahrscheinlich nicht vorhanden.
+     </textblock>
+     <textblock>
+Zuerst müssen Sie sicherstellen, dass Sie XFree 4.x installiert
+haben. Ausserdem muss der Treiber für Ihre Grafikkarte Xv
+unterstützen. Unter diesen Adressen finden Sie Treiber für Ihre
+Karte:<br/>
+Xv-Unterstützung mitgeliefert in XFree86:
+     </textblock>
+     <table>
+      <pdf-column width="100"/>
+      <pdf-column/>
+      <tr><td>Voodoo (3dfx)</td><td>?</td></tr>
+      <tr><td>Intel i815</td><td>?</td></tr>
+      <tr><td>Matrox G200/G400</td><td>http://www.matrox.com</td></tr>
+      <tr><td>NVidia</td><td>http://www.nvidia.com</td></tr>
+      <tr><td>Permedia 2/3</td><td>?</td></tr>
+     </table>
+     <textblock>
+Unklarheit über Xv-Unterstützung:
+     </textblock>
+     <table>
+      <pdf-column width="100"/>
+      <pdf-column/>
+      <tr><td>ATI</td><td>http://www.linuxvideo.org/gatos/</td></tr>
+      <tr><td>Savage</td><td>http://www.probo.com/timr/savage40.html</td></tr>
+     </table>
+    </section>
+    <section><!-- 9.3.3 -->
+     <heading>
+Das xine-Logo wird angezeigt, aber mein Video nicht!
+     </heading>
+     <textblock>
+Drücken Sie den "Play"-Knopf oder die Eingabetaste, um das Video
+abzuspielen.
+     </textblock>
+     <textblock>
+Stellen Sie sicher, dass Sie festgelegt haben, was xine abspielen
+soll, z.B. in der Befehlszeile:
+     </textblock>
+     <shell><user path="~">xine beispielfilm.mpg</user></shell>
+    </section>
+    <section><!-- 9.3.4 -->
+     <heading>
+Teile des Desktops werden durchsichtig!
+     </heading>
+     <textblock>
+Offenbar stimmen einige Farben Ihres Desktops mit dem von Xv
+verwendeten "Colorkey" überein. Ändern Sie den Colorkey-Wert,
+um das zu verhindern. Im Konfigurationsdialog können Sie den
+Wert unter "Video" verändern.
+     </textblock>
+    </section>
+    <section>
+     <heading>
+Das Verhältnis Höhe/Breite des Videos stimmt nicht!
+     </heading>
+     <textblock>
+Drücken Sie die Taste "a" wiederholt, um das Seitenverhältnis zu
+ändern.
+     </textblock>
+    </section>
+    <section><!-- 9.3.5 -->
+     <heading>
+Wie kann ich Farben/Helligkeit/Kontrast änderm?
+     </heading>
+     <textblock>
+Zur Zeit wird diese Option nur von einigen Xv-Treibern und von
+XShm unterstützt. Sie können diese Werte mit der Bedienoberfläche
+einstellen, oder wie folgt in der Datei ~/.xine/config :
+     </textblock>
+     <file>
+      <title>~/.xine/config</title>
+      <content>
+     <![CDATA[
+	video.xv_brightness:0
+    video.xv_saturation:0
+    video.xv_contrast:128
+      ]]>
+      </content>
+     </file>
+     <textblock>
+Die möglichen Werte hangen von Ihrem XV-Treiber ab, Sie müssen
+also ein wenig experimentieren, um ein gutes Bild zu erhalten.
+Für XShm fügen Sie folgende Zeile in die Datei ein, um die
+Helligkeit (eigentlich: Gamma-Korrektur) zu verändern:<br/>
+ video.xshm_gamma:20
+     </textblock>
+     <textblock>
+Hier können Sie Werte von -100 bis +100 eingeben.
+Beachten Sie dass alle diese Massnahmen keine Wirkung haben, falls
+ihr Videotreiber das Einstellen der Werte nicht ermöglicht.
+Lesen Sie die Datei README.config_en für mehr Informationen zur
+Konfigurationsdatei.
+     </textblock>
+    </section>
+    <section><!-- 9.3.6 -->
+     <heading>
+Was ist der Unterschied zwischen verworfenen ('discarded') und
+übersprungenen ('skipped') Frames?
+     </heading>
+     <textblock>
+Ab und zu wird xine Nachrichten ausgeben, die etwa so aussehen:
+200 frames delivered, XX frames skipped, YY frames discarded
+     </textblock>
+     <textblock>
+Der Unterschied zwischen diesen Zählern ist für Nicht-Programmierer
+nur von sehr feiner Natur. <name>xine</name> benutzt zwei Threads, um das Video
+zu dekodieren: Der Decoder-Thread reicht die Bilder an den
+Video-Ausgabe-Thread weiter, der dafür zuständig ist, diese zum
+richtigen Zeitpunkt anzuzeigen.
+     </textblock>
+     <textblock>
+Wenn Ihr System mit der Dekodierung nicht nachkommt, wird der
+Dekoder Bilder verspätet übergeben. Beispielsweise ist die
+Dekodierung des Bildes für den Zeitpunkt 11:30 erst dann beendet,
+als die Uhr von <name>xine</name> schon auf 11:31 steht. Wenn diese Situation
+auftritt, versucht xine einige Bilder nicht zu dekodieren und diese
+zu überspringen. Allerdings unterstützen nicht alle Dekoder dieses
+Vorgehen.
+     </textblock>
+     <textblock>
+Wenn ein Bild bereits dekodiert ist, um in der Zukunft angezeigt zu
+werden, aber der Ausgabe-Thread nicht rechtzeitig vom Betriebssystem
+ausgeführt wird, um das Bild anzuzeigen, wird das Bild verworfen.
+Ein Grund dafür kann Festplattenaktivität sein, die ein System ohne
+DMA für einige Millisekunden anhalten kann.
+     </textblock>
+     <textblock>
+Beachten Sie bitte auch, dass wenn Dekoder aus irgendwelchen Gründen
+keine Bilder überspringen können, Sie niemals übersprungene
+('skipped') Bilder angezeigt bekommen (diese werden alle verworfen).
+     </textblock>
+    </section>
+   </section>
+   <section><!-- 9.4 -->
+    <heading>
+Fehlermeldungen
+    </heading>
+    <section><!-- 9.4.1 -->
+     <heading>
+xine startet nicht und beklagt sich über Audio- oder Video-Treiber
+     </heading>
+     <textblock>
+Sie können den Audio-Treiber mit der Option "-A" wählen. Versuchen
+Sie folgendes:
+     </textblock>
+     <shell><user path="~">xine -A null</user></shell>
+     <textblock>
+So wird xine mit dem "null"-Treiber geladen (kein Sound).
+Wenn Sie ALSA installiert haben, probieren Sie das:
+     </textblock>
+     <shell><user path="~">xine -A alsa09</user></shell>
+     <textblock>
+Wenn Sie ESD verwenden:
+     </textblock>
+     <shell><user path="~">xine -A esd</user></shell>
+     <textblock>
+Für arts (KDE):
+     </textblock>
+     <shell><user path="~">xine -A arts</user></shell>
+    </section>
+    <section><!-- 9.4.2 -->
+     <heading>
+"no video port found"
+     </heading>
+     <textblock>
+Sie haben die Xv-Erweiterung installiert, der wird von Ihrem
+Grafikkartentreiber aber nicht unterstützt. Versuchen Sie, einen
+Treiber zu finden, der <name>Xv</name> auf Ihrer Hardware unterstützt
+(versuchen Sie es mit der Homepage des Grafikkartenherstellers).
+     </textblock>
+     <textblock>
+Wenn Ihr Treiber Xv-Unterstützung hat, aber sie funktioniert
+nicht, dann versuchen Sie, eine geringere Auflösung einzustellen
+(1024 x 768 ist mehr als genug).
+     </textblock>
+     <textblock>
+Wenn alle Stricke reissen, können Sie immer noch XShm verwenden:
+     </textblock>
+     <shell><user path="~">xine -V XShm film.mpg</user></shell>
+    </section>
+    <section><!-- 9.4.3 -->
+     <heading>
+"Unable to open dvd drive (/dev/dvd)"
+     </heading>
+     <textblock>
+Möglicherweise haben Sie keine Gerätedatei /dev/dvd. Wenn das der
+Fall ist, erstellen Sie einen Link auf ihr DVD-Gerät, z.B.:
+     </textblock>
+     <shell>
+      <user path="~">
+       cd /dev
+      </user>
+      <user path="~">
+       ln -s hdc dvd
+      </user>
+     </shell>
+     <textblock>
+...wenn ihr DVD-Laufwerk Master am Secondary-IDE ist.
+     </textblock>
+    </section>
+    <section><!-- 9.4.4 -->
+     <heading>
+"demux error! 00 00 00 (should be 0x000001)"
+     </heading>
+     <textblock>
+Wahrscheinlich kann <name>xine</name> nicht auf die Datenquelle zugreifen.
+Das ist v.a. dann der Fall, wenn Sie versuchen, eine gesperrte/
+verschlüsselte DVD abzuspielen. Wie bereits erwähnt, spielt <name>xine</name>
+diese DVDs aus rechtlichen Gründen nicht ohne Zusatzsoftware von
+Drittanbietern ab.
+     </textblock>
+     <textblock>
+Sie können ein DVD-Plugin mit CSS-Unterstützung verwenden, um das
+zu verhindern.
+     </textblock>
+     <textblock>
+Ein anderer Grund für diese Fehlermeldung könnte sein, dass Ihr
+DVD-Laufwerk nicht auf den richtigen Regionalcode gesetzt ist.
+Aktuelle Versionen von <name>xine</name> überprüfen, ob die DVD verschlüsselt
+ist und geben eine entsprechende Meldung aus (siehe nächste
+Frage).
+     </textblock>
+    </section>
+    <section><!-- 9.4.5 -->
+     <heading>
+"input_dvd: Sorry, Xine, doesn't play encrypted DVDs. ..."
+     </heading>
+     <textblock>
+Ihre DVD ist verschlüsselt, deshalb kann Sie von xine nicht
+abgespielt werden.
+     </textblock>
+    </section>
+    <section><!-- 9.4.6 -->
+     <heading>
+"audio driver 'oss' failed, using null driver instead"
+     </heading>
+     <textblock>
+Zuerst überprüfen Sie bitte, ob Ihr OSS-Treiber funktioniert,
+d.h. ob Sie mit anderen Programmen Musik abspielen können.
+     </textblock>
+     <textblock>
+Der häufigste Grund für diese Fehlermeldung ist, dass ein anderes
+Programm Ihre Soundkarte bereits verwendet (auch wenn Sie keinen
+Ton hören). Unter Linux können Sie mit dem Befehl "fuser /dev/dsp"
+sehen, welcher Prozess (PID) das Gerät verwendet.
+     </textblock>
+     <textblock>
+Wenn Sie <name>Gnome</name> verwenden, kann es auch am ESD-Treiber liegen.
+Dann haben Sie zwei Möglichkeiten: Entweder Sie deaktivieren ESD
+zwischenzeitlich (klicken Sie dazu mit der rechten Maustaste auf
+den Sound Monitor und wählen Sie "Place Esound in standby"), oder
+Sie verwenden den ESD-Treiber mit <name>xine</name>:
+     </textblock>
+     <shell><user path="~">xine -A esd</user></shell>
+     <textblock>
+Dies kann eine schlechtere Qualität zur Folge haben, da mit ESD
+eine genaue Synchronisation von Ton und Bild nicht möglich ist.
+     </textblock>
+     <textblock>
+Wenn Sie <name>KDE</name> verwenden, kann es sein, dass der <name>aRts</name> Sound Dämon
+läuft und das Soundgerät blockiert. Hier gilt dasselbe: Entweder
+Sie deaktivieren <name>arTs</name> in KDE-Kontrollcenter (empfohlen), oder Sie
+verwenden aRts mit xine:
+     </textblock>
+     <shell><user path="~">xine -A arts</user></shell>
+    </section>
+    <section><!-- 9.4.7 -->
+     <heading>
+"video_out: throwing away image with pts xxx because it's too old"
+     </heading>
+     <textblock>
+Es handelt sich um ein Geschwindigkeitsproblem.
+     </textblock>
+     <textblock>
+Falls Sie einen schnellen Rechner haben und diese Nachricht von Zeit
+zu Zeit auftaucht, wenn Sie eine DVD/CDROM abspielen, dann
+unterstützt ihr Laufwerk evtl. kein DMA oder es ist nicht aktiviert.
+     </textblock>
+    </section>
+    <section><!-- 9.4.8 -->
+     <heading>
+No video plugin available to decode 'xxxxxx'."
+     </heading>
+     <textblock>
+Sie haben versucht, einen Stream abzuspielen, der einen unbekannten
+oder nicht unterstützten CODEC verwendet. Wahrscheinlich benutzt die
+Datei ein obskures und propietäres Format, zu dem keine öffentlichen
+Informationen bekannt sind, um es zu dekodieren.
+     </textblock>
+     <textblock>
+Diese Meldung kann gentrennt für Audio, Video oder beide zusammen
+deaktiviert werden. Siehe die 'gui.warn_unhandled_codec' Einstellung.
+     </textblock>
+    </section>
+    <section><!-- 9.4.9 -->
+     <heading>
+"w32codec: decoder failed to start. Is 'xxxxxx' installed?"
+     </heading>
+     <textblock>
+Wahrscheinlich haben Sie die win32-DLLs nicht installiert, die zum
+Dekodieren der Datei benötigt werden.
+     </textblock>
+    </section>
+    <section><!-- 9.4.10 -->
+     <heading>
+"xine-lib xxx expected. Version xxx found"
+     </heading>
+     <textblock>
+Ihre <name>xine-ui</name> Installation passt nicht zu ihrer <name>xine-lib</name> Installation.
+Falls Sie nicht gerade vergessen haben, ihr aktuelles <name>xine-lib</name> (bzw.
+<name>xine-ui</name>) zu installieren,  haben Sie wahrscheinlich von einer
+älteren Version aufgerüstet, wovon noch einige alte Dateien
+übriggeblieben sind und im Weg stehen. Evtl. handelt es sich auch
+nur um einen fehlerhaften symbolischen Verweis.
+     </textblock>
+     <textblock>
+Das kann passieren, wenn Sie von den Quellen installieren oder eine
+Packetverwaltung benutzen, die alte Versionen nicht gründlich genug
+deinstalliert.
+     </textblock>
+     <textblock>
+Entfernen Sie bitte von Hand alle alten xine-Bibliotheken
+("<command>rm $prefix/lib/libxine*</command>", und wo Sie schon dabei sind auch alle
+alten Plugins in $prefix/lib/xine/plugins/). Installieren Sie danach
+<name>xine-lib</name> und <name>xine-ui</name> erneut, womit das Problem behoben sein sollte.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+</chapter>

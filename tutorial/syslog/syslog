@@ -1,0 +1,1900 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>Syslog</title>
+
+ <author>
+  <name>Steffen Dettmer</name>
+  <mailto>steffen@dett.de</mailto>
+ </author>
+
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+
+
+ <license>
+GFDL
+ </license>
+
+ <index>syslog</index>
+
+<description>
+ <textblock>
+Syslog ist ein Dienst, der zentral Meldungen von anderen Diensten
+und Daemonen des Systems einsammelt, und beispielsweise in
+Logdateien schreibt, zum Beispiel nach
+<command>/var/log/messages</command> oder über das Netzwerk
+auf einen zentralen Logserver schickt.
+ </textblock>
+</description>
+
+<!-- 1. Kapitel -->
+<split>
+
+ <section>
+
+  <heading>
+Einleitung
+  </heading>
+
+   <textblock>
+Auf einem System laufen, selbst wenn man momentan gerade nicht
+direkt damit arbeitet, stets viele Dienste. Bei typischen
+Linuxinstallationen sind es schnell einhundert Prozesse, die im
+Hintergrund ihre Arbeit verrichten. Auf einem Server ist "ständig
+was los", auch wenn man diesem das nicht unbedingt ansieht.
+   </textblock>
+<!-- 1.1. Kapitel -->
+  <section>
+
+   <heading>
+Hintergrundaktivitäten
+   </heading>
+
+    <textblock>
+Etliche dieser Hintergrundprozesse sind Dienste, Server oder
+Daemons. Alle drei Begriffe meinen im Wesentlichen das Gleiche.
+    </textblock>
+
+    <textblock>
+Beispiele für solche Dienste sind FTP-, Web- und Mailserver. Da
+ein Dienst über keine direkte Benutzerschnittstelle verfügt (das
+heißt, er hat kein "Fenster"), kann er Meldungen und Fehler nicht
+direkt an den Benutzer melden. Oft sind die Benutzer, die gerade
+mit einem System arbeiten, auch die nicht gewünschten Empfänger,
+denn viele Meldungen sind eher für Systemadministratoren gedacht.
+Auf kleinen Systemen jedoch sind die Benutzer oft gleichzeitig
+Administratoren.
+    </textblock>
+
+    <textblock>
+Um einen ordnungsgemäßen Betrieb zu gewährleisten, muß das System
+überwacht, und gegebenenfalls auf Fehler reagiert
+werden.
+    </textblock>
+
+    <textblock>
+Auch der Linux-Kernel selbst erzeugt Meldungen, beispielsweise
+über Hardwarefehler (wie kaputte Festplatten).
+    </textblock>
+
+  </section>
+<!-- 1.2. Kapitel -->
+  <section>
+
+   <heading>
+Logdateien
+   </heading>
+
+    <textblock>
+Um derartige Meldungen zu verarbeiten, können diese
+beispielsweise in Logdateien geschrieben werden. Diese können
+dann von Zeit zu Zeit von einem Administrator geprüft werden, oder
+bei Fehleranalysen verwendet werden. Der Apache-Webserver
+schreibt beispielsweise solche Logdateien.
+    </textblock>
+
+    <textblock>
+Dieser Weg ist aber für Meldungen von vielen kleineren Diensten
+umständlich, da man viele Logdateien in unterschiedlichen
+Formaten analysieren müßte: Zwanzig verschiedene Dienste würden
+zwanzig verschiedene Logdateien schreiben.
+    </textblock>
+
+    <textblock>
+Hier gibt es jedoch einen Dienst, der dafür zuständig ist, von
+beliebigen Diensten Meldungen einzusammeln, und zentral in
+Logdateien zu schreiben. Der Dienst, der sehr häufig hierfür
+eingesetzt wird, ist Syslog.
+    </textblock>
+
+  </section>
+<!-- 1.3. Kapitel -->
+  <section>
+
+   <heading>
+Syslog - der System Logger
+   </heading>
+
+    <textblock>
+Syslog bietet anderen Diensten eine Schnittstelle, über die
+Meldungen übergeben werden. Syslog verarbeitet diese Meldungen
+dann weiter, in dem sie in Dateien geschrieben werden.
+    </textblock>
+
+    <textblock>
+Dieser Dienst ist einfach zu handhaben und wird deshalb
+insbesondere von kleineren Diensten gerne verwendet. Diese
+Dienste müssen sich dann nicht alle einzeln um Logdateien
+kümmern. Für den Administrator hat dies Vorteile: Es gibt eine
+zentrale Konfigurationsdatei und zentrale Logdateien.
+    </textblock>
+
+    <textblock>
+Zusätzlich erlaubt es Syslog auch, Logmeldungen an andere Server
+über das Netzwerk weiterzureichen. Auf dem Zielserver nimmt
+wiederum Syslog diese Nachrichten ab, und schreibt sie in
+Logdateien. Damit lassen sich die Nachrichten von mehreren Systemen
+auf einem Server zusammenfassen.
+    </textblock>
+
+  </section>
+
+ </section>
+
+</split>
+<!-- 2. Kapitel -->
+<split>
+
+ <section>
+
+  <heading>
+Meldungen
+  </heading>
+
+   <textblock>
+Wenn ein Dienst den Syslog-Dienst verwendet, schickt er seine
+Meldungen also einfach an Syslog. Eine Meldung ist im
+Wesentlichen eine Textzeile. Zusätzlich enthält diese noch einige
+Statusinformationen, beispielsweise wie wichtig diese Meldung
+ist und zu welchem "Themengebiet" sie gehört bzw. von welcher
+Quelle sie kommt.
+   </textblock>
+
+   <textblock>
+Syslog prüft anhand dieser Werte, ob und wie diese Meldung
+verarbeitet werden soll.  Man kann Syslog zum Beispiel so
+konfigurieren, dass wichtige Meldungen in der einen und unwichtige
+in einer anderen Datei stehen, oder dass alle Meldungen, die vom
+Mailsystem kommen, auf einen anderen Rechner übertragen werden
+sollen und weiteres.
+   </textblock>
+
+  <section>
+<!-- 2.1. Kapitel -->
+   <heading>
+Quellen von Meldungen
+   </heading>
+
+    <textblock>
+Syslog definiert eine Reihe von Quellen oder Themengebieten für
+Meldungen. Diese werden als <strong>facilities</strong> bezeichnet. Dabei ist es
+nur eine Konvention, wann welche Facility verwendet wird.
+Manchmal ist eine eindeutige Zuordnung nicht einfach möglich.
+Hier muß man nachsehen, welche Facility ein Dienst benutzt (bei
+manchen Diensten läßt sie diese auch einstellen).
+    </textblock>
+
+    <textblock>
+Die nachfolgende Übersicht beschreibt die Facilities kurz:
+    </textblock>
+
+    <table>
+
+     <pdf-column width="100"/>
+     <pdf-column/>
+
+     <tr>
+
+      <th>Name</th>
+      <th>Bedeutung</th>
+
+     </tr>
+
+     <tr>
+
+      <td><command>auth, authpriv</command></td>
+      <td>Meldungen, die zur Authentifizierung
+      gehören, beispielsweise falsche
+      Passwörter.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>cron</command></td>
+      <td>Meldungen, die von Cron erzeugt wurden,
+      oder von Prozessen, die von Cron
+      gestartet werden (die Standard-Ausgabe
+      und Stardard-Fehler-Ausgabe werden jedoch
+      von Cron nicht an Syslog gereicht,
+      sondern per EMail verschickt).</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>daemon</command></td>
+      <td>Meldungen von allgemeinen Diensten, wie
+      zum Beispiel einem FTP-Server.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>kern</command></td>
+      <td>Meldungen des Systemkernels. Sollte von
+      keinem Dienst verwendet werden. Hierzu
+      gehören beispielsweise Hardware-bezogene
+      Meldungen.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>lpr</command></td>
+      <td>Meldungen des Drucksystems<br/>
+      (Druckerspooler).</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>mail</command></td>
+      <td>Meldungen des Mailsystems (beispielsweise
+      von sendmail und fetchmail).</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>mark</command></td>
+      <td>Nur für Syslog-interne Zwecke, sollte nie
+      verwendet werden.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>news</command></td>
+      <td>Meldungen des News-Systems, zum Beispiel
+      eines Newsservers.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>syslog</command></td>
+      <td>Meldungen von Syslog selbst.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>user</command></td>
+      <td>Meldungen von Benutzersystemen wie zum
+      Beispiel eigenen Scripten.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>uucp</command></td>
+      <td>Meldungen von Unix-Unix-Copy (UUCP
+      wird heute kaum noch verwendet).</td>
+
+     </tr>
+
+     <tr>
+
+      <td><command>local0</command> bis <command>local7</command></td>
+      <td>Diese sind frei und können nach Belieben
+      verwendet werden. Bei Diensten, bei
+      denen man die zu verwendende Facility
+      einstellen kann, kann man diese verwenden
+      und je nach Bedarf verteilen.</td>
+
+     </tr>
+
+    </table>
+
+  </section>
+<!-- 2.2. Kapitel -->
+  <section>
+
+   <heading>
+Priorität von Meldungen
+   </heading>
+
+    <textblock>
+Syslog definiert eine Reihe von Namen, die die Wichtigkeit
+beschreiben. Diese Priorität wird englisch als <strong>priority</strong> oder
+<strong>severity</strong> bezeichnet. Manchmal spricht man auch vom <strong>log level</strong>.
+Auch diese Eigenschaft kann man verwenden, um die Meldungen
+differenziert zu verarbeiten, wie bereits angedeutet.
+    </textblock>
+
+    <textblock>
+Die folgende Übersicht nennt die definierten Prioritäten:
+    </textblock>
+
+    <table>
+
+     <pdf-column width="100"/>
+     <pdf-column/>
+
+     <tr>
+
+      <th>Name</th>
+      <th>Beschreibung</th>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>debug</strong></td>
+
+      <td>Unwichtige Meldungen, dienen nur zu
+      Debug-Zwecken (Fehlerfindung
+      vor allem bei der Entwicklung).</td>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>info</strong></td>
+      <td>Informative, nicht weiter wichtige
+      Meldungen.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>notice</strong></td>
+      <td>Informative Meldungen, die größere
+      Bedeutung haben als <strong>info</strong>.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>warning</strong></td>
+      <td>Warnungen, also Meldungen, die
+      nicht-fatale Fehler anzeuigen.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>err</strong></td>
+      <td>Fehlermeldungen, die kleine
+      Störungen anzeigen.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>crit</strong></td>
+      <td>Kritische (schwerere) Fehler, die
+      beispielsweise Teilausfälle anzeigen.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>alert</strong></td>
+      <td>Schwere Fehler, die erhebliche Störungen und
+      Ausfälle anzeigen.</td>
+
+     </tr>
+
+     <tr>
+
+      <td><strong>emerg</strong></td>
+      <td>Sehr schwere Fehler, die beispielweise
+      den Totalausfall des Systems anzeigen
+      können und schwere Kernelfehler
+      (Hardwareausfälle).</td>
+
+     </tr>
+
+    </table>
+
+    <textblock>
+Als Faustregel gilt hier: Alles, was wichtiger oder gleich
+<strong>warning</strong> ist, verdient auf jeden Fall Aufmerksamkeit.
+    </textblock>
+<!-- 2.3. Kapitel -->
+  </section>
+
+  <section>
+
+    <heading>
+Weitere Eigenschaften von Meldungen
+    </heading>
+
+    <textblock>
+Zu diesen beiden essentiellen Eigenschaften kommt die Information
+über den Zeitpunkt der Meldung hinzu (diese wird von Syslog
+automatisch beigefügt), die Prozeß-ID des Prozesses, der diese
+Meldung erzeugte, und ein <command>Tag</command>, das meistens den Namen des
+Programmes enthält, das die Meldung erzeugte (beispielsweise
+verwendet Sendmail das Tag <command>sendmail</command>). Auch der Hostname des
+Systems wird hinzugefügt, was insbesondere wichtig ist, wenn man
+von mehreren Systemen über das Netzwerk auf ein zentrales loggt.
+    </textblock>
+
+  </section>
+<!-- 2.4. Kapitel -->
+  <section>
+
+    <heading>
+Festes Format der Meldungen
+    </heading>
+
+    <textblock>
+Beim Schreiben in Logdateien verwendet Syslog ein festes Format.
+Eine Meldung ist immer eine Zeile. Zu Beginn steht der
+Zeitstempel, dann folgt der Hostname des Systems. Das dritte Feld
+ist das Tag (also meistens der Programmname) und in eckigen
+Klammern dessen Prozeß-ID. Der Rest der Zeile ist die
+Textnachricht dieser Meldung. Bei einigen Meldungen weicht das
+Format geringfügig ab, beispielsweise kann die Prozeß-ID
+entfallen (wie etwa bei Kernel und syslog Meldungen).
+    </textblock>
+
+    <textblock>
+Die Facility und Priority sind aus einer solchen Zeile leider
+nicht mehr erkennbar.
+    </textblock>
+
+    <textblock>
+Ein Beispiel für eine Logmeldung:
+    </textblock>
+
+    <file>
+     <title>
+     /var/log/messages
+     </title>
+
+<content><![CDATA[ Mar 10 13:30:30 atlas syslogd 1.3-3: restart. ]]> </content>
+
+    </file>
+
+    <textblock>
+Diese Meldung wurde am 10. März um 13:30 Uhr auf einem Host
+namens <command>atlas</command> erzeugt, und gibt an, dass Syslog gestartet wurde
+(diese Meldung erzeugt Syslog selbst beim Start).
+    </textblock>
+
+  </section>
+<!-- 2.5. Kapitel -->
+  <section>
+
+     <heading>
+Meldungen des Kernels
+     </heading>
+
+    <textblock>
+Der Kernel verschickt seine Meldungen auf eine etwas andere Art.
+Der Kernel kann sich nicht wie ein normales Programm verhalten,
+beispielsweise weil er als erstes läuft, kein <strong>normaler</strong>
+Prozeß ist, und weil er aus Performancegründen nicht auf die
+Fertigstellung von Schreiboperationen warten kann.
+    </textblock>
+
+    <textblock>
+Der Kernel legt alle Meldungen in einem speziellen
+Speicherbereich ab. Diese kann man zunächst überhaupt nicht lesen.
+Es gibt nun einen speziellen Dienst, den Kernel-Logger <command>klogd</command>.
+Dieser Dienst holt die Meldungen aus dem Speicherbereich ab und
+wandelt sie auch in menschenlesbare Meldungen um.
+Der Kernel-Logger kann die Kernelmeldungen in eine Datei
+schreiben, oder an Syslog weiterversenden. Die zweite Möglichkeit
+ist die Voreinstellung. Startet man den Kernel-Logger, holt er
+die Kernelmeldungen sofort ab, und verschickt diese an Syslog.
+Syslog schreibt sie dann in eine Datei. Normalerweise wird <command>klogd</command>
+automatisch direkt nach <command>syslogd</command> gestartet.
+    </textblock>
+
+  </section>
+
+ </section>
+
+</split>
+
+
+<split>
+<!-- 3. Kapitel -->
+ <section>
+
+  <heading>
+Konfiguration von Syslog
+  </heading>
+
+   <textblock>
+Über eine zentrale Datei wird das Verhalten von Syslog gesteuert.
+Zusätzlich akzeptiert Syslog einige Kommandozeilen-Parameter, die
+das Verhalten beeinflussen. 
+   </textblock>
+<!-- 3.1. Kapitel -->
+  <section>
+
+   <heading>
+Die Konfigurationsdatei
+   </heading>
+
+    <textblock>
+Fast immer heißt diese Datei <command>/etc/syslog.conf</command>. Hier wird
+eingestellt, wie Meldungen in Dateien zu schreiben sind, bzw. wie
+diese über das Netzwerk übertragen werden.
+    </textblock>
+
+    <textblock>
+Diese Datei ist zeilenorientiert. Zeilen, die mit einem Hashmark
+("#") beginnen, sind Kommentare und werden ignoriert.
+    </textblock>
+
+    <textblock>
+Zeilen bestehen aus zwei Teilen, die durch mindestens einen
+Tabstop getrennt sind (moderne GNU/Linux Syslog Implementierungen
+erlauben oft auch Leerzeichen, es sollten aber sicherheitshalber
+Tabstops verwendet werden). Zu Beginn der Zeile, also auf der
+linken Seite, steht eine Beschreibung der Nachricht. Hier können
+über die Facility und Priority Meldungen <strong>ausgewählt</strong> werden.
+    </textblock>
+
+    <textblock>
+Der zweite Teil gibt dann an, was mit diesen ausgewählten
+Meldungen passieren soll. Hier steht meistens ein Dateiname. In
+diese Datei werden dann die Meldungen geschrieben. Es sind nicht
+nur Dateinamen erlaubt: NetzwerkAdressen (IP-Adressen oder
+Hostnamen) sind hier erlaubt und auch Benutzernamen können hier
+stehen. Im letzten Fall werden die Meldungen auf die Konsolen der
+entsprechenden Benutzer geschrieben. Das kann für sehr wichtige
+Meldungen Sinn machen, wird aber im Allgemeinen als störend
+empfunden. Oft verwendet man als einzigen Benutzernamen <command>root</command>,
+damit ein eventuell angemeldeter Administrator wichtige Meldungen
+sofort auf sein Terminal bekommt (insbesondere bei Störungen
+und der Suche nach den Ursachen für diese ist das oft
+hilfreich).
+    </textblock>
+
+    <textblock>
+Es werden immer alle Aktionen ausgeführt, deren Beschreibung auf
+die Meldung paßt. Dadurch kann ein- und dieselbe Meldung in
+mehrere Dateien geschrieben und gleichzeitig
+beispielsweise über das Netzwerk verschickt werden.
+    </textblock>
+<!-- 3.1.1. Kapitel -->
+   <section>
+
+    <heading>
+Meldungsbeschreibung
+    </heading>
+    
+     <textblock>
+Die Meldungsbeschreibung ist eine Liste aus
+Facility/Priority-Paaren. Das wird so verwendet: Ist eine Meldung
+der entsprechenden Facility mindestens so wichtig, wie die
+Priority angibt, wird die rechte Seite verwendet (die Aktion wird
+ausgeführt). Hat man viele Regeln, so werden wichtige Meldungen
+damit oft in mehrere Dateien geloggt; dies ist erwünscht.
+     </textblock>
+
+     <textblock>
+Der Grundaufbau der durch Semikolon (<command>;</command>) getrennten
+Facility/Priority-Paaren ist einfach: Facility und Priority
+stehen in dieser Reihenfolge durch einen Punkt getrennt. Wichtige
+Kernelmeldungen lassen sich beispielsweise durch:
+     </textblock>
+
+     <textblock>
+<command>kern.warning</command> 
+     </textblock>
+
+     <textblock>
+beschreiben. Hier sind nicht nur die Meldungen der Priorität
+<strong>warning</strong>, sondern auch alle höheren (also <strong>err</strong>, <strong>crit</strong>, <strong>alert</strong>
+und <strong>emerg</strong>) gemeint. Man kann auch Wildcards verwenden, so zum
+Beispiel <strong>*.warning</strong> für alle wichtigen Meldungen und <command>kern.*</command>
+für alle Kernelmeldungen. Hierbei ist jedoch zu beachten, daß
+nicht alle Syslogdienste Wildcard verstehen (aber die unter GNU/Linux
+verwendeten können dies). Bei GNU/Linux-Syslog kann man auch mehrere
+Facilities durch Komma (<command>,</command>) getrennt aufführen. Dies ist jedoch nur
+zulässig, wenn diese alle die gleiche Priorität haben (die nur an
+der letzten Facility angehängt steht). Nach dieser komplizierten
+Erklärung ein einfaches Beispiel: Wichtige Meldungen von News
+oder Mail:
+     </textblock>
+
+     <textblock>
+<command>news,mailwarning</command>
+     </textblock>
+
+     <textblock>
+Oft wird jedoch auch hier lieber eine durch Semikolon getrennte
+Liste verwendet, weil es als lesbarer und weniger verwirrend
+empfunden wird:
+     </textblock>
+
+     <textblock>
+<command>news.warning;mail.warning</command>
+     </textblock>
+
+     <textblock>
+Verwendet man Wildcards, kann man sämtliche Meldungen mit <command>*.*</command>
+erfassen. GNU/Linux-Syslog bietet neben Wildcards weitere
+nützliche Erweiterungen: Möchte man nicht, dass alle Meldungen
+auch höherer Priorität passen, kann man vor die Priority ein
+Gleichheitszeichen (<command>=</command>) setzen, beispielsweise <command>*.=warning</command>. In
+solchen Fällen muß man aber unbedingt Regeln haben, die auch die
+wichtigeren Meldungen verarbeiten, sonst fehlen am Ende die
+wichtigsten Meldungen! 
+     </textblock>
+
+     <textblock>
+Es ist auch möglich, mit einem Ausrufezeichen (<command>!</command>) eine Priorität
+auszuschließen, zum Beispiel <command>*.=!warning</command>, was man aber sehr
+selten sieht.
+     </textblock>
+
+     <textblock>
+Widersprechen sich Bedingungen einer durch Semikolon getrennten
+Bedingungsliste, so gilt die zuletzt beschriebene, also 
+     </textblock>
+
+     <textblock>
+      <command>
+kern.=!info;kern.*
+      </command>
+     </textblock>
+
+     <textblock>
+loggt jegliche Kernelmeldung (hier meinte man vermutlich einfach
+<command>kern.=!info</command>). Solche Konstrukte sind natürlich zu vermeiden.
+     </textblock>
+
+     <textblock>
+Es gibt eine spezielle Priority <command>none</command>, die für keine Priority
+der dazugehörigen Facility steht:
+     </textblock>
+
+     <textblock>
+      <command>
+*.info;mail.none
+      </command>
+     </textblock>
+
+     <textblock>
+bezeichnet alle Meldungen mit Priority <command>info</command>, außer von der
+Facility <command>mail</command>.
+     </textblock>
+
+
+   </section>
+<!-- 3.1.2. Kapitel -->
+   <section>
+
+    <heading>
+Meldungsaktion
+    </heading>
+
+     <textblock>
+Auf der rechten Seite steht dann, was mit Meldungen geschehen
+soll. Im einfachsten Fall steht hier ein Dateiname. Diese müssen
+mit vollem Pfad angegeben werden, sie beginnen also mit einem
+Slash (<command>/</command>). Beispiel: <command>/var/log/messages</command>. Möchte man
+nicht-synchronisiert schreiben (später mehr dazu), schreibt man
+noch ein Minus (<command>-</command>) davor: <command>-/var/log/messages</command>. Als spezielle
+Datei kann man auch ein Terminal, zum Beispiel <command>/dev/tty10</command>,
+verwenden. Dann erscheinen die Meldungen auf der Konsole 10 (die
+man meist über
+
+<keycomb mode="hold">
+ <key>ATL</key>
+ <key>F10</key>
+</keycomb>
+oder 
+<keycomb mode="hold">
+ <key>STRG</key>
+ <key>ALT</key>
+ <key>F10</key>
+</keycomb> 
+erreicht).
+     </textblock>
+
+     <textblock>
+Neben Dateien kann man auch sogenannte <command>named FIFOs</command> verwenden.
+Diese beginnen mit einem Pipezeichen (<command>|</command>), gefolgt vom
+Dateinamen. Für diese Spezialität erfolgt an dieser Stelle jedoch
+keine detaillierte Diskussion.
+     </textblock>
+
+     <textblock>
+Soll die Meldung an einen anderen Server übertragen werden,
+schreibt man ein At-Zeichen (<command>@</command>) und den Hostnamen oder besser
+eine IP-Adresse des Systems, zum Beispiel <command>@192.168.1.14</command>.
+     </textblock>
+
+     <textblock>
+Um die Meldung auf die Terminals von Benutzern zu schreiben,
+schreibt man einfach dessen Accountnamen, beispielsweise <command>root</command>.
+Hier darf auch ein <command>*</command> stehen. Dann werden alle Benutzer (also
+alle Terminals) informiert. Das kann jedoch stören, denn die
+Meldungen erscheinen dann "mitten im Terminaltext" und
+"verunstalten" das
+Layout der laufenden Anwendung (wenn man zum Beispiel gerade
+einen Editor offen hat. Etliche Anwendungen haben eine
+Möglichkeit, die Anzeige neuzuzeichnen, häufig 
+
+     <keycomb mode="hold">
+      <key>STRG</key>
+      <key>L</key> 
+     </keycomb>
+).
+     </textblock>
+
+    </section>
+<!-- 3.1.3. Kapitel -->
+    <section>
+   
+     <heading>
+Beispielkonfigurationsdatei
+     </heading>
+
+     <textblock>
+Es folgt ein Beispiel mit ausführlichen Kommentaren.
+     </textblock>
+
+    <file>
+     <title>
+     /etc/syslog.conf
+     </title>
+     <content> <![CDATA[	
+#/etc/syslog.conf: Syslogkonfigurationsdatei
+#Zur Trennung der "linken" und "rechten" Seite sollten
+#   Tabstops verwendet werden (moderne GNU/Linux Syslog
+#   Implementierungen kommen meist auch mit Leerzeichen klar)
+
+#sehr wichtige Warnungen vom Kernel, und alle Fehler außer
+#   evtl. Passwortvertipper auf die Konsole ALT-F10 loggen. 
+#   Zur Erinnerung: .warn schließt höhere Meldungen (also err,
+#   crit, alert, emerg) mit ein. Diese landen also auch auf
+#   ALT-F10.
+kern.warning;*.err;authpriv.none	/dev/tty10
+
+#Die gleichen Meldungen für die xconsole bereitstellen
+#  (Hier wird ein FIFO verwendet, der von xconsole
+#   ausgelesen wird)
+kern.warn;*.err;authpriv.none   	|/dev/xconsole
+
+#ALLE Meldungen auf ALT-F9. Das ist für einen schnellen Überblick 
+#  bei "Echtzeit-Fehleranalyse" hilfreich
+*.*                              	/dev/tty9
+
+#alle sehr schweren Fehler direkt an alle Benutzer in die Konsolen
+#  schreiben. In solchen Fällen ist das System vermutlich eh kaum
+#  noch benutzbar. Eventuell sieht man aber kurz vor dem Absturz
+#  noch eine Fehlermeldung und kann nach einem Neustart etwas
+#  ändern
+*.emerg                         	*
+
+#Root möchte eventuell auch schon "crit" auf der Console sehen,
+#  wenn er zufällig gerade an dem System arbeitet:
+#*.crit					root
+
+#Alle EMail-Meldungen in eine eigene Datei. Diese Datei wird 
+#  aus Performance-Gründen nicht nach jeder Zeile synchronisiert,
+#  (aber schwere Fehler schreiben wir nochmal in eine extra Datei)
+mail.*                          	-/var/log/mail
+
+#Warnungen in eine extra Datei. Diese wird hier nicht sync'd (bei
+#  langsameren Systemen hilfreich)
+*.=warn;*.=err                  	-/var/log/warn
+
+#"crit" und höhere kommen in die gleiche Datei, aber sync'd
+*.crit                           	/var/log/warn
+
+#alles außer "debug" und mail in eine andere Datei
+*.info;mail.none                	-/var/log/messages
+
+#Für die Fehlersuche hilft oft eine Datei, die sämtliche
+#Informationen enthält
+#*.*					-/var/log/allmessages
+
+#Hat man einen Loghost, soll dieser eine Kopie von allen
+#  Meldungen erhalten
+#*.*					@192.168.1.1
+
+#Weniger wichtige Systeme sollen das Netzwerk nicht unnötig
+#  belasten
+#*.warn					@192.168.1.1
+     ]]> </content>
+    </file>
+
+   </section>
+
+ </section>
+
+<!-- 3.2. Kapitel -->
+ <section>
+
+  <heading>
+Kommandozeilenoptionen
+  </heading>
+
+   <textblock>
+Kommandozeilenoptionen steuern das Verhalten von Syslog
+ebenfalls. Über Kommandozeilenoptionen kann Syslog konfiguriert
+werden, dass Meldungen vom Netzwerk (also anderen System-Loggern)
+akzeptiert und verarbeitet werden. Man kann Syslog auch
+veranlassen, eine andere Konfigurationsdatei zu verwenden.
+   </textblock>
+
+   <table>
+
+    <pdf-column width="100"/>
+    <pdf-column/>
+
+    <tr>
+
+     <th>Option</th>
+     <th>Beschreibung</th>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-a</command> &lt;Socket&gt;</td>
+     <td>Öffnet &lt;Socket&gt; zum Lesen von Meldungen.
+     &lt;Socket&gt;  ist auf <command>/dev/log</command>
+     voreingestellt. Hier kann zum Beispiel
+     zusätzlich ein <command>dev/log</command> aus einer "chroot"
+     Umgebung angegeben werden, damit die
+     "chroot" Umgebung auch Syslog verwenden kann.</td>
+    </tr>
+
+    <tr>
+
+     <td><command>-d</command></td>
+     <td>Debug Modus (für Entwickler gedacht)</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-f</command> &lt;Konfigdatei&gt;</td>
+     <td>Lädt eine andere Konfigdatei.
+     Normalerweise wird <command>/etc/syslog.conf</command>
+     verwendet.</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-h</command></td>
+     <td>Über das Netzwerk empfangene Meldungen
+     auch über das Netzwerk weitersenden.
+     Damit kann man mehrere Netzwerk-Syslogs
+     "in Reihe schalten", um Beispielsweise
+     Meldungen durch mehrere Firewalls oder
+     aus einer DMZ zu bekommen. <command>-t</command> sollte
+     auch verwendet werden, siehe dort.</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-l</command> &lt;Hostnamen&gt;</td>
+     <td>Eine durch <command>:</command> getrennte Liste von
+     Hostnamen, die in kurzer Form in der
+     Logdatei stehen. Gewöhnlich bevorzugt man
+     die Option <command>-s</command>, die ähnliches Verhalten
+     bringt.</td>
+
+    </tr>
+
+    <tr>
+     <td><command>-m</command> &lt;Mark Zeit&gt;</td>
+     <td>Syslog schreibt alle 20 Minuten einen
+     Eintrag <command>--MARK--</command> in ein Logfile. Daran
+     kann man erkennen, dass das System noch
+     lebt. Bei der nachträglichen Analyse kann
+     man dadurch beispielsweise nächtliche
+     Abstürze zeitlich eingrenzen. Durch diese
+     Option kann man anstatt 20 (Minuten) auch
+     einen anderen Wert verwenden. Der Wert <command>0</command>
+     schaltet die Funktion ab.</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-n</command></td>
+     <td>Syslog soll nicht automatisch in den
+     Hintergrund gehen. Diese Option wird im
+     Normalfall nicht verwendet. Auf
+     speziellen Systemen (Rettungs- oder
+     Installationsystemen) wird diese manchmal
+     gesetzt.</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-p</command> &lt;Socket&gt;</td>
+     <td>Öffnet &lt;Socket&gt; zum Lesen von Meldungen.
+     Siehe Option <command>-a</command>.</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-r</command></td>
+     <td>Aktiviert den Empfang von
+     Netzwerkmeldungen. Aus Effizienz- und
+     Stabilitätsgründen sollte man alle IPs, von
+     denen man Meldungen empfängt, in die
+     Datei <command>/etc/hosts</command> eintragen (diese werden
+     benutzt, um den Hostnamen für das Logfile
+     zu bilden)</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-s</command> &lt;Domains&gt;</td>
+     <td>&lt;Domains&gt; ist eine durch <command>:</command> getrennte
+     Liste von Domains, die vor dem Loggen von
+     Hostnamen abgeschnitten werden. Das ist
+     in Verbindung mit <command>-r</command> hilfreich, da die
+     FQDNs (vollen Namen) viel Platz im Logfile
+     wegnehmen, und die Hostnamen meistens
+     sowieso schon eindeutig sind. Hat man
+     einen host <command>mail.selflinux.de</command> und ein
+     <command>-s selflinux.de</command>, so wird der Hostname
+     also als <strong>mail</strong> in den Logdateien stehen.</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-t</command></td>
+     <td>Weitergeleitete Meldungen (siehe Option
+     <command>-h</command>) sollen den empfangenen Hostnamen
+     enthalten, nicht den eigenen. Das heißt
+     also, der Hostname der Meldung wird nicht
+     verändert; diese können damit weiterhin
+     eindeutig zugeordnet werden.</td>
+
+    </tr>
+
+   </table>
+
+   <textblock>
+Diese Optionen werden in der Regel vom Syslog-Startscript, häufig
+<command>/etc/init.d/syslog</command>, beim Start von Syslog an diesen übergeben. Hier
+kann man also die eigenen Optionen für den Aufruf angeben.
+   </textblock>
+
+   <textblock>
+Bei SuSE-Systemen ist das Startscript intelligenter, es gestattet
+dem Administrator, auf einfachem Weg weiterere Startoptionen
+zu setzen. Hierzu öffnet man dazu einfach die Datei
+<command>/etc/rc.config</command> und ändert
+   </textblock>
+
+   <file>
+     <title>
+     /etc/rc.config
+     </title>
+     <content> <![CDATA[ SYSLOGD_PARAMS="" ]]> </content>
+   </file>
+
+   <textblock>
+so, dass die
+erwünschten Startoptionen verwendet werden. Diese werden hier
+einfach eingetragen.
+   </textblock> 
+
+   <textblock>
+Auch unter <name>RedHat</name> muß man nicht mehr die Datei <command>/etc/init.d/syslog</command>
+bearbeiten, unter <command>/etc/sysconfig/syslog</command> kann man durch Ändern
+von <command>SYSLOGD_OPTIONS=""</command> (z.B. <command>"-r -m 0 -s picard.inka.de:zeibig.net</command>")
+die gewünschten Startoptionen angeben.
+   </textblock> 
+
+  </section>
+<!-- 3.3. Kapitel -->
+  <section>
+   <heading>
+Remote-Logging
+   </heading>
+
+    <textblock>
+Remote-Logging bedeutet, dass ein Host Syslog-Meldungen auf einen
+anderen Host weiterversendet. Dieser andere Host schreibt die
+Meldungen dann in Dateien. Gewöhnlich konfiguriert man das so,
+daß die Meldungen nicht nur über das Netzwerk verschickt,
+sondern daneben auch lokal in Dateien geschrieben werden. Dies
+beugt Informationsverlust bei Netzwerkausfällen oder Störungen
+vor. Da Syslog eine wichtige Informationsquelle zur Analyse von
+Störungen ist, soll hier natürlich möglichst nichts fehlen.
+    </textblock>
+
+<!-- 3.3.1. Kapitel -->
+   <section>
+     
+    <heading>
+Vorteile des Remote-Logging
+    </heading>
+
+     <textblock>
+Oft hat man in LANs einen zentralen Host, der
+Netzwerk-Syslog-Meldungen erhält, und diese in Dateien schreibt.
+Diesen Host nennt man <strong>Loghost</strong>. 
+     </textblock>
+
+     <textblock>
+Diese Konfiguration hat etliche Vorteile: So kommen die Meldungen
+zentral auf einer Maschine an, so dass man auch komplexere
+Störungen analysieren kann (wenn diese mehrere Server betreffen,
+zum Beispiel einen Mailserverausfall, weil DNS ausgefallen ist).
+     </textblock>
+
+     <textblock>
+Ein weiterer Vorteil liegt im Fall von erfolgreichen Angriffen
+vor. Wenn ein Angreifer ein System kompromitiert hat, wird er in
+den meisten Fällen die Syslogdateien löschen oder manipulieren,
+um sich zu tarnen und seine Herkunft zu verschleiern. Wenn nun
+aber der Administrator einen Loghost verwendet, ist es
+unwahrscheinlicher, dass auch dieser gleichzeitig gehackt wird. So
+kann er auf dem Loghost die Meldungen analysieren und wichtige
+Informationen über den Angriff erlangen. 
+     </textblock>
+
+     <textblock>
+Ein dritter Vorteil der Zentralisierung ist die Vereinfachung
+automatischer Behandlung von Logfiles, zum Beispiel wird das
+Aufbereiten/Filtern und als Mail Verschicken erleichtert:
+Man muß diesen Vorgang nur auf einer Maschine pflegen.
+     </textblock>
+
+
+   </section>
+
+<!-- 3.3.2. Kapitel -->
+   <section>
+
+    <heading>
+Nachteile des Remote-Logging
+    </heading>
+
+     <textblock>
+Remote-Logging hat aber auch Nachteile, gerade, wenn man Syslog
+einsetzt. Syslog verwendet ausschließlich das UDP Protokoll. UDP
+Pakete werden direkt verschickt, ihr Empfang wird nicht
+bestätigt. Auf stark ausgelasteten Netzen kann es daher
+vorkommen, dass Meldungen verloren gehen, ohne dass man es bemerkt.
+Weiterhin kann ein Angreifer den Loghost <strong>überfluten</strong>, in dem er
+sehr viele sinnlose Meldungen verschickt. Dies kann die Last auf
+dem Loghost stark erhöhen, und im Extremfall dazu führen, dass er
+nur noch einen Teil der wichtigen Meldungen erhält, und die
+Netzwerklast kann zu weiteren Störungen führen. Bei sehr massiven
+Flut-Angriffen ist auch ein Vollaufen der Festplatte denkbar. In
+diesem Fall ist neben dem Verlust von Logmeldungen in der Regel
+mit weitereren empfindlichen Störungen zu rechnen, oft mit einem
+Totalausfall sämtlicher Dienste des Loghosts!
+     </textblock>
+
+     <textblock>
+Ein Angreifer, der eine Maschine gehackt hat, und hier über
+root-Rechte verfügt, kann auch einen Netzwerk-Sniffer verwenden,
+um die Syslog-Nachrichten, die über das Netzwerk verschickt
+werden, mitzulesen. Er kann dadurch wichtige Informationen
+ausspionieren. Syslog gestattet leider keine Verschlüsselung oder
+andere Absicherung der Netzwerkkommunikation.
+     </textblock>
+
+
+   </section>
+<!-- 3.3.3. Kapitel -->
+   <section>
+
+    <heading>
+Konfiguration des Loghosts
+    </heading>
+
+     <textblock>
+Die Konfiguration des Loghosts ist einfach. Man muß lediglich den
+Empfang aktivieren, in dem man Syslog mit der Option <command>-r</command>
+startet. Bei SuSE-Systemen öffnet man dazu einfach die Datei
+<command>/etc/rc.config</command>, und ändert 
+     </textblock>
+
+     <file>
+     <title>
+     /etc/rc.config
+     </title>
+      <content> <![CDATA[ SYSLOGD_PARAMS="" ]]> </content>
+     </file>
+
+     <textblock>
+so, dass die
+Startoption <command>-r</command> verwendet wird. Die IP Adressen der Hosts, die
+den Loghost verwenden, sollte man in die Datei <command>/etc/hosts</command>
+eintragen, um Fehlern bei DNS Ausfällen vorzubeugen. 
+     </textblock>
+
+     <textblock>
+Kommt nun eine Nachricht über das Netzwerk, schaut Syslog anhand
+der Sender-IP Adresse nach, wie der Hostname des Systems lautet.
+Ist dieser beispielsweise <ref lang="de" url="http://www.selflinux.de">www.selflinux.de</ref>, so wird dieser Name
+im Logfile eingetragen. Dies ist unübersichtlich, und man möchte
+vermutlich die Ausgaben von "<command>.selflinux.de</command> unterdrücken (sofern
+der Teil davor eindeutig ist). Dazu verwendet man am einfachsten
+die Option <command>-s</command>, die die Domainanteile abschneidet. In unserem
+Beispiel würde der Administrator also <command>-r -s selflinux.de</command>
+verwenden. Hat er ein SuSE-System, trägt er einfach in
+<command>/etc/rc.config</command> ein:
+     </textblock>
+
+     <file>
+    
+      <title>
+   /etc/rc.config 
+      </title>
+
+      <content> <![CDATA[SYSLOGD_PARAMS="-r -s selflinux.de" ]]> </content>
+    
+     </file>
+
+     <textblock>
+Syslog verwendet den UDP Port <command>syslog</command>. Dieser wird in der Datei
+<command>/etc/services</command> nachgesehen. Normalerweise soll Syslog die
+<command>Portnummer 514</command> verwenden. Demzufolge muß folgende Zeile in der
+Datei <command>/etc/services</command> vorhanden sein:
+     </textblock>
+
+     <file>
+    
+      <title>
+   /etc/services 
+      </title>
+
+      <content> <![CDATA[syslog          514/udp ]]> </content>
+    
+     </file>
+
+     <textblock>
+Dies ist bei gängigen Distributionen (SuSE, RedHat) jedoch
+bereits richtig eingetragen.
+     </textblock>
+
+     <textblock>
+Nun muß Syslog neu gestartet werden, damit die Änderungen aktiv
+werden. Dazu schreibt man beispielsweise:
+     </textblock>
+
+     <shell>
+
+      <root path="~">
+/etc/rc.d/syslog restart
+      </root>
+
+     </shell>
+
+     <textblock>
+Auf SuSE Systemen kann man auch schreiben:
+     </textblock>
+
+     <shell>
+
+      <root path="~">
+rcsyslog restart
+      </root>
+
+     </shell>
+
+     <textblock>
+Nun akzeptiert der Syslog Nachrichten vom Netzwerk.
+     </textblock>
+
+   </section>
+<!-- 3.3.4. Kapitel -->
+   <section>
+    <heading>
+Konfiguration der anderen Hosts
+    </heading>
+
+     <textblock>
+Die Maschinen, die nun den Loghost verwenden sollen, müssen
+hierzu angepaßt werden. Ein neuer Eintrag in der Datei
+<command>/etc/syslog.conf</command> ist auf jedem Server notwendig. Möchte man alle
+Nachrichten auf den <command>Loghost 192.168.1.1</command> loggen, verwendet man:
+     </textblock>
+
+     <file>
+
+     <title>
+     /etc/syslog.conf
+     </title>
+
+      <content> <![CDATA[ *.*			@192.168.1.1 ]]> </content>
+
+     </file>
+
+
+     <textblock>
+Um nur wichtige Meldungen zu verschicken, kann man
+     </textblock>
+
+     <file>
+     <title>
+     /etc/syslog.conf
+     </title>
+
+      <content> <![CDATA[ *.warn		@192.168.1.1 ]]> </content>
+
+     </file>
+
+     <textblock>
+verwenden. Es kann auch mehrere solcher Zeilen geben, so kann
+man sich auch eine Konfiguration mit zwei Loghosts vorstellen.
+Über den Sinn solchen Vorgehens kann man natürlich streiten.
+     </textblock>
+
+     <textblock>
+Nach dem Ändern dieser Datei muß Syslog neu geladen oder
+neu gestartet werden. Dazu kann man Syslog ein Hangup-Signal
+senden (SIGHUP), in dem man beispielsweise schreibt:
+     </textblock>
+
+     <shell>
+
+      <root path="~">
+killall -HUP syslog
+      </root>
+
+     </shell>
+
+     <textblock>
+oder auf SuSE-Systemen das Startscript verwenden:
+     </textblock>
+
+     <shell>
+ 
+      <root path="~">
+rcsyslog reload
+      </root>
+
+     </shell>
+
+     <textblock>
+Man kann Syslog aber auch einfach neu starten (<command>stop/start</command>).
+Allerdings gehen hier möglicherweise für einige Sekunden
+Meldungen verloren.
+     </textblock>
+
+   </section>
+<!-- 3.3.5. Kapitel -->
+   <section>
+ 
+    <heading>
+Beispiel für Logeinträge
+    </heading>
+
+     <textblock>
+Auf dem Loghost kann man dann gut das Netzwerksystem beobachten.
+Ein fiktives Beispiel:
+     </textblock>
+
+     <file>
+
+      <title>
+/var/log/messages (fiktives Beispiel)
+      </title>
+
+      <content>
+      <![CDATA[	
+Mar 10 13:30:30 atlas syslogd 1.3-3: restart.
+
+Apr  1 13:02:01 ns1 named[124]: XX+/127.0.0.1/1.1.168.192.
+                                in-addr.arpa/PTR/IN
+Apr  1 13:02:01 www httpd[123]: GET /login.cgi?username=steffen
+Apr  1 13:02:03 www httpd[123]: Starting authorization for
+				"steffen" from "ws1.selflinux.de"
+Apr  1 13:02:04 radius radiusd[125]: autorization request from
+				"www.selflinux.de" for "steffen"
+Apr  1 13:02:04 db kernel: end_request: I/O error, dev 03:02 (hda), 
+				sector 58138452
+Apr  1 13:02:04 db postmaster[111]: Database error: disk read failed 
+                                (I/O error)
+Apr  1 13:02:04 radius radiusd[125]: authorization request for
+				"steffen" failed (database error)
+Apr  1 13:02:03 www httpd[123]: Authorization for "steffen" failed
+				(incorrect password)
+      ]]>
+      </content>
+
+     </file>
+
+     <textblock>
+In diesem fiktiven Szenario sieht man eine fehlgeschlagene
+Web-Anmeldung. Der Webserver (httpd) löste die IP Adresse auf
+(über "named" auf "ns1") und fragte dann bei einem Radius-Dienst
+auf einem separten Server nach. Dieser wiederum verwendete eine
+PostgreSQL Datenbank auf einem anderen Server. Diese hat ein
+großes Problem: Eine kaputte Festplatte (
+
+     <command>
+sector 58138452
+     </command>
+
+konnte nicht gelesen werden). Demzufolge kann PostgreSQL (<command>postmaster</command>)
+die Anfrage nicht bestätigen. Radius meldet also einen Fehler,
+den der Webserver als
+
+     <command>
+incorrect password
+     </command>
+
+fehlinterpretiert. Nicht das falsche Passwort war das Problem, sondern eine kaputte
+Festplatte! In diesem Fall würde man im Webserverlog sehr viele
+
+     <command>
+incorrect password
+     </command>
+
+finden, und einen Angriff vermuten.
+Doch durch die Verwendung eines Loghosts sind die Meldungen aller
+Komponenten zentral verfügbar. Hier hat das die Fehlersuche
+erheblich beschleunigt (der Administrator hat die Festplatte
+sofort gewechselt und die Bandsicherung zurückgespielt).
+     </textblock>
+
+   </section>
+
+  </section>
+  <section>
+<!-- 3.4. Kapitel -->
+
+   <heading>
+Konfigurationsvorschläge
+   </heading>
+
+
+<!-- 3.4.1. Kapitel -->
+   <section>
+
+    <heading>
+Serverkonfiguration
+    </heading>
+
+     <textblock>
+Bei der Installation eines Servers kann man überlegen, wie man
+mit großen Logfiles umgehen möchte. Hier ist zunächst von
+Interesse, dass große Logdateien Filesysteme füllen können. Hat man
+die Logdateien (in der Regel also das Verzeichnis <command>/var/log</command>) im
+selben Filesystem gemoutet wie beispielsweise das Root-Filesystem
+<command>/</command>, so ist damit zu rechnen, dass nach einer Logflut das System
+vollkommen unbenutzbar ist, also mit dem Ausfall sämtlicher
+Dienste.
+     </textblock>
+
+     <textblock>
+Diese Gefahr kann man durch den Einsatz von Werkzeugen wie
+<command>logrotate</command> oder dem SuSE-Linux <command>/etc/logfiles</command> Mechanismus senken.
+Auf SuSE-Systemen trägt man hierzu jede Logdatei in <command>/etc/logfiles</command>
+ein. Hinter den Dateinamen schreibt man die Größe (z.B. <command>+1024k</command>)
+und den Zugriffsmodus (beispielsweise <command>640</command>) und den Eigentümer
+(beispielsweise <command>root.root</command>). Die erste Option wird für das
+Dienstkommando <command>find</command> als Parameter verwendet, der zweite für
+<command>chmod</command> und der dritte für <command>chown</command>. Die manpages dieser drei
+Werkzeuge geben Auskunft über Art der verwendbaren Werte. Auf
+SuSE-Systemen sind in dieser Datei die voreingestellten
+Logdateien bereits eingetragen. Eigene Dateien muß man hier
+natürlich hinzufügen.
+     </textblock>
+
+     <textblock>
+Eine weitere Möglichkeit wäre der Einsatz von separaten
+Filesystemen. Man kann z.B. <command>/var</command> auf eine andere Partition oder
+ein anderes LVM LV (logical volume) mounten. Dies hat jedoch auch
+Nachteile: es wird nicht der gesamte verfügbare Platz für
+Logfiles verwendet (demzufolge fällt das Logging früher aus), und
+insbesondere Angriffe und Störungen sind damit nicht mehr
+rekonstruierbar. Daher ist eine regelmäßige Überprüfung der
+freien Plattenkapazität durchzuführen, vorzugsweise automatisch,
+dann kann man es nicht vergessen.
+     </textblock>
+
+
+    </section>
+<!-- 3.4.2. Kapitel -->
+    <section>
+    
+     <heading>
+Bootkonfiguration
+     </heading>
+
+     <textblock>
+Syslog sollte stets laufen. Syslog benötigt meist Schreibzugriff
+auf Festplatten. Bei Konfigurationen mit einem zentralen Loghost
+wird weiterhin das Netzwerk benötigt. Daher sollte man Syslog
+unmittelbar nach dem Hochfahren des Netzwerkes starten. Auf
+SuSE-Systemen verhält sich das bereits so. 
+     </textblock>
+
+     <textblock>
+Es ist denkbar, den Start von Syslog vor dem des Netzwerkes
+durchzuführen, wenn man keinen Loghost verwendet. Eventuell
+erhält man so mehr Meldungen.
+     </textblock>
+
+     <textblock>
+Nach dem Start von Syslog sollte man den Kernel-Logger <command>klogd</command>
+starten. Sicherheitshalber wartet man z.B. eine Sekunde
+dazwischen. Die GNU/Linux-Startscripte sollten dies bereits so
+machen (bei SuSE-Systemen ist es der Fall).
+     </textblock>
+
+
+   </section>
+<!-- 3.4.3. Kapitel -->
+   <section>
+    
+    <heading>
+Syslog-Konfiguration
+    </heading>
+
+     <textblock>
+Man sollte darauf achten, dass keine Meldungen überhaupt nicht
+geloggt werden. Meistens möchte man verschiedene Dateien haben,
+um schnell Meldungen zu finden. Oft werden mindestens die Dateien
+<command>/var/log/messages</command> und <command>/var/log/warn</command> verwendet. Letzere enthält
+nur wichtige Meldungen. Sehr üblich ist auch eine Datei
+<command>/var/log/mail</command> und eventuell <command>/var/log/news</command> für Meldungen des Mail-
+bzw. Newssystems. Häufig sieht man auch <command>/var/log/allmessages</command> oder
+<command>/var/log/allinone</command>, die sämtliche Meldungen enthalten.
+     </textblock>
+
+     <textblock>
+Zusätzlich empfiehlt es sich, Meldungen auf einer virtuellen
+Konsole zu haben.
+     </textblock>
+
+     <textblock>
+Weitere Informationen und ein Beispiel finden sich im Abschnitt
+"Die Konfigurationsdatei", siehe oben.
+     </textblock>
+
+   </section>
+<!-- 3.4.4. Kapitel -->
+   <section>
+    
+    <heading>
+Einheitliche Netzwerkzeit
+     </heading>
+
+     <textblock>
+Bei der Analyse von Störungen ist es wichtig, Reihenfolgen und
+Abstände von Fehlermeldungen oder Fehlermails richtig feststellen
+zu können. Oft sind Zeitstempel bekannt. Diese sind natürlich
+Rechner-übergreifend nur verwendbar, wenn auch alle Maschinen die
+gleiche Vorstellung der Netzwerkzeit haben, deren Uhren also
+genau gleich bzw. synchron sind. Es empfiehlt sich also
+(insbesondere, wenn man keinen Loghost verwendet), die
+Netzwerkzeiten zu synchronisieren. Dazu verwendet man
+üblicherweise einen NTP (Network Time Protocol) Dienst,
+beispielsweise xntpd.
+     </textblock>
+
+    </section>
+<!-- 3.4.5. Kapitel -->
+    <section>
+
+     <heading>
+Firewall-Konfiguration
+     </heading>
+
+     <textblock>
+Firewalls sollten verhindern, dass UDP/514 Pakete vom Internet in
+das LAN geroutet werden, um Flut-Angriffen zu entgehen. Selbst
+wenn man keinen Loghost verwendet, könnte möglicherweise ein
+interner Host den Empfang von Netzwerk-Meldungen aktiviert haben.
+Auskunft darüber gibt das Kommando:
+     </textblock>
+
+     <shell>
+ 
+      <root path="~">
+ netstat -an --inet | grep 514
+      </root>
+
+     </shell>
+
+     <textblock>
+Sicherheitshalber sollten Firewalls ohnehin alle nicht benötigten
+und nicht verwendeten Ports sperren.
+     </textblock>
+
+     <textblock>
+Interne Firewalls müssen diese Pakete natürlich zwischen Loghost
+und den Logsystemen erlauben, aber sollten so eingestellt werden,
+daß nur die betreffenden IP-Adressen erlaubt sind.
+     </textblock>
+
+     <textblock>
+Es ist zu beachten, dass die <strong>Absender-Adresse</strong> von UDP Paketen
+sehr einfach fälschbar ist. Demzufolge kann man bei Firewalls
+diese Adressen nicht zum Filtern verwenden. Man sollte hier an
+Interfaces blocken. Hat eine Firewall beispielsweise ein externes
+Interface <command>eth1</command>, sollte eine entsprechende Firewall-Regel den
+Empfang und Versand von Syslog-Paketen über dieses Interface
+unterbinden. Wenn die Firewall über <command>eth0</command> an das interne Netz
+angebunden ist, kann hier dennoch ein Loghost verwendet werden,
+der die Firewallmeldungen empfängt.
+     </textblock>
+
+     <textblock>
+Bei der Verwendung von Firewalls und Loghosts ist zu beachten,
+daß normalerweise unerlaubte Pakete geloggt werden, was zu einen
+hohen Aufkommen an Meldungen führt. Hier sollte Syslog so
+konfiguriert werden, dass diese Meldungen nicht über das Netzwerk
+geschrieben werden, wenn sich hier Probleme ergeben (Portscans
+könnten beispielsweise zu Flut-Verhalten führen).
+     </textblock>
+
+     <textblock>
+Häufig sind aber die Außenanbindungen vergleichsweise langsam
+(beispielsweise E1 (2MBit) extern und 100Mbit intern), so daß
+hier interne Netzwerküberlastungen eher unwahrscheinlich sind.
+     </textblock>
+
+    </section>
+
+  </section>
+
+ </section>
+
+</split>
+<!-- 4. Kapitel -->
+<split>
+
+ <section>
+
+  <heading>
+Starten und Stoppen von Syslog
+  </heading>
+
+   <textblock>
+Der Start erfolgt fast immer und ausschließlich automatisch beim
+Hochfahren des Systems über ein <command>rc-Script</command>, häufig
+<command>/etc/rc.d/syslog</command>. Bei gängigen GNU/Linux Distributionen ist das
+bereits so konfiguriert. Dieses Script startet oft (zum Beispiel
+bei SuSE-Systemen) auch automatisch den Kernel-Logger. Andere
+Systeme haben hier eventuell ein eigenes <command>rc-Script</command>. Dieses sollte
+dann in jedem Fall direkt nach Syslog gestartet werden.
+   </textblock>
+ 
+   <textblock>
+Um Syslog manuell zu starten, verwendet man:
+   </textblock>
+
+   <shell>
+ 
+    <root path="~">
+ /etc/rc.d/syslog start
+    </root>
+
+   </shell>
+   
+   <textblock>
+oder bei SuSE-Systemen kurz:
+   </textblock>    
+
+   <shell>
+ 
+    <root path="~">
+ rcsyslog start
+    </root>
+
+   </shell>
+
+     <textblock>
+Um den Dienst zu stoppen, schreibt man analog dazu <command>stop</command>
+anstatt <command>start</command>.
+     </textblock>
+
+ </section>
+
+</split>
+<!-- 5. Kapitel -->
+<split>
+
+ <section>
+
+  <heading>
+Meldungen selbst erzeugen
+  </heading>
+
+   <textblock>
+Es gibt mehrere Fälle, in denen man selbst Meldungen erzeugen
+möchte. Denkbar sind beispielsweise Cron-Jobs, die neben dem
+Verschicken der EMail mit den Script-Ausgaben kurze Erfolgs-
+oder Mißerfolgsmeldung über Syslog schreiben sollen. Eine weitere
+Anwendung sind automatisch ausgeführte Scripte, beispielsweise
+<command>/etc/ppp/ip-up</command> oder <command>rc-Scripte</command>.
+   </textblock>
+
+   <textblock>
+Es gibt ein kleines, einfaches Werkzeug, mit dem man
+Syslog-Meldungen erzeugen kann. Es heißt <command>logger</command>. Diesem
+Werkzeug kann man über Optionen sagen, wie eine Meldung zu loggen
+ist. Hier kann man beispielsweise Priority und Facility angeben.
+   </textblock>
+
+   <textblock>
+Die wichtigsten Optionen sind:
+   </textblock>
+
+   <table>
+
+    <pdf-column width="100"/>
+    <pdf-column/>
+
+    <tr>
+
+     <th>Option</th>
+     <th>Beschreibung</th>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-i</command></td>
+     <td>Prozeß-ID mit in die Nachricht schreiben</td>
+
+    </tr>
+
+    <tr>
+
+    <td><command>-p</command> &lt;Fac.&gt;.&lt;Pri.&gt;</td>	
+    <td>Angegenene Priorität und Facility<br/>
+	verwenden. Mögliche Werte sind die<br/>
+	gleichen wie die in <command>/etc/syslog.conf</command><br/>
+	verwendbaren, siehe Abschnitt "Quellen von<br/>
+	Meldungen" und "Priorität von Meldungen".<br/>
+	Wird diese Option nicht angegeben, wird<br/>
+	<command>user.notice</command> verwendet.</td>
+
+    </tr>
+
+    <tr>
+
+     <td><command>-t</command> &lt;Tag&gt;</td>		
+     <td>Angegebenes "Tag" verwenden. Meist wird<br/>
+	hier der Name des Scriptes verwendet.</td>
+
+    </tr>
+
+   </table>
+
+   <textblock>
+Es gibt zwei Arten, logger aufzurufen. Einmal kann man die
+Meldungen mit in die Kommandozeile schreiben, direkt hinter die
+Optionen. Mindestens wenn die Meldung Minuszeichen (<command>-</command>)
+enthalten könnte, sollte man sie mit <command>--</command> abtrennen, um zu
+vermeiden, dass Meldungsteile als Optionen mißinterpretiert
+werden. Ein Beispiel:
+   </textblock>
+   
+   <shell>
+    
+    <user path="~">
+logger -i -t MeinProgramm -- Ich bin eine Meldung.
+    </user>
+
+   </shell>
+
+   <textblock>
+Dies erzeugt dann folgenden Logdatei-Eintrag:
+   </textblock>
+   
+   <shell>
+    <user path="~">
+logger -i -t MeinProgramm -- Ich bin eine Meldung.
+    </user>
+   
+    <output>
+Apr 13 13:02:04 atlas MeinProgramm[6178]: Ich bin eine Meldung.
+    </output>
+
+   </shell>
+
+   <textblock> 
+Die zweite Art des Aufrufes unterscheidet sich in der Art, wie
+die Meldung übergeben wird. Wird nämlich keine auf der
+Kommandozeile angeben, liest logger die Standard-Eingabe. Damit
+kann man also schreiben:
+   </textblock>
+
+   <shell>
+
+    <user path="~">
+echo "Ich bin eine Meldung." | logger -i -t MeinProgramm
+    </user>
+
+   </shell>
+   <textblock>
+was zum gleichen Ergebnis führt. logger geht auch mit mehreren
+Eingabezeilen korrekt um (jede Zeile wird eine Meldung). In
+Scripten kann man deshalb beispielsweise komfortabel schreiben:
+   </textblock>
+
+   <file>
+   
+    <title>
+Beispielscript
+    </title>
+
+    <content>
+    <![CDATA[
+LOGGER="/usr/bin/logger -t `basename $0`[$$]"
+
+{
+  test -e /etc/irgenteinedatei || echo "Error, Datei nicht gefunden!";
+  date;
+  echo "eine andere Fehlermeldung";
+} | $LOGGER
+    ]]>
+    </content>
+
+   </file>
+
+   <textblock>
+Dies erzeugt auf elegante Art und Weise folgende Einträge:
+   </textblock>
+
+   <file>
+     <title>
+     /var/log/messages
+     </title>
+    <content> <![CDATA[
+Apr 13 13:20:45 atlas script.sh[6338]: Error, Datei nicht gefunden!
+Apr 13 13:20:45 atlas script.sh[6338]: Sat Apr 13 13:20:45 MEST 2002
+Apr 13 13:20:45 atlas script.sh[6338]: eine andere Fehlermeldung
+    ]]> </content>
+
+   </file>
+
+ </section>
+
+</split>
+<!-- 6. Kapitel -->
+<split>
+
+ <section>
+
+  <heading>
+Logdateien auswerten
+  </heading>
+
+   <textblock>
+Sehr wichtig ist es natürlich, die erzeugten Logdateien
+auszuwerten. Gewöhnlich hat ein Administrator jedoch nicht die
+Zeit, täglich tausende von Zeilen zu lesen. 
+   </textblock>
+
+   <textblock>
+Hier benutzt man Werkzeuge, um diese Arbeit zu automatisieren.
+Ein Beispiel hierfür ist <command>LogWatch</command>, das von RedHat verwendet
+wird. Ein weiteres ist <command>logmail</command>, das man sich von
+<ref lang="en" url="http://sws.dett.de/logmail">http://sws.dett.de/logmail</ref> herrunterladen kann (es enthält auch
+eine deutsche Dokumentation). Sicherlich gibt es viele weitere
+ähnliche und leistungsfähigere Werkzeuge.
+   </textblock>
+
+   <textblock>
+Verwendet man <command>logmail</command>, so kann man sich eine Konfigurationsdatei
+anlegen, in dem spezifiziert wird, welche Einträge per EMail an
+wen verschickt werden. Bei Loghosts kann man zum Beispiel alle
+Meldungen von <command>postmaster</command> an den PostgreSQL Administrator und
+alle Meldungen von <command>named</command> an den DNS-Administrator verschicken,
+und alle Meldungen an einen dritten Administrator. Des weiteren
+sollte konfiguriert werden, welche Meldungen man nicht haben
+möchte, sonst erhalten die Administratoren viele <strong>langweilige</strong>
+Meldungen. <command>Logmail</command> gestattet es auch, Loghost-Meldungen anhand
+des Hostnamens per EMail zu verteilen. So kann man den
+entsprechenden Systemadministratoren <strong>ihre</strong> Meldungen zustellen.
+   </textblock>
+
+   <textblock>
+Man kann sich alle Meldungen, die man per EMail erhält, aber
+nicht mehr erhalten möchte, einfach in die Konfigurationsdatei
+als Filter mit aufnehmen. Dann werden diese in Zukunft nicht mehr
+verschickt. Derartige Systeme bedürfen natürlich der Pflege. In
+wenigen Tagen erhält man dann aber nur noch neue, interessante
+Meldungen per EMail, und kann nicht vergessen, Logfiles
+auszuwerten. So erkennt man auch Störungen, die nachts auftraten,
+oder bekommt Mitteilungen über Angriffsversuche. Zusätzlich senkt
+das die Gefahr, dass ein Angreifer Logfiles manipulieren kann, da
+unter Umständen bereits eine EMail verschickt wurde, die der
+Angreifer nicht mehr <strong>aufhalten</strong> oder ungeschehen machen kann.
+   </textblock>
+
+   <textblock>
+Nur durch derartiges Vorgehen ist es möglich, mehrere Server
+richtig zu betreuen, da im Produktionsbetrieb natürlich keine
+Zeit bleibt, täglich stundenlang Logfiles auszuwerten, die fast
+immer langweilig sind.
+   </textblock>
+ 
+ </section>
+
+</split>
+<!-- 7. Kapitel -->
+<split>
+
+ <section>
+
+  <heading>
+Andere Systemlogger
+  </heading>
+
+   <textblock>
+Neben Syslog gibt es weitere Systemlogger, die man verwenden
+kann. Beispiele sind <command>socklock</command> und <command>syslog-ng</command>. Beide haben
+interessante Funktionen und Vorteile gegenüber Syslog.
+   </textblock>
+
+ </section>
+
+<!-- 8. Kapitel -->
+
+ <section>
+
+  <heading>
+Weitere Informationsquellen
+  </heading>
+
+   <textblock>
+Es folgt eine unvollständige Liste:
+   </textblock>
+
+   <textblock>
+    <command>
+* syslog manpage
+    </command>
+   </textblock>
+
+   <textblock>
+    <command>
+* klogd manpage
+    </command>
+   </textblock>
+
+   <textblock>
+HOWTOs oder andere Dokumentationen sind mir nicht bekannt. Über
+Hinweise freue ich mich natürlich jederzeit.
+   </textblock>
+  
+  </section>
+ 
+</split>
+
+</chapter>

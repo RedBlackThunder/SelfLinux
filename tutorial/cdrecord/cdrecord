@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>cdrecord</title>
+
+ <author>
+  <name>Johnny Graber</name>
+  <mailto>linux@jgraber.ch</mailto>
+ </author>
+
+ <layout>
+  <name>Axel Gross</name>
+  <mailto>axelgross@web.de</mailto>
+ </layout>
+ 
+ <license>GFDL</license>
+ 
+ <index>cdrecord</index>
+
+ <description>
+  <textblock>
+CDs kann man unter Linux ganz praktisch über die Kommandozeile
+brennen. Wie dies geht und was man für Vorbereitungen treffen
+muss ist Inhalt dieses Textes.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+ <!-- 1. Kapitel -->
+   <heading>
+Vorbereitungen
+   </heading>
+
+   <section>
+<!-- 1.1 Kapitel -->
+    <heading>
+Einbau des Brenners
+    </heading>
+  
+    <textblock>
+Bevor man mit dem Brennen loslegen kann, muss natürlich ein
+CD-Brenner vorhanden sein. Im Rahmen von SelfLinux gehen wir
+aber nicht auf den Einbau ein. Dazu verweisen wir auf die
+mit dem Gerät mitgelieferte Erklärung.
+    </textblock>
+   </section>
+
+   <section>
+<!-- 1.1 Kapitel -->
+    <heading>
+SCSI-Emulation
+    </heading>
+  
+    <textblock>
+Bei den meisten Heimanwendern steht heutzutage ein (E)IDE-Brenner
+herum. Diese Brenner können nicht direkt verwendet werden, sondern
+brauchen die SCSI-Emulation.
+    </textblock>
+
+    <section>
+    <!-- 1.1.1 Kapitel -->
+     <heading>
+Kernelmodul ide-scsi
+     </heading>
+    
+     <textblock>
+Diese besteht hauptsächlich im laden des Kernelmodules <command>ide-scsi</command>
+während dem Bootvorgang. Distributionen wie Mandrake, SuSE und RedHat
+haben dieses Kernelmodul schon vorbereitet und man braucht keinen
+neuen Kernel zu kompilieren. Dies kann man einfach mit
+     </textblock>
+
+     <shell>
+      <root path="~">
+modprobe ide-scsi
+      </root>
+     </shell>
+
+     <textblock>
+überprüfen. Mit diesem Befehl, der als root ausgeführt werden muss,
+wird das Modul getestet und geladen. Wenn dies ohne Fehler gemacht
+wird, können wir mit der <path>lilo.conf</path> weiterfahren. Andernfalls muss
+man zuerst einen neuen Kernel kompilieren.
+     </textblock>
+    </section>
+
+    <section>
+    <!-- 1.1.1 Kapitel -->
+     <heading>
+Neuen Kernel erzeugen
+     </heading>
+
+     <textblock>
+Wie man einen Kernel erstellt, wurde im Rahmen von SelfLinux ja
+bereits <ref chapter="kernel">hier</ref> erklärt. Daher beschränkt sich die Erklärung hier nur
+auf die Besonderheiten im Zusammenhang mit dem CD-Brennen.
+     </textblock>
+
+     <textblock>
+Zum Anpassen des Kernels verwenden wir wiederum <command>make menuconfig</command>.
+Zuerst vergewissern wir uns, das der Kernel Module verwendet. Dazu
+wechselt man zu <strong>"Loadable modul support"</strong> und aktiviert wenn nötig die
+Option und kehrt zum Hauptmenü zurück.
+     </textblock>
+
+     <textblock>
+Unter <strong>ATA/IDE/MFM/RLL support</strong> geht man nach Aktivierung der Option
+weiter nach unten. <strong>"Enhanced IDE/MFM/RLL disc/cdrom/ tape/floppy support"</strong>
+wird auf <strong>Y</strong> gestellt und <strong>"SCSI emulation support"</strong> wird entweder als <strong>M</strong>
+oder <strong>Y</strong> geladen. Durch <strong>M</strong> wird ein Modul erstellt, das man vor der
+Verwendung laden muss.
+     </textblock>
+
+     <textblock>
+Danach geht es wieder zurück ins Hauptmenü. Bei <strong>"SCSI support"</strong> wählt
+man die gleichnamige Option mit <strong>Y</strong>, ebenso die Optionen
+<strong>"SCSI CD-ROM support"</strong> sowie <strong>"SCSI generic support"</strong>. Falls man sich
+nicht ganz sicher ist, kann man auch <strong>M</strong> verwenden.
+     </textblock>
+
+     <textblock>
+Als letzte Optionen wählt man unter <strong>"Filesystems"</strong> im Hauptmenü die
+Optionen <strong>"ISO 9660 CDROM filesystemsupport"</strong> als <strong>M</strong> und
+<strong>"Microsoft Joliet CDROM extensions"</strong> mit <strong>Y</strong>.
+     </textblock>
+
+     <textblock>
+Beim verlassen von <command>make menuconfig</command> wird nachgefragt, ob man seine
+Änderungen sichern will. Dies muss mit <strong>"Yes"</strong> bestätigt werden, da
+ansonsten die Einstellungen verloren gehen.<br/>
+Der Kernel wird danach ganz gewöhnlich übersetzt und installiert.
+     </textblock>
+    </section>
+
+    <section>
+      <!-- 1.1.1 Kapitel -->
+     <heading>
+Anpassen der lilo.conf
+     </heading>
+
+     <textblock>
+Als nächstes ergänzt man die <path>lilo.conf</path>. Bei der Zeile <strong>append=""</strong> trägt
+man das Argument <strong>hdX=ide-scsi</strong> ein. Dabei muss das <strong>X</strong> durch einen dieser
+Werte ergänzt werden:
+     </textblock>
+
+<!--# Als Tabelle formatieren-->
+
+     <table>
+      <pdf-column width="25"/>
+      <pdf-column/>
+      <tr>
+       <td><command>a</command></td>
+       <td>CD-Brenner wurde am Port 0 als Master angeschlossen</td>
+      </tr>
+      <tr>
+       <td><command>b</command></td>
+       <td>CD-Brenner wurde am Port 0 als Slave angeschlossen</td>
+      </tr>
+      <tr>
+       <td><command>c</command></td> 
+       <td>CD-Brenner wurde am Port 1 als Master angeschlossen</td>
+      </tr>
+      <tr>
+       <td><command>d</command></td> 
+       <td>CD-Brenner wurde am Port 1 als Slave angeschlossen</td>
+      </tr>
+     </table>
+     
+     <textblock>
+So sähe die <path>lilo.conf</path> aus, wenn ihr Brenner am Port 1 als Master
+angeschlossen währe:
+     </textblock>
+
+     <file>
+      <title>Auszug der Datei lilo.conf</title>
+      <content>
+image=/boot/vmlinuz-2.4.18-6mdk
+        label=Mandrake_8.2
+        root=/dev/hda8
+        initrd=/boot/initrd-2.4.18-6mdk.img
+
+        append="hdc=ide-scsi"
+
+        vga=788
+        read-only
+      </content>
+     </file>
+
+     <textblock>
+Nach dem Editieren nicht vergessen, <command>lilo</command> als root aufzurufen. Beim
+nächsten Start sollte der Brenner richtig eingerichtet werden.
+     </textblock>
+    </section>
+
+    <section>
+<!-- Kapitel 1.1.1 -->
+     <heading>
+      kleine Tests
+     </heading>
+
+     <textblock>
+Wird der Brenner richtig erkannt, wird ein entsprechender Eintrag in
+den Bootmeldungen auftauchen. Da die Bootmeldungen während dem Start
+in einer hohen Geschwindigkeit vorbeisausen, ist dies nicht sehr
+komfortabel.
+     </textblock>
+
+     <shell>
+      <user path="~">
+dmesg | grep scsi | less
+      </user>
+      <output>
+Kernel command line: auto BOOT_IMAGE=Mandrake_8.2 ro root=308 quiet devfs=mount hdc=ide-scsi
+ide_setup: hdc=ide-scsi
+scsi0 : SCSI host adapter emulation for IDE ATAPI devices
+Attached scsi CD-ROM sr0 at scsi0, channel 0, id 0, lun 0
+sr0: scsi3-mmc drive: 24x/24x writer cd/rw xa/form2 cdda tray
+      </output>
+     </shell>
+
+     <textblock>
+Gibt man nach dem Einloggen in die Konsole ein. <command>dmesg | less</command> zeigt einem
+die Meldungen an, <command>grep</command> filtert diese Ausgabe nach <strong>scsi</strong>.
+     </textblock>
+
+     <textblock>
+Man kann aber auch schon <command>cdrecord</command> für diesen Test brauchen:
+     </textblock>
+
+     <shell>
+      <user path="~">cdrecord --scanbus</user>
+      <output>
+Cdrecord 1.11a15 (i586-mandrake-linux-gnu) Copyright (C) 1995-2001 Jörg Schilling
+Linux sg driver version: 3.1.22
+Using libscg version 'schily-0.5'
+scsibus0:
+        0,0,0     0) 'MATSHITA' 'UJDA710         ' '1.50' Removable CD-ROM
+        0,1,0     1) *
+        0,2,0     2) *
+      </output>
+     </shell>
+
+     <textblock>
+Wir sehen, das vor dem gefundenen Brenner (MATSHITA) 0,0,0 steht. Diese
+Werte teilen <command>cdrecord</command> mit, welches Gerät er für das Brennen verwenden
+soll.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <!-- 1 Kapitel -->
+   <heading>
+ISO-Image
+   </heading>
+
+   <textblock>
+Für die Bearbeitung von ISO-Images verwendet man das Tool
+<command>mkisofs</command> (make ISO FileSystem). Sollte <command>mkisofs</command> nicht schon
+installiert sein, findet man es im Paket <command>cdrtools</command> auf<br/>
+<ref url="ftp://ftp.fokus.gmd.de/pub/unix/cdrecord/alpha/">ftp://ftp.fokus.gmd.de/pub/unix/cdrecord/alpha/</ref>
+   </textblock>
+
+   <section>
+       <!-- 1.1 -->
+    <heading>
+erstellen
+    </heading>
+
+    <textblock>
+Will man eine Daten-CD erstellen, macht man zuerst ein
+ISO-Image. Will man z.B. sein <path>/home/user</path> in ein ISO-Image mit
+dem Namen <path>meineDaten.iso</path> packen, genügt ein:
+    </textblock>
+
+    <shell>
+     <user path="~">
+mkisofs -o /mnt/disk2/meineDaten.iso -R -T -V MeineDaten /home/user/
+     </user>
+    </shell>
+
+    <textblock>
+Der Befehl ist ein wenig lang, doch wird damit schön gezeigt,
+was <command>mkisofs</command> alles kann. Mit <command>-o</command> teilt man mit, das man das zu
+erstellende Image in eine Datei ablegen will (output). Wichtig
+ist, das sich die zu erstellende Datei nicht dort befindet, wo
+man die Dateien her kopieren will.
+    </textblock>
+
+    <textblock>
+Mit <command>-R</command> erstellt eine CD vom Type RockRidge, da diese dem
+Linux-Dateisystem am nächsten kommt. Mit der Option <command>-T</command> wird
+zusätzliche Datei (<path>TRANS.TBL</path>) erzeugt. Darin werden die Dateinamen
+in einer Kurzform abgelegt, so das auch DOS mit der CD klar kommt.
+Unter Windows ist es üblich, der CD einen Namen zu vergeben, der
+im Dateimanager angezeigt wird. Dies geschieht mit <command>-V</command> und zeigt
+in unserem Fall <strong>"MeineDateien"</strong> an.
+Am Ende des Befehls listet man alle Verzeichnisse und Dateien auf,
+die auf die CD kommen sollen.
+    </textblock>
+
+    <textblock>
+Für den täglichen Gebrauch reichen die hier erwähnten Optionen.
+Will man speziellere CDs brennen, empfiehlt sich wie immer der Blick
+in die Manualpage (<command>man mkisofs</command>).
+    </textblock>
+   </section>
+
+   <section>
+    <!-- 1.1 Kapitel -->
+    <heading>
+testen
+    </heading>
+
+    <textblock>
+Wer kennt es nicht: Nach dem Brennen bemerkt man, das die wichtigste
+Datei in einem anderen Verzeichnis lag und man sie daher nicht hat. 
+Unter Windows bedeutet dies ein neuer Anlauf mit einem neuen Rohling.
+    </textblock>
+
+    <textblock>
+Linux ist aber auch hier geschickter und bietet einem eine
+Testmöglichkeit. Dazu wird das ISO-Image in den Verzeichnisbaum
+eingehängt/gemountet:
+    </textblock>
+
+    <shell>
+     <user path="~">
+mount -t iso9660 -o loop,ro /mnt/disk2/meineDaten.iso /cdrom
+     </user>
+    </shell>
+
+    <textblock>
+Damit wird ein Loop-Device erzeugt und das Image <path>meineDaten.iso</path>
+unter <path>/cdrom</path> eingehängt. Man kann so das Image wie eine gewöhnliche
+CD verwenden.
+    </textblock>
+
+    <textblock>
+Bemerkt man einen Fehler, kann man das ISO-Image löschen und ein
+neues Erstellen - ohne das man für diese Erkenntnis einen Rohling
+brauchte.
+    </textblock>
+   </section>
+  </section>
+ </split>
+ 
+ <split>
+  <section>
+       <!-- 1 Kapitel -->
+   <heading>
+CD brennen
+   </heading>
+
+   <textblock>
+<command>cdrecord</command> ist wie <command>mkisofs</command> bei jeder Distribution dabei. Falls nicht,
+findet man es auf auch auf<br/>
+<ref url="ftp://ftp.fokus.gmd.de/pub/unix/cdrecord/">ftp://ftp.fokus.gmd.de/pub/unix/cdrecord/</ref>
+   </textblock>
+
+   <section>
+   <!-- Kapitel 1.1 -->
+    <heading>
+ISO-Image auf CD brennen
+    </heading>
+
+    <textblock>
+Der häufigste Fall Daten-CDs zu erstellen, ist das selbst gemachte
+ISO-Image auf eine CD zu brennen. Dafür genügt ein einfacher Befehl:
+    </textblock>
+
+    <shell>
+     <user path="~">
+cdrecord -v speed=8 dev=0,0,0 /mnt/disk2/meineDaten.iso
+     </user>
+    </shell>
+
+    <textblock>
+Mit <command>-v speed=8</command> veranlasst man den Brenner, mit <strong>8x</strong> zu schreiben. Man
+sollte daran denken, die Geschwindigkeit nicht über die Möglichkeiten
+des Gerätes zu setzen.
+    </textblock>
+
+<!--# Layout: "Kleine Tests" bitte verlinken-->
+
+
+    <textblock>
+Bei <command>dev=</command> gibt man die 3 Zahlen an, die einem <command>cdrecord --scanbus</command>
+liefert (siehe <ref iref="kleine Tests">"kleine Tests"</ref> zu beginn des Textes).
+Am Schluss gibt man noch das ISO-Image an, das man brennen will.
+    </textblock>
+
+    <textblock>
+Es gibt auch bei <command>cdrecord</command> noch zahlreiche Optionen:
+    </textblock>
+
+    <table>
+     <pdf-column width="50"/>
+     <pdf-column/>
+     <tr>
+      <td><command>-eject</command></td>
+      <td>CD wird nach dem Beschreiben ausgeworfen</td>
+     </tr>
+     <tr>
+      <td><command>-dummy</command></td>
+      <td>Der Schreibvorgang wird nur simuliert</td>
+     </tr>
+     <tr>
+      <td><command>-multi</command></td>
+      <td>Für Multisession-CDs immer angeben, ausser bei der letzten Session</td>
+     </tr>
+     <tr>
+      <td><command>-msinfo</command></td>
+      <td>Zeit einem Informationen über Multisession-CDs an</td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+   <!-- 1.1 Kapitel -->
+    <heading>
+On-The-Fly CD kopieren
+    </heading>
+
+    <textblock>
+Bei <command>cdrecord</command> gibt es die Möglichkeit, Daten von der Standardeingabe zu
+lesen. So ist es möglich, auf das Schreiben eines ISO-Images zu
+verzichten. Damit die Daten ins richtige Format kommen, muss man
+aber trotzdem <command>mkisofs</command> verwenden:
+    </textblock>
+
+    <shell>
+     <user path="~">
+ mkisofs -R -T -V MeineCD /cdrom |  cdrecord -v speed=8 dev=0,0,0 -
+     </user>
+    </shell>
+
+
+    <textblock>
+Dabei wird die Ausgabe von <command>mkisofs</command> nicht in eine Datei geschrieben,
+sondern durch die Pipe an <command>cdrecord</command> weitergereicht. Dies wiederum
+weiss dank dem <command>-</command>, das es von der Standardeingabe lesen muss.
+    </textblock>
+
+    <textblock>
+So kann man nicht nur CDs direkt kopieren, sondern auch lokale
+Dateien. Dafür wird <path>/cdrom</path> durch den entsprechenden Pfad ersetzt.
+    </textblock>
+   </section>
+
+   <section>
+   <!-- 1.1 Kapitel -->
+    <heading>
+Audio-CDs
+    </heading>
+
+    <textblock>
+Fürs Erstellen von Audio-CDs braucht man die Option <command>-audio</command>. Damit kann
+man *.wav-Dateien auf die CD brennen. Zusätzlich braucht man noch <command>-pad</command>,
+das die Audio-Dateien auf ein Vielfaches von 2352 Byte setzt.
+    </textblock>
+
+    <shell>
+     <user path="~">
+cdrecord -v speed=8 dev=0,0,0 -pad -audio lied1.wav lied2.wav
+     </user>
+    </shell>
+
+    <textblock>
+Die Lieder werden entsprechend ihrer Auflistung auf die CD gebrannt.
+    </textblock>
+   </section>
+
+   <section>
+        <!-- 1.1 Kapitel -->
+    <heading>
+CD-RW
+    </heading>
+
+    <textblock>
+Es ist auch möglich, CD-RWs zu beschreiben. Beschrieben wird wie bisher
+in den Beispielen genannt. Zum Löschen der CD-RW verwendet man
+<command>blank=Methode</command>. Es gibt momentan folgende Methoden:
+    </textblock>
+
+    <table>
+     <pdf-column width="70"/>
+     <pdf-column/>
+     <tr>
+      <td><command>help</command></td>
+      <td>Zeigt alle Möglichen Methoden an</td>
+     </tr>
+     <tr>
+      <td><command>all</command></td>
+      <td>Löscht die gesamte CD, kann also ein wenig dauern</td>
+     </tr>
+     <tr>
+      <td><command>fast</command></td>
+      <td>Schnelles Löschen.  Dabei werden nur PMA, TOC und das Pregap gelöscht.</td>
+     </tr>
+     <tr>
+      <td><command>track</command></td>
+      <td>Löscht einen Track.</td>
+     </tr>
+     <tr>
+      <td><command>unreserve</command> </td>
+      <td>Gibt einen reservierten Track wieder frei.</td>
+     </tr>
+     <tr>
+      <td><command>trtail</command></td>
+      <td>Löscht das Ende eines Tracks.</td>
+     </tr>
+     <tr>
+      <td><command>unclose</command></td>
+      <td>Gibt die letzte Session wieder frei.</td>
+     </tr>
+     <tr>
+      <td><command>session</command></td>
+      <td>Löscht die letzte Session.</td>
+     </tr>
+    </table>
+
+    <textblock>
+Ein ganze CD-RW löscht man mit diesem Befehl:
+    </textblock>
+    
+    <shell>
+     <user path="~">
+      cdrecord blank=all
+     </user>
+    </shell>
+    
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+        <!-- 1 Kapitel -->
+   <heading>
+Frontends
+   </heading>
+
+   <textblock>
+Es gibt eine grosse Anzahl von Frontends für <command>cdrecord</command>. Wem die
+Kommandozeile zu kompliziert ist, sollte sich einmal eines der
+folgenden Programme ansehen. Da sie alle mit <command>cdrecord</command> arbeiten,
+haben sie die gleichen Einschränkungen, aber auch meistens die
+gleiche Vielfalt.
+In der nächsten Version von SelfLinux wird es zu einigen
+Frontends ausführliche Erklärungen geben.
+   </textblock>
+
+   <table>
+    <pdf-column width="75"/>
+    <pdf-column/>
+    <tr>
+     <td><ref chapter="xcdroast">Xcdroast</ref></td>
+     <td><ref lang="en" url="http://www.xcdroast.org/">http://www.xcdroast.org/</ref></td>
+    </tr>
+    <tr>
+     <td>BurnIT</td>
+     <td><ref lang="en" url="http://sunsite.dk/BurnIT/">http://sunsite.dk/BurnIT/</ref></td>
+    </tr>
+    <tr>
+     <td>Eroaster</td>
+     <td><ref lang="en" url="http://sourceforge.net/projects/eroaster/">http://sourceforge.net/projects/eroaster/</ref></td>
+    </tr>
+    <tr>
+     <td>Gnome Toaster</td>
+     <td><ref lang="en" url="http://gnometoaster.rulez.org/">http://gnometoaster.rulez.org/</ref></td>
+    </tr>
+    <tr>
+     <td>KOnCD</td>
+     <td><ref lang="en" url="http://www.koncd.org/">http://www.koncd.org/</ref></td>
+    </tr>
+    <tr>
+     <td><ref chapter="k3b">K3b</ref></td>
+     <td><ref lang="en" url="http://k3b.sourceforge.net/">http://k3b.sourceforge.net/</ref></td>
+    </tr>
+   </table>
+  </section>
+ </split>
+</chapter>
