@@ -162,7 +162,7 @@ Rechner an einer unterbrechungsfreien Stromversorgung
 anschließen und ein Backup-System im Standby-Modus betreiben.
      </li>
      <li>
-korrekte Pflege der Benutzerdatenbank durch den Administrator
+korrekte Pflege der <ref chapter="userverwaltung>Benutzerdatenbank</ref> durch den Administrator
      </li>
      <li>
 physische Sicherung z.B. der internen Laufwerke (Schloss oder
@@ -176,7 +176,7 @@ und arbeiten in sensiblen Bereichen wie Serverräumen nur
 tagsüber, am besten unter Aufsicht)
      </li>
      <li>
-Schulung der Systembenutzer, Überprüfen der Kennworte durch
+Schulung der Systembenutzer, <ref chapter="passwoerter">Überprüfen der Kennworte</ref> durch
 Passwort-Crackprogramm
      </li>
      <li>
@@ -2515,75 +2515,10 @@ durch Begrenzungen verhindert werden
     <quotation>
 Seit Version 2.1.8.8.pre wird das IPv6 Protokoll unterstützt.
     </quotation>
-   </section>
-
-   <section>
-    <heading>
-Konfigurationsbeispiel (/etc/xinetd.conf):
-    </heading>
-
-    <file>
-     <title>
-/etc/xinetd.conf
-     </title>
-     <content>
-1  defaults
-2  {
-3     instances  = 10
-4     log_type   = SYSLOG auth
-5     log_on_success = HOST USERID DURATION
-6     log_on_failure = HOST USERID
-7     only_from = 192.168.1.0/24
-8  }
-9
-10 service ssh
-11 {
-12    socket_type  = stream
-13    protocol     = tcp
-14    wait         = no
-15    user         = root
-16    server       = /sbin/sshd
-17    server_args  = -i
-18 }
-19
-20 service ftp
-21 {
-22    socket_type  = stream
-23    protocol     = tcp
-24    wait         = no
-25    user         = root
-26    redirect     = 192.168.1.7 21
-27    per_source   = 2
-28    access_time  = 9:00-14:00
-29    log_type     = FILE /var/log/ftp_redir
-30 }
-     </content>
-    </file>
 
     <textblock>
-Im obersten Block stehen die Standardeinstellungen. Mit <strong>instances</strong>
-wird die Anzahl der einkommenden Verbindungen pro Netzwerkdienst
-auf 10 limitiert. In den Zeilen 4-6 wird die Protokollierung durch
-den <command>Syslogd</command> eingestellt. Für erfolgreiche Verbindungen (Zeile 5)
-wird die IP-Adresse des Client, die Benutzerkennung des
-Client-Prozesses und die Dauer der Verbindung festgehalten, bei
-fehlerhaften Verbindungsaufbau beschränkt sich die Protokollierung
-auf die IP-Adresse und UserID. In Zeile 7 wird der Zugriff auf
-einen Teil des lokalen Netzwerkes beschränkt.
-    </textblock>
-
-    <textblock>
-In den Zeilen 10 bis 18 wird der ssh-Dienst konfiguriert, die
-Parameter sollten selbsterklärend sein.
-    </textblock>
-
-    <textblock>
-Im letzten Block sind die Einstellungen des FTP-Dienstes zu finden.
-Alle Anfragen werden auf einen anderen Rechner mit der
-IP-Adresse 192.168.1.7 weitergeleitet (Zeile 26). Außerdem werden
-pro Client nur zwei Verbindungen zugelassen (Zeile 27) und auf einen
-Zeitraum zwischen 9:00 und 14:00 Uhr beschränkt. Die Protokollierung
-erfolgt in der Datei <path>/var/log/ftp_redir</path> (Zeile 29).
+Weitergehende Informationen und auch Beispiele findet man im Kapitel
+<ref chapter="xinetd">xinetd</ref> von SelfLinux.
     </textblock>
    </section>
   </section>
@@ -4162,7 +4097,7 @@ natürlich dem genauen Zeitpunkt (minutengenau).
     <textblock>
 Connection Accounting muss explizit im Kernel
 aktiviert werden
-(General Setup --> BSD Process Accounting). Die
+(General Setup --&gt; BSD Process Accounting). Die
 eigentlichen Aufzeichnungen übernimmt jedoch wieder
 ein Daemon, er wird durch den Aufruf
     </textblock>
@@ -4235,7 +4170,7 @@ Statistik der Verbindungszeiten
      <root>
 lastcomm user007
      </root>
-     <root>
+     <outout>
 Eterm                   user007    ??         2.05 secs Wed Jul 16 17:34
 bash                    user007    ??         0.43 secs Wed Jul 16 17:34
 bash               F    user007    ??         0.00 secs Wed Jul 16 17:56
@@ -4246,7 +4181,7 @@ mozilla-bin        F    user007    ??         0.00 secs Wed Jul 16 17:52
 mozilla-bin        F    user007    ??         0.02 secs Wed Jul 16 17:52
 quota                   user007    ??         0.04 secs Wed Jul 16 17:43
 rm                      user007    ??         0.15 secs Wed Jul 16 17:43
-     </root>
+     </output>
      <output>
 # Statistik nach Nutzern
      </output>
@@ -4639,7 +4574,8 @@ hier neben <ref lang="de" url="http://www.knopper.net/knoppix/">Knoppix</ref>
 auch sogenannte "Business Cards",
 also Rettungs-CDs in Scheckkartengröße. Zwei Vertreter
 können als ISO-Image unter <ref lang="en" url="http://www.lnx-bbc.org/">http://www.lnx-bbc.org/</ref> bzw.
-<ref lang="en" url="http://lbt.linuxcare.com/">http://lbt.linuxcare.com/</ref> heruntergeladen werden.
+<ref lang="en" url="http://www.inside-security.de/INSERT.html">http://www.inside-security.de/INSERT.html</ref>
+heruntergeladen werden.
     </textblock>
 
     <textblock>
@@ -4906,9 +4842,6 @@ Was soll wie gemeldet werden?
 Auf den Internetseiten des CERT findet man einen
 <ref lang="en" url="http://www.cert.org/reporting/incident_form.txt">englischsprachigen Vordruck</ref>, deshalb sollen hier nur die
 wichtigsten Angaben aufgeführt werden:
-
-<ref lang="en" url="http://www.cert.org/reporting/incident_form.txt">englischsprachigen Vordruck</ref>,
-deshalb sollen hier nur die wichtigsten Angaben aufgeführt werden:
     </textblock>
 
     <ul>
@@ -4967,7 +4900,8 @@ Dazu zählen:
     <li>chroot Umgebung</li>
     <li>BIOS-Sicherheit</li>
     <li>Kerberos</li>
-    <li>NIS/NFS-Sicherheit</li>
+    <li><ref chapter="nis">NIS-Sicherheit</ref></li>
+    <li><ref chapter="nfs">NFS-Sicherheit</ref></li>
     <li>VPN - Virtuelle Private Netze</li>
     <li>LIDS - Linux Intrusion Detection System</li>
     <li>RAS-Sicherheit (RADIUS/TACACS) </li>
