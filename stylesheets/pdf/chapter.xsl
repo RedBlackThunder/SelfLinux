@@ -33,11 +33,13 @@
    font-size="12pt">
    <xsl:text>Autor: </xsl:text>
    <xsl:apply-templates select="name"/>
-   <xsl:text> (</xsl:text>
-   <fo:wrapper font-style="italic">
-    <xsl:apply-templates select="mailto"/>
-   </fo:wrapper>
-   <xsl:text>)</xsl:text>
+   <xsl:if test="mailto">
+    <xsl:text> (</xsl:text>
+    <fo:wrapper font-style="italic">
+     <xsl:apply-templates select="mailto"/>
+    </fo:wrapper>
+    <xsl:text>)</xsl:text>
+   </xsl:if>
   </fo:block>
  </xsl:template>
 
@@ -53,11 +55,13 @@
    font-size="12pt">
    <xsl:text>Formatierung: </xsl:text>
    <xsl:apply-templates select="name"/>
-   <xsl:text> (</xsl:text>
-   <fo:wrapper font-style="italic">
-    <xsl:apply-templates select="mailto"/>
-   </fo:wrapper>
-   <xsl:text>)</xsl:text>
+   <xsl:if test="mailto">
+    <xsl:text> (</xsl:text>
+    <fo:wrapper font-style="italic">
+     <xsl:apply-templates select="mailto"/>
+    </fo:wrapper>
+    <xsl:text>)</xsl:text>
+   </xsl:if>
   </fo:block>
  </xsl:template>
 
