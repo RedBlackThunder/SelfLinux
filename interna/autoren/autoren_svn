@@ -68,7 +68,7 @@ erhält man seperat bei Florian Frank oder Frank Börner, falls erwünscht.
 
 
 
-3.2 Zugang zum CVS
+3.2 Zugang zum SVN
 
 Für den Lese-Zugriff auf das SelfLinux-SVN-Repository auf
 pingos.org gibt es folgende Möglichkeiten:
@@ -85,90 +85,43 @@ https://ssl.pingos.org/svn/selflinux/trunk/
 
 3.3 Checkout der Arbeitskopie
 
-Um mit dem CVS arbeiten zu können, braucht man immer eine eigene,
+Um mit dem SVN arbeiten zu können, braucht man immer eine eigene,
 lokale Arbeitskopie. In dieser Arbeitskopie werden dann die
 entsprechenden Dateien bearbeitet und die Änderungen dann dem
-CVS-Repository mitgeteilt. Also besorgst du dir erst einmal eine
+SVN-Repository mitgeteilt. Also besorgst du dir erst einmal eine
 Arbeitskopie.
 
 Dazu legst du dir ein Verzeichnis an, wo die Arbeitskopie
-abgespeichert werden soll, z.B. /home/<username>/selflinux/cvs oder
+abgespeichert werden soll, z.B. /home/<username>/selflinux/svn oder
 ähnliches. 
 Dann wechselst du in dieses Verzeichnis:
 
-user$ cd /home/<username>/selflinux/cvs
+user$ cd /home/<username>/selflinux/svn
 
-Als nächstes logst du dich als SelfLinux-Mitglied wie oben beschrieben
-in das Pingos.org-CVS ein. Mit folgenden Befehl wird das gesamte
+Als nächstes logst du dich wie oben beschrieben in das Pingos.org-CVS ein.
+Mit folgenden Befehl wird das gesamte
 SL-Repository als Arbeitskopie "ausgecheckt":
 
-Als SL-Mitglied OHNE Verschlüsselung:
-user$ cvs -d :pserver:<SelfLinux_Username>@cvs.pingos.org:/selflinux co . 
-
-(Hinter dem "co" steht ein Punkt als Zeichen für das Auschecken des
-gesamten CVS!)
-
-Als SL-Mitglied MIT Verschlüsselung:
-user$ cvs -d :pserver:<SelfLinux_Username>@localhost:/selflinux co . 
-
-Wenn du nur ein einzelnes Modul möchtest, z.B. das Tutorial, dann gibt
-man hinter dem "co" den Verzeichnisnamen an, unser Bsp.:
-
-user$ cvs -d :pserver:<SelfLinux_Username>@localhost:/selflinux co tutorial
+svn checkout https://ssl.pingos.org/svn/selflinux/trunk
 
 Diesen Checkout der Arbeitskopie macht man eigentlich nur
-einmal. Später wird die Arbeitskopie durch den "cvs update"-Befehl
+einmal. Später wird die Arbeitskopie durch den "svn update"-Befehl
 aktualisiert.
 
-TIPS!
-Nach dem ersten Einloggen werden in der .cvspass-Datei, die im
-Home-Verzeichnis angelegt wird, die Zugangsdaten zum CVS-Server
-abgelegt. Wenn man die Arbeitskopie noch geholt hat, ist dann das
-CVS so klug und sucht sich zu der Arbeitskopie den passenden
-Server. Damit sind die hier aufgeführten Schritte bei der späteren
-Arbeit mit CVS normalerweise nicht mehr notwendig.
-
-Es ist auch möglich, eine Datenkompression für die Verbindungen zum
-Server einzustellen. Dazu wird hinter dem Befehl cvs die Option -z und
-eine Zahl zwischen eins (minimale Kompression) und neun (maximale
-Kompression) gesetzt. Als praktikabel haben sich Zahlen zwischen drei
-und fünf herausgestellt. Das Kommando sehe also mit Kompression dann
-so aus (Beispiel):
-
-user$ cvs -z3 -d :pserver:<SelfLinux_Username>@localhost:/selflinux co .
-
-Am besten ist, einfach mal mit den Zahlen herumzuexperimentieren
-(sofern man diese Option nutzen will).
 
 
- 
-3.4 Zusammenfassung
- 
-Zur besseren Veranschaulichung soll an einem Beispiel diese
-Anfangssitzung noch mal zusammengefasst gezeigt werden. Wir gehen davon
-aus, daß wir den Zugang mit Verschlüsselung haben wollen und als Autor
-benötigen wir erstmal nur das Sammelbecken. Damit werden folgende
-Befehle eingegeben:
-
-user$ cd /home/<username>/selflinux/cvs
-user$ stunnel -P /tmp -c -d 2401 -r cvs.pingos.org:2402
-user$ cvs -d :pserver:<SelfLinux_Username>@localhost:/selflinux login
-password CVS:  -> Passwort eingeben!
-user$ cvs -d :pserver:<SelfLinux_Username>@localhost:/selflinux co sammelbecken
-
-
-
-4. "Alltägliche" Arbeit mit dem CVS
+4. "Alltägliche" Arbeit mit dem SVN
 
 
 
 4.1 Anlegen eines neuen Textes
 
-Jetzt wollen wir in das Sammelbecken einen neuen Text anlegen. Dazu
+Vorraussetzung dazu ist dass man einen Schreibzugriff hat.
+Jetzt wollen wir einen neuen Text anlegen. Dazu
 gehen wir in das Verzeichnis unserer (ausgecheckten) lokalen
 Arbeitskopie.
 
-user$ cd /home/<username>/selflinux/cvs/sammelbecken
+user$ cd /home/<username>/selflinux/svn/tutorial/...
 
 Dort müssen wir zuerst ein Verzeichnis mit dem Namen für den neuen
 Text anlegen. 
@@ -176,20 +129,13 @@ Text anlegen.
 user$ mkdir <neuer_text>
 (Achtung! Das ist ein Verzeichnis, keine Datei!)
 
-Als nächstes muss dieses Verzeichnis unserem CVS-Repository bekannt
+Als nächstes muss dieses Verzeichnis unserem SVN-Repository bekannt
 gemacht werden. Das erfolgt mit dem Befehl:
 
 user$ cvs add <neuer_text>
 
-Damit haben wir in unserem CVS ein neues Verzeichnis im Sammelbecken
+Damit haben wir in unserem SVN ein neues Verzeichnis im Tutorial
 angelegt.
-
-WICHTIGER HINWEIS!
-Eimal eingecheckte Verzeichnisse können NICHT mehr aus dem
-CVS-Repository entfernt werden. Darum bitte vor dem "cvs add"-Befehl
-unbedingt noch mal GENAU prüfen, ob das Verzeichnis an der richtigen
-Stelle in der Arbeitskopie erzeugt wurde. Der "cvs add"-Befehl ist bei
-Verzeichnissen daher mit GRÖSSTER Sorgfalt anzuwenden!
 
 Nun wechselt man in das neue Verzeichnis und kopiert seinen Text
 hinein.
@@ -199,442 +145,71 @@ user$ cp <Quelldatei> <Zieldatei>
 
 (Wie man das hier reinkopiert, ist natürlich jedem selbst überlassen.)
 
-Auch hier müssen wir unsere Textdatei dem CVS bekannt machen. Aber im
+Auch hier müssen wir unsere Textdatei dem SVN bekannt machen. Aber im
 Unterschied zu einem Verzeichnis erfolgt das bei Dateien in zwei
 Schritten:
 
-user$ cvs add <neuer_text>
-user$ cvs commit -m "Text ueber ... eingefuegt" <neuer_text>
+user$ svn add <neuer_text>
+user$ svn commit  "Text ueber ... eingefuegt" <neuer_text>
 
-Damit wird unser neuer Text endgültig in unser CVS-Repository
+Damit wird unser neuer Text endgültig in unser SVN-Repository
 eingefügt.
 
-Hinweise zum "cvs commit"-Befehl.
-
-Das "commit" kann man abkürzen, in dem man z.B.:
-
-user$ cvs ci -m "..." <Datei>
-
-eingibt.
-
-Mit -m "<Kommentar>" wird ein Kommentar in das log-file
-abgelegt. Hier sollte sehr kurz und prägnant reingeschrieben werden,
+Es wird der Standard-Editor geöffnet um einen Kommentar in das log-file
+schreiben zu können. Hier sollte sehr kurz und prägnant reingeschrieben werden,
 was man an der Datei gemacht hat (z.B. Rechtschreibfehler korrigiert
-oder um Kapitel soundso erweitert). Bloß keine Romane schreiben! Man
-kann diese Option auch weglassen, dann öffnet sich beim Absetzen des
-Befehls ein Editor-Fenster, wo man diesen Einzeiler reinschreiben
-muss. Mit -m geht das halt einfach schneller.
+oder um Kapitel soundso erweitert). Bloß keine Romane schreiben!
 
 
 
 4.2 Ablegen von Bildern eines Textes
 
-Bilder werden immer in dem Verzeichnis /sammelbecken/bilder
-abgelegt. Die Schritte sind analog zu den Texten. Wir legen wieder ein
-Verzeichnis mit demselben Namen wie beim Text an:
-
-user$ cd /<Pfad>/sammelbecken/bilder
-user$ mkdir <neuer_text>
-user$ cvs add <neuer_text>
-
-(Achtung, das ist ein Verzeichnis, also bitte sorgfältig noch mal
-alles überprüfen!)
-
-In das Verzeichnis wechseln:
-
-user$ cd <neuer_text>
-
-Nun werden die Bilder hinzugefügt. Dazu gibt es folgende Besonderheit
-zu beachten. Bilder müssen beim "cvs add"-Befehl mit der Option -kb
-eingecheckt werden. CVS wurde ursprünglich für reine Textdateien
-entwickelt. Bilddateien sind aber Binärdateien, daher werden mit "-kb"
-u.a. die Schlüsselwort-Ersetzungen unterdrückt, was damit ein
-unverändertes Einchecken der Bilder ermöglicht.
-Wer mehr darüber wissen möchte, sollte sich die CVS-Kapitel in SL
-durchlesen. 
-
-user$ cvs add -kb bildname.png
+Bilder werden immer in dem Verzeichnis des Textes 
+abgelegt. Die Schritte sind analog zu den Texten.
 
 Wenn man mehrere Bilder hat, kann man diese natürlich auch mit einem
 Male einchecken.
 
-user$ cvs add -kb bildname1.png bildname2.png bildname3.png
+user$ svn add bildname1.png bildname2.png bildname3.png
 
 usw.
 
-Abschließend müssen die Bilder wie die Textdateien auch ins CVS mit
+Abschließend müssen die Bilder wie die Textdateien auch ins SVN mit
 "commit" eingefügt werden.
 
-user$ cvs commit -m "Bild soundso eingecheckt" bildname.png
-
-Wenn man gleich mehrere Bilder ins Verzeichnis eingefügt hat, dann
-braucht man die Dateinamen nicht noch mal einfügen, es reicht:
-
-user$ cvs ci -m "Bilder eingecheckt"
+user$ svn commit "Bild soundso eingecheckt" bildname.png
 
 
 
 4.3 Bearbeiten eines vorhandenen Textes
 
-Wir geben unseren "stunnel"-Befehl ein und wechseln dann in das
-Verzeichnis, wo unser Text liegt, den wir bearbeiten wollen:
+Wir wechseln in das Verzeichnis, wo unser Text liegt, den wir bearbeiten wollen:
 
-user$ cd /<Pfad>/sammelbecken/<text>
+user$ cd /<Pfad>/tutorial/<text>
 
 Dann wird als erstes immer ein:
 
-user$ cvs update
+user$ svn update
 
-gemacht. Mit cvs update wird verglichen, ob die lokale Arbeitskopie
-und das CVS-Repository noch gleich sind und ggf. abgeglichen. 
+gemacht. Mit svn update wird verglichen, ob die lokale Arbeitskopie
+und das SVN-Repository noch gleich sind und ggf. abgeglichen. 
 
-Um dem CVS und damit anderen Mitarbeitern, die eventuell mit dem Text
-befasst sind, mitzuteilen, dass der Text gerade bearbeitet wird,
-markiert man ihn entsprechend:
-
-user$ cvs edit <text>
-
-Diese Markierung wird beim nächsten Commit automatisch
-aufgehoben. Jetzt können wir mit unserem Lieblingseditor die Datei
+Jetzt können wir mit unserem Lieblingseditor die Datei
 bearbeiten:
 
 user$ EDITOR <text>
 
-Nach der Bearbeitung müssen wir unsere Änderungen wieder ins CVS
+Nach der Bearbeitung müssen wir unsere Änderungen wieder ins SVN
 einfügen:
 
-user$ cvs commit -m "Ergänzungen zu ... angebracht" <text>
-
-oder kürzer ;)
-
-user$ cvs ci -m "Ergänzungen zu ... angebracht"
+user$ svn commit "Ergänzungen zu ... angebracht" <text>
 
 Dieser Zyklus (siehe auch unten bei Zusammenfassung) sollte bei jeder
 neuen Bearbeitung der Datei erneut durchlaufen werden!
-
-TIP!
-Falls man die Datei nicht mit "commit" ins CVS bringen möchte, aber
-ein "cvs edit" gemacht hat, dann kann man mit dem Befehl "cvs unedit
-<text>" die Markierung durch edit wieder aufheben.
-
-
-
-4.4 Besonderheiten bei der Verwaltung von Verzeichnissen
-
-Bei der Verwaltung von Verzeichnissen gibt es einige merkwürdige
-Besonderheiten bei CVS, die beachtet werden müssen.
-
-Möchte man ein Verzeichnis entfernen, muss man zuerst alle darin
-enthaltenen Dateien löschen.
-
-user$ rm <datei1> <datei2>
-user$ cvs remove <datei1> <datei2>
-(zwei remove Befehle!)
-
-Dies muss durch ein commit auch dem Repository mitgeteilt werden (wie
-bei Dateien üblich).
-
-user$ cvs ci -m "alle Dateien gelöscht" <datei1> <datei2>
-
-Dann kommt das Besondere! Man muss jetzt:
-
-user$ cvs update -P
-
-machen. Die "-P" Option bedeutet für update, leere Verzeichnisse zu
-reduzieren. Aber Achtung! Es bleibt im CVS-Repository ein leeres
-Verzeichnis stehen (wie oben schon gesagt), das leere Verzeichnis wird
-jetzt (nur) aus der lokalen Arbeitskopie entfernt.
-
-Ein interessantes Gegenstück zu diesem Verhalten ist, dass das CVS bei
-einem einfachen "update" keine neuen Verzeichnisse aus dem
-CVS-Repository in die Arbeitskopie einfügt! Darum sollte man in
-regelmäßigen Abständen seine Module oder die gesamte Arbeitskopie mit
-"cvs update -P" aktualisieren, so das eventuell neue Verzeichnisse
-in die lokale Arbeitskopie aufgenommen werden.  
-
-
-
-5. Zusammenfassung
-
-Hier nochmal eine Zusammenfassung der wichtigsten Befehle (in
-Kurzform).
-
-Zugang CVS:
-
-Diesen Befehl immer am Anfang der Onlinesitzung EINMAL eingeben. Dann
-arbeitet man mit dem CVS über die verschlüsselte Verbindung.
-
-user$ stunnel -P /tmp -c -d 2401 -r cvs.pingos.org:2402
-
-Anlegen eines neuen Textes:
-
-user$ cd /<Pfad>/sammelbecken
-user$ mkdir <neuer_text>
-user$ cvs add <neuer_text>
-(Verzeichnis erstellt)
-
-user$ cd <neuer_text>
-user$ cp <Quelldatei> <Zieldatei>
-user$ cvs add <neuer_text>
-user$ cvs ci -m "Text ueber ... eingefuegt" <neuer_text>
-(Text eingefügt)
-
-Bilder anlegen:
-
-user$ cd /<Pfad>/sammelbecken/bilder
-user$ mkdir <neuer_text>
-user$ cvs add <neuer_text>
-(Verzeichnis erstellt)
-
-user$ cd <neuer_text>
-user$ cvs add -kb bildname1.png bildname2.png bildname3.png
-user$ cvs ci -m "Bilder eingecheckt"
-(Bilder eingefügt)
-
-Vorhandenen Text bearbeiten:
-
--ins Verzeichnis gehen (wo der Text sich befindet)
-user$ cvs update
-user$ cvs edit <text>
-user$ EDITOR <text> 
-user$ cvs ci -m "Ergänzungen zu ... angebracht" <text>
-
-
-Wie man anhand der Zusammenfassung schön sehen kann, ist der Umgang
-mit CVS nicht so schwierig. Es ist einfach eine Übungssache, um die
-entsprechenden Befehle zu tippen.
-
-Wenn Fragen oder Unklarheiten sind, dann bitte einfach eine E-Mail an
-die Mailingliste. CVS erscheint einem anfangs als schwierig, darum lieber
-zuviel gefragt als zuwenig. ;)
-
-
-
-6. Üben und Testen
-
-In unserem CVS-Repository gibt es zum Üben ein
-"test"-Verzeichnis. Dieses Verzeichnis kann als Modul "test"
-ausgecheckt werden, also z.B. so (mit Verschlüsselung):
-
-user$ cvs -d :pserver:<SelfLinux_Username>@localhost:/selflinux co test
-
-Unter:
-
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/test/
-
-kann man sich das Verzeichnis ansehen. In dem Testverzeichnis
-befindet sich ein "autoren"-Verzeichnis. In diesem Verzeichnis (und
-nur in diesem - also bitte genau aufpassen!!!) darf jeder Autor, der
-mit CVS abeiten möchte, EIN Verzeichnis mit seinem SelfLinux_Usernamen
-einrichten. In diesem persönlichen Verzeichnis kann er dann nach
-Herzenslust üben und dort Dateien einchecken, abändern, commiten und
-was es sonst noch so gibt. Damit hat man einfach die Möglichkeit, sich
-an den Umgang mit dem CVS zu gewöhnen. Nutzt diese Möglichkeit!
-
-
-
-7. Spezialfälle
-
-
-
-7.1 Konflikte
-
-Etwas womit Autoren eigentlich nur sehr selten in Berührung kommen
-sollten, sind Konflikte. Konflikte treten auf, wenn sowohl die
-Arbeitskopie als auch die Datei im Repository in der gleichen Zeile
-geändert wurden und ein Commit von der lokalen Arbeitskopie versucht
-wird.
-
-Dazu soll uns ein Beispiel dienen:
-
-Dazu wird ein Abschnitt aus dem Text "cron" verwendet.
-
-Angenommen wir haben in unserer Arbeitskopie die 
-Revision ( Version) 1.2 .
-Währenddessen hat ein anderer ein paar Rechtschreibfehler aus dieser
-1.2 entfernt und diese Änderungen ins CVS eingecheckt. Damit entstand
-eine neue Revision 1.3 . Später machen wir noch ein paar inhaltliche
-Änderungen und zufälligerweise auch genau da, wo Rechtschreibfehler
-gewesen sind. Da wir etwas "faul" waren, haben wir vorher kein "cvs
-update" gemacht, sondern wollen die Datei gleich ins CVS einchecken.
-Also ein:
-
-user$ cvs ci -m "inhaltliche Aenderung" cron
-
-eingegeben. Folgende Ausgabe erscheint da:
-
-cvs commit: Up-to-date check failed for `cron'
-cvs [commit aborted]: correct above errors first!
-
-Das CVS meckert, das wir die Update-Überprüfung vergessen haben! Also
-machen wir das doch:
-
-user$ cvs update cron
-
-Oh Schreck! Jetzt erhalten wir folgende Ausgabe:
-
-RCS file: /<Pfad>/tutorial/cron,v
-retrieving revision 1.2
-retrieving revision 1.3
-Merging differences between 1.2 and 1.3 into cron
-rcsmerge: warning: conflicts during merge
-cvs update: conflicts found in cron
-C cron
-
-CVS teilt uns jetzt mit, das zwischen unserer 1.2 und der 1.3 im CVS
-"Konflikte" entstanden sind. Das macht CVS deshalb, weil es ja nicht
-weiß, welcher Text in den beiden Versionen nun der richtige Text
-ist. Damit fordert uns CVS auf, den richtigen Text MANUELL
-einzufügen. Dabei ist CVS so freundlich und macht uns entsprechende
-Markierungen in die Textdatei, so dass wir die Konflikte schnell
-finden können. Das sieht dann so aus (dazu wird die Datei mit einem
-Editor geöffnet):
-
-<<<<<<< cron
-Linux bietet ehtliche Programme für das Automatisieren von
-Aufgaben. Ein Beispiel ist cron. Beim Booten sollte ein cron Daemon
-gestartet werden, der im Normalbtrieb nciht beendet wird.
-=======
-Linux bietet etliche Programme für das Automatisieren von
-Aufgaben. Ein Beispiel ist cron. Beim Booten wird ein cron Daemon
-gestartet und im Normalbetrieb nicht beendet.
->>>>>>> 1.3
-Cron ist für sich wiederholende Aufgaben zuständig, die
-automatisch zu bestimmten Zeiten stattfinden sollen.
-
-Hinter dem "<<<<<<< cron" kommt der Teil des Textes, der in unserer
-lokalen Arbeitskopie ist.
-"=======" ist eine Trenner zwischen den beiden Revisionen.
-Vor dem ">>>>>>> 1.3" steht der Text aus der Revision 1.3 aus dem
-CVS-Repository.
-Nun wird durch geeignetes Löschen der Teile, die falsch sind oder
-durch Umschreiben des Textes der Konflikt gelöst. Dabei sind auch die
-speziellen Markierungen vom CVS (<<< === >>>) zu löschen! Speichern und
-Editor schließen und nun können wir die Datei "commiten":
-
-user$ cvs ci -m "inhaltliche Aenderung" cron
-
-Und siehe da, jetzt haben wir eine "konfliktfreie" Revision 1.4 .
-
-Das Entstehen solcher Konflikte kann ganz leicht verhindert werden!
-Es wird einfach, bevor der Text überhaupt bearbeitet wird, ein
-"cvs update" gemacht und damit immer die aktuellste Version vom
-CVS-Repository geholt. Also immer den Zyklus machen, so wie es in
-der Zusammenfassung steht!
-
-
-
-7.2 Einchecken fremder Texte
-
-Dieser Spezialfall ist für all diejenige gedacht, die im Auftrag
-anderer Autoren Texte ins CVS einchecken.
-
-Wenn man solche Arbeiten übernimmt, dann sollte man im Umgang mit dem
-CVS schon vertraut sein. Das Einchecken läuft genauso ab, wie bei
-eigenen Texten. Der Spezialfall tritt ein, wenn uns der Autor
-Änderungen zu seinem Text schickt, die man wieder einchecken
-soll. Damit klar wird, was jetzt überhaupt gemeint ist, ein Beispiel.
-
-Ich erhalte von einem Autor einen Text (wir nehmen mal an, der kennt
-CVS überhaupt nicht). Diesen checke ich ein und der Text erhält die
-Revision 1.1 . Dieser Text wird zur QA1 freigegeben und ein QA-ler
-beseitigt einige kleine Rechtschreibfehler und andere Kleinigkeiten
-und commitet diesen Text und er wird damit zu Revision 1.2 . Einige
-Zeit später schickt der Autor mir eine verbesserte und erweiterte
-Version seines Textes mit der Bitte zum Einchecken. Kein Problem!
-
-Ich mache also cvs update, sehe, dass es die neue Revision 1.2 gibt,
-deren Änderungen ich ja jetzt mit update geholt habe. Nun ist der
-geänderte Text des Autors sehr umfangreich, also nehme ich ihn einfach
-und kopiere in meinem Editor den neuen Text über den alten Text, mache
-ein commit und freue mich, das die Revision 1.3 entstanden ist. Also
-alles scheint bestens zu sein.
-
-Dem aufmerksamen "CVS-Anwender" wird jetzt wohl ein etwas ungutes
-Gefühl beschlichen haben. Ist das wirklich so richtig?
-
-Was habe ich nun gemacht? Ich habe den erweiterten Originaltext des
-Autors mit all den kleinen Fehlern genommen und über die Revision 1.2
-"gebügelt". Das heißt, das alle Änderungen von der QA1 wieder weg
-sind, also scheinbar rückgängig gemacht wurden, weil ich ja quasi einen
-auf dem ursprünglich Originaltext (Revision 1.1) beruhenden Text
-genommen habe und erneut komplett eingecheckt habe. Die
-Wahrscheinlichkeit, das der Autor in dem geänderten Text all seine
-kleinen Fehler selbst schon korrigiert hat, ist ziemlich gering. 
-
-Auch der QA-ler beginnt jetzt an sich zu zweifeln, weil in der
-Revision 1.3 all  die Fehler, die er schon korrigiert hatte, plötzlich
-wieder da sind, sofern die QA1 noch nicht abgeschlossen wurde. Übler
-wird es, wenn die QA1 schon abgeschlossen wurde und der Text als
-scheinbar richtig sogar den Weg ins Tutorial findet.
-
-Wie wäre es richtig? Nun man müsste die Revision 1.2 hernehmen und
-alle Änderungen von dem erweiterten Originaltext MANUELL
-einpflegen. Das wird aber bei umfangreichen Änderungen dann schnell
-eine sehr aufwändige und auch sehr stupide Arbeit. 
-
-Aber CVS ist ja eine (wie oben schon gesagt) geniale Sache und es gibt
-natürlich einen eleganteren Weg, das Problem zu lösen. Es ist dabei
-EXTREM wichtig zu wissen, auf was für eine Revision der geänderte
-bzw. erweiterte Text des Autors (der uns den Text zugeschickt hat)
-beruht. Also bitte vorher immer mit dem Autor abklären, auf welcher
-Revision er das geschrieben bzw. verändert hat!
-
-Gehen wir nochmal zu unserem Beispiel zurück, an dem Punkt wo wir den
-erweiterten Text vom Autoren erhalten haben. Es ist der Text, den ich
-als Revision 1.1 eingescheckt habe, bloß abgeändert bzw. erweitert. In
-meiner Arbeitskopie ist aber schon die 1.2 . Ich kann aber dem CVS
-jetzt sagen, dass ich in meine Arbeitskopie die Revision 1.1 (auf dem
-die geänderte Version ja beruht) zurück haben möchte. Der Befehl dazu
-lautet:
-
-user$ cvs update -r 1.1 <text>
-
-Jetzt befindet sich die ursprüngliche Revision in unserer
-Arbeitskopie. Es kann hier natürlich eine ganz andere Revisionsnummer
-stehen, z.B. 1.4 oder 1.38 . Wichtig ist hier zu wissen, in welcher
-Revision der Autor die Änderungen gemacht hat. Das sieht man
-normalerweise im Dokumentenheader. U.a. ist es darum so wichtig,
-diesen Header in jeder Textdatei einzufügen!
-
-Ich öffne die Datei mit einem Editor, kopiere den
-geänderten Text über den Ursprungtext, speichern und schließe den
-Editor wieder.
-
-Nun möchte ich den Text ins CVS einchecken. CVS ist clever und  würde
-natürlich sofort meckern, weil es ja schon eine Revision 1.2 im CVS
-gibt. Hier gibt es einen ganz einfachen "Trick". Mit dem speziellen
-Befehl:
-
-user$ cvs update -A <text> 
-
-wird unsere abgeänderte lokale Kopie mit der aktuellen Revision 1.2 im
-CVS upgedatet und alle Änderungen dabei übernommen. Achtung, hier ist
-die Wahrscheinlichkeit von Konflikten (die dann noch manuell aufgelöst
-werden müssen) schon etwas höher! Das Clevere aber an der Sache ist,
-das ich mit ZWEI CVS-Befehlen sowohl die Änderungen des Autors, als
-auch die Änderungen von der QA1 in meine lokale Arbeitskopie eingefügt
-habe. Cool, oder? Wenn die Konflikte beseitigt sind, kann ich diese
-dann ins CVS einchecken und erhalte die Revision 1.3, die genau so
-ist, wie wir sie haben wollen. :)
-
-user$ cvs ci -m "Text vom Autor erweitert" <text>
-
-So und nun das ganze nochmal als kurze Zusammenfassung:
-
-user$ cd /<Pfad/<text>/ (das Verzeichnis in der lokalen Arbeitskopie!)
-user$ cvs up -r 1.1 <text>
-user$ cvs edit <text>
-user$ $EDITOR <text>
-  (speichern und evetl. schließen)
-user$ cvs up -A <text>
-  (eventuelle Konflikte beheben)
-user$ cvs ci -m "bla bla bla" <text>
-
-Erledigt!
 
 
 
 --------------------------------------------------------
 Autoren: Andreas Kalbitz
 	 Jörg Meinhold
+	 Frank Börner
