@@ -1,7 +1,6 @@
 Richtlinien für die Qualitätsprüfung von Texten
 *************************************************
-Frank Börner <frank@frank-boerner.de>
-(Teamleiter Quality )
+Stand 21.11.2004
 
 -------------------------
 1 Ziel dieses Dokumentes
@@ -15,7 +14,7 @@ sind, um die Qualitätsprüfung im Rahmen des Gesamtprojektes
 problemlos und effizient ablaufen zu lassen.
 
 Bei Fragen/Anregungen/Kritik meldet man sich am besten direkt
-via Email bei Frank Börner <frank@frank-boerner.de>
+via Email bei einem Mitarbeiter des Core-Teams.
 
 
 
@@ -29,24 +28,18 @@ arbeiten? Die wenigen Materialien werden hier aufgelistet.
 
 
 
-2.1 CVS / CVS Benutzernamen
+2.1 SVN
 -----------------------------------
 
-Damit die Arbeit einfach zu erledigen ist, benötigt man CVS. Ob
+Damit die Arbeit einfach zu erledigen ist, benötigt man SVN. Ob
 dies über die Konsole oder ein grafisches Programm gemacht wird,
 ist egal.
 
-Eine allgemeine CVS-Einführung mit den schrittweisen Abläufen gibt es unter:
+Eine allgemeine SVN-Einführung mit den schrittweisen Abläufen gibt es unter:
 
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/quality/quality_cvs?rev=HEAD&content-type=text/plain
+https://ssl.pingos.org/svn/selflinux/interna/svn/svn_anleitung
+
 (alles in einer Zeile!)
-
-bzw.
-
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/autoren_cvs?rev=HEAD&content-type=text/plain
-(alles in einer Zeile!)
-
-Für Cervisia und LinCVS, beides sind grafische CVS-Oberflächen, gibt es demnächst eine eigenständige Anleitung.
 
 
 
@@ -75,9 +68,9 @@ muss die Textvergabe ein wenig organisiert werden.
 In der Mailingliste werden in regelmässigen Abständen Statusberichte
 der Quality gepostet. Darin befindet sich eine Liste mit nicht
 zugeteilten Texten. Daraus sucht man sich einen aus und meldet dies
-via Liste dem Teamleiter und den anderen Layoutern. Es genügt eine
+via Liste dem Core-Team.  Es genügt eine
 einfache Antwort auf die Email mit der Bemerkung, dass man diesen Text
-bearbeitet.
+bearbeitet. Man kann sich dann im TTS als Bearbeiter eintragen.
 
 Nun kann die Arbeit begonnen werden.
 
@@ -90,10 +83,10 @@ Der Text muß nun nach den Kritierien der Qualitätsprüfung
 gelesen und korrigiert werden. Die Kriterien werden im
 4. Abschnitt dieses Dokumentes im Detail beschrieben. Die
 Korrekturen können als Ganzes vorgenommen und am Ende in
-das CVS überspielt (siehe Abschnitt 3.3) werden. Es können
+das SVN überspielt (siehe Abschnitt 3.3) werden. Es können
 aber auch lediglich Teile korrigiert, dann überspielt und
 später weiterkorrigiert, wieder überspielt werden usw. Keine
-Angst vor hohen Versionsnummern. Das hat innerhalb von CVS
+Angst vor hohen Versionsnummern. Das hat innerhalb von SVN
 nichts Kritisches zu bedeuten. Im Gegenteil: Lieber häufiger
 überspielen als zu selten. Was einmal im Repository ist, kann
 keinem privaten Plattencrash oder der Vergessenheit zum Opfer
@@ -106,11 +99,11 @@ fallen!
 
 Dies geschieht mittels des einfachen Kommandos
 
-$ cvs commit text
+$ svn commit text
 
-oder über den entsprechenden Menüeintrag in cervisia oder lincvs.
+oder über den entsprechenden Menüeintrag in rapidsvn.
 
-Über commit wird der Text in das CVS überspielt. Es muss eine kleine
+Über commit wird der Text in das SVN überspielt. Es muss eine kleine
 Meldung zur Änderung verfasst werden. Diese sollte es ermöglichen,
 dass man auch nach einem halben Jahr noch nachvollziehen kann, was sich
 dabei geändert hat. Wenn Du über die Kommandozeile arbeitest, wird zu diesem
@@ -120,9 +113,9 @@ vi nicht kennen, stelle einen Editor Deiner Wahl ein. Sofern Du unter
 X arbeitest, kann das auch ein Editor mit eigenen Fenster sein, z.B.
 XEmacs, kwrite oder andere.
 
-Nachdem die Arbeit abgeschlossen und im CVS ist, sollte noch eine
-Email an die Mailingliste und/oder den Leiter des Qualityteams geschickt
-werden. So können dann die nachfolgenden Arbeiten angegangen werden.
+Nachdem die Arbeit abgeschlossen und im SVN ist, sollte noch eine
+Email an die Mailingliste  geschickt werden. So können dann die
+nachfolgenden Arbeiten angegangen werden.
 
 
 
@@ -139,27 +132,18 @@ nicht prüfen zu können, solltest Du weder gar nichts mehr tun, noch
 die betreffenden Punkte stillschweigend übergehen. Auch wenn Du
 einzelne Anforderungen prüfst, tust Du damit wichtige Arbeit. Die
 verbleibenden Kriterien maile einfach an die Mailingliste oder
-den Leiter des Quality-Teams. Sie können dann von anderen Mitarbeitern
+an einen Mitrabeiter des Core-Teams. Sie können dann von anderen Mitarbeitern
 nachgeholt werden.
 
-Jeder Text hat in seinem Verzeichnis auch eine Datei namens
-qp-<textname>. In dieser Datei befindet sich eine Liste der Punkte,
-auf die der Text geprüft werden muss. Wenn ein Punkt geprüft und
-für gut befunden wurde, trägt der Prüfer hinter diesen Punkt seinen
-SelfLinux-Benutzernamen sowie das aktuelle Datum ein. Der Eintrag
-sollte die Form <benutzername>/JJJJMMTT haben. Punkte, die noch nicht
-geprüft wurden bzw. die Prüfung nicht bestanden haben, bleiben im qp
-leer. Bitte nicht irgendwelche Kommentare dahinter eintragen!
-
-Die Kriterien 4.1 bis 4.8 beziehen sich auf die Plainversion
+Die Kriterien 4.1 bis 4.6 beziehen sich auf die Plainversion
 eines Textes. Damit ist die rohe ASCII-Version gemeint, die
 im Allgemeinen vom Autor oder Übersetzer selbst stammt. Die
-Abschnitte ab 4.9 beziehen sich auf die XML-Version eines
+Abschnitte ab 4.7 beziehen sich auf die XML-Version eines
 Textes. Zur Qualitätsprüfung der Layout-Version sind besondere
 Kenntnisse über das Layout notwendig. Wenn Du über diese noch
 nicht verfügst, aber künftig auch diesen Teil der
 Qualitätsprüfung durchführen möchtest, sind Dir die
-Mailingliste oder die Leiter von Layout- und Quality-Team
+Mailingliste oder die Mitrabeiter des Core-Teams
 gerne bei der Einarbeitung behilflich. Weitere Hinweise erfolgen
 unten.
 
@@ -183,14 +167,14 @@ Lizenz hervor, so ist diese Lizenz in der Mailingliste zu diskutieren.
 4.2 Ablage und Benamung des Dokumentes
 --------------------------------------
 
-4.2.1 Text in CVS
+4.2.1 Text in SVN
 -----------------------------
 
-Grundlage unserer Teamarbeit ist die Verwendung von CVS.
+Grundlage unserer Teamarbeit ist die Verwendung von SVN.
 Daher muß zuerst sichergestellt sein, daß der geprüfte Text
-auch in der zu prüfenden Version im CVS abgelegt ist. Im
+auch in der zu prüfenden Version im SVN abgelegt ist. Im
 allgemeinen sollte der Text vom Qualitätsprüfer ohnehin über
-CVS geholt werden. Andernfalls ist dies unbedingt zu prüfen.
+SVN geholt werden. Andernfalls ist dies unbedingt zu prüfen.
 
 
 
@@ -212,7 +196,7 @@ eines Verzeichnisses ist. Dieser kann z.B. umfangreiche Beispiele
 oder ein später gefundenes Nebenkapitel enthalten. Wenn ein
 Text nicht den Verzeichnisnamen trägt und Zweifel daran bestehen,
 ob der lediglich ein Nebendokument darstellt oder das eigentliche
-Hauptdokument, solltest Du die Liste oder den Leiter der Quality
+Hauptdokument, solltest Du die Liste oder das Core-Team
 zur Benamung befragen.
 
 
@@ -274,7 +258,8 @@ müssen folgende Anforderungen geprüft werden:
    und sollte von den Qualitätsprüfern auch wahrgenommen werden.
 
    Richtlinien zu Ausdruck und Stil finden sich unter
-   http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibstil?rev=HEAD&content-type=text/plain
+   https://ssl.pingos.org/svn/selflinux/trunk/interna/autoren/schreibregeln
+   https://ssl.pingos.org/svn/selflinux/trunk/interna/autoren/schreibstil
 
 5. Einheitliche Schreibweisen. Es ist vorgesehen, einen Katalog von
    Begriffen für SelfLinux zu erstellen, die einheitlich geschrieben
@@ -282,10 +267,10 @@ müssen folgende Anforderungen geprüft werden:
    oder "EMail" oder "E-Mail" schreiben, und natürlich sollen solche Begriffe
    in SelfLinux einheitlich verwendet werden (korrekt ist E-Mail).
    Siehe:
-   http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/rechtschreibung?rev=HEAD&content-type=text/plain
+   https://ssl.pingos.org/svn/selflinux/trunk/interna/autoren/rechtschreibung
 
 6. Links. Die Syntax-Vorgaben für Links, wie sie im Dokument "schreibregeln"
-   http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibregeln?rev=HEAD&content-type=text/plain
+   https://ssl.pingos.org/svn/selflinux/trunk/interna/autoren/schreibregeln
    festgehalten sind, sind für Autoren lediglich Empfehlungen. Bei der
    Qualitätsprüfung müssen eventuell anders vermerkte Links jedoch
    zwingend in die Syntax, wie sie in den "schreibregeln" beschrieben
@@ -317,17 +302,9 @@ Regeln für die Formatierung von Texten in der Plainversion erstellt.
 Diese sind in den folgenden Dokumenten enthalten. Die Links sind als eine
 einzige Zeile zu lesen:
 
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/autoreninfos?rev=HEAD&content-type=text/plain
 (alles in einer Zeile!)
-
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibregeln?rev=HEAD&content-type=text/plain
-(alles in einer Zeile!)
-
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/schreibstil?rev=HEAD&content-type=text/plain
-(alles in einer Zeile!)
-
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/autoren/rechtschreibung?rev=HEAD&content-type=text/plain
-(alles in einer Zeile!)
+https://ssl.pingos.org/svn/selflinux/trunk/interna/autoren/schreibregeln
+https://ssl.pingos.org/svn/selflinux/trunk/interna/autoren/schreibstil
 
 Diese Dokumente solltest Du lesen und den Text auf die darin
 aufgestellten Regeln prüfen.
@@ -343,6 +320,7 @@ Zum einen muß ein Text bestimmte Textteile wie Titel, Autorenname,
 sowie eine kurze Beschreibung des Inhaltes enthalten. Zum anderen
 soll auch die Gesamtstruktur auf Übersichtlichkeit hin überprüft werden.
 
+https://ssl.pingos.org/svn/selflinux/trunk/interna/autoren/autoreninfos
 
 
 4.5.1 Titel
@@ -384,33 +362,7 @@ Textblöcke, zu wenige Überschriften und Zwischenüberschriften usw.
 
 
 
-4.5.6 CVS Schlüsselwörter
----------------------------
-
-Der Text muß *mindestens* $Revision: 1.9 $ enthalten. Idealerweise
-hat die Datei den üblichen SelfLinux-Header, der dieses und
-weitere Schlüsselwörter enthält.
-
-
-
-4.6 Stichwörter
----------------
-
-Alle Texte sollten mit Stichwörtern versehen sein. Dies muss überprüft werden; und
-zwar, ob Stichworte vorhanden sind und ob sie zu den bisjetzigen passen.
-Einfaches Beispiel Schreibweise: Sun oder SUN.
-
-Sollten keine Stichwörter vorhanden sein, müssen sie im Zuge der
-Qualitätsprüfung erstellt werden.
-
-Die Richtlinien zur Erstellung der Stichwörter finden sich unter:
-
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/*checkout*/interna/quality/keywords?rev=HEAD&content-type=text/plain
-(alles in einer Zeile!)
-
-
-
-4.7 Inhaltliche Bewertung des Dokumentes
+4.6 Inhaltliche Bewertung des Dokumentes
 ----------------------------------------
 
 Dieser Punkt stellt auch Anforderungen an Dein inhaltliches
@@ -432,44 +384,13 @@ aufgebaut? Führt er den Leser von leicht nach schwer? Ist die
 Abfolge der Kapitel nachvollziehbar?
 
 Wenn Du Dir eine inhaltliche Bewertung nicht zutraust, melde
-bitte an den Leiter der Quality zurück, dass Du diese Bewertung
+bitte an das Core-Team zurück, dass Du diese Bewertung
 noch nicht vorgenommen hast. Sie wird dann von einem anderen
 Teammitglied vorgenommen.
 
 
 
-4.8 Zusätzliche Prüfung durch Lektoren
-------------------------------------------
-
-Um eine höchstmögliche Qualität der Texte sicherzustellen,
-darf das qa_plain_ok-Tag erst gesetzt werden, wenn der Text
-von 2 zusätzlichen Lektoren geprüft wurde. Diese Lektoren
-tragen sich ebenfalls in das qp des Textes (unter Punkt 8)
-ein und geben damit ihr Einverständnis, dass der Text die QA1
-besteht (vorausgesetzt natürlich, dass die Lektoren keine Mängel
-finden).
-
-Die Lektoren können vom Hauptprüfer (also Dir) gesucht und
-beauftragt werden. Solltest Du keine Lektoren finden, melde dies
-bitte den TLs.
-
-Aufgabe der Lektoren ist die Prüfung des Textes auf unsere
-Stilkriterien, Übersichtlichkeit, Gliederung, Rechtschreibung sowie
-Inhalt. Es ist nicht nötig, dass sich ein Lektor tief in das
-jeweilige Themengebiet einarbeitet, jedoch sollten klar ersichtliche
-inhaltliche Fehler gemeldet werden und zur Sperrung des Textes
-führen, bis die Mängel beseitigt worden sind.
-
-Optimalerweise sollte also diese Lektorenarbeit lediglich ein
-konzentriertes Durchlesen des Textes darstellen, da der Text ja
-bereits geprüft sein sollte. Leider hat die Vergangenheit gezeigt,
-dass oftmals Fehler übersehen und klare stilistische Mängel
-nicht beanstandet wurden, darum wurde diese zusätzliche Prüfung
-eingeführt.
-
-
-
-4.9 Prüfung der XML-Version eines Textes (QA2)
+4.7 Prüfung der XML-Version eines Textes (QA2)
 -------------------------------------------------
 
 Die in XML formatierten Texte erfordern zur Qualitätsprüfung
@@ -484,7 +405,7 @@ werden müssen.
 
 
 
-4.9.1. Referenzierte Bilder im CVS?
+4.7.1. Referenzierte Bilder im SVN?
 --------------------------------------------
 
 Da Bilder häufig erst in der XML-Version eines Textes
@@ -495,7 +416,7 @@ Auch sollte eine inhaltliche Kontrolle der Bilder stattfinden.
 Zeigen die Bilder das was sie zeigen sollen? Passen die Bildunterschriften?
 
 
-4.9.2 Einrückung der Tags
+4.7.2 Einrückung der Tags
 ---------------------------------
 
 Da die Tags potentiell sehr verschachtelt sein können, ist
@@ -506,7 +427,7 @@ Kenntnisse über das Layout
 
 
 
-4.9.3 Validierung und Übersetzung
+4.7.3 Validierung und Übersetzung
 -----------------------------------------
 
 Ein XML-Dokument kann mittels einer Validierung gegen ein
@@ -521,36 +442,4 @@ Eine Anleitunbg wie das Tool zu benutzen ist befindet sich unter:
 (Der Text ist zur zeit noch nicht fertig)
 
 
-
----------------------------------------
-5. Qualitätspapier erstellen/pflegen
----------------------------------------
-
-Um die Qualitätsprüfung der einzelnen Texte zu verwalten, haben wir
-ein Template erstellt, in die Ergebnisse aller Prüfungsschritte
-für jeden Text festgehalten werden sollen. Jedem Text ist ein eigenes
-Qualitätspapier zugeordnet, das im Verzeichnis des Textes abgelegt
-wird. Das Qualitätspapier trägt den Namen des Textes mit einem
-vorangestellten "qp-". Das Qualitätspapier zu dem Text "kernel" heißt
-also "qp-kernel".
-
-Sollte zu einem Text, den Du prüfst, bereits ein Qualitätspapier
-vorliegen, so wirst Du dieses freilich lediglich in den Punkten
-aktualisieren, die Du geprüft hast.
-
-
-
-------------------
-6. CVS Tags setzen
-------------------
-
-Erfüllt eine Revision die Richtlinien und ist das Qualitätspapier
-(qa-paper "qp-dokument") ausgefüllt, so wird diese mit einem
-Tag markiert. Eine Revision im Plain-Ast wird mit dem Tag
-"qa_plain_ok" getaggt. Dieses Tag wird gegebenenfalls verschoben.
-Eine Revision im Format-Ast wird mit dem Tag "qa_format_ok"
-gekennzeichnet.
-
-Es ist darauf zu achten, dass verwendente Bilder ebenfalls
-geprüft und mit dem Tag "qa_format_ok" getaggt werden müssen (und
-alle anderen Dateien, die in das Release eingehen sollen).
+Autor: Frank Börner
