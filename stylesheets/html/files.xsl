@@ -110,6 +110,14 @@
  </xsl:template>
 
  <!-- chapter-Template
+  Ruft lediglich chapter/split auf.
+ -->
+
+ <xsl:template match="chapter">
+  <xsl:apply-templates select="split"/>
+ </xsl:template>
+
+ <!-- chapter-Template
   Erzeugt das Inhaltsverzeichnis (TOC) aus dem aktuellen Kapitel.
 
   Das eigentliche Inhaltsverzeichnis erstellt das Template toc aus toc.xsl
