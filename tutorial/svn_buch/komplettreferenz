@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!-- Diese Übersetzung basiert auf der englischen Version
 mit commited-rev=9183 -->
-
 <chapter>
 
   <title>Subversion - Komplettreferenz</title>
@@ -2325,158 +2324,227 @@ Nein
    </section>
   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn import -- Überträgt rekursiv eine Kopie von PFAD nach URL.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn import [PFAD] URL</command></textblock>
+   <section>
+    <heading>
+svn import
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn import -- Überträgt rekursiv eine Kopie von PFAD nach URL.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn import [PFAD] URL</command>
+    </quotation>
 
-<textblock>Überträgt rekursiv eine Kopie von
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Überträgt rekursiv eine Kopie von
 <italic>PFAD</italic> nach
 <italic>URL</italic>.  Wenn
 <italic>PFAD</italic> weggelassen wird, dann
-wird <italic><path>.</path></italic> angenommen.
+wird <path>.</path> angenommen.
 Fehlende Elternverzeichnisse im Projektarchiv werden
-angelegt.</textblock>
+angelegt.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+Keine
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>Keine</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
 
+    <textblock>
+Projektarchiv
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Projektarchiv</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Ja
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Ja</textblock>
+    <quotation>
+     <command>--message (-m) TEXT</command><br/>
+     <command>--file (-F) DATEI</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--non-recursive (-N)</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--force-log</command><br/>
+     <command>--editor-cmd EDITOR</command><br/>
+     <command>--encoding ENC</command><br/>
+     <command>--config-dir DIR</command><br/>
+     <command>--auto-props</command><br/>
+     <command>--no-auto-props</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---message (-m) TEXT
---file (-F) DATEI
---quiet (-q)
---non-recursive (-N)
---username USER
---password PASS
---no-auth-cache
---non-interactive
---force-log
---editor-cmd EDITOR
---encoding ENC
---config-dir DIR
---auto-props
---no-auto-props
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Importiert das lokale Verzeichnis
+    <textblock>
+Importiert das lokale Verzeichnis
 <path>meinproj</path> in das Basisverzeichnis des
-Projektarchives:</textblock>
+Projektarchives:
+    </textblock>
 
-<shell>
-$ svn import -m "Neuer Import" meinproj http://svn.red-bean.com/repos/test
+    <shell>
+     <user>
+svn import -m "Neuer Import" meinproj http://svn.red-bean.com/repos/test
+     </user>
+     <output>
 Adding         meinproj/beispiel.txt
 ...
 Übertrage Daten .........
 Revision 16 übertragen.
-</shell>
+     </output>
+    </shell>
 
-<textblock>Importiert das lokale Verzeichnis
+    <textblock>
+Importiert das lokale Verzeichnis
 <path>meinproj</path> nach
 <path>trunk/vendors</path> in ihrem Projektarchiv.
 Das Verzeichnis <path>trunk/vendors</path> muss
-vor dem Import nicht existieren &mdash; <command>svn
+vor dem Import nicht existieren -- <command>svn
 import</command> wird fehlende Verzeichnisse rekurisv
-anlegen:</textblock>
-<shell>
-$ svn import -m "Neuer import" meinproj \
+anlegen:
+    </textblock>
+    
+    <shell>
+     <user>
+svn import -m "Neuer import" meinproj \
 http://svn.red-bean.com/repos/test/trunk/vendors/meinproj
+     </user>
+     <output>
 Hinzufügen         meinproj/beispiel.txt
 ...
 Übertrage Daten .........
 Revision 19 übertragen.
-</shell>
-
-
-</refentry>
+     </output>
+    </shell>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn info -- Zeigt Information über PFADe.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn info [PFAD...]</command></textblock>
+   <section>
+    <heading>
+svn info
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn info -- Zeigt Information über PFADe.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn info [PFAD...]</command>
+    </quotation>
 
-<textblock>Zeigt Information über Pfade in ihrer Arbeitskopie,
-inclusive:</textblock>
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
 
-<ul>
-<li>Pfad</li>
-<li>Name</li>
-<li>URL</li>
-<li>Revision</li>
-<li>Kotentyp</li>
-<li>Letzt. AutorIn</li>
-<li>Letzte Revision</li>
-<li>Letztes Änderungsdatum</li>
-<li>Text zuletzt geändert</li>
-<li>Eigenschaften zuletzt geändert</li>
-<li>Prüfsumme</li>
-</ul>
+    <textblock>
+Zeigt Information über Pfade in ihrer Arbeitskopie,
+inclusive:
+    </textblock>
 
+    <ul>
+     <li>Pfad</li>
+     <li>Name</li>
+     <li>URL</li>
+     <li>Revision</li>
+     <li>Kotentyp</li>
+     <li>Letzt. AutorIn</li>
+     <li>Letzte Revision</li>
+     <li>Letztes Änderungsdatum</li>
+     <li>Text zuletzt geändert</li>
+     <li>Eigenschaften zuletzt geändert</li>
+     <li>Prüfsumme</li>
+    </ul>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>Keine</textblock>
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+Keine
+    </textblock>
 
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Nichts
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Nichts</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nein</textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nein</textblock>
+    <quotation>
+     <command>--targets DATEINAME</command><br/>
+     <command>--recursive (-R)</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---targets DATEINAME
---recursive (-R)
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock><command>svn info</command> zeigt alle nützlichen Informationen
+    <textblock>
+<command>svn info</command> zeigt alle nützlichen Informationen
 die es von Objekten in ihrer Arbeitskopie hat an.
-Für Dateien wird angezeigt:</textblock>
+Für Dateien wird angezeigt:
+    </textblock>
 
-<shell>
-$ svn info foo.c
+    <shell>
+     <user>
+svn info foo.c
+     </user>
+     <output>
 Pfad: foo.c
 Name: foo.c
 URL: http://svn.red-bean.com/repos/test/foo.c
@@ -2489,12 +2557,18 @@ Letztes Änderungsdatum: 2003-01-13 16:43:13 -0600 (Mon, 13 Jan 2003)
 Text zuletzt geändert: 2003-01-16 21:18:16 -0600 (Thu, 16 Jan 2003)
 Eigenschaften zuletzt geändert: 2003-01-13 21:50:19 -0600 (Mon, 13 Jan 2003)
 Prüfsumme: /3L38YwzhT93BWvgpdF6Zw==
-</shell>
+     </output>
+    </shell>
 
-<textblock>Für Verzeichnisse wird angezeigt:</textblock>
+    <textblock>
+Für Verzeichnisse wird angezeigt:
+    </textblock>
 
-<shell>
-$ svn info vendors
+    <shell>
+     <user>
+svn info vendors
+     </user>
+     <output>
 Pfad: trunk
 URL: http://svn.red-bean.com/repos/test/vendors
 Revision: 19
@@ -2503,199 +2577,281 @@ Vorgemerkt: normal
 Letzt. AutorIn: harry
 Letzte Revision: 19
 Letztes Änderungsdatum: 2003-01-16 23:21:19 -0600 (Thu, 16 Jan 2003)
-</shell>
-
-
-</refentry>
-
+     </output>
+    </shell>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn list -- Listet Vereichniseinträge im Projektarchiv.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn list [ZIEL...]</command></textblock>
+   <section>
+    <heading>
+svn list
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn list -- Listet Vereichniseinträge im Projektarchiv.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn list [ZIEL...]</command>
+    </quotation>
 
-<textblock>Listet jede <italic>ZIEL</italic> Datei und
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Listet jede <italic>ZIEL</italic> Datei und
 den Inhalt von jedem <italic>ZIEL</italic>
 Verzeichnis so wie sie im Projektarchiv existieren.  Wenn
 <italic>ZIEL</italic> eine Arbeitskopie ist,
 dann wird die dazugehörige Projektarchiv URL
-benutzt.</textblock>
+benutzt.
+    </textblock>
 
-<textblock>Standardmässig wird <italic>ZIEL</italic>
-<italic><path>.</path></italic> verwendet, also die
+    <textblock>
+Standardmässig wird <italic>ZIEL</italic>
+<path>.</path> verwendet, also die
 Projektarchiv URL vom aktuellen Verzeichnis der
-Arbeitskopie.</textblock>
+Arbeitskopie.
+    </textblock>
 
-<textblock>Mit <command>--verbose</command>, werden folgende
-Statusfelder angezeigt:</textblock>
+    <textblock>
+Mit <command>--verbose</command>, werden folgende
+Statusfelder angezeigt:
+    </textblock>
 
-<ul>
-<li>Revisionsnumber der letzten Übertragung
-</li> <li>AutorIn der letzten
-Übertragung </li> <li>Grösse (in
-Bytes)</li> <li>Datum und Uhrzeit
-der letzen Übertragung</li>
-</ul>
+    <ul>
+     <li>Revisionsnumber der letzten Übertragung</li>
+     <li>AutorIn der letzten Übertragung</li>
+     <li>Grösse (in Bytes)</li>
+     <li>Datum und Uhrzeit der letzen Übertragung</li>
+    </ul>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+     <command>ls</command>
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>ls</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Nichts
+    </textblock>
 
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Ja
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Nichts</textblock>
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
+    <quotation>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--verbose (-v)</command><br/>
+     <command>--recursive (-R)</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Ja</textblock>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---Revision (-r) REV
---verbose (-v)
---recursive (-R)
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock><command>svn list</command> ist meist dann hilfreich,
+    <textblock>
+<command>svn list</command> ist meist dann hilfreich,
 wenn sie sehen wollen welche Dateien ein Projektarchiv hat
-ohne eine Arbeitskopie herunterzuladen:</textblock>
+ohne eine Arbeitskopie herunterzuladen:
+    </textblock>
 
-<shell>
-$ svn list http://svn.red-bean.com/repos/test/support
+    <shell>
+     <user>
+svn list http://svn.red-bean.com/repos/test/support
+     </user>
+     <output>
 README.txt
 INSTALL
 examples/
 ...
-</shell>
+     </output>
+    </shell>
 
-<textblock>Im Unterschied zum UNIX <command>ls</command>, können
+    <textblock>
+Im Unterschied zum UNIX <command>ls</command>, können
 sie die <command>--verbose</command> Option für zusätzliche
-Information verwenden:</textblock>
+Information verwenden:
+    </textblock>
 
-<shell>
-$ svn list --verbose file:///tmp/repos
+    <shell>
+     <user>
+svn list --verbose file:///tmp/repos
+     </user>
+     <output>
 16 sally         28361 Jan 16 23:18 README.txt
 27 sally             0 Jan 18 15:27 INSTALL
 24 harry               Jan 18 11:27 examples/
-</shell>
+     </output>
+    </shell>
 
-<textblock>For further details, see <xref
-linkend="svn-ch-3-sect-5.4"/>.</textblock>
-
-
-</refentry>
-
+    <textblock>
+For further details, see <xref
+linkend="svn-ch-3-sect-5.4"/>.
+    </textblock>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn log --  Zeigt die
-Log-Nachrichten.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn log [PFAD]</command></textblock>
-<textblock><command>svn log URL [PFAD...]</command></textblock>
+   <section>
+    <heading>
+svn log
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn log --  Zeigt die
+Log-Nachrichten.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn log [PFAD]</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn log URL [PFAD...]</command>
+    </quotation>
 
-<textblock>Standardmässig wird als Ziel das aktuelle Verzeichnis
-genommen.  Wenn keine Argumente angegeben werden, dann
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Standardmässig wird als Ziel das aktuelle Verzeichnis
+genommen. Wenn keine Argumente angegeben werden, dann
 zeigt <command>svn log</command> die Log-Nachrichten von
 allen Dateien und Verzeichnissen im aktuellen
 Arbeitsverzeichnis ihrer Arbeitskopie.  Sie können das
 Ergebnis verfeinern indem sie einen Pfad, eine oder
 mehrere Revisionen oder jede Kombination von beiden
 angeben.  Der standardmässige Revisionsbereich ist
-<italic>BASE:1</italic>.</textblock>
+<italic>BASE:1</italic>.
+    </textblock>
 
-<textblock>Wenn sie eine einzelne URL angeben, dann werden die
+    <textblock>
+Wenn sie eine einzelne URL angeben, dann werden die
 Log-Nachrichten für alles angezeigt, was in und unterhalb
 dieser URL liegt.  Wenn sie nach der URL auch Pfade
 angeben, dann werden nur die Log-Nachrichten für diese
 Pfade unter der URL angezeigt.  Der standardmässige
 Revisionsbereich für eine URL ist
-<italic>HEAD:1</italic>.</textblock>
+<italic>HEAD:1</italic>.
+    </textblock>
 
-<textblock>Mit <command>--verbose</command> wird <command>svn
+    <textblock>
+Mit <command>--verbose</command> wird <command>svn
 log</command> auch alle betroffenen Pfade zu jeder
 Log-Nachricht anzeigen.  Mit <command>--quiet</command> wird
 <command>svn log</command> den eigentlichen
 Nachrichtentext selbst nicht anzeigen (das ist
-kombinierbar mit <command>--verbose</command>).</textblock>
+kombinierbar mit <command>--verbose</command>).
+    </textblock>
 
-<textblock>Jede Log-Nachricht wird nur einmal ausgegeben, selbst
+    <textblock>
+Jede Log-Nachricht wird nur einmal ausgegeben, selbst
 dann, wenn expizit mehrere Pfade für eine Revision
 angefordert werden.  Standardmässig erlaubt <command>svn
 log</command> die Verfolgung der Kopier-Historie.
 Benutzen sie <command>--stop-on-copy</command> um dieses
 Verhalten abzustellen, was sinnvoll sein kann um die
-Auflistung bei Abzweigungen (branches) anzuhalten.</textblock>
+Auflistung bei Abzweigungen (branches) anzuhalten.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+Keine
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>Keine</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Nichts
+    </textblock>
 
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Ja
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Nichts</textblock>
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
+    <quotation>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--verbose (-v)</command><br/>
+     <command>--targets DATEINAME</command><br/>
+     <command>--stop-on-copy</command><br/>
+     <command>--incremental</command><br/>
+     <command>--xml</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Ja</textblock>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---Revision (-r) REV
---quiet (-q)
---verbose (-v)
---targets DATEINAME
---stop-on-copy
---incremental
---xml
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Sie können die Log-Nachrichten für alle geänderten
+    <textblock>
+Sie können die Log-Nachrichten für alle geänderten
 Pfade in ihrer Arbeitskopie einsehen, indem sie
 <command>svn log</command> im höchsten Verzeichnis
-aufrufen:</textblock>
+aufrufen:
+    </textblock>
 
-<shell>
-$ svn log
+    <shell>
+     <user>
+svn log
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r20 | harry | 2003-01-17 22:56:19 -0600 (Fri, 17 Jan 2003) | 1 line
 
@@ -2703,13 +2859,19 @@ Tweak.
 ------------------------------------------------------------------------
 r17 | sally | 2003-01-16 23:21:19 -0600 (Thu, 16 Jan 2003) | 2 lines
 ...
-</shell>
+     </output>
+    </shell>
 
-<textblock>Zeigt alle Log-Nachrichten für eine einzelne Datei
-ihrer Arbeitskopie:</textblock>
+    <textblock>
+Zeigt alle Log-Nachrichten für eine einzelne Datei
+ihrer Arbeitskopie:
+    </textblock>
 
-<shell>
-$ svn log foo.c
+    <shell>
+     <user>
+svn log foo.c
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r32 | sally | 2003-01-13 16:43:13 -0600 (Mon, 13 Jan 2003) | 1 line
 
@@ -2717,13 +2879,19 @@ Feinheiten hinzugefügt.
 ------------------------------------------------------------------------
 r28 | sally | 2003-01-07 21:48:33 -0600 (Tue, 07 Jan 2003) | 3 lines
 ...
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie keine Arbeitskopie bei der Hand haben, können
-sie eine URL verwenden:</textblock>
+    <textblock>
+Wenn sie keine Arbeitskopie bei der Hand haben, können
+sie eine URL verwenden:
+    </textblock>
 
-<shell>
-$ svn log http://svn.red-bean.com/repos/test/foo.c
+    <shell>
+     <user>
+svn log http://svn.red-bean.com/repos/test/foo.c
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r32 | sally | 2003-01-13 16:43:13 -0600 (Mon, 13 Jan 2003) | 1 line
 
@@ -2731,14 +2899,20 @@ Feinheiten hinzugefügt.
 ------------------------------------------------------------------------
 r28 | sally | 2003-01-07 21:48:33 -0600 (Tue, 07 Jan 2003) | 3 lines
 ...
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie verschiedene Pfade unterhalb der gleichen
-URL, können sie die <italic>URL [PFAD...]</italic>
-Syntax verwenden.</textblock>
+    <textblock>
+Wenn sie verschiedene Pfade unterhalb der gleichen
+URL, können sie die <path><italic>URL [PFAD...]</italic></path>
+Syntax verwenden.
+    </textblock>
 
-<shell>
-$ svn log http://svn.red-bean.com/repos/test/ foo.c bar.c
+    <shell>
+     <user>
+svn log http://svn.red-bean.com/repos/test/ foo.c bar.c
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r32 | sally | 2003-01-13 16:43:13 -0600 (Mon, 13 Jan 2003) | 1 line
 
@@ -2750,27 +2924,39 @@ Neue Datei bar.c hinzugefügt.
 ------------------------------------------------------------------------
 r28 | sally | 2003-01-07 21:48:33 -0600 (Tue, 07 Jan 2003) | 3 lines
 ...
-</shell>
+     </output>
+    </shell>
 
-<textblock>Das hat den gleichen Effekt wie wenn beide URLs in der
-Kommandozeile angegeben werden:</textblock>
+    <textblock>
+Das hat den gleichen Effekt wie wenn beide URLs in der
+Kommandozeile angegeben werden:
+    </textblock>
 
-<shell>
-$ svn log http://svn.red-bean.com/repos/test/foo.c \
+    <shell>
+     <user>
+svn log http://svn.red-bean.com/repos/test/foo.c \
 http://svn.red-bean.com/repos/test/bar.c
+     </user>
+     <output>
 ...
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie die Ergebnisse mehrerer Aufrufe verketten
+    <textblock>
+Wenn sie die Ergebnisse mehrerer Aufrufe verketten
 wollen, dann ist die <command>--incremental</command>
 hilfreich.  <command>svn log</command> zeigt normalerweise
 eine strichlierte Zeile am Beginn der Ausgabe und nach
 jeder einzelnen Log-Nachricht.  Wenn sie <command>svn
 log</command> für den Bereich von zwei Revisionen
-aufrufen, würden sie das erhalten:</textblock>
+aufrufen, würden sie das erhalten:
+    </textblock>
 
-<shell>
-$ svn log -r 14:15
+    <shell>
+     <user>
+svn log -r 14:15
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r14 | ... 
 
@@ -2778,17 +2964,29 @@ r14 | ...
 r15 | ... 
 
 ------------------------------------------------------------------------
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie zwei nicht direkt aufeinanderfolgende
+    <textblock>
+Wenn sie zwei nicht direkt aufeinanderfolgende
 Log-Nachrichten in eine Datei ausgeben wollen, dann machen
-sie das eventuell so:</textblock>
+sie das eventuell so:
+    </textblock>
 
-<shell>
-$ svn log -r 14 &gt; mylog
-$ svn log -r 19 &gt;&gt; mylog
-$ svn log -r 27 &gt;&gt; mylog
-$ cat mylog
+    <shell>
+     <user>
+svn log -r 14 &gt; mylog
+     </user>
+     <user>
+svn log -r 19 &gt;&gt; mylog
+     </user>
+     <user>
+svn log -r 27 &gt;&gt; mylog
+     </user>
+     <user>
+cat mylog
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r14 | ... 
 
@@ -2801,18 +2999,29 @@ r19 | ...
 r27 | ... 
 
 ------------------------------------------------------------------------
-</shell>
+     </output>
+    </shell>
 
-<textblock>Sie können die unnötige zweifache Ausgabe der
+    <textblock>
+Sie können die unnötige zweifache Ausgabe der
 strichlierten Linien vermeiden, indem sie die
-<command>--incremental</command> Option verwenden:</textblock>
+<command>--incremental</command> Option verwenden:
+    </textblock>
 
-
-<shell>
-$ svn log --incremental -r 14 &gt; mylog
-$ svn log --incremental -r 19 &gt;&gt; mylog
-$ svn log --incremental -r 27 &gt;&gt; mylog
-$ cat mylog
+    <shell>
+     <user>
+svn log --incremental -r 14 &gt; mylog
+     </user>
+     <user>
+svn log --incremental -r 19 &gt;&gt; mylog
+     </user>
+     <user>
+svn log --incremental -r 27 &gt;&gt; mylog
+     </user>
+     <user>
+cat mylog
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r14 | ... 
 
@@ -2820,177 +3029,260 @@ r14 | ...
 r19 | ... 
 
 ------------------------------------------------------------------------
-r27 | ... 
-</shell>
+r27 | ...
+     </output>
+    </shell>
 
-<textblock>Die <command>--incremental</command> Option erzeugt eine
+    <textblock>
+Die <command>--incremental</command> Option erzeugt eine
 ähnliche Ausgabe, wenn sie die <command>--xml</command>
-Option verwenden.</textblock>
+Option verwenden.
+    </textblock>
 
-
-
-<tip>
-<textblock>Wenn sie <command>svn log</command> auf einen
+<hint>
+Wenn sie <command>svn log</command> auf einen
 bestimmten Pfad und eine bestimmte Revision anwenden und
-sie bekommen überhaupt keine Ausgabe</textblock>
+sie bekommen überhaupt keine Ausgabe
+    </hint>
 
-<shell>
-$ svn log -r 20 http://svn.red-bean.com/untouched.txt
+    <shell>
+     <user>
+svn log -r 20 http://svn.red-bean.com/untouched.txt
+     </user>
+     <output>
 ------------------------------------------------------------------------
-</shell>
+     </output>
+    </shell>
 
-<textblock>Dann bedeutet das, dass dieser Pfad in dieser
+    <textblock>
+Dann bedeutet das, dass dieser Pfad in dieser
 Revision nicht verändert wurde.  Wenn sie von der
 höchsten Ebene des Projektarchives oder wenn sie die
 Datei kennen, die sich in dieser Revision geändert hat,
-dann können sie das explizit angeben:</textblock>
+dann können sie das explizit angeben:
+    </textblock>
 
-<shell>
-$ svn log -r 20 geaendert.txt 
+    <shell>
+     <user>
+svn log -r 20 geaendert.txt
+     </user>
+     <output>
 ------------------------------------------------------------------------
 r20 | sally | 2003-01-17 22:56:19 -0600 (Fri, 17 Jan 2003) | 1 line
 
 Es wurde dies und das geändert.
 ------------------------------------------------------------------------
-</shell>
-</tip>
-
-
-</refentry>
-
+     </output>
+    </shell>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn merge -- Übertrage die Unterschiede zwischen zwei Quellen
-auf einen Pfad in der Arbeitskopie.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn merge QuellURL1[@N] QuellURL2[@M] [AKPFAD]</command></textblock>
-<textblock><command>svn merge -r N:M QUELLE [PFAD]</command></textblock>
+   <section>
+    <heading>
+     svn merge
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn merge -- Übertrage die Unterschiede zwischen zwei Quellen
+auf einen Pfad in der Arbeitskopie.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn merge QuellURL1[@N] QuellURL2[@M] [AKPFAD]</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn merge -r N:M QUELLE [PFAD]</command>
+    </quotation>
 
-<textblock>In der ersten Form werden die URLs der Quellen für die
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+In der ersten Form werden die URLs der Quellen für die
 Revisionen <italic>N</italic> und
 <italic>M</italic> angegeben. Das sind die zwei
 Quellen die verglichen werden.  Wenn die Revisionen
 weggelassen werden, dann wird standardmässig
-<italic>HEAD</italic> genommen.</textblock>
+<italic>HEAD</italic> genommen.
+    </textblock>
 
-<textblock>In der zweiten Form kann
+    <textblock>
+In der zweiten Form kann
 <italic>QUELLE</italic> eine URL oder ein Objekt
 aus der Arbeitskopie sein, wofür die korrespondiertende
 URL ermittelt wird.  Diese URL, in den Revisionen
 <italic>N</italic> und
 <italic>M</italic> legt fest welche zwei Quellen
-verglichen werden.</textblock>
+verglichen werden.
+    </textblock>
 
-<textblock><italic>AKPFAD</italic> ist der Pfad der
+    <textblock>
+<italic>AKPFAD</italic> ist der Pfad der
 Arbeitskopie, auf welchen die Änderungen übertragen
 werden.  Wenn <italic>AKPFAD</italic>
 weggelassen wird, dann wird
-<italic><path>.</path></italic> angenommen, ausser
+<path>.</path> angenommen, ausser
 die Quellen haben den gleichen Basisnamen, welcher auf
-eine Datei in <italic><path>.</path></italic> passt:
+eine Datei in <path>.</path> passt:
 in diesem Fall werden die Unterschiede auf diese Datei
-übertragen.</textblock>
+übertragen.
+    </textblock>
 
-<textblock>Im Unterschied zu <command>svn diff</command> nimmt
+    <textblock>
+Im Unterschied zu <command>svn diff</command> nimmt
 das merge Kommando beim Zusammenführen Rücksicht auf die
 Abstammung einer Datei.  Das ist sehr wichtig, wenn sie
 Unterschiede von einem Zweig (branch) in einen anderen
 Zweig übertragen und sie haben eine Datei in einem Zweig
-umbenannt und im anderen Zweig aber nicht.</textblock>
+umbenannt und im anderen Zweig aber nicht.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+Keine
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>Keine</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie
+    </textblock>
 
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit URLs gearbeitet wird
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie</textblock>
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
+    <quotation>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--non-recursive (-N)</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--force</command><br/>
+     <command>--dry-run</command><br/>
+     <command>--diff3-cmd CMD</command><br/>
+     <command>--ignore-ancestry</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit URLs gearbeitet wird</textblock>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---Revision (-r) REV
---non-recursive (-N)
---quiet (-q)
---force
---dry-run
---diff3-cmd CMD
---ignore-ancestry
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Überträgt die Änderungen aus einem Nebenzweig (branch)
-zurück zum offiziellen Hauptzweig (trunk).  Für das
+    <textblock>
+Überträgt die Änderungen aus einem Nebenzweig (branch)
+zurück zum offiziellen Hauptzweig (<path>trunk</path>). Für das
 Beispiel wird angenommen, dass sie eine Arbeitskopie des
 Hauptzweiges haben und dass der Nebenzweig in Revision 250
-erstellt wurde:</textblock>
+erstellt wurde:
+    </textblock>
 
-<shell>
-$ svn merge -r 250:HEAD http://svn.red-bean.com/repos/branches/mein-zweig
+    <shell>
+     <user>
+svn merge -r 250:HEAD http://svn.red-bean.com/repos/branches/mein-zweig
+     </user>
+     <output>
 U  meinproj/tiny.txt
 U  meinproj/thhgttg.txt
 U  meinproj/win.txt
 U  meinproj/flo.txt
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn die Abzweigung bei Revision 23 erfolgte und sie
+    <textblock>
+Wenn die Abzweigung bei Revision 23 erfolgte und sie
 wollen die Änderungen aus dem Hauptzweig auf ihren
 Nebenzweig übertragen, dann können sie dies von der
-Arbeitskopie ihres Nebenzweiges aus erledigen:</textblock>
+Arbeitskopie ihres Nebenzweiges aus erledigen:
+    </textblock>
 
-<shell>
-$ svn merge -r 23:30 file:///tmp/repos/trunk/vendors
+    <shell>
+     <user>
+svn merge -r 23:30 file:///tmp/repos/trunk/vendors
+     </user>
+     <output>
 U  meinproj/thhgttg.txt
 ...
-</shell>
+     </output>
+    </shell>
 
-<textblock>Um Änderungen einer einzelnen Datei zu
-übertragen:</textblock>
+    <textblock>
+Um Änderungen einer einzelnen Datei zu
+übertragen:
+    </textblock>
 
-<shell>
-$ cd meinproj
-$ svn merge -r 30:31 thhgttg.txt 
+    <shell>
+     <user>
+cd meinproj
+     </user>
+     <user>
+svn merge -r 30:31 thhgttg.txt
+     </user>
+     <output>
 U  thhgttg.txt
-</shell>
-
-
-</refentry>
-
+     </output>
+    </shell>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn mkdir -- Erzeugt ein neues Verzeichnis unter Versionskontrolle.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn mkdir PFAD...</command></textblock>
-<textblock><command>svn mkdir URL...</command></textblock>
+   <section>
+    <heading>
+svn mkdir
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn mkdir -- Erzeugt ein neues Verzeichnis unter Versionskontrolle.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn mkdir PFAD...</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn mkdir URL...</command>
+    </quotation>
 
-<textblock>Erzeugt ein Verzeichnis unter Angabe von einem
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Erzeugt ein Verzeichnis unter Angabe von einem
 <italic>PFAD</italic> oder einer URL.  Lokale
 Änderungen werden sofort durchgeführt, für das
 Projektarchiv wird die Aktion aber nur vorgemerkt und erst
@@ -2999,619 +3291,908 @@ Ein Verzeichnis, das eine URL im Projektarchiv angegeben
 wurde wird durch eine sofortige Übertragung gleich
 angelegt.  Mehrere URLs werden getrennt übertragen.  In
 beiden Fällen müssen die darüberliegenden Verzeichnisse
-bereits existieren.</textblock>
+bereits existieren.
+    </textblock>
+
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+Keine
+    </textblock>
+
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie, das Projektarchiv wenn mit einer URL gearbeitet wird
+    </textblock>
+
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit einer URL gearbeitet wird
+    </textblock>
+
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
+
+    <quotation>
+     <command>--message (-m) TEXT</command><br/>
+     <command>--file (-F) DATEI</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--editor-cmd EDITOR</command><br/>
+     <command>--encoding ENC</command><br/>
+     <command>--force-log</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>Keine</textblock>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
+    <textblock>
+Erstellt ein Verzeichnis in ihrer Arbeitskopie:
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie, das Projektarchiv wenn mit einer URL gearbeitet wird</textblock>
-
-
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit einer URL gearbeitet wird</textblock>
-
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---message (-m) TEXT
---file (-F) DATEI
---quiet (-q)
---username USER
---password PASS
---no-auth-cache
---non-interactive
---editor-cmd EDITOR
---encoding ENC
---force-log
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Erstellt ein Verzeichnis in ihrer Arbeitskopie:</textblock>
-
-<shell>
-$ svn mkdir neudir
+    <shell>
+     <user>
+svn mkdir neudir
+     </user>
+     <output>
 A         neudir
-</shell>
+     </output>
+    </shell>
 
-<textblock>Erzeugt ein Verzeichnis im Projektarchiv (sofortige
+    <textblock>
+Erzeugt ein Verzeichnis im Projektarchiv (sofortige
 Übertragung, daher ist eine Log-Nachricht
-erforderlich):</textblock>
+erforderlich):
+    </textblock>
 
-<shell>
-$ svn mkdir -m "Erstelle ein neues Verzeichnis." http://svn.red-bean.com/repos/neudir
+    <shell>
+     <user>
+svn mkdir -m "Erstelle ein neues Verzeichnis." http://svn.red-bean.com/repos/neudir
+     </user>
+     <output>
 
 Revision 26 übertragen.
-</shell>
-
-
-</refentry>
+     </output>
+    </shell>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn move -- Verschiebt eine Datei oder Verzeichnis.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn move QUELLE ZIEL</command></textblock>
+   <section>
+    <heading>
+svn move
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn move -- Verschiebt eine Datei oder Verzeichnis.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn move QUELLE ZIEL</command>
+    </quotation>
 
-<textblock>Das Kommando verschiebt eine Datei oder Verzeichnis in ihrer
-Arbeitskopie oder im Projektarchiv.</textblock>
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
 
-<tip>
-<hint>Das Kommando hat die gleiche Auswirkung wie ein
+    <textblock>
+Das Kommando verschiebt eine Datei oder Verzeichnis in ihrer
+Arbeitskopie oder im Projektarchiv.
+    </textblock>
+
+    <hint>
+Das Kommando hat die gleiche Auswirkung wie ein
 <command>svn copy</command> gefolgt von einem
-<command>svn delete</command>.</hint>
-</tip>
+<command>svn delete</command>.
+    </hint>
 
-<note>
-<hint>Subversion unterstützt nicht das Verschieben
+    <hint>
+Subversion unterstützt nicht das Verschieben
 zwischen Arbeitskopie und URLs.  Zusätzlich können sie
 Dateien nur innerhalb eines einzelnen Projektarchives
-verschieben &mdash; Subversion unterstützt keine
+verschieben -- Subversion unterstützt keine
 Verschiebungen über die Grenzen eines Projektarchives
-hinweg.</hint>
-</note>
+hinweg.
+    </hint>
 
+    <textblock>
+AK  -&gt; AK
+    </textblock>
 
+    <quotation>
+Verschiebt und merkt eine Datei oder Verzeichnis 
+zum Hinzufügen vor (mit Historie).
+    </quotation>
 
+    <textblock>
+URL -&gt; URL
+    </textblock>
 
-<textblock>AK  -&gt; AK</textblock>
+    <quotation>
+Ausschliesslich serverseitige Namensänderung.
+    </quotation>
 
-<quotation>Verschiebt und merkt eine Datei oder Verzeichnis 
-zum Hinzufügen vor (mit Historie).</quotation>
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+     <command>mv</command>, <command>rename</command>, <command>ren</command>
+    </textblock>
 
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie, Projektarchiv wenn mit einer URL gearbeitet wird
+    </textblock>
 
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>URL -&gt; URL</textblock>
+    <quotation>
+     <command>--message (-m) TEXT</command><br/>
+     <command>--file (-F) DATEI</command><br/>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--force</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--editor-cmd EDITOR</command><br/>
+     <command>--encoding ENC</command><br/>
+     <command>--force-log</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
-<quotation>Ausschliesslich serverseitige Namensänderung.</quotation>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
+    <textblock>
+Verschiebt eine Datei in ihrer Arbeitskopie:
+    </textblock>
 
-
-
-
-
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>mv, rename, ren</textblock>
-
-
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie, Projektarchiv wenn mit einer URL gearbeitet wird</textblock>
-
-
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit einer URL gearbeitet wird</textblock>
-
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---message (-m) TEXT
---file (-F) DATEI
---Revision (-r) REV
---quiet (-q)
---force
---username USER
---password PASS
---no-auth-cache
---non-interactive
---editor-cmd EDITOR
---encoding ENC
---force-log
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Verschiebt eine Datei in ihrer Arbeitskopie:</textblock>
-
-<shell>
-$ svn move foo.c bar.c
+    <shell>
+     <user>
+svn move foo.c bar.c
+     </user>
+     <output>
 A         bar.c
 D         foo.c
-</shell>
+     </output>
+    </shell>
 
-<textblock>Verschiebt eine Datei im Projektarchiv (sofortige
+    <textblock>
+Verschiebt eine Datei im Projektarchiv (sofortige
 Übertragung, daher ist eine Log-Nachricht erforderlich):
-</textblock>
+    </textblock>
 
-<shell>
-$ svn move -m "Move a file" http://svn.red-bean.com/repos/foo.c \
+    <shell>
+     <user>
+svn move -m "Move a file" http://svn.red-bean.com/repos/foo.c \
 http://svn.red-bean.com/repos/bar.c
+     </user>
+     <output>
 
 Revision 27 übertragen.
-</shell>
-
-
-</refentry>
+     </output>
+    </shell>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn propdel -- Entferne eine Eigenschaft von einem Objekt.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn propdel PROPNAME [PFAD...]</command></textblock>
-<textblock><command>svn propdel PROPNAME --revprop -r REV [URL]</command></textblock>
+   <section>
+    <heading>
+svn propdel
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn propdel -- Entferne eine Eigenschaft von einem Objekt.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn propdel PROPNAME [PFAD...]</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn propdel PROPNAME --revprop -r REV [URL]</command>
+    </quotation>
 
-<textblock>Entfernt Eigenschaften von Dateien, Verzeichnissen
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Entfernt Eigenschaften von Dateien, Verzeichnissen
 oder Revisionen.  Die erste Form entfernt Eigenschaften
 mit Versionskontrolle in der Arbeitskopie, während die
 zweite Eigenschaften ohne Versionskontrolle in einer
-Revision des Projektarchives entfernt.</textblock>
+Revision des Projektarchives entfernt.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+     <command>pdel</command>, <command>pd</command>
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>pdel, pd</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
 
+    <textblock>
+Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
+    
+    <quotation>
+     <command>--quiet (-q)</command><br/>
+     <command>--recursive (-R)</command><br/>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--revprop</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit einer URL gearbeitet wird</textblock>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
+    <textblock>
+Löscht eine Eigenschaft von einer Datei in ihrer
+Arbeitskopie.
+    </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---quiet (-q)
---recursive (-R)
---Revision (-r) REV
---revprop
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Löscht eine Eigenschaft von einer Datei in ihrer
-Arbeitskopie.</textblock>
-
-<shell>
-$ svn propdel svn:mime-type  irgendein-script
+    <shell>
+     <user>
+svn propdel svn:mime-type  irgendein-script
+     </user>
+     <output>
 Eigenschaft 'svn:mime-type' gelöscht von 'irgendein-script'.
-</shell>
+     </output>
+    </shell>
 
-<textblock>Löscht die Eigenschaft einer Revisions:</textblock>
+    <textblock>
+Löscht die Eigenschaft einer Revisions:
+    </textblock>
 
-<shell>
-$ svn propdel --revprop -r 26 release-date 
+    <shell>
+     <user>
+svn propdel --revprop -r 26 release-date
+     </user>
+     <output>
 Eigenschaft 'release-date' gelöscht von Projektarchiv Revision '26'
-</shell>
-
-
-</refentry>
+     </output>
+    </shell>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn propedit -- Bearbeitet die Eigenschaft von einem oder mehreren
-Objekten unter Versionskontrolle.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn propedit PROPNAME PFAD...</command></textblock>
-<textblock><command>svn propedit PROPNAME --revprop -r REV [URL]</command></textblock>
+   <section>
+    <heading>
+svn propedit
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn propedit -- Bearbeitet die Eigenschaft von einem oder mehreren
+Objekten unter Versionskontrolle.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn propedit PROPNAME PFAD...</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn propedit PROPNAME --revprop -r REV [URL]</command>
+    </quotation>
+    
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
 
-<textblock>Bearbeitet eine oder mehrere Eigenschaften unter
-Benutzung ihres bevorzugten Editors.  Die erste Form
+    <textblock>
+Bearbeitet eine oder mehrere Eigenschaften unter
+Benutzung ihres bevorzugten Editors. Die erste Form
 bearbeitet Eigenschaften mit Versionskontrolle in ihrer
 Arbeitskopie, während die zweite Form Eigenschaften ohne
 Versionskontrolle in einer Revision des Projektarchives
-bearbeitet.</textblock>
+bearbeitet.
+    </textblock>
+   
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+<command>pedit</command>, <command>pe</command>
+    </textblock>
 
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>pedit, pe</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird</textblock>
+    <quotation>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--revprop</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--encoding ENC</command><br/>
+     <command>--editor-cmd EDITOR</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit einer URL gearbeitet wird</textblock>
-
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---Revision (-r) REV
---revprop
---username USER
---password PASS
---no-auth-cache
---non-interactive
---encoding ENC
---editor-cmd EDITOR
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock><command>svn propedit</command> macht es leicht
+    <textblock>
+<command>svn propedit</command> macht es leicht
 Änderungen an Eigenschaften, die mehreren Werte halten
-können, vorzunehmen:</textblock>
+können, vorzunehmen:
+    </textblock>
 
-<shell>
-$ svn propedit svn:keywords  foo.c 
+    <shell>
+     <user>
+svn propedit svn:keywords  foo.c
+     </user>
+     <output>
 &lt;svn wird hier ihren bevorzugten Editor aufrufen und zwar mit
 einem geöffnetem Buffer, welcher die aktuellen Werte der
 svn:keywords Eigenschaft enthält.  Sie können hier mehrere Werte
 zu einer Eigenschaft hinzufügen, indem sie einfach einen Wert pro
 Zeile eingeben.&gt;
 Setze neuen Wert für die Eigenschaft 'svn:keywords' von 'foo.c'
-</shell>
-
-
-</refentry>
-
+     </output>
+    </shell>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn propget -- Zeigt den Wert einer Eigenschaft.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn propget PROPNAME [PFAD...]</command></textblock>
-<textblock><command>svn propget PROPNAME --revprop -r REV [URL]</command></textblock>
+   <section>
+    <heading>
+svn propget
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+     svn propget -- Zeigt den Wert einer Eigenschaft.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn propget PROPNAME [PFAD...]</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn propget PROPNAME --revprop -r REV [URL]</command>
+    </quotation>
 
-<textblock>Zeigt den Wert einer Eigenschaft von Dateien,
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Zeigt den Wert einer Eigenschaft von Dateien,
 Verzeichnissen oder Revisionen.  Die erste Form zeigt
 Eigenschaften unter Versionskontrolle in ihrer
 Arbeitskopie, während die zweite Form Eigenschaften ohne
 Versionskontrolle in einer Revision des Projektarchives
 zeigt.  Siehe <xref linkend="svn-ch-7-sect-2"/> für mehr
-Information über Eigenschaften.</textblock>
+Information über Eigenschaften.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>pget, pg</textblock>
+    <textblock>
+     <command>pget</command>, <command>pg</command>
+    </textblock>
 
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit einer URL gearbeitet wird</textblock>
+    <quotation>
+     <command>--recursive (-R)</command><br/>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--revprop</command><br/>
+     <command>--strict</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
+    <textblock>
+Zeigt eine Eigenschaft von einer Datei in ihrer
+Arbeitskopie:
+    </textblock>
 
-<screen>
---recursive (-R)
---Revision (-r) REV
---revprop
---strict
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Zeigt eine Eigenschaft von einer Datei in ihrer
-Arbeitskopie:</textblock>
-
-<shell>
-$ svn propget svn:keywords foo.c
+    <shell>
+     <user>
+svn propget svn:keywords foo.c
+     </user>
+     <output>
 Author
 Date
 Rev
-</shell>
+     </output>
+    </shell>
 
-<textblock>Das gleiche für eine Eigenschaft einer
-Revision:</textblock>
+    <textblock>
+Das gleiche für eine Eigenschaft einer
+Revision:
+    </textblock>
 
-<shell>
-$ svn propget svn:log --revprop -r 20 
+    <shell>
+     <user>
+svn propget svn:log --revprop -r 20
+     </user>
+     <output>
 Beginn eines Berichtes.
-</shell>
-
-
-</refentry>
+     </output>
+    </shell>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn proplist -- Zeigt eine Liste aller Eigenschaften.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn proplist [PFAD...]</command></textblock>
-<textblock><command>svn proplist --revprop -r REV [URL]</command></textblock>
+   <section>
+    <heading>
+svn proplist
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn proplist -- Zeigt eine Liste aller Eigenschaften.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn proplist [PFAD...]</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn proplist --revprop -r REV [URL]</command>
+    </quotation>
 
-<textblock>Zeigt alle Eigenschaften von einer Datei, Verzeichniss
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Zeigt alle Eigenschaften von einer Datei, Verzeichniss
 oder Revision.  Die erste Form zeigt Eigenschaften unter
 Versionskontrolle in ihrer Arbeitskopie, während die
 zweite Form Eigenschaften ohne Versionskontrolle in einer
-Revision des Projektarchives zeigt.</textblock>
+Revision des Projektarchives zeigt.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+     <command>plist</command>, <command>pl</command>
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>plist, pl</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
 
+    <textblock>
+Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit einer URL gearbeitet wird</textblock>
+    <quotation>
+     <command>--verbose (-v)</command><br/>
+     <command>--recursive (-R)</command><br/>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--revprop</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
+    <textblock>
+Sie können proplist verwenden um die Eigenschaften
+eines Objektes in ihrer Arbeitskopie einzusehen:
+    </textblock>
 
-<screen>
---verbose (-v)
---recursive (-R)
---Revision (-r) REV
---quiet (-q)
---revprop
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Sie können proplist verwenden um die Eigenschaften
-eines Objektes in ihrer Arbeitskopie einzusehen:</textblock>
-
-<shell>
-$ svn proplist foo.c
+    <shell>
+     <user>
+svn proplist foo.c
+     </user>
+     <output>
 Properties on 'foo.c':
 svn:mime-type
 svn:keywords
 owner
-</shell>
+     </output>
+    </shell>
 
-<textblock>Aber so richtig nützlich wird svn proplist mit der
+    <textblock>
+Aber so richtig nützlich wird svn proplist mit der
 <command>--verbose</command> option, weil es dann auch die
-Werte für die Eigenschaften anzeigt:</textblock>
+Werte für die Eigenschaften anzeigt:
+    </textblock>
 
-<shell>
-$ svn proplist --verbose foo.c
+    <shell>
+     <user>
+svn proplist --verbose foo.c</user>
+     <output>
 Properties on 'foo.c':
 svn:mime-type : text/plain
 svn:keywords : Author Date Rev
 owner : sally
-</shell>
-
-
-</refentry>
-
+     </output>
+    </shell>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn propset -- Set PROPNAME to PROPVAL on Dateien, Verzeichnissen, or Revisions.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn propset PROPNAME [PROPWERT | -F WERTDATEI] PFAD...</command></textblock>
-<textblock><command>svn propset PROPNAME --revprop -r REV [PROPWERT | -F WERTDATEI] [URL]</command></textblock>
+   <section>
+    <heading>
+svn propset
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn propset -- Set PROPNAME to PROPVAL on Dateien, Verzeichnissen, or Revisions.
+    </textblock>
 
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn propset PROPNAME [PROPWERT | -F WERTDATEI] PFAD...</command>
+    </quotation>
+    
+    <quotation>
+     <command>svn propset PROPNAME --revprop -r REV [PROPWERT | -F WERTDATEI] [URL]</command>
+    </quotation>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
 
-<textblock>Setzt <italic>PROPNAME</italic> auf
+    <textblock>
+Setzt <italic>PROPNAME</italic> auf
 <italic>PROPWERT</italic> für Dateien,
 Verzeichnisse oder Revisionen.  Die erste Form erzeugt
 eine Änderung einer Eigenschaft unter Versionskontrolle in
 der Arbeitskopie, während die zweite Form eine Änderung
 einer Eigenschaft ohne Versionskontrolle in einer Revision
-des Projektarchives erzeugt.</textblock>
+des Projektarchives erzeugt.
+    </textblock>
 
-<tip>
-<textblock>Subversion hat eine Anzahl von
+
+    <hint>
+Subversion hat eine Anzahl von
 <italic>Special</italic> Eigenschaften, die das Verhalten
 von svn beeinflussen.  Siehe <xref
 linkend="svn-ch-7-sect-2.3"/> für mehr Informationen zu
-diesen Eigenschaften.</textblock>
-</tip>
+diesen Eigenschaften.
+    </hint>
+    
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+     <command>pset</command>, <command>ps</command>
+    </textblock>
 
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>pset, ps</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn mit einer URL gearbeitet wird
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie, Projektarchiv nur wenn mit einer URL gearbeitet wird</textblock>
+    <quotation>
+     <command>--file (-F) DATEI</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--targets DATEINAME</command><br/>
+     <command>--recursive (-R)</command><br/>
+     <command>--revprop</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--encoding ENC</command><br/>
+     <command>--force</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn mit einer URL gearbeitet wird</textblock>
+    <textblock>
+Setzt den Mime-Typ einer Datei:
+    </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---file (-F) DATEI
---quiet (-q)
---Revision (-r) REV
---targets DATEINAME
---recursive (-R)
---revprop
---username USER
---password PASS
---no-auth-cache
---non-interactive
---encoding ENC
---force
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Setzt den Mime-Typ einer Datei:</textblock>
-
-<shell>
-$ svn propset svn:mime-type image/jpeg foo.jpg 
+    <shell>
+     <user>
+svn propset svn:mime-type image/jpeg foo.jpg
+     </user>
+     <output>
 Eigenschaft 'svn:mime-type' gesetzt für 'foo.jpg'
-</shell>
+     </output>
+    </shell>
 
-<textblock>Auf UNIX Systemen, wenn sie für eine Datei das
-ausführbar Recht setzen wollen:</textblock>
+    <textblock>
+Auf UNIX Systemen, wenn sie für eine Datei das
+ausführbar Recht setzen wollen:
+    </textblock>
 
-<shell>
-$ svn propset svn:executable ON irgendeinscript
+    <shell>
+     <user>
+svn propset svn:executable ON irgendeinscript
+     </user>
+     <output>
 property 'svn:executable' set on 'irgendeinscript'
-</shell>
+     </output>
+    </shell>
 
-<textblock>Möglicherweise haben sie eine interne Vorschrift, die
+    <textblock>
+Möglicherweise haben sie eine interne Vorschrift, die
 verschiedene Eigenschaften verwendet, um das Leben von
-MitarbeiterInnen an einem Projekt zu erleichtern:</textblock>
+MitarbeiterInnen an einem Projekt zu erleichtern:
+    </textblock>
 
-<shell>
-$ svn propset owner sally foo.c
+    <shell>
+     <user>
+svn propset owner sally foo.c
+     </user>
+     <output>
 property 'owner' set on 'foo.c'
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie einen Fehler in einer Log-Nachricht einer
+    <textblock>
+Wenn sie einen Fehler in einer Log-Nachricht einer
 bestimmten Revision gemacht haben und sie wollen diese
 ändern, dann verwenden sie <command>--revprop</command> und
-setzen svn:log auf die neue Log-Nachricht:</textblock>
+setzen svn:log auf die neue Log-Nachricht:
+    </textblock>
 
-<shell>
-$ svn propset --revprop -r 25 svn:log "Bericht über die Reise nach New York."
+    <shell>
+     <user>
+svn propset --revprop -r 25 svn:log "Bericht über die Reise nach New York."
+     </user>
+     <output>
 Eigenschaft 'svn:log' für Revision '25' im Projektarchiv gesetzt
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie keine Arbeitskopie haben können sie eine URL
-angeben.</textblock>
+    <textblock>
+Wenn sie keine Arbeitskopie haben können sie eine URL
+angeben.
+    </textblock>
 
-<shell>
-$ svn propset --revprop -r 26 svn:log "Zusatz-Dokument." http://svn.red-bean.com/repos
+    <shell>
+     <user>
+svn propset --revprop -r 26 svn:log "Zusatz-Dokument." http://svn.red-bean.com/repos
+     </user>
+     <output>
 Eigenschaft 'svn:log' für Revision '25' im Projektarchiv gesetzt
-</shell>
+     </output>
+    </shell>
 
-<textblock>Sie können propset anweisen seine Eingaben aus einer
+    <textblock>
+Sie können propset anweisen seine Eingaben aus einer
 Datei zu holen.  Sie können das einsetzen um den Inhalt
-einer Eigenschaft mit binären Werte zu versorgen:</textblock>
+einer Eigenschaft mit binären Werte zu versorgen:
+    </textblock>
 
-<shell>
-$ svn propset owner-pic -F sally.jpg moo.c 
+    <shell>
+     <user>
+svn propset owner-pic -F sally.jpg moo.c
+     </user>
+     <output>
 Eigenschaft 'owner-pic' gesetzt für 'moo.c'
-</shell>
+     </output>
+    </shell>
 
-<note>
-<hint>Standardmässig können sie Eigenschaften einer
+    <hint>
+Standardmässig können sie Eigenschaften einer
 Revision in einem Subversion Projektarchiv nicht ändern.
 Ihr Projektarchiv Administrator muss die Änderung von
 Eigenschaften einer Revision ausdrücklich erlauben,
 indem er einen Haken (hook) mit dem Namen
 <italic>pre-revprop-change</italic> erzeugt.  Siehe
 <xref linkend="svn-ch-5-sect-2.1"/> für mehr Information
-zu Haken-Skripte (hook scripts).</hint>
-</note>
-
-
-</refentry>
+zu Haken-Skripte (hook scripts).
+    </hint>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn resolved -- Entfernt den <italic>conflicted</italic> Status von
-Dateien oder Verzeichnissen in der Arbeitskopie.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn resolved PFAD...</command></textblock>
+   <section>
+    <heading>
+svn resolved
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn resolved -- Entfernt den <italic>conflicted</italic> Status von
+Dateien oder Verzeichnissen in der Arbeitskopie.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn resolved PFAD...</command>
+    </quotation>
 
-<textblock>Entfernt den <italic>conflicted</italic> Status von
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Entfernt den <italic>conflicted</italic> Status von
 Dateien oder Verzeichnissen in der Arbeitskopie.  Dieses
 Subkommando löst weder semantisch Konflikte auf, noch
 entfernt es Konfliktmarken.  Es löscht lediglich zum
@@ -3620,83 +4201,120 @@ Verzeichnis wieder übertragen werden kann.  Es teilt
 Subversion also mit, dass der Konflikt
 <italic>resolved</italic> (aufgelöst) wurde.  Siehe <xref
 linkend="svn-ch-3-sect-4.4"/> für einen tieferen Einblick in
-das Auflösen von Konflikten.</textblock>
+das Auflösen von Konflikten.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+Keine
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>Keine</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie
+    </textblock>
 
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nein
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie</textblock>
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
+    <quotation>
+     <command>--targets DATEINAME</command><br/>
+     <command>--recursive (-R)</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nein</textblock>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---targets DATEINAME
---recursive (-R)
---quiet (-q)
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Wenn sie bei einer Aktualisierung einen Konflikt
+    <textblock>
+Wenn sie bei einer Aktualisierung einen Konflikt
 bekommen haben, werden in ihrer Arbeitskopie drei neue
-Dateien erzeugt:</textblock>
+Dateien erzeugt:
+    </textblock>
 
-<shell>
-$ svn update
+    <shell>
+     <user>
+svn update
+     </user>
+     <output>
 C  foo.c
 Aktualisiert auf Revision 31.
-$ ls
+     </output>
+     <user>
+ls
+     </user>
+     <output>
 foo.c
 foo.c.mine
 foo.c.r30
 foo.c.r31
-</shell>
+     </output>
+    </shell>
 
-<textblock>Dann wenn sie den Konflikt aufgelöst haben und
+    <textblock>
+Dann wenn sie den Konflikt aufgelöst haben und
 <path>foo.c</path> wieder bereit zur Übertragung
 ist, dann rufen sie <command>svn resolved</command> auf,
 damit ihre Arbeitskopie weiss, dass sie alles notwendige
-veranlasst haben.</textblock>
+veranlasst haben.
+    </textblock>
 
-<warning>
-<hint>Sie <emphasis>können</emphasis> auch nur die
+    <hint>
+Sie können auch nur die
 konfliktbezogenen Dateien löschen und eine Übertragung
 durchführen, aber <command>svn resolved</command> bringt
 zusätzlich einige Evidenzdaten im administrativen
 Bereich der Arbeitskopie in Ordnung, sodass wir
-empfehlen dass sie dieses Kommando verwenden.</hint>
-</warning>
-
-
-</refentry>
-
+empfehlen dass sie dieses Kommando verwenden.
+    </hint>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn revert -- Macht alle lokalen Änderungen rückgängig.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn revert PFAD...</command></textblock>
+   <section>
+    <heading>
+     svn revert
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn revert -- Macht alle lokalen Änderungen rückgängig.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn revert PFAD...</command>
+    </quotation>
 
-<textblock>Macht alle lokalen Änderungen an einer Datei oder
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Macht alle lokalen Änderungen an einer Datei oder
 einem Verzeichnis rückgängig und löscht alle
 Konfliktmarken.  <command>svn revert</command> macht nicht
 nur Änderungen am Inhalt eines Objektes in ihrer
@@ -3705,668 +4323,857 @@ Eigenschaften.  Schlussendlich können sie es verwenden um
 vorgemerkte Operationen rückgängig zu machen, die sie
 vielleicht vorbereitet haben (z.B. Dateien, die zum
 hinzufügen oder löschen vorgemerkt wurden, können wieder
-aus der Vormerkung entfernt werden).</textblock>
+aus der Vormerkung entfernt werden).
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+Keine
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>Keine</textblock>
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie
+    </textblock>
 
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nein
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie</textblock>
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
+    <quotation>
+     <command>--targets DATEINAME</command><br/>
+     <command>--recursive (-R)</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nein</textblock>
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
+    <textblock>
+Änderungen einer Datei rückgängig machen:
+    </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---targets DATEINAME
---recursive (-R)
---quiet (-q)
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Änderungen einer Datei rückgängig machen:</textblock>
-
-<shell>
-$ svn revert foo.c
+    <shell>
+     <user>
+svn revert foo.c
+     </user>
+     <output>
 Zurückgenommen foo.c
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie die Änderungen an allen Dateien eines
+    <textblock>
+Wenn sie die Änderungen an allen Dateien eines
 Verzeichnisses rückgängig machen wollen, dann verwenden
-sie die <command>--recursive</command> Option:</textblock>
+sie die <command>--recursive</command> Option:
+    </textblock>
 
-<shell>
-$ svn revert --recursive .
+    <shell>
+     <user>
+svn revert --recursive .
+     </user>
+     <output>
 Zurückgenommen neudir/afile
 Zurückgenommen foo.c
 Zurückgenommen bar.txt
-</shell>
+     </output>
+    </shell>
 
-<textblock>Schliesslich können sie alle vorgemerkten Operationen
-rückgängig machen:</textblock>
+    <textblock>
+Schliesslich können sie alle vorgemerkten Operationen
+rückgängig machen:
+    </textblock>
 
-<shell>
-$ svn add irrtuemlich.txt hoppala
+    <shell>
+     <user>
+svn add irrtuemlich.txt hoppala
+     </user>
+     <output>
 A         irrtuemlich.txt
 A         hoppala
 A         hoppala/hopsi.c
-
-$ svn revert irrtuemlich.txt hoppala
+     </output>
+     <user>
+svn revert irrtuemlich.txt hoppala
+     </user>
+     <output>
 Zurückgenommen irrtuemlich.txt
 Zurückgenommen hoppala
-
-$ svn status
+     </output>
+     <user>
+svn status
+     </user>
+     <output>
 ?      irrtuemlich.txt
 ?      hoppala
-</shell>
+     </output>
+    </shell>
 
-<note>
-<textblock>Wenn sie keine Ziele für <command>svn
-revert</command> angeben, dann geschieht nichts &mdash;
+
+    <hint>
+Wenn sie keine Ziele für <command>svn
+revert</command> angeben, dann geschieht nichts --
 um sie davor zu bewahren irrtümlich Änderungen an ihrer
 Arbeitskopie zu verlieren, erfordert <command>svn
-revert</command> die explizite Angabe der Ziele.</textblock>
-</note>
-
-
-</refentry>
-
+revert</command> die explizite Angabe der Ziele.
+    </hint>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn status -- Zeigt den Status von Dateien und Verzeichnissen in ihrer Arbeitskopie.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn status [PFAD...]</command></textblock>
+   <section>
+    <heading>
+svn status
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn status -- Zeigt den Status von Dateien und Verzeichnissen in ihrer Arbeitskopie.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn status [PFAD...]</command>
+    </quotation>
+    
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
 
-<textblock>Zeigt den Status von Dateien und Verzeichnissen in
+    <textblock>
+Zeigt den Status von Dateien und Verzeichnissen in
 ihrer Arbeitskopie.  Ohne Argumente werden nur lokal
 geänderte Objekte angezeigt (kein Zugriff auf das
 Projektarchiv).  Mit <command>--show-updates</command>
 werden Arbeitsrevision und 'veraltet' Informationen
 (out-of-date) hinzugefügt.  Mit
 <command>--verbose</command>, wird die volle
-Revisionsinformation für jedes Objekt angezeigt.</textblock>
+Revisionsinformation für jedes Objekt angezeigt.
+    </textblock>
 
-<textblock>Die ersten fünf Spalten in der Ausgabe sind jeweils
+    <textblock>
+Die ersten fünf Spalten in der Ausgabe sind jeweils
 einen Buchstaben breit und jede Spalte gibt Auskunft über
 verschiedene Aspekte der Objekte in der
-Arbeitskopie.</textblock>
+Arbeitskopie.
+    </textblock>
 
-<textblock>Die erste Spalte sagt aus, ob das Objekt hinzugefügt,
-gelöscht, oder in sonstiger Weise verändert wurde.</textblock>
+    <textblock>
+Die erste Spalte sagt aus, ob das Objekt hinzugefügt,
+gelöscht, oder in sonstiger Weise verändert wurde.
+    </textblock>
 
+    <textblock>
+' '
+    </textblock>
 
+    <quotation>
+Keine Änderungen.
+    </quotation>
 
+    <textblock>
+'A'
+    </textblock>
 
-<textblock>' '</textblock>
+    <quotation>
+Objekt ist vorgemerkt zum Hinzufügen (Added).
+    </quotation>
 
-<quotation>Keine Änderungen.</quotation>
+    <textblock>
+'D'
+    </textblock>
 
+    <quotation>
+Objekt ist vorgemerkt zum Löschen (Deleted).
+    </quotation>
 
+    <textblock>
+'M'
+    </textblock>
 
+    <quotation>
+Objekt wurde geändert (Modified).
+    </quotation>
 
-<textblock>'A'</textblock>
+    <textblock>
+'C'
+    </textblock>
 
-<quotation>Objekt ist vorgemerkt zum Hinzufügen (Added).</quotation>
+    <quotation>
+Objekt steht in Konflikt mit Änderungen, die vom
+Projektarchiv empfangen wurden (Conflicted).
+    </quotation>
 
+    <textblock>
+'I'
+    </textblock>
 
+    <quotation>
+Objekt wird ignoriert (z.B. über die
+svn:ignore Eigenschaft)
+    </quotation>
 
+    <textblock>
+'?'
+    </textblock>
 
-<textblock>'D'</textblock>
+    <quotation>
+Objekt steht nicht unter Versionskontrolle.
+    </quotation>
 
-<quotation>Objekt ist vorgemerkt zum Löschen (Deleted).</quotation>
+    <textblock>
+'!'
+    </textblock>
 
-
-
-
-<textblock>'M'</textblock>
-
-<quotation>Objekt wurde geändert (Modified).</quotation>
-
-
-
-
-<textblock>'C'</textblock>
-
-<quotation>Objekt steht in Konflikt mit Änderungen, die vom
-Projektarchiv empfangen wurden (Conflicted).</quotation>
-
-
-
-
-<textblock>'I'</textblock>
-
-<quotation>Objekt wird ignoriert (z.B. über die
-svn:ignore Eigenschaft)</quotation>
-
-
-
-
-<textblock>'?'</textblock>
-
-<quotation>Objekt steht nicht unter Versionskontrolle.</quotation>
-
-
-
-
-<textblock>'!'</textblock>
-
-<quotation>Objekt fehlt (z.B. weil es verschoben oder
+    <quotation>
+Objekt fehlt (z.B. weil es verschoben oder
 gelöscht wurde, ohne, dass dazu die entsprechenden
 <command>svn</command> Kommandos verwendet wurden).
 Es kann auch bedeuten, dass ein Verzeichnis
-unvollständig ist (z.B.  weil ein checkout oder
-update unterbrochen wurden).</quotation>
+unvollständig ist (z.B.  weil ein <command>checkout</command> oder
+<command>update</command> unterbrochen wurden).
+    </quotation>
 
+    <textblock>
+'~'
+    </textblock>
 
-
-
-<textblock>'~'</textblock>
-
-<quotation>Das Objekt steht als Verzeichnis unter
+    <quotation>
+Das Objekt steht als Verzeichnis unter
 Versionskontrolle und und wurde durch eine Datei
-ersetzt oder umgekehrt.</quotation>
+ersetzt oder umgekehrt.
+    </quotation>
 
+    <textblock>
+Die zweite Spalte zeigt den Status der Eigenschaften
+von Dateien oder Verzeichnissen an.
+    </textblock>
 
+    <textblock>
+' '
+    </textblock>
 
+    <quotation>
+Keine Änderungen.
+    </quotation>
 
+    <textblock>
+'M'
+    </textblock>
 
-<textblock>Die zweite Spalte zeigt den Status der Eigenschaften
-von Dateien oder Verzeichnissen an.</textblock>
+    <quotation>
+Eigenschaften für dieses Objekt wurden geändert
+(Modified).
+    </quotation>
 
+    <textblock>
+'C'
+    </textblock>
 
-
-
-<textblock>' '</textblock>
-
-<quotation>Keine Änderungen.</quotation>
-
-
-
-
-<textblock>'M'</textblock>
-
-<quotation>Eigenschaften für dieses Objekt wurden geändert
-(Modified).</quotation>
-
-
-
-
-<textblock>'C'</textblock>
-
-<quotation>Eigenschaften für dieses Objekt stehen im
+    <quotation>
+Eigenschaften für dieses Objekt stehen im
 Konflikt mit Eigenschaften die vom Projektarchiv
-empfangen wurden (Conflicted).</quotation>
+empfangen wurden (Conflicted).
+    </quotation>
 
+    <textblock>
+Die dritte Spalte zeigt an, ob das Objekt in der
+Arbeitskopie gesperrt ist.
+    </textblock>
 
+    <textblock>
+' '
+    </textblock>
 
+    <quotation>
+Objekt ist nicht gesperrt.
+    </quotation>
 
+    <textblock>
+'L'
+    </textblock>
 
-<textblock>Die dritte Spalte zeigt an, ob das Objekt in der
-Arbeitskopie gesperrt ist.</textblock>
+    <quotation>
+Objekt ist gesperrt (Locked).
+    </quotation>
 
+    <textblock>
+Die vierte Spalte zeigt an, ob ein Objekt für das
+'Hinzufügen mit Historie' vorgemerkt ist.
+    </textblock>
 
+    <textblock>
+' '
+    </textblock>
 
+    <quotation>
+Keine Historie für die Übertragung vorgemerkt.
+    </quotation>
 
-<textblock>' '</textblock>
+    <textblock>
+'+'
+    </textblock>
 
-<quotation>Objekt ist nicht gesperrt.</quotation>
+    <quotation>
+Historie für die Übertragung vorgemerkt.
+    </quotation>
 
-
-
-
-<textblock>'L'</textblock>
-
-<quotation>Objekt ist gesperrt (Locked).</quotation>
-
-
-
-
-
-<textblock>Die vierte Spalte zeigt an, ob ein Objekt für das
-'Hinzufügen mit Historie' vorgemerkt ist.</textblock>
-
-
-
-
-<textblock>' '</textblock>
-
-<quotation>Keine Historie für die Übertragung vorgemerkt.</quotation>
-
-
-
-
-<textblock>'+'</textblock>
-
-<quotation>Historie für die Übertragung vorgemerkt.</quotation>
-
-
-
-
-
-<textblock>Die fünfte Spalte zeigt an, ob das Objekt relativ zu
+    <textblock>
+Die fünfte Spalte zeigt an, ob das Objekt relativ zu
 seinen Eltern umgestellt wurde (siehe <xref
-linkend="svn-ch-4-sect-5"/>).</textblock>
+linkend="svn-ch-4-sect-5"/>).
+    </textblock>
 
+    <textblock>
+' '
+    </textblock>
 
+    <quotation>
+Das Objekt ist ein Kind seines Elternverzeichnisses.
+    </quotation>
 
+    <textblock>
+'S'
+    </textblock>
 
-<textblock>' '</textblock>
+    <quotation>
+Das Objekt wurde umgestellt (Switched).
+    </quotation>
 
-<quotation>Das Objekt ist ein Kind seines Elternverzeichnisses.</quotation>
-
-
-
-
-<textblock>'S'</textblock>
-
-<quotation>Das Objekt wurde umgestellt (Switched).</quotation>
-
-
-
-
-
-<textblock>Die 'veraltet' Information erscheint in der in der
+    <textblock>
+Die 'veraltet' Information erscheint in der in der
 achten Spalte (aber nur, wenn die
 <command>--show-updates</command> Option angegeben
-wurde).</textblock>
+wurde).
+    </textblock>
 
+    <textblock>
+' '
+    </textblock>
 
+    <quotation>
+Das Objekt in der Arbeitskopie ist aktuell.
+    </quotation>
 
+    <textblock>
+'*'
+    </textblock>
 
-<textblock>' '</textblock>
+    <quotation>
+Am Server existiert eine neuere Revision des
+Objektes.
+    </quotation>
 
-<quotation>Das Objekt in der Arbeitskopie ist aktuell.</quotation>
-
-
-
-
-<textblock>'*'</textblock>
-
-<quotation>Am Server existiert eine neuere Revision des
-Objektes.</quotation>
-
-
-
-
-
-<textblock>Die restlichen Felder haben eine variable Breite und
+    <textblock>
+Die restlichen Felder haben eine variable Breite und
 sind durch Leerzeichen getrennt.  Wenn die
 <command>--show-updates</command> oder
 <command>--verbose</command> Option angegeben wurde, dann
-steht im nächsten Feld die Arbeitsrevision.</textblock>
+steht im nächsten Feld die Arbeitsrevision.
+    </textblock>
 
-<textblock>Wenn die <command>--verbose</command> Option angegeben
+    <textblock>
+Wenn die <command>--verbose</command> Option angegeben
 wurde, dann werden Revision und AutorIn der lezten
-Übertragung angezeigt.</textblock>
+Übertragung angezeigt.
+    </textblock>
 
-<textblock>Der Objektname ist immer das letzte Feld und kann daher
-Leerzeichen enthalten.</textblock>
+    <textblock>
+Der Objektname ist immer das letzte Feld und kann daher
+Leerzeichen enthalten.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+     <command>stat</command>, <command>st</command>
+    </textblock>
 
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Nichts
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>stat, st</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Nur wenn die <command>--show-updates</command> Option verwendet wird.
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Nichts</textblock>
+    <quotation>
+     <command>--show-updates (-u)</command><br/>
+     <command>--verbose (-v)</command><br/>
+     <command>--non-recursive (-N)</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--no-ignore</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Nur wenn die <command>--show-updates</command> Option verwendet wird.</textblock>
+    <textblock>
+Das ist der einfachste Weg um herauszufinden, welche
+Änderungen sie an ihrer Arbeitskopie gemacht haben:
+    </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---show-updates (-u)
---verbose (-v)
---non-recursive (-N)
---quiet (-q)
---no-ignore
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Das ist der einfachste Weg um herauszufinden, welche
-Änderungen sie an ihrer Arbeitskopie gemacht haben:</textblock>
-
-<shell>
-$ svn status ak
+    <shell>
+     <user>
+svn status ak
+     </user>
+     <output>
 M     ak/bar.c
 A  +   ak/qax.c
-</shell>
+     </output>
+    </shell>
 
-<textblock>Wenn sie herausfinden wollen, welche Dateien in ihrer
+    <textblock>
+Wenn sie herausfinden wollen, welche Dateien in ihrer
 Arbeitskopie veraltet sind, verwenden sie die
 <command>--show-updates</command> Option (es werden
 <emphasis>keine</emphasis> Änderungen an ihrer
 Arbeitskopie gemacht).  Hier wurde die Datei
 <path>ak/foo.c</path> im Projektarchiv geändert,
-nachdem wir unsere Arbeitskopie aktualisiert haben:</textblock>
+nachdem wir unsere Arbeitskopie aktualisiert haben:
+    </textblock>
 
-<shell>
-$ svn status --show-updates ak
+    <shell>
+     <user>
+svn status --show-updates ak
+     </user>
+     <output>
 M           965    ak/bar.c
 *     965    ak/foo.c
 A  +         965    ak/qax.c
 Status im Vergleich zu Revision:    981
-</shell>
-
-<note>
-<textblock><command>--show-updates</command> zeigt
+     </output>
+    </shell>
+    
+    <hint>
+<command>--show-updates</command> zeigt
 <emphasis>nur</emphasis> einen Stern neben dem Objekt
 das veraltet ist (das heisst, dass das Objekt Änderungen
 vom Projektarchiv empfängt, wenn <command>svn
 update</command> durchgeführt wird).
 <command>--show-updates</command> zeigt
 <emphasis>nicht</emphasis> die Revisionsnummer des
-Objektes im Projektarchiv an.</textblock>
-</note>
+Objektes im Projektarchiv an.
+    </hint>
 
-<textblock>And finally, the most information you can get out of
-the status subcommand:</textblock>
+    <textblock>
+And finally, the most information you can get out of
+the status subcommand:
+    </textblock>
 
-<shell>
-$ svn status --show-updates --verbose ak
+    <shell>
+     <user>
+svn status --show-updates --verbose ak
+     </user>
+     <output>
 M           965       938 sally        ak/bar.c
 *     965       922 harry        ak/foo.c
 A  +         965       687 harry        ak/qax.c
 965       687 harry        ak/zig.c
 Head Revision:   981
-</shell>
+     </output>
+    </shell>
 
-<textblock>Für weiter Beispiele zu <command>svn status</command>,
-siehe <xref linkend="svn-ch-3-sect-4.3.1"/>.</textblock>
-
-
-</refentry>
-
+    <textblock>
+Für weiter Beispiele zu <command>svn status</command>,
+siehe <xref linkend="svn-ch-3-sect-4.3.1"/>.
+    </textblock>
+   </section>
+   
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn switch -- Stelle die Arbeitskopie auf eine andere URL um.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn switch URL [PFAD]</command></textblock>
+   <section>
+    <heading>
+svn switch
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn switch -- Stelle die Arbeitskopie auf eine andere URL um.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
+    
+    <quotation>
+     <command>svn switch URL [PFAD]</command>
+    </quotation>
 
-<textblock>Dieses Subkommando stellt ihre Arbeitskopie so um,
-dass sie eine neue URL spielgelt &mdash; üblicherweise hat
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+Dieses Subkommando stellt ihre Arbeitskopie so um,
+dass sie eine neue URL spielgelt -- üblicherweise hat
 diese URL gemeinsame Vorfahren mit ihrer Arbeitskopie,
 obwohl das nicht erforderlich ist.  Dies ist der typische
 Weg von Subversion um eine Arbeitskopie in einen neuen
 Nebenzweig (branch) zu verschieben.  Siehe <xref
 linkend="svn-ch-4-sect-5"/> für einen tieferen Einblick
-zum Thema Umstellung/Wechsel (switching).</textblock>
+zum Thema Umstellung/Wechsel (switching).
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>sw</textblock>
+    <textblock>
+     <command>sw</command>
+    </textblock>
 
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Ja
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Ja</textblock>
+    <quotation>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--non-recursive (-N)</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--diff3-cmd CMD</command><br/>
+     <command>--relocate</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---Revision (-r) REV
---non-recursive (-N)
---quiet (-q)
---diff3-cmd CMD
---relocate
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Wenn sie im Verzeichnis <path>vendors</path>
+    <textblock>
+Wenn sie im Verzeichnis <path>vendors</path>
 stehen, für welches ein Zweig
 <path>vendors-mit-korr</path> erstellt wurde,
 können sie ihre Arbeitskopie auf diesen Zweig
-umstellen:</textblock>
+umstellen:
+    </textblock>
 
-<shell>
-$ svn switch http://svn.red-bean.com/repos/branches/vendors-mit-korr .
+    <shell>
+     <user>
+svn switch http://svn.red-bean.com/repos/branches/vendors-mit-korr .
+     </user>
+     <output>
 U  meinproj/foo.txt
 U  meinproj/bar.txt
 U  meinproj/baz.c
 U  meinproj/qux.c
 Aktualisiert auf Revision 31.
-</shell>
+     </output>
+    </shell>
 
-<textblock>Und um zurückzuwechseln geben brauchen sie nur die URL
+    <textblock>
+Und um zurückzuwechseln geben brauchen sie nur die URL
 angeben von der sie ihre Arbeitskopie ursprünglich
-augecheckt haben:</textblock>
+augecheckt haben:
+    </textblock>
 
-<shell>
-$ svn switch http://svn.red-bean.com/repos/trunk/vendors .
+    <shell>
+     <user>
+svn switch http://svn.red-bean.com/repos/trunk/vendors .
+     </user>
+     <output>
 U  meinproj/foo.txt
 U  meinproj/bar.txt
 U  meinproj/baz.c
 U  meinproj/qux.c
 Aktualisiert auf Revision 31.
-</shell>
+     </output>
+    </shell>
 
-<tip>
-<hint>Sie können auch einzelne Teile ihrer Arbeitskopie
+    <hint>
+Sie können auch einzelne Teile ihrer Arbeitskopie
 auf einen Zweig (branch) umstellen, wenn sie nicht die
-ganze Arbeitskopie umstellen wollen.</hint>
-</tip>
+ganze Arbeitskopie umstellen wollen.
+    </hint>
 
-<textblock>Wenn die URL von ihrem Projektarchiv wechselt und sie
+    <textblock>
+Wenn die URL von ihrem Projektarchiv wechselt und sie
 haben eine bestehende Arbeitskopie, die sie
 weiterbenutzen möchten, dann können sie die <command>svn
 switch --relocate</command> Option verwenden, um ihre
 Arbeitskopie von einer URL auf eine andere
-umzustellen:</textblock>
+umzustellen:
+    </textblock>
 
-<shell>
-$ svn checkout file:///tmp/repos test
+    <shell>
+     <user>
+svn checkout file:///tmp/repos test
+     </user>
+     <output>
 A  test/a
 A  test/b
 ...
-
-$ mv repos newlocation
-$ cd test/
-
-$ svn update
+     </output>
+     <user>
+mv repos newlocation
+     </user>
+     <user>
+cd test/
+     </user>
+     <user>
+svn update
+     </user>
+     <output>
 svn: Unable to open an ra_local session to URL
 svn: Unable to open Projektarchiv 'file:///tmp/repos'
-
-$ svn switch --relocate file:///tmp/repos file:///tmp/newlocation .
-$ svn update
+     </output>
+     <user>
+svn switch --relocate file:///tmp/repos file:///tmp/newlocation .
+     </user>
+     <user>
+svn update
+     </user>
+     <output>
 Bei Revision 3.
-</shell>
-
-
-</refentry>
+     </output>
+    </shell>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svn update -- Aktualisiert ihre Arbeitskopie.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svn update [PFAD...]</command></textblock>
+   <section>
+    <heading>
+     svn update
+    </heading>
+    
+    <textblock>
+     <strong>Name</strong>
+    </textblock>
+    
+    <textblock>
+svn update -- Aktualisiert ihre Arbeitskopie.
+    </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+    <textblock>
+     <strong>Übersicht</strong>
+    </textblock>
 
-<textblock><command>svn update</command> überträgt die Änderungn
+    <quotation>
+     <command>svn update [PFAD...]</command>
+    </quotation>
+
+    <textblock>
+     <strong>Beschreibung</strong>
+    </textblock>
+
+    <textblock>
+<command>svn update</command> überträgt die Änderungn
 vom Projektarchiv in ihre Arbeitskopie.  Wenn keine
 Revision angegeben wurde, dann wird ihre Arbeitskopie mit
 der <italic>HEAD</italic> Revision aktualisiert.
 Andernfalls wird die Arbeitskopie auf den Stand der
 Revision gebracht, die an die <command>--revision</command>
-Option übergegeben wird.</textblock>
+Option übergegeben wird.
+    </textblock>
 
-<textblock>Für jedes aktualisierte Objekt wird wird eine Zeile ausgegeben, 
+    <textblock>
+Für jedes aktualisierte Objekt wird wird eine Zeile ausgegeben, 
 die mit einem Buchstabn für die durchgeführte Aktion beginnt.
-Diese haben die folgende Bedeutung:</textblock>
+Diese haben die folgende Bedeutung:
+    </textblock>
 
+    <textblock>
+A
+    </textblock>
 
+    <quotation>
+Hinzugefügt (Added)
+    </quotation>
 
+    <textblock>
+D
+    </textblock>
 
-<textblock>A</textblock>
+    <quotation>
+Gelöscht (Deleted)
+    </quotation>
 
-<quotation>Hinzugefügt (Added)</quotation>
+    <textblock>
+U
+    </textblock>
 
+    <quotation>
+Aktualisiert (Updated)
+    </quotation>
 
+    <textblock>
+C
+    </textblock>
 
+    <quotation>
+Konflikt (Conflict)
+    </quotation>
 
-<textblock>D</textblock>
+    <textblock>
+G
+    </textblock>
 
-<quotation>Gelöscht (Deleted)</quotation>
+    <quotation>
+Zusammengeführt (Merged)
+    </quotation>
 
-
-
-
-<textblock>U</textblock>
-
-<quotation>Aktualisiert (Updated)</quotation>
-
-
-
-
-<textblock>C</textblock>
-
-<quotation>Konflikt (Conflict)</quotation>
-
-
-
-
-<textblock>G</textblock>
-
-<quotation>Zusammengeführt (Merged)</quotation>
-
-
-
-
-
-<textblock>Ein Buchstabe in der ersten Spalte bedeutet eine
+    <textblock>
+Ein Buchstabe in der ersten Spalte bedeutet eine
 Aktualisierung der Datei, während Aktualisierungen der
 Dateieigenschaften in der zweiten Spalte angezeigt
-werden.</textblock>
+werden.
+    </textblock>
 
+    <textblock>
+     <strong>Alternative Namen</strong>
+    </textblock>
+    
+    <textblock>
+     <command>up</command>
+    </textblock>
+    
+    <textblock>
+     <strong>Ändert</strong>
+    </textblock>
+    
+    <textblock>
+Arbeitskopie
+    </textblock>
 
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>up</textblock>
+    <textblock>
+     <strong>Archivzugriff</strong>
+    </textblock>
+    
+    <textblock>
+Ja
+    </textblock>
 
+    <textblock>
+     <strong>Optionen</strong>
+    </textblock>
 
-<textblock>
-<strong>Ändert</strong></textblock>
-<textblock>Arbeitskopie</textblock>
+    <quotation>
+     <command>--Revision (-r) REV</command><br/>
+     <command>--non-recursive (-N)</command><br/>
+     <command>--quiet (-q)</command><br/>
+     <command>--diff3-cmd CMD</command><br/>
+     <command>--username USER</command><br/>
+     <command>--password PASS</command><br/>
+     <command>--no-auth-cache</command><br/>
+     <command>--non-interactive</command><br/>
+     <command>--config-dir DIR</command><br/>
+    </quotation>
 
+    <textblock>
+     <strong>Beispiele</strong>
+    </textblock>
 
-<textblock>
-<strong>Archivzugriff</strong></textblock>
-<textblock>Ja</textblock>
+    <textblock>
+Übernehme Änderungen vom Projektarchiv, die seit der
+letzten Aktualisierung dort vorgenommen wurden:
+    </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---Revision (-r) REV
---non-recursive (-N)
---quiet (-q)
---diff3-cmd CMD
---username USER
---password PASS
---no-auth-cache
---non-interactive
---config-dir DIR
-</screen>
-
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Übernehme Änderungen vom Projektarchiv, die seit der
-letzten Aktualisierung dort vorgenommen wurden:</textblock>
-
-<shell>
-$ svn update
+    <shell>
+     <user>
+svn update
+     </user>
+     <output>
 A  neudir/toggle.c
 A  neudir/disclose.c
 A  neudir/launch.c
 D  neudir/README
 Aktualisiert auf Revision 32.
-</shell>
+     </output>
+    </shell>
 
-<textblock>Sie können ihre Arbeitskopie auch mit einer älteren
+    <textblock>
+Sie können ihre Arbeitskopie auch mit einer älteren
 Revision aktualisieren (Subversion hat kein Konzept von
 <italic>sticky</italic> (klebrigen) Dateien, so wie CVS dies
-kennt; siehe <xref linkend="svn-ap-a"/>):</textblock>
+kennt; siehe <xref linkend="svn-ap-a"/>):
+    </textblock>
 
-<shell>
-$ svn update -r30
+    <shell>
+     <user>
+svn update -r30
+     </user>
+     <output>
 A  neudir/README
 D  neudir/toggle.c
 D  neudir/disclose.c
 D  neudir/launch.c
 U  foo.c
 Aktualisiert auf Revision 30.
-</shell>
+     </output>
+    </shell>
 
-<tip>
-<hint>Wenn sie eine ältere Revision einer einzelnen Datei
+    <hint>
+Wenn sie eine ältere Revision einer einzelnen Datei
 anschauen wollen, sollten sie <command>svn
-cat</command> benutzen.</hint>
-</tip>
-
-
-
- </section>
+cat</command> benutzen.
+    </hint>
+   </section>
+  </section>
  </split>
 
 <!-- ================================================================= -->
@@ -4379,176 +5186,226 @@ cat</command> benutzen.</hint>
 svnadmin
    </heading>
 
-<textblock><command>svnadmin</command> ist das Adminstrations-Werkzeug
+   <textblock>
+<command>svnadmin</command> ist das Adminstrations-Werkzeug
 zum Überprüfen und Reparieren des Projektarchives.  Für
 detailiertere Information, siehe <xref
-linkend="svn-ch-5-sect-3.1.2"/>.</textblock>
+linkend="svn-ch-5-sect-3.1.2"/>.
+   </textblock>
 
-<textblock>Da <command>svnadmin</command> direkt auf das Projektarchiv
+   <textblock>
+Da <command>svnadmin</command> direkt auf das Projektarchiv
 zugreift (und nur auf der Maschine verwendet werden kann, auf
 der sich das Projektarchiv befindet), wird das Projektarchiv als
-Pfad und nicht als URL angegeben.</textblock>
+Pfad und nicht als URL angegeben.
+   </textblock>
 
-<section>
-<heading><command>svnadmin</command> Optionen</heading> 
+   <section>
+    <heading>
+     svnadmin Optionen
+    </heading> 
 
+    <textblock>
+     <command>--bdb-log-keep</command>
+    </textblock>
 
-
-
-<textblock><command>--bdb-log-keep</command></textblock>
-
-<quotation>(Spezifisch für die Berkeley Datenbank) Schaltet das
+    <quotation>
+(Spezifisch für die Berkeley Datenbank) Schaltet das
 automatische Löschen der Datenbank Logdateien
-ab.</quotation>
+ab.
+    </quotation>
 
+    <textblock>
+     <command>--bdb-txn-nosync</command>
+    </textblock>
 
-
-
-<textblock><command>--bdb-txn-nosync</command></textblock>
-
-<quotation>(Spezifisch für die Berkeley Datenbank) Schaltet
+    <quotation>(Spezifisch für die Berkeley Datenbank) Schaltet
 fsync ab, wenn Datenbank Transaktionen übertragen
-werden.</quotation>
+werden.
+    </quotation>
 
+    <textblock>
+     <command>--bypass-hooks</command>
+    </textblock>
 
+    <quotation>
+Umgehe das Hakensystem des Projektarchivs.
+    </quotation>
 
+    <textblock>
+     <command>--clean-logs</command>
+    </textblock>
 
-<textblock><command>--bypass-hooks</command></textblock>
-
-<quotation>Umgehe das Hakensystem des Projektarchivs.</quotation>
-
-
-
-
-<textblock><command>--clean-logs</command></textblock>
-
-<quotation>Entferne unbenutzte Berkeley DB Logdateien.</quotation>
-
+    <quotation>
+Entferne unbenutzte Berkeley DB Logdateien.
+    </quotation>
 
 
 <!-- TODO config-dir? Is it really used? -->
 
 
-<textblock><command>--force-uuid</command></textblock>
+    <textblock>
+     <command>--force-uuid</command>
+    </textblock>
 
-<quotation>Standardmässig wird <command>svnadmin</command> beim
+    <quotation>
+Standardmässig wird <command>svnadmin</command> beim
 Laden von Daten in ein Projektarchiv, das bereits
 Revisionen enthält die <italic>UUID</italic> Angaben
 im importierten 'Dump' ignorieren.  Diese Option
 bewirkt, dass die <italic>UUID</italic> des 'Dump' in
-das Projektarchiv übernommen wird.</quotation>
+das Projektarchiv übernommen wird.
+    </quotation>
 
+    <textblock>
+     <command>--ignore-uuid</command>
+    </textblock>
 
-
-
-<textblock><command>--ignore-uuid</command></textblock>
-
-<quotation>Standardmässig wird <command>svnadmin</command> beim
+    <quotation>
+Standardmässig wird <command>svnadmin</command> beim
 Laden in ein leeres Projektarchiv die
 <italic>UUID</italic> vom importierten 'Dump'
 übernehmen.  Diese Option bewirkt, dass diese UUID
-ignoriert wird.</quotation>
+ignoriert wird.
+    </quotation>
 
+    <textblock>
+     <command>--incremental</command>
+    </textblock>
 
-
-
-<textblock><command>--incremental</command></textblock>
-
-<quotation>Dump a Revision only as a diff against the
+    <quotation>
+Dump a Revision only as a diff against the
 previous Revision, instead of the usual
-fulltext.</quotation>
+fulltext.
+    </quotation>
 
+    <textblock>
+     <command>--parent-dir <italic>DIR</italic></command>
+    </textblock>
 
-
-
-<textblock><command>--parent-dir
-<italic>DIR</italic></command></textblock>
-
-<quotation>Wenn eine 'Dump' Datei geladen wird, dann wird als
+    <quotation>
+Wenn eine 'Dump' Datei geladen wird, dann wird als
 Basisverzeichnis <italic>DIR</italic> genommen
-anstatt <italic>/</italic>.</quotation>
+anstatt <italic>/</italic>.
+    </quotation>
 
+    <textblock>
+     <command>--Revision</command> (<command>-r</command>)
+<italic>ARG</italic>
+    </textblock>
 
+    <quotation>
+Gibt die zu verwendende Revision an.
+    </quotation>
 
+    <textblock>
+     <command>--quiet</command>
+    </textblock>
 
-<textblock><command>--Revision</command> (<command>-r</command>)
-<italic>ARG</italic></textblock>
-
-<quotation>Gibt die zu verwendende Revision an.</quotation>
-
-
-
-
-<textblock><command>--quiet</command></textblock>
-
-<quotation>Zeige keine normalen Prozessausgaben, sondern nur
-Fehler.</quotation>
-
-
-
-</section>
-
-<!-- ================================================================= -->
-<section>
-<heading><command>svnadmin</command> Subcommands</heading>
+    <quotation>
+Zeige keine normalen Prozessausgaben, sondern nur
+Fehler.
+    </quotation>
+   </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin create -- Erzeugt ein neues, leeres Projektarchiv im
+
+   <section>
+    <heading>
+svnadmin Subcommands
+    </heading>
+
+<!-- ================================================================= -->
+
+    <section>
+     <heading>
+svnadmin create
+      </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin create -- Erzeugt ein neues, leeres Projektarchiv im
 <italic>ARCHIV_PFAD</italic>.
-</textblock>
+     </textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin create ARCHIV_PFAD</command></textblock>
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin create ARCHIV_PFAD</command>
+     </quotation>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
 
-<textblock>Erzeugt ein neues, leeres Projektarchiv im angegeben
+     <textblock>
+Erzeugt ein neues, leeres Projektarchiv im angegeben
 Pfad.  Wenn das angegebene Verzeichnis nicht existiert,
-wird es angelegt.  <footnote><para>Zur Erinnerung:
+wird es angelegt. FOOTNOTE Zur Erinnerung:
 <command>svnadmin</command> arbeitet nur mit lokalen
-<emphasis>Pfadangaben</emphasis> und nicht mit
-<emphasis>URL</emphasis>s.</para></footnote></textblock>
+Pfadangaben und nicht mit
+URLs.FOOTNOTE</textblock>
 
+     <textblock>
+      <strong>Optionen</strong>
+     </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
+     <quotation>
+      <command>--bdb-txn-nosync</command><br/>
+      <command>--bdb-log-keep</command><br/>
+     </quotation>
+     
+     <textblock>
+      <strong>Beispiele</strong>
+     </textblock>
 
-<screen>
---bdb-txn-nosync
---bdb-log-keep
-</screen>
+     <textblock>
+Das Erstellen eines neuen Projektarchiv ist sehr
+einfach:
+     </textblock>
 
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Das Erstellen eines neuen Projektarchiv ist sehr
-einfach:</textblock>
-
-<shell>
-$ svnadmin create /usr/local/svn/repos
-</shell>
-
-
-</refentry>
+     <shell>
+      <user>
+svnadmin create /usr/local/svn/repos
+      </user>
+     </shell>
+    </section>
 
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock></textblock>
-<textblock>svnadmin dump -- Gibt den Inhalt des Dateienystems im
-'Dump'-Format aus.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin dump ARCHIV_PFAD [-r VON[:BIS]] [--incremental]</command></textblock>
+    <section>
+     <heading>
+svnadmin dump
+     </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>svnadmin dump -- Gibt den Inhalt des Dateienystems im
+'Dump'-Format aus.
+     </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin dump ARCHIV_PFAD [-r VON[:BIS]] [--incremental]</command>
+     </quotation>
 
-<textblock>Gibt den Inhalt des Dateisystems in einem portablen
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
+
+     <textblock>
+Gibt den Inhalt des Dateisystems in einem portablen
 'Dump'-Format auf die Standardausgabe (stdout) aus.
 Rückmeldungen gehen an die Standardfehlerausgabe (stderr).
 Gibt die Revisionen <italic>VON</italic>:
@@ -4557,121 +5414,180 @@ angegeben werden, dann werden alle Revisionen ausgegeben.
 Wenn nur <italic>VON</italic> angegeben wird,
 dann wird nur diese eine Revision ausgegeben.  Siehe <xref
 linkend="svn-ch-5-sect-3.5"/> für praktische
-Beispiele.</textblock>
+Beispiele.
+     </textblock>
 
-<textblock>
-<strong>Optionen</strong>
+     <textblock>
+      <strong>Optionen</strong>
+     </textblock>
 
-<screen>
---Revision (-r)
---incremental
---quiet
-</screen>
+     <quotation>
+      <command>--Revision (-r)</command><br/>
+      <command>--incremental</command><br/>
+      <command>--quiet</command><br/>
+     </quotation>
 
+     <textblock>
+      <strong>Beispiele</strong>
+     </textblock>
 
-<textblock>
-<strong>Beispiele</strong></textblock>
+     <textblock>
+Gibt das ganze Projektarchiv aus:
+     </textblock>
 
-<textblock>Gibt das ganze Projektarchiv aus:</textblock>
-
-<shell>
-$ svnadmin dump /usr/local/svn/repos
+     <shell>
+      <user>
+svnadmin dump /usr/local/svn/repos
+      </user>
+      <output>
 SVN-fs-dump-format-version: 1
 Revision-number: 0
 * Dumped Revision 0.
 Prop-content-length: 56
 Content-length: 56
 ...
-</shell>
+      </output>
+     </shell>
 
-<textblock>Inkrementelle Ausgabe einer einzelnen Transaktion aus
-dem Projektarchiv: </textblock>
+     <textblock>
+Inkrementelle Ausgabe einer einzelnen Transaktion aus
+dem Projektarchiv:
+     </textblock>
 
-<shell>
-$ svnadmin dump /usr/local/svn/repos -r 21 --incremental 
+     <shell>
+      <user>
+svnadmin dump /usr/local/svn/repos -r 21 --incremental
+      </user>
+      <output>
 * Dumped Revision 21.
 SVN-fs-dump-format-version: 1
 Revision-number: 21
 Prop-content-length: 101
 Content-length: 101
 ...
-</shell>
-
-
-</refentry>
+      </output>
+     </shell>
+    </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock></textblock>
-<textblock>svnadmin help -- 
+    <section>
+     <heading>
+svnadmin help      
+     </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+      svnadmin help --
+     </textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin help [SUBKOMMANDO...]</command></textblock>
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin help [SUBKOMMANDO...]</command>
+     </quotation>
 
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
-
-<textblock>Dieses Subkommando ist hilfreich, wenn sie in sich auf
+     <textblock>
+Dieses Subkommando ist hilfreich, wenn sie in sich auf
 einer einsamen Insel und weder eine Internetverbindung
-noch dieses Buch zur Verfügung haben.</textblock>
+noch dieses Buch zur Verfügung haben.
+     </textblock>
 
-
-
-<textblock>
-<strong>Alternative Namen</strong></textblock>
-<textblock>?, h</textblock>
-
-
-</refentry>
+     <textblock>
+      <strong>Alternative Namen</strong>
+     </textblock>
+     
+     <textblock>
+      <command>?</command>, <command>h</command>
+     </textblock>
+    </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin hotcopy -- Erstellt eine Kopie des Projektarchivs im
-laufenden Betrieb.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin hotcopy ALTER_ARCHIV_PFAD NEUER_ARCHIV_PFAD</command></textblock>
+    <section>
+     <heading>
+svnadmin hotcopy
+     </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin hotcopy -- Erstellt eine Kopie des Projektarchivs im
+laufenden Betrieb.
+     </textblock>
 
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin hotcopy ALTER_ARCHIV_PFAD NEUER_ARCHIV_PFAD</command>
+     </quotation>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
 
-<textblock>Das Subkommando erstellt eine volle Sicherung des
+     <textblock>
+Das Subkommando erstellt eine volle Sicherung des
 Projektarchives im <italic>laufenden</italic> Betrieb,
 inklusive aller Haken, Konfigurations-Dateien und
 natürlich der Datenbank-Dateien.  Wenn sie die
 <italic>--clean-logs</italic> Option angeben, wird
 <command>svnadmin</command> die Kopie des Projektarchivs
 erstellen und dann die unbenutzen Berkeley DB Logdateien
-vom ursprünglichen Projektarchiv entfernen.</textblock>
+vom ursprünglichen Projektarchiv entfernen.
+     </textblock>
 
+     <textblock>
+      <strong>Optionen</strong>
+     </textblock>
 
-
-<textblock>
-<strong>Optionen</strong></textblock>
-
-<screen>
---clean-logs
-</screen>
-
-
-</refentry>
+     <quotation>
+      <command>--clean-logs</command><br/>
+     </quotation>
+    </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin list-dblogs -- Listet die Berkeley DB Logdateien, die für das angegebene
-Projektarchiv existieren.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin list-dblogs ARCHIV_PFAD</command></textblock>
+    <section>
+     <heading>
+svnadmin list-dblogs
+     </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin list-dblogs -- Listet die Berkeley DB Logdateien, die für das angegebene
+Projektarchiv existieren.
+     </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin list-dblogs ARCHIV_PFAD</command>
+     </quotation>
 
-<textblock>Die Berkeley Datenbank erzeugt Logdateien über alle
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
+
+     <textblock>
+Die Berkeley Datenbank erzeugt Logdateien über alle
 Änderungen am Projektarchiv, um damit eine
 Wiederherstellung nach einer Katastrophe zu ermöglichen.
 Solange sie nicht <italic>DB_LOGS_AUTOREMOVE</italic>
@@ -4679,24 +5595,40 @@ einschalten, werden die Logdateien immer mehr werden,
 obwohl die meisten davon nicht mehr benötigt werden und
 gelöscht werden können, um Plattenplatz freizugeben.
 Siehe <xref linkend="svn-ch-5-sect-3.3"/> für weitere
-Informationen.</textblock> 
-
-
-</refentry>
+Informationen.
+     </textblock>
+    </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin list-unused-dblogs -- Listet die Berkeley DB Logdateien, die gefahrlos
-gelöscht werden können.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin list-unused-dblogs ARCHIV_PFAD</command></textblock>
+    <section>
+     <heading>
+svnadmin list
+     </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin list-unused-dblogs -- Listet die Berkeley DB Logdateien, die gefahrlos
+gelöscht werden können.
+     </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin list-unused-dblogs ARCHIV_PFAD</command>
+     </quotation>
 
-<textblock>Die Berkeley Datenbank erzeugt Logdateien über alle
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
+
+     <textblock>
+Die Berkeley Datenbank erzeugt Logdateien über alle
 Änderungen am Projektarchiv, um damit eine
 Wiederherstellung nach einer Katastrophe zu ermöglichen.
 Solange sie nicht <italic>DB_LOGS_AUTOREMOVE</italic>
@@ -4704,198 +5636,303 @@ einschalten, werden die Logdateien immer mehr werden,
 obwohl die meisten davon nicht mehr benötigt werden und
 gelöscht werden können, um Plattenplatz freizugeben.
 Siehe <xref linkend="svn-ch-5-sect-3.3"/> für weitere
-Informationen.</textblock> 
+Informationen.
+     </textblock> 
 
+     <textblock>
+      <strong>Beispiele</strong>
+     </textblock>
 
-<textblock>
-<strong>Beispiele</strong></textblock>
+     <textblock>
+Entferne alle unbenutzten Logdateien vom Projektarchiv:
+     </textblock>
 
-<textblock>Entferne alle unbenutzten Logdateien vom Projektarchiv:</textblock>
-
-<shell>
-$ svnadmin list-unused-dblogs /path/to/repos
+     <shell>
+      <user>
+svnadmin list-unused-dblogs /path/to/repos
+      </user>
+      <output>
 /path/to/repos/log.0000000031
 /path/to/repos/log.0000000032
 /path/to/repos/log.0000000033
-
-$ svnadmin list-unused-dblogs /path/to/repos | xargs rm
+      </output>
+      <user>
+svnadmin list-unused-dblogs /path/to/repos | xargs rm
+      </user>
+      <output>
 ## disk space reclaimed!
-</shell>
+      </output>
+     </shell>
+    </section>
 
-
-</refentry>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin load --  Liest einen Stream im
-<italic>'Dump'-Format</italic> von der Standardeingabe ein.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin load ARCHIV_PFAD</command></textblock>
+    <section>
+     <heading>
+      svnadmin load
+     </heading>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin load --  Liest einen Stream im
+<italic>'Dump'-Format</italic> von der Standardeingabe ein.
+     </textblock>
 
-<textblock>Liest einen Stream im <italic>'Dump'-Format</italic> von
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin load ARCHIV_PFAD</command>
+     </quotation>
+
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
+
+     <textblock>
+Liest einen Stream im <italic>'Dump'-Format</italic> von
 der Standardeingabe (stdin) ein und überträgt neue
 Revisionen in das Dateienystem des Projektarchivs.
 Sendet Prozessinformationen an die Standardausgabe
-(stdout).</textblock> 
+(stdout).
+     </textblock> 
 
+     <textblock>
+      <strong>Optionen</strong>
+     </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
+     <quotation>
+      <command>--quiet (-q)</command><br/>
+      <command>--ignore-uuid</command><br/>
+      <command>--force-uuid</command><br/>
+      <command>--parent-dir</command><br/>
+     </quotation>
 
-<screen>
---quiet (-q)
---ignore-uuid
---force-uuid
---parent-dir
-</screen>
+     <textblock>
+      <strong>Beispiele</strong>
+     </textblock>
 
-
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Hier wird ein Projektarchiv von einer Sicherungsdatei
+     <textblock>
+Hier wird ein Projektarchiv von einer Sicherungsdatei
 (welche natürlich mit <command>svn dump</command> erstellt
-worden ist) geladen:</textblock>
+worden ist) geladen:
+     </textblock>
 
-<shell>
-$ svnadmin load /usr/local/svn/restored &lt; repos-backup
+     <shell>
+      <user>
+svnadmin load /usr/local/svn/restored &lt; repos-backup
+      </user>
+      <output>
 &lt;&lt;&lt; Started new txn, based on original Revision 1
 * adding path : test ... done.
 * adding path : test/a ... done.
 ...
-</shell>
+      </output>
+     </shell>
 
-<textblock>Oder wenn sie in ein Unterverzeichnis laden wollen:</textblock>
+     <textblock>
+Oder wenn sie in ein Unterverzeichnis laden wollen:
+     </textblock>
 
-<shell>
-$ svnadmin load --parent-dir neu/unterverz/fuer/project /usr/local/svn/restored &lt; repos-backup
+     <shell>
+      <user>
+svnadmin load --parent-dir neu/unterverz/fuer/project /usr/local/svn/restored &lt; repos-backup
+      </user>
+      <output>
 &lt;&lt;&lt; Started new txn, based on original Revision 1
 * adding path : test ... done.
 * adding path : test/a ... done.
 ...
-</shell>
-
-
-</refentry>
+      </output>
+     </shell>
+    </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin lstxns -- Gibt die Namen aller hängengebliebenen Transaktionen aus.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin lstxns ARCHIV_PFAD</command></textblock>
+    <section>
+     <heading>
+svnadmin lstxns
+     </heading>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin lstxns -- Gibt die Namen aller hängengebliebenen Transaktionen aus.
+     </textblock>
 
-<textblock>Gibt die Namen aller hängengebliebenen
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin lstxns ARCHIV_PFAD</command>
+     </quotation>
+
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
+
+     <textblock>
+Gibt die Namen aller hängengebliebenen
 Transaktionen aus.  Siehe <xref
 linkend="svn-ch-5-sect-3.2"/> für Informationen wie solche
 hängengebliebenen Transaktionen entstehen und was sie
-damit machen sollten.</textblock>
+damit machen sollten.
+     </textblock>
 
+     <textblock>
+      <strong>Beispiele</strong>
+     </textblock>
 
+     <textblock>
+Listet alle hängengebliebenen Transaktionen für ein
+Projektarchiv.
+     </textblock>
 
-<textblock>
-<strong>Beispiele</strong></textblock>
-
-<textblock>Listet alle hängengebliebenen Transaktionen für ein
-Projektarchiv.</textblock>
-
-<shell>
-$ svnadmin lstxns /usr/local/svn/repos/ 
+     <shell>
+      <user>
+svnadmin lstxns /usr/local/svn/repos/
+      </user>
+      <output>
 1w
 1x
-</shell>
-
-
-</refentry>
+      </output>
+     </shell>
+    </section>
 
 <!-- ================================================================= -->
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin recover -- Stellt verlorengegangene Statusinformationen im Projektarchiv wieder her.</textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin recover ARCHIV_PFAD</command></textblock>
+    <section>
+     <heading>
+svnadmin recover
+     </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin recover -- Stellt verlorengegangene Statusinformationen im Projektarchiv wieder her.
+     </textblock>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin recover ARCHIV_PFAD</command>
+     </quotation>
 
-<textblock>Verwenden sie dieses Kommando, wenn sie eine
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
+
+     <textblock>
+Verwenden sie dieses Kommando, wenn sie eine
 Fehlermeldung bekommen, die darauf hinweist, dass ihr
-Projektarchiv eine Wiederherstellung benötigt.</textblock>
+Projektarchiv eine Wiederherstellung benötigt.
+     </textblock>
 
+     <textblock>
+      <strong>Beispiele</strong>
+     </textblock>
 
-<textblock>
-<strong>Beispiele</strong></textblock>
+     <textblock>
+Wiederherstellung eines hängengebliebenen Projektarchivs:
+     </textblock>
 
-<textblock>Wiederherstellung eines hängengebliebenen Projektarchivs:</textblock>
-
-<shell>
-$ svnadmin recover /usr/local/svn/repos/ 
+     <shell>
+      <user>
+svnadmin recover /usr/local/svn/repos/
+      </user>
+      <output>
 Setze exklusive Sperre für Projektarchiv db.
 Wiederherstellung läuft, bitte warten...
 Wiederherstellung komplett.
 Die aktuellste Revision im Projektarchiv ist 34.
-</shell>
-
-
-</refentry>
+      </output>
+     </shell>
+    </section>
 
 <!-- ================================================================= -->
 
-<textblock><strong>Name</strong></textblock>
-<textblock>svnadmin rmtxns -- Löscht Transaktionen vom Projektarchiv.</textblock>
+    <section>
+     <heading>
+svnadmin rmtxns
+     </heading>
+     
+     <textblock>
+      <strong>Name</strong>
+     </textblock>
+     
+     <textblock>
+svnadmin rmtxns -- Löscht Transaktionen vom Projektarchiv.
+     </textblock>
 
-<textblock>
-<strong>Übersicht</strong></textblock>
-<textblock><command>svnadmin rmtxns ARCHIV_PFAD TXN_NAME...</command></textblock>
+     <textblock>
+      <strong>Übersicht</strong>
+     </textblock>
+     
+     <quotation>
+      <command>svnadmin rmtxns ARCHIV_PFAD TXN_NAME...</command>
+     </quotation>
 
-<textblock>
-<strong>Beschreibung</strong></textblock>
+     <textblock>
+      <strong>Beschreibung</strong>
+     </textblock>
 
-<textblock>Löscht hängengebliebene Transaktionen vom Projektarchiv.
+     <textblock>
+Löscht hängengebliebene Transaktionen vom Projektarchiv.
 Dies wird im Detail besprochen in <xref
-linkend="svn-ch-5-sect-3.2"/>.</textblock>
+linkend="svn-ch-5-sect-3.2"/>.
+     </textblock>
 
+     <textblock>
+      <strong>Optionen</strong>
+     </textblock>
 
-<textblock>
-<strong>Optionen</strong></textblock>
+     <quotation>
+      <command>--quiet (-q)</command><br/>
+     </quotation>
 
-<screen>
---quiet (-q)
-</screen>
+     <textblock>
+      <strong>Beispiele</strong>
+     </textblock>
 
+     <textblock>
+Löscht benannte Transaktionen:
+     </textblock>
 
-<textblock>
-<strong>Beispiele</strong></textblock>
+     <shell>
+      <user>
+svnadmin rmtxns /usr/local/svn/repos/ 1w 1x
+      </user>
+     </shell>
 
-<textblock>Löscht benannte Transaktionen:</textblock>
-
-<shell>
-$ svnadmin rmtxns /usr/local/svn/repos/ 1w 1x
-</shell>
-
-<textblock>Glücklicherweise lässt sich die Ausgabe von
+     <textblock>
+Glücklicherweise lässt sich die Ausgabe von
 <command>svn lstxns</command> hervorragend für die EIngabe
-von rmtxns verwenden:</textblock>
+von rmtxns verwenden:
+     </textblock>
 
-<shell>
-$ svnadmin rmtxns /usr/local/svn/repos/  `svnadmin lstxns /usr/local/svn/repos/`
-</shell>
-
-<textblock>Womit alle hängengebliebenen Transaktionen vom
-Projektarchiv entfernt werden.</textblock>
-
-
-</refentry>
+     <shell>
+      <user>
+svnadmin rmtxns /usr/local/svn/repos/  `svnadmin lstxns /usr/local/svn/repos/`
+      </user>
+     </shell>
+     
+     <textblock>
+Womit alle hängengebliebenen Transaktionen vom
+Projektarchiv entfernt werden.
+     </textblock>
+    </section>
 
 
 <!-- ================================================================= -->
@@ -4933,10 +5970,10 @@ verlorengeht.</hint>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r) ARG
---bypass-hooks
-</screen>
+<quotation>
+<command>--Revision (-r) ARG</command><br/>
+<command>--bypass-hooks</command><br/>
+</quotation>
 
 
 <textblock>
@@ -4997,7 +6034,7 @@ $ svnadmin verify /usr/local/svn/repos/
 
 <textblock><command>svnlook</command> ist ein Kommandozeilen-Werkzeug
 um verschiedene Aspekte eines Subversion Projektarchives zu
-untersuchen.  Es macht keine Änderunge am Projektarchiv &mdash;
+untersuchen.  Es macht keine Änderunge am Projektarchiv --
 es dient nur zum <italic>Nachschauen</italic>.
 <command>svnlook</command> wird typischerweise bei Haken im
 Projektarchiv verwendet, kann aber auch für Diagnosezwecke bei
@@ -5088,10 +6125,10 @@ Projektarchiv aus.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5126,10 +6163,10 @@ sally
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5181,10 +6218,10 @@ der ersten Spalte: <italic>A</italic> für hinzugefügt
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5222,10 +6259,10 @@ im Projektarchiv aus.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5260,11 +6297,11 @@ aus dem Projektarchiv im GNU-Stil.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
---no-diff-deleted
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+<command>--no-diff-deleted</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5315,10 +6352,10 @@ wurden.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5382,10 +6419,10 @@ angegeben wird).</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---show-ids
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--show-ids</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5437,10 +6474,10 @@ und Log-Nachricht.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5477,10 +6514,10 @@ Menü umgekrempelt.
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5522,10 +6559,10 @@ Projektarchiv.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5569,11 +6606,11 @@ der Wert der Eigenschaft angezeigt.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
---verbose (-v)
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+<command>--verbose (-v)</command><br/>
+</quotation>
 
 
 <textblock>
@@ -5622,11 +6659,11 @@ Knoten-IDs der Revisionen.</textblock>
 <textblock>
 <strong>Optionen</strong></textblock>
 
-<screen>
---Revision (-r)
---Transaktion (-t)
---show-ids
-</screen>
+<quotation>
+<command>--Revision (-r)</command><br/>
+<command>--Transaktion (-t)</command><br/>
+<command>--show-ids</command><br/>
+</quotation>
 
 
 <textblock>
