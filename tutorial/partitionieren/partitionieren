@@ -1,87 +1,160 @@
-Autor: Arnulf Pelzer (webmaster@arnulfpelzer.de)
-Lizenz GPL
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>Das Partitionieren</title>
 
+ <author>
+  <name>Arnulf Pelzer</name>
+  <mailto>webmaster@arnulfpelzer.de</mailto>
+ </author>
 
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
 
+ <license>
+  GPL
+ </license>
 
-1. Das Partitionieren
+ <index>partitionieren</index>
 
+ <split>
+  <section>
+   <heading>
+Das Partitionieren
+   </heading>
+
+   <textblock>
 Das Partitionieren ist das Aufteilen einer Festplatte in mehrere
-Teile, sogenannte Partitionen. Sie sind unabhängig voneinander und
+Teile, sogenannte Partitionen. Sie sind unabhbängig voneinander und
 können verschiedene Dateisysteme enthalten. Das Partitionieren
 entspricht Schubladen in einem Schrank zieht man eine heraus und
 nimmt etwas heraus, leert sie oder ändert man den Inhalt werden die
 anderen Schubladen davon nicht betroffen.
-Bei PCs (Intel basiert) gibt das PC-BIOS (Basic Input Output System)
+Bei PCs (Intel basiert) gibt das PC-BIOS (<name>Basic Input Output System</name>)
 vor, wieviele Partitionen verwendet werden dürfen. 
-Für PC-Festplatten sind die eigentlichen Partitionen "Primäre
-Partitionen", davon können Sie aber nur vier anlegen. Um diese
+Für PC-Festplatten sind die eigentlichen Partitionen <strong>Primäre
+Partitionen</strong>, davon können Sie aber nur vier anlegen. Um diese
 Einschränkung zu übergehen wurden erweiterte (extended) Partitionen
 eingeführt. Eine Primäre Partition kann als erweiterte Partition in
 mehrere logische (logical) Partitionen eingeteilt werden.
-Vom BIOS her gibt es keine Beschränkungen für die Anzahl logischer
+Vom <ref lang="de" url="http://de.wikipedia.org/wiki/BIOS">BIOS</ref> her gibt es keine Beschränkungen für die Anzahl logischer
 Partitionen. Es darf aber nur eine erweiterte Partition pro Festplatte
 geben. Linux limitiert die Anzahl der Partitionen pro IDE-Festplatte
 auf 63 Partitionen, drei benutzbar als primäre und 60 als logische
 Partitionen. Bei SCSI-Festplatten 15, drei benutzbar als primäre und
 zwölf als logische Partitionen.
-
+    </textblock>
+   
+   <textblock>
 Bei älternen PCs oder BIOS-Versionen sei darauf hingewiesen das die
 Boot-Partition, jene die den Kernel enthält, innerhalb der ersten
-1024 Zylinder liegen muss. Da, in der Regel, die Boot und die Root
+1024 Zylinder liegen muss. Da, in der Regel, die <path>Boot</path> und die <path>Root</path>
 Partition identisch sind müssen Sie darauf achten das die
 Root-Partition innerhalb der ersten 1024 Zylinder der Festplatte
-untergebracht ist.    
-Bei neueren BIOS-Versionen die "Enhanced Disk Drive Support" verwenden
-gibt es diese Einschränkungen nicht mehr. lilo, grub und andere
-Bootmanager greifen über das BIOS auf int 0x13 (Unterstützung für
-grosse Festplatten) um den Kernel ins RAM zu laden. Sobald Linux
+untergebracht ist.<br/>
+Bei neueren BIOS-Versionen die <strong>Enhanced Disk Drive Support</strong> verwenden
+gibt es diese Einschränkungen nicht mehr. <ref lang="de" url="http://de.wikipedia.org/wiki/LILO">lilo</ref>,<ref lang="de" url="http://de.wikipedia.org/wiki/GRUB">grub</ref> und andere
+<ref lang="de" url="http://de.wikipedia.org/wiki/Bootmanager">Bootmanager</ref> greifen über das BIOS auf int 0x13 (Unterstützung für
+grosse Festplatten) um den <ref chapter="kernel">Kernel</ref> ins RAM zu laden. Sobald Linux
 gestartet ist wird nicht mehr auf das BIOS zurückgegriffen, da Linux
 eigene Routinen für den Festplattenzugriff verwendet.
-GNU/Linux Systeme sollten den Filesystem Hierarchy Standard (FHS)
+GNU/Linux Systeme sollten den <ref lang="de" url="http://de.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">Filesystem Hierarchy Standard</ref> (FHS)
 unterstützen, dies ermöglicht es dem Nutzer Dateien an bestimmten
 Orten im Dateisystem zu finden. Das Root Verzeichnis wird durch einen
-slash (/) dargestellt. 
+slash (<path>/</path>) dargestellt.
+   </textblock>
 
-     /         Root Verzeichnis
-         bin       Wesentliche Programme
-         boot      Statische Dateien des Bootmanagers
-         dev       Schnittstellen zu Geräten
-         etc       Rechnerabhängige Konfigurationsdateien
-         home      Heimatverzeichnisse der Benutzer
-         lib       Wesentliche Systembibliotheken
-         mnt       Einhänge Punkte für temporäre Dateisysteme
-         proc      Virtuelles Verzeichnis für Systeminformationen
-         root      Heimatverzeichnis des Systemadministrators (root)
-         sbin      Wesentliche Systemprograme
-         tmp       Temporäre Dateien
-         usr       Sekundäre Dateisystemhirarchie
-         var       Veränderliche Dateien
-         opt       Zusätzliche Software Pakete
+   <table>
+    <pdf-column width="50"/>
+    <pdf-column/>
+    <tr>
+     <td><path>/</path></td>
+     <td>Root Verzeichnis</td>
+    </tr>
+    <tr>
+     <td><path>bin</path></td><td>Wesentliche Programme</td>
+    </tr>
+    <tr>
+     <td><path>boot</path></td>
+     <td>Statische Dateien des Bootmanagers</td>
+    </tr>
+    <tr>
+     <td><path> dev</path></td>
+     <td>Schnittstellen zu Geräten</td>
+    </tr>
+    <tr>
+     <td><path>etc</path></td>
+     <td>Rechnerabhängige Konfigurationsdateien</td>
+    </tr>
+    <tr>
+     <td><path> home </path></td>
+     <td>Heimatverzeichnisse der Benutzer</td>
+    </tr>
+    <tr>
+     <td><path>lib</path></td>
+     <td>Wesentliche Systembibliotheken</td>
+    </tr>
+    <tr>
+     <td><path>mnt</path></td>
+     <td>Einhänge Punkte für temporäre Dateisysteme</td>
+    </tr>
+    <tr>
+     <td><path>proc</path></td>
+     <td>Virtuelles Verzeichnis für Systeminformationen</td>
+    </tr>
+    <tr>
+     <td><path>root</path></td>
+     <td>Heimatverzeichnis des Systemadministrators (root)</td>
+    </tr>
+    <tr>
+     <td><path>sbin</path></td>
+     <td>Wesentliche Systemprogramme</td>
+    </tr>
+    <tr>
+     <td><path>tmp</path></td>
+     <td>Temporäre Dateien</td>
+    </tr>
+    <tr>
+     <td><path> usr</path></td>
+     <td>Sekundäre Dateisystemhirarchie</td>
+    </tr>
+    <tr>
+     <td><path> var</path></td>
+     <td>Veränderliche Dateien</td>
+    </tr>
+    <tr>
+     <td><path>opt</path></td>
+     <td>Zusätzliche Software Pakete</td>
+    </tr>
+   </table>
 
-
+   <textblock>
 Eine weitere Partition die in vielen GNU/Linux Systemen zu finden ist
-nennt man swap. Diese Partition dient dazu Speicherbereiche des
+nennt man <path>swap</path>. Diese Partition dient dazu Speicherbereiche des
 Hauptspeichers auszulagern um weitere Programme auszuführen oder
 ausgeführten Programmen mehr als dem im System vorhandenen Speicher
 zugänglich zu machen. Diese Funktion ist bei Computern mit wenig RAM
-sehr von Vorteil da es ermöglicht OpenOffice oder KDE zu starten ohne
+sehr von Vorteil da es ermöglicht <ref lang="de" url="http://de.openoffice.org/">OpenOffice</ref> oder <ref lang="de" url="http://kde.de">KDE</ref> zu starten ohne
 eigentlich den notwendigen Speicher dafür zur Verfügung zu haben. Es
 ist aber wenig sinnvoll da durch das swappen sehr viel Zeit vergeht
-und ein zügiges Arbeiten nicht möglich ist.
-Auf meinen Privaten Rechnern mit 512 MB Ram und jeweils 1024MB swap
-Partition wird sehr selten der swap Bereich der Festplatte
-angefordert. 
+und ein zügiges Arbeiten nicht möglich ist.<br/>
+Auf meinen Privaten Rechnern mit 512 MB Ram und jeweils 1024MB <path>swap</path>
+Partition wird sehr selten der <path>swap</path> Bereich der Festplatte
+angefordert. <br/>
 Bei Computern mit anderen Aufgaben kann dies aber ganz anders
-aussehen.Sie sollten aber immer eine swap Partition anlegen da dies
-nur von Vorteil sein kann.
-Ein GNU/Linux System braucht nur eine Partition um Lauffähig zu sein. 
-
+aussehen. Sie sollten aber immer eine swap Partition anlegen da dies
+nur von Vorteil sein kann.<br/>
+Ein GNU/Linux System braucht nur eine Partition um Lauffähig zu sein.
+   </textblock>
+   
+   <textblock>
 Auf meinem Laptop sieht die Partitionierung so aus:
+   </textblock>
 
-***konsole***
-
+   <shell>
+    <output>
 Platte /dev/hda: 30.0 GByte, 30005821440 Byte
 255 Köpfe, 63 Sektoren/Spuren, 3648 Zylinder
 Einheiten = Zylinder von 16065 × 512 = 8225280 Bytes
@@ -90,115 +163,193 @@ Einheiten = Zylinder von 16065 × 512 = 8225280 Bytes
 /dev/hda1               1        1721    13823901   83  Linux
 /dev/hda2            1722        1848     1020127+  82  Linux swap 
 /dev/hda3            1849        3647    14450467+  83  Linux
+    </output>
+   </shell>
 
-***konsole***
-
+   <shell>
+    <output>
 /dev/hda1 ist die boot und root Partition
 /dev/hda2 ist die swap Partition
 /dev/hda3 ist die home partition
+    </output>
+   </shell>
 
+   <textblock>
 Da es zu jeder Aufgabe für einen Computer verschiedene
 Partitionierungs Philosophien gibt, maße ich mir hier keine
-Empfehlung an. 
+Empfehlung an.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Programme zum Partitionieren
+   </heading>
 
-2. Programme zum Partitionieren
-
+   <textblock>
 Es gibt unter GNU/Linux verschiedene Werkzeuge um Festplatten zu
-partitionieren. fdisk, parted und die hier vorgestellten Programme
-cfdisk und qtparted.
+partitionieren. <command>fdisk</command>, <command>parted</command> und die hier vorgestellten Programme
+<command>cfdisk</command> und <command>qtparted</command>.
+   </textblock>
 
-2.1 Partitionieren mit cfdisk
+   <section>
+    <heading>
+Partitionieren mit cfdisk
+    </heading>
 
-Auf diesem Screenshot sehen Sie cfdisk mit einer leeren Festplatte,
+    <textblock>
+Auf diesem Screenshot sehen Sie <command>cfdisk</command> mit einer leeren Festplatte,
 bereit zum Partitionieren.
+    </textblock>
 
-***BILD*** cfdisk-leere-Festplatte.png
+    <image>
+     <title>cfdisk mit leeren Festplatte</title>
+     <filename>cfdisk-leere-festplatte.png</filename>
+    </image>
 
+    <textblock>
 Der obere Teil des Bildschirms zeigt die Daten der Festplatte, der
 mittlere Teil die noch nicht
 vorhandenen Partitionen und der untere Teil die Auswahlmöglichkeiten
-von cfdisk an.
+von <command>cfdisk</command> an.
+    </textblock>
 
+    <textblock>
 Im nächsten Schritt gehen wir auf Neue und erstellen eine Primäre
-Partion mit 40 Gigabyte
+Partition mit 40 Gigabyte
+    </textblock>
 
-***BILD*** cfdisk-40gig-eintragen.png
+    <image>
+     <title>Erstellen Primäre Partition mit 40 Gigabyte</title>
+     <filename>cfdisk-40gig-eintragen.png</filename>
+    </image>
 
+    <textblock>
 Nach dem Bestätigen mit der Entertaste sehen Sie Ihre Partition nun im
 mittleren Bildschirmabschnitt.
+    </textblock>
 
-***BILD*** cfdisk-eingetragenene-40gig.png
+    <image>
+     <title>Eingetragene 40 Gigabyte</title>
+     <filename>cfdisk-eingetragenene-40gig.png</filename>
+    </image>
 
+    <textblock>
 Mit der Pfeil nach unten Taste kommen Sie wieder auf den
 unpartitionierten Bereich der Festplatte.
 Im nächsten Schritt erstellen wir eine 1 GigaByte grosse Partition, die
-als swap Speicher genutzt werden soll.
+als <path>swap</path> Speicher genutzt werden soll.
+    </textblock>
 
-***BILD*** cfdisk-swap.png
+    <image>
+     <title>swap Speicher</title>
+     <filename>cfdisk-swap.png</filename>
+    </image>
 
-Nun gehen wir auf Typ und wählen Typ 82 Linux swap aus. Den Rest der
+    <textblock>
+Nun gehen wir auf Typ und wählen Typ 82 Linux <path>swap</path> aus. Den Rest der
 Festplatte wird wieder wie weiter oben beschriebenn als Primäre
 Partition verfügbar gemacht. Die Bildschirmausgabe sollte nun wie
 folgt aussehen, bevor Sie mit dem Schreiben der
 Partitionierungstabelle die Partitionierung übernehmen.
+    </textblock>
 
-***BILD*** cfdisk-bevor-schreiben.png
+    <image>
+     <title>Geamtliste</title>
+     <filename>cfdisk-bevor-schreiben.png</filename>
+    </image>
 
-In diesem Beispiel haben wir nun eine / (Root/Boot Partition) eine
-swap und eine home Partition angelegt so wie sie mit den meisten
+    <textblock>
+In diesem Beispiel haben wir nun eine <path>/</path>(Root/Boot Partition) eine
+<path>swap</path> und eine <path>home</path> Partition angelegt so wie sie mit den meisten
 GNU/LINUX Installatinen unterstützt werden. Um genau zu sein:
+    </textblock>
 
-/dev/sda1 = Root/Boot Partition 40GB
-/dev/sda2 = swap Partition       1GB
-/dev/sda3 = Home Partition      39GB
+    <textblock>
+/dev/sda1 = Root/Boot Partition 40GB<br/>
+/dev/sda2 = swap Partition       1GB<br/>
+/dev/sda3 = Home Partition      39GB<br/>
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Partitionieren mit qtparted
+    </heading>
 
-2.2 Partitionieren mit qtparted
-
-Qtparted hat den Vorteil das es zusätzlich noch bestehende FAT, FAT32
-und NTFS Partitionen bearbeiten kann, dies machen Sie natürlich auf
-eigene Gefahr. Bevor Sie mit qtparted Windows Partitionen bearbeiten
-können, sollten Sie defrag ausführen. Ein Backup ist bei solchen
+    <textblock>
+<command>Qtparted</command> hat den Vorteil das es zusätzlich noch bestehende <name>FAT</name>, <path>FAT32</path>
+und <path>NTFS</path> Partitionen bearbeiten kann, dies machen Sie natürlich auf
+eigene Gefahr. Bevor Sie mit <command>qtparted</command> Windows Partitionen bearbeiten
+können, sollten Sie <command>defrag</command> ausführen. Ein <ref chapter="backups">Backup</ref> ist bei solchen
 Dateibewegungen immer auszuführen. Der Autor dieses Textes hat keine
 der oben genannten Dateisysteme und kann deshalb nicht auf die
-genannten Fähigkeiten von qtparted eingehen.
-Deshalb hier auch wieder nach dem obigen in Kapitel 3.3.1 genannten
-Schema das Partitionieren mit qtparted.
+genannten Fähigkeiten von <command>qtparted</command> eingehen.
+Deshalb hier auch wieder nach dem obigen in Kapitel<ref iref="Partitionieren mit cfdisk">Partitionieren mit cfdisk</ref> genannten
+Schema das Partitionieren mit <command>qtparted</command>.
+    </textblock>
 
-***BILD*** qtparted-leere-festplatte.png
+    <image>
+     <title>qtparted mit leeren Festplatte</title>
+     <filename>qtparted-leere-festplatte.png</filename>
+    </image>
 
-Wie Sie sehen ist qtparted eine in qt geschriebene grafische
-Anwendung, die Aufteilung ist ein wenig anders als in cfdisk aber
+    <textblock>
+Wie Sie sehen ist <command>qtparted</command> eine in <name>qt</name> geschriebene grafische
+Anwendung, die Aufteilung ist ein wenig anders als in <command>cfdisk</command> aber
 nicht weniger übersichtlich. Im linken oberen Fenster unter der
 Menüleiste sehen Sie die im Computer installierten Festplatten,
 darunter Informationen über die Ausgewählte Festplatte. Im rechten
 Bereich des Fensters das Arbeitsbereich. Durch Anklicken von der
 Festplatte im rechten Fenster können sie nun Partitionen anlegen.
+    </textblock>
 
-***BILD*** qtparted-bevor-schreiben.png
+    <image>
+     <title> </title>
+     <filename>qtparted-bevor-schreiben.png</filename>
+    </image>
 
-Dies ist die gleiche Partitionsweise wie bei dem cfdisk Beispiel.
+    <textblock>
+Dies ist die gleiche Partitionsweise wie bei dem <command>cfdisk</command> Beispiel.
+    </textblock>
 
-
-Über Datei &Durchführen übernehmen Sie die gemachten Einstellungen.
-qtparted formatiert in diesem Schritt auch schon das eingetragene
-Dateisystem. Die möglichen Dateisysteme werden im nächsten Kapitel
+    <textblock>
+Über <strong>Datei</strong> <strong>Durchführen</strong> übernehmen Sie die gemachten Einstellungen.
+<command>qtparted</command> formatiert in diesem Schritt auch schon das eingetragene
+Dateisystem. Die möglichen Dateisysteme werden im nächsten <ref iref="Formatieren der Festplatte">Kapitel</ref>
 vorgestellt.
+    </textblock>
 
-***BILD*** qtparted-sicherheitswarnung.png
+    <image>
+     <title>Sicherheitswarnung</title>
+     <filename>qtparted-sicherheitswarnung.png</filename>
+    </image>
 
+    <textblock>
 Beachten Sie hier auch wieder die Warnung bei der Übername der
 Änderungen!
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Formatieren der Festplatte
+   </heading>
 
-3. Formatieren der Festplatte
-
+   <textblock>
 Um mit den erstellten Partitionen arbeiten zu können müssen Sie die
 Festplatte noch mit einem Dateisystem versehen. Mit einem GNU/Linux
 System können Sie folgende Dateisysteme anlegen:
+   </textblock>
 
-ext2 
+   <ul>
+    <li>
+<ref iref="Ext2 und Ext3" chapter="dateisysteme_journaling">ext2</ref><br/>
 ist das erprobte und wahre Linux Dateisystem, unterstützt aber kein
 Metadata Journaling, was bedeutet, dass routinemäßige Dateisystem
 Checks beim Booten sehr zeitaufwändig sein können. Es gibt
@@ -208,88 +359,165 @@ dadurch im Vergleich mit den nicht-journalisierenden Gegenstücken
 vorzuziehen sind. Jounalisierende Dateisysteme verhindern lange
 Verzögerungen beim Booten, wenn sich das Dateisystem in einem
 inkonsistenten Zustand befindet.
-
-ext3 
-ist die journalisierende Version des ext2 Dateisystem, die Metadata
+    </li>
+    <li>
+<ref iref="Ext2 und Ext3" chapter="dateisysteme_journaling">ext3</ref><br/> 
+ist die journalisierende Version des <path>ext2</path> Dateisystem, die Metadata
 Journaling für schnelle Wiederherstellung sowie andere verbesserte
 Journaling Modi wie "full data" und "ordered data" Jornaling
-unterstützt. ext3 ist ein sehr gutes und verlässliches Dateisystem.
+unterstützt. <path>ext3</path> ist ein sehr gutes und verlässliches Dateisystem.
 Es hat eine zusätzliche b-tree Indexing Option die in fast allen
-Situationen hohe Performance ermöglicht. Kurz gesagt: ext3 ist ein
+Situationen hohe Performance ermöglicht. Kurz gesagt: <path>ext3</path> ist ein
 excellentes Dateisystem.
-
-ReiserFS 
+    </li>
+    <li>
+<ref iref="ReiserFS" chapter="dateisysteme_journaling">ReiserFS</ref><br/> 
 ist ein B*-tree basierendes Dateisystem mit einer guten Performance
-und überholt sowohl ext2 und ext3 im Umgang mit kleinen Dateien
+und überholt sowohl <path>ext2</path> und <path>ext3</path> im Umgang mit kleinen Dateien
 (Dateien kleiner als 4k) oftmals mit einem Faktor von 10x-15x.
 ReiserFS skaliert extrem gut und hat Metadata Journaling. Seit Kernel
-2.4.18+ ist ReiserFS stabil und sowohl als Dateisystem für generelle
+2.4.18+ ist <path>ReiserFS</path> stabil und sowohl als Dateisystem für generelle
 Anwendungen, als auch für extreme Fälle wie große Dateisysteme, den
 Gebrauch mit vielen kleinen Dateien, den Gebrauch mit sehr großen
 Dateien und Verzeichnissen mit tausenden von Dateien brauchbar.
-
-Reiser4
-ist die neuste Variante des ReiserFS, es arbeitet besser mit großen
-Dateien zusammen als ReiserFS und hat automatische Dateisystem
+    </li>
+    <li>
+<strong>Reiser4</strong><br/>
+ist die neuste Variante des <path>ReiserFS</path>, es arbeitet besser mit großen
+Dateien zusammen als <path>ReiserFS</path> und hat automatische Dateisystem
 Modifikation. Es arbeitet auch mit log Dateien zusammen, die sich an
 verschiedenen Orten im Dateisystem befinden oder deren Ort sich
 ändert.
-
-
-XFS 
+    </li>
+    <li>
+<ref iref="SGI-XFS" chapter="dateisysteme_journaling">XFS</ref> 
 ist ein Dateisytem mit metadata journaling, das mit einem robusten
 Feature-Set kommt und auf Skalierbarkeit ausgelegt ist. Wir empfehlen
 den Einsatz dieses Dateisystems nur auf Linux Systemen mit High-End
 SCSI und/oder Fibre Channel Storage und einer redundaten
-Stromversorgung. Da XFS agressiv vom RAM gebraucht macht, können
+Stromversorgung. Da <path>XFS</path> agressiv vom RAM gebraucht macht, können
 unsachgemäß designte Programme (solche die keine Vorsichtsmaßnahmen
 treffen, wenn Sie auf die Festplatte schreiben und davon gibt es
 einige) dazu führen, dass eine ganze Menge Daten verloren gehen, wenn
 das System unerwartet ausfällt.
-
-JFS
+    </li>
+    <li>
+<ref iref="IBM-JFS" chapter="dateisysteme_journaling">JFS</ref>
  ist IBMs Hochleistungs Journaling Dateisystem. Es ist vor kurzem
 einsatzbereit geworden und es gibt noch keine ausreichende Spur, so
 dass seine allgemeine Stabilität an diesem Punkt weder positiv noch
 negativ kommentiert werden kann.
+    </li>
+   </ul>
 
+   <section>
+    <heading>
+Erstellen eines ext2 Dateisystems
+    </heading>
 
-3.1 Erstellen eines ext2 Dateisystems
+    <textblock>
+Der Aufruf zum Formatieren lautet für <path>/dev/hda1</path>
+    </textblock>
+    <shell>
+     <root>
+mkfs.ext2 /dev/hda1
+     </root>
+    </shell>
+   </section>
 
-Der Aufruf zum Formatieren lautet für /dev/hda1 
-mkfs.ext2 /dev/hda1 
+   <section>
+    <heading>
+Erstellen eines ext3 Dateisystems
+    </heading>
 
+    <textblock>
+Der Aufruf zum Formatieren lautet für <path>/dev/hda1</path>
+    </textblock>
 
-3.2 Erstellen eines ext3 Dateisystems
-
-Der Aufruf zum Formatieren lautet für /dev/hda1 
+    <shell>
+     <root>
 mkfs.ext3 /dev/hda1
+     </root>
+    </shell>
+
+    <textblock>
 oder
+    </textblock>
+
+    <shell>
+     <root>
 mkfs.ext2 -j /dev/hda1
+     </root>
+    </shell>
+
+    <textblock>
 Der Parameter -j schaltet das Journaling ein.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Erstellen eines ReiserFS Dateisystems
+    </heading>
 
-3.3 Erstellen eines ReiserFS Dateisystems
+    <textblock>
+Der Aufruf zum Formatieren lautet für <path>/dev/hda1</path>
+    </textblock>
 
-Der Aufruf zum Formatieren lautet für /dev/hda1 
+    <shell>
+     <root>
 mkfs.reiserfs /dev/hda1
+     </root>
+    </shell>
+   </section>
 
+   <section>
+    <heading>
+Erstellen eines Reiser4 Dateisystems
+    </heading>
 
-3.4 Erstellen eines Reiser4 Dateisystems
+    <textblock>
+Der Aufruf zum Formatieren lautet für <path>/dev/hda1</path>
+    </textblock>
 
-Der Aufruf zum Formatieren lautet für /dev/hda1 
-mkfs.reiser4 /dev/hda1 
+    <shell>
+     <root>
+mkfs.reiser4 /dev/hda1
+     </root>
+    </shell>
+   </section>
 
+   <section>
+    <heading>
+Erstellen eines XFS Dateisystems
+    </heading>
 
-3.5 Erstellen eines XFS Dateisystems
+    <textblock>
+Der Aufruf zum Formatieren lautet für <path>/dev/hda1</path>
+    </textblock>
+    
+    <shell>
+     <root>
+mkfs.xfs /dev/hda1
+     </root>
+    </shell> 
+   </section>
 
-Der Aufruf zum Formatieren lautet für /dev/hda1 
-mkfs.xfs /dev/hda1 
+   <section>
+    <heading>
+Erstellen eines JFS Dateisystems
+    </heading>
 
+    <textblock>
+Der Aufruf zum Formatieren lautet für <path>/dev/hda1</path>
+    </textblock>
 
-3.6 Erstellen eines JFS Dateisystems
-
-Der Aufruf zum Formatieren lautet für /dev/hda1 
-mkfs.jfs /dev/hda1 
-
-
+    <shell>
+     <root>
+mkfs.jfs /dev/hda1
+     </root>
+    </shell>
+   </section>
+  </section>
+ </split>
+</chapter>
