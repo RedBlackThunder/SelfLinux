@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<chapter>
+ <title>xinetd</title>
+
+ <author>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </author>
+
+ <author>
+  <name>Harald Radke</name>
+  <mailto>harryrat@gmx.de</mailto>
+ </author>
+
+ <author>
+  <name>Frédéric Raynal</name>
+  <mailto>pappy@users.sourceforge.net</mailto>
+ </author>
+
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>xinetd</index>
+
+ <description>
+  <textblock>
+Das Programm <command>xinetd</command>, extended Internet services daemon, stellt einen
+guten Schutz gegenüber unbefugten Zugriffen dar und vermindert die
+Gefahr eines
+<ref chapter="grundlagen_sicherheit" iref="Denial of Service (DOS Attacken)">Denial of Service</ref>
+Angriffes. Ebenso, wie die bewährte
+Kombination von <command>inetd</command> und
+<ref chapter="grundlagen_sicherheit" iref="Zugriffssteuerung mit TCP_Wrapper">tcpd</ref>,
+steuert es die Zugriffsrechte des Rechners,
+leistet darüberhinaus aber noch viel mehr. In diesem Artikel werden die
+Fähigkeiten von <command>xinetd</command> vorgestellt.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+   <heading>
+Was ist xinetd?
+   </heading>
+
+   <textblock>
+Das klassische <command>inetd</command> dient der Steuerung und Überwachung von
+Netzwerkverbindungen eines Rechners. Trifft eine Anfrage auf einem Port
+ein, der von <command>inetd</command> verwaltet wird, wird diese an ein Programm namens
+<ref chapter="grundlagen_sicherheit" iref="Zugriffssteuerung mit TCP_Wrapper">tcpd</ref>
+weitergeleitet. Dieses entscheidet auf Basis der Regeln in den
+Dateien <path>hosts.allow</path> und <path>hosts.deny</path>, ob die Anfrage zulässig ist. Ist
+dies der Fall, so wird der entsprechende Serverprozess , zum Beispiel
+ftpd, gestartet und die Anfrage bearbeitet. Dieser Mechanismus ist auch
+als <ref chapter="grundlagen_sicherheit" iref="Zugriffssteuerung mit TCP_Wrapper">TCP_Wrapper</ref> bekannt.
+   </textblock>
+
+   <textblock>
+<command>xinetd</command> bietet ähnliche Möglichkeiten zur Zugriffssteuerung an, wie der
+<ref chapter="grundlagen_sicherheit" iref="Zugriffssteuerung mit TCP_Wrapper">TCP_Wrapper</ref>.
+Zusätzlich leistet es noch mehr:
+   </textblock>
+
+   <ul>
+    <li>
+Zugriffssteuerung von TCP, UDP und RPC Diensten (letzteres
+funktioniert nicht ganz so gut)
+    </li>
+    <li>
+Zugriff zu bestimmten Zeiten
+    </li>
+    <li>
+Protokollierung von zulässigen, als auch von unzulässigen Anfragen
+    </li>
+    <li>
+effizienter Schutz vor
+<ref chapter="grundlagen_sicherheit" iref="Denial of Service (DOS Attacken)">Denial of Service</ref>
+Angriffen. Dies sind Angriffe, bei denen versucht wird, den Rechner
+zu blockieren, indem dessen Resourcen in großem Maße belegt werden:
+     <ul>
+      <li>
+Beschränkung der Zahl der Server des gleichen Types, die
+simultan laufen dürfen
+      </li>
+      <li>
+Festlegung der maximalen Zahl gleichzeitig laufendener Server
+      </li>
+      <li>
+Beschränkung der Größe der Protokolldateien
+      </li>
+     </ul>
+    </li>
+    <li>
+Dienste können an bestimmte Netzwerkschnittstellen gebunden
+werden. Dadurch können einzelne Dienste etwa innerhalb eines privaten
+Netzwerkes verwendet werden, stehen aber nach außen hin nicht zur
+Verfügung.
+    </li>
+    <li>
+Verwendung als Proxy. Recht nützlich in Verbindung mit
+<ref chapter="nat">ip_masquerading (bzw. NAT)</ref>,
+wodurch Rechner eines internen Netzwerkes
+von außen her erreicht werden können, obwohl nur eine IP bekannt ist
+    </li>
+   </ul>
+
+   <textblock>
+Das Hauptproblem, wie schon erwähnt, stellt die Abwicklung von RPC
+Aufrufen dar. Jedoch arbeiten <command>portmap</command> und
+<command>xinetd</command> großartig zusammen.
+   </textblock>
+
+   <textblock>
+Im ersten Teil dieses Artikels wird erklärt, wie <command>xinetd</command> funktioniert.
+Ausführlich wird die Konfiguration des Systems, sowie einige spezielle
+Optionen (Beschränkung auf ein Netzinterface, Umleitung) beschrieben.
+Dabei werden zur Veranschaulichung einige Beispiel vorgestellt. Im
+zweiten Teil schließlich wird xinetd im laufen Betrieb betrachtet und
+ein Blick auf die Protokolldateien geworfen. Zum Schluß gibt es dann
+noch einen nützlichen Tip.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Übersetzen und Installatieren
+   </heading>
+
+   <textblock>
+Von <ref lang="en" url="http://www.xinetd.org/">http://www.xinetd.org/</ref>
+kann man das Programm beziehen. In diesem Artikel
+wurde Version 2.1.8.9pre10 verwendet.
+Übersetzung und Installation sehen wie üblich aus:
+   </textblock>
+
+   <shell>
+    <root>
+./configure
+    </root>
+    <root>
+make
+    </root>
+    <root>
+make install
+    </root>
+   </shell>
+
+   <textblock>
+<command>configure</command> bietet auch hier die üblichen Optionen. Desweiteren gibt es
+zur Übersetzungszeit drei spezielle Schalter:
+   </textblock>
+
+   <ol>
+    <li>
+<strong>--with-libwrap</strong>:
+Wird diese Option verwendet. so überprüft <strong>xinetd</strong>,
+ob die Konfigurationsdateien für <command>tcpd</command> (<path>/etc/hosts.allow</path> und
+<path>/etc/hosts.deny</path>) zu finden sind. Falls auf diese zugegriffen werden
+kann, verwendet <command>xinetd</command> seine Kontrolmechanismen. Soll diese Option
+verwendet werden, so müssen
+<ref chapter="grundlagen_sicherheit" iref="Zugriffssteuerung mit TCP_Wrapper">tcp_wrapper</ref>
+und die notwendigen Bibliotheken
+auf dem System installiert sein (Bemerkung: alles, was der Wrapper
+leistet, kann auch mit xinetd realisiert werden. Entscheidet man sich
+dennoch dafür, steigt die Zahl der Konfigurationsdateien unnötig an und die
+Administration wird aufwendiger. Es ist daher nicht zu empfehlen).
+    </li>
+    <li>
+<strong>--with-loadavg</strong>:
+Übersetzt man <command>xinetd</command> mit dieser Option, kann
+später bei der Konfiguration des Programmes die Option <command>max_load</command>
+verwendet werden. Durch diese können Server deaktiviert werden, sollte
+der Rechner zu überlasten drohen, eine wesentliche Einstellung zur
+Abwehr von <ref chapter="grundlagen_sicherheit" iref="Denial of Service (DOS Attacken)">DoS Angriffen</ref>.
+    </li>
+    <li>
+<strong>--with-inet6</strong>:
+Unterstützung für IPv6. Sowohl IPv4, als auch IPv6
+Verbindungen werden verwaltet, allerdings werden ggfs. IPv4 Adressen in
+das IPv6 Format umgewandelt.
+    </li>
+   </ol>
+
+   <textblock>
+Es ist nicht notwendig, vor dem Start von <command>xinetd</command>
+das Programm <command>inetd</command> zu
+beenden. Dies kann aber zu einem unerwarteten Verhalten beider Programme
+führen!
+   </textblock>
+
+   <textblock>
+Über folgende Signale kann man das Verhalten von <command>xinetd</command> beeinflussen:
+   </textblock>
+
+   <ul>
+    <li>
+<strong>SIGUSR1</strong>:
+Die Konfigurationsdatei wird erneut ausgelesen und die Einstellungen
+für die jeweiligen Dienste werden entsprechend angepasst.
+    </li>
+    <li>
+<strong>SIGUSR2</strong>:
+Wie oben, zusätzlich werden unnötige Daemonprogramme beendet.
+    </li>
+    <li>
+<strong>SIGTERM</strong>:
+Beendet xinetd und alle Daemonprogramme, die gestartet
+worden waren.
+    </li>
+   </ul>
+
+   <textblock>
+Die oben erwähnten Signale können recht bequem mittels eines Skriptes
+verwendet werden, und z. B. über Stichworte wie start, stop, restart,
+soft und hard als Parameter des Skriptes gesendet werden (die letzten
+beiden korrespondieren zu <strong>SIGUSR1</strong> und <strong>SIGUSR2</strong>).
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Konfiguration
+   </heading>
+
+   <textblock>
+Die Datei <path>/etc/xinetd.conf</path> dient standardmäßig der Konfiguration des
+<command>xinetd</command> Daemons (eine alternative Datei kann als Kommandozeilenparameter
+übergeben werden). Ist die Konfiguration von <command>xinetd</command> auch nicht allzu
+komplex, so doch ein wenig aufwendiger und die Syntax unterscheidet sich
+erheblich von der des Vorgängerprogrammes <command>inetd</command>.
+   </textblock>
+
+   <textblock>
+Es gibt zwei Werkzeuge namens <command>itox</command> und <command>xconv.pl</command>,
+welche mit <command>xinetd</command> mitkommen und den Inhalt von
+<path>/etc/inetd.conf</path> als Basis für die
+Konfigurationsdatei von <command>xinetd</command> verwenden. Damit ist es das natürlich
+nicht gewesen, da die Regeln, definiert in der Wrapper Konfiguration,
+nicht berücksichtigt werden. <command>itox</command> wird wohl nicht mehr weiterentwickelt.
+Generell ist <command>xconv.pl</command> die bessere Wahl, auch wenn die Ergebnisse noch
+zusätzlich per Hand angepasst werden müssen, da <command>xinetd</command> mehr
+Funktionalität als <command>inetd</command> bietet.
+   </textblock>
+
+   <shell>
+    <root>
+/usr/local/sbin/xconv.pl &lt; /etc/inetd.conf &gt; /etc/xinetd.conf
+    </root>
+   </shell>
+
+   <textblock>
+Am Anfang der Konfigurationsdatei stehen die Standardeinstellungen. Alle
+Attribute, die hier zu finden sind, werden für jeden Dienst, der von
+<command>xinetd</command> verwaltet wird, verwendet. Für jeden Dienst folgt nun ein eigener
+Bereich, in welchem Standardeinstellungungen angepasst werden können.
+   </textblock>
+
+   <textblock>
+Der Eintrag für die Standardeinstellungen sieht so aus:
+   </textblock>
+
+   <file>
+    <content>
+defaults
+{
+  attribut operator wert(e)
+  ...
+}
+    </content>
+   </file>
+
+   <textblock>
+Die Werte jedes Attributes, die diesem hier zugwiesen werden, sind für
+alle folgenden Dienste gültig. Deswegen kann man mittels des Attributes
+<command>only_from</command> eine feste Liste von
+<ref chapter="tcpip" iref="Adressierung im IP">IP Adressen</ref> angeben, die die Dienste
+nutzen dürfen:
+   </textblock>
+
+   <file>
+    <content>
+only_from = 192.168.1.0/24/192.168.5.0/24 192.168.10.17
+    </content>
+   </file>
+
+   <textblock>
+Dadurch dürfen alle Rechner mit obigen Adressen alle hier konfigurierten
+Dienste in Anspruch nehmen. Aber natürlich können diese Werte zusätzlich
+noch für jeden Dienst einzeln modifiziert werden (man werfe einen Blick
+auf die weiter unten vorgestellten Operatoren). Dies ist allerdings ein
+wenig riskant. Es ist besser, will man das System einfach und sicher
+halten, nicht erst Standardwerte zu definieren, die dann später für
+einzelne Dienste wieder eingeschränkt werden. Betrachtet man beispielsweise
+Zugriffsrechte, so besteht die einfachste Vorgehensweise darin, zuerst
+generell den Zugriff zu verbieten und dann für jeden Dienst einzeln die
+anvisierten Benutzer anzugeben und diesen den Zugriff zu ermöglichen
+(bei <ref chapter="grundlagen_sicherheit" iref="Zugriffssteuerung mit TCP_Wrapper">tcp_wrapper</ref>
+wird dies dadurch realisiert, dass zuerst in der Datei
+<path>hosts.deny</path> die Regel <strong>ALL:ALL@ALL</strong> eingetragen wird und dann in
+<path>hosts.allow</path> alle zugelassenen Dienste und die erlaubten IP Adressen
+etwaiger Benutzer angegeben werden).
+   </textblock>
+
+   <textblock>
+Die Syntax eines Eintrags für einen Dienst in <path>xinetd.conf</path> sie
+folgendermaßen aus:
+   </textblock>
+
+   <file>
+    <content>
+service
+{
+  attribut operator wert(e)
+  ...
+}
+    </content>
+   </file>
+
+   <textblock>
+Als Operatoren stehen zur Auswahl: <strong>=</strong>, <strong>+=</strong> und <strong>-=</strong>.
+Die meisten Attribute lassen jedoch nur den Operator <strong>=</strong> zu.
+Dieser weist einem Attribut einen bestimmten Wert zu.
+Durch <strong>+=</strong> wird ein Eintrag einer Liste von Werten
+hinzugefügt, mittels <strong>-=</strong> hingegen wird der Eintrag aus der Liste
+entfernt.
+   </textblock>
+
+   <textblock>
+Im Folgenden gibt es eine kurze Übersicht der Attribute. Deren Einsatz wird in
+einigen Beispielen verdeutlicht werden. Weitergehende Informationen kann
+man der <ref chapter="linux_hilfe" iref="man">Manpage</ref> zu <command>xinetd.conf</command> entnehmen.
+   </textblock>
+
+   <table>
+    <pdf-column width="75"/>
+    <pdf-column/>
+    <tr>
+     <th>
+Attribut
+     </th>
+     <th>
+Werte und Beschreibung
+     </th>
+    </tr>
+    <tr>
+     <td>
+Flags
+     </td>
+     <td>
+Nur die gängigsten Werte werden hier aufgeführt; weitere sind in
+der Dokumentation zu finden:
+      <ul>
+       <li>
+<strong>IDONLY</strong>:
+Es werden nur Verbindungen mit Client-Rechnern
+zugelassen, auf denen ein Server zur Identifikation läuft.
+       </li>
+       <li>
+<strong>NORETRY</strong>:
+Unterbindet das Anlegen eines neuen Prozesses im
+Fehlerfall.
+       </li>
+       <li>
+<strong>NAMEINARGS</strong>:
+Das erste Argument des Attributes server_args wird
+als argv[0] des Servers verwendet. Dadurch wird es möglich, tcpd zu
+verwenden, indem es dem Attribut server zugewiesen wird, gefolgt vom
+Namen des Servers und dessen Parameter als sever_args, genau, wie bei
+<command>inetd</command>.
+       </li>
+      </ul>
+     </td>
+    </tr>
+    <tr>
+     <td>
+log_type
+     </td>
+     <td>
+<command>xinetd</command> verwendet <ref chapter="syslog">syslog</ref>, als Selektor wird standardmäßig
+<command>daemon.info</command> gewählt.
+      <ul>
+       <li>
+SYSLOG Selektor [level]:
+Auswahl zwischen <command>daemon</command>, <command>auth</command>, <command>user</command> oder
+<command>local0-7</command> des <command>syslog</command> Daemons.
+       </li>
+       <li>
+FILE [max_size [absolute_max_size]]:
+In die hier angegebene Datei wird die Ausgabe gesichert.
+Die beiden Optionen begrenzen die
+Dateigröße. Wird der erste Wert erreicht, wird eine Nachricht an <ref chapter="syslog">syslog</ref>
+gesendet. Die Protokollierung des jeweiligen Dienstes wird eingestellt,
+sobald die Dateigröße den zweiten Parameter erreicht (sollte es sich um
+eine mehrfach verwandte Datei oder um eine Standardeinstellung in
+<command>xinetd.conf</command> handeln, können auch mehrere Dienste betroffen sein).
+       </li>
+      </ul>
+     </td>
+    </tr>
+    <tr>
+     <td>
+log_on_success
+     </td>
+     <td>
+Bei Start eines Servers können mehrere unterschiedliche
+Informationen festgehalten werden:
+      <ul>
+       <li>
+<strong>PID</strong>:
+die Server PID (handelt es sich um einen internen Dienst von
+<command>xinetd</command> ist die PID 0)
+       </li>
+       <li>
+<strong>HOST</strong>:
+Die Adresse des Clients
+       </li>
+       <li>
+<strong>USERID</strong>:
+Die ID des Benutzers, der den Dienst in Anspruch nimmt,
+entsprechend dem in der RFC1413 definierten Protokolles
+       </li>
+       <li>
+<strong>EXIT</strong>:
+Der Statuswert, den der Prozess bei Beendigung zurückliefert
+       </li>
+       <li>
+<strong>DURATION</strong>:
+Verbindungsdauer
+       </li>
+      </ul>
+     </td>
+    </tr>
+    <tr>
+     <td>
+log_on_failure
+     </td>
+     <td>
+Hierdurch kann eine Vielzahl an Informationen
+protokoliert werden, sobald ein Server nicht gestartet werden kann, sei
+es aufgrund fehlender Resourcen oder der Verletzung der Zugriffsregeln:
+      <ul>
+       <li>
+<strong>HOST, USERID</strong>:
+wie oben
+       </li>
+       <li>
+<strong>ATTEMPT</strong>:
+Hält einen Zugriffsversuch fest. Diese Option wird
+automatisch gewählt, sobald ein weiterer Wert gesetzt wird
+       </li>
+       <li>
+<strong>RECORD</strong>:
+Protokolliert alle Informationen, die über den Client
+verfügbar sind.
+       </li>
+      </ul>
+     </td>
+    </tr>
+    <tr>
+     <td>
+nice
+     </td>
+     <td>
+Ändert die Priorität des Servers, analog dem Unixbefehl <command>nice</command>.
+     </td>
+    </tr>
+    <tr>
+     <td>
+no_access
+     </td>
+     <td>
+Liste der Clients, denen der Zugriff auf den jeweiligen
+Dienst verweigert werden soll
+     </td>
+    </tr>
+    <tr>
+     <td>
+only_from
+     </td>
+     <td>
+Liste aller akzeptierten Rechner. Wird diesem Attribut kein
+Wert zugewiesen, so ist kein Zugriff auf den Dienst möglich
+     </td>
+    </tr>
+    <tr>
+     <td>
+port
+     </td>
+     <td>
+Port, unter dem der Dienst erreichbar ist. Sollte dieser auch in
+der Datei <path>/etc/services</path> stehen, müssen beide Wert übereinstimmen.
+     </td>
+    </tr>
+    <tr>
+     <td>
+protocol
+     </td>
+     <td>
+Das hier angegebene Protokoll muss in der Datei <path>/etc/protocols</path>
+aufgeführt sein. Wird dieses Attribut nicht gesetzt, wird das
+Standardprotokoll des Servers verwendete
+     </td>
+    </tr>
+    <tr>
+     <td>
+server
+     </td>
+     <td>
+Pfad, unter dem der Server zu finden ist
+     </td>
+    </tr>
+    <tr>
+     <td>
+server_args
+     </td>
+     <td>
+Parameter, die an den Server übergeben werden sollen
+     </td>
+    </tr>
+    <tr>
+     <td>
+socket_type
+     </td>
+     <td>
+stream (TCP), dgram (UDP), raw (IP Direktzugriff) oder seqpacket ()
+     </td>
+    </tr>
+    <tr>
+     <td>
+type
+     </td>
+     <td>
+<command>xinetd</command> verwaltet drei Arten von Diensten:
+      <ol>
+       <li>
+<strong>RPC</strong>:
+alle, die in der Datei <path>/etc/rpc</path> zu finden
+sind. Funktioniert nicht besonders gut.
+       </li>
+       <li>
+<strong>INTERNAL</strong>:
+Dienste, die direkt von <command>xinetd</command> verwaltet werden (echo,
+time, daytime, chargen und discard)
+       </li>
+       <li>
+<strong>UNLISTED</strong>:
+Dienste, die weder in <path>/etc/rpc</path> noch in <path>/etc/services</path>
+stehen.
+       </li>
+      </ol>
+Bemerkung: man kann mehrere Werte kombinieren, wie bei den internen
+Diensten servers, services und xadmin gezeigt wird.
+     </td>
+    </tr>
+    <tr>
+     <td>
+wait
+     </td>
+     <td>
+Legt das threading-Verhalten des Dienstes fest. Es gibt zwei
+Möglichkeiten:
+      <ul>
+       <li>
+<strong>yes</strong>:
+Der Dienst ist mono-threaded, dass heisst es kann immer nur
+eine Verbindungen dieses Types unterhalten werden
+       </li>
+       <li>
+<strong>no</strong>:
+Für jede neue Anfrage startet xinetd einen neuen
+Serverprozess, unter Berücksichtigung etwaiger Beschränkungen der
+maximalen Zahl an Servern (Achtung: Standardmäßig gibt es keine
+Obergrenze für die Serverzahl.).
+       </li>
+      </ul>
+     </td>
+    </tr>
+    <tr>
+     <td>
+cps
+     </td>
+     <td>
+Beschränkt die Zahl der zugelassenen Verbindungen. Als erster
+Parameter wird die Zahl selbst angeben. Der zweite Wert legt die Zeit
+fest, die der Dienst für weitere Verbindungen erreichbar ist, sobald das
+Limit erreicht wurde.
+     </td>
+    </tr>
+    <tr>
+     <td>
+instances
+     </td>
+     <td>
+Maximale Zahl an Servern des gleichen Types, die simultan laufen dürfen
+     </td>
+    </tr>
+    <tr>
+     <td>
+max_load
+     </td>
+     <td>
+Tatsächliche maximale Last eines Servers (z. B. 2 oder 2.5).
+Wird dieser Wert überschritten, nimmt der Server keine weiteren
+Anfragen an
+     </td>
+    </tr>
+    <tr>
+     <td>
+per_source
+     </td>
+     <td>
+Ein Zahlenwert oder UNLIMITED. Ermöglicht es, die Zahl der
+Verbindungen, die ein Dienst mit einem einzelnen Clientrechner
+unterhält, zu beschränken.
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Die letzten vier Attribute bieten die Möglichkeit, die
+Resourcen je nach Server zu verwalten. Dies stellt einen effizienten
+Schutz vor
+<ref chapter="grundlagen_sicherheit" iref="Denial of Service (DOS Attacken)">Denial of Service Angriffen</ref> dar.
+   </textblock>
+
+   <textblock>
+In diesem Abschnitt wurden ein wenig von der Funktionalität von <command>xinetd</command>
+vorgestellt. Im nächsten wird nun gezeigt, wie diese angewandt wird und
+einige Regeln erläutert, so dass xinetd korrekt funktioniert.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Die Sektion: default
+   </heading>
+
+   <textblock>
+In diesem Abschnitt können Standardwerte für eine Anzahl von Attributen
+(eine komplette Liste ist in der Dokumentation zu finden) gesetzt
+werden. Einige der Attribute, wie etwa <command>only_from</command>,
+<command>no_access</command>, <command>log_on_success</command> oder
+<command>log_on_failure</command>, können gleichzeitig Werte dieser
+Sektion und der der einzelnen Dienste beinhalten.
+   </textblock>
+
+   <textblock>
+Der erste Schritt hin zu einem sicheren System ist, standardmäßig allen
+Rechnern den Zugriff zu verweigern. Danach wird dann für den jeweiligen
+Dienst getrennt festgelegt, wer diesen nutzen darf. Wie gesehen gibt es
+zwei Attribute, die den Zugriff auf Basis der IP Adresse eines Rechners
+steuern: <command>only_from</command> und <command>no_access</command>. Unter Verwendung des letzteren:
+   </textblock>
+
+   <file>
+    <content>
+no_access = 0.0.0.0/0
+    </content>
+   </file>
+
+   <textblock>
+wird der Zugriff auf alle Dienste unterbunden. Soll dann etwa <strong>echo</strong>
+allen zugängig gemacht werden, sollte in der Sektion für den <strong>echo</strong>
+Dienst folgendes stehen:
+   </textblock>
+
+   <file>
+    <content>
+only_from = 0.0.0.0/0
+    </content>
+   </file>
+
+   <textblock>
+Unter Verwendung dieser Einstellungen erhält man folgende Ausgabe:
+   </textblock>
+
+   <file>
+    <content>
+Sep 17 15:11:12 charly xinetd[26686]: Service=echo-stream: only_from
+list and no_access list match equally the address 192.168.1.1
+    </content>
+   </file>
+
+   <textblock>
+Bei der Entscheidung, ob ein Zugriff erlaubt werden soll, werden die
+Adresslisten beider Attribute überprüft. Wird die Adresse des
+Clientrechners von beiden Listen überdeckt, so ist das Attribut
+relevant, welches weniger allgemein ist. Kann dies nicht festgestellt
+werden (beide gleich allgemein), so wird die Verbindung nicht
+zugelassen. Um dies zu beheben, sollte man stattdessen folgendes
+schreiben:
+   </textblock>
+
+   <file>
+    <content>
+only_from = 192.0.0.0/8
+    </content>
+   </file>
+
+   <textblock>
+Eine einfachere Lösung besteht darin, in der Sektion defaults folgendes
+Attribut zu verwenden:
+   </textblock>
+
+   <file>
+    <content>
+only_from =
+    </content>
+   </file>
+
+   <textblock>
+Wird kein Wert zugewiesen, scheitert jeder Verbindungsaufbau.
+Danach kann jeder Dienst den Zugriff über eine entsprechende Zuweisung
+an dieses Attribut regeln.
+   </textblock>
+
+   <textblock>
+<strong>Wichtig</strong>: Wird gar keine Zugriffsregel (also weder das
+Attribut <command>only_from</command>, noch <command>no_access</command>)
+für einen Dienst aufgestellt (weder in dessen, noch in der defaults Sektion),
+so kann jeder diesen Dienst nutzen!
+   </textblock>
+
+   <textblock>
+Ein Beispiel für die defaults Sektion:
+   </textblock>
+
+   <file>
+    <content>
+defaults
+{
+  instances       = 15
+  log_type        = FILE /var/log/servicelog
+  log_on_success  = HOST PID USERID DURATION EXIT
+  log_on_failure  = HOST USERID RECORD
+  only_from       =
+  per_source      = 5
+
+  disabled = shell login exec comsat
+  disabled = telnet ftp
+  disabled = name uucp tftp
+  disabled = finger systat netstat
+
+  #INTERNAL
+  disabled = time daytime chargen servers services xadmin
+
+  #RPC
+  disabled = rstatd rquotad rusersd sprayd walld
+}
+    </content>
+   </file>
+
+   <textblock>
+Mittels servers, services und xadmin unter #INTERNAL kann <command>xinetd</command>
+gesteuert werden. Später dazu mehr.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Konfiguration eines Dienstes
+   </heading>
+
+   <textblock>
+Was muss man nun noch zusätzlich tun, um einen Dienst zu konfigurieren?
+Es müssen noch gegebenenfalls die Standardwerte einiger Attribute angepasst
+bzw. weitere Attribute für den jeweiligen Dienst verwendet werden.
+   </textblock>
+
+   <textblock>
+Einige Attribute müssen, je nach Art des Dienstes (INTERNAL, UNLISTED
+oder RPC), angegeben werden:
+   </textblock>
+
+   <table>
+    <pdf-column/>
+    <pdf-column/>
+    <tr>
+     <th>
+Attribut
+     </th>
+     <th>
+Verwendung
+     </th>
+    </tr>
+    <tr>
+     <td>
+socket-type
+     </td>
+     <td>
+Jeder Dienst
+     </td>
+    </tr>
+    <tr>
+     <td>
+user
+     </td>
+     <td>
+Nur Dienste, die keine INTERNAL Dienste sind
+     </td>
+    </tr>
+    <tr>
+     <td>
+server
+     </td>
+     <td>
+Nur Dienste, die keine INTERNAL Dienste sind
+     </td>
+    </tr>
+    <tr>
+     <td>
+wait
+     </td>
+     <td>
+Alle Dienste
+     </td>
+    </tr>
+    <tr>
+     <td>
+protocol
+     </td>
+     <td>
+Alle RPC Dienste und solche, die nicht in <path>/etc/services</path> zu finden sind
+     </td>
+    </tr>
+    <tr>
+     <td>
+rpc_version
+     </td>
+     <td>
+Jeder RPC Dienst.
+     </td>
+    </tr>
+    <tr>
+     <td>
+rpc_number
+     </td>
+     <td>
+Jeder RPC Dienst ohne Eintrag in <path>/etc/rpc</path>.
+     </td>
+    </tr>
+    <tr>
+     <td>
+port
+     </td>
+     <td>
+Jeder Dienst, der kein RPC Dienst ist und nicht in <path>/etc/services</path> steht
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Hier ein Beispiel, wie die Konfiguration von Diensten aussieht:
+   </textblock>
+
+   <file>
+    <content>
+service ntalk
+{
+  socket_type   = dgram
+  wait          = yes
+  user          = nobody
+  server        = /usr/sbin/in.ntalkd
+  only_from     = 192.168.1.0/24
+}
+
+service ftp
+{
+  socket_type  = stream
+  wait         = no
+  user         = root
+  server       = /usr/sbin/in.ftpd
+  server_args  = -l
+  instances    = 4
+  access_times = 7:00-12:30 13:30-21:00
+  nice         = 10
+  only_from    = 192.168.1.0/24
+}
+    </content>
+   </file>
+
+   <textblock>
+Man beachte, dass diese Dienste nur im lokalen Netzwerk zugäglich sind
+(293.268.1.0/24). Was FTP angeht, so wurde der Zugriff noch weiter
+eingeschränkt: Nur 4 Rechnern wurde der Zugriff gestattet und dies auch
+nur zu bestimmten Zeiten.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Ports an Adressen binden: Das Attribut bind
+   </heading>
+
+   <textblock>
+Mittels diesem Attribut kann man einen Dienst an eine IP Adresse binden.
+Besitzt der Rechner sowieso nur eine Adresse, ist dies nicht sehr
+sinnig. Ein Rechner allerdings, der einerseits an einem lokalen
+Netzwerk, andereseits an das Internet angebunden ist, besitzt mindestens
+zwei Adressen.
+   </textblock>
+
+   <textblock>
+Angenommen, eine Firma möchte einen FTP Server füpr ihre Angestellten
+installieren, etwa, damit diese auf interne Dokumente zugreifen und
+diese lesen können. Desweiteren sollen Kunden mittels FTP auf die
+Firmenprodukte zugreifen können. <command>bind</command> ist wie geschaffen für diesen Fall.
+Es werden zwei FTP Dienste definiert. Diese müssen allerdings von
+<command>xinetd</command> unterschieden werden können.
+Dazu wird das Attribut <command>id</command> verwendet.
+Durch dieses wird ein Dienst eindeutig identifiziert. Sollte ein Dienst
+dem Attribut keinen Wert zuweisen, so wird standardmäßig der Dienstname
+als Wert verwendet.
+   </textblock>
+
+   <file>
+    <content>
+
+service ftp
+{
+  id           = ftp-public
+  wait         = no
+  user         = root
+  server       = /usr/sbin/in.ftpd
+  server_args  = -l
+  instances    = 4
+  nice         = 10
+  only_from    = 0.0.0.0/0 #allows every client
+  bind         = 212.198.253.142 #public IP address for this server
+}
+
+service ftp
+{
+  id           = ftp-private
+  socket_type  = stream
+  wait         = no
+  user         = root
+  server       = /usr/sbin/in.ftpd
+  server_args  = -l
+  only_from    = 192.168.1.0/24 #only for internal use
+  bind         = 192.168.1.1  #local IP address for this server (charly)
+}
+    </content>
+   </file>
+
+   <textblock>
+Durch den Einsatz von <command>bind</command> kann das jeweilige Daemonprogramm
+angesprochen werden, abhängig von der Zieladresse der Pakete. Will ein
+Client im lokalen Netzwerk auf intere Daten zugreifen, so muss er die
+lokale Adresse (bzw. den assoziierten Rechnernamen) des FTP Servers
+verwenden. In der Protokolldatei steht dann:
+   </textblock>
+
+   <file>
+    <content>
+00/9/17@16:47:46: START: ftp-public pid=26861 from=212.198.253.142
+00/9/17@16:47:46: EXIT: ftp-public status=0 pid=26861 duration=30(sec)
+00/9/17@16:48:19: START: ftp-internal pid=26864 from=192.168.1.1
+00/9/17@16:48:19: EXIT: ftp-internal status=0 pid=26864 duration=15(sec)
+    </content>
+   </file>
+
+   <textblock>
+Der erste Teil stammt vom Befehl <command>ftp 212.198.253.142</command>, während der zweite
+Teil vom Aufruf von charly auf sich selbst resultiert: <command>ftp 192.168.1.1</command>.
+   </textblock>
+
+   <textblock>
+Was passiert aber nun, falls ein Rechner keine zwei statischen IP
+Adressen hat? Dies ist zum Beispiel bei <ref chapter="ppp_verbindung">PPP Verbindungen</ref>
+oder beim Einsatz von <ref chapter="dhcp">DHCP</ref> der Fall.
+Es wäre besser, könnten Dienste an
+Netzwerkschnittstellen selbst, anstatt an Adressen gebunden werden. Dies
+jedoch ist bei <command>xinetd</command> noch nicht in Sicht und stellt ein wirkliches
+Problem dar. Das Design eines C Modules beispielsweise, dass auf ein
+Netzwerkinterface oder eine Adresse zugreifen soll, ist stark vom
+jeweiligen Betriebssystem abhängig, und da <command>xinetd</command> auf vielen Plattformen
+arbeiten soll, ist dies problematisch. Unter Verwendung eines Skriptes
+kann das Problem gelöst werden:
+   </textblock>
+
+   <file>
+    <content>
+#!/bin/sh
+
+PUBLIC_ADDRESS=`/sbin/ifconfig $1 | grep "inet addr" | awk '{print $2}'| awk -F: '{print $2}'`
+sed s/PUBLIC_ADDRESS/"$PUBLIC_ADDRESS"/g /etc/xinetd.base > /etc/xinetd.conf
+    </content>
+   </file>
+
+   <textblock>
+Dieses Skript liest die gewünschte Konfiguration aus der Datei
+<path>/etc/xinetd.base</path> aus, wobei <strong>PUBLIC_ADDRESS</strong> als Platzhalter für die
+dynamische Adresse steht und nimmt die entsprechenden Änderungen in
+<path>/etc/xinetd.conf</path> vor. Hierbei wird <strong>PUBLIC_ADDRESS</strong> durch die Adresse
+ersetzt, die dem Interface zugeordnet ist, welches dem Skript als
+Parameter übergeben wird. Der Aufruf des Skriptes hängt von der Art der
+Verbindung ab: Am einfachsten ist es, den Aufruf in die jeweilige ifup-*
+Datei einzutragen und <command>xinetd</command> neu zu starten.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Umleiten eines Dienstes auf einen anderen Rechner
+   </heading>
+
+   <textblock>
+<command>xinetd</command> kann auch als ein transparenter Proxy verwendet werden
+(jedenfalls beinahe, wie später zu sehen sein wird) und zwar mittels dem
+Attribut <command>redirect</command>. Dieses erlaubt es, eine Anfrage an einen Dienst an
+einen anderen Rechner und einem bestimmten Port weiterzuleiten.
+   </textblock>
+
+   <file>
+    <content>
+telnet service
+{
+  flags  = REUSE
+  socket_type = stream
+  wait  = no
+  user  = root
+  server = /usr/sbin/in.telnetd
+  only_from = 192.168.1.0/24
+  redirect = 192.168.1.15 23
+}
+    </content>
+   </file>
+
+   <textblock>
+Dabei passiert folgendes:
+   </textblock>
+
+   <shell>
+    <user>
+telnet charly
+    </user>
+    <output>
+Trying 192.168.1.1...
+Connected to charly.
+Escape character is '^]'.
+
+Digital UNIX (sabrina) (ttyp1)
+
+login:
+    </output>
+   </shell>
+
+   <textblock>
+Es scheint, als ob eine Verbindung mit dem Rechner charly aufgebaut
+worden ist. Tatsächlich aber befindet sich sabrina auf der anderen Seite
+der Verbindung (eine Alpha Maschine, auch an <strong>Digital UNIX</strong> zu
+erkennen). Die Weiterleitung kann recht nützlich, aber auch gefährlich
+sein.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+Spezielle Dienste
+   </heading>
+
+   <textblock>
+Es gibt drei Dienste, die nur für <command>xinetd</command> verwendet werden. Diese sind
+weder in <path>/etc/rpc</path>, noch in <path>/etc/services</path> zu finden und müssen das
+UNLISTED Flag setzen (neben dem INTERNAL Flag, welches anzeigt, dass sie
+<command>xinetd</command> Dienste sind).
+   </textblock>
+
+   <ol>
+    <li>
+<strong>servers</strong>: Auskunft über die gerade laufenden Server
+    </li>
+    <li>
+<strong>services</strong>: liefert Informationen über die angebotenen Dienste, ihre Protokolle und Ports
+    </li>
+    <li>
+<strong>xadmin</strong>: bietet Funktionen der beiden oben genannten Dienste
+    </li>
+   </ol>
+
+   <textblock>
+Es ist offensichtlich, dass durch diese Dienste das System verletzbarer
+wird. Sie stellen wichtige Informationen zu Verfügung. Zur Zeit gibt es
+keine Sicherheitsmechanismen für den Zugriff auf diese Dienste (etwa
+Passwortschutz). Sie sollten nur in der Einrichtungsphase verwendet
+werden. Zunächst wird der Zugriff auf sie in dem Abschnitt defaults
+generell gesperrt:
+   </textblock>
+
+   <file>
+    <content>
+defaults {
+  ...
+  disabled = servers services xadmin
+  ...
+}
+    </content>
+   </file>
+
+   <textblock>
+Bevor sie dann aktiviert werden sollten einige Vorkehrungen getroffen
+werden:
+   </textblock>
+
+   <ol>
+    <li>
+Der Rechner, auf dem <command>xinetd</command> läuft, sollte der einzige Rechner
+sein, dem es erlaubt ist, die Dienste zu nutzen
+    </li>
+    <li>
+Die Anzahl der gleichzeitig erlaubten Serverinstanzen sollte eins
+sein
+    </li>
+    <li>
+Zugegriffen werden darf nur von dem Rechner aus, auf dem der
+Server läuft.
+    </li>
+   </ol>
+
+   <textblock>
+Hier ein Beispiel für die Konfiguration des <strong>xadmin</strong> Dienstes. Die
+Einstellung der beiden anderen Dienste erfolgt analog, bis auf die
+Portnummer natürlich.
+   </textblock>
+
+   <file>
+    <content>
+service xadmin
+{
+  type  = INTERNAL UNLISTED
+  port  = 9100
+  protocol = tcp
+  socket_type = stream
+  wait  = no
+  instances = 1
+  only_from = 192.168.1.1  #charly
+}
+    </content>
+   </file>
+
+   <textblock>
+Der Dienst xadmin bietet fünf Befehle:
+   </textblock>
+
+   <ol>
+    <li>
+help ...
+    </li>
+    <li>
+show run : gleicht dem Dienst servers und gibt Auskunft über die
+zur Zeit laufenden Server
+    </li>
+    <li>
+show avail : gleicht dem Dienst services und informiert über die
+verfügbaren Dienste (und ein wenig mehr)
+    </li>
+    <li>
+bye oder exit ...
+    </li>
+   </ol>
+
+   <textblock>
+Das System kann auch ohne diese Dienste getestet werden. Befehle, wie
+<command>netstat</command>, <command>fusert</command>, <command>lsof</command>
+geben ebenfalls einen Überblick über das, was
+auf dem Rechner vonstatten geht, ohne ihn ein wenig unsicherer durch die
+Verwendung der Dienste zu machen!
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+chroot für einen Dienst
+   </heading>
+
+   <textblock>
+Oft wird empfohlen, die Bereiche eines Dienstes einzuschränken oder eine
+neue Umgebung zu generieren. Der Befehl <command>chroot</command> ändert das
+Wurzelverzeichnis für einen Befehl oder ein Skript:
+   </textblock>
+
+   <shell>
+    <root>
+chroot [options] new_root
+    </root>
+   </shell>
+
+   <textblock>
+Auf diese Weise werden häufig Dienste wie <ref chapter="dns">bind/DNS</ref>
+oder <ref chapter="vsftpd">FTP</ref> gesichert.
+Um dies zuerreichen und dabei gleichzeitig die Vorzüge von <command>xinetd</command> nutzen
+zu können, muss <command>chroot</command> als Server deklariert werden. Die Parameter
+werden dann über das Attribut server_args übergeben.
+   </textblock>
+
+   <file>
+    <content>
+service ftp
+{
+  id           = ftp
+  socket_type  = stream
+  wait         = no
+  user         = root
+  server       = /usr/sbin/chroot
+  server_args  = /var/servers/ftp /usr/sbin/in.ftpd -l
+}
+    </content>
+   </file>
+
+   <textblock>
+Sobald nun eine Anfrage, den jeweiligen Dienst betreffend, eintrifft,
+wird als erstes <command>chroot</command> ausgeführt. Das erste Argument, dass diesem
+übergeben wird, ist der erste Eintrag in sever_args: das neue
+Wurzelverzeichnis. Zuletzt wird der Server gestartet.
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
+Fazit
+   </heading>
+
+   <textblock>
+Es mag sich nun die Frage stellen, ob nun <command>xinetd</command> oder <command>inetd</command> verwendet
+werden sollte. Es ist nun einmal so, dass <command>xinetd</command> ein wenig mehr
+Administration verlangt, vorallem, solange es nicht mit den Linux
+Distributionen mitgeliefert wird. Eine sichere Lösung
+stellt der Einsatz von <command>xinetd</command> auf Rechnern dar, die eine Verbindung mit
+dem Rest der Welt (etwa dem Internet) haben. <command>xinetd</command> bietet einfach den
+besseren Schutz. Für Rechner in einem lokalen Netzwerk sollte <command>inetd</command>
+vollkommen ausreichend sein.
+   </textblock>
+  </section>
+ </split>
+</chapter>
