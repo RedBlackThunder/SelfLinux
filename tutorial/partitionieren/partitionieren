@@ -1,3 +1,10 @@
+Autor: Arnulf Pelzer (webmaster@arnulfpelzer.de)
+Lizenz GPL
+
+
+
+
+
 1. Das Partitionieren
 
 Das Partitionieren ist das Aufteilen einer Festplatte in mehrere
@@ -73,6 +80,8 @@ Ein GNU/Linux System braucht nur eine Partition um Lauffähig zu sein.
 
 Auf meinem Laptop sieht die Partitionierung so aus:
 
+***konsole***
+
 Platte /dev/hda: 30.0 GByte, 30005821440 Byte
 255 Köpfe, 63 Sektoren/Spuren, 3648 Zylinder
 Einheiten = Zylinder von 16065 × 512 = 8225280 Bytes
@@ -81,6 +90,8 @@ Einheiten = Zylinder von 16065 × 512 = 8225280 Bytes
 /dev/hda1               1        1721    13823901   83  Linux
 /dev/hda2            1722        1848     1020127+  82  Linux swap 
 /dev/hda3            1849        3647    14450467+  83  Linux
+
+***konsole***
 
 /dev/hda1 ist die boot und root Partition
 /dev/hda2 ist die swap Partition
@@ -102,7 +113,7 @@ cfdisk und qtparted.
 Auf diesem Screenshot sehen Sie cfdisk mit einer leeren Festplatte,
 bereit zum Partitionieren.
 
-***BILD***
+***BILD*** cfdisk-leere-Festplatte.png
 
 Der obere Teil des Bildschirms zeigt die Daten der Festplatte an, der
 mittlere Teil die noch nicht
@@ -112,23 +123,28 @@ von cfdisk an.
 Im nächsten Schritt gehen wir auf Neue und erstellen eine Primäre
 Partion mit 40 Gigabyte
 
-***BILD***
+***BILD*** cfdisk-40gig-eintragen.png
 
 Nach dem Bestätigen mit der Entertaste sehen sie Ihre Partition nun im
 mittleren Bildschirmabschnitt.
+
+***BILD*** cfdisk-eingetragenene-40gig.png
+
 Mit der Pfeil nach unten Taste kommen Sie wieder auf den
 unpartitionierten Bereich der Festplatte.
 Im nächsten Schritt erstellen wir eine 1 GigaByte grosse Partition die
 als swap Speicher genutzt werden soll.
 
-***BILD***
+***BILD*** cfdisk-swap.png
 
-Nun gehen wir auf Typ und wählen Typ 82 Linux swap / Solaris aus. Den
-Rest der Festplatte
-wird wieder als Primäre Partition verfügbar gemacht. Die
-Bildschirmausgabe sollte nun wie folgt
-aussehen, bevor Sie mit dem Schreiben der Partitionierungstabelle die
-Partitionierung übernehmen.
+Nun gehen wir auf Typ und wählen Typ 82 Linux swap aus. Den Rest der
+Festplatte wird wieder wie weiter oben beschriebenn als Primäre
+Partition verfügbar gemacht. Die Bildschirmausgabe sollte nun wie
+folgt aussehen, bevor Sie mit dem Schreiben der
+Partitionierungstabelle die Partitionierung übernehmen.
+
+***BILD*** cfdisk-bevor-schreiben.png
+
 In diesem Beispiel haben wir nun eine / (Root/Boot Partition) eine
 swap und eine home Partition angelegt so wie sie mit den meisten
 GNU/LINUX Installatinen unterstützt werden. Um genau zu sein:
@@ -150,7 +166,7 @@ genannten Fähigkeiten von qtparted eingehen.
 Deshalb hier auch wieder nach dem obigen in Kapitel 3.3.1 genannten
 Schema das Partitionieren mit qtparted.
 
-***BILD***
+***BILD*** qtparted-leere-festplatte.png
 
 Wie Sie sehen ist qtparted eine in qt geschriebene grafische
 Anwendung, die Aufteilung ist ein wenig anders als in cfdisk aber
@@ -160,7 +176,7 @@ darunter Informationen über die Ausgewählte Festplatte. Im rechten
 Bereich des Fensters das Arbeitsbereich. Durch Anklicken von der
 Festplatte im rechten Fenster können sie nun Partitionen anlegen.
 
-***BILD***
+***BILD*** qtparted-bevor-schreiben.png
 
 Dies ist die gleiche Partitionsweise wie bei dem cfdisk Beispiel.
 
@@ -170,7 +186,7 @@ qtparted Formatiert in diesem Schritt auch schon das eingetragene
 Dateisystem. Die möglichen Dateisysteme werden im nächsten Kapitel
 vorgestellt.
 
-***BILD*** 
+***BILD*** qtparted-sicherheitswarnung.png
 
 Beachten Sie hier auch wieder die Warnung bei der Übername der
 Änderungen!
