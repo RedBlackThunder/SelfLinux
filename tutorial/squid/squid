@@ -1,630 +1,992 @@
-Titel: Der Web-Proxy Squid
-Autor: Jörn Bruns <joern_bruns@gmx.de>
-Lizenz: GPL
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>Der Web-Proxy Squid</title>
 
+ <author>
+  <name>Jörn Bruns</name>
+  <mailto>joern_bruns@gmx.de</mailto>
+ </author>
 
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
 
-1 Der Web-Proxy Squid
+ <license>GPL</license>
 
+ <index>squid</index>
+
+ <split>
+  <section>
+   <heading>
+Der Web-Proxy Squid
+   </heading>
+
+   <textblock>
 Sollen sich mehrere Surfer einen Web-Zugang teilen, der sicher,
 schnell und zudem flexibel ist, bietet sich ein Caching-Web-Proxy
-wie der Squid an.
+wie Squid an.
+   </textblock>
 
-Der Squid steht unter der
-<!-- LINK: chapter="sl_anhang" -->GNU GPL<!-- ENDLINK -->.
-Er ist sehr ausgereift, schnell
-und flexibel.
+   <textblock>
+Squid steht unter der <ref chapter="sl_anhang">GNU GPL</ref>.
+Er ist sehr ausgereift, schnell und flexibel.
 Deshalb ist er von den Web-Proxies am weitesten verbreitet und wird
 gerade in sehr großen Umgebungen, wie Universitäten und großen,
 verzweigten Unternehmen, verwendet.
+   </textblock>
 
+   <textblock>
 Warum sollten wir seine Vorteile nicht auch in kleineren Netzwerken
 nutzen?
+   </textblock>
+  </section>
 
-Hier finden Sie eine Beschreibung,
-wie der Squid in Betrieb genommen werden kann.
+  <section>
+   <heading>
+Was macht ein Web-Proxy?
+   </heading>
 
-
-
-
-1 Was macht ein Web-Proxy?
-
+   <textblock>
 Zunächst die Vorteile eines Web-Proxies im allgemeinen:
+   </textblock>
 
-1. Proxy heißt übersetzt "Stellvertreter", und als solcher holt er
+   <ol>
+    <li>
+Proxy heißt übersetzt <strong>Stellvertreter</strong>, und als solcher holt er
 für die Nutzer die Web-Seiten aus dem Netz. Nach außen ist
 netzwerktechnisch nur der Proxy zu sehen, der Zugreifende ist hinter
 ihm versteckt und dadurch geschützt.
-
-2. Als weitere Fähigkeit kann ein Proxy meist statische Web-Inhalte
-zwischenspeichern, was "Caching" genannt wird.  Ein erneuter Zugriff
+    </li>
+    <li>
+Als weitere Fähigkeit kann ein Proxy meist statische Web-Inhalte
+zwischenspeichern, was <strong>Caching</strong> genannt wird.  Ein erneuter Zugriff
 auf die gleichen Inhalte wird dadurch erheblich beschleunigt, und
 das bei gleichzeitig geringerer Netzlast!
+    </li>
+   </ol>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Warum gerade den Squid als Web-Proxy verwenden?
+   </heading>
 
-
-
-1.1 Warum gerade den Squid als Web-Proxy verwenden?
-
+   <textblock>
 Der Einsatz des Squid bringt mehrere Vorteile mit sich:
+   </textblock>
 
+   <section>
+    <heading>
+Freie Lizenz
+    </heading>
 
-
-
-1.1.1 freie Lizenz
-
-Squid ist eine Open-Source-Entwicklung unter der
-GNU GPL.
+    <textblock>
+Squid ist eine Open-Source-Entwicklung unter der <ref chapter="gpl_de">GNU GPL</ref>.
 Somit fallen keine Lizenz-Kosten an, der Quell-Code ist frei
 verfügbar und an eigene Bedürfnisse anpassbar.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Squid ist sehr stabil und ausgereift
+    </heading>
 
-
-
-1.1.1 Squid ist sehr stabil und ausgereift
-
+    <textblock>
 Der Squid wird seit vielen Jahren entwickelt und hat sich auch gerade
 in größeren Umgebungen, wie Universitäten und großen Firmen, bewährt.
 Im Laufe der Entwicklung ist er schneller und vielseitiger geworden,
 so dass er sich hinter keinem kommerziellen Proxy verstecken muss.
+    </textblock>
 
-Ein Blick in die gut dokumentierte /etc/squid.conf zeigt, wie viele
+    <textblock>
+Ein Blick in die gut dokumentierte <path>/etc/squid.conf</path> zeigt, wie viele
 Optionen mit dem Squid offen stehen. Und es gibt eine sehr aktive
 Gemeinde, die diesen Proxy immer weiter entwicket.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Beschleunigung und Entlastung des Internet-Zugangs
+    </heading>
 
-
-
-1.1.1 Beschleunigung und Entlastung des Internet-Zugangs
-
+    <textblock>
 Statische Inhalte, welche einmal abgerufen wurden, können
-zwischengespeichert werden. Dazu gehören auch Images von dynamisch
+zwischengespeichert werden. Dazu gehören auch Grafiken von dynamisch
 generierten Seiten. Ein erneutes Abrufen solcher Inhalte, auch
 von einem anderen Benutzer, kann aus dem Zwischenspeicher bedient
 werden. Die Anfrage ist dadurch erheblich schneller beantwortet, der
 Internetzugang wird entlastet. Die Aktualität der Seiten wird durch
 sehr ausgeklügelte Methoden sichergestellt.
+    </textblock>
 
+    <textblock>
 Die am häufigsten genutzten Seiten werden im Arbeitsspeicher gehalten
-("hot object"). Die nicht so schnelle Festplatte wird für länger
+(<strong>hot object</strong>). Die nicht so schnelle Festplatte wird für länger
 zurückliegende Zugriffe genutzt.
+    </textblock>
 
+    <textblock>
 Eine zusätzliche Beschleunigung bewirkt das Zwischenspeichern der
-Zuordnung "Name zu IP-Adresse" (DNS-Caching).
+Zuordnung <strong>Name zu IP-Adresse</strong> (<ref chapter="dns">DNS</ref>-Caching).
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Kontrolle der Zugriffe
+    </heading>
 
-
-
-1.1.1 Kontrolle der Zugriffe
-
+    <textblock>
 Soll der Zugriff eingeschränkt werden, ist dies über die
-Rechtevergabe mit den "Zugriffs-Kontroll-Listen
-(Access Control Lists, ACL)" von Squid
+Rechtevergabe mit den <strong>Zugriffs-Kontroll-Listen
+(Access Control Lists, ACL)</strong> von Squid
 flexibel möglich. Sinnvoll kann dies sein, um die Ablenkung durch
 die Angebots-Flut des Internets einzuschränken, juristische Probleme
-zu vermeiden (z.B. durch pornografische Inhalte in Schulen) oder um
+zu vermeiden (z. B. durch pornografische Inhalte in Schulen) oder um
 die Online-Kosten im Griff zu halten.
+    </textblock>
 
+    <textblock>
 Bereits getätigte Zugriffe können übersichtlich ausgewertet werden.
 So ist nachvollziehbar, wer welche Seiten aufgesucht und wer wie viel
 Daten übertragen hat.
 Ebenso kann ermittelt werden, welche URLs am häufigsten aufgesucht
 wurden oder auch wieviele Daten insgesamt übertragen wurden.
-Zusätzliche Tools, wie webalizer und cachemanager, helfen die Logfiles
-auszuwerten.
+Zusätzliche Tools, wie <ref lang="en" url="http://www.webalizer.org/">webalizer</ref>
+und <command>cachemanager</command>, helfen die Logfiles auszuwerten.
 So kann rechtzeitig ermittelt werden, wann die Proxy-Hardware nicht
 mehr ausreicht. Oder es können bestimmte Seiten gesperrt werden, die
 den Internet-Zugang überstrapazieren.
+    </textblock>
 
+    <textblock>
 In diesen Kontrollmöglichkeiten liegt natürlich auch die Gefahr, in
 die Privatsphäre anderer einzugreifen. Deshalb ist die
-Informationsflut in die Logfiles abgestuft deaktivierbar (z.B. mit
-dem Parameter "client_netmask").
+Informationsflut in die Logfiles abgestuft deaktivierbar (z. B. mit
+dem Parameter <command>client_netmask</command>).
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Erhöhte Sicherheit
+    </heading>
 
-
-
-1.1.1 Erhöhte Sicherheit
-
+    <textblock>
 Eine Firewall kann ein lokales Netz effektiver absichern, wenn sie
 einen Proxy wie den Squid verwendet, anstatt nur auf Paketfilterung
 zu vertrauen.
-Der Grund dafür liegt darin, dass Paketfilter auf TCP/IP-Ebene, nicht
+Der Grund dafür liegt darin, dass <ref chapter="iptables">Paketfilter</ref> auf
+<ref chapter="tcpip">TCP/IP-Ebene</ref>, nicht
 aber den Inhalt von HTTP- und FTP-Verbindungen analysieren können.
 Proxies können aber genau diese Inhalte erkennen.
+    </textblock>
 
+    <textblock>
 Zusätzlich können Proxies die Clients des lokalen Netzes erheblich
-besser verbergen, als es durch
-<!-- LINK: chapter="nat" -->Network Adress Translation (NAT)<!-- ENDLINK -->
-möglich wäre. Mit Hilfe des Squid
-kann genau definiert werden, was an den Webserver übertragen werden
-soll und was nicht (z.B. mit dem Parameter "forwarded_for").
+besser verbergen, als es durch <ref chapter="nat">Network Adress Translation (NAT)</ref>
+möglich wäre. Mit Hilfe des Squid kann genau definiert werden, was an den Webserver
+übertragen werden soll und was nicht (z. B. mit dem Parameter <command>forwarded_for</command>).
+    </textblock>
 
-Es können einige Viren geblockt werden (z.B. Nimda).
+    <textblock>
+Es können einige <ref chapter="grundlagen_sicherheit" iref="Viren">Viren</ref> geblockt werden (z. B. Nimda).
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Namensauflösung vereinfacht
+    </heading>
 
-
-
-1.1.1 Namensauflösung vereinfacht
-
+    <textblock>
 Praktisch ist auch, dass ein Proxy die Namensauflösung zu den
 IP-Adressen übernimmt. Es muss im internen Netz kein öffentlicher
-Name auflösbar sein, was die DNS-Konfiguration erleichtert.
+Name auflösbar sein, was die <ref chapter="dns">DNS-Konfiguration</ref> erleichtert.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Große Flexibilität
+    </heading>
 
-
-
-1.1.1 Große Flexibilität
-
+    <textblock>
 Insbesondere in komplexeren Netzwerken ist der Squid-Proxy sehr
 flexibel.
+    </textblock>
 
-So kann z.B. genau definiert werden, welche Seiten aus dem
+    <textblock>
+So kann z. B. genau definiert werden, welche Seiten aus dem
 Internet, welche von einem anderen Proxy und welche direkt aus dem
 lokalen Netz geholt werden sollen.
+    </textblock>
 
-Es kann über mehrere Standorte ein so genannter "Cache-Verbund"
+    <textblock>
+Es kann über mehrere Standorte ein so genannter <strong>Cache-Verbund</strong>
 aufgebaut werden, was die Netzlast deutlich vermindern kann
 und die Ausfallsicherheit erhöht.
+    </textblock>
 
+    <textblock>
 Des weiteren sind zusätzliche Module verfügbar, welche die
-Funktionalität des Squid erweitern können. Hierzu zählen z.B.
-SquidGuard oder auch Module für die Nutzung einer
+Funktionalität des Squid erweitern können. Hierzu zählen z. B.
+<ref lang="en" url="http://www.squidguard.org/">SquidGuard</ref> oder auch Module für die Nutzung einer
 Windows-Benutzerverwaltung im Squid.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Squid-Konfiguration auf die Schnelle
+   </heading>
 
-
-
-1 Squid-Konfiguration auf die Schnelle
-
+   <textblock>
 Nach der Installation ist der Squid nicht ohne Anpassungen
-lauffähig, er muss zunächst über die Datei "/etc/squid.conf" an die
+lauffähig, er muss zunächst über die Datei <path>/etc/squid.conf</path> an die
 vorhandene Netzwerk-Situation angepasst werden. Diese Datei ist sehr
 gut kommentiert, aber aufgrund der vielen Einstelloptionen auch sehr
 umfangreich. Zum Glück können fast alle Optionen unverändert
 übernommen werden.
+   </textblock>
 
+   <textblock>
 Um den Proxy erst einmal zum Laufen zu bringen,
 müssen die hier vorgestellten Parameter angepasst werden.
 Ergänzend kann auch in die
 QUICKSTART-Datei der Squid-Doku geschaut werden (meist unter
-/usr/share/doc/squid).
+<path>/usr/share/doc/squid</path>).
+   </textblock>
 
+   <section>
+    <heading>
+Zugriffs-Rechte
+    </heading>
 
-
-
-1.1 Zugriffs-Rechte
-
+    <textblock>
 Die Voreinstellung des Squid ist aus Sicherheitsgründen so, dass
 keiner surfen darf.
 Die Rechtevergabe ist sehr flexibel und damit leider auch kompliziert.
 Es soll der Einfachheit halber zunächst allen Nutzern im eigenen
 lokalen Netz Vollzugriff auf das Internet gewährt werden.
+    </textblock>
 
+    <textblock>
 Für die Rechtevergabe muss zunächst die Zugriffs-Kontroll-Liste
 (Access Control List, ACL) definiert werden.
 Anschließend wird über den Namen dieser ACL das Recht mit dem
-Schlüsselwort "http_access" zugewiesen. Weitere Details sind zu finden
-unter:
-<!-- LINK iref="Rechtevergabe unter Squid im Detail" -->Rechtevergabe unter Squid im Detail<!-- ENDLINK -->
+Schlüsselwort <command>http_access</command> zugewiesen. Weitere Details sind zu finden
+unter: <ref iref="Rechtevergabe unter Squid im Detail">Rechtevergabe unter Squid im Detail</ref>
+    </textblock>
 
+    <textblock>
 Die Syntax der ACL:
+    </textblock>
 
-acl  <frei_definierbarer_Name>  <acl_Typ>  <Werte>
+    <file>
+     <content>
+acl &lt;frei_definierbarer_Name&gt; &lt;acl_Typ&gt; &lt;Werte&gt;
+     </content>
+    </file>
 
+    <textblock>
 Angenommen, die PCs des eigenen Netzes verwenden alle IPs aus
-dem Bereich "192.168.10.*",
+dem Bereich <strong>192.168.10.*</strong>,
 könnte die Konfiguration für Vollzugriff des eigenen
 lokalen Netzes wie folgt aussehen:
+    </textblock>
 
+    <file>
+     <content>
 acl allowed_hosts src 192.168.10.0/255.255.255.0
 
 http_access allow allowed_hosts
 http_access deny all
+     </content>
+    </file>
 
+    <textblock>
 Die letzte Zeile ist schon vorhanden, die beiden darüber liegenden
 müssen neu angelegt werden.
-Die Reihenfolge der "http_access"-Zeilen ist wichtig!
+Die Reihenfolge der <command>http_access</command>-Zeilen ist wichtig!
 Für die eigene Nutzung muss natürlich die IP-Netz-Adresse
-192.168.10.0/255.255.255.0 angepasst werden.
+<strong>192.168.10.0/255.255.255.0</strong> angepasst werden.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Größe des Festplatten-Zwischenspeichers
+    </heading>
 
-
-
-1.1 Größe des Festplatten-Zwischenspeichers
-
+    <textblock>
 Dieser Parameter ist nicht zwingend zu verändern, damit Squid
 lauffähig wird, aber so wichtig, dass er hier aufgeführt wird.
+    </textblock>
 
-Soll der Zwischenspeicher ("Cache") viele Objekte enthalten können,
+    <textblock>
+Soll der Zwischenspeicher (<strong>Cache</strong>) viele Objekte enthalten können,
 muss die knappe Voreinstellung von 100 MB vergrößert werden.
+    </textblock>
 
+    <textblock>
 Doch Vorsicht: Es kann leider nicht der gesamte verfügbare Platz
 einer Partition genutzt werden, da zusätzlich noch
 Verwaltungsdaten Platz benötigen.
 Steht dem Squid nicht genügend Platz zur Verfügung, kann er
 nicht arbeiten.
 Die Angabe der Zwischenspeicher-Größe sollte deshalb immer mindestens
-10 % unter dem Wert des freien Platzes liegen.
+<strong>10%</strong> unter dem Wert des freien Platzes liegen.
+    </textblock>
 
+    <textblock>
 Die Syntax ist:
+    </textblock>
 
-cache_dir <Pfad zum Ort des Zwischenspeichers> <Größe des
-Zwischenspeichers>  <nicht zu verändernde Parameter>
+    <file>
+     <content>
+cache_dir &lt;Pfad zum Zwischenspeicher&gt; &lt;Größe&gt; &lt;nicht zu verändernde Parameter&gt;
+     </content>
+    </file>
 
-Soll die Größe z.B. auf 10000 MB eingestellt werden, kann folgendes
+    <textblock>
+Soll die Größe z.B. auf 10000MB eingestellt werden, kann folgendes
 eingetragen werden:
+    </textblock>
 
+    <file>
+     <content>
 cache_dir /usr/local/squid/var/cache 10000 16 256
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+Squid hinter einer Firewall
+    </heading>
 
-
-
-1.1 Squid hinter einer Firewall
-
+    <textblock>
 Kann der Squid direkt auf das Internet zugreifen, sollten die beiden
 genannten Einstellungen genügen, um erst mal loslegen zu können.
-"Direkt zugreifen" bedeutet hier, dass der Proxy über das Default
-Gateway auf die Ports 80, 443 und 21 im Internet zugreifen kann.
+<strong>Direkt zugreifen</strong> bedeutet hier, dass der Proxy über das <strong>Default
+Gateway</strong> auf die Ports 80, 443 und 21 im Internet zugreifen kann.
+    </textblock>
 
+    <textblock>
 Wenn das nicht möglich ist, wird die vorgelagerte Firewall einen
 Web-Proxy haben, von dem sich der Squid die Daten holen kann. In
 diesem Fall ist zunächst folgendes einzutragen:
+    </textblock>
 
-cache_peer  <firewall>  parent  <Proxy-Port>  <Optionen>
+    <file>
+     <content>
+cache_peer &lt;firewall&gt; parent &lt;Proxy-Port&gt; &lt;Optionen&gt;
+     </content>
+    </file>
 
+    <textblock>
 Zum Beispiel:
+    </textblock>
 
-cache_peer  192.168.10.1  parent  8080 no-query
+    <file>
+     <content>
+cache_peer 192.168.10.1 parent 8080 no-query
+     </content>
+    </file>
 
+    <textblock>
 Um sicherzustellen, dass Squid für alle unbekannten, nicht im
 eigenen Netz vorkommenden Web-Server auf das Internet zugreift, die
 eigenen Web-Server jedoch direkt anspricht, sollte folgendes ergänzt
 werden:
+    </textblock>
 
-acl localnet srcdom .selflinux.de
+    <file>
+     <content>
+acl localnet srcdom .selflinux.org
 
 always_direct  allow  localnet
 always_direct  allow  allowed_hosts
 never_direct allow  all
+     </content>
+    </file>
 
-Die eigene Domain, hier "selflinux.de", muss natürlich angepasst
+    <textblock>
+Die eigene Domain, hier <strong>selflinux.org</strong>, muss natürlich angepasst
 werden.
-Die ACL für die "allowed_hosts" ist schon weiter oben definiert.
+Die ACL für die <command>allowed_hosts</command> ist schon weiter oben definiert.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Squid-Daemon starten
+   </heading>
 
-
-
-1 Squid-Daemon starten
-
-Die Installation von Squid über RPM oder DEB ermöglicht eine relativ
+   <textblock>
+Die Installation von Squid über <ref chapter="software_installation" iref="RPM">RPM</ref>
+oder <ref chapter="software_installation" iref="Debian Paket Format">DEB</ref> ermöglicht eine relativ
 einfache Inbetriebnahme des Dienstes. In diesen Fällen ist bereits
 einiges vorkonfiguriert, was ansonsten von Hand gemacht werden muss
 (etwa das Anpassen von Dateisystemrechten oder das Erstellen eines
 Init-Skripts).
+   </textblock>
 
+   <textblock>
 Bevor Squid das erste Mal gestartet wird, muss die
 Cache-Verzeichnisstruktur angelegt werden mit:
+   </textblock>
 
+   <shell>
+    <root>
 squid -z
+    </root>
+   </shell>
 
-Wer will, kann nun den Squid zunächst im Debug-Modus auf der Konsole
-starten.
+   <textblock>
+Wer will, kann nun den Squid zunächst im Debug-Modus auf der Konsole starten.
 Fehler werden so auf dem Terminal ausgeben, da Squid nicht in den
 Hintergrund geschickt wird:
+   </textblock>
 
+   <shell>
+    <root>
 squid -NCd1
+    </root>
+   </shell>
 
+   <textblock>
 Ist alles in Ordnung, sollte folgende Zeile erscheinen:
+   </textblock>
 
+   <shell>
+    <output>
 Ready to serve requests.
+    </output>
+   </shell>
 
-Läuft alles zur Zufriedenheit, kann Squid in Zukunft über das von
-der jeweiligen
-Linux-Distribution vorgesehene Startskript gestartet werden,
-meist durch:
+   <textblock>
+Läuft alles zur Zufriedenheit, kann Squid in Zukunft über das von der jeweiligen
+Linux-Distribution vorgesehene Startskript gestartet werden, meist durch:
+   </textblock>
 
+   <shell>
+    <root>
 /etc/init.d/squid start
+    </root>
+   </shell>
 
-Bei Problemen sollten die Logfiles "/var/log/messages" und
-"cache.log" untersucht werden.
+   <textblock>
+Bei Problemen sollten die Logfiles <path>/var/log/messages</path> und
+<path>cache.log</path> untersucht werden.
+   </textblock>
 
-Wo die "cache.log" abgelegt ist, kann ermittelt werden mit:
+   <textblock>
+Wo die <path>cache.log</path> abgelegt ist, kann ermittelt werden mit:
+   </textblock>
 
+   <shell>
+    <root>
 grep cache_log /etc/squid.conf
+    </root>
+   </shell>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Rechtevergabe unter Squid im Detail
+   </heading>
 
+   <section>
+    <heading>
+Warum Zugriffsrechte für den Internet-Zugriff?
+    </heading>
 
-
-1 Rechtevergabe unter Squid im Detail
-
-1.1 Warum sollten Zugriffsrechte für den Internet-Zugriff gesetzt
-werden?
-
+    <textblock>
 Werden die Rechte lediglich so gesetzt wie im Abschnitt
-<!-- LINK iref="Squid-Konfiguration auf die Schnelle" -->Squid-Konfiguration auf die schnelle<!-- ENDLINK -->
+<ref iref="Squid-Konfiguration auf die Schnelle">Squid-Konfiguration auf die Schnelle</ref>
 beschrieben, können alle Nutzer auf sämtliche Inhalte des Internet
 zugreifen.
+    </textblock>
 
+    <textblock>
 Das mag als Konfiguration häufig reichen, es können sich daraus
-jedoch folgende
-Nachteile ergeben:
+jedoch folgende Nachteile ergeben:
+    </textblock>
 
-* Der Internetzugang ist schnell überlastet und damit langsam
-
-* Erhöhte Kosten können entstehen
-
-* Die Nutzer können sich in der Informationsflut des Internets
-verlieren (wichtig bei Schulungen/Schülern)
-
-* Es können sich juristische Probleme ergeben, wenn sich z.B. Schüler
+    <ul>
+     <li>
+Der Internetzugang ist schnell überlastet und damit langsam.
+     </li>
+     <li>
+Erhöhte Kosten können entstehen.
+     </li>
+     <li>
+Die Nutzer können sich in der Informationsflut des Internets
+verlieren (wichtig bei Schulungen/Schülern).
+     </li>
+     <li>
+Es können sich juristische Probleme ergeben, wenn sich z. B. Schüler
 pornografische Inhalte anschauen
+     </li>
+    </ul>
+   </section>
 
+   <section>
+    <heading>
+Umsetzung
+    </heading>
 
-
-
-1.1 Umsetzung
-
+    <textblock>
 Das Setzen der Rechte unter Squid ist sehr flexibel, aber leider
 nicht selbsterklärend.
+    </textblock>
 
+    <textblock>
 Mit einer ACL wird zunächst festlegt, auf was (Ziel) oder von was
 (Quelle) zugegriffen wird.
-Über "http_access" wird dieser ACL anschließend ein Verbot oder eine
+Über <command>http_access</command> wird dieser ACL anschließend ein Verbot oder eine
 Erlaubnis zugewiesen.
+    </textblock>
 
+    <section>
+     <heading>
+ACL-Elemente - Ziel oder Quelle definieren
+     </heading>
 
-
-
-1.1.1 ACL-Elemente - Ziel oder Quelle definieren
-
+     <textblock>
 Die Syntax einer ACL sieht folgendermaßen aus:
+     </textblock>
 
-acl  <frei_definierbarer_acl_Name>  <acl-Typ>  <Wert ...>
+     <file>
+      <content>
+acl &lt;frei_definierbarer_acl_Name&gt; &lt;acl-Typ&gt; &lt;Wert ...&gt;
+      </content>
+     </file>
 
+     <textblock>
 Über den frei definierten ACL-Namen kann mit Hilfe des
-unten erläuterten "http_access" das gewünschte Recht vergeben werden.
+unten erläuterten <command>http_access</command> das gewünschte Recht vergeben werden.
 Diese ACL-Namen dürfen natürlich nicht doppelt vergeben werden.
+     </textblock>
 
+     <textblock>
 Es können verschiedene Arten von Quellen und Zielen zur
 ACL-Definition verwendet werden.
 Hier die für die Zugriffsverwaltung genutzten ACL-Typen:
+     </textblock>
 
-* src: Absender-IP-Adressen der Client-PCs, die über Squid
-auf Web-Inhalte zugreifen wollen
-
-* dst: Ziel-IP-Adressen, auf die zugegriffen werden soll
-
-* dstdomain: Name der Ziel-Domain, auf deren Server
+     <ul>
+      <li>
+<command>src</command>: Absender-IP-Adressen der Client-PCs, die über Squid
+auf Web-Inhalte zugreifen wollen.
+      </li>
+      <li>
+<command>dst</command>: Ziel-IP-Adressen, auf die zugegriffen werden soll.
+      </li>
+      <li>
+<command>dstdomain</command>: Name der Ziel-Domain, auf deren Server
 im Internet zugegriffen werden soll. Hier kann auch direkt
 ein Server angegeben werden!
-
-* dstdom_regex: Wie dstdomain, zusätzlich können
-<!-- LINK: chapter="regex" -->Reguläre Ausdrücke<!-- ENDLINK -->
-verwendet werden, um die Liste der Server zu erweitern
-
-* time: Zur Festlegung bestimmter Zeitbereiche, in denen gesurft
-werden darf
-
-* url_regex: URLs können über Reguläre Ausdrücke definiert werden
-
-* urlpath_regex: Der Pfad, also alles, außer dem Protokoll
-(wie http://) und dem Rechnernamen (wie www.selflinux.org), wird mit
-dem angegebenen Regulären Ausdruck verglichen
-
-* ident: Vergleich der Namen, die von den Unix-Clients mit dem identd
+      </li>
+      <li>
+<command>dstdom_regex</command>: Wie <command>dstdomain</command>, zusätzlich können
+<ref chapter="regex">Reguläre Ausdrücke</ref>
+verwendet werden, um die Liste der Server zu erweitern.
+      </li>
+      <li>
+<command>time</command>: Zur Festlegung bestimmter Zeitbereiche, in denen gesurft
+werden darf.
+      </li>
+      <li>
+<command>url_regex</command>: URLs können über Reguläre Ausdrücke definiert werden.
+      </li>
+      <li>
+<command>urlpath_regex</command>: Der Pfad, also alles, außer dem Protokoll
+(wie <strong>http://</strong>) und dem Rechnernamen (wie <strong>www.selflinux.org</strong>), wird mit
+dem angegebenen Regulären Ausdruck verglichen.
+      </li>
+      <li>
+<command>ident</command>: Vergleich der Namen, die von den Unix-Clients mit dem <command>identd</command>
 übertragen werden, mit denen in der Liste. So kann eine
-einfache Benutzerverwaltung genutzt werden. Den identd gibt
+einfache Benutzerverwaltung genutzt werden. Den <command>identd</command> gibt
 es auch für Windows als Programm oder als Dienst.
-
-* external: Einbinden eines externen Hilfsprogramms, das z.B.
+      </li>
+      <li>
+<command>external</command>: Einbinden eines externen Hilfsprogramms, das z. B.
 ermöglicht, zur Benutzerverwaltung einen NT-Domänen-Kontroller
 zu nutzen.
+      </li>
+     </ul>
 
+     <textblock>
 Weitere ACL-Typen stehen für spezielle Anwendungen des Squid zur
 Verfügung, die nicht für die Benutzerverwaltung wichtig sind.
+     </textblock>
 
+     <textblock>
 Werden mehrere Werte hinter dem ACL-Typ aufgelistet, braucht nur einer
-der Werte zu passen, um das zugehörige "http_access" zu aktivieren
-(OR-Logik, siehe
-<!-- LINK iref="Logik der Rechtevergabe" -->Logik der Rechtevergabe<!-- ENDLINK -->).
+der Werte zu passen, um das zugehörige <command>http_access</command> zu aktivieren
+(OR-Logik, siehe <ref iref="Logik der Rechtevergabe">Logik der Rechtevergabe</ref>).
+     </textblock>
 
+     <textblock>
 Zur besseren Übersicht können die aufzulistenden Werte auch in eine
 eigene Datei ausgelagert werden.
 Dort wird für jeden Eintrag eine eigene Zeile angelegt.
 Die Datei muss Squid wie folgt bekanntgegeben werden:
+     </textblock>
 
-acl  <frei_definierbarer_Name>  <acl-Typ>  "<Pfad_zur_Datei>"
+     <file>
+      <content>
+acl &lt;frei_definierbarer_Name&gt; &lt;acl-Typ&gt; "&lt;Pfad_zur_Datei&gt;"
+      </content>
+     </file>
+    </section>
 
+    <section>
+     <heading>
+Zugriffsrechte für die ACLs definieren
+     </heading>
 
+     <textblock>
+Mit <command>http_access</command> wird in Kombination mit <command>allow</command> bzw.
+<command>deny</command> ein Recht für die definierten ACL-Elemente festgelegt.
+     </textblock>
 
-
-1.1.1 Zugriffsrechte für die ACLs definieren
-
-Mit "http_access" wird in Kombination mit allow bzw. deny ein Recht
-für die definierten ACL-Elemente festgelegt.
-
+     <textblock>
 Die Syntax:
+     </textblock>
 
-http_access allow|deny <acl-Name ...>
+     <file>
+      <content>
+http_access allow|deny &lt;acl-Name ...&gt;
+      </content>
+     </file>
 
+     <textblock>
 Das sieht zunächst sehr simpel aus. Einer definierten ACL wird über
-"deny" oder "allow" ein gewünschtes Recht zugewiesen, so wie im
-Beispiel des Abschnittes
-<!-- LINK iref="Squid-Konfiguration auf die schnelle" -->Squid-Konfiguration auf die schnelle<!-- ENDLINK --> gezeigt:
+<command>deny</command> oder <command>allow</command>" ein gewünschtes Recht zugewiesen,
+so wie im Beispiel des Abschnittes
+<ref iref="Squid-Konfiguration auf die Schnelle">Squid-Konfiguration auf die Schnelle</ref> gezeigt:
+     </textblock>
 
+     <file>
+      <content>
 acl allowed_hosts src 192.168.10.0/255.255.255.0
 http_access allow allowed_hosts
+      </content>
+     </file>
 
+     <textblock>
 Komplexer wird es, wenn mehrere ACL-Namen in einer Zeile
 aufgelistet sind. Dies bewirkt, dass alle aufgelisteten ACLs
-zutreffen müssen, damit das "allow" oder "deny" in Kraft treten kann.
+zutreffen müssen, damit das <command>allow</command> oder <command>deny</command>" in Kraft treten kann.
+     </textblock>
 
+     <textblock>
 Beispiel:
+     </textblock>
 
-acl  all  src  0/0
-acl  selflin  dstdom  .selflinux.de
-acl  pcRestr  src  192.168.20.0/255.255.255.0
-acl  allowed_hosts  src  192.168.10.0/255.255.255.0
+     <file>
+      <content>
+acl all            src    0/0
+acl selflin        dstdom .selflinux.org
+acl pcRestr        src    192.168.20.0/255.255.255.0
+acl allowed_hosts  src    192.168.10.0/255.255.255.0
 
-http_access  allow  selflin  pcRestr
-http_access  allow  allowed_hosts
-http_access  deny  all
+http_access allow selflin       pcRestr
+http_access allow allowed_hosts
+http_access deny  all
+      </content>
+     </file>
 
-Die Angabe der zwei ACL-Namen "selflin" und "pcRestr" nach dem ersten
-"http_access" bewirkt, dass Rechner mit der IP 192.168.20.* nur
-auf selflinux-Seiten surfen dürfen.
-Die "allowed_hosts" dürfen alles sehen, da diese nicht mit einer
-zusätzlichen ACL in der http_access-Zeile eingeschränkt werden.
+     <textblock>
+Die Angabe der zwei ACL-Namen <strong>selflin</strong> und <strong>pcRestr</strong> nach dem ersten
+<command>http_access</command> bewirkt, dass Rechner mit der IP <strong>192.168.20.*</strong> nur
+auf SelfLinux-Seiten surfen dürfen.
+Die <command>allowed_hosts</command> dürfen alles sehen, da diese nicht mit einer
+zusätzlichen ACL in der <command>http_access</command>-Zeile eingeschränkt werden.
+     </textblock>
 
-Hier ist gleich eine wichtige Eigenart des ACL-Typs "dstdom" zu
+     <textblock>
+Hier ist gleich eine wichtige Eigenart des ACL-Typs <command>dstdom</command> zu
 erkennen:
-Der "." vor dem Domainnamen sagt Squid, dass auch Subdomains in diese
-ACL fallen, wie z.B. www.selflinux.de oder srv.sub.selflinux.de.
+Der <strong>.</strong> vor dem Domainnamen sagt Squid, dass auch Subdomains in diese
+ACL fallen, wie z. B. www.selflinux.org oder srv.sub.selflinux.org.
+     </textblock>
+    </section>
 
+    <section>
+     <heading>
+Logik der Rechtevergabe
+     </heading>
 
-
-
-1.1.1 Logik der Rechtevergabe
-
+     <textblock>
 Es ist sehr wichtig für das Berechtigungsmodell von Squid,
 die OR/AND-Logik zu verstehen:
+     </textblock>
 
+     <ul>
+      <li>
 Alle Elemente eines ACL-Eintrags werden mit OR verknüpft.
+      </li>
+      <li>
 Alle Elemente eines Access-Eintrags dagegen werden mit einem AND
 verknüpft.
+      </li>
+     </ul>
 
+     <textblock>
 Noch ein Beispiel, das fatalerweise überhaupt keinen Zugriff
 ermöglicht:
+     </textblock>
 
+     <file>
+      <content>
 acl wir src 192.168.10.0
 acl ihr src 192.168.20.0
 http_access allow wir ihr
+      </content>
+     </file>
 
+     <textblock>
 Hier würden Zugriffe dann erlaubt werden, wenn sich der Surfende
 zugleich mit den beiden Quell-IPs an den Proxy wendet, was nicht
 möglich ist. Somit werden keine Zugriffe mehr erlaubt.
+     </textblock>
 
+     <textblock>
 Sollen dagegen beide IP-Adressen Zugriff erhalten, muss folgendes
 eingetragen werden:
+     </textblock>
 
+     <file>
+      <content>
 acl wir src 192.168.10.0 192.168.20.0
 http_access allow wir
+      </content>
+     </file>
 
-Ein weiterer wichtiger Punkt ist die Reihenfolge der access-Listen.
+     <textblock>
+Ein weiterer wichtiger Punkt ist die Reihenfolge der <command>access</command>-Listen.
+     </textblock>
 
+     <textblock>
 Ist erst einmal ein Zugriff erlaubt worden, kann er durch darunter
 liegende Zeilen nicht wieder zurückgenommen werden.
+     </textblock>
 
+     <textblock>
 Beispiel:
+     </textblock>
 
-acl selflin dstdom .selflinux.de
-acl verboten src 10.0.0.23
+     <file>
+      <content>
+acl selflin  dstdom .selflinux.org
+acl verboten src    10.0.0.23
 http_access allow selflin
-http_access deny verboten
+http_access deny  verboten
+      </content>
+     </file>
 
-Obwohl 10.0.0.23 in der letzen Zeile alles verboten wird, kann
-dieser PC die Seiten von selflinux sehen, da die Erlaubnis über dem
+     <textblock>
+Obwohl <strong>10.0.0.23</strong> in der letzen Zeile alles verboten wird, kann
+dieser PC die Seiten von SelfLinux sehen, da die Erlaubnis über dem
 kompletten Verbot vergeben wurde.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Squid aus Quellen kompilieren
+   </heading>
 
-
-
-1 Squid aus Sourcen kompilieren
-
+   <textblock>
 Selbst kompilieren hat mehrere Vorteile:
+   </textblock>
 
-1. Es können zusätzliche Funktionen aktiviert oder zur
+   <ol>
+    <li>
+Es können zusätzliche Funktionen aktiviert oder zur
 Stabilitätserhöhung ungenutzte Funktionen deaktiviert werden
-
-2. Die aktuellsten Versionen sind meist nur als Sourcen verfügbar
-
-3. Das kompilierte Programm ist optimal an die Umgebung
+    </li>
+    <li>
+Die aktuellsten Versionen sind meist nur als Sourcen verfügbar
+    </li>
+    <li>
+Das kompilierte Programm ist optimal an die Umgebung
 angepasst, wie z.B. Prozessortyp und Bibliotheken.
+    </li>
+   </ol>
 
+   <textblock>
 Der Nachteil ist, dass die Installation erheblich aufwendiger ist.
+   </textblock>
 
+   <section>
+    <heading>
+Kompilieren und Installation
+    </heading>
 
-
-
-1.1 Kompilieren und Installation
-
+    <textblock>
 Zunächst sollten die neuesten Squid-Sourcen geholt werden unter
-<!-- LINK: url="http://www.squid-cache.org/" -->www.squid-cache.org<!-- ENDLINK -->
+<ref lang="en" url="http://www.squid-cache.org/">www.squid-cache.org</ref>
 (am besten die jeweils aktuellste STABLE-Version wählen).
+    </textblock>
 
+    <textblock>
 Anschließend sind diese auszupacken mit:
+    </textblock>
 
-cd /usr/local/src/
-tar xvjf squid-<Version>.tar.bz2
+    <shell>
+     <root>
+cd /usr/local/src
+     </root>
+     <root path="/usr/local/src">
+tar xvjf squid-&lt;Version&gt;.tar.bz2
+     </root>
+    </shell>
 
-Mit dem configure-Kommando können Parameter übergeben werden, um
+    <textblock>
+Mit dem <command>configure</command>-Kommando können Parameter übergeben werden, um
 Squid den eigenen Anforderungen anzupassen. Die möglichen Parameter
 sind zu erfahren mit:
+    </textblock>
 
-cd squid-<Version>
+    <shell>
+     <root>
+cd squid-&lt;Version&gt;
+     </root>
+     <root>
 ./configure --help
+     </root>
+    </shell>
 
+    <textblock>
 Anschließend kann kompiliert und installiert werden.
+    </textblock>
 
+    <textblock>
 Soll Squid beispielsweise mit
-<!-- LINK: iref="Squid in ein Windows-NT-Netz integrieren" -->Zugriffsmöglichkeiten auf eine Windows-NT-Domäne<!-- ENDLINK -->
-installiert werden, kann der Aufruf von configure z.B.
+<ref iref="Squid in Windows-NT-Netz integrieren">Zugriffsmöglichkeiten auf eine Windows-NT-Domäne</ref>
+installiert werden, kann der Aufruf von <command>configure</command> z. B.
 folgendermaßen aussehen:
+    </textblock>
 
-./configure  --enable-auth="ntlm,basic" \
-  --enable-external-acl-helpers="wbinfo_group"
+    <shell>
+     <root>
+./configure  --enable-auth="ntlm,basic" --enable-external-acl-helpers="wbinfo_group"
+     </root>
+     <root>
 make all
+     </root>
+     <root>
 make install
+     </root>
+    </shell>
+   </section>
 
+   <section>
+    <heading>
+Konfiguration
+    </heading>
 
-
-
-1.1 Konfiguration
-
-Die Konfigurationsdatei "squid.conf" liegt standardmäßig nach dem
-Kompilieren unter /usr/local/squid/etc/squid.conf. Der Übersicht und
+    <textblock>
+Die Konfigurationsdatei <path>squid.conf</path> liegt standardmäßig nach dem
+Kompilieren unter <path>/usr/local/squid/etc/squid.conf</path>. Der Übersicht und
 Einheitlichkeit halber sollte folgender Link erzeugt werden:
+    </textblock>
 
+    <shell>
+     <root>
 ln -s /usr/local/squid/etc/squid.conf /etc/squid.conf
+     </root>
+    </shell>
 
+    <textblock>
 Vor dem ersten Start ist die Cache-Verzeichnisstruktur und deren
 Rechte anzulegen mit:
+    </textblock>
 
+    <shell>
+     <root>
 mkdir -p /usr/local/squid/var/cache
+     </root>
+     <root>
 mkdir -p /usr/local/squid/var/logs
+     </root>
+     <root>
 chown -R nobody /usr/local/squid/var/cache
+     </root>
+     <root>
 chown -R nobody /usr/local/squid/var/logs
+     </root>
+     <root>
 /usr/local/squid/sbin/squid -z
+     </root>
+    </shell>
 
-Die Konfiguration über die Datei squid.conf ist identisch mit der von
-RPM- oder DEB-Paket-Installationen.
+    <textblock>
+Die Konfiguration über die Datei <path>squid.conf</path> ist identisch mit der von
+<ref chapter="software_installation" iref="RPM">RPM</ref>- oder
+<ref chapter="software_installation" iref="Debian Paket Format">DEB</ref>-Paket-Installationen.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Installation kontrollieren
+    </heading>
 
-
-
-1.1 Installation prüfen
-
+    <textblock>
 Der Squid kann im Debug-Modus gestartet werden, um mögliche Fehler
 gleich auf dem Terminal zu sehen (siehe
-<!-- LINK iref="Squid-Daemon starten" -->Squid-Daemon starten<!-- ENDLINK -->).
+<ref iref="Squid-Daemon starten">Squid-Daemon starten</ref>).
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Squid starten mit Startskript
+    </heading>
 
-
-
-1.1 Squid starten mit Startskript
-
+    <textblock>
 Läuft der Squid im Testlauf ohne Probleme, sollte ein Startskript
-erstellt werden. Über dieses kann der Squid bei einem reboot
-automatisch hochgefahren werden.
+erstellt werden. Über dieses kann der Squid bei einem Neustart des
+Systems automatisch hochgefahren werden.
+    </textblock>
 
+    <textblock>
 Zu beachten ist, dass der Squid bei noch aktiven Verbindungen längere
 Zeit braucht, bis er gestoppt ist. Deshalb ist hier für den Stop-Fall
 eine Schleife einzubauen, die das Skript erst dann beendet, wenn der
-Daemon wirklich gestorben ist, da ansonsten ein restart mit
+Daemon wirklich gestorben ist, da ansonsten ein erneuter Start mit
 Fehlern abgebrochen wird.
+    </textblock>
 
+    <file>
+     <content>
+      <![CDATA[
 #!/bin/bash
 
 squid=/usr/local/squid/sbin/squid
@@ -662,119 +1024,183 @@ restart)
         echo "Usage: $0 {start|stop|reload|restart|status|}" >&2
 ;;
 esac
+      ]]>
+     </content>
+    </file>
 
-Dieses Skript ist als "/etc/init.d/squid" anzulegen und ausführbar
+    <textblock>
+Dieses Skript ist als <path>/etc/init.d/squid</path> anzulegen und ausführbar
 zu machen.
+    </textblock>
 
+    <textblock>
 Um einen automatischen Start des Squid nach einem reboot zu
 erreichen, müssen die entsprechenden Links auf die rc-Verzeichnisse
 gesetzt werden. Da sich die einzelnen Linux-Distributionen hier leider
 sehr unterscheiden, ist hierfür kein einfaches Beispiel möglich.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Squid in Windows-NT-Netz integrieren
+   </heading>
 
+   <section>
+    <heading>
+Funktionen für die Windows-NT-Benutzerverwaltung
+    </heading>
 
-
-1 Squid in Windows-NT-Netz integrieren
-
-1.1 Neue Funktionen des Squid-Proxies für die Zusammenarbeit mit der
-Windows-NT-Benutzerverwaltung
-
+    <textblock>
 Der Squid ist flexibel, ausgereift und kostenlos, doch innerhalb
 eines Windows-Netzes hatte er bis zur Version 2.4 zwei gravierende
 Nachteile:
+    </textblock>
 
-1. Doppelte Benutzerverwaltung:
+    <ol>
+     <li>
+<strong>Doppelte Benutzerverwaltung</strong>:
 Sollen User unterschiedliche Web-Zugriffsrechte bekommen, müssen diese
-Nutzer dem Squid natürlich bekannt sein, d.h. es ist eine
+Nutzer dem Squid natürlich bekannt sein, d. h. es ist eine
 Benutzerverwaltung notwendig. Diese musste bislang zusätzlich,
 neben der Windows-Domänen-Benutzerverwaltung, betreut werden, was
 einen erheblichen administrativen Mehraufwand bedeutete.
-
-2. Verminderte Benutzerfreundlichkeit beim Surfen:
+     </li>
+     <li>
+<strong>Verminderte Benutzerfreundlichkeit beim Surfen</strong>:
 Eine transparente Authentifizierung durch den IE war nicht
 möglich, d.h. es musste für den Zugang Name und Passwort in ein
 Browser-Fenster eingeben werden, das auch noch unabhängig von dem
 der Windows-NT-Domäne ist.
+     </li>
+    </ol>
 
+    <textblock>
 Diese Nachteile sind mit der Squid-Version 2.5 bei entsprechender
 Konfiguration behoben.
+    </textblock>
 
-Das Squid- und das
-<!-- LINK: url="http://samba.org" -->Samba-Team<!-- ENDLINK -->
+    <textblock>
+Das Squid- und das <ref url="http://samba.org">Samba-Team</ref>
 schufen gemeinsam die Möglichkeit, die
 Benutzerverwaltung einer Windows-NT-Domäne für Squid nutzen zu können.
 Der Zugriff auf die Windows-Domäne wird dem Squid-Proxy mit Hilfe
 neuer Helper-Module in Ergänzung zu Samba-Winbind ermöglicht.
+    </textblock>
 
+    <textblock>
 Auch die Benutzerfreundlichkeit für den Surfenden ist mit der
 MS-Konkurrenz gleichgezogen. Dabei nutzt der Squid die gleichen
 Mechanismen (NTLM) wie ein MS-Proxy. Es ist mit dem IE keine
 zusätzliche Authentifizierung mehr notwendig.
 Mit allen anderen Browsern muss man sich authentifizieren,
 und zwar mit dem Nutzernamen und Passwort des NT-Benutzers.
+    </textblock>
 
+    <textblock>
 Die Arbeitserleichterung für Administratoren eines Windows-Netzes ist
 enorm. Der neu angelegte User hat sofort die für ihn bestimmten
 Rechte, wenn er nur der entsprechenden Windows-Gruppe hinzugefügt
 wird. Da die User im Usermanager für NT normalerweise mit F8 von
 einer Vorlage kopiert werden, ist dies kein Mehraufwand.
+    </textblock>
 
+    <textblock>
 Gibt es Probleme mit fehlenden Rechten, reicht nun meist ein Blick in
 den Usermanager, um diese zu kontrollieren.
+    </textblock>
 
+    <textblock>
 Die Installation und Einrichtung mit der genannten Zielsetzung ist
 nicht trivial, sollte aber mit geringen Unix-Grundkenntnissen und
 dieser Anleitung möglich sein.
-Leider ist es unumgänglich, die Programme Samba und Squid selbst zu
-kompilieren. Vorhandene Binaries der Linux-Distributionen sind nicht
+Leider ist es meist unumgänglich, die Programme <command>samba</command>
+und <command>squid</command> selbst zu kompilieren.
+Vorhandene Binaries der Linux-Distributionen sind nicht
 mit den nötigen Parametern übersetzt und oft nicht aktuell genug.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Samba mit Winbind
+    </heading>
 
+    <section>
+     <heading>
+Installation
+     </heading>
 
+     <textblock>
+Es müssen Entwicklertools wie <ref chapter="make">make</ref> und <command>gcc</command> installiert sein.
+Die folgenden Ausführungen beziehen sich auf die Samba-Version 3.0.*.
+     </textblock>
 
-1.1 Samba mit Winbind
-
-1.1.1 Installation
-
-Es müssen Entwicklertools wie make und gcc installiert
-sein.
-Die folgenden Ausführungen beziehen sich auf die Samba-Version
-3.0.*.
-
-Nach dem Download der
-<!-- LINK: url="http://samba.org" -->Quellen<!-- ENDLINK -->
-sollten diese unter /usr/local/src/
+     <textblock>
+Nach dem Download der <ref url="http://samba.org">Quellen</ref>
+sollten diese unter <path>/usr/local/src/</path>
 ausgepackt werden. Samba ist zu übersetzen und zu installieren mit:
+     </textblock>
 
-cd /usr/local/src/samba-<Version>/source>
+     <shell>
+      <root>
+cd /usr/local/src/samba-&lt;Version&gt;/source
+      </root>
+      <root>
 ./configure --with-winbind
+      </root>
+      <root>
 make
+      </root>
+      <root>
 make install
+      </root>
+     </shell>
+    </section>
 
+    <section>
+     <heading>
+Konfiguration von Samba/winbind
+     </heading>
 
-
-
-1.1.1 Konfiguration von Samba/winbind
-
-Als erstes ist eine smb.conf aus dem Quellcode in das richtige
+     <textblock>
+Als erstes ist eine <command>smb.conf</command> aus dem Quellcode in das richtige
 Verzeichnis zu kopieren:
+     </textblock>
 
-cp /usr/local/src/samba-<Version>/examples/smb.conf.default
+     <shell>
+      <root>
+cp /usr/local/src/samba-&lt;Version&gt;/examples/smb.conf.default
+      </root>
+     </shell>
 
+     <textblock>
 Um die Konfigurationsdatei leichter zu finden, sollte ein Link in das
-Verzeichnis /etc/ erstellt werden mit:
+Verzeichnis <path>/etc/</path> erstellt werden mit:
+     </textblock>
 
+     <shell>
+      <root>
 ln -s /usr/local/samba/lib/smb.conf /etc/smb.conf
+      </root>
+     </shell>
 
+     <textblock>
 Nun sollte diese Datei folgendermaßen angepasst werden:
+     </textblock>
 
-workgroup = <NT-Domänen-Name>
+     <file>
+      <content>
+workgroup = &lt;NT-Domänen-Name&gt;
 security = domain
 # hier die Domain Controller des Standortes eintragen
-password server = <dc1> <dc2>
+password server = &lt;dc1&gt; &lt;dc2&gt;
 wins support = no
 # Hier die WINS-Server der Standorte eintragen
-wins server = <IP_des_WINS-Servers>
+wins server = &lt;IP_des_WINS-Servers&gt;
 max log size = 10000
 local master = no
 winbind enum users = yes
@@ -783,56 +1209,104 @@ winbind use default domain = yes
 idmap uid = 10000-20000
 idmap gid = 10000-20000
 template shell = /bin/false
+      </content>
+     </file>
 
-Unter "workgroup" ist der eigene NT-Domänen-Name einzusetzen.
-Als "password server" muss mindestens ein Domänen-Controller angegeben
+     <textblock>
+Unter <strong>workgroup</strong> ist der eigene NT-Domänen-Name einzusetzen.
+Als <strong>password server</strong> muss mindestens ein Domänen-Controller angegeben
 werden.
+     </textblock>
 
+     <textblock>
 Nun kann der Samba-Rechner in die Windows-NT-Domäne aufgenommen
 werden mit:
+     </textblock>
 
-/usr/local/samba/bin/net rpc join -S <PDC> -U <Administrator>
+     <shell>
+      <root>
+/usr/local/samba/bin/net rpc join -S &lt;PDC&gt; -U &lt;Administrator&gt;
+      </root>
+     </shell>
+    </section>
 
+    <section>
+     <heading>
+Installation testen
+     </heading>
 
-
-
-1.1.1 Installation testen
-
+     <textblock>
 Nun können die Dienste von Samba gestartet werden:
+     </textblock>
 
+     <shell>
+      <root>
 /usr/local/samba/bin/nmbd -D
+      </root>
+      <root>
 /usr/local/samba/bin/smbd -D
+      </root>
+      <root>
 /usr/local/samba/bin/winbindd -B
+      </root>
+     </shell>
 
+     <textblock>
 Um zu sehen, ob diese auch laufen, listet folgendes Kommando die
 gestarteten Services auf:
+     </textblock>
 
+     <shell>
+      <root>
 ps aux | egrep "(mbd|winbind)"
+      </root>
+     </shell>
 
+     <textblock>
 Die Anbindung des Samba-Servers an die
 Windows-Domänen-Benutzerverwaltung kann getestet werden mit:
+     </textblock>
 
+     <shell>
+      <root>
 wbinfo -u
+      </root>
+     </shell>
 
+     <textblock>
 Wenn Winbind korrekt arbeitet, sollten alle User der NT-Domänen
 ausgegeben werden.
+     </textblock>
+    </section>
+   </section>
 
+   <section>
+    <heading>
+Squid
+    </heading>
 
+    <section>
+     <heading>
+Kompilierung, Installation und Konfiguration
+     </heading>
 
-
-1.1 Squid
-
-1.1.1 Kompilierung, Installation und Konfiguration
-
+     <textblock>
 Die Kompilierung und Installation ist im Abschnitt
-<!-- LINK iref="Squid selbst kompilieren" -->Squid selbst kompilieren<!-- ENDLINK -->
+<ref iref="Squid aus Quellen kompilieren">Squid aus Quellen kompilieren</ref>
 abgehandelt und mit einem passenden Beispiel erklärt worden.
+     </textblock>
 
+     <textblock>
 Zur Nutzung von NT-Gruppen muss des Weiteren sichergestellt werden,
-dass ein Perl ab der Version 5.8 installiert ist.
+dass ein <command>perl</command> ab der Version 5.8 installiert ist.
+     </textblock>
 
-Die spezifischen Einträge in der /etc/squid.conf sind:
+     <textblock>
+Die spezifischen Einträge in der <path>/etc/squid.conf</path> sind:
+     </textblock>
 
+     <file>
+      <content>
 # Einbindung der neuen ACL-Helper Schnittstelle, hier NT-Domänen
 external_acl_type NT_global_group children=10 ttl=900 %LOGIN /usr/local/squid/libexec/wbinfo_group.pl
 
@@ -844,254 +1318,397 @@ auth_param basic program /usr/local/samba/bin/ntlm_auth --helper-protocol=squid-
 auth_param basic children 50
 auth_param basic realm squid proxy-caching web server
 auth_param basic credentialsttl 2 hours
-# acl <FreiDefinierbarerName> <aclTyp> <Definition>
-acl ProxyUsers external NT_global_group <NT-Gruppen-Name>
+# acl &lt;FreiDefinierbarerName&gt; &lt;aclTyp&gt; &lt;Definition&gt;
+acl ProxyUsers external NT_global_group &lt;NT-Gruppen-Name&gt;
 acl AuthorizedUsers proxy_auth REQUIRED
 # Beispiel für die Rechtevergabe:
-acl selflinux dstdomain .selflinux.de
+acl selflinux dstdomain .selflinux.org
 # Vollzugriff für diese Gruppe
 http_access allow AuthorizedUsers ProxyUsers
 # Dies hätte nur Zugriff auf die Selflinux-Seiten erlaubt:
 #http_access allow AuthorizedUsers ProxyUsers selflinux
+      </content>
+     </file>
 
+     <textblock>
 In der Squid-Dokumentation zu NTLM wird eine Anzahl von 5
 Kind-Prozessen vorgeschlagen. Dies bewirkte in der vom Autor
-betreuten Umgebung "aufpoppende" Anmelde-Fenster.
+betreuten Umgebung <strong>aufpoppende</strong> Anmelde-Fenster.
 Deshalb scheint es empfehlenswert zu sein, reichlich Kind-Prozesse
 starten zu lassen.
 Zur Beschleunigung können zusätzlich die beiden challenge-Werte
 höher gesetzt werden als vorgegeben. Diese legen zusammen die
 Gültigkeitsdauer einer Anfrage an die Windows-Domänen-Controller fest.
+     </textblock>
 
+     <textblock>
 Wer Hilfe zu den Funktionen der weiteren Parameter sucht, findet diese
-ausführlich in der /etc/squid.conf beschrieben.
+ausführlich in der <path>/etc/squid.conf</path> beschrieben.
+     </textblock>
 
+     <textblock>
 Nun muss noch der Squid-Daemon folgende Berechtigung bekommen:
+     </textblock>
 
+     <shell>
+      <root>
 chgrp -R nogroup /usr/local/samba/var/locks/winbindd_privileged/
+      </root>
+     </shell>
 
+     <textblock>
 Um einen gültigen Computeraccount in der Domain zu halten, sollte
-folgender Cronjob hinzugefügt werden:
+folgender <ref chapter="cron">Cronjob</ref> hinzugefügt werden:
+     </textblock>
 
+     <file>
+      <content>
 0 2 * * * /usr/local/samba/bin/net rpc changetrustpw
+      </content>
+     </file>
+    </section>
 
+    <section>
+     <heading>
+Installation prüfen
+     </heading>
 
-
-
-1.1.1 Installation prüfen
-
+     <textblock>
 Zunächst sollte die Anbindung an die NT-Domäne getestet werden. Nach
 der Eingabe von
+     </textblock>
 
+     <shell>
+      <root>
 /usr/local/samba/bin/ntlm_auth --helper-protocol=squid-2.5-basic
+      </root>
+     </shell>
 
-wartet das Programm "wb_auth" auf die Eingabe eines gültigen
+     <textblock>
+wartet das Programm <command>wb_auth</command> auf die Eingabe eines gültigen
 NT-Accounts in Form von
+     </textblock>
 
-<NT-Domänen-Name>\<Accout> <Password>
+     <shell>
+      <input>
+&lt;NT-Domänen-Name&gt;\&lt;Accout&gt; &lt;Password&gt;
+      </input>
+     </shell>
 
+     <textblock>
 wie z.B.:
+     </textblock>
 
+     <shell>
+      <input>
 Domain\joern geheim
+      </input>
+     </shell>
 
-Die Ausgabe muss mit einem "OK" abschließen.
+     <textblock>
+Die Ausgabe muss mit einem <strong>OK</strong> abschließen.
+     </textblock>
 
+     <textblock>
 Nach dem Anlegen der Cache-Verzeichnisstruktur kann der Squid
 Debug-Modus gestartet und mögliche Fehler behoben werden, siehe dazu
-<!-- LINK iref="Squid-Daemon starten" -->Squid-Daemon starten<!-- ENDLINK -->.
+<ref iref="Squid-Daemon starten">Squid-Daemon starten</ref>.
+     </textblock>
+    </section>
 
+    <section>
+     <heading>
+Squid starten
+     </heading>
 
-
-
-1.1.1 Squid starten
-
+     <textblock>
 Nun muss ein Startskript erstellt und mit dem
 gewünschten Runlevel verlinkt werden. Siehe hierzu
-<!-- LINK iref="1.1 Squid starten mit Startskript" -->Squid starten mit Startskript<!-- ENDLINK -->
+<ref iref="Squid starten mit Startskript">Squid starten mit Startskript</ref>
+     </textblock>
+    </section>
 
+    <section>
+     <heading>
+Zugriffsrechte auf Internet-Seiten setzen
+     </heading>
 
-
-
-1.1.1  Zugriffsrechte auf Internet-Seiten setzen
-
+     <textblock>
 Für die User-Verwaltung bleiben folgende Aufgaben:
+     </textblock>
 
+     <section>
+      <heading>
+Squid-Rechte
+      </heading>
 
-
-
-1.1.1.1 Squid-Rechte
-
+      <textblock>
 Für jede globale Windows-NT-Gruppe muss eine ACL in der
-/etc/squid.conf erstellt werden.
+<path>/etc/squid.conf</path> erstellt werden.
 Dort wird das externe Programm, definiert über den oben angegebenen
-"external_acl_type", eingebunden und damit eine Verknüpfung von
+<command>external_acl_type</command>", eingebunden und damit eine Verknüpfung von
 NT-Gruppen mit Squid-ACL-Namen erreicht:
+      </textblock>
 
-acl  <Frei_definierbarer_Name>  external  NT_global_group  <WinNT-GruppenName>
+      <file>
+       <content>
+acl &lt;Frei_definierbarer_Name&gt; external NT_global_group &lt;WinNT-GruppenName&gt;
+       </content>
+      </file>
 
+      <textblock>
 Beispiel:
-acl  verwaltung  external  NT_global_group  verwaltung
+      </textblock>
 
+      <file>
+       <content>
+acl verwaltung  external NT_global_group verwaltung
+       </content>
+      </file>
+
+      <textblock>
 Eine weitere ACL ist zu erstellen für die Seiten, die von der Gruppe
 gesehen werden sollen:
+      </textblock>
 
-acl  <GruppenName>  dstdomain  <.Dns-Domäne1>  <.Dns-Domäne2>  ...
+      <file>
+       <content>
+acl &lt;GruppenName&gt; dstdomain &lt;.Dns-Domäne1&gt; &lt;.Dns-Domäne2&gt;  ...
+       </content>
+      </file>
 
+      <textblock>
 Beispiel:
+      </textblock>
 
-acl  verwaltung_dstdom  dstdomain  .selflinux.de .intranet.de
+      <file>
+       <content>
+acl verwaltung_dstdom dstdomain .selflinux.org .intranet.de
+       </content>
+      </file>
 
+      <textblock>
 Als letztes sind für die ACLs die Rechte festzusetzen:
+      </textblock>
 
-http_access  allow  AuthorizedUsers  <ACL-GruppenName>  <ACL-Zieldomänen-Name>
+      <file>
+       <content>
+http_access allow AuthorizedUsers &lt;ACL-GruppenName&gt; &lt;ACL-Zieldomänen-Name&gt;
+       </content>
+      </file>
 
+      <textblock>
 Beispiel:
+      </textblock>
 
-http_access  allow  AuthorizedUsers  verwaltung  verwaltung_dstdom
+      <file>
+       <content>
+http_access allow AuthorizedUsers verwaltung verwaltung_dstdom
+       </content>
+      </file>
 
+      <textblock>
 Weitere Informationen zur Rechtevergabe siehe unter
-<!-- LINK iref="Rechtevergabe unter Squid im Detail" -->Rechtevergabe unter Squid im Detail<!-- ENDLINK -->.
+<ref iref="Rechtevergabe unter Squid im Detail">Rechtevergabe unter Squid im Detail</ref>.
+      </textblock>
+     </section>
 
+     <section>
+      <heading>
+NT-Domänen-Rechte
+      </heading>
 
-
-
-1.1.1.1 NT-Domänen-Rechte
-
+      <textblock>
 Die Surfer müssen hier nur in die globalen Gruppen aufgenommen
 werden, die auf dem Squid mit den entsprechenden Gruppen verknüpft
 sind.
+      </textblock>
+     </section>
+    </section>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Browser-Proxy-Einstellungen automatisieren und optimieren
+   </heading>
 
-
-
-1 Browser-Proxy-Einstellungen automatisieren und optimieren
-
+   <textblock>
 Netscape hat für seinen Browser eine Möglichkeit entwickelt, über
 Javascript die Proxy-Einstellungen des Browsers zu konfigurieren.
 Inzwischen haben alle bekannten Browser diese Fähigkeit
 integriert.
+   </textblock>
 
+   <textblock>
 Über ein solches Skript kann festgelegt werden, auf welcher Adresse
 und über welchen Port der Proxy seinen Dienst zur Verfügung stellt.
 Zusätzlich kann definiert werden, welche IPs und URLs über den Proxy
 zu gehen haben und welche dagegen direkt an einen Web- oder FTP-Server
 weitergeleitet werden.
+   </textblock>
 
+   <textblock>
 Worin besteht nun der Vorteil, ein derartiges Skript zu nutzen,
 gegenüber dem direkten Eintragen des Proxies in der
 Browser-Konfiguration?
+   </textblock>
 
-* Erhöhte Flexibilität
+   <ul>
+    <li>
+<strong>Erhöhte Flexibilität</strong>
 Wenn der Proxy die IP oder den Port wechselt, sich die Einträge für
 direkten Zugriff ändern, reicht ein Eintrag in dem zentralen Skript.
 Ansonsten müssten zur Änderung alle Client-PCs angefasst werden.
-
-* Erhöhte Ausfall-Sicherheit
+    </li>
+    <li>
+<strong>Erhöhte Ausfall-Sicherheit</strong>
 Sind mehrere Proxies vorhanden, können alle eingetragen werden.
 Ist der erste in der Liste nicht erreichbar, wird der
-zweite genommen u.s.w. Es kann sogar eingetragen werden, dass,
+zweite genommen u. s. w. Es kann sogar eingetragen werden, dass,
 wenn kein Proxy zur Verfügung steht, der Browser direkt ins Internet
 geht (wenn dies netzwerktechnisch erlaubt sein sollte).
 Soll der Proxy dagegen direkt in die Browser-Konfiguration
-eingetragen werden, ist nur EIN einziger Proxy-Eintrag möglich.
-
-* Steuerung des Traffic
+eingetragen werden, ist nur <strong>ein</strong> einziger Proxy-Eintrag möglich.
+    </li>
+    <li>
+<strong>Steuerung des Traffic</strong>
 Sind die Internet-Nutzer über mehrere Standorte verteilt, kann
 über die Feststellung, aus welchem Netz er zugreift, der optimale
 Proxy für ihn zugewiesen werden.
-
-* Erleichterung bei Wartung
+    </li>
+    <li>
+<strong>Erleichterung bei Wartung</strong>
 Schnelle Reaktion bei Ausfall eines Proxys ist durch einfache
 Konfiguration des Proxy-Skriptes möglich. Bei Wartungsarbeiten kann
 vorübergehend einfach ein anderer Proxy zugewiesen werden.
+    </li>
+   </ul>
 
+   <textblock>
 Der Pfad zu dem Skript ist in der Browser-Konfiguration einzutragen.
 Dies kann manuell oder zentral und automatisiert über zu kopierende
 Konfigurations-Dateien oder unter Windows NT/2000/XP über die
 Systemrichtlinien/Policy erfolgen.
+   </textblock>
 
+   <section>
+    <heading>
+Automatische Proxy-Konfiguration
+    </heading>
 
-
-
-1.1 Konfiguration
-
+    <textblock>
 Es ist nicht nötig, Javascript programmieren zu können, um die
 Möglichkeiten der Auto-Konfiguration zu nutzen.
 Es sollte reichen, die hier vorgestellten Beispiele den eigenen
 Netzen anzupassen, d.h. die Domains und IPs mit den eigenen zu
 ersetzen.
+    </textblock>
 
+    <section>
+     <heading>
+Eigene Server direkt ansprechen
+     </heading>
 
-
-
-1.1.1 Eigene Server direkt ansprechen
-
+     <textblock>
 Sollen sich die Clients direkt, ohne Proxy als Bindeglied
 dazwischen, an die eigenen Web-Server wenden, kann dies über den
 eigenen Domain-Namen wie im folgenden Skript umgesetzt werden:
+     </textblock>
 
+     <file>
+      <content>
 function FindProxyForURL(url, host)
 {
-  if (dnsDomainIs(host, ".selflinux.de"))
+  if (dnsDomainIs(host, ".selflinux.org"))
     return "DIRECT";
   else
-    return "PROXY wwwproxy.selflinux.de:3128";
+    return "PROXY wwwproxy.selflinux.org:3128";
 }
+      </content>
+     </file>
 
+     <textblock>
 Die Zahl hinter dem Proxy-Namen legt den Port des Proxies fest.
+     </textblock>
 
+     <textblock>
 Eine andere Möglichkeit besteht in der Angabe der Netzadresse, welche
 direkt, ohne Proxy, angesprochen werden soll:
+     </textblock>
 
+     <file>
+      <content>
 function FindProxyForURL(url, host)
 {
   if (isInNet(host, "192.168.10.0", "255.255.255.0"))
     return "DIRECT";
   else
-    return "PROXY wwwproxy.selflinux.de:3128";
+    return "PROXY wwwproxy.selflinux.org:3128";
 }
+      </content>
+     </file>
+    </section>
 
+    <section>
+     <heading>
+Proxy-Auswahl für verschiedene Standorte automatisieren
+     </heading>
 
-
-
-1.1.1 Proxy-Auswahl für verschiedene Standorte automatisieren
-
+     <textblock>
 Sind mehrere Standorte mit relativ langsamen Standleitungen verbunden,
 ist der Aufbau eines Cache-Verbundes sinnvoll. Dafür werden mehrere
 Squid-Proxies aufgesetzt und sinnvoll miteinander gekoppelt.
+     </textblock>
 
+     <textblock>
 Für einen derartigen Proxy-Verbund ist es wichtig, den
 Internet-Nutzern immer den Proxy vor Ort zuzuweisen, um die
 in dem Standort zwischengespeicherten Seiten nutzen zu können.
 Dadurch wird eine Standleitung oder auch ein VPN entlastet.
+     </textblock>
 
+     <textblock>
 Die URL, unter welcher das Skript abgelegt ist, gilt für alle
 Standorte. Besonders Mitarbeiter, welche oft die
 Standorte wechseln, werden dies sehr begrüßen.
+     </textblock>
 
+     <textblock>
 Das Konfigurations-Skript muss nun feststellen können, an welchem
 Standort sich der Internet-Nutzer befindet.
 Da Netze verschiedener Standorte jeweils eigene IP-Bereiche haben
 sollten, kann dies über die Abfrage der Quell-IP erfolgen.
 Netscape hatte leider nicht vorgesehen, in der Konfigurationsdatei
 nach der Quell-IP fragen zu können. Deshalb hier eine Lösung über
-PHP, die diese Funktion hinzufügt. Der Webserver, der das Auto-Skript
+PHP, die diese Funktion hinzufügt. Der <ref chapter="apache">Webserver</ref>, der das Auto-Skript
 beherbergt, muss PHP installiert haben.
+     </textblock>
 
+     <file>
+      <content>
+       <![CDATA[
 <?php
 header("Content-type: application/x-ns-proxy-autoconfig");
 if (preg_match("/192\.168\.85/", $REMOTE_ADDR)) {
-  $adrr = "PROXY wwwproxy.selflinux.de:3128; PROXY wwwproxy2.selflinux.de:3128";
+  $adrr = "PROXY wwwproxy.selflinux.org:3128; PROXY wwwproxy2.selflinux.org:3128";
 }
 if (preg_match("/192\.168\.75\./", $REMOTE_ADDR)) {
-  $adrr = "PROXY 10.20.20.1:3128; PROXY wwwproxy.selflinux.de:3128";
+  $adrr = "PROXY 10.20.20.1:3128; PROXY wwwproxy.selflinux.org:3128";
 }
 ?>
+       ]]>
+      </content>
+     </file>
 
+     <file>
+      <content>
 function FindProxyForURL(url, host)
 {
 if (isPlainHostName(host) ||
-  dnsDomainIs(host, ".selflinux.de") ||
+  dnsDomainIs(host, ".selflinux.org") ||
   dnsDomainIs(host, ".partnernetz.de") ||
   isInNet(host, "192.168.85.0", "255.255.255.0") ||
   isInNet(host, "172.20.20.80", "255.255.255.255") ||
@@ -1100,8 +1717,17 @@ if (isPlainHostName(host) ||
   else
   return "<?php echo $adrr; ?>";
 }
+      </content>
+     </file>
 
-Wird also z.B. von einem 192.168.75.* Netz zugegriffen, wird der
-Proxy "10.20.20.1" zugewiesen. Wenn der nicht verfügbar ist, wird
-"wwwproxy.selflinux.de" genutzt. Und das, ohne dass es der Anwender
+     <textblock>
+Wird also z.B. von einem <strong>192.168.75.*</strong> Netz zugegriffen, wird der
+Proxy <strong>10.20.20.1</strong> zugewiesen. Wenn der nicht verfügbar ist, wird
+<strong>wwwproxy.selflinux.org</strong> genutzt. Und das, ohne dass es der Anwender
 bemerkt.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+</chapter>
