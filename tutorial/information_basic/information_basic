@@ -1,362 +1,573 @@
-<!--
-   * Titel: Elementare Informationen
-   *
-   * $Revision: 1.10 $
-   *
-   * $Source: /selflinux/tutorial/information_basic/information_basic,v $
-   *
-   * Autor: Frank Börner, Ferdinand Hahmann <FerdinandHahmann@gmx.net>
-   *
-   * Lizenz: GFDL
-   *
-   * Diese Datei ist Teil von SelfLinux  http://www.selflinux.org
-   *
-   *** $Id: information_basic,v 1.10 2004/07/14 20:57:49 Konqui Exp $
--->
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<chapter>
 
+ <title>Elementare Informationen</title>
 
+ <author>
+  <name>Frank Börner</name>
+  <mailto>frank@frank-boerner.de</mailto>
+ </author>
 
-Elementare Informationen
+ <author>
+  <name>Ferdinand Hahmann</name>
+  <mailto>FerdinandHahmann@gmx.net</mailto>
+ </author>
 
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
+ 
+ <license>GFDL</license>
 
+ <index>information_basic</index>
 
-1 Benutzerinformationen
+ <split>
+  <section>
+   <heading>
+Benutzerinformationen
+   </heading>
 
+   <section>
+    <heading>
+     Einführung
+    </heading>
 
-
-1.1 Einführung
-
-Die folgenden Beispiele sind unter X größtenteils nicht
+    <textblock>
+Die folgenden Beispiele sind unter <strong>X</strong> größtenteils nicht
 funktionsfähig, weil die Kommandos nicht herausfinden
 können, welcher Benutzer angemeldet ist. Darum ist die
 Verwendung einer Textkonsole empfehlenswert.
+    </textblock>
 
+    <textblock>
 Wenn Sie gerade unter X arbeiten, können Sie mit der
-Tastenkombination <Strg>+<Alt>+F1 bis <Strg>+<Alt>+F6 auf eine
+Tastenkombination
+     <keycomb mode="hold">
+      <key>Strg</key>
+      <key>Alt</key>
+      <key>F1</key>
+     </keycomb>
+bis
+     <keycomb>
+      <key>Strg</key>
+      <key>Alt</key>
+      <key>F6</key>
+     </keycomb>
+auf eine
 Textkonsole wechseln. Hier werden Sie sich nun vermutlich
 erst anmelden müssen. Geben Sie wie üblich Ihren
 Benutzernamen und Ihr Passwort ein. Um wieder zu X zu wechseln
-genügt <Alt>+F7.
+genügt
+     <keycomb>
+      <key>Alt</key>
+      <key>F7</key>
+     </keycomb>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+id
+    </heading>
 
-
-1.1 id
-
-id gibt Informationen über die Daten, mit denen die Benutzer
+    <textblock>
+<command>id</command> gibt Informationen über die Daten, mit denen die Benutzer
 eines Linux-Systems verwaltet werden, aus. Jeder Benutzer hat
 eine Benutzernummer, die sogenannte UID (user identification
 number). Zudem ist er Mitglied in einer oder mehreren
 Gruppen von Benutzern, was wichtig für die Regelung von
 Zugriffsrechten und Rechten zur Nutzung von
 Systemressourcen ist.
+    </textblock>
 
-$ id
+    <shell>
+     <user>
+id
+     </user>
+     <output>
 uid=500(pinguin) gid=100(users) groups=100(users),14(uucp)
+     </output>
+    </shell>
 
+    <textblock>
 Unser Pinguin ist der Benutzer mit der Nummer 500, und seine
-wichtigste Gruppe ist die Gruppe 100 mit dem Namen "users".
+wichtigste Gruppe ist die Gruppe 100 mit dem Namen <strong>users</strong>.
 Auf fast jedem Linux-System gibt es diese Gruppe, und
 normalerweise sind alle Benutzer Mitglied in ihr.
+    </textblock>
 
+    <textblock>
 Er gehört auch noch einer anderen Gruppe an, der Gruppe
-"uucp", die traditionell das Recht gibt, über
+<strong>uucp</strong>, die traditionell das Recht gibt, über
 Modemverbindungen Daten mit der Außenwelt auszutauschen.
+    </textblock>
 
-id kann auch Informationen über andere Benutzer auf dem
+    <textblock>
+<command>id</command> kann auch Informationen über andere Benutzer auf dem
 System liefern:
+    </textblock>
 
-$ id root
-uid=0(root) gid=0(root)
-groups=0(root),1(bin),14(uucp),15(shadow),16(dialout),17(audio),65534
-(nogroup)
+    <shell>
+     <user>
+id root
+     </user>
+     <output>
+uid=0(root) gid=0(root) groups=0(root),1(bin),14(uucp),15(shadow),16(dialout),17(audio),65534(nogroup)
+     </output>
+    </shell>
 
+    <textblock>
 Dies ist der Systemverwalter root. Er hat seine eigene Gruppe.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+logname
+    </heading>
 
-
-1.1 logname
-
+    <textblock>
 Mit diesem Kommando wird der Benutzername des Benutzers
-abgefragt, der es aufruft. logname lässt sich auch von
+abgefragt, der es aufruft. <command>logname</command> lässt sich auch von
 Kommandos, die es einem Benutzer ermöglichen, vorübergehend
 einen anderen Namen anzunehmen, nicht
 irritieren:
+    </textblock>
 
-$ logname
+    <shell>
+     <user>
+logname
+     </user>
+     <output>
 pinguin
-$ su
+     </output>
+     <user>
+su
+     </user>
+     <input>
 Kennwort:
-# logname
+     </input>
+     <root>
+logname
+     </root>
+     <output>
 pinguin
-# exit
-$ logname
+     </output>
+     <root>
+exit
+     </root>
+     <user>
+logname
+     </user>
+     <output>
 pinguin
+     </output>
+    </shell>
+   </section>
 
+   <section>
+    <heading>
+who
+    </heading>
 
-
-1.1 who
-
+    <textblock>
 Linux ermöglicht es Benutzern, sich über ein Netzwerk (das
 kann auch ein Modem sein) am System anzumelden und zu
 arbeiten. Daher können mehrere Benutzer zur gleichen Zeit
-angemeldet sein. Das Kommando who gibt einen Überblick über
+angemeldet sein. Das Kommando <command>who</command> gibt einen Überblick über
 die angemeldeten Benutzer:
+    </textblock>
 
-$ who
+    <shell>
+     <user>
+who
+     </user>
+     <output>
 pinguin        tty1                    Jan 18 22:27
 eisbaer        tty3                    Jan 20 07:45
+     </output>
+    </shell>
 
+    <textblock>
 Dies bedeutet, dass der Pinguin auf der ersten Textkonsole
 angemeldet ist, und der Eisbär auf der dritten. In der
 dritten Spalte steht der Zeitpunkt der Anmeldung.
+    </textblock>
 
-$ who am i
+    <shell>
+     <user>
+whoami
+     </user>
+     <output>
 pinguin   tty1           Jan 18 22:27
+     </output>
+    </shell>
 
-who am i ("Wer bin ich") zeigt nur den Benutzer an, der das
+    <textblock>
+<strong>who am i</strong> (<strong>Wer bin ich</strong>) zeigt nur den Benutzer an, der das
 Kommando aufgerufen hat. Diese Angaben lassen sich in
 Shell-Skripten leicht auswerten.
+    </textblock>
 
-Zwei interessante Optionen sind -H und --login. -H (headline)
+    <textblock>
+Zwei interessante Optionen sind <command>-H</command> und <command>--login</command>. <command>-H</command> (headline)
 gibt zusätzlich noch eine Kopfzeile mit aus, wie Sie es von
 den meisten anderen Programmen gewöhnt sind.
+    </textblock>
 
---login gibt nicht die Benutzer, die gerade angemeldet sind
+    <textblock>
+<command>--login</command> gibt nicht die Benutzer, die gerade angemeldet sind
 aus, sondern zeigt an, wo gerade ein Login-Prozess läuft.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+w
+    </heading>
 
-
-1.1 w
-
-w ist wesentlich gesprächiger als who. Es gibt alle
+    <textblock>
+<command>w</command> ist wesentlich gesprächiger als <ref iref="who">who</ref>. Es gibt alle
 Informationen, die auch who liefert, und zusätzlich noch
 statistische Daten über Rechenzeitverbrauch und gerade
 aktive Programme:
+    </textblock>
 
-$ w
+    <shell>
+     <user>
+w
+     </user>
+     <output>
   9:49pm  up 14 days,  4:29,  2 users,  load average: 1.08, 1.02, 1.01
 USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU  WHAT
 pinguin  tty1     -                Tue10pm  2days  0.42s  0.31s  -bash
 eisbaer  pts/3    sp.antarktis.net  9:49pm  0.00s  0.32s  0.06s  w
+     </output>
+    </shell>
 
+    <textblock>
 Diese Zeilen enthalten:
+    </textblock>
 
 <!-- Beginn Aufzählung -->
-
-- Die aktuelle Uhrzeit. (9:49 pm = 21:49 h)
-
-- Die Uptime: Das System
+    <ul>
+    <li>
+Die aktuelle Uhrzeit. (9:49 pm = 21:49 h)
+    </li>
+    <li>
+<strong>Die Uptime:</strong><br/>
+Das System
 läuft seit zwei Wochen, vier Stunden und 29 Minuten.
 (up 14 days, 4:29)
-
-- Die Anzahl der angemeldeten User: 2
-(2 users)
-
-- Die Systemauslastung in der letzten Minute, den letzten
+    </li>
+    <li>
+<strong>Die Anzahl der angemeldeten User:</strong><br/>
+2 (2 users)
+    </li>
+    <li>
+Die Systemauslastung in der letzten Minute, den letzten
 fünf Minuten und den letzten 15 Minuten.
 (load average: 1.08, 1.02, 1.01)
-
-- Zusätzlich zu den von who bekannten Daten in den Spalten
+    </li>
+    <li>
+Zusätzlich zu den von <command>who</command> bekannten Daten in den Spalten
 USER, TTY und LOGIN@ noch:
-
-- FROM: Den Namen des Computers, von dem aus sich der Benutzer
+    </li>
+    <li>
+<strong>FROM:</strong><br/> Den Namen des Computers, von dem aus sich der Benutzer
 angemeldet hat. Der Pinguin sitzt an dem Computer selbst,
 der Eisbär könnte irgendwo sein, denn er ist über ein
 Netzwerk angemeldet.
-
-- IDLE: Die Zeit, seit der jeweilige Benutzer zuletzt etwas getan
-hat: Pinguin ist schon seit zwei Tagen untätig, er wird
+    </li>
+    <li>
+<strong>IDLE:</strong><br/> Die Zeit, seit der jeweilige Benutzer zuletzt etwas getan
+hat:<br/>
+Pinguin ist schon seit zwei Tagen untätig, er wird
 wahrscheinlich vergessen haben, sich abzumelden.
-
-- JCPU: Die Rechenzeit, die alle zum gegenwärtigen Zeitpunkt
+    </li>
+    <li>
+<strong>JCPU:</strong><br/> Die Rechenzeit, die alle zum gegenwärtigen Zeitpunkt
 laufenden Programme bisher belegt haben. Hier lässt sich
 erkennen, ob ein Benutzer ein Programm gestartet hat, das
 viel Rechenzeit verbraucht. Der Systemverwalter kann dann
 den Benutzer auffordern, das Programm zu beenden, er kann
 dem Programm weniger Rechenzeit zuteilen, oder er
 kann es eigenmächtig beenden.
-
-- WHAT: Das Programm, dass der Benutzer zuletzt gestartet
+    </li>
+    <li>
+<strong>WHAT:</strong><br/> Das Programm, dass der Benutzer zuletzt gestartet
 hat, wenn es nicht im Hintergrund abläuft.
-
-- PCPU: Die bisher von dem unter WHAT angegebenen Programm
+    </li>
+    <li>
+<strong>PCPU:</strong><br/> Die bisher von dem unter WHAT angegebenen Programm
 verbrauchte Rechenzeit.
-
+    </li>
+   </ul>
 <!-- Ende Aufzählung -->
+   </section>
 
+   <section>
+    <heading>
+finger
+    </heading>
 
-
-1.1 finger
-
-Um mehr über einen Benutzer zu erfahren, gibt es das Tool finger.
-Wie viel Informationen finger ausgibt, hängt davon ab, wie viel der
-Systemverwalter und der Benutzer zulässt. finger sucht unter
-anderem nach Informationen in den Dateien  ~/.plan und ~/.project.
-Damit finger die Dateien .plan und .project ausgeben kann, muss
-finger darauf zugreifen können. Da diese Dateien im
+    <textblock>
+Um mehr über einen Benutzer zu erfahren, gibt es das Tool <command>finger</command>.
+Wie viel Informationen <command>finger</command> ausgibt, hängt davon ab, wie viel der
+Systemverwalter und der Benutzer zulässt. <command>finger</command> sucht unter
+anderem nach Informationen in den Dateien  <path>~/.plan</path> und <path>~/.project</path>.
+Damit <command>finger</command> die Dateien <path>.plan</path> und <path>.project</path> ausgeben kann, muss
+<command>finger</command> darauf zugreifen können. Da diese Dateien im
 home-Verzeichnis liegen, ist dieser Umstand nicht immer gegeben.
+    </textblock>
 
+    <textblock>
 Ohne Angabe eines Benutzernamens wird eine Kurzinformation über
 alle angemeldeten Benutzer ausgegeben.
+    </textblock>
 
-$ finger
+    <shell>
+     <user>
+finger
+     </user>
+     <output>
 Login	Name	Tty	Idle	Login Time	Office	Office Phone
-pinguin			*tty1	1:45  Jul 26  9:56
-eisbaer			*tty2	    7	Jul 26 11:18
+pinguin		*tty1	1:45  Jul 26  9:56
+eisbaer		*tty2	7     Jul 26 11:18
+     </output>
+    </shell>
 
 <!-- Beginn Aufzählung -->
 
-- Login: Hiermit ist der Login-Name gemeint
-
-- Name: Das ist der reale Name des Users. Bei beiden wurde
+    <ul>
+     <li>
+<strong>Login:</strong><br/> Hiermit ist der Login-Name gemeint
+     </li>
+     <li>
+<strong>Name:</strong><br/> Das ist der reale Name des Users. Bei beiden wurde
 kein Name angegeben.
-
-- Tty: Hier ist das Terminal angegeben, von wo aus sich
+     </li>
+     <li>
+<strong>Tty:</strong><br/> Hier ist das Terminal angegeben, von wo aus sich
 der Benutzer angemeldet hat.
-
-- Idle: Gibt wie auch bei w die Zeitspanne an seit dem
+     </li>
+     <li>
+<strong>Idle:</strong><br/> Gibt wie auch bei w die Zeitspanne an seit dem
 der Benutzer inaktiv ist.
-
-- Login Time: Das ist die Angabe, wann er sich angemeldet hat.
-
-- Office: Gibt Informationen zum Büro, z.B. Adresse aus.
-
-- Office Phone: Hier steht, wenn vorhanden, die Telefonnummer
+     </li>
+     <li>
+<strong>Login Time:</strong><br/> Das ist die Angabe, wann er sich angemeldet hat.
+     </li>
+     <li>
+<strong>Office:</strong><br/> Gibt Informationen zum Büro, z.B. Adresse aus.
+     </li>
+     <li>
+<strong>Office Phone:</strong><br/> Hier steht, wenn vorhanden, die Telefonnummer
 des Büros, in welchem der Benutzer arbeitet.
+     </li>
+    </ul>
 
 <!-- Ende Aufzählung -->
 
+    <textblock>
 Gibt man einen Benutzernamen mit an, werden genauere Informationen
 über diesen einen Benutzer ausgegeben.
+    </textblock>
 
-$ finger pinguin
+    <shell>
+     <user>
+finger pinguin
+     </user>
+     <output>
 Login: pinguin				Name: (null)
 Directory: /home/pinguin		Shell: /bin/bash
-On since Sat Jul 26 11:08 (CEST) on tty2	8 minutes 2 seconds idle
-	(messages off)
+On since Sat Jul 26 11:08 (CEST) on tty2	8 minutes 2 seconds idle (messages off)
 No mail.
 No Plan.
+     </output>
+    </shell>
 
-"Login" und "Name" wurden schon weiter oben erklärt.
+    <textblock>
+<strong>Login</strong> und <strong>Name</strong> wurden schon weiter oben erklärt.
+    </textblock>
 
-"Directory" gibt das home-Verzeichnis des Benutzers an. In diesem
-Fall ist es wie für Benutzer üblich /home/pinguin.
+    <textblock>
+<strong>Directory</strong> gibt das home-Verzeichnis des Benutzers an. In diesem
+Fall ist es wie für Benutzer üblich <path>/home/pinguin</path>.
+    </textblock>
 
-"Shell" gibt die Standardshell des Benutzers an. Pinguin
-benutzt /bin/bash.
+    <textblock>
+<strong>Shell</strong> gibt die Standardshell des Benutzers an. Pinguin
+benutzt <path>/bin/bash</path>.
+    </textblock>
 
+    <textblock>
 Danach erfolgt die Angabe, seit wann und wo der Benutzer
-angemeldet ist, gefolgt von der Idle-Zeit.
+angemeldet ist, gefolgt von der <strong>Idle</strong>-Zeit.
+    </textblock>
 
-"messages off" sagt aus, dass der Benutzer keine Nachrichten
+    <textblock>
+<strong>messages off</strong> sagt aus, dass der Benutzer keine Nachrichten
 empfangen kann.
+    </textblock>
 
-"No mail" bedeutet dass der Benutzer keine Mails in seinem
+    <textblock>
+<strong>No mail</strong> bedeutet dass der Benutzer keine Mails in seinem
 Mailordner hat. Wenn ungelesene Mails vorhanden sind, wird
 zum dem noch angegeben, seit wann die Mails nicht gelesen
 wurden.
+    </textblock>
 
-"No Plan" sagt aus, dass die Datei .plan nicht vorhanden ist
+    <textblock>
+<strong>No Plan</strong> sagt aus, dass die Datei .plan nicht vorhanden ist
 oder finger darauf keinen Zugriff hat.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Systeminformationen
+   </heading>
 
-
-1 Systeminformationen
-
+   <textblock>
 Wesentlich häufiger als Informationen über Benutzer braucht
 man Daten über den Zustand des Systems und laufender Prozesse.
 Auch hier gibt
 es einige Programme, die Zugriff auf beinahe jede
 gewünschte Information bieten.
+   </textblock>
 
+   <section>
+    <heading>
+Informationen über die Speicherbelegung
+    </heading>
 
+    <section>
+     <heading>
+free
+     </heading>
 
-1.1 Informationen über die Speicherbelegung
-
-
-
-1.1.1 free
-
+     <textblock>
 Von Zeit zu Zeit ist es nützlich, die Speicherbelegung in
 Augenschein zu nehmen, beispielsweise weil ein Programm
 nicht genug Speicher bekommt, oder wenn der
 Systemverwalter sich für die Auslastung des
 Auslagerungsbereiches interessiert.
+     </textblock>
 
-$ free
-             total       used       free     shared    buffers
-cached
-
-Mem:        128284(1)  117228(2)   11056(3)   25644(4)
-5736(5)   64304(6)
-
+     <shell>
+      <user>
+free
+      </user>
+      <output>
+             total       used       free     shared    buffers     cached
+Mem:        128284(1)  117228(2)   11056(3)   25644(4)    5736(5)   64304(6)
 -/+ buffers/cache:      47188(7)   81096(8)
-
 Swap:       128480(9)   13376(10) 115104(11)
+      </output>
+     </shell>
 
+     <hint>
 (Die Zahl in Klammern dient lediglich der Erklärng
 und ist keine Ausgabe von free.)
+     </hint>
 
+     <textblock>
 Diese vielen Zahlen bedeuten:
+     </textblock>
 
-1) Die gesamte für das System verfügbare Speichermenge. Hier
+     <ol>
+      <li>
+Die gesamte für das System verfügbare Speichermenge. Hier
 ist der größte Teil von 128 MB verfügbar, weil der vom Kernel
 belegte Speicherplatz nicht mitgerechnet wird.
-
-2) Die Menge des belegten Speichers.
-
-3) Die Menge des freien Speichers.
-
-4) Die Größe von zwischen Prozessen geteilten
+      </li>
+      <li>
+Die Menge des belegten Speichers.
+      </li>
+      <li>
+Die Menge des freien Speichers.
+      </li>
+      <li>
+Die Größe von zwischen Prozessen geteilten
 Speicherbereichen.
-
-5) + 6) Der für verschiedene Arten von Zwischenspeichern
+      </li>
+      <li>
++ 6. Der für verschiedene Arten von Zwischenspeichern
 (Caches) verwendete Speicher. Der Unterschied ist nicht von
 Bedeutung, wenn man nicht gerade am Kernel programmiert.
-
-7) Der belegte Speicher nach Abzug aller Zwischenspeicherarten. Diese
+      </li>
+      <li>
+Der belegte Speicher nach Abzug aller Zwischenspeicherarten. Diese
 Speichermenge ist tatsächlich von Programmen belegt.
-
-8) Der freie Speicher nach Abzug aller Zwischenspeicherarten. Dieser
+      </li>
+      <li>
+Der freie Speicher nach Abzug aller Zwischenspeicherarten. Dieser
 Speicher ist noch für Programme verfügbar.
-
-9) Die Gesamtgröße der vorhandenen Auslagerungsbereiche.
+      </li>
+      <li>
+Die Gesamtgröße der vorhandenen Auslagerungsbereiche.
 Hier sind es knapp 128 MB.
-
-10) Der genutzte Teil des Auslagerungsbereiches. Untätige
+      </li>
+      <li>
+Der genutzte Teil des Auslagerungsbereiches. Untätige
 Prozesse werden in den Auslagerungsbereich verschoben,
 wenn der von ihnen belegte Arbeitsspeicher besser für
 andere Zwecke verwendet werden kann.
+      </li>
+      <li>
+Der freie Teil des Auslagerungsbereiches.
+      </li>
+     </ol>
 
-11) Der freie Teil des Auslagerungsbereiches.
-
-Mit den Optionen -b, -k und -m wird der Speicher in Byte, KByte, bzw.
+     <textblock>
+Mit den Optionen <command>-b</command>, <command>-k</command> und <command>-m</command> wird der Speicher in Byte, KByte, bzw.
 in MByte ausgegeben. Als Standard-Einstellung wird KByte verwendet.
+     </textblock>
 
-Die Option -t (total) gibt zusätzlich noch die Summe der Gesamtgrößen aus.
+     <textblock>
+Die Option <command>-t</command> (total) gibt zusätzlich noch die Summe der Gesamtgrößen aus.
+     </textblock>
+    </section>
 
+    <section>
+     <heading>
+df
+     </heading>
 
-
-1.1.1 df
-
+     <textblock>
 Eines der häufigsten Probleme beim Betrieb eines
 Linux-Systems, und noch dazu eines, das sich oft nicht rechtzeitig zu
 erkennen gibt, ist eine vollgelaufene Festplatte. Heutige
 Linux-Distributionen enthalten derartige Mengen an
 Software, dass es überhaupt kein Problem ist, auch eine
 Fünf- oder mehr Gigabyte-Partition in kürzester Zeit zu füllen.
+     </textblock>
 
-df zeigt den Belegungszustand jedes eingehängten
+     <textblock>
+<command>df</command> zeigt den Belegungszustand jedes eingehängten
 Dateisystems an.
+     </textblock>
 
-$ df
+     <shell>
+      <user>
+df
+      </user>
+      <output>
 Filesystem           1k-blocks      Used Available Use% Mounted on
 /dev/sda2               208820     76912    131908  37% /
 /dev/sda5               763012    104468    658544  14% /var
 /dev/sda3              5245048   3128612   2116436  60% /usr
 /dev/sda1                 7988      2404      5184  32% /boot
 ser1:/home/pinguin     2097286   1305429    686633  66% /home/pinguin
+      </output>
+     </shell>
 
+     <textblock>
 In der ersten Spalte (Filesystem) steht die Bezeichnung des
 Dateisystems,
 meistens eine Festplattenpartition. Dahinter steht die
@@ -365,339 +576,567 @@ und der noch
 vorhandene freie Platz (Available). Außerdem noch der Anteil des
 belegten Speichers an der Gesamtgröße (Use%) und das Verzeichnis,
 in das das Dateisystem eingehängt ist (Mounted on).
+     </textblock>
 
+     <textblock>
 In der letzten Zeile ist ein Dateisystem zu sehen, auf das
 über das Netzwerk zugegriffen wird.
+     </textblock>
 
-Mit der Option -a werden auch Dateisystem angezeigt, die eine
+     <textblock>
+Mit der Option <command>-a</command> werden auch Dateisystem angezeigt, die eine
 Kapazität von 0 Byte haben. Damit sind Dateisysteme gemeint,
 die im Prinzip keinen Speicherplatz belegen, sondern eine bestimmte
 Funktionalität
-zur Verfügung stellen. Ein Beispiel ist das devfs-Dateisystem,
+zur Verfügung stellen. Ein Beispiel ist das <path>devfs</path>-Dateisystem,
 welches nur blockorientierte Dateien beinhaltet, also solche, die
 Geräte darstellen.
+     </textblock>
 
+     <textblock>
 Wenn man noch zu jedem Dateisystem dem Typ erfahren will,
-so gibt es dafür noch die Option -T.
+so gibt es dafür noch die Option <command>-T</command>.
+     </textblock>
 
-Die Option -i zeigt anstelle der Speicherbelegung die Belegung
-der Inodes an. Unter Linux benötigt jede Datei eine bestimmte
+     <textblock>
+Die Option <command>-i</command> zeigt anstelle der Speicherbelegung die Belegung
+der <ref lang="de" url="http://de.wikipedia.org/wiki/Inode">Inodes</ref> an. Unter Linux benötigt jede Datei eine bestimmte
 Inode-Nummer. Es gibt allerdings immer eine maximale Anzahl
 an Inode-Nummern pro Dateisystem. Wenn diese Anzahl erreicht
 ist, kann keine weitere Datei mehr angelegt werden, egal wie viel
 Speicher noch frei ist.
+     </textblock>
 
+     <textblock>
 Wie Sie im Beispiel sehen konnten, sind die Zahlen zum Teil
 ziemlich unhandlich und somit weniger aussagekräftig. Aus
-diesem Grund gibt es die Optionen -h, bzw. -H (human-readable).
+diesem Grund gibt es die Optionen <command>-h</command>, bzw. <command>-H</command> (human-readable).
 Diese haben die Aufgabe, die Zahlen für den Menschen
 besser lesbar darzustellen. Der Unterschied zwischen den
-beiden Optionen besteht darin, dass -h mit einer Potenz
-von 1024 und -H von 1000 rechnet.
-Zudem stehen noch die Optionen -k und -m zur Verfügung.
+beiden Optionen besteht darin, dass <command>-h</command> mit einer Potenz
+von <strong>1024</strong> und <command>-H</command> von <strong>1000</strong> rechnet.
+Zudem stehen noch die Optionen <command>-k</command> und <command>-m</command> zur Verfügung.
 Diese geben den Plattenplatz in Kilobyte, bzw. in  Megabyte
-aus. Mit --block-size=n erfolgt die Ausgabe in
+aus. Mit <command>--block-size=n</command> erfolgt die Ausgabe in
 n-Byte-Blöcken.
+     </textblock>
+    </section>
 
+    <section>
+     <heading>
+du
+     </heading>
 
-
-1.1.1 du
-
-Mit Hilfe von du (disk usage) wird der Speicherplatzverbrauch
+     <textblock>
+Mit Hilfe von <command>du</command> (disk usage) wird der Speicherplatzverbrauch
 für ein Verzeichnis und dessen Unterverzeichnisse angezeigt. Als
 default-Einstellung wird das aktuelle Arbeitsverzeichnis verwendet.
+     </textblock>
 
-$du
+     <shell>
+      <user>
+du
+      </user>
+      <output>
 ...
 120             ./.kde/share/apps/kMail
 ...
+      </output>
+     </shell>
 
-Bei dem Autor war die Ausgabe von du wesentlich länger. Diese eine
+     <textblock>
+Bei dem Autor war die Ausgabe von <command>du</command> wesentlich länger. Diese eine
 Zeile soll exemplarisch betrachtet werden.
+     </textblock>
 
+     <textblock>
 Das Beispiel sagt aus, dass das Verzeichnis
-./.kde/share/apps/kMail insgesamt 120 Kilobyte belegt (als
+<path>./.kde/share/apps/kMail</path> insgesamt 120 Kilobyte belegt (als
 Standard-Einstellung erfolgt die Ausgabe in Kilobytes). Um die
-Ausgabe besser lesbar darzustellen, gibt es wie bei df die
-Optionen -h und -H.
+Ausgabe besser lesbar darzustellen, gibt es wie bei <ref iref="df">df</ref> die
+Optionen <command>-h</command> und <command>-H</command>.
+     </textblock>
 
-Ebenfalls stehen wie bei df die Optionen -k und -m für eine
+     <textblock>
+Ebenfalls stehen wie bei <ref iref="df">df</ref> die Optionen <command>-k</command> und <command>-m</command> für eine
 Ausgabe in Kilo- bzw. Megabyte zur Verfügung. Hinzu
-kommt noch die Option -b für Byte.
+kommt noch die Option <command>-b</command> für Byte.
+     </textblock>
 
+     <textblock>
 Um nur die Gesamtsumme, die ein bestimmtes Verzeichnis belegt, zu
-erfahren, verwendet man die Option -s.
+erfahren, verwendet man die Option <command>-s</command>.
+     </textblock>
 
-$ du -s
+     <shell>
+      <user>
+du -s
+      </user>
+      <output>
 40248	.
+      </output>
+     </shell>
 
+     <textblock>
 Auf den ersten Blick mag diese Ausgabe ein wenig ungewohnt
 erscheinen, haben wir doch erwartet, dass alle Verzeichnisse im
 aktuellem Verzeichnis ausgegeben werden. Bei genauerer
 Betrachtung ist die Ausgabe aber durchaus logisch. Als
 Standard-Einstellung wird das aktuelle Arbeitsverzeichnis genommen
-und das ist nun mal "./".
+und das ist nun mal <path><strong>./</strong></path>.
+     </textblock>
 
+     <textblock>
 Will man alle Unterverzeichnisse aufgelistet haben, so muss der
-Befehl "du -s *" lauten.
+Befehl <command>du -s *</command> lauten.
+     </textblock>
 
+     <textblock>
 Um zusätzlich noch den belegten Speicher für jede Datei
-auszugeben, gibt es die Optionen -a, bzw. --all.
+auszugeben, gibt es die Optionen <command>-a</command>, bzw. <command>--all</command>.
+     </textblock>
 
-Die Option -c gibt am Ende noch die Gesamtsumme aus.
+     <textblock>
+Die Option <command>-c</command> gibt am Ende noch die Gesamtsumme aus.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Weitere Kommandos
+   </heading>
 
+   <section>
+    <heading>
+dmesg
+    </heading>
 
-1 Weitere Kommandos
-
-1.1 dmesg
-
+    <textblock>
 Der Kernel gibt im Laufe der Zeit eine Menge Informationen
-an den klogd, den "kernel log daemon" weiter.
-dmesg zeigt die aktuellsten Meldungen an. Hier sind z. B.
+an den <command>klogd</command>, den <strong>kernel log daemon</strong> weiter.
+<command>dmesg</command> zeigt die aktuellsten Meldungen an. Hier sind z. B.
 die Bootmeldungen nachzulesen, aber auch das Einlegen einer
 neuen CD wird hier vermerkt. Weil in diesen Meldungen auch
 all die Hardwareinformationen enthalten sind, die beim
-Hochfahren des Systems anfallen, ist dmesg für die
+Hochfahren des Systems anfallen, ist <command>dmesg</command> für die
 Fehlersuche oder die Konfiguration sehr nützlich.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+date
+    </heading>
 
-
-
-1.1 date
-
+    <textblock>
 Wer möchte nicht gerne wissen, welcher Tag heute ist (vor
 allem nach stundenlangem Programmieren, vorzugsweise
-nachts). Dazu gibt date
+nachts). Dazu gibt <command>date</command>
 das aktuelle Datum und die Uhrzeit aus:
+    </textblock>
 
-$ date
+    <shell>
+     <user>
+date
+     </user>
+     <output>
 Fr Jan 21 22:57:58 CET 2000
+     </output>
+    </shell>
 
+    <textblock>
 Manchmal kann es aber notwendig sein, sich das Datum in einem
 individuellem Format ausgeben zu lassen. Wenn dies der Fall ist,
 sieht der Befehl folgendermaßen aus:
+    </textblock>
 
-date +'Format'
+    <quotation>
+<command>date +'Format'</command>
+    </quotation>
 
+    <textblock>
 Format ist eine Zeichenfolge, die angibt, wie das ausgegeben
 Datum aussehen soll. Dabei stehen dem Benutzer verschiede Platzhalter,
 die durch aktuelle Werte ersetzt werden, zur Verfügung.
 Die wichtigsten sind unter anderem:
+    </textblock>
 
 <!-- Aufzählung Anfang -->
 
-- %d: Aktueller Tag des Monats von 01 bis 31
-- %H: Aktuelle Stunde von 00 bis 23
-- %m: Aktueller Montag von 01 bis 12
-- %M: Aktuelle Minute von 00 bis 59
-- %Y: Aktuelles Jahr von 1970 bis ...
+    <ul>
+     <li>
+<command>%d</command>: Aktueller Tag des Monats von 01 bis 31
+     </li>
+     <li>
+<command>%H</command>: Aktuelle Stunde von 00 bis 23
+     </li>
+     <li>
+<command>%m</command>: Aktueller Montag von 01 bis 12
+     </li>
+     <li>
+<command>%M</command>: Aktuelle Minute von 00 bis 59
+     </li>
+     <li>
+<command>%Y</command>: Aktuelles Jahr von 1970 bis ...
+     </li>
+    </ul>
 
 <!-- Aufzählung Ende -->
 
+    <textblock>
 Beispiel:
+    </textblock>
 
-$ date +'%Y-%m-%d'
+    <shell>
+     <user>
+date +'%Y-%m-%d'
+     </user>
+     <output>
 2000-01-21
+     </output>
+    </shell>
 
+    <textblock>
 Von Zeit zu Zeit will man sich aber auch das Datum in einem bestimmten
 standarisiertem Format ausgeben lassen. Dazu stehen folgen Optionen
 zur Verfügung:
+    </textblock>
 
--I[TIMESPEC], --iso-8601[=TIMESPEC]
+    <quotation>
+     <command>-I</command>[TIMESPEC],<command> --iso-8601</command>[=TIMESPEC]
+    </quotation>
 
-Gibt das Datum im Iso 8601 Format aus. Als TIMESPEC kann 'date'
-(gibt nur das Datum aus), 'hours' (gibt zudem noch die Stunde an),
-'minutes' (die Minuten werden noch zusätzlich angezeigt) oder
-'seconds' (die Sekunden werden auch noch angezeigt) sein. Als
-Default für TIMESPEC ist 'date' eingestellt.
+    <textblock>
+Gibt das Datum im Iso 8601 Format aus. Als TIMESPEC kann <command>date</command>
+(gibt nur das Datum aus), <strong>hours</strong> (gibt zudem noch die Stunde an),
+<strong>minutes</strong> (die Minuten werden noch zusätzlich angezeigt) oder
+<strong>seconds</strong> (die Sekunden werden auch noch angezeigt) sein. Als
+Default für TIMESPEC ist <command>date</command> eingestellt.
+    </textblock>
 
--R, --rfc-822
+    <quotation>
+     <command>-R</command>, <command>--rfc-822</command>
+    </quotation>
 
+    <textblock>
 Gibt das Datum im RFC 822 Format aus.
+    </textblock>
 
--u, --utc, --universal
+    <quotation>
+     <command>-u</command>, <command>--utc</command>, <command>--universal</command>
+    </quotation>
 
+    <textblock>
 Gibt das Datum im UTC Format aus.
+    </textblock>
 
-Besitzt man die nötigen Administrativen-Rechte, kann man mit date
-auch Datum und Uhrzeit ändern. Dazu gibt es die Option -s.
+    <textblock>
+Besitzt man die nötigen Administrativen-Rechte, kann man mit <command>date</command>
+auch Datum und Uhrzeit ändern. Dazu gibt es die Option <command>-s</command>.
 Wichtig dabei ist dennoch ein Format anzugeben. Das Format gibt
 dann an in welcher Form das Datum übergeben wird. Die genaue
 Syntax lautet wie folgt:
+    </textblock>
 
-date +'Format' -s "Datum"
+    <quotation>
+     <command>date +'Format' -s "Datum"</command>
+    </quotation>
 
+    <textblock>
 bzw.
+    </textblock>
 
-date +'Format' --set="Datum"
+    <quotation>
+     <command>date +'Format' --set="Datum"</command>
+    </quotation>
 
-Dabei gibt 'Datum' das neue Datum an. Selbstverständlich kann
-anstelle von +'Format' auch eine der Optionen -I, -R oder -u
+    <textblock>
+Dabei gibt <strong>Datum</strong> das neue Datum an. Selbstverständlich kann
+anstelle von <command>+'Format'</command> auch eine der Optionen <command>-I</command>, <command>-R</command> oder <command>-u</command>
 verwendet werden.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+dd
+    </heading>
 
-
-1.1 dd
-
-Die primäre Aufgabe von dd ist es Daten zu kopieren und
+    <textblock>
+Die primäre Aufgabe von <command>dd</command> ist es Daten zu kopieren und
 entsprechend zu konvertieren. Dabei kopiert dd die Daten
 nicht Dateiweise, sondern Blockweise. Das Haupteinsatzgebiet
-von dd ist es Kopien von ganzen Devices auf einem anderen
-(physikalischen) Device anzulegen. Somit eignet sich dd auch
+von <command>dd</command> ist es Kopien von ganzen Devices auf einem anderen
+(physikalischen) Device anzulegen. Somit eignet sich <command>dd</command> auch
 dafür, ein ISO-Abbild von einer CD auf der Festplatte zu
 sichern.
+    </textblock>
 
-dd besitzt eine Reihe von verschiedenen Optionen, die
+    <textblock>
+<command>dd</command> besitzt eine Reihe von verschiedenen Optionen, die
 verschiedene Möglichkeiten der Konvertierung darstellen. Die
-beiden wichtigsten Optionen sind allerdings if=DATEI und
-of=DATEI. if=DATEI gibt dabei die Datei an, von der gelesen
-werden soll. of=DATEI gibt die Datei an, in die
+beiden wichtigsten Optionen sind allerdings <command>if=</command>DATEI und
+<command>of=</command>DATEI. <command>if=</command>DATEI gibt dabei die Datei an, von der gelesen
+werden soll. <command>of=</command>DATEI gibt die Datei an, in die
 geschrieben werden soll.
+    </textblock>
 
+    <textblock>
 Ein Beispiel, um ein ISO-Abbild auf der Festplatte anzulegen, lautet:
+    </textblock>
 
-$dd if=/dev/cdrom of=cdrom.iso
+    <shell>
+     <user>
+dd if=/dev/cdrom of=cdrom.iso
+     </user>
+    </shell>
 
-Wie schon angesprochen kopiert dd nicht Dateiweise sondern
+    <textblock>
+Wie schon angesprochen kopiert <command>dd</command> nicht Dateiweise sondern
 Blockweise. Aus diesem Grund ist es auch möglich Daten zu
 kopieren und dabei die Blockgröße zu ändern. Ebenso ist es
 auch möglich nur bestimmte Blöcke von einem Device zu
 kopieren.
+    </textblock>
 
+    <textblock>
 Um die Blockgröße für die Ein- und Ausgabe festzulegen,
 stehen drei Optionen zur Verfügung:
+    </textblock>
 
 <!-- Aufzählung Begin -->
 
-- ibs=n: Legt die Eingabeblockgröße auf n Bytes fest.
-- obs=n:	Legt die Ausgabeblockgröße auf n Bytes fest.
-- bs=n:  Legt die Ein- und Ausgabeblockgröße auf n Bytes
+    <ul>
+     <li>
+ibs=n: Legt die Eingabeblockgröße auf n Bytes fest.
+     </li>
+     <li>
+obs=n:	Legt die Ausgabeblockgröße auf n Bytes fest.
+     </li>
+     <li>
+bs=n:  Legt die Ein- und Ausgabeblockgröße auf n Bytes
          fest. bs hat Vorrang von ibs und obs.
-- cbs=n: Legt die Datensatzlänge auf n Bytes fest.
+     </li>
+     <li>
+cbs=n: Legt die Datensatzlänge auf n Bytes fest.
+     </li>
+    </ul>
 
 <!-- Aufzählung Ende -->
 
+    <textblock>
 Die voreingestellte Größe für die Ein- und Ausgabeblöcke ist 512
 Byte.
+    </textblock>
 
+    <textblock>
 Um nur bestimmte Blöcke zu kopieren, stehen folgende Optionen
 zur Verfügung:
+    </textblock>
 
 <!-- Aufzählung Beginn -->
 
-- skip=n:  Überspringt n-Blöcke am Anfang der Eingabedatei.
-- seek=n:  Überspringt n-Blöcke am Anfang der Ausgabedatei
-- count=n: Kopiert nur n Eingabeblöcke.
+    <ul>
+     <li>
+skip=n:  Überspringt n-Blöcke am Anfang der Eingabedatei.
+     </li>
+     <li>
+seek=n:  Überspringt n-Blöcke am Anfang der Ausgabedatei
+     </li>
+     <li>
+count=n: Kopiert nur n Eingabeblöcke.
+     </li>
+    </ul>
 
 <!-- Aufzählung Beginn -->
 
-Als Blockgröße wird logischerweise, der durch bs, ibs, bzw. obs
+    <textblock>
+Als Blockgröße wird logischerweise, der durch <command>bs</command>, <command>ibs</command>, bzw. <command>obs</command>
 angegeben Wert genutzt.
+    </textblock>
 
-Eine weitere wichtige Option ist conv=Key. Wenn diese
+    <textblock>
+Eine weitere wichtige Option ist <command>conv=</command>Key. Wenn diese
 Option angegeben ist, wird die Eingabedatei entsprechend
 durch das mit Key angegeben Schlüsselwort in die
 Ausgabedatei konvertiert. Als Key können auch mehrere
 Schlüsselwörter, durch Kommata getrennt angeben werden. 
+    </textblock>
 
+    <textblock>
 Unter anderem stehen dem Benutzer dabei folgenden
 Schlüsselwörter zur Verfügung:
+    </textblock>
 
-block/unblock
+    <textblock>
+     <command>block/unblock</command>
+    </textblock>
 
+    <quotation>
 Es gibt Datensätze fester Länge und es gibt Datensätze
 mit variabler Länge, deren Ende durch einen Zeilenumbruch
 markiert ist.
+    </quotation>
 
-Das Schlüsselwort block füllt einen Datensatz,
-der kleiner als cbs-Bytes ist mit Leerzeilen auf, bis die
+    <quotation>
+Das Schlüsselwort <command>block</command> füllt einen Datensatz,
+der kleiner als <command>cbs</command>-Bytes ist mit Leerzeilen auf, bis die
 entsprechende Datensatzlänge erreicht ist. Somit
-wandelt block Datensätze variabler Länge in Datensätze
+wandelt <command>block</command> Datensätze variabler Länge in Datensätze
 mit fester Länge um.
+    </quotation>
 
-Entsprechend entfernt unblock die nachfolgenden Leerzeilen
+    <quotation>
+Entsprechend entfernt <command>unblock</command> die nachfolgenden Leerzeilen
 und wandelt somit Datensätze mit fester Länge in
 Datensätze mit variabler Länge um.
+    </quotation>
 
-lcase
+    <textblock>
+     <command>lcase</command>
+    </textblock>
 
+    <quotation>
 Sämtliche Großbuchstaben werden in Kleinbuchstaben
 umgewandelt
+    </quotation>
 
-ucase
+    <textblock>
+     <command>ucase</command>
+    </textblock>
 
+    <quotation>
 Sämtliche Kleinbuchstaben werden in Großbuchstaben
 umgewandelt
+    </quotation>
 
-noerror
+    <textblock>
+     <command>noerror</command>
+    </textblock>
 
+    <quotation>
 Die Verarbeitung wird auch nach einem Fehler
+    </quotation>
+   </section>
 
+   <section>
+    <heading>
+which
+    </heading>
 
-
-1.1 which
-
+    <textblock>
 Wenn Sie auf der Shell einen Befehl eingeben, werden der Reihe nach
-alle Verzeichnisse in $PATH nach diesem Befehl durchsucht. Nachdem
+alle Verzeichnisse in <path>$PATH</path> nach diesem Befehl durchsucht. Nachdem
 der Befehl in einem Verzeichnis gefunden wurde, wird die Suche
 abgebrochen. Dabei kann allerdings das Problem auftreten, dass Sie
 ein anderes Kommando meinen, das sich in einem anderen
 Verzeichnis befindet. Um heraus zufinden, wo sich nun das
-Programm befindet, das ausgeführt wird, gibt es das Werkzeug "which".
+Programm befindet, das ausgeführt wird, gibt es das Werkzeug <command>which</command>.
+    </textblock>
 
-which durchsucht alle Verzeichnisse, die in der
-Umgebungsvariablen $PATH aufgelistet sind, nach einer
+    <textblock>
+     <command>which</command> durchsucht alle Verzeichnisse, die in der
+Umgebungsvariablen <path>$PATH</path> aufgelistet sind, nach einer
 ausführbaren Datei mit dem angegebenen Namen:
+    </textblock>
 
-$ which man
+    <shell>
+     <user>
+which man
+     </user>
+     <output>
 /usr/bin/man
+     </output>
+    </shell>
 
+    <textblock>
 Auf diese Weise finden Sie heraus, ob das seltsame Verhalten
 eines Kommandos dadurch verursacht wird, dass ein anderes
 Programm in ein Verzeichnis geraten ist, das sich im Pfad
 weiter vorne befindet:
+    </textblock>
 
-$ man ls
+    <shell>
+     <user>
+man ls
+     </user>
+     <output>
 cat: ls: No such file or directory
-$ which man
+     </output>
+     <user>
+which man
+     </user>
+     <output>
 /usr/local/bin/man
+     </output>
+    </shell>
 
-Hier ist ein Programm namens man in dem Verzeichnis
-/usr/local/bin, das im Suchpfad vor dem Verzeichnis /usr/bin steht, in
-dem sich das gewünschte Kommando man befindet. Durch den
+    <textblock>
+Hier ist ein Programm namens <command>man</command> in dem Verzeichnis
+<path>/usr/local/bin</path>, das im Suchpfad vor dem Verzeichnis <path>/usr/bin</path> steht, in
+dem sich das gewünschte Kommando <command>man</command> befindet. Durch den
 Aufruf:
+    </textblock>
 
-$ /usr/bin/man ls
+    <shell>
+     <user>
+/usr/bin/man ls
+     </user>
+    </shell>
 
+    <textblock>
 können Sie jetzt das richtige Programm aufrufen.
+    </textblock>
 
-"which" kann zudem nützlich sein, um festzustellen, ob ein
+    <textblock>
+<command>which</command> kann zudem nützlich sein, um festzustellen, ob ein
 bestimmtes Programm vorhanden ist ohne dieses Programm
 gleich ausführen zu müssen.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Bearbeitung von Programmausgaben
+   </heading>
 
-
-1 Bearbeitung von Programmausgaben
-
+   <textblock>
 Manchmal können Ausgaben von Programmen recht umfangreich werden. Um
 die Ausgaben
 ein wenig übersichtlicher zu gestalten, stehen  dem Benutzer dieselben
 Werkzeuge
 mit denselben Optionen und derselben Funktionalität
-zur Verfügung wie bei der Dateiverwaltung, also z.B. less, grep usw.
+zur Verfügung wie bei der Dateiverwaltung, also z.B. <command>less</command>, <command>grep</command> usw.
 Dabei muss man die Ausgabe von dem einem Programm
 per
-<!-- LINK: chapter="bash_basic" iref="Kommandos verbinden" -->Pipe<!-- ENDLINK -->
+<ref chapter="bash_basic" iref="Kommandos verbinden">Pipe</ref>
 in ein anderes Programm weiterleiteten, z.B.:
+   </textblock>
 
-$ ps ax | less
+   <shell>
+    <user>
+ps ax | less
+    </user>
+   </shell>
 
-Der Befehl "ps ax" wird ganz normal ausgeführt, aber die Ausgabe
+   <textblock>
+Der Befehl <command>ps ax</command> wird ganz normal ausgeführt, aber die Ausgabe
 dient in diesem Fall als Eingabe für
-<!-- LINK: chapter="dateien_unter_linux" iref="more und less" -->less<!-- ENDLINK -->.
+<ref chapter="dateien_unter_linux" iref="more und less">less</ref>.
 Aus diesem Grund muss
-auch kein Dateiname für less angeben werden, da die Ausgabe von
-"ps ax" von less wie eine Datei behandelt wird. Das Resultat dieser
-Kombination ist, dass man durch die gesamte Ausgabe von "ps ax"
+auch kein Dateiname für <command>less</command> angeben werden, da die Ausgabe von
+<command>ps ax</command> von <command>less</command> wie eine Datei behandelt wird. Das Resultat dieser
+Kombination ist, dass man durch die gesamte Ausgabe von <command>ps ax</command>
 bewegen kann und man sich nicht nur mit den letzten Zeilen zu
 Frieden geben muss.
+   </textblock>
+  </section>
+ </split>
+</chapter>
