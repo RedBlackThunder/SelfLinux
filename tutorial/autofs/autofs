@@ -1,212 +1,370 @@
-Titel: Automount und Autofs
-Autor: Florian Frank <florian.frank@pingos.org>
-Autor: Guido Socher <guido@linuxfocus.org>
-Autor: Frédéric Raynal <pappy@users.sourceforge.net>
-Lizenz: GFDL
+<?xml version="1.0" encoding="iso-8859-1"?>
+<chapter>
+ <title>Automount und Autofs</title>
 
+ <author>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </author>
 
+ <author>
+  <name>Guido Socher</name>
+  <mailto>guido@linuxfocus.org</mailto>
+ </author>
 
+ <author>
+  <name>Frédéric Raynal</name>
+  <mailto>pappy@users.sourceforge.net</mailto>
+ </author>
 
-Automount und Autofs
+ <layout>
+  <name>florian.frank@pingos.org</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
 
-Automount und autofs sind sehr leistungsfähige Werkzeuge, um das
+ <license>GFDL</license>
+
+ <index>autofs</index>
+
+ <description>
+  <textblock>
+<command>automount</command> und <command>autofs</command> sind sehr leistungsfähige Werkzeuge, um das
 Management von Dateisystemen zu erleichtern. Sie erlauben es dem
 Benutzer eines Rechners, automatisch verschiedene Dateisysteme zu
 mounten in dem Moment, wo sie gebraucht werden.
+  </textblock>
+ </description>
 
+ <split>
+  <section>
+   <heading>
+Einführung
+   </heading>
 
-
-1 Einführung
-
+   <textblock>
 In Abhängigkeit von den physikalischen Gegebenheiten (Festplatten,
-Disketten, CD-ROMs, ...) und dem Betriebssystem ist der Vorgang
-des Schreibens von Daten unterschiedlich: Man nennt dies Dateisystem.
+<ref chapter="zugriff_auf_disketten">Disketten</ref>, <ref chapter="zugriff_auf_laufwerke">CD-ROMs</ref>, ...) und dem Betriebssystem ist der Vorgang
+des Schreibens von Daten unterschiedlich: Man nennt dies <strong>Dateisystem</strong>.
 Dies ist zwar eine sehr vereinfachte Darstellung, aber hier ausreichend.
-Die Datei /etc/fstab enthält die festen mount-Punkte, die beim Starten
-gemountet werden. Jeder mount-Punkt entspricht einem Verzeichnis
-im Verzeichnisbaum. Später, wenn man auf andere Punkte im Dateisystem
-zugreifen möchte, dann kann nur root das Dateisystem mounten. Eine
-Ausnahme sind Einträge, die die Option "users" in /etc/fstab enthalten.
+Die Datei <path>/etc/fstab</path> enthält die festen <command>mount</command>-Punkte, die beim Starten
+gemountet werden. Jeder <command>mount</command>-Punkt entspricht einem <ref chapter="verzeichnisse_unter_linux">Verzeichnis</ref>
+im <ref chapter="verzeichnisse_unter_linux" iref="Linux-Verzeichnisstruktur">Verzeichnisbaum</ref>. Später, wenn man auf andere Punkte im Dateisystem
+zugreifen möchte, dann kann nur <ref chapter="nutzer_unter_linux" iref="root">root</ref> das Dateisystem mounten. Eine
+Ausnahme sind Einträge, die die Option <command>users</command>" in <path>/etc/fstab</path> enthalten.
 Abgesehen davon kann ein normaler Benutzer nicht einfach auf alle Daten
 und Dateisysteme zugreifen.
+   </textblock>
 
-Die manpages von mount und fstab erklären diese Befehle und Konzepte
+   <textblock>
+Die <ref chapter="linux_hilfe" iref="man">Manpages</ref> von <command>mount</command> und <path>fstab</path> erklären diese Befehle und Konzepte
 genauer.
+   </textblock>
 
-Beide (automount und autofs) erlauben es dem Systemadministrator alle
+   <textblock>
+Beide (<command>automount</command> und <command>autofs</command>) erlauben es dem Systemadministrator alle
 Dateisysteme, auf die eine Maschine zugreifen kann, zu konfigurieren in
-einer ähnlichen Art und Weise, wie dies bei dem Befehl mount passieren
-würde. Für den Benutzer ist das völlig transparent.
+einer ähnlichen Art und Weise, wie dies bei dem Befehl <command>mount</command> passieren
+würde. Für den Benutzer ist das <strong>völlig transparent</strong>.
+   </textblock>
+  </section>
 
+  <section>
+   <heading>
+Beschreibung
+   </heading>
 
-
-
-1.1 Beschreibung
-
-Das Paar (automount und autofs) kann als ein client/server System
+   <textblock>
+Das Paar (<command>automount</command> und <command>autofs</command>) kann als ein <strong>client/server System</strong>
 verstanden werden. Ein Server läuft und wartet auf eine Anfrage. Wenn
 die Anfrage kommt, dupliziert sich der Server. Der duplizierte Teil
 beantwortet die Anfrage und der andere wartet auf weitere Anfragen.
+   </textblock>
 
-Hier spielt autofs die Rolle des wartenden Servers und automount die des
+   <textblock>
+Hier spielt <command>autofs</command> die Rolle des wartenden Servers und <command>automount</command> die des
 duplizierten Servers. Die Anfragen kommen aus einer Konfigurationsdatei.
+   </textblock>
 
+   <section>
+    <heading>
+autofs
+    </heading>
 
-
-
-1.1 autofs
-
-Autofs wird im allgemeinen beim Booten gestartet, aber der
-Systemadministrator (root) kann es natürlich manuell starten und
+    <textblock>
+<command>autofs</command> wird im allgemeinen beim Booten gestartet, aber der
+Systemadministrator (<ref chapter="nutzer_unter_linux" iref="root">root</ref>) kann es natürlich manuell starten und
 stoppen.
+    </textblock>
 
-autofs hat 4 Optionen:
+    <textblock>
+<command>autofs</command> hat 4 Optionen:
+    </textblock>
 
-1. start: Wie der Name schon sagt, startet diese Option den Prozess.
-Beim Start sucht autofs nach "maps" (maps spezifizieren die
-mount-Punkte) in der Konfigurationsdatei /etc/auto.master. Danach
-startet es automount für jeden einzelnen mount-Punkt. Im Anschluss
-daran sucht autofs nach NIS maps.
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <td>
+<command>start</command>
+      </td>
+      <td>
+Wie der Name schon sagt, startet diese Option den Prozess.
+Beim Start sucht <command>autofs</command> nach <strong>maps</strong> (maps spezifizieren die
+<command>mount</command>-Punkte) in der Konfigurationsdatei <path>/etc/auto.master</path>. Danach
+startet es <command>automount</command> für jeden einzelnen <command>mount</command>-Punkt. Im Anschluss
+daran sucht <command>autofs</command> nach NIS maps.
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>stop</command>
+      </td>
+      <td>
+Stoppt <command>autofs</command> und alle <command>automount</command>-Instanzen
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>status</command>
+      </td>
+      <td>
+Zeigt die augenblickliche Konfiguration und alle laufenden
+<command>automount</command>-Instanzen an
+      </td>
+     </tr>
+     <tr>
+      <td>
+<command>reload</command>
+      </td>
+      <td>
+Liest die <strong>map</strong> <path>auto.master</path> ein und beendet die nicht mehr
+gebrauchten <command>automount</command>-Instanzen. Es startet neue <command>automount</command>-Instanzen für neu
+hinzugekommene <command>mount</command>-Punkte. Veränderungen der maps werden beim nächsten
+<ref chapter="starten_und_herunterfahren">Neustart</ref> berücksichtigt.
+      </td>
+     </tr>
+    </table>
 
-2. stop: Stoppt autofs und alle automounts
+    <textblock>
+Kurzgesagt ist also <command>autofs</command> nichts als ein <ref chapter="shellprogrammierung">Skript</ref>, das <path>auto.master</path>
+befragt, bevor es die einzelnen <command>automount</command>-Instanzen für jeden der <command>mount</command>-Punkte in
+<path>auto.master</path> startet.
+    </textblock>
+   </section>
 
-3. status: Zeigt die augenblickliche Konfiguration und alle laufenden
-automounts
+   <section>
+    <heading>
+automount
+    </heading>
 
-4. reload: Liest die "map" auto.master ein und beendet die nicht mehr
-gebrauchten automounts. Es startet neue automounts für neu
-hinzugekommene mount-Punkte. Veränderungen der maps werden beim nächsten
-Neustart berücksichtigt.
-
-Kurzgesagt ist also autofs nichts als ein Skript, das auto.master
-befragt, bevor es die einzelnen automounts für jeden der mount-Punkte in
-auto.master startet.
-
-
-
-
-1.1 automount
-
-automount arbeitet nur mit einem mount-Punkt (der von autofs gefunden
-wurde und automount beim Start übergeben wurde). Eine "map" beschreibt
-alle Eigenschaften dieses mount-Punktes, die nötig sind, um ein
+    <textblock>
+<command>automount</command> arbeitet nur mit einem <command>mount</command>-Punkt (der von <command>autofs</command> gefunden
+wurde und <command>automount</command> beim Start übergeben wurde). Eine <strong>map</strong> beschreibt
+alle Eigenschaften dieses <command>mount</command>Punktes, die nötig sind, um ein
 Dateisystem automatisch zu mounten. Dieses automatische Mounten wird
 durchgeführt, sobald jemand versucht, auf etwas zuzugreifen, das im
-Verzeichnisbaum unterhalb des mount-Punktes liegt.
+<ref chapter="verzeichnisse_unter_linux" iref="Linux-Verzeichnisstruktur">Verzeichnisbaum</ref> unterhalb des <command>mount</command>-Punktes liegt.
+    </textblock>
 
-Weiterhin ist automount für das automatische "unmount" der Dateisysteme
+    <textblock>
+Weiterhin ist <command>automount</command> für das automatische <strong>unmount</strong> der Dateisysteme
 zuständig. Dieses geschieht nach einiger Zeit, wenn auf ein Dateisystem
 nicht mehr zugegriffen wird. Die Voreinstellung ist 5 Minuten.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Konfiguration
+   </heading>
 
-
-
-1 Konfiguration
-
-Die Konfiguration wird mit Hilfe von 2 Dateien durchgeführt. Die
-auto.master Datei, enthält alle mount-Punkte, und eine
-mount-Punkt-Datei, die die Optionen für einen speziellen mount-Punkt
+   <textblock>
+Die Konfiguration wird mit Hilfe von 2 Dateien durchgeführt. Die Datei
+<path>auto.master</path>, enthält alle <command>mount</command>-Punkte, und eine
+<command>mount</command>-Punkt-Datei, die die Optionen für einen speziellen <command>mount</command>-Punkt
 beschreibt.
+   </textblock>
 
+   <section>
+    <heading>
+/etc/auto.master Datei
+    </heading>
 
-
-
-1.1 /etc/auto.master Datei
-
-Hier werden die mount-Punkte im sogenannten "Sun maps Format"
+    <textblock>
+Hier werden die <command>mount</command>-Punkte im sogenannten <strong>Sun maps Format</strong>
 beschreiben. Das andere Format (hesiod) kann die Syntax im unten
 aufgeführten Beispiel nicht verstehen.
+    </textblock>
 
-/etc/auto.master: Jede Zeile beschreibt genau einen mount-Punkt und
-zeigt zu einer Datei, die die weiteren Optionen für diesen mount-Punkt
-enthält. Die dritte Spalte erlaubt es spezielle Optionen an mount zu
+    <textblock>
+<path>/etc/auto.master</path>: Jede Zeile beschreibt genau einen <command>mount</command>-Punkt und
+zeigt zu einer Datei, die die weiteren Optionen für diesen <command>mount</command>-Punkt
+enthält. Die dritte Spalte erlaubt es spezielle Optionen an <command>mount</command> zu
 übergeben.
+    </textblock>
 
+    <textblock>
 Die Syntax einer Zeile ist:
+    </textblock>
 
+    <file>
+     <title>
+/etc/auto.master
+     </title>
+     <content>
 mount-point map-for-the-associated-automount [ -mount-options-separated-by-comma ]
+     </content>
+    </file>
 
+    <textblock>
 Beispiel:
+    </textblock>
 
+    <file>
+     <title>
+/etc/auto.master
+     </title>
+     <content>
 /home   ldap            10.1.7.7:ou=home,ou=autofs,dc=foo,dc=bar
 /misc   /etc/auto.misc  --timeout 60
 /mnt    yp:mnt.map      -intr,nosuid,nodev
+     </content>
+    </file>
 
-Dies konfiguriert 3 mount-Punkte, /home, /misc und /mnt. Um auf Dateien
-in /misc zuzugreifen, wird automount die Datei /etc/auto.misc lesen und
+    <textblock>
+Dies konfiguriert 3 <command>mount</command>-Punkte, <path>/home</path>, <path>/misc</path> und <path>/mnt</path>. Um auf Dateien
+in <path>/misc</path> zuzugreifen, wird automount die Datei <path>/etc/auto.misc</path> lesen und
 dort eine Beschreibung des Dateisystems finden. In der letzten Zeile
-sieht man Optionen. Sie werden in den manpages zu mount beschrieben.
+sieht man Optionen. Sie werden in den <ref chapter="linux_hilfe" iref="man">Manpages</ref> zu <command>mount</command> beschrieben.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Automount maps
+    </heading>
 
-
-
-1.1 Automount maps
-
+    <textblock>
 Die Syntax einer automount map ist fast die gleiche, wie von
-auto.master:
+<path>auto.master</path>:
+    </textblock>
 
+    <file>
+     <content>
 Schlüssel [ -mount-optionen-seperiert-durch-Komma ] Ort-des-Dateisystems
+     </content>
+    </file>
 
+    <textblock>
 Der Schlüssel ist ein symbolischer Name für das Dateisystem unter dem
-mount-Punkt.
+<command>mount</command>-Punkt.
+    </textblock>
 
-Hier ist die Datei /etc/auto.misc aus dem obigen Beispiel:
+    <textblock>
+Hier ist die Datei <path>/etc/auto.misc</path> aus dem obigen Beispiel:
+    </textblock>
 
+    <file>
+     <title>
+/etc/auto.misc
+     </title>
+     <content>
 kernel  -ro,soft,intr       ftp.kernel.org:/pub/linux
 cdrom   -fstype=iso9660,ro  :/dev/cdrom
 floppy  -fstype=auto        :/dev/fd0
 windoz  -fstype=vfat        :/dev/hda1
+     </content>
+    </file>
 
+    <textblock>
 Der absolute Pfad zu einer Datei ist dann:
+    </textblock>
 
-/mount-Punkt/Schlüssel/Pfad/Datei
+    <textblock>
+<path>/mount-Punkt/Schlüssel/Pfad/Datei</path>
+    </textblock>
 
-Man sieht auch, dass die erste Zeile auf ein über NFS exportiertes
-Dateisystem verweist (nur um zu zeigen, wie flexibel automount und
-autofs sind).
+    <textblock>
+Man sieht auch, dass die erste Zeile auf ein über <ref chapter="nfs">NFS</ref> exportiertes
+Dateisystem verweist (nur um zu zeigen, wie flexibel <command>automount</command> und
+<command>autofs</command> sind).
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+autofs und NIS
+    </heading>
 
-
-
-1.1 autofs und NIS
-
+    <textblock>
 In einem kleinen Netzwerk zu Hause wird man wahrscheinlich in der Lage
 sein, ohne NIS zu leben. NIS Network Information Service ist ein Weg,
-um Konfigurationsdateien (z.B. in /etc) auf andere Maschinen zu
+um Konfigurationsdateien (z. B. in <path>/etc</path>) auf andere Maschinen zu
 veteilen.
+    </textblock>
 
-Der Hauptserver in unserem Beispielnetzwerk ist "sol". Drei andere
-Maschinen des Netzwerkes sind "telesto", "mars" und "venus". "sol" ist
+    <textblock>
+Der Hauptserver in unserem Beispielnetzwerk ist <strong>sol</strong>. Drei andere
+Maschinen des Netzwerkes sind <strong>telesto</strong>, <strong>mars</strong> und <strong>venus</strong>. <strong>sol</strong> ist
 als NIS Server für die Domain foobar konfiguriert. Die anderen Maschinen
-sind nur NIS Clienten von "sol".
+sind nur NIS Clienten von <strong>sol</strong>.
+    </textblock>
 
-Zunächst betrachten wir die Konfiguration des Servers "sol". Wir
+    <textblock>
+Zunächst betrachten wir die Konfiguration des Servers <strong>sol</strong>. Wir
 beginnen mit dem Definieren einiger NIS maps, die alle notwendigen
 Informationen enthalten.
+    </textblock>
 
-Soweit es NFS betrifft ist die Konfiguration sehr eingeschränkt.
-Die Datei /etc/exports von "sol" enthält:
+    <textblock>
+Soweit es <ref chapter="nfs">NFS</ref> betrifft ist die Konfiguration sehr eingeschränkt.
+Die Datei <path>/etc/exports</path> von <strong>sol</strong> enthält:
+    </textblock>
 
-# /etc/exports
+    <file>
+     <title>
+/etc/exports
+     </title>
+     <content>
 /usr/local    *
+     </content>
+    </file>
 
-An dieser Stelle sollte man auf automount setzen, um auf das exportierte
-Verzeichnis /usr/local zuzugreifen. Anstatt dieses Verzeichnis zur
+    <textblock>
+An dieser Stelle sollte man auf <command>automount</command> setzen, um auf das exportierte
+Verzeichnis <path>/usr/local</path> zuzugreifen. Anstatt dieses Verzeichnis zur
 Boot-Zeit zu mounten, geschieht es automatisch, sobald ein Benutzer auf
 eine Datei in diesem Verzeichnis zugreift. Man erzeugt die Datei
-/etc/auto.map, um zu definieren, was zugreifbar sein wird, sowohl durch
-automount als auch durch NIS:
+<path>/etc/auto.map</path>, um zu definieren, was zugreifbar sein wird, sowohl durch
+<command>automount</command> als auch durch NIS:
+    </textblock>
 
-# /etc/auto.map
+    <file>
+     <title>
+/etc/auto.map
+     </title>
+     <content>
 sol          sol:/usr/local
+     </content>
+    </file>
 
-Da man diese Informationen (die neue auto.map und die netgroup Dateien) in
+    <textblock>
+Da man diese Informationen (die neue <path>auto.map</path> und die netgroup Dateien) in
 die NIS Datenbank integrieren will, muss man das Makefile von NIS
-anpassen, bevor die NIS Datenbank neu erstellt wird. Was auto.map betrifft, so
+anpassen, bevor die NIS Datenbank neu erstellt wird. Was <path>auto.map</path> betrifft, so
 so wird diese Datei nicht standardmässig definiert. Man muss nur einen
 neuen Eintrag in das Makefile hinzufügen, mit der assoziierten Regel
 (benutzen der existierenden als ein Modell):
+    </textblock>
 
+    <file>
+     <title>
+/var/yp/Makefile
+     </title>
+     <content>
 #To be added in the Yellow Pages Makefile
 
 AUTO_MAP    = $(YPSRCDIR)/auto.map
@@ -218,55 +376,96 @@ auto.map: $(AUTO_MAP) $(YPDIR)/Makefile
             -@sed -e "/^#/d" -e s/#.*$$// $(AUTO_MAP) | $(DBLOAD) \
             -i $(AUTO_MAP) -o $(YPMAPDIR)/$@ - $@
             -@$(NOPUSH) || $(YPPUSH) -d $(DOMAIN) $@
+     </content>
+    </file>
 
+    <textblock>
 Diese Produktionsregel entfernt nur Kommentare, fügt einen neuen Eintrag
 in die Datenbank hinzu und übermittelt dann die Information zu jedem
 NIS Server der NIS-Domain foobar.
+    </textblock>
 
-Man muss hierzu nur make aus dem Verzeichnis /var/yp heraus ausführen.
+    <textblock>
+Man muss hierzu nur make aus dem Verzeichnis <path>/var/yp</path> heraus ausführen.
+    </textblock>
 
-# cd /var/yp
-# make
+    <shell>
+     <root>
+cd /var/yp
+     </root>
+     <root path="/var/yp">
+make
+     </root>
+    </shell>
 
-Nun zu den drei Clienten "telesto", "mars" und "venus". Hier gibt es
-nicht viel tun. Man muss lediglich autofs mitteilen, dass es eine neue
+    <textblock>
+Nun zu den drei Clienten <strong>telesto</strong>, <strong>mars</strong> und <strong>venus</strong>. Hier gibt es
+nicht viel tun. Man muss lediglich <command>autofs</command> mitteilen, dass es eine neue
 map, die von YP (NIS) übergeben wird, verwalten soll. In jeder Datei
-/etc/auto.master des Clienten informiert die folgende Zeile über die
-Anwesenheit einer "map" "auto.map", verwaltet durch die YP Dienste (NIS).
+<path>/etc/auto.master</path> des Clienten informiert die folgende Zeile über die
+Anwesenheit einer <strong>map</strong> <path>auto.map</path>, verwaltet durch die YP Dienste (NIS).
+    </textblock>
 
-#/etc/auto.master
+    <file>
+     <title>
+/etc/auto.master
+     </title>
+     <content>
 /usr/local    yp auto.map    --intr,nosuid,nodev
+     </content>
+    </file>
 
-Danach muss autofs neu gestartet werden, damit die neue "map" wirksam
+    <textblock>
+Danach muss <command>autofs</command> neu gestartet werden, damit die neue <strong>map</strong> wirksam
 wird.
+    </textblock>
 
-# /etc/init.d/autofs restart
+    <shell>
+     <root>
+/etc/init.d/autofs restart
+     </root>
+     <output>
 Stopping automounter:
   Stopped 798()
 done.
 Starting automounter: /usr/local.
+     </output>
+    </shell>
 
-Jetzt hat man ein einziges physikalisches Verzeichnis /usr/local auf
-"sol". Wenn spezifische Programme auf "sol" installiert werden,
+    <textblock>
+Jetzt hat man ein einziges physikalisches Verzeichnis <path>/usr/local</path> auf
+<strong>sol</strong>. Wenn spezifische Programme auf <strong>sol</strong> installiert werden,
 können alle Maschinen diese sofort nutzen.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+autofs und LDAP
+    </heading>
 
-
-
-1.1 autofs und LDAP
-
-Die Benutzung von LDAP zur Steuerung des Automounters, bietet sich vor
+    <textblock>
+Die Benutzung von <ref chapter="ldap">LDAP</ref> zur Steuerung des Automounters, bietet sich vor
 allem in Umgebungen an, in denen bereits ein oder auch mehrere
 LDAP-Server im Einsatz sind.
+    </textblock>
 
-Auf Serverseite ist es lediglich nötig das entsprechende Schema für den
+    <textblock>
+Auf Serverseite ist es lediglich nötig das entsprechende <ref chapter="ldap" iref="Schema">Schema</ref> für den
 automounter einzubinden. Dieses Schema wird, obwohl es in den meisten
-Fällen sehr nützlich ist, leider nicht mit OpenLDAP ausgeliefert.
+Fällen sehr nützlich ist, leider nicht mit <ref lang="en" url="http://www.openldap.org">OpenLDAP</ref> ausgeliefert.
+    </textblock>
 
-Im Folgenden findet man das für den automounter nötige Schema, welches
-man am besten als /etc/ldap/schema/automount.schema speichert.
+    <textblock>
+Im Folgenden findet man das für den <command>automount</command> nötige <ref chapter="ldap" iref="Schema">Schema</ref>, welches
+man am besten als <path>/etc/ldap/schema/automount.schema</path> speichert.
+    </textblock>
 
-#/etc/ldap/schema/automount.schema
+    <file>
+     <title>
+/etc/ldap/schema/automount.schema
+     </title>
+     <content>
 
 attributetype ( 1.3.6.1.1.1.1.25 NAME 'automountInformation'
         DESC 'Automount information'
@@ -281,13 +480,19 @@ objectclass ( 1.3.6.1.1.1.2.13 NAME 'automount' SUP top STRUCTURAL
 
 objectclass ( 1.3.6.1.4.1.2312.4.2.2 NAME 'automountMap' SUP top STRUCTURAL
         DESC 'An group of related automount objects' MUST ( ou ) )
+     </content>
+    </file>
 
-Des weiteren muss diese Datei natürlich auch in der Konfigurationsdatei
+    <textblock>
+Des weiteren muss diese Datei natürlich auch in der <ref chapter="ldap" iref="Anpassen der Konfigurationsdateien">Konfigurationsdatei</ref>
 des LDAP-Servers eingebunden werden:
+    </textblock>
 
+    <file>
+     <title>
 /etc/ldap/slapd.conf
-
-...
+     </title>
+     <content>
 # Schema and objectClass definitions
 include         /etc/ldap/schema/core.schema
 include         /etc/ldap/schema/cosine.schema
@@ -295,13 +500,18 @@ include         /etc/ldap/schema/nis.schema
 include         /etc/ldap/schema/inetorgperson.schema
 
 include         /etc/ldap/schema/automount.schema
-...
+     </content>
+    </file>
 
+    <textblock>
 Nun müssen die gewünschten Einträge noch im LDAP-Server vorgenommen
 werden. Es gibt zahlreiche graphische Oberflächen, die hierbei
 hilfreich sein können. Auf Grund der grossen Zahl dieser Programme,
 werden hier nur die realen Daten im ldif-Format angegeben.
+    </textblock>
 
+    <file>
+     <content>
 dn: ou=autofs,dc=foo,dc=bar
 objectClass: top
 objectClass: organizationalUnit
@@ -316,45 +526,80 @@ dn: cn=/,ou=home,ou=autofs,dc=foo,dc=bar
 objectClass: top
 objectClass: automount
 cn: /
-automountInformation: saturn:/home_phys/&
+automountInformation: saturn:/home_phys/&amp;
+     </content>
+    </file>
 
-Zu obigen Eingaben wäre die äquivalente auto.home:
+    <textblock>
+Zu obigen Eingaben wäre die äquivalente <path>auto.home</path>:
+    </textblock>
 
-#/etc/auto.home
-&         saturn:/home_phys/&
+    <file>
+     <title>
+/etc/auto.home
+     </title>
+     <content>
+*         saturn:/home_phys/&amp;
+     </content>
+    </file>
 
+    <textblock>
 Auf den Klienten gibt es auch in diesem Fall nicht sehr viel zu tun. Man
-muss nur autofs mitteilen, dass eine neue "map" existiert, die über
-LDAP bezogen und verwaltet werden soll.
+muss nur <command>autofs</command> mitteilen, dass eine neue <strong>map</strong> existiert, die über
+<ref chapter="ldap">LDAP</ref> bezogen und verwaltet werden soll.
+    </textblock>
 
-#/etc/auto.master
+    <file>
+     <title>
+/etc/auto.master
+     </title>
+     <content>
 /usr/local    ldap ldap 10.1.7.7:ou=home,ou=autofs,dc=foo,dc=bar
+     </content>
+    </file>
 
-Danach muss autofs noch neu gestartet werden. Ab sofort stehen nun
-unter /home die zentral auf "saturn" liegenden Home-Verzeichnisse zur
+    <textblock>
+Danach muss <command>autofs</command> noch neu gestartet werden. Ab sofort stehen nun
+unter <path>/home</path> die zentral auf <strong>saturn</strong> liegenden Home-Verzeichnisse zur
 Verfügung.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Die letzten Details
+   </heading>
 
-
-
-1 Die letzten Details
-
+   <textblock>
 Zunächst wird man feststellen, dass die automatische Vervollständigung
 des Dateinamens nicht wie üblich funktioniert. Um nicht immer den vollen
-Pfad angeben zu müssen, benutzt man oft die TAB-Taste. Solange die
-entsprechende automount-map nicht geladen ist, funktioniert diese TAB
+Pfad angeben zu müssen, benutzt man oft die <keycomb><key>TAB</key></keycomb>-Taste. Solange die
+entsprechende <command>automount</command>-map nicht geladen ist, funktioniert diese <keycomb><key>TAB</key></keycomb>
 Taste nicht.
+   </textblock>
 
+   <textblock>
 Dieses Verhalten ist ganz normal. Offensichtlich wird das Verzeichnis
-durchsucht, wenn man die TAB Taste drückt (globbing), um die verschiedenen
+durchsucht, wenn man die <keycomb><key>TAB</key></keycomb> Taste drückt (globbing), um die verschiedenen
 Einträge zu lesen. In diesem Fall ist das Verzeichnis jedoch leer, da es
 das Ziel ist, das Dateisystem nur dann zu mounten, wenn auf eine Datei
 aus diesem Dateisystem zugegriffen wird.
+   </textblock>
 
-Betrachtet man die Ausgabe von mount vor und nach dem Zugriff auf eine
+   <textblock>
+Betrachtet man die Ausgabe von <command>mount</command> vor und nach dem Zugriff auf eine
 map, so sieht man die entsprechenden EInträge. Hier wird wieder die
-vorherige /etc/auto.master mit nur einem mount benutzt:
+vorherige <path>/etc/auto.master</path> mit nur einem mount benutzt:
+   </textblock>
 
+   <shell>
+    <root>
+mount
+    </root>
+    <output>
 /dev/hda6 on / type ext2 (rw)
 none on /proc type proc (rw)
 /dev/hda9 on /home type ext2 (rw)
@@ -365,11 +610,20 @@ automount(pid364) on /misc type autofs
 (rw,fd=5,pgrp=364,minproto=2,maxproto=3)
 automount(pid366) on /mnt type autofs
 (rw,fd=5,pgrp=366,minproto=2,maxproto=3)
+    </output>
+   </shell>
 
+   <textblock>
 Man sieht, dass es einen Daemon (daemon -- etwa ein Systemprozess) gibt.
-Weiterhin ist der zugehörige Typ "autofs". Nach dem Zugriff sieht
+Weiterhin ist der zugehörige Typ <strong>autofs</strong>. Nach dem Zugriff sieht
 dies so aus:
+   </textblock>
 
+   <shell>
+    <root>
+mount
+    </root>
+    <output>
 /dev/hda6 on / type ext2 (rw)
 none on /proc type proc (rw)
 /dev/hda9 on /home type ext2 (rw)
@@ -381,29 +635,43 @@ automount(pid364) on /misc type autofs
 automount(pid366) on /mnt type autofs
 (rw,fd=5,pgrp=366,minproto=2,maxproto=3)
 /dev/hda1 on /misc/windoz type vfat (rw)
+    </output>
+   </shell>
 
+   <textblock>
 Die letzte Zeile enthält, was man erwartet hat. Wenn man einige
 Minuten wartet, ohne auf das Dateisystem zuzugreifen, wird der Eintrag
 wieder verschwinden.
+   </textblock>
+  </section>
 
+  <section>
+   <heading>
+Zusammenfassung
+   </heading>
 
-
-
-1 Zusammenfassung
-
+   <textblock>
 Auf einem einzigen alleinstehenden Computer, der nur Linux und Windows
-beheimatet, sind automount und autofs relativ nutzlos.
+beheimatet, sind <command>automount</command> und <command>autofs</command> relativ nutzlos.
+   </textblock>
 
-Im Zusammenhang mit Netzwerken ist der Nutzen sehr gross, da automount
-und autofs mit NIS und LDAP sehr gut zusammenarbeitet und man sich keine
+   <textblock>
+Im Zusammenhang mit Netzwerken ist der Nutzen sehr gross, da <command>automount</command>
+und <command>autofs</command> mit NIS und <ref chapter="ldap">LDAP</ref> sehr gut zusammenarbeitet und man sich keine
 Gedanken machen muss, wo sich die Dateisysteme physikalisch befinden.
-Dies wird von den über NIS und/oder LDAP verteilten maps komplett
+Dies wird von den über NIS und/oder <ref chapter="ldap">LDAP</ref> verteilten maps komplett
 abstrahiert.
+   </textblock>
 
-Ein großer Vorteil von automount ist, dass ein ausgefallener Dateiserver
+   <textblock>
+Ein großer Vorteil von <command>automount</command> ist, dass ein ausgefallener Dateiserver
 nur die Maschinen betrifft, die den Server gerade benötigt hatten. Das
 kann die Ausfallzeit in einer großen Firma (mit vielleicht 10 NFS
 Servern) signifikant reduzieren. Auch ist es möglich, sofern ein
-Backup-Server vorhanden ist, zentral über die Maps des automounter auf
+Backup-Server vorhanden ist, zentral über die Maps des automounters auf
 diesen umzuschalten. So kann nach einem Totalausfall zumindest auf etwas
 älteren Daten weitergearbeitet werden.
+   </textblock>
+  </section>
+ </split>
+</chapter>
