@@ -1,183 +1,227 @@
-<!--
- *
- * Intrusion Detection Systeme - IDS
- * Copyright Gabriel Welsche,
- *           Alexis Hildebrandt,
- *           Mathias Meyer
- *
- * Lizenz: GFDL
- *
- * Diese Datei ist Teil von SelfLinux  http://www.selflinux.de
- *
--->
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>Intrusion Detection Systeme - IDS</title>
 
+ <author>
+  <name>Gabriel Welsche</name>
+ </author>
 
-Zusammenfassung
+ <author>
+  <name>Alexis Hildebrandt</name>
+ </author>
 
-Intrusion Detection (ID) oder zu deutsch "Einbruchserkennung" ist
+ <author>
+  <name>Mathias Meyer</name>
+ </author>
+
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>IDS</index>
+
+ <description>
+  <textblock>
+Intrusion Detection (ID) oder zu deutsch <strong>Einbruchserkennung</strong> ist
 noch ein sehr junges Gebiet der Netzwerksicherheit. Dieser Artikel
 soll die theoretischen Grundlagen und praktischen Möglichkeiten der
-Einbruchserkennung beleuchten. Obwohl Intrusion Detection Systeme 
-(IDS) oftmals noch für "unreif" gehalten werden, so ist ihre Rolle
+Einbruchserkennung beleuchten. Obwohl Intrusion Detection Systeme
+(IDS) oftmals noch für <strong>unreif</strong> gehalten werden, so ist ihre Rolle
 als Komponente in einer Sicherheitsarchitektur sehr bedeutsam.
+  </textblock>
+ </description>
 
-Zwei weitere Artikel beschäftigen sich mit den ID-Systemen 
-<-- FUTURELINK: chapter="snort"-->snort<!-- ENDLINK-->
-und 
-<-- LINK: chapter="samhain"-->samhain<!-- ENDLINK-->. 
-Die Ausarbeitung zu snort entstand im Rahmen der
-Vorlesung "Netzwerksicherheit" im Studiengang Informatik an der
-Fachhochschule Brandenburg und wurde Ende 2004 nochmals überarbeitet.
-Samhain wird vom Autor der Software vorgestellt. Der Schwerpunkt
-liegt jeweils auf den Konfigurationsmöglichkeiten der beiden
-Software-Systeme.
+ <split>
+  <section>
+   <heading>
+Einführung in das Gebiet der "Intrusion Detection"
+   </heading>
 
-
-
-1 Einführung in das Gebiet der "Intrusion Detection"
-
-
+   <textblock>
 Mit der wachsenden Verbreitung des Internets wächst auch
 der Bedarf an Sicherheit - sowohl im privaten als auch
 im geschäftlichen Bereich. Vornehmlich Firmennetzwerke sind
 oftmals Angriffsversuchen ausgesetzt. Um den Schaden
-abzuwenden bzw. zu begrenzen müssen diese Angriffe
+abzuwenden bzw. zu begrenzen, müssen diese Angriffe
 erkannt und entsprechende Gegenmaßnahmen eingeleitet
 werden.
+   </textblock>
 
-**** BILD Grundprinzip der Intrusion Detection
+   <image>
+    <filename>ids-1.png</filename>
+   </image>
 
-Das Gebiet der "Intrusion Detection"
+   <textblock>
+Das Gebiet der <strong>Intrusion Detection</strong>
 (ID - zu dt. Einbruchserkennung) befasst sich mit
 der Entwicklung von Methoden zur frühzeitigen
 Angriffserkennung. Ein IDS kann demnach
-als "Alarmanlage" angesehen werden.
+als <strong>Alarmanlage</strong> angesehen werden.
 Durchbricht beispielsweise ein Angreifer die
 Sicherheitsvorkehrungen (Firewall), so soll das IDS
 Alarm auslösen. Dies kann eine Mitteilung
-an den Administrator (E-Mail, SMS, Pager, etc) oder aber
-aktive Gegenmaßnahmen, wie das Schließen von Ports, 
-das Beenden angegriffener Dienste, etc. beinhalten. 
+an den Administrator (E-Mail, SMS, Pager, etc.) oder aber
+aktive Gegenmaßnahmen, wie das Schließen von Ports,
+das Beenden angegriffener Dienste, etc. beinhalten.
 Des Weiteren sollte der
 Administrator genaue Informationen über den Angriff
 selbst erhalten, damit eventuelle geeignete und effektive
 Gegenmaßnahmen möglichst schnell eingeleitet werden
 können.
+   </textblock>
 
+   <textblock>
 Doch woraus besteht ein Intrusion Detection System?
 Welche Möglichkeiten stellen die verschiedenen Systeme
 zur Verfügung? Wie setzt man es erfolgreich ein und welche
 Instrumente stehen unter Linux zur Verfügung?
+   </textblock>
 
+   <section>
+    <heading>
+Begriffsklärung und Einordnung der verschiedenen Systeme
+    </heading>
 
-
-1.1 Begriffsklärung und Einordnung der verschiedenen Systeme
-
+    <textblock>
 Um ein Intrusion Detection System konkretisieren zu können,
 ist zunächst die Frage zu klären, durch was
-"Eindringen" (Intrusion) überhaupt gekennzeichnet ist.
+<strong>Eindringen</strong> (Intrusion) überhaupt gekennzeichnet ist.
 Heberlein, Levitt und Mukherjee von der University of
-California, Davis haben sie 1991 wie folgt definiert:
+California, und Davis haben sie 1991 wie folgt definiert:
+    </textblock>
 
+    <quotation>
 "... eine Menge von Handlungen, deren Ziel es ist, die
 Integrität, die Verfügbarkeit oder die Vertraulichkeit
 eines Betriebsmittels zu kompromittieren."
+    </quotation>
 
+    <textblock>
 Daraus ergibt sich folgende Deutung für Intrusion Detection:
+    </textblock>
 
+    <quotation>
 "Intrusion Detection ist die Gesamtheit aller Methoden, um
 gegen ein System oder Netzwerk gerichtete Aktionen
 herauszufinden"
+    </quotation>
 
+    <textblock>
 Im Laufe der Zeit bildeten sich vier Arten an ID-Systemen
 heraus:
+    </textblock>
 
-<!-- Aufzählung Beginn -->
-- Logfile-Analysatoren,
-- Host basierte IDS (HIDS),
-- Netzwerk basierte IDS (NIDS),
-- Deception-Systeme (auch bekannt als Honeypots).
-<!-- Aufzählung Ende -->
+    <ul>
+     <li>
+Logfile-Analysatoren,
+     </li>
+     <li>
+Host basierte IDS (HIDS),
+     </li>
+     <li>
+Netzwerk basierte IDS (NIDS),
+     </li>
+     <li>
+Deception-Systeme (auch bekannt als Honeypots).
+     </li>
+    </ul>
 
+    <textblock>
 Logfile-Analysatoren untersuchten die System-Protokolldateien
-auf ungewöhnliche Ereignisse (Mustererkennung). Durch die  
-fehlende "Echtzeitfähigkeit" sind sie nicht in der Lage,
-heute übliche Angriffe z.B. durch 
-<!-- LINK: chapter="grundlagen_sicherheit" iref="Root Kits"-->
-Rootkits
-<!-- ENDLINK-->
-zu erkennen -geschweige denn- denen entgegenzuwirken.
+auf ungewöhnliche Ereignisse (Mustererkennung). Durch die
+fehlende <strong>Echtzeitfähigkeit</strong> sind sie nicht in der Lage,
+heute übliche Angriffe z. B. durch
+<ref chapter="grundlagen_sicherheit" iref="Root Kits">Rootkits</ref>
+zu erkennen - geschweige denn - ihnen entgegenzuwirken.
+    </textblock>
 
+    <textblock>
 Bei Host basierten
 Intrusion Detection Systemen (HIDS) läuft ein Teil der 
 Überwachungssoftware (nämlich die 
-<!-- LINK: iref="Aufbau eines IDS"-->
-Ereigniskomponente
-<!-- ENDLINK-->) auf dem zu überwachenden Rechner (Host),
-d.h. dass die zu analysierenden Daten von diesem 
-Host stammen. Angriffsanalyse, Protokollierung und 
-eventuelle Gegenmaßnahmen sind nicht zwangsweise auf 
-einen Rechner beschränkt. Zur Gruppe der HIDS zählen die so 
-genannten System-Integritäts-Verifikatoren (SIV), zu denen 
-z.B. auch tripwire und 
-<!-- LINK: chapter="samhain"-->samhain<!-- ENDLINK-->
-gehören. 
+<ref iref="Aufbau eines IDS">Ereigniskomponente</ref>
+auf dem zu überwachenden Rechner (Host),
+d. h. dass die zu analysierenden Daten von diesem
+Host stammen. Angriffsanalyse, Protokollierung und
+eventuelle Gegenmaßnahmen sind nicht zwangsweise auf
+einen Rechner beschränkt. Zur Gruppe der HIDS zählen die so
+genannten System-Integritäts-Verifikatoren (SIV), zu denen
+z. B. auch <command>tripwire</command> und 
+<ref chapter="samhain">samhain</ref> gehören.
+    </textblock>
 
+    <textblock>
 Netzwerkbasierte IDS überwachen den
-Netzwerkverkehr (Netzwerkpakete), als Vertreter ist 
-<!-- FUTURELINK: chapter="snort"-->snort<!-- ENDLINK-->
-zu nennen, das in einem eigenen Selflinux-Kapitel vorgestellt 
-wird. Die meisten Netzwerk-IDS arbeiten im
-promiscious-Modus. 
+Netzwerkverkehr (Netzwerkpakete), als Vertreter ist <command>snort</command>
+zu nennen. Die meisten Netzwerk-IDS arbeiten im promiscious-Modus.
+    </textblock>
 
-Honeypots (Honigtöpfe)
-geben fälschlicherweise vor, wichtige Daten vorzuhalten und
-lenken damit von den tatsächlich sicherheitskritischen Systemen ab.
+    <textblock>
+Honeypots (Honigtöpfe) geben fälschlicherweise vor, wichtige Daten vorzuhalten
+und lenken damit von den tatsächlich sicherheitskritischen Systemen ab.
 Bei einem Angriff protokollieren sie alle Aktivitäten des Angreifers
 mit dem Ziel, diesen möglichst frühzeitig überführen zu können und
-zwar ohne sensitive Daten preiszugeben. 
+zwar ohne sensitive Daten preiszugeben.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Gründe für Intrusion Detection Systeme
+    </heading>
 
-
-1.1 Gründe für Intrusion Detection Systeme
-
+    <textblock>
 Die Motivation, ein Netzwerk oder auch nur einen Einzelrechner mit
 einem Intrusion Detection System abzusichern, liegt heutzutage auf
 der Hand. Kaum ein Tag vergeht, an dem man nicht von neuen
 Crackversuchen oder Einbrüchen in Firmennetzwerken hört. So manche
 Kreditkartennummer hat durch Einbruchsversuche schon den Weg in
 die Finger böswilliger krimineller Individuen gefunden.
+    </textblock>
 
-Informationen des CERT zufolge stiegen in den letzten Jahren die
+    <textblock>
+Informationen des <ref lang="en" url="http://www.cert.org/">CERT</ref>
+zufolge stiegen in den letzten Jahren die
 Anzahl der Angriffe und die damit verbundenen Kosten exponentiell
 an. Dieser Tendenz konnte bisher noch nichts entgegengesetzt werden,
 auch so genannte Intrusion Prevention Systeme (zu dt. 
-"Einbruchsverhinderungssysteme") verfehlten oftmals ihren 
+<strong>Einbruchsverhinderungssysteme</strong>) verfehlten oftmals ihren 
 Zweck.
+    </textblock>
 
+    <textblock>
 Bedrohungen können sehr vielfältig Art und Weise auftreten.
 Der Angreifer kann zum Beispiel über Fehler in der Implementierung
-des TCP/IP-Stacks Zugriff auf das System oder dessen Ressourcen
-erhalten. Ein Profi findet anhand einer Untersuchung des
-TCP/IP-Fingerprints 
-(<!-- LINK: chapter="nmap" iref="Fingerprints zur Ermittlung des Betriebssystems"-->nmap<!-- ENDLINK-->
-heraus, um welches System es sich handelt, kann durch diese Information 
-ganz gezielt Schwachstellen suchen und nutzt diese letztendlich für 
+des <ref chapter="tcpip">TCP/IP-Stacks</ref> Zugriff auf das System
+oder dessen Ressourcen erhalten. Ein Profi findet anhand einer
+Untersuchung des TCP/IP-Fingerprints 
+(<ref chapter="nmap" iref="Fingerprints zur Ermittlung des Betriebssystems">nmap</ref>
+heraus, um welches System es sich handelt, kann durch diese Information
+ganz gezielt Schwachstellen suchen und nutzt diese letztendlich für
 einen Angriff aus.
+    </textblock>
 
+    <textblock>
 Schwachstellen lassen sich aber auch oftmals in der
-auf dem System vorhandenen Software finden -meist in
+auf dem System vorhandenen Software finden - meist in
 Form von Pufferüberläufen (Buffer Overflows), durch die ein 
-normaler Benutzer u.U. sogar root-Rechte erlangen kann. Besonders
+normaler Benutzer u. U. sogar
+<ref chapter="nutzer_unter_linux" iref="root">root</ref>-Rechte
+erlangen kann. Besonders
 negativ aufgefallen sind der DNS-Daemon BIND, welcher schon seit
 Jahrzehnten unter Unix und seinen Derivaten markführend ist,
-der FTP-Server WuFTP und natürlich der "Klassiker", der Microsoft
-Internet Information Server. Durch die ersten beiden Programme
+der FTP-Server WuFTP und natürlich der <strong>Klassiker</strong>, der
+Microsoft Internet Information Server. Durch die ersten beiden Programme
 gelangten die ersten Würmer in die Unix-Welt. Mittlerweile gibt es
 sogar einen Wurm, der eine Kombination aus Sicherheitslöchern
 im Microsoft IIS und BIND ausnutzt.
+    </textblock>
 
+    <textblock>
 Fälschlicherweise wird oft angenommen, dass Einbruchsversuche
 grundsätzlich nur in Firmen-Netzwerken oder in großen
 Organisationen geschehen. Tatsächlich ist jeder private
@@ -186,120 +230,173 @@ IP-Adresse, von der man weiß, dass die dahinter steckenden
 Rechnersysteme häufig wechseln, ist nicht halb so interessant
 wie ein System, welches dauerhaften Kontakt zum Internet hat oder
 gar mehrere Systeme in einem Netzwerk, die für einen der
-gefürchteten 
-<!-- LINK: chapter="grundlagen_sicherheit" iref="DDOS"-->
-Distributed Denial of Service-Attacken 
-<!-- ENDLINK-->
+gefürchteten <ref chapter="grundlagen_sicherheit" iref="DDOS">Distributed Denial of Service-Attacken</ref>
 genutzt werden könnten. Ein Rechner, dessen
 Internet-Anbindung mittels Flatrate-DSL zustande kommt, ist
-weitaus mehr gefährdet als einer, der ISDN oder älterer Modems
-nur sporadisch nutzt.
+weitaus mehr gefährdet als einer, der <ref chapter="isdn">ISDN</ref>
+oder ältere Modems nur sporadisch nutzt.
+    </textblock>
 
+    <textblock>
 Letzten Endes ist eine Kette immer nur so stark wie ihr
-schwächstes Glied -der Benutzer des Systems. Oftmals sind
-Einbruchsversuche auf falsch gewählte 
-<!-- LINK: chapter="passwortsicherheit"-->
-Passwörter<!-- ENDLINK--> zurückzuführen.
+schwächstes Glied - der Benutzer des Systems. Oftmals sind
+Einbruchsversuche auf falsch gewählte
+<ref chapter="passwoerter">Passwörter</ref> zurückzuführen.
 Hat ein Einbrecher erst einmal einen Zugang zum
 System, ist es ein Leichtes, zu noch höheren oder gar den
-absoluten, den root-Rechten, auf einem Rechner zu gelangen.
-Neben so genannten 
-<!-- LINK: chapter="grundlagen_sicherheit" iref="Angriffs...."-->
-Brute-Force-Angriffen
-<!-- ENDLINK-->
-kann
-der Angreifer natürlich auch mittels "Social Engineering"
+absoluten, den <ref chapter="nutzer_unter_linux" iref="root">root</ref>-Rechten,
+auf einem Rechner zu gelangen. Neben so genannten 
+<strong>Brute-Force-Angriffen</strong> kann
+der Angreifer natürlich auch mittels <strong>Social Engineering</strong>
 versuchen, an das Passwort des Benutzers zu gelangen. Man hört
 immer wieder von Fällen, in denen dreiste Personen unter einem
 Vorwand oder Vorgabe einer falschen Identität versucht haben,
 einen Benutzer zur Herausgabe seines Passwortes zu bewegen.
 Ein IDS kann natürlich einen solchen (Passwort)-Angriff nicht
 verhindern. Es lassen sich höchstens ungewöhnliche und von diesem
-Login ausgehende Aktivitäten erkennen, aber dann dies leider oft
+Login ausgehende Aktivitäten erkennen, aber dann ist es leider oft
 zu spät.
+    </textblock>
 
+    <textblock>
 Ohne Intrusion Detection System besteht keine Möglichkeit 
 herauszufinden, wie lange ein Eindringling unbemerkt blieb, 
 wie er seinen Angriff ausführte und welcher Schaden dabei 
 entstand. Zusammenfassend lassen sich die Ziele von ID-Systemen
 in folgenden Punkten ausdrücken:
+    </textblock>
 
-<!-- Beginn Aufzählung -->
-- im Falle eines Angriffs Benachrichtigung der Verantwortlichen 
-  (Administrator, Sicherheitsbeauftragter) oder aktive Gegenmaßnahmen,
-- juristische Verwertbarkeit der gesammelten Erkenntnisse,
-- Erkennung von Datenverlusten,
-- Schutz vor zukünftigen Angriffen durch Auswertung der
-  gesammelten Erkenntnisse bei einem (simulierten) Einbruch.
-<!-- Ende Aufzählung -->
+    <ul>
+     <li>
+im Falle eines Angriffs Benachrichtigung der Verantwortlichen 
+(Administrator, Sicherheitsbeauftragter) oder aktive Gegenmaßnahmen,
+     </li>
+     <li>
+juristische Verwertbarkeit der gesammelten Erkenntnisse,
+     </li>
+     <li>
+Erkennung von Datenverlusten,
+     </li>
+     <li>
+Schutz vor zukünftigen Angriffen durch Auswertung der
+gesammelten Erkenntnisse bei einem (simulierten) Einbruch.
+     </li>
+    </ul>
+   </section>
 
+   <section>
+    <heading>
+Anzeichen für ein "Eindringen"
+    </heading>
 
-
-1.1 Anzeichen für ein "Eindringen"
-
+    <textblock>
 Ein Intrusion Detection System deutet Unregelmäßigkeiten im System
 als Anzeichen eines Einbruchs. Man unterscheidet:
+    </textblock>
 
-Systembezogene Anzeichen:
+    <textblock>
+<strong>Systembezogene Anzeichen:</strong>
+    </textblock>
 
-<!-- Aufzählung Beginn -->
-- ungewöhnliche Login - Aktivitäten (z.B. nächtliches Anmelden, Login
-  auf lange unbenutzte Benutzerkonten, neue ungewöhnliche
-  Benutzerkonten, etc.),
-- ungewöhnliche Systemprozesse oder Kernel-Module,
-- abnormal hohe CPU-/Speicherauslastung, ungewöhnliches
-  Systemverhalten (z.B. Systemabstürze, Neustarts),
-- Zeitlücken bzw. auffallende Zeitangeben in der Protokollierung
-  (Logfiles).
-<!-- Aufzählung Ende -->
+    <ul>
+     <li>
+ungewöhnliche Login - Aktivitäten (z. B. nächtliches Anmelden, Login
+auf lange unbenutzte Benutzerkonten, neue ungewöhnliche
+Benutzerkonten, etc.),
+     </li>
+     <li>
+ungewöhnliche Systemprozesse oder Kernel-Module,
+     </li>
+     <li>
+abnormal hohe CPU-/Speicherauslastung, ungewöhnliches
+Systemverhalten (z. B. Systemabstürze, Neustarts),
+     </li>
+     <li>
+Zeitlücken bzw. auffallende Zeitangeben in der Protokollierung
+(Logfiles).
+     </li>
+    </ul>
 
-Anzeichen im Dateisystem:
+    <textblock>
+<strong>Anzeichen im Dateisystem:</strong>
+    </textblock>
 
-<!-- Aufzählung Beginn -->
-- veränderte Benutzer/Gruppenzugehörigkeit bzw. veränderte
-  Zugriffsrechte Rechte insbesondere der Protokoll-Dateien (Logfiles),
-- veränderte Dateigrößen, Dateiinhalte (Systemsoftware, 
-  Konfigurationsdateien, Logfiles, ...),
-- neue, ungewöhnliche Dateien/Programme,
-- neue SUID-, SGID- Dateien,
-- nicht mehr vorhandene (gelöschte) Dateien.
-<!-- Aufzählung Ende -->
+    <ul>
+     <li>
+veränderte Benutzer/Gruppenzugehörigkeit bzw. veränderte
+Zugriffsrechte insbesondere der Protokoll-Dateien (Logfiles),
+     </li>
+     <li>
+veränderte Dateigrößen, Dateiinhalte (Systemsoftware,
+Konfigurationsdateien, Logfiles, ...),
+     </li>
+     <li>
+neue, ungewöhnliche Dateien/Programme,
+     </li>
+     <li>
+neue SUID-, SGID-Dateien,
+     </li>
+     <li>
+nicht mehr vorhandene (gelöschte) Dateien.
+     </li>
+    </ul>
 
-Netzwerkspezifische Anzeichen:
+    <textblock>
+<strong>Netzwerkspezifische Anzeichen:</strong>
+    </textblock>
 
-<!-- Aufzählung Beginn -->
-- Verbindungen von ungewöhnlichen Standorten (IP-Adressen)
-  zu ungewöhnlichen Zeiten (z.B. nachts),
-- erhöhter Netzwerkverkehr (im Extremfall DOS),
-- Anfragen auf unbenutzten/geschlossenen Ports,
-- Anfragen, die auf einen Port-Scan hindeuten.
-<!-- Aufzählung Ende -->
+    <ul>
+     <li>
+Verbindungen von ungewöhnlichen Standorten
+(<ref chapter="tcpip" iref="Adressierung im IP">IP-Adressen</ref>)
+zu ungewöhnlichen Zeiten (z. B. nachts),
+     </li>
+     <li>
+erhöhter Netzwerkverkehr (im Extremfall DoS),
+     </li>
+     <li>
+Anfragen auf unbenutzten/geschlossenen Ports,
+     </li>
+     <li>
+Anfragen, die auf einen Port-Scan hindeuten.
+     </li>
+    </ul>
 
-Die in den ersten beiden Gruppen aufgeführten Anhaltspunkte 
-werden von HIDS insbesondere den System-Integritätsverifikatoren 
-behandelt, die letzte Gruppe hingegen wird von Netzwerk-IDS 
+    <textblock>
+Die in den ersten beiden Gruppen aufgeführten Anhaltspunkte
+werden von HIDS insbesondere den System-Integritätsverifikatoren
+behandelt, die letzte Gruppe hingegen wird von Netzwerk-IDS
 identifiziert.
+    </textblock>
+   </section>
+  </section>
 
+  <section>
+   <heading>
+Aufbau und Funktionalität eines IDS
+   </heading>
 
-
-1 Aufbau und Funktionalität eines IDS
-
+   <textblock>
 Im Allgemeinen erledigt ein MD-IDS seine Arbeit in drei Schritten,
 wie Abbildung 2 veranschaulicht.
+   </textblock>
 
-***** BILD
-     Datensammlung  --> (Rohdaten in einheitl. Format) Protokoll
-     Datenanalyse   --> (Ereignismeldungen) Protokoll
- Datenvisualisierung | Gegenmaßnahmen  --> () Protokoll
+   <image>
+    <filename>ids-2.png</filename>
+   </image>
 
-In den folgenden drei Abschnitten werden die oben genannten 
-Schritte erläutert. Daran anschließend wird der prinzipielle 
+   <textblock>
+In den folgenden drei Abschnitten werden die oben genannten
+Schritte erläutert. Daran anschließend wird der prinzipielle
 Aufbau eines IDS besprochen.
+   </textblock>
 
+   <section>
+    <heading>
+Datensammlung
+    </heading>
 
-
-1.1 Datensammlung 
-
+    <textblock>
 Im ersten Schritt werden Daten gesammelt. Im Falle eines
 Netzwerk-IDS handelt es sich hierbei um Pakete, die
 das Netzwerk passieren. Bei integritätsüberprüfenden
@@ -311,35 +408,49 @@ die die Vergabe von Betriebsmitteln durch das Betriebssystem
 überwachen (CPU, Speicher-Auslastung, aktive Netzwerkverbindungen,
 etc.). Protokolldaten (Logfiles) sind ebenfalls essenzielle
 Datenquellen.
+    </textblock>
 
+    <textblock>
 Besonders wichtig ist die Vertrauenswürdigkeit gegenüber der
 Datenbezugsquelle. Informationen, die mitgehört oder gar
 manipuliert werden können, sind nicht nur nutzlos sondern
-äußerst gefährlich! (z.B. Logfiles, in denen gelöscht werden
+äußerst gefährlich! (z. B. Logfiles, in denen gelöscht werden
 kann, ...)
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Datenanalyse - Anomalieerkennung vs. signaturbasierter Missbrauchserkennung
+    </heading>
 
-
-1.1 Datenanalyse - Anomalieerkennung vs. signaturbasierter Missbrauchserkennung
-
+    <textblock>
 Zwei grundlegende Techniken zur Datenanalyse wurden in
 den letzten Jahren entwickelt:
+    </textblock>
 
-<!-- Aufzählung Beginn-->
- - Anomalieerkennung (Anomaly Detection -AD-IDS),
- - Missbrauchserkennung (Missuse Detection -MD-IDS).
-<!-- Aufzählung Ende-->
+    <ul>
+     <li>
+Anomalieerkennung (Anomaly Detection -AD-IDS),
+     </li>
+     <li>
+Missbrauchserkennung (Missuse Detection -MD-IDS).
+     </li>
+    </ul>
 
+    <textblock>
 Bei der Missbrauchserkennung wird anhand vordefinierter
 Muster versucht, Einbrüche zu erkennen. Die Anomalieerkennung
-stellt Abweichungen zum Normalbetrieb fest. 
+stellt Abweichungen zum Normalbetrieb fest.
 Auch wenn AD-IDS kaum in der Praxis zu finden
 sind, so besitzen sie einen sehr wichtigen Vorteil gegenüber
-MD-IDS, welcher darin besteht *unbekannte* Angriffsmuster zu
+MD-IDS, welcher darin besteht <strong>unbekannte</strong> Angriffsmuster zu
 erkennen.
+    </textblock>
 
+    <textblock>
 Zur Anomalieerkennung werden zwei Techniken eingesetzt,
-die Erste basiert auf Methoden der künstlichen Intelligenz. 
+die Erste basiert auf Methoden der künstlichen Intelligenz.
 Dem AD-IDS wird in einer Trainingsphase
 der Normalzustand des Systems angelernt. Das Ergebnis des
 Trainings ist ein Systemprofil, welches als Vergleichsmuster
@@ -353,310 +464,395 @@ Abfolge von Ereignissen. Beobachtet das System den Anfang einer
 Ereignisfolge, erwartet es, dass auch der Rest dieser
 Ereignisfolge abläuft. Passiert dies nicht, schlägt das System
 Alarm.
+    </textblock>
 
+    <textblock>
 Missbrauchserkennungssysteme (MD-IDS) lassen sich am Besten mit
 einem Virenscanner vergleichen.
 Bereits bekannte Angriffsmuster liegen in Form von Signaturen vor,
-die -analog zum Virenscanner- möglichst immer auf einem aktuellen
+die - analog zum Virenscanner - möglichst immer auf einem aktuellen
 Stand sein sollten. Im Internet sind Unmengen an
 Angriffssignaturen zu finden. Die Voraussetzung für die
 Missbrauchserkennung ist eine für den zu identifizierenden
-Angriff passende Signatur und -selbstverständlich- dass das
+Angriff passende Signatur und - selbstverständlich - dass das
 MD-IDS diese Signatur berücksichtigt.
+    </textblock>
 
-<!-- EXKURS Beginn -->
+    <textblock>
 Der letzte Abschnitt führte den Begriff der Signatur (als
 Fingerabdruck eines Angriffs) ein. Zum Beispiel erzeugt ein
 Angriff über ein Netzwerk bestimmte Pakete, die sich entweder
-durch einen String auf Applikationsebene, wie z.B. "/cgi-bin/phf"
+durch einen String auf Applikationsebene, wie z. B. <path>/cgi-bin/phf</path>
 für ein CGI-Probe, durch eine bestimmte Konstellation gesetzter
-TCP-Flags, wie z.B. alle Flags bei XMas-Tree-Scan (siehe
-<!-- FUTURELINK: chapter="nmap" iref="Stealth FIN-, Xmas-Tree- oder Null-Scan-Modis"-->
-nmap
-<!-- ENDLINK-->)
+TCP-Flags, wie z. B. alle Flags bei XMas-Tree-Scan (siehe
+<ref chapter="nmap" iref="Stealth FIN-, Xmas-Tree- oder Null-Scan-Modis">nmap</ref>)
 oder ähnliche Merkmale auszeichnen. So kommt die Signatur zustande,
 die ein Angriffsmuster repräsentiert.
-<!-- EXKURS Ende -->
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen
+    </heading>
 
-
-1.1 Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen
-
+    <textblock>
 Die Darstellung des Ergebnisses der Analyse geschieht
-in Abhängigkeit der verwendeten Erkennungstechnik.  
-Die zu visualisierenden Informationen lassen sich in 
+in Abhängigkeit der verwendeten Erkennungstechnik.
+Die zu visualisierenden Informationen lassen sich in
 folgende Gruppen einteilen:
+    </textblock>
 
-<!-- Beginn Aufzählung -->
-- Art des potentiellen Angriffs/Unregelmäßigkeit,
-- Daten zur Identität des Angreifers (IP, ...),
-- Zeitangaben (vermutete Dauer des Angriffs, ...),
-- Daten zu angegriffenen Diensten,
-- Schadensanalyse (veränderte, gelöschte Daten),
-- usw.
-<!-- Ende Aufzählung -->
+    <ul>
+     <li>
+Art des potentiellen Angriffs/Unregelmäßigkeit,
+     </li>
+     <li>
+Daten zur Identität des Angreifers (IP, ...),
+     </li>
+     <li>
+Zeitangaben (vermutete Dauer des Angriffs, ...),
+     </li>
+     <li>
+Daten zu angegriffenen Diensten,
+     </li>
+     <li>
+Schadensanalyse (veränderte, gelöschte Daten),
+     </li>
+     <li>
+usw.
+     </li>
+    </ul>
 
+    <textblock>
 Mittels statistischer Graphiken lassen sich Informationen,
-die über einen längeren Zeitraum gesammelt wurden, 
+die über einen längeren Zeitraum gesammelt wurden,
 benutzerfreundlich aufbereiten. Einige ID-Monitore
 bieten außerdem Erklärungen zum Grund der Angriffsmeldung
-und zeigen u.U. sogar potentielle Schwachstellen, die
+und zeigen u. U. sogar potentielle Schwachstellen, die
 vom Angreifer ausgenutzt wurden.
+    </textblock>
 
+    <textblock>
 Die Ausgabe der Ergebnisse beschränkt sich natürlich nicht
 auf die Aufbereitung der Daten und einer entsprechenden
-passiven Anzeige (z.B. Web-Interface wie ACID).
-Notwendig sind auch aktive Benachrichtigungsmethoden wie z.B.
+passiven Anzeige (z. B. Web-Interface wie ACID).
+Notwendig sind auch aktive Benachrichtigungsmethoden wie z. B.
 E-Mail- oder SMS-Versand.
+    </textblock>
 
-Unter Umständen sind ID-Systeme in der Lage, anhand der 
-analysierten Daten entsprechende Gegenmaßnahmen 
+    <textblock>
+Unter Umständen sind ID-Systeme in der Lage, anhand der
+analysierten Daten entsprechende Gegenmaßnahmen
 einzuleiten. Man teilt IDS anhand ihrer
 Reaktionsschnelligkeit in folgende zwei Gruppen ein:
-**** BILD
-- reaktionär
-- unmittelbar wirkend
-    * automatische Aktionen
-    * (halb)automatisch - Interaktion mit Administrator
-    * manuell - dem Administrator werden Vorschläge unterbreitet.
+    </textblock>
 
+    <image>
+     <filename>ids-3.png</filename>
+    </image>
+
+    <ul>
+     <li>
+reaktionär
+     </li>
+     <li>
+unmittelbar wirkend
+      <ul>
+       <li>
+automatische Aktionen
+       </li>
+       <li>
+(halb)automatisch - Interaktion mit Administrator
+       </li>
+       <li>
+manuell - dem Administrator werden Vorschläge unterbreitet.
+       </li>
+      </ul>
+     </li>
+    </ul>
+
+    <textblock>
 Reaktionäre Systeme werden heute kaum weiterentwickelt, der Fokus
 liegt eindeutig auf unmittelbar wirkenden IDS. Trotz des Vorteils
-einer sehr schnellen Angriffserkennung sei auf einige Nachteile 
-dieser "Live"-Systeme hingewiesen:
+einer sehr schnellen Angriffserkennung sei auf einige Nachteile
+dieser <strong>Live</strong>-Systeme hingewiesen:
+    </textblock>
 
-<!-- Beginn Aufzählung -->
-- extensiver Ressourcenverbrauch und dadurch hohe Kosten,
-- manipulierbar und angreifbar (durch gezielte Attacken),
-  im worst case Nicht-Verfügbarkeit des IDS,
-- untersucht meist nur Paketkopf (nicht Paketinhalt),
-- viele falsch-positiven Alarme (siehe BURGAR-Alarms als möglichen
-  Ausweg, Idee dieser Technik ist das Wissen über die Netzwerk-Struktur,
-  die sich ein Angreifer erst mühevoll erarbeiten muss).
-<!-- Ende Aufzählung -->
+    <ul>
+     <li>
+extensiver Ressourcenverbrauch und dadurch hohe Kosten,
+     </li>
+     <li>
+manipulierbar und angreifbar (durch gezielte Attacken),
+im worst case Nicht-Verfügbarkeit des IDS,
+     </li>
+     <li>
+untersucht meist nur Paketkopf (nicht Paketinhalt),
+     </li>
+     <li>
+viele falsch-positive Alarme (siehe BURGAR-Alarms als möglichen
+Ausweg, Idee dieser Technik ist das Wissen über die Netzwerk-Struktur,
+die sich ein Angreifer erst mühevoll erarbeiten muss).
+     </li>
+    </ul>
 
-Die Art der Gegenmaßnahmen lassen sich in "Aktive" und "Passive" 
-einteilen. Bei den zuerst Genannten wird versucht, einen 
-direkten Kontakt zum Angreifer aufzubauen und zwar mit dem 
-Ziel, einen "Gegenangriff" durchzuführen. Das "Opfer" wird 
-so zum "Angreifer", die damit verbundenen rechtlichen 
-Probleme werden im Abschnitt 
-<!-- LINK: iref="Gegenmaßnahmen und rechtliche Aspekte"-->
-rechtliche Aspekte<!-- ENDLINK--> 
-behandelt. Normalerweise werden nur passive 
-Aktionen ausgeführt, am Besten nur solche, die vom 
-Angreifer unbemerkt bleiben. (Vorteil: der Angreifer 
-setzt den Angriff fort und gibt damit möglicherweise 
-neue wichtige Informationen z.B. über seine Identität 
+    <textblock>
+Die Art der Gegenmaßnahmen lassen sich in <strong>Aktive</strong> und <strong>Passive</strong>
+einteilen. Bei den zuerst Genannten wird versucht, einen
+direkten Kontakt zum Angreifer aufzubauen und zwar mit dem
+Ziel, einen <strong>Gegenangriff</strong> durchzuführen. Das <strong>Opfer</strong> wird
+so zum <strong>Angreifer</strong>, die damit verbundenen rechtlichen
+Probleme werden im Abschnitt
+<ref iref="Gegenmaßnahmen und rechtliche Aspekte">rechtliche Aspekte</ref>
+behandelt. Normalerweise werden nur passive
+Aktionen ausgeführt, am Besten nur solche, die vom
+Angreifer unbemerkt bleiben. (Vorteil: der Angreifer
+setzt den Angriff fort und gibt damit möglicherweise
+neue wichtige Informationen z. B. über seine Identität
 preis.) Zu diesen Aktionen gehören beispielsweise:
+    </textblock>
 
-<!-- Beginn Aufzählung -->
-- Anpassen der Firewall-Regeln (->
-  <!-- LINK iref="iptables" -->Paketfilter<!-- ENDLINK -->),
-- Ändern der Prozessprioritäten (DOS-Gegenmaßnahme),
-- Erhöhung der aufzuzeichnenden Daten,
-- Dienste beenden, Ports sperren oder vom Netzwerk 
-  trennen (nur im Extremfall und wohlüberlegt).
-<!-- Ende Aufzählung -->
+    <ul>
+     <li>
+Anpassen der Firewall-Regeln (<ref iref="iptables">Paketfilter</ref>),
+     </li>
+     <li>
+Ändern der Prozessprioritäten (DOS-Gegenmaßnahme),
+     </li>
+     <li>
+Erhöhung der aufzuzeichnenden Daten,
+     </li>
+     <li>
+Dienste beenden, Ports sperren oder vom Netzwerk
+trennen (nur im Extremfall und wohlüberlegt).
+     </li>
+    </ul>
 
+    <textblock>
 Ein Neustart des Systems sollte wohlüberlegt erfolgen,
-da unter Umständen wichtige Informationen verloren 
-gehen. Lesen Sie dazu unbedingt das Kapitel 
-<!-- LINK: chapter="grundlagen_sicherheit" iref="Notfallplan im Falle einer Systemkompromittierung"-->
-Grundlagen Sicherheit<!-- ENDLINK-->.
+da unter Umständen wichtige Informationen verloren
+gehen. Lesen Sie dazu unbedingt das Kapitel
+<ref chapter="grundlagen_sicherheit" iref="Notfallplan im Falle einer Systemkompromittierung">Grundlagen Sicherheit</ref>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Aufbau eines IDS
+    </heading>
 
-
-1.1 Aufbau eines IDS
-
-Um die oben beschriebene Funktionalität zu implementieren, 
+    <textblock>
+Um die oben beschriebene Funktionalität zu implementieren,
 verwendet ein IDS in der Regel vier Komponenten, die je nach 
 System in unterschiedlicher Ausprägung zu finden sind:
+    </textblock>
 
-a) Ereigniskomponente:
-
+    <ul>
+     <li>
+<strong>Ereigniskomponente:</strong><br/>
 Über Sensoren werden Daten aus
 der Umgebung aufgenommen, entsprechende Ereignisse generiert
-und nach einer Vorverarbeitung (preprocessing) an die 
+und nach einer Vorverarbeitung (preprocessing) an die
 Analysekomponente weitergeleitet. Die Sensoren können
-aus unterschiedlichen Quellen lesen (Logfiles, 
-Betriebssystem-Ereignisse, Netzwerk-Verkehr, ...) Entscheidend ist die 
-<!-- LINK: iref="Eingliederung in die lokale Netzwerkstruktur"-->
-Platzierung der Sensoren
-<!-- ENDLINK-->.
-
-b) Sicherungs- bzw. Aufzeichnungskomponente:
-
-Die Sicherungskomponente eines IDS  ist für die 
+aus unterschiedlichen Quellen lesen (Logfiles,
+Betriebssystem-Ereignisse, Netzwerk-Verkehr, ...) Entscheidend ist die
+<ref iref="Eingliederung in die lokale Netzwerkstruktur">Platzierung der Sensoren</ref>.
+     </li>
+     <li>
+<strong>Sicherungs- bzw. Aufzeichnungskomponente:</strong><br/>
+Die Sicherungskomponente eines IDS ist für die
 Protokollierung der gewonnenen Erkenntnisse zuständig.
 Sie bildet damit die Grundlage für eine spätere Auswertung
 und die juristische Verwertbarkeit der Informationen.
-
-c) Analysekomponente:
-
+     </li>
+     <li>
+<strong>Analysekomponente:</strong><br/>
 Die von der Ereigniskomponente gesammelten Daten werden
-analysiert. Beim Feststellen eines Angriffs wird Alarm 
-ausgelöst, d.h. sowohl die Aufzeichnungskomponente als
+analysiert. Beim Feststellen eines Angriffs wird Alarm
+ausgelöst, d. h. sowohl die Aufzeichnungskomponente als
 auch die Komponente für (halb-) automatische Gegenmaßnahmen
 werden in Kenntnis gesetzt.
-
 Für die Datenanalyse haben sich in den letzten Jahren
 die bereits oben erläuterten zwei Methoden 
-<!-- LINK: iref="Datenanalyse - Anomalieerkennung vs. signaturbasierter Missbrauchserkennung"-->
-"Missbrauchserkennung" und "Anomalieerkennung"<!-- ENDLINK--> 
-herausgebildet. 
-
-d) Monitor und Aktionskomponente:
-
+<ref iref="Datenanalyse - Anomalieerkennung vs. signaturbasierter Missbrauchserkennung">"Missbrauchserkennung" und "Anomalieerkennung"</ref> 
+herausgebildet.
+     </li>
+     <li>
+<strong>Monitor und Aktionskomponente:</strong><br/>
 Die Ergebnisse der Analyse werden derart aufbereitet, dass
 der Administrator damit auch etwas anfangen kann. Unter
 Umständen werden Gegenmaßnahmen eingeleitet, automatisch,
-halbautomatisch oder manuell. Näheres dazu in 
-<!-- LINK: iref="Gegenmaßnahmen und rechtliche Aspekte"-->
-"Gegenmaßnahmen und rechtliche Aspekte" 
-<!-- ENDLINK-->
-und  
-<!-- LINK: iref="Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen"-->
-"Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen" 
-<!-- ENDLINK-->.
- 
+halbautomatisch oder manuell. Näheres dazu in
+<ref iref="Gegenmaßnahmen und rechtliche Aspekte">"Gegenmaßnahmen und rechtliche Aspekte"</ref>
+und
+<ref iref="Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen">"Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen"</ref>.
+     </li>
+    </ul>
+   </section>
+  </section>
 
+  <section>
+   <heading>
+Praktischer Einsatz und Effizienz von ID Systemen
+   </heading>
 
-1 Praktischer Einsatz und Effizienz von ID Systemen
-
-In diesem Abschnitt werden praktische Aspekte behandelt. 
+   <textblock>
+In diesem Abschnitt werden praktische Aspekte behandelt.
 Dazu zählen prinzipielle Probleme, die den Einsatz von IDS
-behindern und nur teilweise oder gar nicht in den Griff zu 
-bekommen sind. Nach einigen Betrachtungen zu Effektivität 
-von ID-Systemen wird deren Eingliederung in ein Netzwerk 
+behindern und nur teilweise oder gar nicht in den Griff zu
+bekommen sind. Nach einigen Betrachtungen zu Effektivität
+von ID-Systemen wird deren Eingliederung in ein Netzwerk
 diskutiert. Im Anschluss daran werden Angriffsmöglichkeiten
-auf IDS erörtert, Gegenmaßnahmen für Angriffe und deren 
+auf IDS erörtert, Gegenmaßnahmen für Angriffe und deren
 rechtliche Konsequenzen vorgestellt und weiterführende Hinweise
 gegeben.
+   </textblock>
 
+   <section>
+    <heading>
+Prinzipielle Probleme
+    </heading>
 
-
-1.1 Prinzipielle Probleme
-
+    <textblock>
 Ein grundsätzlich unlösbares Problem stellt der Einsatz
 von Verschlüsselungstechnologien dar. Verschlüsselung soll
-unberechtigten Personen den Zugang zu Informationen 
+unberechtigten Personen den Zugang zu Informationen
 verwehren. Berechtigt sind alle diejenigen, die ein
-Geheimnis kennen und dies auch beweisen können (Besitz eines 
-Schlüssels). Ist das ID-System nicht berechtigt, die Daten 
+Geheimnis kennen und dies auch beweisen können (Besitz eines
+Schlüssels). Ist das ID-System nicht berechtigt, die Daten
 zu lesen, kann es auch keine Angriffe mehr erkennen, der Zweck
-des IDS ist damit infrage gestellt. Bespiel: Bei verschlüsselten 
-Dateisystemen sind dem IDS keinerlei Informationen über 
-Dateigrößen, Dateirechte oder gar Dateiinhalte zugänglich. 
-Es wird lediglich erkannt, ob Änderungen stattfanden, die 
+des IDS ist damit infrage gestellt. Bespiel: Bei verschlüsselten
+Dateisystemen sind dem IDS keinerlei Informationen über
+Dateigrößen, Dateirechte oder gar Dateiinhalte zugänglich.
+Es wird lediglich erkannt, ob Änderungen stattfanden, die
 betroffenen Dateien lassen sich jedoch nicht identifizieren.
-Nun könnte ein Ausweg darin bestehen, dem IDS den Schlüssel zur 
-Verfügung zu stellen. Dies stellt jedoch eine massive Bedrohung 
+Nun könnte ein Ausweg darin bestehen, dem IDS den Schlüssel zur
+Verfügung zu stellen. Dies stellt jedoch eine massive Bedrohung
 für die zu schützenden Daten dar, da ein Angreifer nun das IDS
 als Zugangspunkt missbrauchen könnte.
+    </textblock>
 
-Ein weiteres Hauptproblem für NIDS liegt in der Skalierbarkeit, 
+    <textblock>
+Ein weiteres Hauptproblem für NIDS liegt in der Skalierbarkeit,
 oder anders ausgedrückt im exponentiellen Wachstum der Durchsatzrate
 von Netzwerken. Eine Analyse in Echtzeit ist in Gigabit-Netzwerken
-mit entsprechend großem Verkehrsaufkommen nicht bzw. nur 
+mit entsprechend großem Verkehrsaufkommen nicht bzw. nur
 eingeschränkt möglich und zudem äußerst teuer. Eine eingeschränkte
-Analyse hat den entscheidenden Nachteil, dass u.U. nicht alle 
-Angriffe als solche identifiziert werden und damit Sicherheit 
+Analyse hat den entscheidenden Nachteil, dass u. U. nicht alle
+Angriffe als solche identifiziert werden und damit Sicherheit
 lediglich suggeriert wird.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Effektivität
+    </heading>
 
-
-1.1 Effektivität
-
+    <textblock>
 Heutzutage werden oftmals missbrauchserkennende Systeme eingesetzt,
-weil diese einfacher zu realisieren sind. Der Hauptnachteil dieser 
+weil diese einfacher zu realisieren sind. Der Hauptnachteil dieser
 Systeme besteht darin, dass sie lediglich bekannte Angriffe aufgrund
-einer Mustererkennung identifizieren können. Die Effektivität ist also 
-stark abhängig von der Vollständigkeit der Signaturdatenbank sowie 
+einer Mustererkennung identifizieren können. Die Effektivität ist also
+stark abhängig von der Vollständigkeit der Signaturdatenbank sowie
 deren Aktualisierungsintervallen. Um so länger die Verbreitung neuer
-Angriffsmuster dauert, desto weniger Schutz kann ein 
+Angriffsmuster dauert, desto weniger Schutz kann ein
 missbrauchbasiertes IDS bieten.
+    </textblock>
 
+    <textblock>
 Anomaliebasierte Systeme sind in realen Umgebungen aufgrund ihrer
 sehr hohen falsch positiven Fehlerrate kaum einsetzbar. Eine manuelle
-Bewertung, ob ein Angriff tatsächlich stattfand, ist oftmals 
-undenkbar. Die Rate liegt derzeit selbst bei größter Anstrengung 
+Bewertung, ob ein Angriff tatsächlich stattfand, ist oftmals
+undenkbar. Die Rate liegt derzeit selbst bei größter Anstrengung
 nur knapp unter 1%.
+    </textblock>
 
+    <textblock>
 Die Effektivität ist weiterhin von der Qualität und Aussagekraft
 der gesammelten Auditdaten abhängig. Meist ist die Menge der
 auszuwertenden Daten jedoch so groß, dass es kaum möglich ist,
 eine intensive Analyse in Echtzeit durchzuführen. Ansätze zur
-Verteilung dieser Lasten auf mehrere Knoten sind Bestandteil 
-heutiger Forschungsarbeiten der Technischen Universität Cottbus, 
-die mit der 
-<!-- LINK: ref="http://www-rnks.informatik.tu-cottbus.de/de/staff/mm/papers/pik2002.pdf"-->
-HEIDI-Architektur 
-<!-- ENDLINK-->
+Verteilung dieser Lasten auf mehrere Knoten sind Bestandteil
+heutiger Forschungsarbeiten der Technischen Universität Cottbus,
+die mit der
+<ref url="http://www-rnks.informatik.tu-cottbus.de/de/staff/mm/papers/pik2002.pdf">HEIDI-Architektur</ref>
 sogar schon einen Prototypen aufzuweisen hat.
+    </textblock>
 
+    <textblock>
 Die Integration host- und netzwerkbasierter IDS ist ein weiteres
 aktuelles Ziel, welchem sich Systeme wie 
-<!-- LINK: ref="http://www.prelude-ids.org/"-->
-prelude <!-- ENDLINK--> widmen.
+<ref url="http://www.prelude-ids.org/">prelude</ref> widmen.
+    </textblock>
 
-Im Abschnitt <!-- LINK: iref="Charakteristika eines guten IDS"-->
-"Charakteristika eines guten IDS"<!-- ENDLINK--> wird 
-jedoch deutlich, dass die Anforderungen an Intrusion Detection 
-Systeme nur schwer in Einklang zu bringen sind. Deshalb genügen 
-real existierende Systeme keinem universellen Anspruch. Aussagen 
+    <textblock>
+Im Abschnitt <ref iref="Charakteristika eines guten IDS">"Charakteristika eines guten IDS"</ref>
+wird jedoch deutlich, dass die Anforderungen an Intrusion Detection
+Systeme nur schwer in Einklang zu bringen sind. Deshalb genügen
+real existierende Systeme keinem universellen Anspruch. Aussagen
 über die Effektivität sind sehr kritisch zu bewerten.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Eingliederung in die lokale Netzwerkstruktur
+    </heading>
 
-
-1.1 Eingliederung in die lokale Netzwerkstruktur
-
+    <textblock>
 Intrusion Detection Systeme werden oftmals mit einer Firewall
 in Verbindung gebracht, manchmal sogar mit dieser verwechselt.
 Ein IDS kann jedoch eine Firewall nicht ersetzen, sondern stellt
 lediglich eine sinnvolle Ergänzung zu ihr dar.
+    </textblock>
 
-Nun stellt sich jedoch die Frage, an welchen Stellen Firewall 
-und IDS günstigerweise im Netzwerk platziert werden. Wird es 
-vor der Firewall positioniert, kann es den hereinkommenden 
-Netzwerkverkehr auf Angriffe prüfen. Jedoch stellt nicht nur der 
-Verkehr, der von Außen in ein Netzwerk dringt, eine Gefahr dar, 
-sondern auch der Verkehr vom Inneren eines Netzwerkes. Angriffe 
-gehen laut 
-<!-- LINK: ref="http://www.cert.org/"-->
-CERT<!-- ENDLINK--> Studie zu mehr als 50 Prozent vom
+    <textblock>
+Nun stellt sich jedoch die Frage, an welchen Stellen Firewall
+und IDS günstigerweise im Netzwerk platziert werden. Wird es
+vor der Firewall positioniert, kann es den hereinkommenden
+Netzwerkverkehr auf Angriffe prüfen. Jedoch stellt nicht nur der
+Verkehr, der von Außen in ein Netzwerk dringt, eine Gefahr dar,
+sondern auch der Verkehr vom Inneren eines Netzwerkes. Angriffe
+gehen laut <ref url="http://www.cert.org/">CERT</ref>
+Studie zu mehr als 50 Prozent vom
 Netzwerkinneren aus, oftmals von eigenen Mitarbeitern oder
 von externen Dienstleistern mit innerbetrieblichem Netzzugang.
 Dabei kann ein Angriff auch ungewollt durch Viren und Würmer
-durchgeführt werden. Deshalb ist eine  
-<!-- FUTURELINK: chapter="theorieSicherheit"-->
-Sicherheitspolitik <!-- ENDLINK--> unumgänglich. In der dort 
-beschriebenen Sicherheitsarchitektur besitzt ein Firewallsystem 
-beispielsweise
+durchgeführt werden. Deshalb ist eine Sicherheitspolitik
+unumgänglich. In der dort beschriebenen Sicherheitsarchitektur
+besitzt ein Firewallsystem beispielsweise
 die Aufgabe, den Verkehr zwischen Netzwerksegmenten zu steuern.
 Es wird also festgelegt, welcher Verkehr aus einem externen
-Netz, sei es das Internet oder ein Netzwerk mit anderem 
-Sicherheitsbedarf, in den zu schützenden Netzwerkbereich 
+Netz, sei es das Internet oder ein Netzwerk mit anderem
+Sicherheitsbedarf, in den zu schützenden Netzwerkbereich
 gelangen darf. Ein IDS hingegen ist keine Steuerungskomponente,
 sie hat vielmehr eine Kontrollfunktion. Es soll Angriffe auf
-das System feststellen und somit die Durchsetzung der 
-Sicherheitspolitik gewährleisten. 
+das System feststellen und somit die Durchsetzung der
+Sicherheitspolitik gewährleisten.
+    </textblock>
 
+    <textblock>
 Die Platzierung eines IDS im zu schützenden Netzwerksegment
 erscheint genauso sinnvoll wie vor dem Netzwerkbereich - eine
-Entscheidung hängt sehr stark vom Sicherheitsbedarf, von den 
+Entscheidung hängt sehr stark vom Sicherheitsbedarf, von den
 durch die Sicherheitspolitik festgelegten Restriktionen und
 von der Sicherheitsarchitektur insgesamt ab. Besonders
 schützenswerte Bereiche wie Forschung und Entwicklung sollten
-mit zwei ID-Systemen überwacht werden, wie die folgende 
+mit zwei ID-Systemen überwacht werden, wie die folgende
 Abbildung zeigt:
+    </textblock>
 
-*** BILD
+    <image>
+     <filename>ids-4.png</filename>
+    </image>
 
+    <textblock>
 Für die Sensoren eines Netzwerk-IDS gibt es ein prinzipielles
-Problem. Heutzutage werden fast ausschließlich "Switches" 
-eingesetzt -das heißt, die Kommunikation zwischen den 
-Netzwerkpartnern wird geschaltet und erfolgt über 
+Problem. Heutzutage werden fast ausschließlich <strong>Switches</strong>
+eingesetzt - das heißt, die Kommunikation zwischen den
+Netzwerkpartnern wird geschaltet und erfolgt über
 Punkt-zu-Punkt Verbindungen (wie beim Telefon). Ist das IDS
 an einem normalen Port des Switches angeschlossen, kann
 es somit nicht den gesamten Netzwerkverkehr abhören, sondern es
@@ -666,230 +862,269 @@ bieten allerdings Monitoring-Ports, auf die der gesamte Netzwerkverkehr,
 der den Switch passiert, geleitet wird. Es versteht sich von selbst,
 dass ein NIDS-Host an einem solchen Port betrieben werden muss.
 Die damit verbundenen Durchsatz-/Performance Probleme sind
-im praktischen Einsatz jedoch zu beachten (siehe 
-<!-- LINK: iref="Prinzipielle Probleme"-->"Prinzipielle Probleme"<!-- ENDLINK-->).
+im praktischen Einsatz jedoch zu beachten (siehe
+<ref iref="Prinzipielle Probleme">Prinzipielle Probleme</ref>).
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Das IDS als Angriffspunkt
+    </heading>
 
-
-1.1 Das IDS als Angriffspunkt 
-
+    <textblock>
 Sicherheitskomponenten wie Firewall-Systeme oder IDS
-sind besonders sicherheitskritisch. Meist versucht ein 
-Angreifer diese zu manipulieren oder unbrauchbar zu 
-machen. Deshalb müssen solche Systeme geschützt werden 
-bzw. selbst resistent gegenüber etwaigen Angriffen sein. 
+sind besonders sicherheitskritisch. Meist versucht ein
+Angreifer diese zu manipulieren oder unbrauchbar zu
+machen. Deshalb müssen solche Systeme geschützt werden
+bzw. selbst resistent gegenüber etwaigen Angriffen sein.
+    </textblock>
 
+    <textblock>
 Besonders zu schützen sind die Aufzeichnungsdaten. Um
 Manipulationen bereits bestehender Einträge zu unterbinden,
-ist sicherzustellen, dass die Datei nur wachsen kann 
-(s. <!-- LINK: chapter="grundlagen_sicherheit" iref="Erweiterte ext2-Dateiattribute"-->
-"Erweiterte ext2-Dateiattribute"
-<!-- ENDLINK-->, 
-<!-- LINK: chapter="samhain"-->
-samhain
-<!-- ENDLINK-->, bzw. tripwire).
-Des Weiteren ist es denkbar, dass 
-ein Angreifer bewusst massenhaft Aktionen ausführt, deren 
-Protokollierung tausende wenn nicht millionenfache Einträge 
-nach sich ziehen. Das Herausfinden eines Angriffes gleicht dann 
+ist sicherzustellen, dass die Datei nur wachsen kann
+(s. <ref chapter="grundlagen_sicherheit" iref="Erweiterte ext2-Dateiattribute">"Erweiterte ext2-Dateiattribute"</ref>, 
+<ref chapter="samhain">samhain</ref>, bzw. tripwire).
+Des Weiteren ist es denkbar, dass
+ein Angreifer bewusst massenhaft Aktionen ausführt, deren
+Protokollierung tausende wenn nicht millionenfache Einträge
+nach sich ziehen. Das Herausfinden eines Angriffes gleicht dann
 dem Suchen einer Nadel in einem Heuhaufen. Im Extremfall laufen
-die Logfiles über und der Aufzeichnungsdienst steht nicht 
+die Logfiles über und der Aufzeichnungsdienst steht nicht
 mehr zur Verfügung (DOS-Angriff).
+    </textblock>
 
+    <textblock>
 Bei signaturbasierten NIDS sind vor Allem Angriffe festzustellen,
-welche Techniken wie "Insertion" und "Evasion" verwenden. Ein
+welche Techniken wie <strong>Insertion</strong> und <strong>Evasion</strong> verwenden. Ein
 Angreifer fügt in den vom IDS überwachten Datenstrom Pakete
 ein, und versucht durch diese Verwirrungstaktik den Angriff
 zu verschleiern.
+    </textblock>
 
+    <section>
+     <heading>
+Insertion - Einfügen ungültiger Daten
+     </heading>
 
-
-1.1.1 Insertion - Einfügen ungültiger Daten
-
-Insertion basiert darauf, dass ein IDS Pakete akzeptiert, 
-die das "normale Endsystem" normalerweise nicht annehmen
-würde. Das Intrusion Detection System geht also 
-fälschlicherweise davon aus, dass ein Paket vom 
+     <textblock>
+Insertion basiert darauf, dass ein IDS Pakete akzeptiert,
+die das <strong>normale Endsystem</strong> normalerweise nicht annehmen
+würde. Das Intrusion Detection System geht also
+fälschlicherweise davon aus, dass ein Paket vom
 entsprechenden Host akzeptiert wird. Beim Insertion-Angriff
-wird diese Tatsache ausgenutzt und gezielt solche Pakete versendet, 
+wird diese Tatsache ausgenutzt und gezielt solche Pakete versendet,
 die ausschließlich vom IDS akzeptiert werden. Dadurch
-lassen sich beispielsweise signaturbasierte Systeme 
+lassen sich beispielsweise signaturbasierte Systeme
 folgendermaßen austricksen: Angenommen, das IDS reagiert
-auf die Sequenz "ATTACK". Der Angreifer versendet nun die
-Sequenz "AXTTAXXCXXK, jedoch sind die "X" Pakete derart 
-manipuliert, dass sie nur vom IDS akzeptiert werden. Die 
-Einbruchserkennung stellt keinen Angriff fest, weil ja das 
-Muster "ATTACK" nicht passt. Das Zielsystem jedoch 
-verwirft die "X"-Pakete, ein Angriff findet dort tatsächlich 
+auf die Sequenz <strong>ATTACK</strong>. Der Angreifer versendet nun die
+Sequenz <strong>AXTTAXXCXXK</strong>, jedoch sind die <strong>X</strong> Pakete derart
+manipuliert, dass sie nur vom IDS akzeptiert werden. Die
+Einbruchserkennung stellt keinen Angriff fest, weil ja das
+Muster <strong>ATTACK</strong> nicht passt. Das Zielsystem jedoch
+verwirft die <strong>X</strong>-Pakete, ein Angriff findet dort tatsächlich
 statt.
+     </textblock>
+    </section>
 
+    <section>
+     <heading>
+Evasion - Ablehnen gültiger Daten
+     </heading>
 
+     <textblock>
+Die zweite Möglichkeit - <strong>Evasion</strong> - arbeitet komplementär
+zur soeben vorgestellten <strong>Insertion</strong>-Technik. Hier lehnt das
+IDS Pakete ab, die das Endsystem durchaus akzeptiert. Die
+Systemschwachstelle ist also bei Insertion und Evasion
+identisch: Das IDS <strong>sieht</strong> einen anderen Datenstrom als
+das Zielsystem. Sind also bspw. bei der Sequenz <strong>ATTACK</strong>
+die <strong>T</strong>-Zeichen manipuliert, so würde das IDS lediglich
+<strong>AACK</strong> erkennen und dementsprechend kein passendes
+Angriffsmuster zuordnen können.
+     </textblock>
+    </section>
+   </section>
 
-1.1.1 Evasion - Ablehnen gültiger Daten
+   <section>
+    <heading>
+Gegenmaßnahmen und rechtliche Aspekte
+    </heading>
 
-Die zweite Möglichkeit -"Evasion"- arbeitet komplementär
-zur soeben vorgestellten "Insertion"-Technik. Hier lehnt das
-IDS Pakete ab, die das Endsystem durchaus akzeptiert. Die 
-Systemschwachstelle ist also bei Insertion und Evasion 
-identisch: Das IDS "sieht" einen anderen Datenstrom als 
-das Zielsystem. Sind also bspw. bei der Sequenz "ATTACK" 
-die "T"-Zeichen manipuliert, so würde das IDS lediglich
-"AACK" erkennen und dementsprechend kein passendes 
-Angriffsmuster zuordnen können. 
+    <textblock>
+Wie bereits im Abschnitt
+<ref iref="Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen">"Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen"</ref>.
+erwähnt, lassen sich die Gegenmaßnahmen in Aktive und Passive unterteilen.
+    </textblock>
 
-
-
-1.1 Gegenmaßnahmen und rechtliche Aspekte
-
-Wie bereits im Abschnitt 
-<!-- LINK: iref="Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen"-->
-"Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen" 
-<!-- ENDLINK-->.
-erwähnt, lassen sich die Gegenmaßnahmen
-in Aktive und Passive unterteilen. 
-
-Nutzt man die Daten, um aktiv einen Gegenangriff einzuleiten, 
-stellt sich die Frage, was man letzten Endes damit bewirkt und 
-ob dies wirklich den Sinn eines Intrusion Detection Systems 
+    <textblock>
+Nutzt man die Daten, um aktiv einen Gegenangriff einzuleiten,
+stellt sich die Frage, was man letzten Endes damit bewirkt und
+ob dies wirklich den Sinn eines Intrusion Detection Systems
 entspricht. Durch aktive Maßnahmen erfährt der Eindringling,
 dass er entdeckt wurde und wird sich in der Regel zurückziehen,
 um dann zu einem späteren Zeitpunkt mit ausgefeilteren Mitteln
-erneut anzugreifen. Das Sammeln weiterer Daten über den Angriff 
+erneut anzugreifen. Das Sammeln weiterer Daten über den Angriff
 bzw. die Identität des Angreifers wird damit also verhindert und
 der Angreifer wird gleichzeitig gewarnt. Deshalb sollte der
-Einsatz aktiver Maßnahmen nur in Ausnahmefällen erfolgen. Im 
-Idealfall zeigt das IDS also überhaupt keine Reaktion nach Außen, 
+Einsatz aktiver Maßnahmen nur in Ausnahmefällen erfolgen. Im
+Idealfall zeigt das IDS also überhaupt keine Reaktion nach Außen,
 sondern geht seiner eigentlichen Aufgabe nach, nämlich
-der Sammlung von Informationen über Angriff und Angreifer sowie 
-Benachrichtigung des Administrators (siehe Abschnitt 
-<!-- LINK: iref="Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen"-->
-"Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen" 
-<!-- ENDLINK-->).
+der Sammlung von Informationen über Angriff und Angreifer sowie
+Benachrichtigung des Administrators (siehe Abschnitt
+<ref iref="Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen">"Datenvisualisierung und eventuelle Einleitung von Gegenmaßnahmen"</ref>).
+    </textblock>
 
-Bei Gegenmaßnahmen ist stets darauf zu achten, dass der 
-Angreifer die Auditdaten bewusst manipulieren und seine 
+    <textblock>
+Bei Gegenmaßnahmen ist stets darauf zu achten, dass der
+Angreifer die Auditdaten bewusst manipulieren und seine
 Identität fälschen kann (Maskerade). Er verwendet dazu
-beispielsweise 
-<!-- LINK: chapter="grundlagen_sicherheit" iref="Spoofing"-->
-Spoofing-Techniken 
-<!-- ENDLINK-->
-zum Fälschen der IP-Adresse. Dies festzustellen, 
-ist äußerst schwer. Weiß der Angreifer von den 
-Gegenmaßnahmen, so kann er anderen Personen dadurch schaden, 
+beispielsweise
+<ref chapter="grundlagen_sicherheit" iref="Spoofing">Spoofing-Techniken</ref>
+zum Fälschen der IP-Adresse. Dies festzustellen,
+ist äußerst schwer. Weiß der Angreifer von den
+Gegenmaßnahmen, so kann er anderen Personen dadurch schaden,
 dass er unter deren Identität einen Angriff durchführt.
+    </textblock>
 
-Die gesammelten Auditdaten stellen nach §416 der 
+    <textblock>
+Die gesammelten Auditdaten stellen nach §416 der
 Zivilprozessordnung kein rechtsverbindliches Beweismittel
-dar, wie z.B. ein notariell beglaubigtes Schriftstück. Die
-Daten unterliegen der freien Beweisführung, womit sie den 
+dar, wie z. B. ein notariell beglaubigtes Schriftstück. Die
+Daten unterliegen der freien Beweisführung, womit sie den
 gleichen gerichtlichen Status wie eine Zeugenaussage haben
 und ihre Beurteilung im Ermessen des Gerichtes liegt. Der Grund
-für die Einordnung als "nicht rechtsverbindliches Beweismittels"
+für die Einordnung als <strong>nicht rechtsverbindliches Beweismittels</strong>
 gründet sich auf die Tatsache, dass die Auditdaten nachträglich
 modifiziert werden können und somit als nicht manipulationssicher
 gelten. Um den Beweiswert zu erhöhen, sollten die Auditdaten
 vertrauenswürdig sein, es bedarf also der Sicherstellung
-der Integrität (z.B. durch eine digitalen 
-Signierung der gesammelten Daten durch das IDS). Die dazu 
-verwendeten Maßnahmen sollten aber ebenfalls vor Gericht 
-nachgewiesen werden können (z.B. die Geheimhaltung des 
+der Integrität (z. B. durch eine digitalen
+Signierung der gesammelten Daten durch das IDS). Die dazu
+verwendeten Maßnahmen sollten aber ebenfalls vor Gericht
+nachgewiesen werden können (z. B. die Geheimhaltung des
 privaten Schlüssels, Vertrauenswürdigkeit).
+    </textblock>
 
-Es soll noch erwähnt werden, dass personenbezogene Daten nach 
-den Datenschutzgesetzen nur in annonymisierter Form gespeichert 
-werden dürfen. 
+    <textblock>
+Es soll noch erwähnt werden, dass personenbezogene Daten nach
+den Datenschutzgesetzen nur in annonymisierter Form gespeichert
+werden dürfen.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Sonstige Hinweise
+    </heading>
 
-
-1.1 Sonstige Hinweise
-
-Wie bereits erwähnt, ist das Gebiet der Anomalieerkennung noch 
+    <textblock>
+Wie bereits erwähnt, ist das Gebiet der Anomalieerkennung noch
 sehr jung, es stehen kaum praktische Erfahrungen zur Verfügung.
-Besonders problematisch ist die Erstellung des "normalen" 
+Besonders problematisch ist die Erstellung des <strong>normalen</strong>
 Systemprofils, bei NIDS und heterogenen Netzwerken
 ist dies aufgrund der großen Protokollvielfalt äußerst schwierig -
 meistens sogar unmöglich. Bei sich selbst anpassenden Systemen
-kann der Angreifer die Überwachung derart beeinflussen, dass 
+kann der Angreifer die Überwachung derart beeinflussen, dass
 potentielle Angriffe in das Systemprofil übernommen werden.
-Außerdem interpretieren restriktiv eingestellte Systeme 
+Außerdem interpretieren restriktiv eingestellte Systeme
 normalen Netzwerkverkehr fälschlicherweise als Angriff, sodass
 die Gefahr besteht, dass der Administrator Angriffsmeldungen
-einfach ignoriert. Es werden deshalb große Anstrengungen in 
-der Forschung unternommen, um diese falsch-positiven 
-Ergebnisse zu vermeiden. Zusammenfassend kann man sagen, dass 
-das "Lernen" des Normalzustandes die Qualität der Ergebnisse 
+einfach ignoriert. Es werden deshalb große Anstrengungen in
+der Forschung unternommen, um diese falsch-positiven
+Ergebnisse zu vermeiden. Zusammenfassend kann man sagen, dass
+das <strong>Lernen</strong> des Normalzustandes die Qualität der Ergebnisse
 maßgeblich bestimmt.
+    </textblock>
 
-Missbrauchserkennungssysteme wie snort und samhain sind entgegen
-ihren anomaliebasierten Pendants schon häufig und erfolgreich 
+    <textblock>
+Missbrauchserkennungssysteme wie <command>snort</command> und <ref chapter="samhain">samhain</ref> sind entgegen
+ihren anomaliebasierten Pendants schon häufig und erfolgreich
 im Einsatz. Bei diesen Systemen ist die Aktualität der
 Signaturen von wichtiger Bedeutung. Man muss sich bewusst sein,
 dass nur bereits bekannte Angriffe erkannt werden.
+    </textblock>
 
-Ein IDS darf natürlich so wenig wie möglich Angriffsfläche 
-bieten (s. Abschnitt 
-<!-- LINK: iref="Das IDS als Angriffspunkt"-->
-"Das IDS als Angriffspunkt"
-<!-- ENDLINK-->).
+    <textblock>
+Ein IDS darf natürlich so wenig wie möglich Angriffsfläche
+bieten (s. Abschnitt
+<ref iref="Das IDS als Angriffspunkt">"Das IDS als Angriffspunkt"</ref>).
 Oft stellen Sicherheitskomponenten wie Firewall oder IDS
-das erste Ziel eines Angriffs dar. Sind diese erst einmal 
-ausgeschaltet, kann ein Cracker ungestört (da meist lange 
+das erste Ziel eines Angriffs dar. Sind diese erst einmal
+ausgeschaltet, kann ein Cracker ungestört (da meist lange
 unbemerkt) Schaden anrichten. Darum heißt es bei einem
-IDS wie bei allen Sicherheitskomponenten: "So viele Dienste
-wie nötig, aber so wenige wie möglich!" Je weniger Ports 
+IDS wie bei allen Sicherheitskomponenten: <strong>So viele Dienste
+wie nötig, aber so wenige wie möglich!</strong> Je weniger Ports
 offen sind, je weniger Dienste angeboten werden und je weniger
-Benutzerkonten (s. 
-<!-- LINK: chapter="passwoerter"-->
-"Über die Sicherheit von Passwörtern"
-<!-- ENDLINK-->) existieren, desto 
-resistenter ist ein Host gegenüber Angriffen. 
+Benutzerkonten (s.
+<ref chapter="passwoerter">"Über die Sicherheit von Passwörtern"</ref>)
+existieren, desto resistenter ist ein Host gegenüber Angriffen.
+    </textblock>
 
-Es ist wichtig, dass die Integrität der Konfigurationsdaten 
-gesichert ist. Da einige Dateien sicherheitsrelevante 
-Informationen enthalten, sollten diese vertraulich behandelt 
+    <textblock>
+Es ist wichtig, dass die Integrität der Konfigurationsdaten
+gesichert ist. Da einige Dateien sicherheitsrelevante
+Informationen enthalten, sollten diese vertraulich behandelt
 werden (auch kein Lesezugang für Benutzergruppe).
-Signaturdateien sind auch vor Veränderung zu schützen und 
+Signaturdateien sind auch vor Veränderung zu schützen und
 sollten am Besten vertraulich behandelt werden
-(**** siehe Birthday attack).
+    </textblock>
 
+    <textblock>
 Besondere Vorsicht ist auch beim Protokollieren geboten,
 da ein Überlaufen der Protokolldateien von einem Angreifer
-gezielt ausgenutzt werden könnte (lässt erst die 
-Protokolldateien überlaufen und führt erst dann den 
+gezielt ausgenutzt werden könnte (lässt erst die
+Protokolldateien überlaufen und führt erst dann den
 eigentlichen Angriff aus).
+    </textblock>
+   </section>
+  </section>
 
+  <section>
+   <heading>
+Charakteristika eines guten IDS
+   </heading>
 
-
-1 Charakteristika eines guten IDS
-
+   <textblock>
 Folgende Aspekte stellen eine qualitative Bewertungsgrundlage für
 ID-Systeme dar:
+   </textblock>
 
-<!-- Beginn Aufzählung -->
-- Erkennung von Abweichungen bezüglich des normalen Systemverhaltens:
-  Dabei sollten möglichst keine \ref{weiter unten}
-  falsch positiv/negativen Ergebnisse geliefert werden.
-  Das setzt voraus, dass das IDS resistent gegenüber
-  Täuschungsversuchen ist.
-- Kontinuität und Resistenz: Das System läuft *verlässlich* ohne
-  Eingriffe des Administrators. Das bedeutet auch, dass das IDS selbst
-  resistent gegenüber Angriffen ist.
-- Fehlertoleranz und Flexibilität: Da Einsatzweck und/oder
-  Umgebungsparameter durchaus variabel sind, soll sich das IDS
-  an die Systemumgebung anpassen können. Beispielsweise darf die
-  Installation neuer Software zu keinen ungewünschten Effekten
-  führen. Das IDS sollte auch mit irrelevanten Fehlersituationen
-  umgehen können.
-- Ressourcenverbrauch und Skalierbarkeit: Das IDS sollte
-  zukunftssicher sein und sich an steigende Anforderungen
-  bei laufendem Betrieb anpassen können.
-<!-- Ende Aufzählung -->
+   <ul>
+    <li>
+Erkennung von Abweichungen bezüglich des normalen Systemverhaltens:
+Dabei sollten möglichst keine falsch positiv/negativen Ergebnisse
+geliefert werden. Das setzt voraus, dass das IDS resistent gegenüber
+Täuschungsversuchen ist.
+    </li>
+    <li>
+Kontinuität und Resistenz: Das System läuft <strong>verlässlich</strong> ohne
+Eingriffe des Administrators. Das bedeutet auch, dass das IDS selbst
+resistent gegenüber Angriffen ist.
+    </li>
+    <li>
+Fehlertoleranz und Flexibilität: Da Einsatzweck und/oder
+Umgebungsparameter durchaus variabel sind, soll sich das IDS
+an die Systemumgebung anpassen können. Beispielsweise darf die
+Installation neuer Software zu keinen ungewünschten Effekten
+führen. Das IDS sollte auch mit irrelevanten Fehlersituationen
+umgehen können.
+    </li>
+    <li>
+Ressourcenverbrauch und Skalierbarkeit: Das IDS sollte
+zukunftssicher sein und sich an steigende Anforderungen
+bei laufendem Betrieb anpassen können.
+    </li>
+   </ul>
 
+   <textblock>
 Weitere Anforderungen wurden in der 
-<!-- LINK: ref="http://www.bsi.bund.de/literat/studien/ids/doc0036.htm"-->
-BSI-Studie "Intrusion Detection Systeme" 
-<!-- ENDLINK-->
+<ref url="http://www.bsi.bund.de/literat/studien/ids/doc0036.htm">BSI-Studie "Intrusion Detection Systeme"</ref>
 aufgezeigt. Die Realisierung dieser
 Anforderungen ist nahezu undenkbar, real existierende IDS erfüllen
 nur wenige dieser Forderungen.
-
+   </textblock>
+  </section>
+ </split>
+</chapter>
