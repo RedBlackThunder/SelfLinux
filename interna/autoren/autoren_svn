@@ -40,39 +40,15 @@ dich in der entsprechenden Programm-Dokumentation.
 
 2.1 Wohin mit den Texten?
 
-Prinzipiell wird jeder NEUE Text erst einmal ins Sammelbecken
-eingecheckt. Dies dient dazu, um eine gewisse Übersicht und Ordnung
-über unsere Texte zu behalten. Also bitte daran halten!
-
-Also jeder Text, der noch durch die einzelnen Arbeitsschritte QA1, Layout,
-QA2 muss, gehört somit ins Sammelbecken. Du darfst hier als Autor ein
-Unterverzeichnis für deinen Text anlegen. In dieses Verzeichnis kommt
-der Text. Verzeichnis- und Textnamen sind klein zu schreiben und die
-Namen sollen dieselben sein. Wenn es mehrere  Textdateien gibt, dann
-sollte zumindest die "Masterdatei" den gleichen Namen wie das
-Verzeichnis haben. An die Textdateien bitte KEINE Dateierweiterungen
-(z.B. *.txt) hängen.
-Empfohlen wird, die Verzeichnisnamen dem späteren Ablageort im
-Tutorial anzupassen.
-
-Beispiel:
-Tutorialkapitel: Anwendungssoftware->LaTeX->Kile
-Verzeichnisname: latex_kile
-Dateiname: latex_kile
-(siehe auch das CVS)
+Prinzipiell wird jeder NEUE Text erst einmal an einen Mitarbeiter des Core-Teams
+per Mail geschickt. Dieser checkt den Text dann ins SVN ein.
 
 
 
 2.1 Wohin mit den Bildern?
 
-Bilder sollen als zum Text gehörend wiedererkannt werden. Um das
-sicherzustellen wird unter /sammelbecken/bilder/ ein gleichbenanntes
-(wie bei den Texten) Verzeichnis angelegt, in das die entsprechenden Bilder
-abgespeichert werden.
-
-Beispiel (von oben):
-Verzeichnisname: sammelbecken/bilder/latex_kile/
-Dateinamen: neuer_artikel.png, schnellstart.png, ...
+Bilder sollen als zum Text gehörend wiedererkannt werden. Im Text an der Stelle wo das Bild
+hinsoll, den Namen des Bildes erwähnen. 
 
 Die Bildernamen sollten möglichst aussagekräftig nach dem Inhalt des
 Bildes benannt werden, also NICHT z.B. bild1.png; bild2.png oder
@@ -86,58 +62,24 @@ Bildes benannt werden, also NICHT z.B. bild1.png; bild2.png oder
 
 3.1 Schreibzugriff erhalten
 
-Nach der Anmeldung bei SelfLinux besitzt jeder Autor einen
-Benutzernamen und ein Passwort für den Intern-Bereich. Diese
-Zugangsdaten gelten später auch für den CVS-Zugriff.
-
-Den Schreibzugriff aufs CVS muss aber der Teamleiter extra
-aktivieren. Daher bitte den Teamleiter wegen dem Schreibzugriff
-kontaktieren. Auch wenn etwas nicht funktioniert - fragen!
-
-Bei Mitgliedern mit dem Zeitstatus "derzeit nicht verfügbar" und "ewig
-nichts gehört" wird der Schreibzugriff deaktiviert!
+Nach der Anmeldung bei SelfLinux besitzt jeder Autor die Möglichkeit sich das svn
+lokal auszuchecken, sowie lokal herunterzuladen. Einen Schreibzugriff auf das svn
+erhält man seperat bei Florian Frank oder Frank Börner, falls erwünscht.
 
 
 
 3.2 Zugang zum CVS
 
-Für den Zugriff (Login) auf das SelfLinux-CVS-Repository auf
-pingos.org gibt es mehrere Möglichkeiten:
+Für den Lese-Zugriff auf das SelfLinux-SVN-Repository auf
+pingos.org gibt es folgende Möglichkeiten:
 
 (Befehle auf einer Konsole [user$] bei bestehender
 Internet-Verbindung eintippen)
 
-Anonym:
-user$ cvs -d :pserver:anonymous@cvs.pingos.org:/selflinux login
-	-> das Password ist leer!
-
-Als SL-Mitglied OHNE Verschlüsselung (NICHT empfohlen):
-user$ cvs -d :pserver:<SelfLinux_Username>@cvs.pingos.org:/selflinux login
-	-> Password wie bei MySelfLinux (Internbereich)
-
-Als SL-Mitglied MIT Verschlüsselung (EMPFOHLEN):
-(hier wird als Zusatzprogramm das Programm "stunnel" verwendet)
-user$ stunnel -P /tmp -c -d 2401 -r cvs.pingos.org:2402
-user$ cvs -d :pserver:<SelfLinux_Username>@localhost:/selflinux login
-	-> Password wie bei MySelfLinux (Internbereich)
+svn checkout https://ssl.pingos.org/svn/selflinux/trunk
 
 Über Web:
-http://cvs.pingos.org/cgi-bin/viewcvs.cgi/?cvsroot=selflinux
-
------------------------------------------------------------------
-
-*ACHTUNG!* Der hier beschriebene stunnel-Befehl funktioniert nur mit den
-3.x -Versionen von stunnel. Bei neuen 4.x -Versionen von stunnel sind
-die Konfiguration und die Befehle völlig abgeändert wurden und diese
-Versionen funktionieren daher nicht mit dem oben angeführten Befehl.
-
-Für <SelfLinux_Username> wird natürlich der eigene SL-Name
-eingesetzt. Es kann auch sein das bei stunnel der absolute Pfad
-angegeben werden muss (z.B. /usr/sbin/stunnel), also ggf. ausprobieren.
-
-Wenn man Dateien ins CVS schreiben will, geht das nur mit den zwei
-Zugangsarten, wo der Username angegeben werden muss. (Logisch! Sonst
-könnte ja jeder in unserem CVS rumschreiben.)
+https://ssl.pingos.org/svn/selflinux/trunk/
 
 
 
