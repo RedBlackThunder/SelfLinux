@@ -25,7 +25,7 @@ Einführung
 
    <textblock>
 Logfiles werden gerne übersehen und sind doch so extrem wichtig und hilfreich.
-Eines der großen Vorzüge von Linux ist, dass es fast alles im System
+Einer der großen Vorzüge von Linux ist, dass es fast alles im System
 protokollieren kann. So kann man immer nachvollziehen, was wann wo passiert
 oder eben schief läuft.
    </textblock>
@@ -37,32 +37,39 @@ sind vor allem gute Logfile-Analyse-Werkzeuge notwendig.
    </textblock>
 
    <textblock>
-Der Standard syslog Dämon unter Linux und vielen Unix Varianten ist in
-vielerlei Hinsicht sehr eingeschränkt. Er konnte mir nicht das liefern, was ich
-brauchte, um Logfiles vernünftig und einfach auszuwerten.
+Der Standard <ref chapter="syslog">syslog</ref> Daemon unter Linux und vielen
+Unix Varianten ist in vielerlei Hinsicht sehr eingeschränkt. Er konnte mir
+nicht das liefern, was ich brauchte, um Logfiles vernünftig und einfach
+auszuwerten.
    </textblock>
 
    <textblock>
-Ich bin nicht der einzige, dem der syslog Dämon ziemlich angestaubt und
-unzulänglich vorkam. Und so machte sich dann Balazs Scheidler 1998 auf den Weg,
-einen neuen besseren syslog zu schreiben. Diesen nannte er syslog-ng. Das ng
-steht für New Generation.
+Ich bin nicht der einzige, dem der <ref chapter="syslog">syslog</ref> Daemon
+ziemlich angestaubt und unzulänglich vorkam. Und so machte sich dann
+<name>Balazs Scheidler</name> 1998 auf den Weg, einen neuen besseren
+<ref chapter="syslog">syslog</ref> zu schreiben. Diesen nannte er
+<command>syslog-ng</command>. Das <strong>ng</strong> steht für
+<strong>New Generation</strong>.
    </textblock>
 
    <textblock>
-Syslog-ng ist mittlerweile ein fest etablierter und stabil laufender Ersatz für
-den syslog. Alle großen Distributionen haben ihn mit an Board, jedoch muss er
-meist noch aktiviert werden. Es spricht eigentlich alles dafür, auf syslog-ng
-umzusteigen, sobald man Möglichkeiten braucht, die über den normalen syslog
-hinausreichen.
+<command>syslog-ng</command> ist mittlerweile ein fest etablierter und stabil
+laufender Ersatz für den <ref chapter="syslog">syslog</ref>. Alle großen
+Distributionen haben ihn mit an Board, jedoch muss er meist noch aktiviert
+werden. Es spricht eigentlich alles dafür, auf <command>syslog-ng</command>
+umzusteigen, sobald man Möglichkeiten braucht, die über den normalen
+<ref chapter="syslog">syslog</ref> hinausreichen.
    </textblock>
 
    <textblock>
-Diese Beschreibung bezieht sich auf die syslog-ng Version 1.5.15, wie sie in
-Debian Woody enthalten ist.
+Diese Beschreibung bezieht sich auf die <command>syslog-ng</command> Version
+1.5.15, wie sie in <ref lang="de" url="http://www.debian.org/">Debian Woody</ref>
+enthalten ist.
    </textblock>
   </section>
+ </split>
 
+ <split>
   <section>
    <heading>
 Ein Anwendungsfall
@@ -86,8 +93,9 @@ sollten ebenfalls auftauchen. Eine Zeile sollte etwa so aussehen:
    <textblock>
 Zuerst das Datum in einer samba-like Form, dann die Log-Priorität, die Facility
 (also der Systembereich, der loggt), das Programm und die Message. Alle
-erzeugten Logs des Systems, die über syslog laufen, sollten in einer Logdatei
-landen. Hierzu fügte ich in der syslog-ng.conf folgende Zeilen hinzu:
+erzeugten Logs des Systems, die über <ref chapter="syslog">syslog</ref> laufen,
+sollten in einer Logdatei landen. Hierzu fügte ich in der
+<path>syslog-ng.conf</path> folgende Zeilen hinzu:
    </textblock>
 
    <file>
@@ -97,21 +105,26 @@ destination mysyslog {
   owner("root")
   group("adm")
   perm(0640)
-  template( "[$YEAR/$MONTH/$DAY $HOUR:$MIN:$SEC]
-$PRIORITY $FACILITY $PROGRAM $MESSAGE\n")); };
+  template( "[$YEAR/$MONTH/$DAY $HOUR:$MIN:$SEC] $PRIORITY
+             $FACILITY $PROGRAM $MESSAGE\n")); };
 
 log { source(src);  destination(mysyslog); };
     </content>
    </file>
 
    <textblock>
-Mit destination wird ein destination-Objekt festgelegt, welches mysyslog heißt
-und mit dem File /var/log/mysyslog verbunden wird. Das Ausgabe-Format
-beschreibt ein Template. Über die Zeile log wird dann ein zuvor definiertes
-source-Objekt und mein destination-Objekt zu einer Log-Aktion zusammengefügt.
+Mit <strong>destination</strong> wird ein
+<ref iref="Das destination Objekt">destination-Objekt</ref> festgelegt, welches
+<strong>mysyslog</strong> heißt und mit der Datei
+<path>/var/log/mysyslog</path> verbunden wird. Das Ausgabe-Format
+beschreibt ein Template. Über die Zeile <strong>log</strong> wird dann ein
+zuvor definiertes <ref iref="Das source Objekt">source-Objekt</ref> und mein
+<ref iref="Das destination Objekt">destination-Objekt</ref> zu einer Log-Aktion zusammengefügt.
    </textblock>
   </section>
+ </split>
 
+ <split>
   <section>
    <heading>
 Konfigurationsdetails
@@ -124,20 +137,21 @@ gehalten. Man sollte jedoch aufpassen, Semikolons immer richtig zu setzen.
 
    <textblock>
 Leider gehört es zum Charakter von Linux, dass fast jeder Autor eines Paketes
-sich in einer eigenwilligen Konfigurations-Syntax verewigt. Das ist die
-Schattenseite von Anarchie. Wie schön wäre es, wenn gerade bei der
-Konfigurations-Sprache sich ein Standard durchsetzt, an den sich alle halten.
-Manche großen Pakete wie samba, cups, apache machen schon gute Vorgaben, die
-andere Paketentwickler übernehmen. Die Zeit ist reif für eine standardisierte
-Konfigurations-Sprache. Der Einstieg in neue Pakete wird so wesentlich
-vereinfacht, weil man nur noch wissen muss, was man konfigurieren will und
-nicht mehr, wie man überhaupt konfigurieren kann. Ein vielversprechender Ansatz
-ist <ref lang="en" url="http://config4gnu.sourceforge.net/docs/article.html">http://config4gnu.sourceforge.net/docs/article.html</ref>.
+sich in einer eigenwilligen Konfigurations-Syntax verewigt. Wie schön wäre es,
+wenn gerade bei der Konfigurations-Sprache sich ein Standard durchsetzt, an den
+sich alle halten. Manche großen Pakete wie
+<ref lang="en" url="http://www.samba.org/">samba</ref>,
+<ref lang="en" url="http://www.cups.org/">cups</ref>,
+<ref chapter="apache">apache</ref> machen schon gute Vorgaben, die
+andere Paketentwickler übernehmen. Der Einstieg in neue Pakete wird so
+wesentlich vereinfacht, weil man nur noch wissen muss, was man konfigurieren
+will und nicht mehr, wie man überhaupt konfigurieren kann. Ein
+vielversprechender Ansatz ist <ref lang="en" url="http://config4gnu.sourceforge.net/docs/article.html">http://config4gnu.sourceforge.net/docs/article.html</ref>.
    </textblock>
 
    <textblock>
-Die gesamte Konfiguration erfolgt über die Datei syslog-ng.conf, die bei Debian
-Linux unter /etc/syslog-ng/syslog-ng.conf liegt.
+Die gesamte Konfiguration erfolgt über die Datei <path>syslog-ng.conf</path>,
+die bei Debian Linux unter <path>/etc/syslog-ng/syslog-ng.conf</path> liegt.
    </textblock>
 
    <textblock>
@@ -171,9 +185,9 @@ filter &lt;identifier&gt; { expression; ... };
    </file>
 
    <textblock>
-Hiermit können beliebig viele Filter-Objekte angelegt werden, die später
-in der log-Zeile benutzt werden können. Expression beschreibt die
-Filterregel.
+Hiermit können beliebig viele <ref iref="Das filter Objekt">Filter-Objekte</ref>
+angelegt werden, die später in der log-Zeile benutzt werden können. Expression
+beschreibt die Filterregel.
    </textblock>
 
    <file>
@@ -195,9 +209,12 @@ log { source(s1); source(s2); ...; filter(f1); filter(f2); ...; destination (d1)
    </file>
 
    <textblock>
-Hiermit werden log-Objekte angelegt und log-Objekte sind die einzigen,
-die auch Aktionen ausführen, wenn sie definiert sind. In dem Log-Objekt
-werden zuvor definierte Objekte (source, filter, destination)
+Hiermit werden <ref iref="Das log Objekt">log-Objekte</ref> angelegt und
+<ref iref="Das log Objekt">log-Objekte</ref> sind die einzigen,
+die auch Aktionen ausführen, wenn sie definiert sind. In dem
+<ref iref="Das log Objekt">Log-Objekt</ref>
+werden zuvor definierte Objekte (<ref iref="Das source Objekt">source</ref>,
+<ref iref="Das filter Objekt">filter</ref>, <ref iref="Das destination Objekt">destination</ref>)
 zusammengefügt und das Logging somit aktiviert.
    </textblock>
 
@@ -236,16 +253,11 @@ einstellen - es wird dann sofort jede Zeile geschrieben.
      <li>
 <strong>log_fifo_size(n-lines)</strong><br/>
 Anzahl der Zeilen, die zwischengepuffert werden können. Ist wichtig, wenn
-mehr Logs einlaufen, als syslog-ng wegschreiben kann. Das kann z.B.
+mehr Logs einlaufen, als syslog-ng wegschreiben kann. Das kann z. B.
 passieren, wenn eine kurzzeitige Logzeilen-Flut hereinbricht. Ein
 typischer Wert ist 1000.
      </li>
     </ul>
-
-    <textblock>
-Eine Auflistung aller Möglichkeiten findet man in [2] oder [3], jedoch sind sie
-dort meist sehr kurz beschrieben.
-    </textblock>
    </section>
 
    <section>
@@ -254,8 +266,9 @@ Das source Objekt
     </heading>
 
     <textblock>
-Hier kann man die Quellen angeben, woher syslog-ng Meldungen empfangen soll.
-Unter debian Linux reicht für das normale Logging folgende Zeile:
+Hier kann man die Quellen angeben, woher <command>syslog-ng</command> Meldungen
+empfangen soll. Unter debian Linux reicht für das normale Logging folgende
+Zeile:
     </textblock>
 
     <file>
@@ -265,22 +278,29 @@ source src { unix-stream("/dev/log"); internal(); };
     </file>
 
     <textblock>
-Es wird hier ein neues Source-Objekt namens src angelegt. Dieses Source-Objekt
-wird nun mit zwei Quellen verbunden, zum einen mit /dev/log, zum anderen mit
-internal. Der Typ internal steht für die Messages, dei syslog-ng selber
-erzeugt. Die sollte man also immer mit aufnehmen. /dev/log ist vom Typ unix-
-stream, ein Stream mit unix-style Übertragung, was man typisch unter Linux
-nutzt. Ein ähnlicher Typ ist unix-dgram, der in bsd Systemen verwendet wird.
+Es wird hier ein neues <ref iref="Das source Objekt">Source-Objekt</ref> namens
+<strong>src</strong> angelegt. Dieses Source-Objekt wird nun mit zwei Quellen
+verbunden, zum einen mit <path>/dev/log</path>, zum anderen mit
+<strong>internal</strong>. Der Typ <strong>internal</strong> steht für die
+Messages, die <command>syslog-ng</command> selber erzeugt. Die sollte man
+also immer mit aufnehmen. <path>/dev/log</path> ist vom Typ unix-stream, ein
+Stream mit unix-style Übertragung, was man typischerweise unter Linux
+nutzt. Ein ähnlicher Typ ist unix-dgram, der in BSD Systemen verwendet wird.
 Unter Linux funktioniert generell auch unix-dgram, es ist aber nicht so sicher,
 weil bei zu hoher Systemlast Logs verloren gehen können.
     </textblock>
 
     <textblock>
-Weitere Möglichkeiten von Typen einer Datenquelle sind file, pipe, udp, tcp.
+Weitere Möglichkeiten von Typen einer Datenquelle sind <strong>file</strong>,
+<strong>pipe</strong>, <strong>udp</strong>, <strong>tcp</strong>.
 Hiermit kann man verrückte Sachen anstellen. Im Normalfall dürfte lediglich
-udp/tcp noch interessant sein, mit dem syslog-ng als Loghost übers Netz
-fungieren kann. Er verhält sich dann genauso, wie ein syslog, der per udp
-lauscht. Eine vollständige udp Quelle sieht so aus:
+udp/tcp noch interessant sein, mit dem <command>syslog-ng</command> als Loghost
+übers Netz fungieren kann. Er verhält sich dann genauso, wie ein
+<ref chapter="syslog">syslog</ref>, der per
+<ref chapter="tcpip" iref="UDP - User Datagram Protocol">udp</ref>
+lauscht. Eine vollständige
+<ref chapter="tcpip" iref="UDP - User Datagram Protocol">udp</ref>
+Quelle sieht so aus:
     </textblock>
 
     <file>
@@ -290,44 +310,53 @@ udp( ip(0.0.0.0) port(514) )
     </file>
 
     <textblock>
-Wobei ip und port auch weggelassen werden können, wenn die hier angegebenen
-Defaultparameter genommen werden sollen. Ip steht für die IP-Adresse, auf der
-gelauscht werden soll. Hat ein Rechner also mehrere IP-Adressen, kann man hier
-Einschränkungen machen. Default ist 0.0.0.0, was auf allen Adressen lauscht.
-Man kann nicht angeben, das z.B. nur Logs von einem bestimmten Host angenommen
-werden. Port gibt den Port an, auf dem gelauscht werden soll. Default ist lt.
-altem syslog der Port 514.
+Wobei <strong>ip</strong> und <strong>port</strong> auch weggelassen werden
+können, wenn die hier angegebenen Defaultparameter genommen werden sollen. Ip
+steht für die IP-Adresse, auf der gelauscht werden soll. Hat ein Rechner also
+mehrere IP-Adressen, kann man hier Einschränkungen machen. Default ist 0.0.0.0,
+was auf allen Adressen lauscht. Man kann nicht angeben, das z. B. nur Logs von
+einem bestimmten Host angenommen werden. Port gibt den Port an, auf dem
+gelauscht werden soll. Default ist lt. altem <ref chapter="syslog">syslog</ref>
+der Port 514.
     </textblock>
 
     <textblock>
-UDP ist ein verbindungsloses Protokoll, es kann also passieren, dass bei
-verlorenen Paketen auch Logs verloren gehen, weil die nicht erneut angefordert
-werden. Besser ist es daher, tcp einzusetzen. Konfiguriert wird es genauso, man
-kann auch den gleichen Port nutzen, insofern man auf das sonst dort sitzende
-rshell verzichten kann (seit ssh sollte die eh überflüssig sein). Bei tcp gibt
-es zusätzlich noch den Parameter max-connections(n), der die Anzahl der
-Verbindungen limitiert.
+<ref chapter="tcpip" iref="UDP - User Datagram Protocol">UDP</ref> ist ein
+verbindungsloses Protokoll, es kann also passieren, dass bei
+verlorenen Paketen auch Logs verloren gehen, weil diese nicht erneut angefordert
+werden. Besser ist es daher,
+<ref chapter="tcpip" iref="TCP - Transmission Control Protocol">tcp</ref>
+einzusetzen. Konfiguriert wird es genauso, man kann auch den gleichen Port
+nutzen, insofern man auf das sonst dort sitzende rshell verzichten kann
+(seit ssh sollte die eh überflüssig sein). Bei
+<ref chapter="tcpip" iref="TCP - Transmission Control Protocol">tcp</ref> gibt
+es zusätzlich noch den Parameter <strong>max-connections(n)</strong>, der die
+Anzahl der Verbindungen limitiert.
     </textblock>
 
     <textblock>
-Wer allerdings von alten syslogs aus Logs entgegennehmen muss, der ist auf udp
-angewiesen, weil die nur udp können.
+Wer allerdings von alten <ref chapter="syslog">syslogs</ref> aus Logs
+entgegennehmen muss, der ist auf
+<ref chapter="tcpip" iref="UDP - User Datagram Protocol">udp</ref> angewiesen,
+weil die nur <ref chapter="tcpip" iref="UDP - User Datagram Protocol">udp</ref>
+können.
     </textblock>
 
     <textblock>
 Es gibt noch eine weitere Quelle, die man evtl. nicht vergessen darf - die
-Kernel-Messages. Wenn man auf seinem Linux-System einen klogd laufen hat, dann
-holt der sich alle Kernelmessages aus /proc/kmsg und reicht sie an den Syslog-
-Dämon (hier: syslog-ng) weiter. Somit hat man diese Messages automatisch. Das
-dürfte bei den meisten Distributionen der Standard-Fall sein. Der klogd hat
-auch den Vorteil, das er manche Logs noch weiter aufbereitet, z.B.
-Funktionsnamen über die .map Kernel Files dekodiert. Dadurch können Probleme
-leichter gefunden werden.
+<ref chapter="kernel">Kernel</ref>-Messages. Wenn man auf seinem Linux-System
+einen <command>klogd</command> laufen hat, dann holt dieser sich alle
+Kernelmessages aus <path>/proc/kmsg</path> und reicht sie an den Syslog-
+Daemon (hier: <command>syslog-ng</command>) weiter. Somit hat man diese
+Messages automatisch. Das dürfte bei den meisten Distributionen der
+Standard-Fall sein. Der <command>klogd</command> hat auch den Vorteil, das er
+manche Logs noch weiter aufbereitet, z. B. Funktionsnamen über die .map
+Kernel Files dekodiert. Dadurch können Probleme leichter gefunden werden.
     </textblock>
 
     <textblock>
-Läuft kein klogd, so muss man diese Kernel-Messages selber abholen. Eine
-komplette Sourcezeile könnte dann so aussehen:
+Läuft kein <command>klogd</command>, so muss man diese Kernel-Messages selber
+abholen. Eine komplette Sourcezeile könnte dann so aussehen:
     </textblock>
 
     <file>
@@ -337,7 +366,8 @@ source src { unix-stream("/dev/log"); internal(); file("/proc/kmsg");};
     </file>
 
     <textblock>
-Manche Distributionen benutzen hier auch pipe() statt file() für "/proc/kmsg".
+Manche Distributionen benutzen hier auch <strong>pipe()</strong> statt
+<strong>file()</strong> für <path>/proc/kmsg</path>.
     </textblock>
    </section>
 
@@ -347,7 +377,7 @@ Das destination Objekt
     </heading>
 
     <textblock>
-Mit dem Destination Objekt kann man Ziele festlegen, wohin eine Log-Stream
+Mit dem Destination Objekt kann man Ziele festlegen, wohin ein Log-Stream
 gehen soll. Normal ist dies eine Datei. Ein einfaches Ziel könnte so aussehen:
     </textblock>
 
@@ -358,18 +388,19 @@ destination syslog { file("/var/log/syslog" owner("root") group("adm") perm (064
     </file>
 
     <textblock>
-Hier wird das Ziel mit dem Namen syslog angelegt, wobei es mit der Datei /var/
-log/syslog verbunden wird. Diese Datei soll mit dem Benutzer root:adm angelegt
-werden und 0640er Rechte haben.
+Hier wird das Ziel mit dem Namen <strong>syslog</strong> angelegt, wobei es
+mit der Datei <path>/var/log/syslog</path> verbunden wird. Diese Datei soll
+mit dem Benutzer root.adm angelegt werden und 0640er Rechte haben.
     </textblock>
 
     <textblock>
-Neben den file()-Optionen owner(), group(), perm() gibt es weitere, die man bei
+Neben den <strong>file()</strong>-Optionen <strong>owner()</strong>,
+<strong>group()</strong>, <strong>perm()</strong> gibt es weitere, die man bei
 speziellen Ansprüchen nutzen kann. Eine sehr interessante Option ist die
-Möglichkeit, ein Ausgabeformat mit template() festzulegen. Dies hatte ich
-weiter oben an einem Beispiel schon verdeutlicht. Hiermit kann man sich nahezu
-beliebige Logfile-Formate erstellen. Das Template ist ein String, in dem Makros
-mit einem $MakroName eingefügt werden können.
+Möglichkeit, ein Ausgabeformat mit <strong>template()</strong> festzulegen.
+Dies hatte ich weiter oben an einem Beispiel schon verdeutlicht. Hiermit kann
+man sich nahezu beliebige Logfile-Formate erstellen. Das Template ist ein
+String, in dem Makros mit einem $MakroName eingefügt werden können.
     </textblock>
 
     <textblock>
@@ -392,7 +423,7 @@ Folgende Makros sind verfügbar:
     </textblock>
 
     <table>
-     <pdf-column/>
+     <pdf-column width="150"/>
      <pdf-column/>
      <tr>
       <td>
@@ -526,23 +557,23 @@ sich oft flexibler filtern, als über die Facilitys.
 MSG oder MESSAGE
       </td>
       <td>
-Die eigentliche Message. Da es im alten syslog keine
+Die eigentliche Message. Da es im alten <ref chapter="syslog">syslog</ref> keine
 Möglichkeit gab, das Programm oder den Prozess mitzuloggen, hat es sich als
 Standard herausgebildet, in die Message als erstes das Programm mit
 Prozessnummer anzugeben (Programm[ps-id]: ), welches die Message ausgab. Bei
 Unterprozessen eines Programmes, wird normal Programm/Unterprozess[ps-id]:
 verwendet. Erst hinter dem Doppelpunkt beginnt die eigentliche Message.
 Verlassen kann man sich jedoch auf diese Regel nicht, Ausnahmen gibt es
-immer wieder - unter Linux darf ja jeder tun, was er will... Ein Dank an
-alle Entwickler, die sich an Quasi-Standards halten.
+immer wieder.
       </td>
      </tr>
     </table>
 
     <textblock>
-Es gibt bei file() einen leistungsfähigen Mechanismus, die Makro-Substitution
-für den Dateinamen. So kann man sich dynamische Logfilenamen generieren. Hier
-kann man die gleichen Makros wie für template() benutzen. Ein
+Es gibt bei <strong>file()</strong> einen leistungsfähigen Mechanismus, die
+Makro-Substitution für den Dateinamen. So kann man sich dynamische
+Logfilenamen generieren. Hier kann man die gleichen Makros wie für
+<strong>template()</strong> benutzen. Ein
     </textblock>
 
     <file>
@@ -565,8 +596,8 @@ stream, unix-dgram, fifo, usertty, program.
 
     <textblock>
 Udp oder tcp nutzt man ähnlich, wie schon bei dem Source-Objekt beschrieben.
-Als Ziel angegeben, schickt der syslog-ng nun diesen Log-Stream zu einem
-anderen Rechner per tcp oder udp. Ein Beispiel:
+Als Ziel angegeben, schickt der <command>syslog-ng</command> nun diesen
+Log-Stream zu einem anderen Rechner per tcp oder udp. Ein Beispiel:
     </textblock>
 
     <file>
@@ -583,9 +614,9 @@ weggelassen werden.
 
     <textblock>
 Hier gilt auch: Udp nimmt man aus Kompatibilitätsgründen, weil sich dann
-syslog-ng wie ein altes syslog verhält. Tcp ist das sicherere Verfahren, weil
-bei diesem verbindungsorientierten Protokoll Pakete nicht verloren gehen
-können.
+<command>syslog-ng</command> wie ein altes <ref chapter="syslog">syslog</ref>
+verhält. Tcp ist das sicherere Verfahren, weil bei diesem
+verbindungsorientierten Protokoll Pakete nicht verloren gehen können.
     </textblock>
 
     <textblock>
@@ -628,13 +659,13 @@ Das filter Objekt
 Filter Objekte legen fest, wie Meldungen von einem Source-Objekt gefiltert
 werden sollen. Hiermit lassen sich also gewünschte Messages aus dem gesamten
 Datenstrom eines Source-Objektes herauspicken. Und das ist gut, wenn man z.B.
-in einem Ziel nur bestimmte Meldungen loggen möchte. Auch der alte syslog hat
-eine einfache Filtersprache, um Logausgaben in verschiedene Logdateien zu
-schreiben.
+in einem Ziel nur bestimmte Meldungen loggen möchte. Auch der alte
+<ref chapter="syslog">syslog</ref> hat eine einfache Filtersprache, um
+Logausgaben in verschiedene Logdateien zu schreiben.
     </textblock>
 
     <textblock>
-Mit syslog-ng kann man wesentlich erweitert und verfeinert filtern.
+Mit <command>syslog-ng</command> kann man wesentlich erweitert und verfeinert filtern.
     </textblock>
 
     <textblock>
@@ -683,16 +714,15 @@ entsprechen.
      <li>
 <strong>program(regexp)</strong><br/>
 Alle Meldungen, die vom Programm kommen, worauf regexp passt, werden
-durchgelassen. Hierbei ist regexp ein regulärer Ausdruck. Um welchen
-Regexp-Dialekt es sich handelt, weiß ich nicht. Hat man Whitespaces im
-Programmnamen, sollte man den Ausdruck zwischen doppelte
+durchgelassen. Hierbei ist regexp ein <ref chapter="regex">regulärer Ausdruck</ref>.
+Hat man Whitespaces im Programmnamen, sollte man den Ausdruck zwischen doppelte
 Anführungsstriche setzen.
      </li>
      <li>
 <strong>host(regexp)</strong><br/>
 Filterung nach Host, woher die Message kommt, ebenfalls regulärer
 Ausdruck. Ein Tipp, wenn du nichts von regulären Ausdrücken verstehst:
-Nimm einfach den Hostnamen, z.B. so: host(myhost). Genau genommen
+Nimm einfach den Hostnamen, z. B. so: host(myhost). Genau genommen
 müsstest du host("^myhost$") schreiben.
      </li>
      <li>
@@ -718,10 +748,7 @@ Mach keine Meisterschaft daraus, möglichst komplizierte Konfigurationen zu
 produzieren. Durch komplizierte Filterregeln kann man das hier durchaus
 schaffen. Das zeigt zwar deine intellektuellen Fähigkeiten, produziert aber
 schwer wartbare Konfig-Dateien. Mach es so einfach wie möglich, andere werden
-es dir danken. Und es hilft auch der Verbreitung von OpenSource. OpenSource
-verbreitet sich dann rasant, wenn es für möglichst viele Menschen verständlich
-wird. Und OpenSource lebt davon, dass möglichst viele Menschen ein Produkt
-nutzen (können).
+es dir danken.
     </textblock>
    </section>
 
@@ -747,11 +774,12 @@ log { source(src); filter(f_syslog); destination(syslog); };
 
     <textblock>
 Es wird hier also vom Source src gelesen, diese Messages durch den filter
-f_syslog geschickt und dann zum Ziel syslog geschrieben.
+<strong>f_syslog</strong> geschickt und dann zum Ziel
+<strong>syslog</strong> geschrieben.
     </textblock>
 
     <textblock>
-Mehrere Sourcen bindet man mit mehreren source()-Statements ein.
+Mehrere Sourcen bindet man mit mehreren <strong>source()</strong>-Statements ein.
     </textblock>
 
     <file>
@@ -766,22 +794,27 @@ einbinden.
     </textblock>
 
     <textblock>
-Hinter destination() lässt sich auch noch flags() angeben, mit dem man
-erweitere Funktionalitäten festlegen kann.
+Hinter <strong>destination()</strong> lässt sich auch noch
+<strong>flags()</strong> angeben, mit dem man erweitere Funktionalitäten
+festlegen kann.
     </textblock>
    </section>
   </section>
+ </split>
 
+ <split>
   <section>
    <heading>
 Beispieldatei
    </heading>
 
    <textblock>
-Hier ist ein Beispiel einer kompletten Konfig-Datei, wie ich sie unter Debian
-Woody verwende. Die Kernel-Messages hole ich hier direkt ohne den klogd. Dieser
-darf also nicht gestartet sein. Es gibt unter Debian Woody noch einige Probleme
-im Zusammenspiel klogd/syslog-ng, siehe weiter unten.
+Hier ist ein Beispiel einer kompletten Konfig-Datei, wie ich sie unter
+<ref lang="de" url="http://www.debian.org/">Debian Woody</ref> verwende.
+Die Kernel-Messages hole ich hier direkt ohne den <command>klogd</command>.
+Dieser darf also nicht gestartet sein. Es gibt unter
+<ref lang="de" url="http://www.debian.org/">Debian Woody</ref> noch einige
+Probleme im Zusammenspiel <command>klogd</command>/<command>syslog-ng</command>.
    </textblock>
 
    <file>
@@ -945,7 +978,9 @@ log { source(src); filter(ppp); destination(ppp); };
     </content>
    </file>
   </section>
+ </split>
 
+ <split>
   <section>
    <heading>
 Probleme und Offenes
@@ -957,29 +992,48 @@ Zusammenspiel klogd und syslog-ng
     </heading>
 
     <textblock>
-Es gibt ein paar Probleme im Zusammenspiel des klogd mit syslog-ng. Unter
-Debian Woody reicht der klogd nur Meldungen korrekt weiter, wenn unter syslog-
-ng die Methode unix-dgram("/dev/log") anstatt unix-stream("/dev/log") im Source
-Objekt verwendet wird. Auch gibt es Probleme, wenn syslog-ng neu gestartet
-wird, ohne gleichzeitig klogd neu zu starten. Der Datenaustausch von klogd an
-syslog-ng funktioniert dann nicht mehr korrekt.
+Es gibt ein paar Probleme im Zusammenspiel des <command>klogd</command> mit
+<command>syslog-ng</command>. Unter <ref lang="de"
+url="http://www.debian.org/">Debian Woody</ref> reicht der
+<command>klogd</command> nur Meldungen korrekt weiter, wenn unter
+<command>syslog-ng</command> die Methode
+<strong>unix-dgram("/dev/log")</strong> anstatt
+<strong>unix-stream("/dev/log")</strong> im Source
+Objekt verwendet wird. Auch gibt es Probleme, wenn
+<command>syslog-ng</command> neu gestartet
+wird, ohne gleichzeitig klogd neu zu starten. Der Datenaustausch von
+<command>klogd</command> an <command>syslog-ng</command> funktioniert dann
+nicht mehr korrekt.
     </textblock>
 
     <textblock>
-Einige Distributionen (redhat, suse) sind deshalb dazu übergegangen, entweder
-den klogd nicht zu verwenden oder aber im syslog-ng Init-skript sowohl syslog-
-ng wie auch klogd zu starten und zu stoppen. Dadurch werden beide Dämons immer
-korrekt im Tandem hoch- und runtergefahren. Evtl. sollte man 1 Sekunde nach
-Start des syslog-ng warten, bevor man klogd startet.
+Einige Distributionen sind deshalb dazu übergegangen, entweder
+den <command>klogd</command> nicht zu verwenden oder aber im
+<command>syslog-ng</command> Init-skript sowohl <command>syslog-ng</command>
+wie auch <command>klogd</command> zu starten und zu stoppen. Dadurch werden
+beide Daemons immer korrekt im Tandem hoch- und runtergefahren. Evtl. sollte
+man 1 Sekunde nach Start des <command>syslog-ng</command> warten, bevor man
+<command>klogd</command> startet.
     </textblock>
 
     <textblock>
-Loggt man ohne klogd, fehlt der Prefix "kernel:" im Logfile, den klogd normal
-hinzufügt. Modernere Versionen von syslog-ng haben hierfür einen zusätzlichen
-Befehl, um diesen Prefix selber zu generieren. In einer Source-Zeile könnte
-dann z.B. stehen: pipe("/proc/kmsg" log_prefix("kernel: ")).
-Unter Debian Woody sollte man also einfach ohne klogd arbeiten oder aber die
-Init-Skripte anpassen.
+Loggt man ohne <command>klogd</command>, fehlt der Prefix
+<strong>kernel:</strong> im Logfile, den <command>klogd</command> normal
+hinzufügt. Modernere Versionen von <command>syslog-ng</command> haben hierfür
+einen zusätzlichen Befehl, um diesen Prefix selber zu generieren. In einer
+Source-Zeile könnte dann z. B. stehen:
+    </textblock>
+
+    <file>
+     <content>
+ pipe("/proc/kmsg" log_prefix("kernel: ")).
+     </content>
+    </file>
+
+    <textblock>
+Unter <ref lang="de" url="http://www.debian.org/">Debian Woody</ref> sollte man
+also einfach ohne <command>klogd</command> arbeiten oder aber die Init-Skripte
+anpassen.
     </textblock>
    </section>
 
@@ -990,13 +1044,13 @@ Referenzen
 
     <ul>
      <li>
-http://www.balabit.com/products/syslog_ng/
+<ref lang="en" url="http://www.balabit.com/products/syslog_ng/">http://www.balabit.com/products/syslog_ng/</ref>
      </li>
      <li>
 Referenz Manual im Source-tar (1.5.15) unter doc/sgml/syslog-ng.txt
      </li>
      <li>
-http://home.datacomm.ch/prutishauser/texte/syslog-ng-de.txt
+<ref lang="de" url="http://home.datacomm.ch/prutishauser/texte/syslog-ng-de.txt">http://home.datacomm.ch/prutishauser/texte/syslog-ng-de.txt</ref>
      </li>
      <li>
 Beispiele im Source-tar (1.5.15) unter contrib/syslog-ng.conf.*
@@ -1005,17 +1059,18 @@ Beispiele im Source-tar (1.5.15) unter contrib/syslog-ng.conf.*
 Beispiele im Source-tar (1.5.15) unter doc/syslog-ng.conf.*
      </li>
      <li>
-http://www.linux-magazin.de/Artikel/ausgabe/2003/11/tagebuch/tagebuch.html
+<ref lang="de" url="http://www.linux-magazin.de/Artikel/ausgabe/2003/11/tagebuch/tagebuch.html">http://www.linux-magazin.de/Artikel/ausgabe/2003/11/tagebuch/tagebuch.html</ref>
      </li>
      <li>
 man syslog-ng
      </li>
      <li>
-man syslog (lohnt sich, weil viele Standards und Definitionen von syslog
-auf syslog-ng übernommen wurden.)
+man syslog (lohnt sich, weil viele Standards und Definitionen von
+<ref chapter="syslog">syslog</ref> auf <command>syslog-ng</command> übernommen
+wurden.)
      </li>
      <li>
-man grep (Beschreibung reguläre Ausdrücke (regexp))
+man grep (Beschreibung <ref chapter="regex">reguläre Ausdrücke</ref> (regexp))
      </li>
     </ul>
    </section>
