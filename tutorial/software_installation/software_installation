@@ -24,7 +24,6 @@
 
  <split>
   <section>
-<!--*. Kapitel -->
    <heading>
 Installieren und Deinstallieren von Software
    </heading>
@@ -70,8 +69,8 @@ installieren zu können.
    </textblock>
   </section>
  </split>
- 
- <split> 
+
+ <split>
   <section>
 <!--*. Kapitel -->
    <heading>
@@ -82,27 +81,27 @@ RPM
 Das <command>RPM</command>-Format, das von <name>RedHat</name> für ihre Distribution entwickelt wurde, enthält
 zusammen mit einigen Verwaltungsdaten das compilierte
 Programm-Paket. Erkennbar sind <command>RPM</command>-Dateien an der Endung <command>.rpm</command>, wobei
-zusätzlich die Architektur (z. B. <command>i386</command> oder
-<command>alpha</command>) im Namen der Datei enthalten ist. So kennzeichnet
+zusätzlich die Architektur (z. B. <strong>i386</strong> oder
+<strong>alpha</strong>) im Namen der Datei enthalten ist. So kennzeichnet
    </textblock>
 
    <textblock>
-<strong>kaffe-1.0.6-2.i386.rpm</strong>
+<path>kaffe-1.0.6-2.i386.rpm</path>
    </textblock>
 
    <textblock>
 das Kaffe-Paket für die Intel386-Architektur. Pakete, die nicht an eine
 bestimmte Architektur gebunden sind (z. B. manche Java-Pakete) erhalten die
-Endung <command>.noarch.rpm</command>. Handelt es sich um ein Paket in
-Source-Form, so wird dies durch <command>.src.rpm</command> gekennzeichnet.
+Endung <path>.noarch.rpm</path>. Handelt es sich um ein Paket in
+Source-Form, so wird dies durch <path>.src.rpm</path> gekennzeichnet.
    </textblock>
 
    <textblock>
 Folgende Eigenschaften kennzeichnen das <command>RPM</command>-Format:
    </textblock>
-   
+
    <ul>
-    <li> 
+    <li>
 Prüfung, ob die Voraussetzung für ein Paket vorhanden ist
     </li>
     <li>
@@ -117,9 +116,9 @@ Deinstallation
    </ul>
 
    <textblock>
-Wer über <command>FTP</command> installieren will, kann als Paket-Name eine <command>URL</command> angeben, z. B.
+Wer über <strong>FTP</strong> installieren will, kann als Paket-Name eine <strong>URL</strong> angeben, z. B.
    </textblock>
-   
+
    <shell>
     <user path="~">
 rpm -ih ftp://ftp.redhat.com/pub/redhat/i386/RedHat/RPMS/kaffe-1.0.6-2.i386.rpm
@@ -127,7 +126,7 @@ rpm -ih ftp://ftp.redhat.com/pub/redhat/i386/RedHat/RPMS/kaffe-1.0.6-2.i386.rpm
    </shell>
 
    <textblock>
-Das Schöne an der Installation per <command>FTP</command> ist, dass die Abhängigkeiten vor der
+Das Schöne an der Installation per <strong>FTP</strong> ist, dass die Abhängigkeiten vor der
 eigentlichen Installation überprüft werden, d. h. das restliche Paket wird erst
 heruntergeladen, wenn die Abhängigkeiten erfüllt sind. Dazu teilt sich der
 eigentliche Installations-Vorgang in drei Phasen auf:
@@ -146,8 +145,8 @@ das Post-Install-Skript wird ausgeführt (falls vorhanden)
    </ol>
 
    <textblock>
-Ein ähnliches Schema wird bei der Deinstallation angewandt, auch hier gibt es 
-häufig ein <command>Pre-Uninstall</command>- und <command>Post-Uninstall-Skript</command>.
+Ein ähnliches Schema wird bei der Deinstallation angewandt, auch hier gibt es
+häufig ein <strong>Pre-Uninstall</strong>- und <strong>Post-Uninstall-Skript</strong>.
    </textblock>
 
    <textblock>
@@ -168,7 +167,6 @@ da er sich keine Gedanken darüber zu machen braucht, welche Pakete er zuerst
 installieren muss -- er gibt einfach alle in Frage kommenden Pakete an.
    </textblock>
 
-<!--# Tabelle "Die wichtigsten rpm-Befehle" -->
    <table>
     <pdf-column width="100"/>
     <pdf-column/>
@@ -185,7 +183,7 @@ Kurzbeschreibung
 <command>rpm -ih x.rpm</command>
      </td>
      <td>
-<command>Installation</command>;<br/>
+<strong>Installation</strong>;<br/>
 die Option <command>-h</command> (oder auch <command>-vh</command>) gibt zusätzlich
 noch einen Fortschrittsbalken aus
      </td>
@@ -195,13 +193,12 @@ noch einen Fortschrittsbalken aus
 <command>rpm -U x.rpm</command>
      </td>
      <td>
-<command>Update</command>;<br/>
+<strong>Update</strong>;<br/>
 werden Konfigurationsdaten verändert, werden sie vorher
-unter der Endung <command>.rpmsave</command> gesichert.<br/>
+unter der Endung <path>.rpmsave</path> gesichert.<br/>
 Alternativ wird die neue Version
-einer Konfigurationsdatei mit der Endung <command>.rpmnew</command> angelegt.<br/>
-Während des Updates
-macht der RedHat Package Manager auf diese Aktionen aufmerksam.
+einer Konfigurationsdatei mit der Endung <path>.rpmnew</path> angelegt.<br/>
+Während des Updates macht der RedHat Package Manager auf diese Aktionen aufmerksam.
      </td>
     </tr>
     <tr>
@@ -209,7 +206,7 @@ macht der RedHat Package Manager auf diese Aktionen aufmerksam.
 <command>rpm -qa</command>
      </td>
      <td>
-<command>Query</command> -- Abfrage aller Pakete;<br/>
+<strong>Query</strong> -- Abfrage aller Pakete;<br/>
 ohne die Option <command>-a</command> kann
 man gezielt nach einem Paket nachfragen
 (z.B. <command>rpm -q fileutils</command>)<br/>
@@ -223,7 +220,7 @@ mit der man abfragen kann, zu welchem Paket eine Datei
 <command>rpm -e x.rpm</command>
      </td>
      <td>
-<command>Erase</command> -- zum Deinstallieren eines Paketes
+<strong>Erase</strong> -- zum Deinstallieren eines Paketes
      </td>
     </tr>
     <tr>
@@ -237,17 +234,15 @@ oder hat da etwa jemand dran manipuliert?
     </tr>
    </table>
 
-<!--# Tabellen-Ende -->
-
    <textblock>
-Die Manual-Page von <command>rpm</command> ist recht umfangreich, entsprechend dem Umfang
-dieses Kommandos. In der Tabelle sind deswegen nur die
+Die <ref chapter="linux_hilfe" iref="man">Manual-Page</ref> von <command>rpm</command>
+ist recht umfangreich, entsprechend dem Umfang dieses Kommandos. In der Tabelle sind deswegen nur die
 wichtigsten Befehle aufgelistet, um einen schnellen Einstieg zu
 ermöglichen. Tiefergehende Information sind über <command>man rpm</command>
 abrufbar. Eine sehr ausführliche Beschreibung der Möglichkeiten von <command>rpm</command>
 findet sich unter <ref lang="en" url="http://www.rpm.org/max-rpm/">http://www.rpm.org/max-rpm/</ref>.
    </textblock>
- 
+
   <section>
 <!--*.* Kapitel -->
    <heading>
@@ -255,7 +250,7 @@ Kompilieren von Source-RPMs
     </heading>
 
     <textblock>
-Hat man ein Paket nur in Source-Form vorliegen (<command>xxx.src.rpm</command>), ist die
+Hat man ein Paket nur in Source-Form vorliegen (<path>xxx.src.rpm</path>), ist die
 Option <command>--rebuild</command> ganz hilfreich. Sie sorgt dafür, dass das Paket
 nach dem Auspacken auch gleich kompiliert wird. Während hierfür bei
 <command>RPM</command>-Versionen bis 4.0.X auch der Befehl <command>rpm</command> zuständig ist, gibt es
@@ -263,15 +258,16 @@ seit der Version 4.1 den Befehl <command>rpmbuild</command>.
     </textblock>
 
     <textblock>
-Das Kompilieren eines <command>Source-RPMs</command> auf dem eigenen Rechner hat auch den 
-Vorteil, dass die Programme auf jeden Fall zu den installierten 
+Das Kompilieren eines <strong>Source-RPMs</strong> auf dem eigenen Rechner hat auch den
+Vorteil, dass die Programme auf jeden Fall zu den installierten
 Bibliotheken passen.
     </textblock>
 
     <textblock>
-Generell ist es empfehlenswert, diesen Kompilationsvorgang nicht als 
-Benutzer <command>root</command> durchzuführen. Um als normaler Benutzer einen <command>rebuild</command>
-durchzuführen, muß als erstes eine Datei <command>.rpmmacros</command> im Homeverzeichnis
+Generell ist es empfehlenswert, diesen Kompilationsvorgang nicht als
+Benutzer <ref chapter="nutzer_unter_linux" iref="root">root</ref> durchzuführen.
+Um als normaler Benutzer einen <command>rebuild</command>
+durchzuführen, muß als erstes eine Datei <path>.rpmmacros</path> im Homeverzeichnis
 angelegt werden:
     </textblock>
 
@@ -290,7 +286,7 @@ cat ~/.rpmmacros
     <textblock>
 Nun müssen noch einige Verzeichnisse angelegt werden:
     </textblock>
-    
+
     <shell>
      <user path="~">
 mkdir /tmp/mirko-redhat
@@ -332,7 +328,7 @@ mkdir -p /tmp/mirko-redhat/{RPMS/i386,RPMS/noarch,BUILD,SOURCES,SPECS,SRPMS}
     </shell>
 
     <textblock>
-Jetzt kann man ein vorhandenes <command>Source-RPM</command> einfach wie folgt kompilieren:
+Jetzt kann man ein vorhandenes <strong>Source-RPM</strong> einfach wie folgt kompilieren:
     </textblock>
 
     <shell>
@@ -356,7 +352,7 @@ Nach Ausführen des Befehls wird der Kompilationsvorgang durchgeführt:
     </textblock>
 
    <ul>
-    <li> 
+    <li>
 Die unter SOURCES abgelegten Quellen werden unterhalb von BUILD
 ausgepackt.
     </li>
@@ -365,12 +361,11 @@ Eventuell vorhandene Patches (Quelltext-Änderungen, die der Fehlerkorrektur
 oder dem Anpassen an das System dienen) verändern den Quelltext.
     </li>
     <li>
-Dann wird meistens automatisch der unter <ref iref="Die klassische Installation">
-Die klassische Installation</ref>
+Dann wird meistens automatisch der unter <ref iref="Die klassische Installation">Die klassische Installation</ref>
 beschriebene Ablauf aus <command>./configure</command>, <command>make</command>, <command>make install</command> ausgeführt.
-Allerdings werden die Dateien hierbei temporär unter <command>/var/tmp/PAKET-root</command>
+Allerdings werden die Dateien hierbei temporär unter <path>/var/tmp/PAKET-root</path>
 installiert, da man als normaler Benutzer ja keine Zugriffsrechte auf
-die Standardverzeichnisse <command>/usr</command>, <command>/etc</command> usw. hat.
+die Standardverzeichnisse <path>/usr</path>, <path>/etc</path> usw. hat.
     </li>
     <li>
 Nun werden noch automatisch eventuell auftretende Abhängigkeiten aufgelöst.
@@ -383,18 +378,15 @@ zusammengefasst.
    </ul>
 
     <textblock>
-Am Ende findet sich dann unter <command>RPMS/i386</command> das fertige <command>RPM</command>-Paket, welches 
-man dann als <command>root</command> installieren kann.
+Am Ende findet sich dann unter <path>RPMS/i386</path> das fertige <command>RPM</command>-Paket, welches
+man dann als <ref chapter="nutzer_unter_linux" iref="root">root</ref> installieren kann.
     </textblock>
    </section>
-  
+
    <section>
-<!--*.* Kapitel -->
     <heading>
 Anfragen der RPM-Datenbank
     </heading>
-
-<!--# dieses Kapitel wurde von mzeibig/installation übernommen -->
 
     <textblock>
 Neben den
@@ -404,8 +396,8 @@ zusätzliche Informationen, welche bei der Installation in einer Datenbank
 gespeichert werden.  So umfasst ein <command>RPM</command> zusätzlich eine kurze Beschreibung
 des Programmes, den Installationszeitpunkt, die Zeit zu dem es kompiliert
 wurde, eine Auflistung aller dem Programm zugehörigen Dateien nebst
-Informationen über die Größe dieser Dateien und einen <command>MD5-Hash</command>, durch den
-sich nachträglich überprüfen lässt, ob die Dateien geändert wurden. 
+Informationen über die Größe dieser Dateien und einen <strong>MD5-Hash</strong>, durch den
+sich nachträglich überprüfen lässt, ob die Dateien geändert wurden.
     </textblock>
 
     <textblock>
@@ -425,7 +417,6 @@ Die in der Datenbank während der Installation
 eingetragenen Informationen lassen sich jederzeit abfragen (s. Tabelle)
     </textblock>
 
-<!--# Tabelle "Abfrageoptionen des rpm-Befehls" -->
     <table>
      <pdf-column/>
      <pdf-column/>
@@ -462,10 +453,10 @@ Anzeige aller installierten Pakete
      </tr>
      <tr>
       <td>
-<command>-qf</command> Dateiname	
+<command>-qf</command> Dateiname
       </td>
       <td>
-zu welchem Paket gehört die Datei? 
+zu welchem Paket gehört die Datei?
       </td>
       <td>
 <command>rpm -qf /bin/ls => fileutils-4.1-4</command>
@@ -473,10 +464,10 @@ zu welchem Paket gehört die Datei?
      </tr>
      <tr>
       <td>
-<command>-ql</command> Paketname	
+<command>-ql</command> Paketname
       </td>
       <td>
-listet alle zum Paket gehörenden Dateien 
+listet alle zum Paket gehörenden Dateien
       </td>
       <td>
 <command>rpm -ql fileutils oder rpm -qlf /bin/ls</command>
@@ -484,10 +475,10 @@ listet alle zum Paket gehörenden Dateien
      </tr>
      <tr>
       <td>
-<command>-qi</command> Paketname	
+<command>-qi</command> Paketname
       </td>
       <td>
-Infos zur Version, Inhaltsangabe, Installationsdatum, etc. 
+Infos zur Version, Inhaltsangabe, Installationsdatum, etc.
       </td>
       <td>
 <command>rpm -qi fileutils</command>
@@ -495,7 +486,7 @@ Infos zur Version, Inhaltsangabe, Installationsdatum, etc.
      </tr>
      <tr>
       <td>
-<command>-qd</command> Paketname	
+<command>-qd</command> Paketname
       </td>
       <td>
 zeigt nur die zum Paket gehörenden Dokumentationsdateien an
@@ -506,7 +497,7 @@ zeigt nur die zum Paket gehörenden Dokumentationsdateien an
      </tr>
      <tr>
       <td>
-<command>-qc</command> Paketname	
+<command>-qc</command> Paketname
       </td>
       <td>
 zum Paket gehörende Konfigurationsdateien
@@ -517,7 +508,7 @@ zum Paket gehörende Konfigurationsdateien
      </tr>
      <tr>
       <td>
-<command>-q --changelog</command> Paketname 
+<command>-q --changelog</command> Paketname
       </td>
       <td>
 Anzeigen des RPM-ChangeLog, dieses muss nicht
@@ -530,8 +521,6 @@ Sourcen oft noch patchen.
      </tr>
     </table>
 
-<!--# Ende der Tabelle -->
-
     <textblock>
 Viele dieser Abfrageoptionen lassen sich auch auf noch nicht installierte
 RPM-Pakete anwenden, hierzu dient die Option -p:
@@ -543,18 +532,19 @@ rpm -qip /mnt/cdrom/RedHat/RPMS/pinfo-0.5-1.i386.rpm
      </user>
     </shell>
    </section>
-  
+
    <section>
-<!--*.* Kapitel -->
     <heading>
 Graphische RPM-Frontends
     </heading>
 
-    <image>
+    <image height="300">
      <title>
 gnorpm, kpackage und xrpm
      </title>
-     <filename>rpm-frontends.png</filename>
+     <filename>
+rpm-frontends.png
+     </filename>
     </image>
 
     <textblock>
@@ -570,7 +560,8 @@ ist bei <name>KDE</name> dabei und unterstützt Drag &amp;
 Drop, d. h. man kann ein heruntergeladenes Paket
 aus dem Datei-Manager heraus
 in <command>kpackage</command> hineinschieben und fallen lassen. Es versteht auch das
-<name>Debian</name>-Paketformat, das an der Endung <command>.deb</command> erkennbar ist.
+<ref lang="de" url="http://www.debian.org/">Debian</ref>-Paketformat, das an der Endung <path>.deb</path>
+erkennbar ist.
     </textblock>
 
     <textblock>
@@ -585,8 +576,7 @@ bedienen ist und alle wichtigen Funktionen enthält.
     </textblock>
 
     <textblock>
-<command>mc</command> -- der Midnight Commander
-ist zwar
+<command>mc</command> -- der Midnight Commander ist zwar
 kein graphisches <command>RPM</command>-Frontend, kann aber <command>RPM</command>-Archive lesen und anzeigen
     </textblock>
    </section>
@@ -595,34 +585,31 @@ kein graphisches <command>RPM</command>-Frontend, kann aber <command>RPM</comman
 
  <split>
   <section>
-<!--*. Kapitel -->
    <heading>
 Debian Paket Format
    </heading>
 
-
    <textblock>
-Das <name>Debian</name> Paketformat ist detaillierter als
+Das <ref lang="de" url="http://www.debian.org/">Debian</ref> Paketformat ist detaillierter als
 <command>RPM</command>. <name>Debian</name> definiert nicht nur das
 Format, sondern auch die Datei-Struktur und vieles mehr. Deswegen
-ist das System problemloser aktualisierbar.   </textblock>
+ist das System problemloser aktualisierbar.
+   </textblock>
 
    <textblock>
 Während die meisten Distributionen inzwischen auf das <command>RPM</command>-Format umgestiegen
 sind, ist <name>Debian</name> seinem Paket-Format treu geblieben. Erkennbar sind diese
-Pakete an der Endung <command>.deb</command>. Zum Auspacken dient der <name>Debian</name> Packager
+Pakete an der Endung <path>.deb</path>. Zum Auspacken dient der <name>Debian</name> Packager
 (<command>dpkg</command>) oder das Kommando <command>apt-get</command>. <command>dselect</command> bietet ein Standard-Menü
 zur Paket-Installation,
 <command>tasksel</command> ein Menue mit verschiedenen vordefinierten
-Paketauswahlen. z.B. <command>x-window-system</command> oder <command>mail-server</command>.
+Paketauswahlen. z.B. <strong>x-window-system</strong> oder <strong>mail-server</strong>.
    </textblock>
 
    <textblock>
 Es gibt neben der Menü-gesteuerten Alternative
 (<command>dselect</command>, <command>aptitude</command>) auch graphische Frontends (<command>gnome-apt</command>, <command>kpackage</command>).
    </textblock>
-
-<!--# Tabelle "die wichtigsten Parameter für apt-get" -->
 
    <table>
     <pdf-column width="175"/>
@@ -645,7 +632,7 @@ Paket installieren
     </tr>
     <tr>
      <td>
-apt-get install &lt;kernel-name&gt;		
+apt-get install &lt;kernel-name&gt;
      </td>
      <td>
 anderen Kernel installieren
@@ -653,7 +640,7 @@ anderen Kernel installieren
     </tr>
     <tr>
      <td>
-apt-get --purge remove &lt;paketname&gt;	
+apt-get --purge remove &lt;paketname&gt;
      </td>
      <td>
 Paket löschen
@@ -661,7 +648,7 @@ Paket löschen
     </tr>
     <tr>
      <td>
-apt-get remove &lt;paketname&gt;		
+apt-get remove &lt;paketname&gt;
      </td>
      <td>
 Paket löschen, aber<br/>
@@ -670,15 +657,13 @@ Konfigurations-Dateien behalten
     </tr>
     <tr>
      <td>
-apt-get update / upgrade		
+apt-get update / upgrade
      </td>
      <td>
 System auf den neuesten Stand bringen
      </td>
     </tr>
    </table>
-
-<!--# Tabellen-Ende -->
 
    <textblock>
 Da die Unterstützung von <name>Debian</name>-Paketen manchmal hinter der von <command>RPM</command>-Paketen
@@ -694,9 +679,8 @@ GNU/Linux Anwenderhandbuch (<ref lang="de" url="http://www.openoffice.de/linux/b
 werden.
    </textblock>
   </section>
- 
+
   <section>
-<!--*. Kapitel -->
    <heading>
 Die klassische Installation
    </heading>
@@ -720,7 +704,6 @@ Typische Komprimierung von compress, gzip und bzip2
     <filename>tar-archive.png</filename>
    </image>
 
-<!--# Tabelle "Komprimierte Tar-Archive" -->
    <table>
     <pdf-column width="100"/>
     <pdf-column width="100"/>
@@ -738,7 +721,7 @@ auspacken mit
     </tr>
     <tr>
      <td>
-<command>.tar</command>
+<path>.tar</path>
      </td>
      <td>
 (ohne)
@@ -749,7 +732,7 @@ auspacken mit
     </tr>
     <tr>
      <td>
-<command>.tar.Z</command>
+<path>.tar.Z</path>
      </td>
      <td>
 <command>compress</command>
@@ -760,7 +743,7 @@ auspacken mit
     </tr>
     <tr>
      <td>
-<command>.tar.gz</command>
+<path>.tar.gz</path>
      </td>
      <td>
 <command>gzip</command>
@@ -771,7 +754,7 @@ auspacken mit
     </tr>
     <tr>
      <td>
-<command>.tgz</command>
+<path>.tgz</path>
      </td>
      <td>
 <command>gzip</command>
@@ -782,7 +765,7 @@ auspacken mit
     </tr>
     <tr>
      <td>
-<command>.tar.bz2 </command>
+<path>.tar.bz2</path>
      </td>
      <td>
 <command>bzip2</command>
@@ -792,8 +775,6 @@ auspacken mit
      </td>
     </tr>
    </table>
-
-<!--# Tabellen-Ende -->
 
    <textblock>
 Das <strong>GNU-tar-Kommando</strong>, das üblicherweise bei allen
@@ -806,12 +787,12 @@ ehe man die <strong>Tar</strong>-Datei auspacken kann.
 
    <textblock>
 Vereinzelt findet man auch im Linux-Bereich <strong>Zip</strong>-Archive vor, erkennbar an
-der Endung <command>.zip</command>. Diese werden mit <command>unzip</command> ausgepackt.
+der Endung <path>.zip</path>. Diese werden mit <command>unzip</command> ausgepackt.
    </textblock>
 
    <textblock>
 Nachdem das <strong>Tar</strong>-Archiv erfolgreich ausgepackt ist, sollte man nach einer Datei
-<strong>README</strong> oder <strong>INSTALL</strong> Ausschau halten. Dort steht beschrieben, wie das
+<path>README</path> oder <path>INSTALL</path> Ausschau halten. Dort steht beschrieben, wie das
 Paket übersetzt und installiert wird. Unabhängig von der Plattform und
 Distribution sind es meist folgende Schritte, die ausgeführt werden:
    </textblock>
@@ -824,31 +805,31 @@ Im ersten Schritt wird untersucht, um was
 für ein System (Linux, Unix, ...) es
 sich handelt, welche Bibliotheken vorhanden
 sind und ob die zur Kompilierung benötigten Tools
-wie C-Compiler (<command>gcc</command>) oder Linker (<command>ld</command>) installiert sind, 
-um daraus ein <command>Makefile</command>
+wie C-Compiler (<command>gcc</command>) oder Linker (<command>ld</command>) installiert sind,
+um daraus ein <ref chapter="make">Makefile</ref>
 zu generieren.
     </li>
-    <li> 
+    <li>
 <command>make</command><br/>
 
-Mit Hilfe des <command>Makefiles</command>, das im ersten Schritt erzeugt wurde, wird das Paket
+Mit Hilfe des <ref chapter="make">Makefiles</ref>, das im ersten Schritt erzeugt wurde, wird das Paket
 übersetzt.
     </li>
-    <li> 
+    <li>
 <command>make test</command> (optional)<br/>
 
 Mit diesem Schritt wird überprüft, ob die Kompilation erfolgreich war.
     </li>
-    <li> 
+    <li>
 <command>make install</command><br/>
 
 Damit wird das Paket installiert.
     </li>
-   </ol> 
+   </ol>
 
    <textblock>
 Hilfreich bei der Übersetzung ist die Option <command>-n</command> des
-<command>make</command>-Kommandos. Damit kann man make erst einmal trocken ausführen,
+<ref chapter="make">make</ref>-Kommandos. Damit kann man make erst einmal trocken ausführen,
 um zu sehen, welche Kommandos alle ausgeführt werden und in welches Verzeichnis
 welche Dateien kopiert werden, um nötigenfalls das Makefile noch anpassen zu
 können.
@@ -866,45 +847,44 @@ wohin kopiert wurden und löscht sie manuell.
    <textblock>
 Weitere Nachteile der manuellen Installation:
    </textblock>
-<!--# übernommen von mzeibig/installation -->
-   
+
    <ul>
     <li>
 Auf dem Zielsystem müssen alle Werkzeuge (Compiler, Linker, Make etc.),
-  Bibliotheken und Headerdateien zum Kompilieren des Programmes vorhanden
-  sein.
+Bibliotheken und Headerdateien zum Kompilieren des Programmes vorhanden
+sein.
     </li>
     <li>
 Bei der Installation einer neueren Version eines Programmes (<command>Update</command>)
-  werden evtl. die bereits vorhandenen, an das System
-  angepassten Konfigurationsdateien der alten Version überschrieben.
+werden evtl. die bereits vorhandenen, an das System
+angepassten Konfigurationsdateien der alten Version überschrieben.
     </li>
    </ul>
   </section>
  </split>
- 
- <split> 
+
+ <split>
   <section>
-<!--*. Kapitel -->
    <heading>
 Perl-Archive
    </heading>
 
    <textblock>
 Für <command>Perl</command>-Module gibt es als zentrale Anlaufstelle den
-<command>CPAN-Server</command> (Comprehensive Perl Archive Network,
-http://cpan.org), über den fast alle <command>Perl</command>-Module bezogen und direkt
+<strong>CPAN-Server</strong> (Comprehensive Perl Archive Network,
+<ref lang="en" url="http://www.cpan.org">http://www.cpan.org</ref>),
+über den fast alle <command>Perl</command>-Module bezogen und direkt
 installiert werden können.
    </textblock>
-   
+
    <shell>
-    <user path="~"> 
+    <user path="~">
 perl -MCPAN -e 'install Data::JavaScript'
     </user>
    </shell>
 
    <textblock>
-Mit diesem Aufruf wird das <command>Data::JavaScript</command>-Modul installiert. Beim ersten
+Mit diesem Aufruf wird das <strong>Data::JavaScript</strong>-Modul installiert. Beim ersten
 Mal muss man evtl. noch die automatische Installation konfigurieren. Dazu wird
 man interaktiv durch verschiedene Fragen durchgelotst (z. B. wo das
 <command>\cmd{gzip}</command>- und <command>\cmd{tar}</command>-Kommando liegt, <command>\dots</command>).
@@ -912,13 +892,13 @@ man interaktiv durch verschiedene Fragen durchgelotst (z. B. wo das
 
    <textblock>
 Danach geht es mit der eigentlichen Installation los, bei der das angegebene
-Modul von einem <command>CPAN</command>-Server heruntergeladen, ausgepackt, getestet und
+Modul von einem <strong>CPAN</strong>-Server heruntergeladen, ausgepackt, getestet und
 installiert wird. War alles erfolgreich, sollte am Ende ein
    </textblock>
 
    <shell>
-    <output> 
-  /usr/bin/make install  -- OK
+    <output>
+/usr/bin/make install  -- OK
     </output>
    </shell>
 
@@ -928,9 +908,8 @@ Modul noch von weiteren Modulen abhängt, die nicht auf dem System vorhanden
 sind. In diesem Fall sollte man zuerst diese Module noch installieren.
    </textblock>
   </section>
- 
+
   <section>
-<!--*. Kapitel -->
    <heading>
 Selbstauspackende Archive
     </heading>
@@ -938,12 +917,12 @@ Selbstauspackende Archive
    <textblock>
 In seltenen Fällen kommen auch Shell-Skripte zum Einsatz, die sich nach dem
 Aufruf selbst auspacken. Eventuell muss man vorher noch einige Fragen zur
-Installation beantworten. Meistens heißt das Skript <command>install.sh</command> und wird
+Installation beantworten. Meistens heißt das Skript <path>install.sh</path> und wird
 mit
    </textblock>
 
    <shell>
-    <user path="~"> 
+    <user path="~">
 ./install.sh
     </user>
    </shell>
@@ -953,7 +932,7 @@ oder
    </textblock>
 
    <shell>
-    <user path="~"> 
+    <user path="~">
 sh install.sh
     </user>
    </shell>
@@ -962,24 +941,24 @@ sh install.sh
 aufgerufen. Lässt sich das Skript nicht ausführen, empfiehlt es sich, die erste
 Zeile zu überprüfen. Sie sollte ein
    </textblock>
-   
+
    <file>
-    <title>Ausgabe nach der Eingabe von install.sh
-    </title> 
+    <title>
+Ausgabe nach der Eingabe von install.sh
+    </title>
     <content>
     <![CDATA[
 #!/bin/sh
     ]]>
     </content>
-   </file>  
-   
+   </file>
+
    <textblock>
 enthalten, was leider nicht immer der Fall ist.
    </textblock>
   </section>
- 
+
   <section>
-<!--*. Kapitel -->
    <heading>
 Software-Archive
    </heading>
@@ -990,22 +969,22 @@ niemanden gehört, gibt es auch keine zentralen Stellen, die die ganzen Sourcen
 verwalten. Es gibt allerdings einige Anlaufstellen, von denen wir hier eine ganz
 kleine Auswahl präsentieren möchten (ohne Wertung):
    </textblock>
-   
+
    <ul>
     <li>
 Sunsite<br/>
 
-  Unter <ref lang="en" url="http://sunsite.unc.edu/pub">http://sunsite.unc.edu/pub</ref>
-  finden sich neben GNU-Projekten auch
-  andere OpenSource-Projekte und über 55 GB an Linux-Software und
-  -Dokumentationen.
+Unter <ref lang="en" url="http://sunsite.unc.edu/pub">http://sunsite.unc.edu/pub</ref>
+finden sich neben GNU-Projekten auch
+andere OpenSource-Projekte und über 55 GB an Linux-Software und
+-Dokumentationen.
     </li>
     <li>
 Rpmfind<br/>
 
-  <ref lang="en" url="http://rpmfind.net/linux/RPM">http://rpmfind.net/linux/RPM</ref> ist ein riesiger Katalog von
-  RPM-Archiven. Was man hier nicht findet, ist vermutlich auch nicht als
-  RPM-Paket erhältlich.
+<ref lang="en" url="http://rpmfind.net/linux/RPM">http://rpmfind.net/linux/RPM</ref> ist ein riesiger Katalog von
+RPM-Archiven. Was man hier nicht findet, ist vermutlich auch nicht als
+RPM-Paket erhältlich.
     </li>
    </ul>
 
