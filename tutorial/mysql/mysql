@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <chapter>
- 
-<title>MySQL - Datenbanken</title>
- 
-<author>
- <name>Alexander Fischer</name>
- <mailto>selflinux@tbanus.org</mailto>
-</author>
- 
-<layout>
- <name>Torsten Hemm</name>
- <mailto>T.Hemm@gmx.de</mailto>
-</layout>
+ <title>MySQL - Datenbanken</title>
 
-<license>GFDL</license>
+ <author>
+  <name>Alexander Fischer</name>
+  <mailto>selflinux@tbanus.org</mailto>
+ </author>
 
-<index>mysql</index>
- 
-<split>
- <!--Kapitel 1 --> 
- <section>
-  <heading>
+ <layout>
+  <name>Torsten Hemm</name>
+  <mailto>T.Hemm@gmx.de</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>mysql</index>
+
+ <split>
+  <section>
+   <heading>
 Einleitung
-  </heading>
-  <textblock>
+   </heading>
+
+   <textblock>
 Vorweg ein "Herzliches Willkommen" bei der Dokumentation von <name>MySQL</name>.
 Da Sie die Einführung lesen, gehe ich davon aus, dass Sie ein
 allgemeines Interesse an relationalen Datenbanken und insbesondere einen
 gesteigerten Informationsbedarf an <name>MySQL</name> haben.
-  </textblock>
-  <textblock>
+   </textblock>
+
+   <textblock>
 Die erste Datenbank entstand schon weit früher, als es die erste
 Rechenmaschine gab. Erstaunt? Nun ja, zugegeben, es waren an sich
 keine Datenbanken, wie wir sie heute kennen, aber immerhin hatten sie
@@ -38,69 +38,74 @@ nahezu die gleichen Aufgaben. Primäres Ziel ist heute wie früher,
 Datenbestände aufzubewahren, sie zu speichern, sie in eine bestimmte
 Form bringen und sie bei Bedarf jederzeit wieder abrufen und nutzen zu
 können.
-  </textblock>
-  <textblock>
+   </textblock>
+
+   <textblock>
 Da wir ja schon bei geschichtlichen Abläufen sind, ist es nicht
 vermessen, wenn ich behaupte, dass <name>MySQL</name> zu den bedeutenden
 relationalen Datenbanksystemen gezählt werden kann. Es ist trotz aller
 Einschränkungen, sehr leistungsfähig, ausreichend sicher und stabil
 und führt sozusagen einen Quasi-Standard bei der Verwendung als
 Web-Datenbanksystem ein.
-  </textblock>
- </section> 
-<!--Kapitel 2--> 
- <section>
-  <heading>
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
 Folgende Voraussetzung sollten Sie erfüllen
-  </heading>
-  <ul>
-   <li>
+   </heading>
+
+   <ul>
+    <li>
 Sie besitzen einen Computer
-   </li>
-   <li>
+    </li>
+    <li>
 Sie wissen was Linux ist, und können das System starten
-   </li>
-   <li>
+    </li>
+    <li>
 Sie wissen auch, dass WWW keine Automarke ist und -surfen- so ab und
 zu durch die Weiten des Web's.
-   </li>
-   <li>
+    </li>
+    <li>
 Sie sind eventuell Inhaber einer Website und möchten diese mit einer
 Datenbank ein wenig aufpäppeln.
-   </li>
-   <li> 
+    </li>
+    <li>
 Sie sind eventuell Programmierer und möchten Ihr Programm um eine
 Datenbanklösung erweitern
-   </li>
-   <li>
+    </li>
+    <li>
 Sie gehören nicht zu den Enthusiasten, dessen größtes Glück auf
 Erden darin besteht, dass Sie Tag und Nacht vor einem eckigen Kasten
 verbringen, seltsam verzückt auf Plastikknöpfchen herumtippen,
 gerade die 26. Programmiersprache gelernt und nebenbei Fehler in
 Datenbanksystemen aufgespürt haben.
-   </li>
-  </ul>
- </section>
-</split>
+    </li>
+   </ul>
+  </section>
+ </split>
 
-<split>
-<!--Kapitel 3-->
- <section>
-  <heading>
+ <split>
+  <section>
+   <heading>
 Die Geschichte der Datenbanken
-  </heading>
-  <textblock>
+   </heading>
+
+   <textblock>
 In dieser Geschichte müssen wir ein wenig ausschweifen, da der
 Grundsatz der Datenbanken schon sehr viel früher entstand als Sie zu
 glauben wagen. Vor vielen tausenden von Jahren entwickelte der Mensch
 ein regelrechtes Zahlenbewusstsein. Dieses Bewusstsein ist die
 Grundlage für die Rechenvorschriften und die daraus später
 entstehenden ersten Rechenhilfen.
+   </textblock>
+
+   <textblock>
 Zum Beispiel der Abakus war eine davon. Ein Rechengerät, das nahezu
 perfekt ist. Bis heute hat es sich nicht groß verändert, da es keinen
 Bedarf für eine Verbesserung gab, und bis heute wird es noch verwendet
 - immerhin geschah das bereits vor der Geburt Christi.
-Der Professor <name>Willhelm Schickart</name> erfand 1623 die Rechenuhr 
+Der Professor <name>Willhelm Schickart</name> erfand 1623 die Rechenuhr
 (es war die erste Rechenmaschine), die nachweislich die 4 Grundrechenarten
 beherrschte. Nach einer kurzen Wartezeit, befinden wir uns im Jahre
 1833. Der Engländer <name>Charles Babbage</name> erfand eine dampfgetriebene
@@ -108,81 +113,81 @@ Differenziermaschine und später ein Modell, das unter dem Namen
 <name>analytical Engine</name> bekannt wurde. Beide funktionierten nicht so
 richtig, aber stellten ein grundlegendes Konzept für die heutige
 Computertechnologie dar. Auch eine Dame war an der Entwicklung
-beteiligt. Die Gräfin <name>Augusta Ada Lovelace</name> (1815-1852), galt 
+beteiligt. Die Gräfin <name>Augusta Ada Lovelace</name> (1815-1852), galt
 als erste Programmiererin in der Datenverarbeitung. Sie verstand die
-Programmierung bereist 100 Jahre bevor es die ersten technischen
+Programmierung bereits 100 Jahre bevor es die ersten technischen
 Möglichkeiten dazu gab. 1890 gab die amerikanische Regierung die
 Volkszählung in Auftrag. <name>Hermann Hollerith</name> (1860-1929) verwendete
 dafür eine Lochkarte zur Auswertung. Die geschätzte Dauer von zehn
 Jahren für die Auswertung, bewerkstelligte er innerhalb von nahezu
 sechs Wochen. Dieser Erfindung zu Grunde, wurde 1896 die Firma
-<name>Tabulating Machine Company</name> gegründet. Aus ihr ging 1924 
-die Firma <name>IBM</name> hervor. Zum Schluss bleibt noch Professor 
+<name>Tabulating Machine Company</name> gegründet. Aus ihr ging 1924
+die Firma <name>IBM</name> hervor. Zum Schluss bleibt noch Professor
 <name>Dr. Konrad Zuse</name> zu nennen. Er ist der Erfinder und Konstrukteur
 des ersten funktionstüchtigen, frei programmierbaren Rechners der Welt - der
 <name>ZUSE Z 3</name>. 1941 wurde dieser fertig gestellt, und arbeitete bereits
 mit Dualzahlen und Gleitkommadarstellung.
-  </textblock>
-  <textblock>
+   </textblock>
+
+   <textblock>
 Dies war ein "kurzer" Auszug aus der Geschichte. Sicherlich hat es
 noch vieles mehr gegeben, aber dies soll ja ein Dokument zu <name>MySQL</name>
 und nicht zur Computer-Geschichte werden.
-  </textblock>
-  <textblock>
-Nähere Informationen finden Sie unter:<br/>
-<ref lang="de" url="http://www.konrad-zuse-computermuseum.de">
- http://www.konrad-zuse-computermuseum.de
-</ref>
-<br/>
-<ref lang="de" url=" http://www.computergeschichte.de">
- http://www.computergeschichte.de
-</ref>	
-  </textblock>
- </section>
+   </textblock>
 
-<!--Kapitel 4-->
- <section>
-  <heading>
+   <textblock>
+Nähere Informationen finden Sie unter:<br/>
+<ref lang="de" url="http://www.konrad-zuse-computermuseum.de">http://www.konrad-zuse-computermuseum.de</ref><br/>
+<ref lang="de" url=" http://www.computergeschichte.de">http://www.computergeschichte.de</ref>
+   </textblock>
+  </section>
+
+  <section>
+   <heading>
 Die Geschichte von MySQL
-  </heading>
-  <textblock>
-Die Entstehung vom <name>MySQL</name> befand sich ähnlich wie bei 
+   </heading>
+
+   <textblock>
+Die Entstehung von <name>MySQL</name> befand sich ähnlich wie bei
 <name>Linus Torvalds</name> (der finnische Erfinder von Linux) auch in
 den nördlichen Breiten. <name>Michael Widenius</name> entwickelte 1979
 für die schwedische Firma (nein nicht <name>IKEA</name>) <name>TcX</name>
 ein Datenbankwerkzeug mit dem Namen <name>UNIREG</name>. Die zahlreichen
-Weiterentwicklungen von <name>UNIREG</name> führten allerdings nicht zu 
+Weiterentwicklungen von <name>UNIREG</name> führten allerdings nicht zu
 den Bekanntheitsgrad wie <name>ORACLE</name>, <name>SYBASE</name> oder
-<name>INFORMIX</name>.Dieses allerdings von <name>TcX</name> auch nicht
+<name>INFORMIX</name>. Dieses allerdings von <name>TcX</name> auch nicht
 beabsichtigt war.
-  </textblock>
-  <image height="50">
-   <title>Das offizielle Logo von MySQL</title>
-   <filename>mysql-logo.png</filename>
-  </image>
-  <textblock>
+   </textblock>
+
+   <image height="50">
+    <title>Das offizielle Logo von MySQL</title>
+    <filename>mysql-logo.png</filename>
+   </image>
+
+   <textblock>
 Als einige Jahre später durch das WWW (World Wide Web) der Bedarf an
 dynamischen, datenbankgestützten Websites und Web-Applikationen
-aufkam, erkannte die Firma <name>TcX</name> sehr schnell, dass in den 
-Erfahrungen, die bei der Entwicklung und Weiterentwicklung von 
+aufkam, erkannte die Firma <name>TcX</name> sehr schnell, dass in den
+Erfahrungen, die bei der Entwicklung und Weiterentwicklung von
 <name>UNIREG</name> gesammelt wurden, erhebliches Potential lag, um ein
 System für die Anforderungen im <name>WWW</name> zu kreieren.Gleichzeitig
 arbeitete <name>David Hughes</name> an seinem Mini SQL (mSQL), das insbesondere
 durch die freie und kostenlose Nutzung große Verbreitung erlangen konnte und
 in Sachen Geschwindigkeit so etwas wie eine Messlatte setzte. <name>TcX</name>
-entschied, dass <name>MySQL</name> mindestens so schnell werden müsste wie 
+entschied, dass <name>MySQL</name> mindestens so schnell werden müsste wie
 <name>mSQL</name>, zusätzlich aber noch einige Funktionen mehr bieten sollte,
 die der Konkurrent nicht abdeckte.
-  </textblock>
- </section>
-</split>
-<split>
-<!--Kapitel 5-->
- <section>
-  <heading>
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
 Bezugsquellen
-  </heading>
-  <textblock> 
+   </heading>
+
+   <textblock>
 <name>MySQL</name> ist normalerweise bei jeder Linux-Distribution dabei.
 Die Installation erfolgt dabei mit dem mitgelieferten
 Installationswerkzeug meist problemlos (und einfacher).
@@ -191,293 +196,350 @@ da nicht alle eine Distribution haben, bzw. die Programme nicht bei
 der Linux-Zusammenstellung dabei waren.
 Wenn Sie Ihre Datenbanksoftware mal auf dem neuesten Stand haben
 wollen, dann brauchen Sie die neueste Version von <name>MySQL</name>, um
-das bestehende Updaten zu können.
-  </textblock>
-  <textblock>
+die bestehende Updaten zu können.
+   </textblock>
+
+   <textblock>
 Die erste Anlaufstelle ist die Website von <name>MySQL AB Company</name>.
 Durch dieses Unternehmen wird <name>MySQL</name> weltweit vermarktet und
 vertrieben. Sie erhalten auf deren Homepage jeden erdenklichen Support
-bei Fragen rund um <name>MySQL</name>, die Lizenzsierung oder können sogar bei 
-dem Projekt mitarbeiten. Die Präsenz von <name>MySQL AB Company</name> ist 
+bei Fragen rund um <name>MySQL</name>, die Lizenzsierung oder können sogar bei
+dem Projekt mitarbeiten. Die Präsenz von <name>MySQL AB Company</name> ist
 unter <ref lang="en" url="http://www.mysql.com">
 http://www.mysql.com</ref> erreichbar.
-  </textblock>
-  <textblock>
+   </textblock>
+
+   <textblock>
 Durch die auf der Seite entsprechenden Links kommen Sie recht schnell
 auf den zutreffenden Downloadbereich. Spätestens jetzt müssen Sie sich
 für die Versionsnummer entscheiden, die Sie einsetzen möchten.
 Fast wie bei jedem Programm (od. Projekt) gibt es auch hier
-so genannte Versionsnummern und eine Attribute. Sie sollten unter
-normalen Umständen die Attribute "stable" (stabil / für den produktiven Einsatz)
-benutzen. Unter der stable Version handelt sich um eine Version die
+so genannte Versionsnummern und Attribute. Sie sollten unter
+normalen Umständen die Attribute "Generally Availiable" (empfohlen für den produktiven Einsatz)
+benutzen. Bei der stable Version handelt sich um eine Version die
 keine weiteren, neuen Funktionen mehr bekommt. Es wird zwar weiterhin
 an der Beseitigung einzelner Fehler gearbeitet, aber die Grundstruktur
 wird nicht mehr verändert. Neue Versionen erhalten der Reihe nach die
-Attribute alpha, beta, gamma und abschließend dann stable.
-  </textblock>
-  <textblock>
-Beim Downloaden sollten Sie dabei beachten, einen Mirror in Ihrer
-nähe zu wählen, da ansonsten der FTP-Server von <name>MySQL</name> 
-sehr schnell überlastet wäre und der Download nur unnötig lange dauern 
-würde.
-  </textblock>
- </section>
-</split>
+Attribute Alpha, Beta, Gamma und abschließend dann Generally Availiable.
+   </textblock>
 
-<split>
-<!--Kapitel 6-->
- <section>
-  <heading>
+   <textblock>
+Beim Downloaden sollten Sie dabei beachten, einen Mirror in Ihrer
+Nähe zu wählen, da ansonsten der FTP-Server von <name>MySQL</name>
+sehr schnell überlastet wäre und der Download nur unnötig lange dauern
+würde.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
 Installation
-  </heading>
-  <textblock>
+   </heading>
+
+   <textblock>
 Je Distribution unterschiedlich stehen mehrere Programmpakete zur
 Auswahl. Nachfolgend liste ich die wichtigsten auf.
 Je nach Distribution stehen noch mehrere zur Verfügung.
-  </textblock>
-  <table>
-   <pdf-column width="100"/>
-   <pdf-column/>
-   <tr>
-    <td><command>kmysql</command></td>
-	<td>ein grafischer Client für MySQL</td>
-   </tr>
-   <tr>
-    <td><command>mysql</command></td>
-	<td>Das Datenbanksystem MySQL</td>
-   </tr>
-   <tr>
-    <td><command>mysql-client</command></td>
-	<td>Die Client-Applikation für MySQL</td>
-   </tr>
-   <tr>
-    <td><command>mysql-bench</command></td>
-	<td>So genannte Benchmarktools zur Überprüfung der
-	    Performance des Datenbanksystems
-	</td>
-   </tr>
-   <tr>
-	<td><command>mysql-devel</command></td>
-	<td>Das Developer-Paket inklusive aller Include-Dateien
-	    und Bibliotheken für Programmierer
-	</td>
-   </tr>
-   <tr>
-	<td><command>mysql-shared</command></td>
-	<td>Fehlermeldungen in verschiedenen Sprachen und weitere Libraries</td>
-   </tr>
-  </table>
-  <textblock>
-Wenn Sie die <name>MySQL</name> von Ihrem Paketmanager installieren können, 
+   </textblock>
+
+   <table>
+    <pdf-column width="100"/>
+    <pdf-column/>
+    <tr>
+     <td>
+<command>kmysql</command>
+     </td>
+     <td>
+ein grafischer Client für MySQL
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>mysql</command>
+     </td>
+     <td>
+Das Datenbanksystem MySQL
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>mysql-client</command>
+     </td>
+     <td>
+Die Client-Applikation für MySQL
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>mysql-bench</command>
+     </td>
+     <td>
+So genannte Benchmarktools zur Überprüfung der Performance des Datenbanksystems
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>mysql-devel</command>
+     </td>
+     <td>
+Das Developer-Paket inklusive aller Include-Dateien
+und Bibliotheken für Programmierer
+     </td>
+    </tr>
+    <tr>
+     <td>
+<command>mysql-shared</command>
+     </td>
+     <td>
+Fehlermeldungen in verschiedenen Sprachen und weitere Libraries
+     </td>
+    </tr>
+   </table>
+
+   <textblock>
+Wenn Sie die <name>MySQL</name> von Ihrem Paketmanager installieren können,
 tun Sie es. Für alle anderen erkläre ich kurz die "zu-Fuß-Installation".
-Genauere Hinweise und Erklärung zu Installation entnehmen Sie bitte
-dem Buch (selbstverständlich auch bei <name>SelfLinux</name> ) "Installation"
-  </textblock>
-  <textblock>
-Für das kompilieren brauchen Sie zu Anfang einige Variable.
-Diese legen Sie mit dem Tool <command>configure</command> fest.
-Als Beispiel verwende ich folgende Variable:<br/>
+Genauere Hinweise und Erklärungen zur Installation entnehmen Sie bitte
+diesem Tutorial im Teil <ref chapter="software_installation">Software-Installation</ref>.
+   </textblock>
+
+   <textblock>
+Für das Kompilieren brauchen Sie zu Anfang einige Variablen.
+Diese legen Sie mit dem Werkzeug <command>configure</command> fest.
+Als Beispiel verwende ich die folgenden Variablen:<br/>
 <command>MySQL-Verzeichnis = /usr/local/mysql</command><br/>
 <command>Daten-Verzeichnis = /var/local/mysql</command><br/>
-  </textblock>
-  <textblock>
-Ich möchte ich nochmal darauf Hinweisen, dass sämtliche
+   </textblock>
+
+   <textblock>
+Ich möchte nochmal darauf hinweisen, dass sämtliche
 Verzeichnisangaben als Beispiel zu sehen sind! Bitte passen Sie die
-Parameter auf Ihre Bedürfnisse an. - Erspart Ihnen eine Menge Ärger...
-  </textblock>
-  <textblock>
-Aus diesen Variablen entsteht folgendes configure-Kommando, dass Sie in
+Parameter auf Ihre Bedürfnisse an. Das erspart Ihnen eine Menge Ärger...
+   </textblock>
+
+   <textblock>
+Aus diesen Variablen entsteht folgendes <command>configure</command>-Kommando, dass Sie in
 dem Verzeichnis ausführen, wo die Quell-Dateien liegen
 (Standardmäßig wäre es das Verzeichnis:
-<strong>/usr/scr/mysql-4.0.0</strong> von diesem Beispiel gehe ich in 
-folgenden Abschnitten aus.):
-  </textblock>
-  <shell>
-   <user path="~">
+<strong>/usr/scr/mysql-4.0.0</strong>, von diesem Beispiel gehe ich in
+folgenden Abschnitten aus):
+   </textblock>
+
+   <shell>
+    <user path="~">
 /configure --prefix=/usr/local/mysql --localstatedir=/var/local/mysql
-   </user>
-  </shell>
-  <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 Nach dem betätigen der Taste "Enter" fängt auch schon die Festplatte
 an zu rattern. Je nach Systemleistung kann sich der Prozess von ein
 paar Sekunden bis zu etlichen Minuten hinziehen.
-  </textblock>
-  <textblock>
+   </textblock>
+
+   <textblock>
 Nachdem <command>configure</command> seine Arbeit erfolgreich zu Ende
 gebracht hat, können Sie mit dem kompilieren beginnen. Viel Spaß...
-  </textblock>
-  <textblock>
-Was? Sie wissen nicht wie das geht? Nagut ich will nun nicht so sein:
+   </textblock>
+
+   <textblock>
 Die Kompilierung verläuft eigentlich wie bei jeder anderen
 Installation auch:
-  </textblock>
-  <shell>
-    <user path="~">
+   </textblock>
+
+   <shell>
+     <user path="~">
 make
-    </user>
-    <user path="~">
+     </user>
+     <user path="~">
 make install
-    </user>
-   </shell>	
-   <textblock>
+     </user>
+    </shell>
+
+    <textblock>
 Auch diese beiden Befehle sollten Sie - da ja ein Ergebnis erwünscht
 ist - mit "Enter" abschließen.
 Nun ist es an der Zeit, einen Kaffee zu trinken, denn die Aufgabe die
 Sie Ihrem grauen Blechkasten aufgetragen haben wird sich ein wenig
 hinziehen.
-   </textblock>
-   <textblock>
+    </textblock>
+
+    <textblock>
 Der Kompiliervorgang hat sein Werk fertiggestellt? Gut.
 <name>MySQL</name> legt automatisch eine MySQL-Start-Datei an, mit der Sie
 den MySQL-Dämon starten können, und auch nun tun werden.
 Wechseln Sie hierzu in das Verzeichnis:
 <strong>usr/src/mysql-4.0.0/support-files/</strong>(kann bei Ihnen Abweichen )
-   </textblock>
-   <textblock>
+    </textblock>
+
+    <textblock>
 Um den <name>MySQL</name>-Dämonen zu starten müssen Sie die Start-Datei in Ihr
 Verzeichnis mit des Auszuführenden Dateien kopieren
 Standardmäßig ist das folgendes Verzeichnis:
 <strong>/sbin/</strong> oder <strong>/usr/sbin/</strong>
-   </textblock>
-   <textblock>
+    </textblock>
+
+    <textblock>
 Wenn eines von diesen Verzeichnissen nicht vorhanden sein sollte, dann
 lesen Sie bitte in dem Handbuch Ihrer Distribution nach.
 Der Kopiervorgang sieht dann so aus:
-   </textblock>
-   <shell>
-    <user path="~">
+    </textblock>
+
+    <shell>
+     <user path="~">
 cp mysql.server /sbin/mysqld   (mit "Enter" bestätigen)
-    </user>
-   </shell>
-   <textblock>
+     </user>
+    </shell>
+
+    <textblock>
 Um damit Arbeiten zu können müssen Sie die Datei mit den
 entsprechenden Zugriffsrechten versehen. Normalerweise sollte dies so
 sein, dass der Besitzer der Datei alle Rechte hat, und der Rest nur
 Lese- und Ausführrechte hat.
-  </textblock>
-  <textblock>
+   </textblock>
+
+   <textblock>
 Geben Sie nun folgenden Befehl ein:
-  </textblock>
-  <shell>
-   <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 chmod 755 /sbin/mysqld
-   </user>
-  </shell>
-  <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 Ihr Dämon ist nun fertig zum starten:
-  </textblock>
-  <shell>
-   <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 mysqld start
-   </user>
-  </shell>
- <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 Damit Sie mit <name>MySQL</name> arbeiten können, benötigen Sie noch die
 Standard-Datenbanken (was genau das ist, erkläre ich Ihnen später)
 Zuerst wechseln Sie in das Verzeichnis:
 <strong> /usr/src/mysql-4.0.0/scripts/</strong>
 und geben anschließend diesen Befehl ein:
- </textblock>
- <shell>
-  <user path="/usr/src/mysql-4.0.0/scripts">
+   </textblock>
+
+   <shell>
+    <user path="/usr/src/mysql-4.0.0/scripts">
 ./mysql_install_db
-  </user>
- </shell>
- <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 Nun werden die Datenbanken "mysql" und "test" angelegt
 Ihr System ist nun bereit konfiguriert und administriert zu werden.
- </textblock>
-</section> 
-</split>
+   </textblock>
+  </section>
+ </split>
 
-<split>
-<!-- Kapitel 6 -->
-<section>
- <heading>
+ <split>
+  <section>
+   <heading>
 Der erste Kontakt
- </heading>
- <textblock>
+   </heading>
+
+   <textblock>
 Um die zu erfahren ob der Server aktiv ist, geben sie bitte folgendes
 Kommando in die Konsole ein:
- </textblock>
- <shell>
-  <user path="~">
+   </textblock>
+   <shell>
+    <user path="~">
 mysqladmin -u root -h localhost ping
-  </user>
- </shell>
- <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 Nun sollten Sie die Meldung "mysqld is alive" erhalten.
 Ist dem so, dann läuft Ihr Server. Andernfalls erhalten Sie eine
 Hinweismeldung, dass die Verbindung nicht hergestellt werden konnte
 und wie Sie eventuell Fehler beseitigen können.
 Wenn Sie das ausprobieren möchten, kann müssen Sie den Datenbankserver
 herunterfahren:
- </textblock>
- <shell>
-  <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 mysqladmin -u root -h localhost shutdown
-  </user>
- </shell>
- <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 Anschließend noch einmal den "ping"-Befehl eingeben und Sie müssten
-die entsprechende Fehlermeldung erhalten. Anschließend den Server bitte 
+die entsprechende Fehlermeldung erhalten. Anschließend den Server bitte
 wieder mit dem Befehl <command>mysqld start</command>
 starten, damit wir damit arbeiten können.
- </textblock>
- <textblock>
+   </textblock>
+
+   <textblock>
 Abschließend zu den Test's geben Sie noch folgenden Befehl ein:
- </textblock>
- <shell>
-  <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 mysqladmin -u root -h localhost status
-  </user>
- </shell>
- <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 Der Befehl liefert bei laufendem Server noch einige Informationen zum
 System. Sie erkennen auf einfache Art, wie lange der Server schon
 aktiv ist, wie viele Threads er gerade bearbeitet und all die anderen
 Dinge.
- </textblock>
- <textblock>
+   </textblock>
+
+   <textblock>
 Soweit der erste Kontakt mit dem MySQL-Datenbankserver.
 Nun starten wir gemeinsam den Client mysql. Dazu geben Sie am Prompt
 den Befehl
- </textblock>
- <shell>
-  <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 mysql -u root -h localhost
-  </user>
- </shell>
- <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 ein und bestätigen mit "Enter". Eine Bildschirmmeldung begrüßt Sie
 und dort, wo Ihr Eingabecursor blinkt, steht nun mysql>
- </textblock>
- <shell>
-  <user path="~">
+   </textblock>
+   <shell>
+    <user path="~">
 mysql -u root -h localhost
-  </user>
-  <output>
+    </user>
+    <output>
 Welcome to the MySQL monitor. Commands end with ; or \g.
 Your MySQL connection id is 2 to server version: 4.0.0
 
 Type 'help;' or '\h' for help. Type '\c' to clear the buffer
 
 mysql> _
-  </output>
- </shell>
- <textblock>
+    </output>
+   </shell>
+
+   <textblock>
 Durch die Begrüßung wurde Ihnen mitgeteilt, dass alle Befehle mit einem
 Semikolon abgeschlossen werden müssen. Wenn Sie sich einmal vertippen
 sollten, machen Sie sich keinen Kopf, <name>MySQL</name> schmeißt lediglich eine
 Fehlermeldung aus, sonst passiert aber nichts weiter. Gehen Sie nun
 folgende Befehle durch, und verlassen den Clienten mit dem Befehl
 <command>quit</command> wieder.
- </textblock>
- <shell>
-  <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 mysql -u root -h localhost
-  </user>
-  <output>
+    </user>
+    <output>
 Welcome to the MySQL monitor. Commands end with ; or \g.
 Your MySQL connection id is 2 to server version: 4.0.0
 
@@ -499,27 +561,26 @@ mysql>; SHOW TABLES;
 
 mysql>; quit;
 Bye
-  </output>
-		<user path="~">
-  </user>
- </shell>
- <textblock>
+    </output>
+   </shell>
+
+   <textblock>
 Nun haben Sie bereits den Datenbankserver und den Client verwendet.
 Zum Server ist grundsätzlich nicht mehr viel zusagen, als dass er
 gestartet werden muß. Dies geschieht automatisch oder manuell, wie sie
 das schon ausprobiert haben. Der Client hingegen wird Sie nun noch
 eine Weile beschäftigen.
- </textblock>
-</section>
-</split>
+   </textblock>
+  </section>
+ </split>
 
-<split>
-<!--Kapitel 7-->
-<section>
- <heading>
+ <split>
+  <section>
+   <heading>
 Allgemeine Administration
- </heading>
- <textblock>
+   </heading>
+
+   <textblock>
 In diesem Kapitel erfahren Sie die wichtigsten Aufgaben eines
 Administrators. Ich zeige Ihnen die wichtigsten Werkzeuge und
 erläutere die ersten Schritte bei der Erstellung einer kleinen
@@ -530,39 +591,41 @@ obwohl Sie den wichtigsten Schritt vornehmen:
 Die Absicherung des Datenbank-Management-System.
 Dieser Abschnitt ist wichtig, damit ihr Datenbanksystem vor
 unberechtigten Zugriff geschützt ist. Gerade bei Verwendung
-im Netzwerk (oder im WWW) ist wichtig, dass Sie Ihr System
+im Netzwerk (oder im WWW) ist es wichtig, dass Sie Ihr System
 absichern.
- </textblock>
+   </textblock>
 
-
-<!-- Kapitel 7.1 -->
- <section>
-  <heading>
+   <section>
+    <heading>
 Aufgaben eines Administrators
-  </heading>
-  <textblock>
+    </heading>
+
+    <textblock>
 Der Begriff Administrator hört sich immens wichtig an, aber anders
 als bei vielen anderen Begriffen, trifft das in diesem speziellen
 Fall sogar zu. Sie sind wie bei Linux selbst der Allmächtige!
 Diese folgenden Aufgaben kommen dabei auf Sie zu:
-  </textblock>
-  <ul>
-   <li>Installation und Updates</li>
-   <li>Systemkonfiguration</li>
-   <li>Verwaltung von Benutzer- und Zugriffsrechten</li>
-   <li>Pflege und Wartung des Systems</li>
-   <li>Fehlerlokalisierung und Fehlerbehebung</li>
-   <li>Durchführen von Datensicherungen</li>
-  </ul>
-  <textblock>
+    </textblock>
+
+    <ul>
+     <li>Installation und Updates</li>
+     <li>Systemkonfiguration</li>
+     <li>Verwaltung von Benutzer- und Zugriffsrechten</li>
+     <li>Pflege und Wartung des Systems</li>
+     <li>Fehlerlokalisierung und Fehlerbehebung</li>
+     <li>Durchführen von Datensicherungen</li>
+    </ul>
+
+    <textblock>
 Für diese Aufgaben ist alleine der Administrator zuständig und
 nur er alleine hat den vollständigen Zugriff auf das System.
 Das heißt, dass Sie mit dem Privileg an keinerlei Beschränkungen
 gebunden sind und eine große Verantwortung haben.
 Aus diesem Grunde sollten Sie mit den administrativen Rechten nur
 arbeiten, wenn es wirklich nicht mehr anders geht.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Unter Linux/Unix ist der Benutzer "root" ein alter Bekannter.
 root ist der Superuser, also gewissermaßen der Obermotz des
 gesamten Systems und genau einen solchen finden Sie auch bei <name>MySQL</name>.
@@ -570,27 +633,29 @@ Dieser Kerl existiert bereits, nachdem sie <name>MySQL</name> auf die Platte
 gezwängt haben, und Mutter Datenbank fackelt da nicht lange mit der
 Aufgabenverteilung. Somit kann er kurz nach seiner Geburt schon die
 folgenden Arbeiten verrichten:
-  </textblock>
-  <ul>
-   <li>Erstellen und Verwalten von Benutzerkonten sowie Passwortvergabe</li>
-   <li>Anlage von neuen Datenbanken</li>
-   <li>Löschen von vorhandenen Datenbanken</li>
-   <li>Allgemeine Kontrollfunktionen</li>
-  </ul>
-  <textblock>
+    </textblock>
+
+    <ul>
+     <li>Erstellen und Verwalten von Benutzerkonten sowie Passwortvergabe</li>
+     <li>Anlage von neuen Datenbanken</li>
+     <li>Löschen von vorhandenen Datenbanken</li>
+     <li>Allgemeine Kontrollfunktionen</li>
+    </ul>
+
+    <textblock>
 Zu diesem Zweck stellt Ihnen <name>MySQL</name> ein Tool Namens "mysqladmin" zur
 Verfügung. Die meisten der vorher aufgeführten Aufgaben verrichten
 Sie mit diesem Programm. Der Start Ihrer Karriere als
 MySQL-Administrator beginnt mit der Absicherung Ihres Systems.
-  </textblock>
- </section>
+    </textblock>
+   </section>
 
-<!--Kapitel 7.2 -->
- <section>
-  <heading>
+   <section>
+    <heading>
 Absichern des Systems
-  </heading>
-  <textblock>
+    </heading>
+
+    <textblock>
 Nach der Neuinstallation ist Ihr MySQL-System offen wie das
 Brandenburger-Tor. Wenn Sie nun mit einem Netzwerk verbunden sind,
 und auf Ihr Netzwerk auch von außerhalb zugegriffen werden kann
@@ -605,61 +670,81 @@ Form einer dafür angelegten Datenbank verwaltet.
 In diesen Tabellen stehen die Benutzernamen, die Passwörter und
 die zugeteilten Rechte an den vorhandenen Datenbanken und Tabellen.
 Schreib- und Leserechte werden mit so genannten "Flags" erteilt.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 <name>MySQL</name> verwaltet die Benutzerkonten sowie die Rechtevergabe in einer
 Datenbank mit dem sinnigen Namen <name>mysql</name>. In dieser Datenbank
 finden Sie die folgenden Tabellen:
-  </textblock>
-  <table>
-   <pdf-column width="100"/>
-   <pdf-column/>
-   <tr>
-    <td>columns_priv</td>
-	<td>In und mit der Tabelle vergeben Sie Zugriffsbeschränkungen auf einzelne
-	    Tabellenspalten und die darauf anwendbaren Befehle</td>
-   </tr>
-   <tr>
-	<td>db</td>
-	<td>In dieser Tabelle werdenZugriffsrechte für die  gesamte Datenbank
-	    gespeichert. Dort wird gespeichert, welcher Benutzer auf welche Datenbank
-		Zugriff hat und welche weiteren Rechte er darauf hat. </td>
-   </tr>
-   <tr>
-    <td>host</td>
-    <td>Hier besteht die Möglichkeit einzelnen Rechnern, also
-		 den Hosts, den Zugriff auf MySQL zu beschränken/verbieten.</td>
-   </tr>
-   <tr>
-	<td>user</td>
-	<td>Hier werden die Benutzer mitsamt ihren Passwörtern eingetragen</td>
-   </tr> 
-  </table>
-  <textblock>
+    </textblock>
+
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <td>
+columns_priv
+      </td>
+      <td>
+In und mit der Tabelle vergeben Sie Zugriffsbeschränkungen auf einzelne
+Tabellenspalten und die darauf anwendbaren Befehle
+      </td>
+     </tr>
+     <tr>
+      <td>
+db
+      </td>
+      <td>
+In dieser Tabelle werdenZugriffsrechte für die  gesamte Datenbank
+gespeichert. Dort wird gespeichert, welcher Benutzer auf welche Datenbank
+Zugriff hat und welche weiteren Rechte er darauf hat.
+      </td>
+     </tr>
+     <tr>
+      <td>
+host
+      </td>
+      <td>
+Hier besteht die Möglichkeit einzelnen Rechnern, also
+den Hosts, den Zugriff auf MySQL zu beschränken/verbieten.
+      </td>
+     </tr>
+     <tr>
+      <td>
+user
+      </td>
+      <td>
+Hier werden die Benutzer mitsamt ihren Passwörtern eingetragen
+      </td>
+     </tr>
+    </table>
+
+    <textblock>
 Mit dem Befehl mysqlshow bekommen Sie eine Liste aller verfügbaren
 Datenbanken:
-  </textblock>
-  <shell>
-   <user path="~">
+    </textblock>
+
+    <shell>
+     <user path="~">
 mysqlshow -u root -h localhost
-   </user>
-   <output>
+     </user>
+     <output>
 +-----------+
 | Databases |
 +-----------+
 | mysql     |
 | test      |
 +-----------+
-   </output>
-  <user path="~">
-  </user>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Wenn Sie nun die Tabelle user aus der Datenbank mysql auf dem
 Bildschirm ausgeben lassen würden, dann hätten Sie folgende Einträge:
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 +-----------+--------+------------------+
 | Host      | User   | Password         |
 +-----------+--------+------------------+
@@ -669,115 +754,133 @@ Bildschirm ausgeben lassen würden, dann hätten Sie folgende Einträge:
 | %         | root   |                  |
 | localhost | tbanus | 68d4f47c49a579c9 |
 +-----------+--------+------------------+
-   </output>
-  </shell> 
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Kurz zur Erklärung:
-Mit Localhost ist der Rechner gemeint, auf dem auch der MySQL-Server
+Mit "localhost" ist der Rechner gemeint, auf dem auch der MySQL-Server
 installiert wurde. Wahrscheinlich der, vor dem Sie sitzen.
 Das %-Zeichen ist ein Platzhalter für beliebige andere Rechner
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 In der Spalte User finden Sie zwei Benutzernamen den root und
 eventuell finden Sie wo der Benutzer tbanus steht Ihren Vornamen.
 Dies Bedeutet, dass es auf dem System einen Benutzer mit dem Namen
 tbanus gibt. Da der Benutzer nicht mit einem Prozentzeichen
 aufgelistet wird, kann dieser <name>MySQL</name> nicht von einem anderen Rechner
 aus bedienen.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Die vier Zeilen, die den Administrator root betreffen, ergeben
 alle Kombinationen, die notwendig sind, damit Sie sich als root
 immer auch ohne Passwort von jedem System aus zugreifen können.
 Das ist äußerst brisant und wird nun schnellstens abgestellt.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Als ersten Schritt vergeben Sie dem root ein Passwort.
 Danach löschen Sie alle Datensätze, in denen Prozentzeichen oder
 leere Datenfelder vorkommen. Erst dann ist Ihr System abgesichert.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Sie müssen sich nun ein sicheres Kennwort überlegen.
 Verwenden Sie dabei bitte nicht Ihr Kennwort von <name>root</name> bei Linux
 oder eines der anderen Benutzerkennwörter.
 Die folgende Befehlszeile geben Sie in Ihrer Console ein, wobei Sie
 das Wort "rootpasswort" durch Ihr Passwort ersetzen
-  </textblock>
-  <shell>
-   <user path="~">
+    </textblock>
+
+    <shell>
+     <user path="~">
 mysqladmin -u root -h localhost password "rootpasswort"
-   </user>
-  </shell>
-  <textblock>
+     </user>
+    </shell>
+
+    <textblock>
 Wenn nach der Bestätigung des Befehls nichts passiert, dann hat es
 geklappt. Wenn Sie nun als root auf eine Funktion zugreifen wollen und
 nicht Ihr Passwort mit angeben <command>mysql -u root</command> geschieht
 folgendes:
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 ERROR 1045: Access denied for user: ...
-   </output>
-  </shell>
-  <textblock>
-Verwenden Sie stattdessen <command>mysql -u root -p</command>, werden Sie nach 
+     </output>
+    </shell>
+
+    <textblock>
+Verwenden Sie stattdessen <command>mysql -u root -p</command>, werden Sie nach
 Ihrem Passwort gefragt. Nachdem Sie es eingegeben haben stehen Sie wieder im
 Clienten.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Genau dort müssen Sie nun für folgende Schritte der Systemabsicherung
 auch hin. Nun befolgen Sie bitte die folgenden Anweisungen:
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Um die Datenbank MYSQL zu aktivieren, geben Sie den SQL-Befehl
 <command>USE mysql;</command> ein. Anschließend verwenden Sie den Befehl
 <command>SELECT Host, User, Password FROM user;</command>
 und erhalten eine Liste von Datensätzen, die ähnlich der vorherigen
 Tabelle aussehen sollte, nur das bei dem Benutzer root nun auch eine
 Passwort-Kodierung aufgeführt ist.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Mit dem folgenden Befehl löschen Sie nun alle Datensätze, die zu einem
 Teil leer sind oder ein Prozentzeichen besitzen<br/>
 <command>DELETE FROM user WHERE Host="%";</command><br/>
 <command>DELETE FROM user WHERE User="";</command><br/>
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Das Ergebnis können Sie sich mit einem erneuten Aufruf von dem
 <command>SELECT</command> Befehl anschauen.
 Zu guter Letzt verlassen Sie den Client und starten den MySQL-Server
 neu, damit die Änderungen übernommen werden.
-  </textblock>
-  <shell>
-   <user path="~">
+    </textblock>
+
+    <shell>
+     <user path="~">
 mysqladmin -u root -h localhost -p reload
-   </user>
-  </shell>
-  <textblock>
+     </user>
+    </shell>
+
+    <textblock>
 Dadurch wird das System neu initialisiert und ist ab sofort vor
 anonymen Zugriff geschützt. Es können sich nun nur noch die Benutzer
 root und in meinem Beispiel der Benutzer tbanus einloggen und damit
 arbeiten, weil diese alleine Eingetragen sind.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Das folgende Listing zeigt Ihnen noch einmal alle Schritte der Reihe
 nach, so dass Sie das Beispiel komplett nachvollziehen können:
-  </textblock>
-  <shell>
-   <user path="~">
+    </textblock>
+    <shell>
+     <user path="~">
 mysqladmin -u root -h localhost password "rootpasswort"
-   </user>
-  </shell>
-  <shell>
-   <user path="~">
+     </user>
+    </shell>
+
+    <shell>
+     <user path="~">
 mysql -u root -h localhost -p
-   </user>
-   <input>
+     </user>
+     <input>
 Enter password: *******
-   </input>
-  </shell>
-  <shell>
-   <output>
+     </input>
+    </shell>
+
+    <shell>
+     <output>
 Welcome to the MySQL monitor. Commands end with ; or \g
 Your MySQL connection id is 12 to server version 4.0.0
 Type 'help;' or '\h' for help. Type '\c' to clear the buffer
@@ -813,179 +916,182 @@ mysql> SELECT Host, User, Password FROM user;
 
 mysql> quit
 Bye
-  </output>
-   <user path="~">
+    </output>
+     <user path="~">
 mysqladmin -u root -h localhost -p reload
-   </user>
-   <input>
+     </user>
+     <input>
 Enter password: *******
-   </input>
-   <user path="~">
-   </user>
-  </shell>
- </section>
-</section> 
-</split>
-<split>
-<!--  
- LAYOUT: Bitte Split setzen (Kapitel wird später mal erweitert.
- Deswegen eigene Seite)
- Kapitel 8 -->
+     </input>
+    </shell>
+   </section>
+  </section>
+ </split>
 
-<section>
- <heading>
+ <split>
+  <section>
+   <heading>
 Die Datenbank-Planung
- </heading>
- <textblock>
+   </heading>
+
+   <textblock>
 Auf den Punkt Datenbank-Planung gehe ich in diesem Dokument nicht
 näher ein, aber es wird in den späteren Releasen von Selflinux
-nachgeholt;  Versprochen ;)
+nachgeholt.
 Damit dennoch Ihre Datenbanken planen können,
-können Sie der einfachheitshalber auf folgende Tools zurückgreifen:
+können Sie der Einfachheit halber auf folgende Werkzeuge zurückgreifen:
 Die letzten 2 Einträge sind Mysql-Frontends ( Grafische Oberflächen
 zur Verwaltung und Konfiguration von MySQL )
- </textblock>
- <table>
-  <pdf-column width="75"/>
-  <pdf-column width="75"/>
-  <pdf-column width="75"/>
-  <pdf-column width="75"/>
-  <pdf-column/>
-  <tr>
-   <th> Programm </th>
-   <th> System </th>
-   <th> Version </th>
-   <th> Preis </th>
-   <th> Bezugsquelle </th>
-  </tr>
-  <tr>
-   <td> ERwin </td>
-   <td> Win/Linux </td>
-   <td> Demoversion </td>
-   <td> unbekannt </td>
-   <td> <ref lang="en" url="http://www.cai.com">http://www.cai.com</ref> </td>
-  </tr>
-  <tr>
-   <td> DeZign </td>
-   <td> Windows </td>
-   <td> Demoversion </td>
-   <td> 130 US$ </td>
-   <td> <ref lang="en" url="http://www.datanamic.com/dezign">http://www.datanamic.com/dezign</ref></td>
-  </tr>
-  <tr>
-   <td> MySQLFront </td>
-   <td> Windows </td>
-   <td> Freeware </td>
-   <td> kostenlos </td>
-   <td> <ref lang="de" url="http://www.anse.de">http://www.anse.de</ref> </td>
-  </tr>
-  <tr>
-   <td> KMySql </td>
-   <td> Linux </td>
-   <td> Freeware </td>
-   <td> kostenlos </td>
-   <td> bei den Distributionen dabei. </td>
-  </tr>
- </table>
-</section> 
-<!-- Kapitel 9 -->
-<section>
- <heading>
+   </textblock>
+
+   <table>
+    <pdf-column width="75"/>
+    <pdf-column width="75"/>
+    <pdf-column width="75"/>
+    <pdf-column width="75"/>
+    <pdf-column/>
+    <tr>
+     <th>Programm</th>
+     <th>System</th>
+     <th>Version</th>
+     <th>Preis</th>
+     <th>Bezugsquelle</th>
+    </tr>
+    <tr>
+     <td>ERwin</td>
+     <td>Win/Linux</td>
+     <td>Demoversion</td>
+     <td>unbekannt</td>
+     <td><ref lang="en" url="http://www.cai.com">http://www.cai.com</ref></td>
+    </tr>
+    <tr>
+     <td>DeZign</td>
+     <td>Windows</td>
+     <td>Demoversion</td>
+     <td>130 US$</td>
+     <td><ref lang="en" url="http://www.datanamic.com/dezign">http://www.datanamic.com/dezign</ref></td>
+    </tr>
+    <tr>
+     <td>MySQLFront</td>
+     <td>Windows</td>
+     <td>Freeware</td>
+     <td>kostenlos</td>
+     <td><ref lang="de" url="http://www.anse.de">http://www.anse.de</ref></td>
+    </tr>
+    <tr>
+     <td>KMySql</td>
+     <td>Linux</td>
+     <td>Freeware</td>
+     <td>kostenlos</td>
+     <td>bei den Distributionen dabei.</td>
+    </tr>
+   </table>
+  </section>
+
+  <section>
+   <heading>
 Die Datenbank
- </heading>
- <textblock>
+   </heading>
+
+   <textblock>
 Gut nun haben Sie MySQL erfolgreich installiert und konfiguriert.
 Prima!!!
 Aber was bringt Ihnen das beste und sicherste Datenbank-System, wenn
 Sie nichts damit anfangen können?
 In diesem Kapitel werde ich Ihnen Zeigen, wie Sie eine Datenbank
 anlegen, verwalten, zuweisen und löschen können.
- </textblock>
-<!-- Kapitel 9.1 -->
- <section>
-  <heading>
+   </textblock>
+
+   <section>
+    <heading>
 Eine Datenbank erzeugen
-  </heading>
-  <shell>
-   <output>
+    </heading>
+
+    <shell>
+     <output>
 mysql> CREATE DATABASE [IF NOT EXISTS] db_name;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Mit diesem Kommando erstellen Sie eine neue Datenbank.
 Falls diese schon vorhanden sein sollte, erhalten Sie eine
 entsprechende Fehlermeldung. Wenn Sie keine Fehlermeldung erhalten
 wollen, dann  sollten Sie die Option in den Eckigen Klammern
 verwenden. Sie können auch alternativ mittels mysqladmin unter der
 Eingabeaufforderung eine neue Datenbank anlegen.
-  </textblock>
- </section>
- <!-- Kapitel 9.2 -->
- <section>
-  <heading>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
 Datenbanken löschen
-  </heading>
-  <shell>
-   <output>
+    </heading>
+
+    <shell>
+     <output>
 mysql> DROP DATABASE [IF EXISTS] db_name;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Auch hier können Sie mittels der Option <command>IF EXISTS</command>
 die Fehlermeldung einer nicht vorhandenen Datenbank verbergen lassen.
-  </textblock>
-  <textblock> 
-Vorsicht:<br/>
-Mit DROP löschen Sie alle Tabellen einer Datenbank! Es gibt keine
-Möglichkeit die Daten wieder zurückzuholen!
-  </textblock>
- </section>
-<!-- Kapitel 9.3 --> 
- <section>
-  <heading>
+    </textblock>
+
+    <textblock>
+<strong>Vorsicht:</strong> Mit DROP löschen Sie alle Tabellen einer Datenbank!
+Es gibt keine Möglichkeit die Daten wieder zurückzuholen!
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
 Datenbankwechsel
-  </heading>
-  <shell>
-   <output>
-mysql> USE db_name
-   </output>
-  </shell>
-  <textblock>
+    </heading>
+    <shell>
+     <output>
+mysql> USE db_name;
+     </output>
+    </shell>
+
+    <textblock>
 Wenn Sie mit einer Datenbank arbeiten wollen, müssen Sie diese
 zunächst aktivieren. Wenn sie während Ihrer Arbeit die Datenbanken
-wechseln wollen, können sie mit dem Befehl <command>USE</command> genau das 
+wechseln wollen, können sie mit dem Befehl <command>USE</command> genau das
 erreichen.
-  </textblock>
- </section>
-</section>
-<!-- Kapitel 10 -->
-</split>
-<split>
-<section>
- <heading>
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
 Das Backup
- </heading>
- <textblock>
+   </heading>
+
+   <textblock>
 Die wichtigste Aufgabe eines Administrators ist die Sicherung der
 Datenbanken. Der Befehl mysqldump erzeugt eine Textdatei, in der
 unter anderem typische MySQL-Kommandos gespeichert werden,
 die eine Wiederherstellung der Datenbanken ermöglichen.
- </textblock>
-<!-- Kapitel 10.1 -->
- <section>
-  <heading>
-Sichern der Daten
-  </heading>
-  <shell>
-   <output>
+   </textblock>
 
+   <section>
+    <heading>
+Sichern der Daten
+    </heading>
+
+    <shell>
+     <output>
 shell> mysqldump [OPTIONS] database [tables]
 oder   mysqldump [OPTIONS] --database [OPTIONS] DB1 [DB2 DB3...]
 oder   mysqldump [OPTIONS] --all-databases [OPTIONS]
-  
-   </output>
-  </shell>
-  <textblock> 
+     </output>
+    </shell>
+
+    <textblock>
 Die vielen Optionen die mysqldump Ihnen anbietet erhalten Sie
 wenn Sie den Befehl mit dem Parameter --help aufrufen.
 Für den Anfang reicht es, wenn Sie den Parameter --opt mit anhängen.
@@ -993,16 +1099,19 @@ Diese Option enthält alle nötigen Einstellungen, die bei einer
 Sicherung berücksichtigt werden müssen.
 Diesen Parameter sollten Sie immer setzen wenn Sie eine
 vollständige Sicherung durchführen wollen.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Beispiel-Befehl:
-  </textblock>
-  <shell>
-   <user path="~">
+    </textblock>
+
+    <shell>
+     <user path="~">
 mysqldump -u root -p --opt --all-databases &gt; backup.sql
-   </user>
-  </shell>
-  <textblock>
+     </user>
+    </shell>
+
+    <textblock>
 In diesem Fall bewirkt die Option <command>--opt</command> einen read lock
 für alleTabellen! Das heisst, dass sie für eine kurzen Augenblick für alle
 Zugriffe gesperrt werden. Die Backup-Datei wird dabei möglichst klein
@@ -1010,71 +1119,79 @@ gehalten und es werden Kommandos eingefügt, die bei einer
 Wiederherstellung eventuell vorhanden Tabellen zuerst löschen, um sie
 dann neu erzeugen zu können. Während dieser Operation ist die
 komplette Datenbank auch blockiert.
-  </textblock>
- </section>
-<!-- Kapitel 10.2 -->
- <section>
-  <heading>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
 Wiederherstellen der Daten
-  </heading>
-  <shell>
-   <user path="~">
+    </heading>
+
+    <shell>
+     <user path="~">
   mysql -u root -p &lt; backup.sql
-   </user>
-  </shell>
-  <textblock>
+     </user>
+    </shell>
+
+    <textblock>
 Mit diesem Befehl wird ein Restore (Wiederherstellung) durchgeführt
-  </textblock>  
-  <shell>
-   <user path="~">
+    </textblock>
+
+    <shell>
+     <user path="~">
   mysqldump -u root --password=testpassword --opt gelddatenbank &lt; save_gdb.sql
-   </user>
-  </shell>
-  <textblock>
+     </user>
+    </shell>
+
+    <textblock>
 Damit können Sie einen bestimmten Datensatz wiederherstellen.
-  </textblock>
- </section> 
-</section>
-</split>
-<split>
-<!-- Kapitel 11 -->
-<section>
- <heading>
+    </textblock>
+   </section>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
 Tabellen (Relationen)
- </heading>
- <textblock>
+   </heading>
+
+   <textblock>
 Tabellen speichern Informationen.
 Wie Sie aber die Tabellen erstellen, löschen und verändern, zeige ich
 Ihnen in den folgenden Kapiteln
- </textblock> 
-<!-- Kapitel 11.1 -->
- <section>
-  <heading>
+   </textblock>
+
+   <section>
+    <heading>
 Tabellen erzeugen
-  </heading>
-  <textblock>
-Es kommt gleich eine mordsmäßige Syntax-Definition. Bitte nicht
-erschrecken! Der CREATE-Befehl ist mit Abstand der aufwändigste
-Befehl, den <name>MySQL</name> zu bieten hat. Das ganze könnte nun 
-ein wenig"trocken" werden.
-  </textblock>
-  <!-- Kapitel 11.1.1 -->
-  <section>
-   <heading>
+    </heading>
+
+    <textblock>
+Es kommt gleich eine komplexe Syntax-Definition. Der
+CREATE-Befehl ist mit Abstand der aufwändigste
+Befehl, den <name>MySQL</name> zu bieten hat. Das ganze könnte nun
+ein wenig "trocken" werden.
+    </textblock>
+
+    <section>
+     <heading>
 Syntax-Definition
-   </heading>
-   <shell>
-    <output>
+     </heading>
+     <shell>
+      <output>
 mysql> CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
        [(erstellungs-definition,...)] [tabellen_optionen]
        [select_statement]
-    </output>
-   </shell> 
-   <textblock>
+      </output>
+     </shell>
+
+     <textblock>
 <strong>Erstellungs-Definition:</strong>
-   </textblock>
-   <shell>
-    <output>
+     </textblock>
+
+     <shell>
+      <output>
 spaltenname datentyp [NOT NULL | NULL] [DEFAULT default_value]
 [AUTO_INCREMENT] [PRIMARY KEY] [reference_definition]
   oder    PRIMARY KEY (index_col_name,...)
@@ -1085,42 +1202,48 @@ spaltenname datentyp [NOT NULL | NULL] [DEFAULT default_value]
   oder    [CONSTRAINT symbol] FOREIGN KEY index_name
           (index_col_name,...)[reference_definition]
   oder    CHECK (expr)
-    </output>
-   </shell>
-   
-			<textblock>
-<strong>index_col_name:</strong>
-   </textblock>
-   <shell>
-    <output>
-  col_name [(length)]
-    </output>
-   </shell>
-   <textblock>
-<strong>reference_definition:</strong>
-   </textblock>
-   <shell>
-    <output>
-       REFERENCES tbl_name [(index_col_name,...)]
-                  [MATCH FULL | MATCH PARTIAL]
-		  [ON DELETE reverence_option]
-		  [ON UPDATE reverence_option]
+      </output>
+     </shell>
 
-    </output>
-   </shell>
-   <textblock>
+     <textblock>
+<strong>index_col_name:</strong>
+     </textblock>
+
+     <shell>
+      <output>
+  col_name [(length)]
+      </output>
+     </shell>
+
+     <textblock>
+<strong>reference_definition:</strong>
+     </textblock>
+
+     <shell>
+      <output>
+REFERENCES tbl_name [(index_col_name,...)]
+           [MATCH FULL | MATCH PARTIAL]
+           [ON DELETE reverence_option]
+           [ON UPDATE reverence_option]
+      </output>
+     </shell>
+
+     <textblock>
 <strong>reference_option:</strong>
-   </textblock>
-   <shell>
-    <output>
-       RESTRICT | CASCADE | SET NULL | NO AKTION | SET DEFAULT
-    </output>
-   </shell>
-   <textblock>
+     </textblock>
+
+     <shell>
+      <output>
+RESTRICT | CASCADE | SET NULL | NO AKTION | SET DEFAULT
+      </output>
+     </shell>
+
+     <textblock>
 <strong>tabellen_optionen:</strong>
-   </textblock>
-   <shell>
-    <output>
+     </textblock>
+
+     <shell>
+      <output>
 TYPE = {BDB | HEAP | ISAM | InnDB | MERGE | MRG_MYISAM | MYSISAM }
   oder  AUTO_INCREMENT = #
   oder  AVG_ROW_LENGTH = #
@@ -1142,40 +1265,42 @@ TYPE = {BDB | HEAP | ISAM | InnDB | MERGE | MRG_MYISAM | MYSISAM }
 select_statement:
   [INGORE | REPLACE] SELECT ...  (Irgendein korrektes SELECT-Kommando
   ist zulässig)
-    </output>
-   </shell>
-  </section>
-<!-- Kapitel 11.1.2 -->
-  <section>
-   <heading>
+      </output>
+     </shell>
+    </section>
+
+    <section>
+     <heading>
 Anwendungsbeispiel
-   </heading>
-   <textblock>
-Als kleines Beispiel für ich Ihnen vor, wie Sie eine Adressentabelle
+     </heading>
+     <textblock>
+Als kleines Beispiel führe ich Ihnen vor, wie Sie eine Adressentabelle
 erstellen können.
 Folgende Anforderungen soll diese mindestens erfüllen:
-   </textblock>
-   <ul>
-    <li>
+     </textblock>
+
+     <ul>
+      <li>
 Es gibt eine Kundennummer die als Primärschlüssel definiert wird.
 Die Datenbank soll maximal 100 Kunden aufnehmen und automatisch
 mittels des Primärschlüssels hochgezählt werden.
 Es gibt keine negativen Schlüssel.
-    </li>
-    <li>
+      </li>
+      <li>
 Es dürfen keine Datensätze ohne Name, Vorname, PLZ und Ort angelegt
 werden.
-    </li>
-    <li>
+      </li>
+      <li>
 Die Postleitzahl ist ein Zahlenwert und darf nicht negativ sein
-    </li>
-    <li>
+      </li>
+      <li>
 Es soll nach dem Namen und Ort gesucht werden.
 Deswegen sollen diese mit einem Index verknüpft werden
-    </li>
-   </ul>
-   <shell>
-    <output>
+      </li>
+     </ul>
+
+     <shell>
+      <output>
 mysql> CREATE TABLE kunden(
     -> kunden_nr TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
     -> name CHAR(30) NOT NULL,
@@ -1197,208 +1322,240 @@ mysql> SHOW TABLES;
 1 row in set (0.00 sec)
 
 mysql>
-    </output>
-   </shell>
-   <textblock>
+      </output>
+     </shell>
+
+     <textblock>
 Mit dem Befehl <command>SHOW TABLES</command> können Sie nachsehen, ob die
 Tabelle angelegt wurde.
-   </textblock>
-   <textblock> 
-Ein weiterer sehr interessanter Befehl ist <command>EXPLAIN</command>. Mit 
+     </textblock>
+
+     <textblock>
+Ein weiterer sehr interessanter Befehl ist <command>EXPLAIN</command>. Mit
 diesem Kommando können sie die Tabellendefinition überprüfen.
-   </textblock>
-  </section>  
- </section>
-<!-- Kapitel 11.2 -->
- <section>
-  <heading>
+     </textblock>
+    </section>
+   </section>
+
+   <section>
+    <heading>
 Tabellen (Relationen) löschen
-  </heading>
-  <shell>
-   <output>
+    </heading>
+
+    <shell>
+     <output>
 mysql> DROP TABLE [IF EXISTS] tbl_name [, tbl_name, ...]
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Alles was kommt muß auch mal wieder gehen. Manche netten Nachbarn
 nehmen den Zeitpunkt zwar nicht immer so genau, aber bei einer
 Datenbank  bestimmen Sie, wann es Zeit ist, zu verschwinden.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Bei <name>MySQL</name> ist es nicht wie bei anderen Programmen, bei denen Sie 75
 Mal gefragt werden, ob Sie sich auch wirklich sicher sind! <name>MySQL</name>
 löscht nach bestätigen der Eingabetaste gnadenlos.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Aus diesem Grunde ist es ratsam, bevor Sie mit der Arbeit an
 einer Datenbank anfangen eine Sicherheitskopie anzulegen.
 (Wie, wird in den vorangegangenen Kapiteln beschrieben)
-  </textblock>
- </section>
-<!-- Kapitel 11.3 -->
- <section>
-  <heading>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
 Indexierung
-  </heading>
-  <shell>
-   <output>
+    </heading>
+    <shell>
+     <output>
 mysql> CREATE [UNIQUE|FULLTEXT] INDEX index_name ON tbl_name
        (spalten_name{(länge)]....];
-   </output>
-  </shell>
-  <textblock>
-Sie legen normalerweise die Indizes bereist bei Tabellenerstellung
+     </output>
+    </shell>
+    <textblock>
+Sie legen normalerweise die Indizes bereist bei der Tabellenerstellung
 fest. Hin und Wieder kommt es aber vor, dass Sie einen weiteren Index
 brauchen.<br/>
 Löschen können Sie einen Index mittels des Befehls
 <command>DROP INDEX</command>.
-  </textblock>
- </section>
-<!-- Kapitel 11.4 -->
- <section>
-  <heading>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
 Tabellen verändern
-  </heading>
-  <shell>
-   <output>
+    </heading>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE tbl_name tabellen_optionen;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Wenn Sie bei einer bestehenden Tabelle eine Spalte hinzufügen wollen,
-brauchen Sie nicht eine neue Tabelle erzeugen und diese verknüpfen.
+brauchen Sie keine neue Tabelle erzeugen und diese verknüpfen.
 Sie können mittels des Befehls <command>ALTER</command> Veränderungen an
 bestehenden Tabellen vornehmen.
-  </textblock>
-  <textblock>
-Folgen zeige ich Ihnen einige Syntax, an denen Sie sehen können,
+    </textblock>
+
+    <textblock>
+Im Folgenden zeige ich Ihnen einige Beispiele, an denen Sie sehen können,
 was <command>ALTER</command> alles kann.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden ADD email CHAR(30);
-   </output>
-  </shell>
-  <textblock>
-Damit legen erzeugen Sie eine neue Spalte namens Email.
-  </textblock>
-  <shell>
-   <output>
+     </output>
+    </shell>
+
+    <textblock>
+Damit erzeugen Sie eine neue Spalte namens Email.
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden DROP email;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Keine gute Idee? Dann löschen Sie doch einfach die Spalte Email
 wieder...
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden DROP INDEX name;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Damit löschen Sie den Index der bei dem Nachnamen angelegt wurde.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden DROP PRIMERY KEY;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Somit wird der Primärschlüssel der auf die Kundennummer gelegt war,
 gelöscht.
-</textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden ADD PRIMERY KEY (kunden_nr);
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 War ein Fehler? Dann erstellen Sie ihn einfach wieder.
-</textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden MODIFY ort CHAR(50);
-   </output>
-  </shell>
-  <textblock>
-Mit der MODIFY-Option ändern Sie den Datentyp. In dem Beispiel wir die
+     </output>
+    </shell>
+
+    <textblock>
+Mit der MODIFY-Option ändern Sie den Datentyp. In dem Beispiel wird die
 Zeichenlänge bei der Spalte ort von 30 auf 50 angehoben.
-</textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden CHANGE ort wohnort CHAR(50);
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Hiermit können Sie nicht nur den Datentyp sondern auch gleich die
 Bezeichnung ändern
-</textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden RENAME kunden;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Sie können sogar ganze Tabellen umbenennen. Aber achten Sie bitte auf
 die von Ihnen gesetzten Beziehungen! Diese ändert <name>MySQL</name> leider nicht
 automatisch.
-</textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> ALTER TABLE kunden ALTER plz SET DEFAULT 85253;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Mit dieser Option können Sie der Postleitzahl einen Vorgabewert von
 85253 zuweisen.
-  </textblock>
- </section>
-</section>
-</split>
-<split>
+    </textblock>
+   </section>
+  </section>
+ </split>
 
-<!-- Kapitel 12 -->
-<section>
- <heading>
-Das Arbeiten mit dem Datensätzen
- </heading>
- <textblock> 
+ <split>
+  <section>
+   <heading>
+Das Arbeiten mit Datensätzen
+   </heading>
+
+   <textblock>
 Nun haben Sie gelernt wie sie Datenbanken und Tabellen erstellen,
 löschen und verändern können. Da dies aber nicht der einzige Sinn und
 Zweck von <name>MySQL</name> ist, sehen Sie jetzt wie sie diese Datensätze auch
 noch füllen, löschen und ändern.
- </textblock>
-<!-- Kapitel 12 -->
- <section>
-  <heading>
+   </textblock>
+
+   <section>
+    <heading>
 Das Füllen
-  </heading>
-  <shell>
-   <output>
+    </heading>
+
+    <shell>
+     <output>
 mysql> INSERT [LOW_PRIORITY | DELAYED] [IGNORE] [INTO] tbl_name
        [(spaltenname]...)] VALUES (datum1,...),(...).....;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 oder:
-  </textblock>
-  <shell>
-   <output> 
+    </textblock>
+    <shell>
+     <output>
 mysql> INSERT [LOW_PRIORITY | DELAYED] [IGNORE] [INTO] tbl_name
        [(spaltenname]...)] SELECT ...;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 oder:
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> INSERT [LOW_PRIORITY | DELAYED] [IGNORE] [INTO] tbl_name
        SET spaltenname1=datum1, spaltenname2=datum2, ....;
-   </output>
-  </shell> 
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Das INSERT-Kommando dient dazu, (wie sie bereits ahnen)
 neue Daten in die Tabelle aufzunehmen.
 Sie können zwischen den drei Varianten wählen. Aber der wohl am
@@ -1407,68 +1564,79 @@ können Sie die Daten einfügen die Sie gerne möchten.
 An dem folgenden Beispiel möchte ich Ihnen gerne zeigen, wie das in
 etwa aussieht:
 (Ich beziehe mich hierbei wieder auf die kunden-beispiels-Datenbank)
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> INSERT INTO kunden (name, vorname, strasse, plz, ort) VALUES
     -> ('Sommerfeld', 'Frank', 'Waldweg 12', 85221, 'Dachau');
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Die Kundennummer wird (da ja mit der Option auto_increment belegt)
 automatisch von 1 weg hochgezählt.
-  </textblock>
-  <textblock>
+    </textblock>
+
+    <textblock>
 Möchten Sie z.B. mehrere Datensätze auf einmal eingeben, dann
 verwenden Sie einfach mehrere Klammerpaare die durch ein Komma
 getrennt sind:
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> INSERT INTO kunden (name, vorname, strasse, plz, ort) VALUES
     -> ('Brunninger', 'Jasmin', 'Giechstrasse 1', 81249, 'Muenchen'),
     -> ('Stadler', 'Matthias', 'Glonntalstrasse 15', 85253, 'Erdweg'),
     -> ('Sistig', 'Marianne', 'Linztal 1', 82149, 'Olching');
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Die zweite Methode ist die Option SELECT.
 Meist werden SELECT-Befehle mittels eines MySQL-Frontends ausgeführt.
 Diese können in einer Internetseite eingebunden sein. Dabei wird ein
 Script die Tipparbeit für Sie abnehmen.
 Aber um Ihnen zu zeigen, wie Sie auch "händisch" damit arbeiten
 können, zeige ich Ihnen 2 Beispiele wie Sie das bewerkstelligen:
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> SELECT * FROM kunden;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 damit erhalten Sie (das ganze ist nun sehr unübersichtlich) alle
 Spalten und Datensätze der Tabelle kunden aufgelistet.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> SELECT kunden_nr, vorname, name, ort FROM kunden;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Sie können auch einzelne Spalten auswählen!
-  </textblock>
- </section>
-<!-- Kapitel 12.1 -->
- <section>
-  <heading>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
 Die Select-Anweisung
-  </heading>
-  <textblock>
+    </heading>
+
+    <textblock>
 Sie erhalten hier wiederum den Syntax von dem Befehl <command>SELECT</command>.
 Ich werde Ihnen das Kommando anschließend anhand von Beispielen
 erklären und zeigen was es für Möglichkeiten gibt.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> SELECT [STRAIGHT_JOIN] [SQL_SMALL_RESULTS] [SQL_BIG_RESULTS]
        [SQL_BUFFER_RESULTS]
        [HIGH_PRIORITY]
@@ -1478,675 +1646,695 @@ mysql> SELECT [STRAIGHT_JOIN] [SQL_SMALL_RESULTS] [SQL_BIG_RESULTS]
     [INTO {OUTFILE | DUMPFILE} 'datei_name' export_optionen]
     [FROM tbl_name
         [WHERE where_definitionen]
-	[GROUP BY {unsigned_integer | spalten_name | formula} [ASC | DESC],
+        [GROUP BY {unsigned_integer | spalten_name | formula} [ASC | DESC],
  ...]
-	[HAVING where_definition]
-	[ORDER BY {unsigned_integer | spalten_name | formula} [ASC | DESC],
+        [HAVING where_definition]
+        [ORDER BY {unsigned_integer | spalten_name | formula} [ASC | DESC],
  ...]
-	[LIMIT [offset,] zeilen]
-	[PROCEDURE prozedur_name]
-	[FOR UPDATE | LOCK IN SHARE MODE]]
-   </output>
-  </shell>
-  <textblock>
+        [LIMIT [offset,] zeilen]
+        [PROCEDURE prozedur_name]
+        [FOR UPDATE | LOCK IN SHARE MODE]]
+     </output>
+    </shell>
+
+    <textblock>
 Die Ausgabe von <command>SELECT</command> erzeugt immer eine Tabelle.
 Der wohl simpelste Befehl lautet <command>SELECT 1;</command>.
-  </textblock>
-  <textblock>
-Ich führe Ihnen nun einige Beispiele auf, die Ihnen die Möglichkeiten
+    </textblock>
+
+    <textblock>
+Ich führe Ihnen nun einige Beispiele vor, die Ihnen die Möglichkeiten
 von <command>SELECT</command> zeigen sollen.
-  </textblock>
-  <shell>
-   <output>
-mysql> SELECT kunden_nr AS Kundennummer, vorname AS Vorname, name AS
-       Name, -> ort AS Ort FROM kunden;
-   </output>
-  </shell>
-  <textblock>
+    </textblock>
+
+    <shell>
+     <output>
+mysql> SELECT kunden_nr AS Kundennummer, vorname AS Vorname, name AS Name,
+-> ort AS Ort FROM kunden;
+     </output>
+    </shell>
+
+    <textblock>
 Damit vergeben Sie für die vorhanden Spaltenbezeichnungen, schönere
 und einprägsamere Namen.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+    <shell>
+     <output>
 mysql> SELECT COUNT(kunden_nr) FROM kunden;
-   </output>
-  </shell>
-  <textblock>
-Mit <command>COUNT</command> können Sie die Anzahl der Datensätze anzeigen lassen.
-  </textblock>
-  <shell>
-   <output>
-mysql> SELECT * FROM kunden LIMIT 0, 5;
+     </output>
+    </shell>
 
-   </output>
-  </shell>
-  <textblock>
+    <textblock>
+Mit <command>COUNT</command> können Sie die Anzahl der Datensätze anzeigen lassen.
+    </textblock>
+
+    <shell>
+     <output>
+mysql> SELECT * FROM kunden LIMIT 0, 5;
+     </output>
+    </shell>
+
+    <textblock>
 Ein tolles feature ist LIMIT. Sie können so die Anzahl der zu
 anzeigenden, Datensätze auf eine bestimmte Anzahl (hier 5) beschränken
 lassen. In diesem Beispiel heisst es: Zeige mir maximal 5 Treffer ab
 den ersten Datensatz. Folgend wäre es dann: LIMIT 5,5 LIMIT 10,5
 usw. somit erhalten Sie immer die nächsten 5 Sätze auf Ihrem
 Bildschirm. Verwendet wird diese Anweisung meist bei Suchmaschinen.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> SELECT auftrags_nr, wert AS Netto, wert*1.16 AS Brutto FROM
 auftraege;
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Sie können auch mittels SELECT Berechnungen ausgeben lassen.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> SELECT vorname, name, strasse, plz, ort FROM kunden WHERE
     -> ort = 'Dachau';
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Wer wohnt eigentlich alles von den Kunden in Dachau?
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> SELECT vorname, name, strasse, plz, ort FROM kunden WHERE
     -> name LIKE 'Sch%';
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Hier werden alle Nachnahmen mit Sch..... aufgelistet.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> SELECT SUM(wert) FROM auftraege WHERE
     -> kunden_nr = 45350
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Lassen Sie MySQL einfach mal für Sie rechnen
-  </textblock>
- </section>
-<!-- Kapitel 12.2 -->
- <section>
-  <heading>
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
 Das löschen von Datensätzen
-  </heading>
-  <textblock>
+    </heading>
+
+    <textblock>
 Es soll auch mal vorkommen, dass Sie Datensätze löschen müssen.
 Dies ist eigentlich weiter nicht tragisch.
 Sie erhalten vom mir wieder einen Syntax und ein Beispiel dazu.
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> DELETE [LOW_PRIORITY | QUICK] FROM tbl_name
            [WHERE where_definition]
-	   [ORDER BY ...]
-	   [LIMIT rows]
-   </output>
-  </shell>
-  <textblock>
+           [ORDER BY ...]
+           [LIMIT rows]
+     </output>
+    </shell>
+
+    <textblock>
 <strong>Beispiel:</strong>
-  </textblock>
-  <shell>
-   <output>
+    </textblock>
+
+    <shell>
+     <output>
 mysql> DELETE FROM auftraege WHERE kunden_nr = 1000
-   </output>
-  </shell>
-  <textblock>
+     </output>
+    </shell>
+
+    <textblock>
 Damit löschen Sie den angegebenen Datensatz...
 Viel Erfolg ;)
-  </textblock>
- </section>
-</section>
-  </split>
-<split>
+    </textblock>
+   </section>
+  </section>
+ </split>
 
-<!-- Kapitel 13-->
-<section>
- <heading>
+ <split>
+  <section>
+   <heading>
 Die Zusammenfassung der administrativen Befehlsketten
- </heading>
- <textblock>
+   </heading>
+
+   <textblock>
 <strong>Passwortvergabe für den Benutzer root:</strong>
- </textblock>
-  <shell>
-   <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 mysqladmin -u root -h localhost password rootpasswort
-   </user>
-  </shell>
- <textblock>
+    </user>
+   </shell>
+
+   <textblock>
 MySQL Absichern:
- </textblock>
-  <shell>
-   <user path="~">
+   </textblock>
+
+   <shell>
+    <user path="~">
 mysql -u root -p
-   </user>
-  <input>
-	Enter password: *******
-	 </input>
-		<output>
-	Welcome to the MySQL monitor, ...
+    </user>
+    <input>
+        Enter password: *******
+         </input>
+                <output>
+        Welcome to the MySQL monitor, ...
 
-	mysql> USE mysql;
-	Database changed
+        mysql> USE mysql;
+        Database changed
 
-	mysql> DELETE FROM user WHERE users='root' AND host='%';
-	Query OK, 1 rows affected (0,00 sec)
+        mysql> DELETE FROM user WHERE users='root' AND host='%';
+        Query OK, 1 rows affected (0,00 sec)
 
-	mysql> FLUSH PRIVILEGES;
-	Query OK, 0 rows affected (0,00 sec)
+        mysql> FLUSH PRIVILEGES;
+        Query OK, 0 rows affected (0,00 sec)
 
-	mysql> quit
-   </output>
-  </shell>
- <textblock>
+        mysql> quit
+    </output>
+   </shell>
+
+   <textblock>
 ANMERKUNG: Mit FLUSH PRIVILEGES machen Sie die Änderungen
 wirksam. Sie könnten genauso den Befehl mysqladmin
 mit dem Parameter -reload benutzen.
- </textblock>
- <textblock>
+   </textblock>
+
+   <textblock>
 Für den Standard-Benutzer die uneingeschränkten Rechte entziehen
- </textblock>
- <shell>
-  <user path="¯">
+   </textblock>
+
+   <shell>
+    <user path="¯">
 mysql -u root -p
-  </user>
-  <input>
-	Enter password: *******
-	 </input>
-		<output>
-	Welcome to the MySQL monitor, ...
+    </user>
+    <input>
+        Enter password: *******
+         </input>
+                <output>
+        Welcome to the MySQL monitor, ...
 
-	mysql> USE mysql;
-	Database changed
+        mysql> USE mysql;
+        Database changed
 
-	mysql> REVOKE ALL ON *.* FROM ''@localhost;
-	Query OK, 1 rows affected (0,00 sec)
+        mysql> REVOKE ALL ON *.* FROM ''@localhost;
+        Query OK, 1 rows affected (0,00 sec)
 
-	mysql> REVOKE GRANT OPTION ON *.* FROM ''@localhost;
+        mysql> REVOKE GRANT OPTION ON *.* FROM ''@localhost;
 
-	mysql> FLUSH PRIVILEGES;
-	Query OK, 0 rows affected (0,00 sec)
+        mysql> FLUSH PRIVILEGES;
+        Query OK, 0 rows affected (0,00 sec)
 
-	mysql> quit
-   </output>
-  </shell>
- <textblock>
+        mysql> quit
+     </output>
+    </shell>
+
+   <textblock>
 ANMERKUNG: Wenn Sie die Absicherung bereits durchgeführt haben,
 dann wird Ihnen MySQL mitteilen, dass es keinen User gibt, dem
 Sie die Rechte entziehen können.
- </textblock>
- <textblock>
+   </textblock>
+
+   <textblock>
 Aktionen ohne Kennwort verbieten:
- </textblock>
- <shell>
-  <user path="¯">
+   </textblock>
+
+   <shell>
+    <user path="¯">
 mysql -u root -p
-  </user>
-  <input>
-	Enter password: *******
-	 </input>
-		<output>
-	Welcome to the MySQL monitor, ...
+    </user>
+    <input>
+        Enter password: *******
+    </input>
+    <output>
+        Welcome to the MySQL monitor, ...
 
-	mysql> USE mysql;
-	Database changed
+        mysql> USE mysql;
+        Database changed
 
-	mysql> DELETE FROM user WHERE user='' AND host='localhost';
-	Query OK, 1 rows affected (0,00 sec)
+        mysql> DELETE FROM user WHERE user='' AND host='localhost';
+        Query OK, 1 rows affected (0,00 sec)
 
-	mysql> DELETE FROM user WHERE user='' AND host='%';
-	Query OK, 1 rows affected (0,00 sec)
+        mysql> DELETE FROM user WHERE user='' AND host='%';
+        Query OK, 1 rows affected (0,00 sec)
 
-	mysql> FLUSH PRIVILEGES;
-	Ouery OK, 0 rows affected (0,00 sec)
+        mysql> FLUSH PRIVILEGES;
+        Ouery OK, 0 rows affected (0,00 sec)
 
-	mysql> quit
-  </output>
- </shell>
-</section>
-  </split>
-<split>
+        mysql> quit
+    </output>
+   </shell>
+  </section>
+ </split>
 
-<!-- Kapitel 14-->
-<section>
- <heading>
+ <split>
+  <section>
+   <heading>
 MySQL Sprachreferenz
- </heading>
-<!-- Kapitel 14.1-->
- <section>
-  <heading>
-Datentypen
-  </heading>
-  <table>
-   <pdf-column width="150"/>
-   <pdf-column/>
-   <tr>
-    <th>Bezeichner</th><th>Erklärung</th>
-   </tr>
-   <tr>
-    <td><command>TINYINT[(x)]</command></td><td>1 Byte</td>
-   </tr>
-   <tr>
-    <td><command>SMALLINT[(x)]</command></td><td>2 Byte</td>
-   </tr>
-   <tr>
-    <td><command>MEDIUMINT[(x)]</command></td><td>3 Byte</td>
-   </tr>
-   <tr>
-    <td><command>INT[(x)]</command></td><td>4 Byte</td>
-   </tr>
-   <tr>
-    <td><command>BIGINT[(x)]</command></td><td>8 Byte</td>
-   </tr>
-   <tr>
-    <td><command>FLOAT[(x[, y])]</command></td><td>4 Byte</td>
-   </tr>
-   <tr>
-    <td><command>DOUBLE[(x[, y])]</command></td><td>8 Byte</td>
-   </tr>
-   <tr>
-    <td><command>DECIMAL(x, y)</command></td>
-    <td><![CDATA[  x Byte bei MySQL<3.23,x+2 Byte bei >=3.23]]></td>
-   </tr>
-   <tr>
-    <td><command>DATE</command></td><td>Datums-Format JJJJ-MM-TT</td>
-   </tr>
-   <tr>
-    <td><command>TIME</command></td><td>Zeit-Format hh:mm:ss</td>
-   </tr>
-   <tr>
-    <td><command>DATETIME</command></td><td>Kombination JJJJ-MM-TT hh:mm:ss</td>
-   </tr>
-   <tr>
-    <td><command>TIMESTAMP</command></td><td>Zeitstempel JJJMMTThhmmss</td>
-   </tr>
-   <tr>
-    <td><command>YEAR</command></td><td>Vierstellige Jahresangabe JJJJ</td>
-   </tr>
-   <tr>
-    <td><command>CHAR(x)</command></td><td>Zeichenkette mit fester Länge x</td>
-   </tr>
-   <tr>
-    <td><command>VARCHAR(x)</command></td><td>Zeichenkette mit variabler Länge x (x+1 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>TINYTEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+1 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>TINYBLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+1 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>TEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+2 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>BLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+2 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>MEDIUMTEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+3 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>MEDIUMBLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+3 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>LONGTEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+4 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>LONGBLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+4 Byte)</td>
-   </tr>
-   <tr>
-    <td><command>ENUM("wert1","wert2",.)</command></td>
-    <td>Aufzählung von maximal 65.535 Zeichenketten</td>
-   </tr>
-   <tr>
-    <td><command>SET("wert1","wert2",)</command></td>
-    <td>Aufzählung von maximal 255 Zeichenketten</td>
-   </tr>
-  </table>
- </section>
-<!-- Kapitel 14.2-->
- <section>
-  <heading>
-Administration
-  </heading>
-  <table>
-   <pdf-column width="150"/>
-   <pdf-column/>
-   <tr>
-    <th>SQL-Kommando</th><th>Erklärung</th>
-   </tr>
-   <tr>
-    <td><command>CREATE DATABASE</command></td><td>Erzeugt eine neue Datenbank</td>
-   </tr>
-   <tr>
-    <td><command>DROP DATABASE</command></td>
-    <td>Löscht eine vorhandene Datenbank incl. aller Tabellen</td>
-   </tr>
-   <tr>
-    <td><command>FLUSH</command></td><td>Leert und aktualisiert interne Caches</td>
-   </tr>
-   <tr>
-    <td><command>GRANT</command></td><td>Vergabe von Zugriffsrechten</td>
-   </tr>
-   <tr>
-    <td><command>KILL</command></td><td>Beendet einen angegebenen Prozess</td>
-   </tr>
-   <tr>
-    <td><command>REVOKE</command></td><td>Schränkt vergebene Zugriffsrechte wieder ein</td>
-   </tr>
-   <tr>
-    <td><command>USE</command></td><td>Wechselt zu einer anderen Datenbank</td>
-   </tr>
-  </table>
- </section>
-<!-- Kapitel 14.3-->
- <section>
-  <heading>
-Definition
-  </heading>
-  <table>
-   <pdf-column width="150"/>
-   <pdf-column/>
-   <tr>
-    <th>SQL-Kommando</th><th>Erklärung</th>
-   </tr>
-   <tr>
-    <td><command>ALTER TABLE</command></td>
-    <td>Ändert oder fügt neue Spalten, Indices etc. hinzu</td>
-   </tr>
-   <tr>
-    <td><command>CREATE FUNCTION</command></td>
-    <td>Gibt eine benutzerdefinierte Funktion (UDF) an,
-       die geladen werden soll
-    </td>
-   </tr>
-   <tr>
-    <td><command>CREATE INDEX</command></td><td>Fügt einer Tabelle einen neuen Index hinzu</td>
-   </tr>
-   <tr>
-    <td><command>CREATE TABLE</command></td><td>Erzeugt eine neue Tabelle</td>
-   </tr>
-   <tr>
-    <td><command>DESCRIBLE</command></td><td>Liefert Informationen über die Tabellenstruktur</td>
-   </tr>
-   <tr>
-    <td><command>DROP INDEX</command></td><td>Löscht einen Tabellenindex</td>
-   </tr>
-   <tr>
-    <td><command>DROP TABLE</command></td><td>Löscht eine Tabelle inkl. aller Datensätze</td>
-   </tr>
-   <tr>
-    <td><command>RENAME TABLE</command></td><td>Benennt eine existierende Tabelle um</td>
-   </tr>
-   <tr>
-    <td><command>SHOW</command></td>
-    <td>Zeigt Informationen über Datenbanken,Tabellen,
-        Zugriffsrechten etc. an
-    </td>
-   </tr>
-   <tr>
-    <td><command>EXPLAIN</command></td>
-    <td>Wie DESCRIBLE, kann aber auch Informationen über das
-			Ergebnis einer SELECT-Anweisung liefern
-    </td>
-   </tr>
-  </table>
- </section>
-<!-- Kapitel 14.4-->
- <section>
-  <heading>
-Manipulation
-  </heading>
-  <table>
-   <pdf-column width="150"/>
-   <pdf-column/>
-   <tr>
-    <th>SQL-Kommando</th><th>Erklärung</th>
-   </tr>
-   <tr>
-    <td><command>DELETE</command></td><td>Löscht angegebene Datensätze aus einer Tabelle</td>
-   </tr>
-   <tr>
-    <td><command>INSERT</command></td><td>Neuen Datensatz in eine Tabelle einfügen</td>
-   </tr>
-   <tr>
-    <td><command>LOAD DATA</command></td>
-    <td>Nimmt neue Datensätze in eine Tabelle auf, die in einer	ASCII-Datei
-        definiert wurden
-    </td>
-   </tr>
-   <tr>
-    <td><command>REPLACE</command></td>
-    <td>Ersetzt einen bereits vorhandenen Datensatz durch einen anderen</td>
-   </tr>
-   <tr>
-    <td><command>SELECT</command></td><td>Fragt vorhandene Datensätze in Tabellen ab</td>
-   </tr>
-   <tr>
-    <td><command>TRUNCATE TABLE</command></td><td>Löscht alle Datensätze einer Tabelle</td>
-   </tr>
-   <tr>
-    <td><command>UPDATE</command></td><td>Verändert den Inhalt eines vorhandenen Datensatzes</td>
-   </tr>
-  </table>
- </section>
-<!-- Kapitel 14.5-->
- <section>
-  <heading>
-Wartung
-  </heading>
-  <table>
-   <pdf-column width="150"/>
-   <pdf-column/>
-   <tr>
-    <th>SQL-Kommando</th><th>Erklärung</th>
-   </tr>
-   <tr>
-    <td><command>BACKUP TABLE</command></td><td>Erstellt ein Backup einer Tabelle</td>
-   </tr>
-   <tr>
-    <td><command>LOCK TABLE</command></td>
-    <td>Blockiert eine Tabelle für Schreib- und Lesezugriffe</td>
-   </tr>
-   <tr>
-    <td><command>RESTORE TABLE</command></td>
-    <td>Stellt eine mit BACKUP gesicherte Tabelle wieder her</td>
-   </tr>
-   <tr>
-    <td><command>UNLOCK TABLE</command></td>
-    <td>Gibt eine mit LOCK blockierte Tabelle wieder frei</td>
-   </tr>
-   <tr>
-    <td><command>ANALYZE TABLE</command></td>
-    <td>Liefert Informationen über die Aktualität der Schlüssel#
-        einer Tabelle. Funktioniert nur mit MyISAM und BDB-Tabellen
-    </td>
-   </tr>
-   <tr>
-    <td><command>CHECK TABLE</command></td>
-    <td>Überprüft eine MyISAM-Tabelle auf Fehler</td>
-   </tr>
-   <tr>
-    <td><command>OPTIMIZE TABLE</command></td>
-    <td>Optimiert die Speicherzuordnung einer MyISAM- und BDB-Tabelle</td>
-   </tr>
-   <tr>
-    <td><command>REPAIR TABLE</command></td>
-    <td>In absoluten Notfällen hilft vielleicht dieses Kommando,
-    	denn es versucht, beschädigte MyISAM-Tabellen zu reparieren
-    </td>
-   </tr>
-  </table>
- </section>
+   </heading>
 
-<!-- Kapitel 14.5-->
- <section>
-  <heading>
+   <section>
+    <heading>
+Datentypen
+    </heading>
+
+    <table>
+     <pdf-column width="150"/>
+     <pdf-column/>
+     <tr>
+      <th>Bezeichner</th><th>Erklärung</th>
+     </tr>
+     <tr>
+      <td><command>TINYINT[(x)]</command></td><td>1 Byte</td>
+     </tr>
+     <tr>
+      <td><command>SMALLINT[(x)]</command></td><td>2 Byte</td>
+     </tr>
+     <tr>
+      <td><command>MEDIUMINT[(x)]</command></td><td>3 Byte</td>
+     </tr>
+     <tr>
+      <td><command>INT[(x)]</command></td><td>4 Byte</td>
+     </tr>
+     <tr>
+      <td><command>BIGINT[(x)]</command></td><td>8 Byte</td>
+     </tr>
+     <tr>
+      <td><command>FLOAT[(x[, y])]</command></td><td>4 Byte</td>
+     </tr>
+     <tr>
+      <td><command>DOUBLE[(x[, y])]</command></td><td>8 Byte</td>
+     </tr>
+     <tr>
+      <td><command>DECIMAL(x, y)</command></td>
+      <td><![CDATA[  x Byte bei MySQL<3.23,x+2 Byte bei >=3.23]]></td>
+     </tr>
+     <tr>
+      <td><command>DATE</command></td><td>Datums-Format JJJJ-MM-TT</td>
+     </tr>
+     <tr>
+      <td><command>TIME</command></td><td>Zeit-Format hh:mm:ss</td>
+     </tr>
+     <tr>
+      <td><command>DATETIME</command></td><td>Kombination JJJJ-MM-TT hh:mm:ss</td>
+     </tr>
+     <tr>
+      <td><command>TIMESTAMP</command></td><td>Zeitstempel JJJMMTThhmmss</td>
+     </tr>
+     <tr>
+      <td><command>YEAR</command></td><td>Vierstellige Jahresangabe JJJJ</td>
+     </tr>
+     <tr>
+      <td><command>CHAR(x)</command></td><td>Zeichenkette mit fester Länge x</td>
+     </tr>
+     <tr>
+      <td><command>VARCHAR(x)</command></td><td>Zeichenkette mit variabler Länge x (x+1 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>TINYTEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+1 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>TINYBLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+1 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>TEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+2 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>BLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+2 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>MEDIUMTEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+3 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>MEDIUMBLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+3 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>LONGTEXT</command></td><td>Zeichenkette mit variabler Länge 1 (1+4 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>LONGBLOB</command></td><td>Binärdaten mit variabler Länge 1 (1+4 Byte)</td>
+     </tr>
+     <tr>
+      <td><command>ENUM("wert1","wert2",.)</command></td>
+      <td>Aufzählung von maximal 65.535 Zeichenketten</td>
+     </tr>
+     <tr>
+      <td><command>SET("wert1","wert2",)</command></td>
+      <td>Aufzählung von maximal 255 Zeichenketten</td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
+Administration
+    </heading>
+
+    <table>
+     <pdf-column width="150"/>
+     <pdf-column/>
+     <tr>
+      <th>SQL-Kommando</th><th>Erklärung</th>
+     </tr>
+     <tr>
+      <td><command>CREATE DATABASE</command></td><td>Erzeugt eine neue Datenbank</td>
+     </tr>
+     <tr>
+      <td><command>DROP DATABASE</command></td>
+      <td>Löscht eine vorhandene Datenbank incl. aller Tabellen</td>
+     </tr>
+     <tr>
+      <td><command>FLUSH</command></td><td>Leert und aktualisiert interne Caches</td>
+     </tr>
+     <tr>
+      <td><command>GRANT</command></td><td>Vergabe von Zugriffsrechten</td>
+     </tr>
+     <tr>
+      <td><command>KILL</command></td><td>Beendet einen angegebenen Prozess</td>
+     </tr>
+     <tr>
+      <td><command>REVOKE</command></td><td>Schränkt vergebene Zugriffsrechte wieder ein</td>
+     </tr>
+     <tr>
+      <td><command>USE</command></td><td>Wechselt zu einer anderen Datenbank</td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
+Definition
+    </heading>
+
+    <table>
+     <pdf-column width="150"/>
+     <pdf-column/>
+     <tr>
+      <th>SQL-Kommando</th><th>Erklärung</th>
+     </tr>
+     <tr>
+      <td><command>ALTER TABLE</command></td>
+      <td>Ändert oder fügt neue Spalten, Indices etc. hinzu</td>
+     </tr>
+     <tr>
+      <td><command>CREATE FUNCTION</command></td>
+      <td>Gibt eine benutzerdefinierte Funktion (UDF) an, die geladen werden soll</td>
+     </tr>
+     <tr>
+      <td><command>CREATE INDEX</command></td><td>Fügt einer Tabelle einen neuen Index hinzu</td>
+     </tr>
+     <tr>
+      <td><command>CREATE TABLE</command></td><td>Erzeugt eine neue Tabelle</td>
+     </tr>
+     <tr>
+      <td><command>DESCRIBE</command></td><td>Liefert Informationen über die Tabellenstruktur</td>
+     </tr>
+     <tr>
+      <td><command>DROP INDEX</command></td><td>Löscht einen Tabellenindex</td>
+     </tr>
+     <tr>
+      <td><command>DROP TABLE</command></td><td>Löscht eine Tabelle inkl. aller Datensätze</td>
+     </tr>
+     <tr>
+      <td><command>RENAME TABLE</command></td><td>Benennt eine existierende Tabelle um</td>
+     </tr>
+     <tr>
+      <td><command>SHOW</command></td>
+      <td>Zeigt Informationen über Datenbanken,Tabellen, Zugriffsrechten etc. an</td>
+     </tr>
+     <tr>
+      <td><command>EXPLAIN</command></td>
+      <td>Wie DESCRIBE, kann aber auch Informationen über das Ergebnis einer SELECT-Anweisung liefern</td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
+Manipulation
+    </heading>
+
+    <table>
+     <pdf-column width="150"/>
+     <pdf-column/>
+     <tr>
+      <th>SQL-Kommando</th><th>Erklärung</th>
+     </tr>
+     <tr>
+      <td><command>DELETE</command></td><td>Löscht angegebene Datensätze aus einer Tabelle</td>
+     </tr>
+     <tr>
+      <td><command>INSERT</command></td><td>Neuen Datensatz in eine Tabelle einfügen</td>
+     </tr>
+     <tr>
+      <td><command>LOAD DATA</command></td>
+      <td>Nimmt neue Datensätze in eine Tabelle auf, die in einer ASCII-Datei definiert wurden</td>
+     </tr>
+     <tr>
+      <td><command>REPLACE</command></td>
+      <td>Ersetzt einen bereits vorhandenen Datensatz durch einen anderen</td>
+     </tr>
+     <tr>
+      <td><command>SELECT</command></td><td>Fragt vorhandene Datensätze in Tabellen ab</td>
+     </tr>
+     <tr>
+      <td><command>TRUNCATE TABLE</command></td><td>Löscht alle Datensätze einer Tabelle</td>
+     </tr>
+     <tr>
+      <td><command>UPDATE</command></td><td>Verändert den Inhalt eines vorhandenen Datensatzes</td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
+Wartung
+    </heading>
+
+    <table>
+     <pdf-column width="150"/>
+     <pdf-column/>
+     <tr>
+      <th>SQL-Kommando</th><th>Erklärung</th>
+     </tr>
+     <tr>
+      <td><command>BACKUP TABLE</command></td><td>Erstellt ein Backup einer Tabelle</td>
+     </tr>
+     <tr>
+      <td><command>LOCK TABLE</command></td>
+      <td>Blockiert eine Tabelle für Schreib- und Lesezugriffe</td>
+     </tr>
+     <tr>
+      <td><command>RESTORE TABLE</command></td>
+      <td>Stellt eine mit BACKUP gesicherte Tabelle wieder her</td>
+     </tr>
+     <tr>
+      <td><command>UNLOCK TABLE</command></td>
+      <td>Gibt eine mit LOCK blockierte Tabelle wieder frei</td>
+     </tr>
+     <tr>
+      <td><command>ANALYZE TABLE</command></td>
+      <td>Liefert Informationen über die Aktualität der Schlüssel einer Tabelle.</td>
+     </tr>
+     <tr>
+      <td><command>CHECK TABLE</command></td>
+      <td>Überprüft eine MyISAM-Tabelle auf Fehler</td>
+     </tr>
+     <tr>
+      <td><command>OPTIMIZE TABLE</command></td>
+      <td>Optimiert die Speicherzuordnung einer MyISAM- und BDB-Tabelle</td>
+     </tr>
+     <tr>
+      <td><command>REPAIR TABLE</command></td>
+      <td>In absoluten Notfällen hilft vielleicht dieses Kommando beschädigte MyISAM-Tabellen zu reparieren</td>
+     </tr>
+    </table>
+   </section>
+
+   <section>
+    <heading>
 Funktionen
-  </heading>
-  <table>
-   <pdf-column width="150"/>
-   <pdf-column/>
-   <tr>
-    <th>SQL-Kommando</th><th>Erklärung</th>
-   </tr>
-   <tr>
-    <td><command>CEILING(x)</command></td><td>Liefert nächsthöhere, aufgerundete ganze Zahl x</td>
-   </tr>
-   <tr>
-    <td><command>FLOOR(x)</command></td><td>Liefert nächstkleinere, abgerundete Zahl x</td>
-   </tr>
-   <tr>
-    <td><command>MOD(x, y)</command></td><td>Liefert Modulo von x und y</td>
-   </tr>
-   <tr>
-    <td><command>PI( )</command></td><td>Liefert die Konstante PI</td>
-   </tr>
-   <tr>
-    <td><command>POW(x, y)</command></td><td>Liefert das Ergebnis von x{hoch y}</td>
-   </tr>
-   <tr>
-    <td><command>RAND()</command></td><td>Liefert eine Zufallszahl zwischen 0.0 und 0.1</td>
-   </tr>
-   <tr>
-    <td><command>ROUND(x)</command></td><td>Rundet zur nächstliegenden Ganzzahl</td>
-   </tr>
-   <tr>
-    <td><command>ROUND(x, y)</command></td><td>Rundet auf y Nachkommastellen</td>
-   </tr>
-   <tr>
-    <td><command>SIGN(x)</command></td><td>Erwirkt einen Vorzeichenwechsel</td>
-   </tr>
-   <tr>
-    <td><command>TRUNCATE(x)</command></td><td>Liefert den ganzzahligen Teil einer Kommazahl</td>
-   </tr>
-   <tr>
-    <td><command>TRUNCATE(X, y)</command></td>
-    <td>Liefert eine Kommazahl mit y Nachkommastellen</td>
-   </tr>
-   <tr>
-    <td><command>CREATEST(x, y, ...)</command></td><td>Liefert das Maximum von x,y,...</td>
-   </tr>
-   <tr>
-    <td><command>IFNULL(adr1, adr2)</command></td>
-    <td>Liefert adr2, wenn adr1 NULL ist, ansonsten adr1</td>
-   </tr>
-   <tr>
-    <td><command>ISNULL(x)</command></td><td>Liefert 1, wenn x NULL ist, ansonsten 0</td>
-   </tr>
-   <tr>
-    <td><command>STRCMP(str1, str2)</command></td><td>Liefert 1, wenn str1 gleich str2 ist</td>
-   </tr>
-   <tr>
-    <td><command>CURDATE()</command></td><td>Liefert das aktuelle Datum als Zeichenkette</td>
-   </tr>
-   <tr>
-    <td><command>CURTIME()</command></td><td>Liefert die aktuelle Zeit als Zeichenkette</td>
-   </tr>
-   <tr>
-    <td><command>DATE_ADD(dat, x)</command></td><td>Liefert die Addition von dat + x als Datum</td>
-   </tr>
-   <tr>
-    <td><command>DATE_FORMAT(format)</command></td><td>Formatiert einen Datum- oder Zeitwert</td>
-   </tr>
-   <tr>
-    <td><command>HOUR(x)</command></td><td>Liefert die Stunde einer Zeitangabe x</td>
-   </tr>
-   <tr>
-    <td><command>MINUTE(x)</command></td><td>Liefert die Minute einer Zeitangabe x</td>
-   </tr>
-   <tr>
-    <td><command>MONTH(x)</command></td><td>Liefert den Monat des Datums x</td>
-   </tr>
-   <tr>
-    <td><command>NOW()</command></td><td>Liefert das aktuelle Datum und die aktuelle Uhrzeit</td>
-   </tr>
-   <tr>
-    <td><command>SECOND(x)</command></td><td>Liefert die Sekunden einer Zeitangabe x</td>
-   </tr>
-   <tr>
-    <td><command>TIME_FORMAT(formate)</command></td><td>Formatiert eine Zeitangabe</td>
-   </tr>
-   <tr>
-    <td><command>YEAR(x)</command></td><td>Liefert das Jahr des Datums x</td>
-   </tr>
-   <tr>
-    <td><command>AVG(x)</command></td>
-    <td>Ermittelt den arithmetischen Mittelwert einer Spalte x</td>
-   </tr>
-   <tr>
-    <td><command>COUNT(x)</command></td>
-    <td>Ermittelt die Anzahl von Datensätzen in der Spalte x</td>
-   </tr>
-   <tr>
-    <td><command>MAX(x)</command></td>
-    <td>Ermittelt den Maximumwert einer Spalte x</td>
-   </tr>
-   <tr>
-    <td><command>MIN(x)</command></td><td>Ermittelt den Minimumwert einer Spalte x</td>
-   </tr>
-   <tr>
-    <td><command>SUM(x)</command></td><td>Liefert die Summa aller Werte in Spalte x</td>
-   </tr>
-   <tr>
-    <td><command>DATABASE()</command></td>
-    <td>Liefert den Namen der aktuellen Datenbank als Zeichenkette</td>
-   </tr>
-   <tr>
-    <td><command>LAST_INSERT()</command></td>
-    <td>Liefert den zuletzt verwendeten AUTO-INCREMENT zurück</td>
-   </tr>
-   <tr>
-    <td><command>PASSWORT(x)</command></td><td>Verschlüsselt den Wert x</td>
-   </tr>
-   <tr>
-    <td><command>USER()</command></td><td>Liefert den aktuellen Benutzernamen des Clients</td>
-   </tr>
-   <tr>
-    <td><command>VERSION()</command></td>
-    <td>Liefert die aktuelle Version des Datenbank-Clients</td>
-   </tr>
-   <tr>
-    <td><command>CHAR_LENGTH(x)</command></td><td>Liefert die Länge der Zeichenkette x</td>
-   </tr>
-   <tr>
-    <td><command>CONCAT(s1, s2, ...)</command></td>
-    <td>Verbindet die einzelnen Zeichenketten s1,s2 zu s</td>
-   </tr>
-   <tr>
-    <td><command>INSERT(s1, p, 0, s2)</command></td>
-    <td>Fügt die Zeichenkette s2 an der Position p in der Zeichenkette s1 ein
-    </td>
-   </tr>
-   <tr>
-    <td><command>LENGTH(x)</command></td><td>Liefert die Anzahl der Zeichen in x</td>
-   </tr>
-   <tr>
-    <td><command>LOWER(x)</command></td><td>Wandelt alle Großbuchstaben in Kleinbuchstaben um</td>
-   </tr>
-   <tr>
-    <td><command>LTRIM(x)</command></td><td>Entfernt vorangestellte Leerzeichen von x</td>
-   </tr>
-   <tr>
-    <td><command>RTRIM(x)</command></td><td>Entfernt nachgestellte Leerzeichen von x</td>
-   </tr>
-   <tr>
-    <td><command>TRIM(x)</command></td>
-    <td>Entfernt vorangestellte und nachfolgende Leerzeichen von x</td>
-   </tr>
-   <tr>
-    <td><command>UCASE(x)</command></td><td>Wandelt alle Zeichen in x in Großbuchstaben um</td>
-   </tr>
-   <tr>
-    <td><command>BIN(x)</command></td><td>Liefert den Dualcode der Dezimalzahl x</td>
-   </tr>
-   <tr>
-    <td><command>HEX(x)</command></td><td>Liefert den Hexadezimalcode der Dezimalzahl x</td>
-   </tr>
-   <tr>
-    <td><command>OCT(x)</command></td><td>Liefert den Oktalcode der Dezimalzahl x</td>
-   </tr>
-  </table>
- </section>
-</section>
-</split>
+    </heading>
+
+    <table>
+     <pdf-column width="150"/>
+     <pdf-column/>
+     <tr>
+      <th>SQL-Kommando</th><th>Erklärung</th>
+     </tr>
+     <tr>
+      <td><command>CEILING(x)</command></td><td>Liefert nächsthöhere, aufgerundete ganze Zahl x</td>
+     </tr>
+     <tr>
+      <td><command>FLOOR(x)</command></td><td>Liefert nächstkleinere, abgerundete Zahl x</td>
+     </tr>
+     <tr>
+      <td><command>MOD(x, y)</command></td><td>Liefert Modulo von x und y</td>
+     </tr>
+     <tr>
+      <td><command>PI( )</command></td><td>Liefert die Konstante PI</td>
+     </tr>
+     <tr>
+      <td><command>POW(x, y)</command></td><td>Liefert das Ergebnis von x{hoch y}</td>
+     </tr>
+     <tr>
+      <td><command>RAND()</command></td><td>Liefert eine Zufallszahl zwischen 0.0 und 0.1</td>
+     </tr>
+     <tr>
+      <td><command>ROUND(x)</command></td><td>Rundet zur nächstliegenden Ganzzahl</td>
+     </tr>
+     <tr>
+      <td><command>ROUND(x, y)</command></td><td>Rundet auf y Nachkommastellen</td>
+     </tr>
+     <tr>
+      <td><command>SIGN(x)</command></td><td>Erwirkt einen Vorzeichenwechsel</td>
+     </tr>
+     <tr>
+      <td><command>TRUNCATE(x)</command></td><td>Liefert den ganzzahligen Teil einer Kommazahl</td>
+     </tr>
+     <tr>
+      <td><command>TRUNCATE(X, y)</command></td>
+      <td>Liefert eine Kommazahl mit y Nachkommastellen</td>
+     </tr>
+     <tr>
+      <td><command>GREATEST(x, y, ...)</command></td><td>Liefert das Maximum von x,y,...</td>
+     </tr>
+     <tr>
+      <td><command>IFNULL(adr1, adr2)</command></td>
+      <td>Liefert adr2, wenn adr1 NULL ist, ansonsten adr1</td>
+     </tr>
+     <tr>
+      <td><command>ISNULL(x)</command></td><td>Liefert 1, wenn x NULL ist, ansonsten 0</td>
+     </tr>
+     <tr>
+      <td><command>STRCMP(str1, str2)</command></td><td>Liefert 1, wenn str1 gleich str2 ist</td>
+     </tr>
+     <tr>
+      <td><command>CURDATE()</command></td><td>Liefert das aktuelle Datum als Zeichenkette</td>
+     </tr>
+     <tr>
+      <td><command>CURTIME()</command></td><td>Liefert die aktuelle Zeit als Zeichenkette</td>
+     </tr>
+     <tr>
+      <td><command>DATE_ADD(dat, x)</command></td><td>Liefert die Addition von dat + x als Datum</td>
+     </tr>
+     <tr>
+      <td><command>DATE_FORMAT(format)</command></td><td>Formatiert einen Datum- oder Zeitwert</td>
+     </tr>
+     <tr>
+      <td><command>HOUR(x)</command></td><td>Liefert die Stunde einer Zeitangabe x</td>
+     </tr>
+     <tr>
+      <td><command>MINUTE(x)</command></td><td>Liefert die Minute einer Zeitangabe x</td>
+     </tr>
+     <tr>
+      <td><command>MONTH(x)</command></td><td>Liefert den Monat des Datums x</td>
+     </tr>
+     <tr>
+      <td><command>NOW()</command></td><td>Liefert das aktuelle Datum und die aktuelle Uhrzeit</td>
+     </tr>
+     <tr>
+      <td><command>SECOND(x)</command></td><td>Liefert die Sekunden einer Zeitangabe x</td>
+     </tr>
+     <tr>
+      <td><command>TIME_FORMAT(formate)</command></td><td>Formatiert eine Zeitangabe</td>
+     </tr>
+     <tr>
+      <td><command>YEAR(x)</command></td><td>Liefert das Jahr des Datums x</td>
+     </tr>
+     <tr>
+      <td><command>AVG(x)</command></td>
+      <td>Ermittelt den arithmetischen Mittelwert einer Spalte x</td>
+     </tr>
+     <tr>
+      <td><command>COUNT(x)</command></td>
+      <td>Ermittelt die Anzahl von Datensätzen in der Spalte x</td>
+     </tr>
+     <tr>
+      <td><command>MAX(x)</command></td>
+      <td>Ermittelt den Maximumwert einer Spalte x</td>
+     </tr>
+     <tr>
+      <td><command>MIN(x)</command></td><td>Ermittelt den Minimumwert einer Spalte x</td>
+     </tr>
+     <tr>
+      <td><command>SUM(x)</command></td><td>Liefert die Summe aller Werte in Spalte x</td>
+     </tr>
+     <tr>
+      <td><command>DATABASE()</command></td>
+      <td>Liefert den Namen der aktuellen Datenbank als Zeichenkette</td>
+     </tr>
+     <tr>
+      <td><command>LAST_INSERT()</command></td>
+      <td>Liefert den zuletzt verwendeten AUTO-INCREMENT zurück</td>
+     </tr>
+     <tr>
+      <td><command>PASSWORT(x)</command></td><td>Verschlüsselt den Wert x</td>
+     </tr>
+     <tr>
+      <td><command>USER()</command></td><td>Liefert den aktuellen Benutzernamen des Clients</td>
+     </tr>
+     <tr>
+      <td><command>VERSION()</command></td>
+      <td>Liefert die aktuelle Version des Datenbank-Clients</td>
+     </tr>
+     <tr>
+      <td><command>CHAR_LENGTH(x)</command></td><td>Liefert die Länge der Zeichenkette x</td>
+     </tr>
+     <tr>
+      <td><command>CONCAT(s1, s2, ...)</command></td>
+      <td>Verbindet die einzelnen Zeichenketten s1,s2 zu s</td>
+     </tr>
+     <tr>
+      <td><command>INSERT(s1, p, 0, s2)</command></td>
+      <td>Fügt die Zeichenkette s2 an der Position p in der Zeichenkette s1 ein
+      </td>
+     </tr>
+     <tr>
+      <td><command>LENGTH(x)</command></td><td>Liefert die Anzahl der Zeichen in x</td>
+     </tr>
+     <tr>
+      <td><command>LOWER(x)</command></td><td>Wandelt alle Großbuchstaben in Kleinbuchstaben um</td>
+     </tr>
+     <tr>
+      <td><command>LTRIM(x)</command></td><td>Entfernt vorangestellte Leerzeichen von x</td>
+     </tr>
+     <tr>
+      <td><command>RTRIM(x)</command></td><td>Entfernt nachgestellte Leerzeichen von x</td>
+     </tr>
+     <tr>
+      <td><command>TRIM(x)</command></td>
+      <td>Entfernt vorangestellte und nachfolgende Leerzeichen von x</td>
+     </tr>
+     <tr>
+      <td><command>UCASE(x)</command></td><td>Wandelt alle Zeichen in x in Großbuchstaben um</td>
+     </tr>
+     <tr>
+      <td><command>BIN(x)</command></td><td>Liefert den Dualcode der Dezimalzahl x</td>
+     </tr>
+     <tr>
+      <td><command>HEX(x)</command></td><td>Liefert den Hexadezimalcode der Dezimalzahl x</td>
+     </tr>
+     <tr>
+      <td><command>OCT(x)</command></td><td>Liefert den Oktalcode der Dezimalzahl x</td>
+     </tr>
+    </table>
+   </section>
+  </section>
+ </split>
 </chapter>
