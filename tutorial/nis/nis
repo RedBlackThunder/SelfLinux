@@ -1,13 +1,29 @@
-Titel: NIS - Yellow Pages
-Autor: Florian Frank <florian.frank@pingos.org>
-Autor: Frédéric Raynal <pappy@users.sourceforge.net>
-Lizenz: GFDL
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>NIS - Yellow Pages</title>
 
+ <author>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </author>
 
+ <author>
+  <name>Frédéric Raynal</name>
+  <mailto>pappy@users.sourceforge.net</mailto>
+ </author>
 
-Yellow Pages
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
 
+ <license>GFDL</license>
+
+ <index>nis</index>
+
+ <description>
+  <textblock>
 Der Network Information Service (NIS) stellt auf einem Server eine
 Datenbank zur Verfügung. Jeder Computer im Netzwerk, auf dem ein NIS
 Client läuft, kann eine Abfrage an diese Datenbank absetzen, um
@@ -17,25 +33,33 @@ Administration einer grossen Anzahl von Computern ermöglicht -
 insbesondere, wenn hier gleichzeitig ein Dateisystem wie NFS eingesetzt
 wird, da durch den Server und die Datenbank Änderungen der
 Benutzerinformationen sofort allen Clients zur Verfügung stehen.
+  </textblock>
+ </description>
 
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
 
-
-
-1 Einleitung
-
+   <textblock>
 Der Network Information Service (NIS) ist ürsprünglich eine Entwicklung
-von Sun und als Sun Yellow Pages bekannt (noch bekannter einfach als
-Yellow Pages oder YP). Doch dies ist eigentlich eine Handelsmarke der
+von <ref lang="en" url="http://www.sun.com">Sun</ref> und als <strong>Sun Yellow Pages</strong> bekannt (noch bekannter einfach als
+<strong>Yellow Pages</strong> oder <strong>YP</strong>). Doch dies ist eigentlich eine Handelsmarke der
 British Telecom und dürfte konsequenterweise nicht ohne die
 entsprechenden Rechte benutzt werden. Die Yellow Pages der British
 Telecom sind das Branchentelefonbuch (wie im deutschsprachigen Raum die
-"Gelben Seiten").
+<strong>Gelben Seiten</strong>).
+   </textblock>
 
+   <textblock>
 Die NIS Server speichern Kopien von gemeinsamen Konfigurationsdateien
 verschiedener vernetzter Computer in einer Datenbank. Die NIS Clients
 wiederum richten ihre Anfragen an diese Server, anstatt eigene
 Konfigurationsdateien zu benutzen.
+   </textblock>
 
+   <textblock>
 Nehmen wir einmal an, wir wären User im Netzwerk und wollten das
 Passwort ändern. Und nehmen wir weiter an, YP sei nicht installiert.
 Wenn wir uns die Möglichkeit offenhalten wollten, uns von jedem Computer
@@ -47,20 +71,28 @@ dem NIS-Server übermittelt und in der Datenbank geändert. Und wenn sich
 nun ein User an einem vernetzten Computer einklinken wollte, würde das
 Passwort mit dem in der Datenbank auf dem Server verglichen (natürlich
 müsste auch dann ein NIS-Client auf dem Computer des Users laufen).
+   </textblock>
 
-glibc 2.x (libc6) unterstützt den Einsatz von NSS (Name Switch Service).
-Dieser Dienst bestimmt durch die Datei /etc/nsswitch.conf, in welcher
-Reihenfolge Informationen gesucht werden müssen. Er unterstützt Aliases,
-das Ethernet-Protokoll, Groups, Hosts, Netgroups, Netzwerke, Protokolle,
-Öffentliche Schlüssel, Passwd, RPC, Dienste und Shadow Maps.
+   <textblock>
+glibc 2.x (libc6) unterstützt den Einsatz von <strong>NSS</strong> (<strong>Name Switch Service</strong>).
+Dieser Dienst bestimmt durch die Datei <path>/etc/nsswitch.conf</path>, in welcher
+Reihenfolge Informationen gesucht werden müssen. Er unterstützt <strong>Aliases</strong>,
+das <strong>Ethernet</strong>-Protokoll, <strong>Groups</strong>, <strong>Hosts</strong>, <strong>Netgroups</strong>, <strong>Netzwerke</strong>, <strong>Protokolle</strong>,
+<strong>öffentliche Schlüssel</strong>, <strong>Passwd</strong>, <strong>RPC</strong>, <strong>Dienste</strong> und <strong>Shadow Maps</strong>.
+   </textblock>
+  </section>
 
+  <section>
+   <heading>
+Wie funktioniert YP (NIS)?
+   </heading>
 
+   <section>
+    <heading>
+Die Struktur
+    </heading>
 
-
-1 Wie funktioniert YP (NIS)?
-
-1.1 Die Struktur
-
+    <textblock>
 Im Netzwerk wird ein Computer als NIS-Server für eine Domäne dienen.
 Diese Domäne stimmt mehr oder weniger mit dem Namen der Datenbank
 überein, die vom Server verwaltet wird. Der Domänenname ist der
@@ -71,192 +103,290 @@ Es kann mehr als einen NIS-Server in derselben DNS-Domain geben. Sie
 können auf dem NIS-Level unterschiedliche Domänen verwalten, oder
 diesselbe NIS-Domäne (in diesem Fall gibt es einen Master-Server und
 einen Slave-Server).
+    </textblock>
 
+    <textblock>
 Die Slave-Server speichern lediglich eine Kopie der Datenbank des
 Master-Servers. Sie unterstützen den Master, wenn er zu viel Zeit
 benötigt, um die Anfragen der Clients zu beantworten, oder er gar in die
 Knie geht.
+    </textblock>
 
+    <textblock>
 Die Slaves werden über jede Änderung im Datenbestand durch das Programm
-yppush informiert, und sie werden daraufhin ihre eigenen Datenbanken auf
+<command>yppush</command> informiert, und sie werden daraufhin ihre eigenen Datenbanken auf
 den neuesten Stand bringen, um die Master-Datenbank exakt
 wiederzuspiegeln.
+    </textblock>
 
+    <textblock>
 Die Clients benötigen ihrerseits keine Pflege, da sie ständig mit dem
 NIS-Server verbunden sind und auf die Informationen in dessen Datenbank
 zugreifen können.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Die Maps
+    </heading>
 
-
-
-1.1 Die Maps
-
-Die YP-Datenbanken liegen im GDBM-Format vor, das aus dem ASCII-Format
+    <textblock>
+Die YP-Datenbanken liegen im <strong>GDBM</strong>-Format vor, das aus dem <strong>ASCII</strong>-Format
 erzeugt wird. Diese Konvertierung geschieht bei der Installation des
-Servers durch das makedbm Programm.
+Servers durch das Programm <command>makedbm</command>.
+    </textblock>
 
-Diese Maps bestehen aus Schlüssel/Wert-Beziehungen. Alle YP-Maps
+    <textblock>
+Diese Maps bestehen aus <strong>Schlüssel/Wert-Beziehungen</strong>. Alle YP-Maps
 basieren auf diesem Modell. Für den Server ist der Inhalt dieser Paare
 ohne Bedeutung (mit Ausnahme der Daten, die den Master-Server
 betreffen). Das bedeutet, dass für den Server eine Map mit Passwörtern,
 Gruppen, oder was-auch-immer, nichts anderes ist als eine Ansammlung von
 Schlüssel/Wert-Paaren. Nur der Client weiss, wie diese richtig zu deuten
 sind, und wie er die Information findet, die er braucht.
+    </textblock>
 
+    <textblock>
 Diese Repräsentation von Daten kann problematisch werden. Da der Server
 den zu einem Schlüssel gehörenden Wert nicht interpretierend lesen kann,
 kann er auch einen zweiten, verborgenen Schlüssel nicht finden. An einem
 Beispiel wird deutlich, was gemeint ist: Sucht der Client nach
-Passwörtern, könnte er vom Login-Namen ausgehen oder von der UID (User
-ID, eine eindeutige Kennung für jeden User im Netzwerk). Um diese Suche
+<ref chapter="passwoerter">Passwörtern</ref>, könnte er vom Login-Namen ausgehen oder von der <ref chapter="nutzer_unter_linux" iref="Benutzer-ID (UID) und Gruppen-ID (GID)">UID (User
+ID</ref>, eine eindeutige Kennung für jeden User im Netzwerk). Um diese Suche
 zu ermöglichen, muss die Passwort-Information verdoppelt werden. Dies
 führt uns allerdings zu redundanter Information, wie man an den Dateien
-passwd.byname und passwd.byuid sehen kann. Für jede Form der Suche muss
+<path>passwd.byname</path> und <path>passwd.byuid</path> sehen kann. Für jede Form der Suche muss
 eine Map erzeugt werden, und bei einer Änderung müssen die Daten
 mehrfach übertragen werden.
+    </textblock>
 
+    <textblock>
 Drei Parameter werden von dem Client benötigt, um eine gesuchte
 Information in der Datenbank aufzuspüren:
+    </textblock>
 
-1. der Name der Domain: das ist der Name der Datenbank auf dem YP-Server
-2. der Name der Map
-3. der Name des Schlüssels
+    <ul>
+     <li>
+der Name der Domain: das ist der Name der Datenbank auf dem YP-Server
+     </li>
+     <li>
+der Name der Map
+     </li>
+     <li>
+der Name des Schlüssels
+     </li>
+    </ul>
 
-Benötigt also ein Client das Passwort des Users toto in der Domain titi,
-wird er in der Datei /var/yp/titi/passwd.byname nach dem User toto
+    <textblock>
+Benötigt also ein Client das Passwort des Users <strong>toto</strong> in der Domain <strong>titi</strong>,
+wird er in der Datei <path>/var/yp/titi/passwd.byname</path> nach dem User <strong>toto</strong>
 suchen.
+    </textblock>
 
+    <textblock>
 Das führt zu einem sehr flexiblen System, da es nun, um eine neue Domain
-einzurichten, lediglich nötig ist, das Verzeichnis /var/yp/new_domain zu
-erzeugen, das Makefile zu kopieren, und mit den korrekten Optionen
+einzurichten, lediglich nötig ist, das Verzeichnis <path>/var/yp/new_domain</path> zu
+erzeugen, das <ref chapter="make">Makefile</ref> zu kopieren, und mit den korrekten Optionen
 auszuführen.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Remote Procedure Calls (RPC)
+    </heading>
 
-
-
-1.1 Remote Procedure Calls (RPC)
-
+    <textblock>
 Die Funktionalität der Yellow Pages basiert im wesentlichen auf den
 Remote Procedure Calls (RPCs), dem Austausch von Anfragen zwischen
 Server und den Clients.
+    </textblock>
 
-Der RPC Portmapper portmap ist ein Programm, das die
+    <textblock>
+Der RPC Portmapper <command>portmap</command> ist ein Programm, das die
 RPC-Programm-Nummern in Portnummern übersetzt. Wenn ein RPC gestartet
 wird, wird es portmap mitteilen, welchen Port es benutzen will und
 welche RPC-Programm-Nummer es ansprechen will.
+    </textblock>
 
+    <textblock>
 Wenn ein Client eine RPC-Abfrage an eine bestimmte Programm-Nummer
 richten will, wird er zuerst den portmap-Server kontaktieren, um die
 Nummer des Ports zu erfahren, auf dem dieses Programm läuft. Dann kann
 der Client die RPC-Packete an den entsprechenden Port schicken. Das YP
 Client/Server-Modell ist also nur ein Sonderfall des RPC
 Client/Server-Modells.
+    </textblock>
 
-Die Datei yp_prot.h enthält die Strukturen und die Prototypen für 11
+    <textblock>
+Die Datei <path>yp_prot.h</path> enthält die Strukturen und die Prototypen für 11
 Funktionen, die das RPC-Protokoll definieren.
+    </textblock>
 
-* YPPROC_DOMAIN und YPPROC_DOMAIN_NOACK ermöglichen den Clients, zu
+    <ul>
+     <li>
+<strong>YPPROC_DOMAIN</strong> und <strong>YPPROC_DOMAIN_NOACK</strong> ermöglichen den Clients, zu
 einer gegebenen Domain den richtigen Server zu finden.
-* Die Funktionen YPPROC_MATCH, YPPROC_FIRST, YPPROC_NEXT und
-YPPROC_ALL ermöglichen es, auf die Daten der Maps zuzugreifen.
-* YPPROC_XFR wird von yppush aufgerufen, um den Slaves anzuzeigen,
-daß sich die Map auf dem Master geändert hat und die Kopien auf den
+     </li>
+     <li>
+Die Funktionen <strong>YPPROC_MATCH</strong>, <strong>YPPROC_FIRST</strong>, <strong>YPPROC_NEXT</strong> und
+<strong>YPPROC_ALL</strong> ermöglichen es, auf die Daten der Maps zuzugreifen.
+     </li>
+     <li>
+<strong>YPPROC_XFR</strong> wird von yppush aufgerufen, um den Slaves anzuzeigen,
+dass sich die Map auf dem Master geändert hat und die Kopien auf den
 neuesten Stand gebracht werden müssen.
-* YPPROC_CLEAR löscht den Inhalt des Caches und der File-Handles.
+     </li>
+     <li>
+<strong>YPPROC_CLEAR</strong> löscht den Inhalt des Caches und der File-Handles.
 Diese Funktion wird aufgerufen, nachdem eine Map upgedated wurde, z.B.
-nach dem makedbm-c Kommando.
-* YPPROC_MASTER, YPPROC_ORDER und YPPROC_MAPLIST ermöglichen es,
+nach dem <command>makedbm -c</command> Kommando.
+     </li>
+     <li>
+<strong>YPPROC_MASTER</strong>, <strong>YPPROC_ORDER</strong> und <strong>YPPROC_MAPLIST</strong> ermöglichen es,
 spezielle Informationen über die Maps zu erhalten. Wenn zum Beispiel auf
-einem Client ein Paßwort geändert wird, ruft das Programm yppasswd die
-Funktion YPPROC_MASTER auf, um den Server zu bestimmen, bevor dort die
+einem Client ein Passwort geändert wird, ruft das Programm <command>yppasswd</command> die
+Funktion <strong>YPPROC_MASTER</strong> auf, um den Server zu bestimmen, bevor dort die
 Datenbank geändert wird.
+     </li>
+    </ul>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Auf der Seite des Clients
+   </heading>
 
+   <section>
+    <heading>
+Client Einführung
+    </heading>
 
-
-1 Auf der Seite des Clients
-
-1.1 Client Einführung
-
-Die Client-Dienste, die zu yellow pages gehören, basieren auf dem ypbind
+    <textblock>
+Die Client-Dienste, die zu yellow pages gehören, basieren auf dem <command>ypbind</command>
 Daemon. Er sendet die Anforderungen an den YP-Server. Zunächst betrachten
 wir seine Arbeitsweise und die Konfiguration. Danach sehen wir, wie
 das NIS-Protokoll arbeitet. Im Anschluss befassten wir uns mit den
 verschiedenen Tools, die auf der Client-Seite zur Verfügung stehen.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Konfiguration des NIS-Clients
+    </heading>
 
-
-
-1.1 Konfiguration des NIS-Clients
-
+    <textblock>
 Die einzige Voraussetzung, um einen NIS-Client zur Verfügung zu haben,
-ist der Start des ypbind-Dämons.
+ist der Start des <command>ypbind</command>-Dämons.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+ypbind
+    </heading>
 
-
-
-1.1 ypbind
-
+    <textblock>
 ypbind etabliert die Verbindung zwischen Client und dem NIS-Server.
 Diese Verbindung wird sichtbar durch eine Datei im Verzeichnis
-/var/yp/binding1, die normalerweise in der Form domainname.version
+<path>/var/yp/binding1</path>, die normalerweise in der Form <path>domainname.version</path>
 benannt ist. Die einzige z. Z. unterstützte Version ist Version 2. Wenn
-der Name der NIS-Domäne etwa "messiah" lautet, heißt die Datei
-messiah.2
+der Name der NIS-Domäne etwa <strong>messiah</strong> lautet, heiaat die Datei
+<path>messiah.2</path>
+    </textblock>
 
-Das Programm ypbind gehört dem Super-User (d. h. root), demzufolge
-findet es sich entweder in /sbin oder /usr/sbin.
+    <textblock>
+Das Programm <command>ypbind</command> gehört dem Super-User (d. h. <ref chapter="nutzer_unter_linux" iref="root">root</ref>), demzufolge
+findet es sich entweder in <path>/sbin</path> oder <path>/usr/sbin</path>.
+    </textblock>
 
-Nach dem Start sucht und findet (hoffentlich) ypbind seine Anweisungen
-in der Datei /etc/yp.conf. Diese Datei kann folgende Einträge enthalten:
+    <textblock>
+Nach dem Start sucht und findet (hoffentlich) <command>ypbind</command> seine Anweisungen
+in der Datei <path>/etc/yp.conf</path>. Diese Datei kann folgende Einträge enthalten:
+    </textblock>
 
-* domain nisdomain server hostname: Der Client sucht nach hostname
+    <ul>
+     <li>
+<strong>domain nisdomain server hostname</strong>: Der Client sucht nach hostname
 für die Domäne nisdomain;
-
-* domain nisdomain broadcast: Der Client fragt per Rundspruch im
+     </li>
+     <li>
+<strong>domain nisdomain broadcast</strong>: Der Client fragt per Rundspruch im
 lokalen Netzwerk nach der Domäne nisdomain;
+     </li>
+     <li>
+<strong>ypserver hostname</strong>: Der Client spricht direkt hostname für die
+lokale Domäne an. In dieser Konfiguration muß die <ref chapter="tcpip" iref="Adressierung im IP">IP-Adresse</ref> des Servers
+in der lokalen Datei <path>/etc/hosts</path> enthalten sein.
+     </li>
+    </ul>
 
-* ypserver hostname: Der Client spricht direkt hostname für die
-lokale Domäne an. In dieser Konfiguration muß die IP-Adresse des Servers
-in der lokalen /etc/hosts-Datei enthalten sein.
-
+    <textblock>
 Wenn die Konfigurationsdatei nicht existiert oder falsche Einträge
-enthält, sucht ypbind per Rundspruch (broadcast) im lokalen Netzwerk
+enthält, sucht <command>ypbind</command> per Rundspruch (broadcast) im lokalen Netzwerk
 nach dem NIS-Server für die lokale Domäne.
+    </textblock>
 
-Mit wenigen Schritten lässt sich sicherstellen, dass ypbind korrekt
+    <textblock>
+Mit wenigen Schritten lässt sich sicherstellen, dass <command>ypbind</command> korrekt
 konfiguriert ist.
+    </textblock>
 
-1. Erstellen Sie die Datei /etc/yp.conf.
+    <textblock>
+1. Erstellen Sie die Datei <path>/etc/yp.conf</path>.
+    </textblock>
 
-2. Überprüfen Sie, dass portmap aktiviert ist (ps aux | grep
-portmap). Wenn nicht, müssen wir ihn starten. Dieses Programm verbindet
-die TCP/IP- (oder UDP/IP)-Ports des Computers mit den Programmen.
-Während der Initialisierung eines RPC-Servers teilt dieser portmap mit,
+    <textblock>
+2. Überprüfen Sie, dass portmap aktiviert ist (<command>ps aux | grep
+portmap</command>). Wenn nicht, müssen wir ihn starten. Dieses Programm verbindet
+die <ref chapter="tcpip">TCP/IP- (oder UDP/IP)</ref>-Ports des Computers mit den Programmen.
+Während der Initialisierung eines RPC-Servers teilt dieser <command>portmap</command> mit,
 auf welchen Ports er lauscht und die Programmnummern, die er starten
 möchte. Wenn ein Client eine RPC-Anforderung für eine bestimmte
-Port-Nummer absetzt, nimmt er zunächst Kontakt mit portmap auf, um zu
+Port-Nummer absetzt, nimmt er zunächst Kontakt mit <command>portmap</command> auf, um zu
 erfahren, an welchen Port die RPC-Pakete zu senden sind. Deshalb ist es
-unbedingt erforderlich, portmap vor ypbind zu starten.
+unbedingt erforderlich, <command>portmap</command> vor <command>ypbind</command> zu starten.
+    </textblock>
 
-3. Erstellen Sie das Verzeichnis /var/yp.
+    <textblock>
+3. Erstellen Sie das Verzeichnis <path>/var/yp</path>.
+    </textblock>
 
-4. Starten Sie ypbind.
+    <textblock>
+4. Starten Sie <command>ypbind</command>.
+    </textblock>
 
-5. Benutzen Sie das Kommando rpcinfo, um sicherzustellen, das ypbind
+    <textblock>
+5. Benutzen Sie das Kommando <command>rpcinfo</command>, um sicherzustellen, das <command>ypbind</command>
 korrekt arbeitet:
+    </textblock>
 
-* Die Ausführung von "rpc -p localhost" sollte folgende Informationen
+    <textblock>
+Die Ausführung von <command>rpc -p localhost</command> sollte folgende Informationen
 anzeigen:
+    </textblock>
 
+    <shell>
+     <output>
 program         vers    proto   port
 100000  2       tcp     111     portmapper
 100000  2       udp     111     portmapper
 100007  2       tcp     637     ypbind
 100007  2       udp     639     ypbind
+     </output>
+    </shell>
 
+    <textblock>
 oder
+    </textblock>
 
+    <shell>
+     <output>
 program         vers    proto   port
 100000  2       tcp     111     portmapper
 100000  2       udp     111     portmapper
@@ -264,388 +394,711 @@ program         vers    proto   port
 100007  1       udp     758     ypbind
 100007  2       tcp     761     ypbind
 100007  1       tcp     761     ypbind
+     </output>
+    </shell>
 
+    <textblock>
 oder versuchen Sie:
+    </textblock>
 
-* "rpcinfo -u localhost ypbind", was als Ergebnis folgendes
+    <textblock>
+<command>rpcinfo -u localhost ypbind</command>, was als Ergebnis folgendes
 anzeigen sollte:
+    </textblock>
 
+    <shell>
+     <output>
 program 100007 version 2 ready and waiting
+     </output>
+    </shell>
 
+    <textblock>
 oder
+    </textblock>
 
+    <shell>
+     <output>
 program 100007 version 1 ready and waiting
 program 100007 version 2 ready and waiting
+     </output>
+    </shell>
 
-abhängig von der Version von ypbind. Der wichtige Teil ist die
+    <textblock>
+abhängig von der Version von <command>ypbind</command>. Der wichtige Teil ist die
 Zeile mit der Version 2.
+    </textblock>
 
-Nachdem ypbind nun korrekt arbeitet, wird Ihr Rechner zu einem
+    <textblock>
+Nachdem <command>ypbind</command> nun korrekt arbeitet, wird Ihr Rechner zu einem
 NIS-Client. Nun können Sie Ihren NIS-Server ansprechen. Z. B. zeigt
-Ihnen "ypcat passwd.byname" alle Passwörter nach Benutzern geordnet an,
+Ihnen <command>ypcat passwd.byname</command> alle Passwörter nach Benutzern geordnet an,
 die im entsprechenden Verzeichnis vorhanden sind.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Einige Details
+    </heading>
 
-
-
-1.1 Einige Details
-
+    <textblock>
 Einige Dateien benötigen noch kleinere Veränderungen, damit YP
 effizienter arbeiten kann:
+    </textblock>
 
-* /etc/host.conf: "nis" für Namensauflösung hinzufügen.
-* /etc/passwd: folgende Zeile einfügen:
+    <ul>
+     <li>
+<path>/etc/host.conf</path>: <strong>nis</strong> für Namensauflösung hinzufügen.
+     </li>
+     <li>
+<path>/etc/passwd</path>: folgende Zeile einfügen:
+     </li>
+    </ul>
 
+    <file>
+     <title>
+/etc/passwd
+     </title>
+     <content>
 +::::::
+     </content>
+    </file>
 
+    <textblock>
 Dies erlaubt allen Personen, die im Verzeichnis des Servers
 enthalten sind, Kontakt zum Client aufzunehmen. Diese Berechtigungen
-können durch die Symbole "+" und "-" verfeinert werden, um den Zugang
-zum Client zu gewähren oder zu sperren. Um z. B. den "guest"-Benutzer
+können durch die Symbole <strong>+</strong> und <strong>-</strong> verfeinert werden, um den Zugang
+zum Client zu gewähren oder zu sperren. Um z. B. den <strong>guest</strong>-Benutzer
 auszusperren, würden Sie die Zeile
+    </textblock>
 
+    <file>
+     <title>
+/etc/passwd
+     </title>
+     <content>
 -guest::::::
+     </content>
+    </file>
 
+    <textblock>
 hinzufügen. Die Felder, die Sie nicht verändern möchten, sollten
 leer bleiben. Es ist aber möglich, mehr hinzuzufügen:
-+me::::::/bin/ksh
+    </textblock>
 
-Der Benutzer "me" bekommt ksh anstelle ihrer sonstigen
-Login-Shell (die in /etc/password des NIS-Servers definiert ist).
+    <file>
+     <title>
+/etc/passwd
+     </title>
+     <content>
++me::::::/bin/ksh
+     </content>
+    </file>
+
+    <textblock>
+Der Benutzer <strong>me</strong> bekommt <command>ksh</command> anstelle ihrer sonstigen
+Login-Shell (die in <path>/etc/password</path> des NIS-Servers definiert ist).
 Ich möchte noch hinzufügen, das NIS auch die Benutzung von
 Netzgruppen 3 perfekt unterstützt
+    </textblock>
 
+    <file>
+     <title>
+/etc/passwd
+     </title>
+     <content>
 +@sysadmins:::::::
+     </content>
+    </file>
 
-erlaubt den Mitgliedern der Netzgruppe sysadmins Verbindungen zu
+    <textblock>
+erlaubt den Mitgliedern der Netzgruppe <strong>sysadmins</strong> Verbindungen zu
 diesem Client.
+    </textblock>
 
-* /etc/group (und/oder /etc/shadow für bestimmte libc-Versionen):
-wie in /etc/passwd, müssen Sie hier
+    <textblock>
+<path>/etc/group</path> (und/oder <path>/etc/shadow</path> für bestimmte libc-Versionen):
+wie in <path>/etc/passwd</path>, müssen Sie hier
+    </textblock>
 
+    <file>
+     <title>
+/etc/shadow
+     </title>
+     <content>
 +:
+     </content>
+    </file>
 
+    <textblock>
 hinzufügen. Sie können auch mit Gruppenberechtigungen
-experimentieren, indem sie + und - hinzufügen.
+experimentieren, indem sie <strong>+</strong> und <strong>-</strong> hinzufügen.
+    </textblock>
 
-* /etc/nsswitch.conf: der "Network Services Switch" erlaubt es (wie
-/etc/hosts.conf), die Reihenfolge zu definieren, in der die gewünschte
+    <textblock>
+<path>/etc/nsswitch.conf</path>: der <strong>Network Services Switch</strong> erlaubt es (wie
+<path>/etc/hosts.conf</path>), die Reihenfolge zu definieren, in der die gewünschte
 Information gesucht wird. Zur Auswahl stehen:
+    </textblock>
 
-nisplus  Suche per NIS+ (d. h. NIS Version 3, eine sichere Version von NIS)
-nis      Suche per NIS (NIS Version 2, entspricht YP)
-dns      Suche per DNS (Domain Name Server)
-files    Suche in den lokalen Dateien
-db       Suche in der Datenbank /var/db
+    <table>
+     <pdf-column width="75"/>
+     <pdf-column/>
+     <tr>
+      <td>
+nisplus
+      </td>
+      <td>
+Suche per NIS+ (d. h. NIS Version 3, eine sichere Version von NIS)
+      </td>
+     </tr>
+     <tr>
+      <td>
+nis
+      </td>
+      <td>
+Suche per NIS (NIS Version 2, entspricht YP)
+      </td>
+     </tr>
+     <tr>
+      <td>
+dns
+      </td>
+      <td>
+Suche per DNS (Domain Name Server)
+      </td>
+     </tr>
+     <tr>
+      <td>
+files
+      </td>
+      <td>
+Suche in den lokalen Dateien
+      </td>
+     </tr>
+     <tr>
+      <td>
+db
+      </td>
+      <td>
+Suche in der Datenbank /var/db
+      </td>
+     </tr>
+    </table>
 
+    <textblock>
 Hinter jeder Such-Option kann ein Befehl in folgender Form eingesetzt
 werden:
+    </textblock>
 
+    <file>
+     <content>
 `[' ( `!'? STATUS `=' ACTION )+ `]'
+     </content>
+    </file>
 
+    <textblock>
 wobei:
+    </textblock>
 
-o STATUS => "success" oder "notfound" oder "unavail" oder "tryagain"
-o ACTION => "return" oder "continue"
+    <ul>
+     <li>
+STATUS => "success" oder "notfound" oder "unavail" oder "tryagain"
+     </li>
+     <li>
+ACTION => "return" oder "continue"
+     </li>
+    </ul>
 
+    <textblock>
 Abhängig von der verwendeten libc-Version verlaufen nicht alle
 Abfragen gleich. Zum Beispiel verwaltet die libc5 keine Passwörter in
-/etc/shadow. Die auf einer Maschine zur Verfügung stehenden Dienste
-benutzen die Bibliothek /lib/libnss_SERVICE.so.X Weitere Informationen
-zu diesem Service finden sich in den Handbuch-Seiten zu nsswitch.conf
+<path>/etc/shadow</path>. Die auf einer Maschine zur Verfügung stehenden Dienste
+benutzen die Bibliothek <path>/lib/libnss_SERVICE.so.X</path>. Weitere Informationen
+zu diesem Service finden sich in den <ref chapter="linux_hilfe" iref="man">Handbuch-Seiten</ref> zu <path>nsswitch.conf</path>
 ("man nsswitch.conf").
+    </textblock>
 
+    <textblock>
 Shadow-Passwörter in NIS werden nur mit der glibc2.x-Bibliothek
 unterstützt. Deshalb sollte man sorgfältig überlegen, ob man sie in
-nsswitch.conf aktiviert.
+<path>nsswitch.conf</path> aktiviert.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Das NIS-Protokoll
+    </heading>
 
-
-
-1.1 Das NIS-Protokoll
-
+    <textblock>
 Nachdem unser NIS-Client nun voll funktionsfähig ist, wollen wir sehen,
 wie er die benötigten Informationen gewinnt.
+    </textblock>
 
+    <textblock>
 Wenn ein Client eine Information benötigt, die sich in einem
 YP-Verzeichnis befindet, sucht er zunächst nach einem YP-Server. Dazu
 öffnet er eine TCP-Verbindung zum lokalen ypbind-Dämonen. Der Client
-informiert ihn über die (NIS-)Domäne, zu der er gehört und ypbind setzt
-mittels der Funktion RPC YPPROC_DOMAIN_NOACK einen Rundspruch im lokalen
+informiert ihn über die (NIS-)Domäne, zu der er gehört und <command>ypbind</command> setzt
+mittels der Funktion <strong>RPC YPPROC_DOMAIN_NOACK</strong> einen Rundspruch im lokalen
 Netz ab. Die NIS-Server, die diese Domäne bedienen, antworten mit einem
-ACK. Die anderen verhalten sich ruhig.
+<strong>ACK</strong>. Die anderen verhalten sich ruhig.
+    </textblock>
 
-ypbind schickt dem Client das Ergebnis der Anfrage (Erfolg oder
-Mißerfolg), und bei Erfolg die Adresse des YP-Servers, der zuerst
+    <textblock>
+<command>ypbind</command> schickt dem Client das Ergebnis der Anfrage (Erfolg oder
+Misserfolg), und bei Erfolg die Adresse des YP-Servers, der zuerst
 geantwortet hat. Der Client kann nun den Server mit seiner Anfrage
 adressieren, indem er die Domäne, das Verzeichnis und den Schlüssel
 angibt.
+    </textblock>
 
+    <textblock>
 Dieses Protokol ist ziemlich langsam, weil es TCP-Verbindungen benutzt.
 Dies wird noch dadurch verschlimmert, weil eine Menge Sockets benutzt
-werden. Um dies zu vermeiden, wartet ypbind nicht auf Anfragen von
+werden. Um dies zu vermeiden, wartet <command>ypbind</command> nicht auf Anfragen von
 Clients. Tatsächlich verwaltet es eine Liste von Servern für jede Domäne
-in der Datei /var/yp/binding/<domainename>.<version> und überprüft
-regelmäßig, ob diese Server noch aktiv sind.
+in der Datei <path>/var/yp/binding/&lt;domainename&gt;.&lt;version&gt;</path> und überprüft
+regelmässig, ob diese Server noch aktiv sind.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Die yp-Tools
+    </heading>
 
-
-1.1 Die yp-Tools
-
+    <textblock>
 Dieser Abschnitt beschreibt kurz einige der Programme aus dem
 yp-Tools-Paket. Wenn Sie mehr darüber erfahren wollen, können Sie für
-jedes dieser Tools eine sehr ausführliche Handbuchseite aufrufen.
+jedes dieser Tools eine sehr ausführliche <ref chapter="linux_hilfe" iref="man">Handbuchseite</ref> aufrufen.
+    </textblock>
 
-* domainname: zeigt oder ändert (abhängig von Optionen) den
+    <ul>
+     <li>
+<command>domainname</command>: zeigt oder ändert (abhängig von Optionen) den
 NIS-Domänen-Namen
-
-* ypcat: zeigt die Werte aller Schlüssel im NIS-Verzeichnis;
-
-* ypmatch: zeigt die Werte eines oder mehrerer Schlüssel im
+     </li>
+     <li>
+<command>ypcat</command>: zeigt die Werte aller Schlüssel im NIS-Verzeichnis;
+     </li>
+     <li>
+<command>ypmatch</command>: zeigt die Werte eines oder mehrerer Schlüssel im
 NIS-Verzeichnis
-
-* ypset: damit kann spezifiziert werden, zu welchen NIS-Server
-ypbind Verbindung aufnehmen muss
-
-* ypwhich: gibt den Namen des NIS-Servers zurück. Mit "-m
-Verzeichnisname" als Option gibt es den Namen des Hauptverzeichnisses
+     </li>
+     <li>
+<command>ypset</command>: damit kann spezifiziert werden, zu welchen NIS-Server
+<command>ypbind</command> Verbindung aufnehmen muss
+     </li>
+     <li>
+<command>ypwhich</command>: gibt den Namen des NIS-Servers zurück. Mit <command>-m
+Verzeichnisname</command>" als Option gibt es den Namen des Hauptverzeichnisses
 zurück.
-
-* yppoll : hat als Argument einen Verzeichnisnamen und gibt den
+     </li>
+     <li>
+<command>yppoll</command>: hat als Argument einen Verzeichnisnamen und gibt den
 Namen des Hauptservers zurück..
+     </li>
+    </ul>
+   </section>
 
+   <section>
+    <heading>
+Einige Worte zu NIS+
+    </heading>
 
-
-
-1.1 Einige Worte zu NIS+
-
+    <textblock>
 Bis jetzt haben wir noch nicht über eine NIS-Variante gesprochen. NIS in
-einem Netzwerk zu benutzen, ist ein großes Sicherheitsrisiko. Wenn z. B.
+einem Netzwerk zu benutzen, ist ein <strong>grosses Sicherheitsrisiko</strong>. Wenn z. B.
 der NIS-Server schlecht geschützt ist und eine Person mit bösen
 Absichten
+    </textblock>
 
-1. den NIS-Domänen-Namen
-2. die IP-Adresse eines NIS-Clients
+    <ul>
+     <li>
+den NIS-Domänen-Namen
+     </li>
+     <li>
+die <ref chapter="tcpip" iref="Adressierung im IP">IP-Adresse</ref> eines NIS-Clients
+     </li>
+    </ul>
 
+    <textblock>
 herausfindet, ist es sehr einfach vorzutäuschen, dass man von dieser
 Maschine mit dieser IP-Adresse arbeitet (Spoofing). Dann kann man durch
-ein ypcat passwd mit allergrößter Leichtigkeit die Passwort-Liste
+ein <command>ypcat passwd</command> mit allergrößter Leichtigkeit die Passwort-Liste
 erhalten.
+    </textblock>
 
+    <textblock>
 NIS+ bietet eine zusätzliche Sicherheitsschicht, indem es ein auf dem
 Austausch von Schlüsseln basierendes Authentifizierungsprotokoll
 integriert und Datenverschlüsselung unterstützt..
+    </textblock>
 
+    <textblock>
 Die Daten werden in Tabellen gehalten, die sich in verschiedenen
 Verzeichnissen befinden. Jede Spalte einer Tabelle enthält einen
 Kopfeintrag, der z. B. angibt, ob bei den Daten Groß-/Kleinschreibung
 unterschieden wird oder ob es sich um binäre Daten handelt.
+    </textblock>
 
+    <textblock>
 Die erwähnte Struktur erlaubt es, Zugriffsrechte für die Verzeichnisse
 und Tabellen und zusätzlich für die Spalten in den Tabellen zu
 definieren. Es ist daher möglich, den Zugriff auf die Passwort-Tabelle
 für jeden Benutzer zu sperren, der nicht auf dem NIS+-Server zugelassen.
 ist. Aber es erlaubt allen berechtigten Benutzerinnen Zugriff auf die
-gesamte Passwort-Tabelle mit Ausnahme des "Passwort"-Feldes. Nur der
-Eigentümer des "Passwort"-Feldes kann dieses abfragen..
+gesamte Passwort-Tabelle mit Ausnahme des <strong>Passwort</strong>-Feldes. Nur der
+Eigentümer des <strong>Passwort</strong>-Feldes kann dieses abfragen..
+    </textblock>
 
+    <textblock>
 Es gibt 4 Sicherheitsstufen:
+    </textblock>
 
-1. Nobody: Die Benutzerin ist nicht berechtigt.
-
-2. Owner: Der Benutzer ist als Eigentümer berechtigt.
-
-3. Group: Die Benutzerin ist berechtigt und gehört zu einer Gruppe,
+    <ol>
+     <li>
+Nobody: Der Benutzer ist nicht berechtigt.
+     </li>
+     <li>
+Owner: Der Benutzer ist als Eigentümer berechtigt.
+     </li>
+     <li>
+Group: Der Benutzer ist berechtigt und gehört zu einer Gruppe,
 die Zugriff auf dieses Objekt hat.
-
-4. World: Der Benutzer ist berechtigt, ist aber nicht Eigentümer und
+     </li>
+     <li>
+World: Der Benutzer ist berechtigt, ist aber nicht Eigentümer und
 gehört keiner Gruppe mit Zugriff auf dieses Objekt an.
+     </li>
+    </ol>
 
-In dieser Konfiguration ist root fast nur ein gewöhnlicher Benutzer.
+    <textblock>
+In dieser Konfiguration ist <ref chapter="nutzer_unter_linux" iref="root">root</ref> fast nur ein gewöhnlicher Benutzer.
 Wenn er nicht die entsprechenden Rechte hat, hat er keinen
 Zugriff auf die Passwörter der anderen Benutzer. So ist es nicht mehr
 möglich, sich als ein anderer Benutzer zu authentifizieren, aber ein
-Wechsel mittels su ist noch möglich.
+Wechsel mittels <command>su</command> ist noch möglich.
+    </textblock>
 
+    <textblock>
 Die Daten werden mit Ausnahme der Passwörter im Netz unverschlüsselt
 übertragen. Kein Passwort wird im Klartext übertragen.
+    </textblock>
 
+    <textblock>
 NIS+ ist ein mächtiges Werkzeug, aber es ist schwer zu konfigurieren.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Die Server - Seite
+   </heading>
 
+   <section>
+    <heading>
+Server Einführung
+    </heading>
 
-
-1 Die Server - Seite
-
-1.1 Server Einführung
-
+    <textblock>
 Hier nun werden wir sehen, wie man den Server konfiguriert und wir
 werden einige Ratschläge zur Nutzung von NIS erteilen.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Vorwort
+    </heading>
 
-
-
-1.1 Vorwort
-
-Bevor ich anfange, eine Präzisierung. Bis jetzt haben wir nur von "NIS"
+    <textblock>
+Bevor ich anfange, eine Präzisierung. Bis jetzt haben wir nur von <strong>NIS</strong>
 gesprochen. Jedoch gibt es davon zwei Varianten: das, was man das
-"traditionelle  NIS" nennen könnte und NYS. Praktisch gibt es keine
+<strong>traditionelle  NIS</strong> nennen könnte und <strong>NYS</strong>. Praktisch gibt es keine
 Unterschiede zwischen den Beiden (speziell bei der Konfiguration sowohl
-des Klienten als auch des Servers). Das "traditionelle NIS" gibt es
+des Klienten als auch des Servers). Das <strong>traditionelle NIS</strong> gibt es
 schon länger, aber es unterstützt nicht alle Neuerungen, wie
-Shadowpasswörter, die von NYS transparent verwaltet werden.
+Shadowpasswörter, die von <strong>NYS</strong> transparent verwaltet werden.
+    </textblock>
 
-Wir behandeln hier eine aktuelle Version von ypserv (d.h. eine Version
+    <textblock>
+Wir behandeln hier eine aktuelle Version von <command>ypserv</command> (d.h. eine Version
 die neuer ist als 1.3.2, um unter anderem die Verwaltung von
 Shadowpasswörtern zur Verfügung zu haben). Deshalb handelt es sich um
-einen NYS Server und kein "traditionelles NIS ", wobei wir weiterhin
-"fälschlich" von NIS sprechen werden.
+einen <strong>NYS</strong> Server und kein <strong>traditionelles NIS</strong>, wobei wir weiterhin
+<strong>fälschlich</strong> von NIS sprechen werden.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Der NIS Server
+    </heading>
 
-
-
-1.1 Der NIS Server
-
-Es gibt zwei NIS Server: ypserv und yps. Gemäß dem Autor des NIS-HOWTO
-unterscheidet sich die Konfiguration nicht wesentlich. Aber yps wird von
+    <textblock>
+Es gibt zwei NIS Server: <command>ypserv</command> und <command>yps</command>.
+Die Konfuguration unterscheidet sich nicht wesentlich. Aber <command>yps</command> wird von
 seinem Autor nicht mehr gepflegt und hat schwere Sicherheitslücken. Wir
-werden uns deshalb nur mit ypserv beschäftigen.
+werden uns deshalb nur mit <command>ypserv</command> beschäftigen.
+    </textblock>
 
+    <textblock>
 Zuerst zeigen wir die Schritte, die nötig sind, um einen Server zu
 installieren. Wir zeigen Schritt für Schritt, wie die einzelnen
 Konfigurationsdateien auf den Installationsprozess des Servers
 einwirken.
+    </textblock>
 
-Im Artikel arbeiten wir auf der Maschine "charly". Die NIS Domäne trägt
-den Name "bosley". Die Slaveserver sind "sabrina", "jill" und "kelly".
+    <textblock>
+Im Artikel arbeiten wir auf der Maschine <strong>charly</strong>. Die NIS Domäne trägt
+den Name <strong>bosley</strong>. Die Slaveserver sind <strong>sabrina</strong>, <strong>jill</strong> und <strong>kelly</strong>.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Installation
+    </heading>
 
+    <textblock>
+Zu allererst muss man sicherstellen, dass der <command>portmap</command> Dämon läuft. Wenn
+dem nicht so ist, muss er gestartet werden.
+    </textblock>
 
-
-1.1 Installation
-
-Zu allererst muß man sicherstellen, daß der portmap Dämon läuft. Wenn
-dem nicht so ist, muß er gestartet werden.
-
+    <textblock>
 Danach legt man den Namen der NIS-Domäne fest. Es handelt sich dabei
-nicht um einen Domänennamen im Sinne von DNS, sondern im Sinne von YPs.
-Dieser Name muß aus Sicherheitsgründen anders als der der Maschine sein.
+nicht um einen Domänennamen im Sinne von <ref chapter="dns">DNS</ref>, sondern im Sinne von YPs.
+Dieser Name muss aus Sicherheitsgründen anders als der der Maschine sein.
+    </textblock>
 
-Mit dem Kommando domainname kann man den Domänennamen festlegen.
+    <textblock>
+Mit dem Kommando <command>domainname</command> kann man den Domänennamen festlegen.
 In unserem Fall benutzen wir es wie folgt:
+    </textblock>
 
+    <shell>
+     <root>
 /bin/domainname bosley
+     </root>
+    </shell>
 
+    <textblock>
 Dieses Kommando fixiert den NIS-Domänennamen im RAM-Speicher. Jedoch,
 wenn die Serverkonfiguration beendet ist, dann wünscht man sich doch,
-daß dies automatisch beim Starten der Maschine erledigt wird. Dafür muß
-man eine Zeile in der Netzwerkkonfiguration /etc/sysconfig/network
+dass dies automatisch beim Starten der Maschine erledigt wird. Dafür muss
+man eine Zeile in der Netzwerkkonfiguration <path>/etc/sysconfig/network</path>
 ändern:
+    </textblock>
 
+    <file>
+     <title>
+/etc/sysconfig/network
+     </title>
+     <content>
 NISDOMAIN=bosley
+     </content>
+    </file>
 
-Sobald das Netzwerk beim nächsten Reboot initialisiert wird, wird auch
+    <textblock>
+oder bei Debian in <path>/etc/defaultdomain</path>
+    </textblock>
+
+    <file>
+     <title>
+/etc/defaultdomain
+     </title>
+     <content>
+bosley
+     </content>
+    </file>
+
+    <textblock>
+Sobald das Netzwerk beim nächsten <ref chapter="starten_und_herunterfahren">Reboot</ref> initialisiert wird, wird auch
 automatisch der NIS-Domänenname festgelegt.
+    </textblock>
 
+    <textblock>
 Der folgende Abschnitt beschäftigt sich mit dem Starten des ypserv
-Dämons. Zuvor muß man ihn mittels der Datei /etc/ypserv.conf
+Dämons. Zuvor muss man ihn mittels der Datei <path>/etc/ypserv.conf</path>
 konfigurieren. Dies ist eine ASCII-Datei:
+    </textblock>
 
-1. Kommentare: Die Zeilen, die mit dem #-Zeichen beginnen.
+    <textblock>
+1. Kommentare: Die Zeilen, die mit dem <strong>#</strong>-Zeichen beginnen.
+    </textblock>
 
+    <textblock>
 2. Optionen für den Dämon: Diese Zeile schreibt sich so:
+    </textblock>
 
+    <file>
+     <title>
+/etc/ypserv.conf
+     </title>
+     <content>
 option: [yes|no]
+     </content>
+    </file>
 
-Mögliche Optionen sind dns (der Server fragt DNS, um die Klienten
-zu finden, die nicht in den hosts-Maps auftauchen), sunos_kludge
-(obsolet) und xfr_check_port (um den Server auf einen Port unter 1024 zu
+    <textblock>
+Mögliche Optionen sind <command>dns</command> (der Server fragt DNS, um die Klienten
+zu finden, die nicht in den hosts-Maps auftauchen), <command>sunos_kludge</command>
+(obsolet) und <command>xfr_check_port</command> (um den Server auf einen Port unter 1024 zu
 lenken - yes als Default)
+    </textblock>
 
+    <textblock>
 3. Zugangsregeln zum NIS-Server. Das Format ist
+    </textblock>
 
+    <file>
+     <content>
 host:map:security:mangle[:field]
+     </content>
+    </file>
 
+    <textblock>
 Sie erlauben es festzulegen, wer was sehen darf.
+    </textblock>
 
-Die Manpage von ypserv.conf führt sehr klar alle Optionen und
+    <textblock>
+Die Manpage von <path>ypserv.conf</path> führt sehr klar alle Optionen und
 Möglichkeiten für Regeln aus.
+    </textblock>
 
+    <textblock>
 Jetzt kann man den Server starten:
+    </textblock>
 
+    <shell>
+     <root>
 /etc/init.d/ypserv start
+     </root>
+    </shell>
 
-Um zu verifizieren, daß alles korrekt läuft:
+    <textblock>
+Um zu verifizieren, dass alles korrekt läuft:
+    </textblock>
 
+    <shell>
+     <root>
 rpcinfo -u localhost ypserv
+     </root>
+     <output>
 program 100004 version 1 ready and waiting
 program 100004 version 2 ready and waiting
+     </output>
+    </shell>
 
-Wir haben gesehen, daß es zwei Typen von Servern gibt: Master und
+    <textblock>
+Wir haben gesehen, dass es zwei Typen von Servern gibt: Master und
 Slaves. Der Master besitzt die NIS-Referenzdatenbank, wovon die Slaves
 nur eine Kopie haben. Sie dienen dazu, den Master von zu vielen
 Requests zu entlasten. Die Datenbank wird nur auf dem Server gepflegt.
 Erst danach wird sie auf die Slaveserver weiterkopiert.
+    </textblock>
 
-Alles ist jetzt bereit, bis auf die Datenbank. Man muß sie nur noch
-erstellen. Und wer erstellen meint, sagt Makefile. Es ist bereits
+    <textblock>
+Alles ist jetzt bereit, bis auf die Datenbank. Man muss sie nur noch
+erstellen. Und wer erstellen meint, sagt <ref chapter="make">Makefile</ref>. Es ist bereits
 fertig geschrieben, es müßen lediglich ein paar Variablen angepasst
-werden. Es befindet sich im Verzeichnis /var/yp. Es ist ausführlich
+werden. Es befindet sich im Verzeichnis <path>/var/yp</path>. Es ist ausführlich
 und klar kommentiert. Die wichtigste Zeile ist, wo die Maps, die von
-NIS benutzt werden sollen, definiert sind. Auf Charly sind dies:
+NIS benutzt werden sollen, definiert sind. Auf <strong>charly</strong> sind dies:
+    </textblock>
 
+    <file>
+     <content>
 all: passwd group hosts rpc services netid protocols mail shadow \
 
 # netgrp publickey
 # networks ethers bootparams printcap \
 # amd.home auto.master auto.home passwd.adjunct
+     </content>
+    </file>
 
+    <textblock>
 Zu dem, was per Default vorgegeben ist, sollte man auch die Verwaltung
-der Shadowpasswörter hinzufügen. Man muß dann aber auch den Wert der
-Variable MERGE_PASSWD von "true" auf "false" setzen. Sie legt nämlich
-fest, daß für die Konstruktion der NIS-Datenbank die Dateien /etc/passwd
-und /etc/shadow zu mischen sind.
+der Shadowpasswörter hinzufügen. Man muss dann aber auch den Wert der
+Variable <strong>MERGE_PASSWD</strong> von <strong>true</strong> auf <strong>false</strong> setzen. Sie legt nämlich
+fest, dass für die Konstruktion der NIS-Datenbank die Dateien <path>/etc/passwd</path>
+und <path>/etc/shadow</path> zu mischen sind.
+    </textblock>
 
+    <textblock>
 Letztes Detail bevor wir die NIS-Datenbank erstellen, die Verwaltung der
 Zugriffsrechte. Es gibt zwei Methoden den Zugang zum Server zu
-verwalten: entweder macht er alles selbst, oder über tcp_wrapper. Wir
-behandeln hier die Sicherheitseinstellungen über ypserv selbst.
+verwalten: entweder macht er alles selbst, oder über <strong>tcp_wrapper</strong>. Wir
+behandeln hier die Sicherheitseinstellungen über <command>ypserv</command> selbst.
+    </textblock>
 
-Wenn Sie nur die Binaries von ypserv haben, dann sagt Ihnen die Option -v
+    <textblock>
+Wenn Sie nur die Binaries von <command>ypserv</command> haben, dann sagt Ihnen die Option <command>-v</command>
 mit welcher Konfiguration Ihr Binary kompiliert wurde:
+    </textblock>
 
+    <shell>
+     <root>
 ypserv -v
+     </root>
+     <output>
 ypserv - NYS YP Server version 1.3.12 (with securenets)
+     </output>
+    </shell>
 
-Die Datei /etc/ypserv.securenets enthält paarweise Kombinationen von
+    <textblock>
+Die Datei <path>/etc/ypserv.securenets</path> enthält paarweise Kombinationen von
 netmask/network, mit denen Sie den Serverzugang kontrollieren können.
 Sie müssen diese Datei unter allen Umständen modifizieren: als Default
 enthält sie:
+    </textblock>
 
+    <file>
+     <content>
 0.0.0.0          0.0.0.0
+     </content>
+    </file>
 
+    <textblock>
 was aller Welt den Zugang auf Ihren NIS-Server erlaubt. Es ist
-anzumerken, daß der Datei lediglich die IP-Adressen bekannt sind (nicht
+anzumerken, dass der Datei lediglich die IP-Adressen bekannt sind (nicht
 der Namen der Maschinen).
+    </textblock>
 
+    <textblock>
 Jetzt können wir die NIS-Datenbank erstellen. Wir benutzen dazu das
-Kommando ypinit. Es erstellt die Datenbank in /var/yp und benutzt die
-Dateien aus /etc  (dies ist der Default, man kann auch ein anderes
-Verzeichnis im Makefile festlegen). Hier sind die Dateien, die die Daten
-für die Datenbank liefern ( /etc/passwd, /etc/group, /etc/hosts,
-/etc/networks, /etc/services, /etc/protocols, /etc/netgroup, /etc/rpc ).
+Kommando <command>ypinit</command>. Es erstellt die Datenbank in <path>/var/yp</path> und benutzt die
+Dateien aus <path>/etc</path>  (dies ist der Standard, man kann auch ein anderes
+Verzeichnis im <ref chapter="make">Makefile</ref> festlegen). Hier sind die Dateien, die die Daten
+für die Datenbank liefern (<path>/etc/passwd</path>, <path>/etc/group</path>, <path>/etc/hosts</path>,
+<path>/etc/networks</path>, <path>/etc/services</path>, <path>/etc/protocols</path>, <path>/etc/netgroup</path>, <path>/etc/rpc</path>).
+    </textblock>
 
-Die Option -m gestattet es, den Server mit den Rohdaten zu
-initialisieren (-m für master), die Option -s kopiert die Daten von der
-Masterdatenbank auf einen Slave (-s für Slave - Sklave auf Englisch).
+    <textblock>
+Die Option <command>-m</command> gestattet es, den Server mit den Rohdaten zu
+initialisieren (<command>-m</command> für master), die Option <command>-s</command> kopiert die Daten von der
+Masterdatenbank auf einen Slave (<command>-s</command> für Slave - Sklave auf Englisch).
+    </textblock>
 
+    <textblock>
 Auf Charly initialisieren wir unsere Datenbank wie folgt:
+    </textblock>
 
+    <shell>
+     <root>
 ypinit -m
+     </root>
+     <output>
 At this point, we have to construct a list of the hosts which will run NIS
 servers.  localhost is in the list of NIS server hosts.  Please continue to add
 the names for the other hosts, one per line.  When you are done with the
-list, type a <control D>.
+list, type a &lt;control D&gt;.
         next host to add:  localhost
         next host to add:  sabrina
         next host to add:  jill
@@ -680,107 +1133,174 @@ Updating shadow.byname...
 # shadow publickey # networks ethers bootparams printcap \
 # amd.home auto.master auto.home passwd.adjunct
 gmake[1]: Leaving directory `/var/yp/bosley'
+     </output>
+    </shell>
 
-Schon steht die Datenbank. Auf jedem Slaveserver muß man
+    <textblock>
+Schon steht die Datenbank. Auf jedem Slaveserver muss man
 jetzt das folgende Kommando ausführen:
+    </textblock>
 
+    <shell>
+     <root>
 ypinit -s charly
+     </root>
+    </shell>
 
-Um sicherzustellen, daß alles korrekt läuft, reicht es aus, einen Server
+    <textblock>
+Um sicherzustellen, dass alles korrekt läuft, reicht es aus, einen Server
 in einen Klienten zu verwandeln, egal ob Master oder Slave,  und einen
-Request abzusetzen. Zum Beispiel auf Charly:
+Request abzusetzen. Zum Beispiel auf <strong>charly</strong>:
+    </textblock>
 
+    <file>
+     <content>
 ypcat passwd mulder:x:500:100::/home/mulder:/bin/csh
 scully:x:501:100::/home/scully:/bin/bash
+     </content>
+    </file>
 
-Man kann nebenbei auch feststellen, daß die Shadowpasswörter korrekt
+    <textblock>
+Man kann nebenbei auch feststellen, dass die Shadowpasswörter korrekt
 funktionieren.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Installation eines NIS-Servers
+    </heading>
 
-
-
-1.1 Installation eines NIS-Servers
-
-1. portmap initialisieren.
-2. Den NIS-Domänenname festlegen.
-3. Die Konfigurationsdatei des NIS-Servers vorbereiten: /etc/ypserv.conf
-4. Den ypserv Dämon starten.
-5. In  /var/yp/Makefile, die Maps auswählen, die von ypserv verwaltet
+    <ol>
+     <li>
+portmap initialisieren.
+     </li>
+     <li>
+Den NIS-Domänenname festlegen.
+     </li>
+     <li>
+Die Konfigurationsdatei des NIS-Servers vorbereiten: <path>/etc/ypserv.conf</path>
+     </li>
+     <li>
+Den <command>ypserv</command> Dämon starten.
+     </li>
+     <li>
+In <path>/var/yp/Makefile</path>, die Maps auswählen, die von <command>ypserv</command> verwaltet
 werden sollen und dann die Kompilierungsoptionen einstellen.
-6. Die Zugangsrechte für den NIS-Server in der Datei.
-/var/yp/securenets festlegen.
-7. Die NIS Masterdatenbank erstellen mit Hilfe des ypinit -m
+     </li>
+     <li>
+Die Zugangsrechte für den NIS-Server in der Datei.
+<path>/var/yp/securenets</path> festlegen.
+     </li>
+     <li>
+Die NIS Masterdatenbank erstellen mit Hilfe des <command>ypinit -m</command>
 Kommandos.
-8. Die Slavedatenbanken erstellen mit ypinit -s <master server>
+     </li>
+     <li>
+Die Slavedatenbanken erstellen mit <command>ypinit -s &lt;master server&gt;</command>
+     </li>
+    </ol>
+   </section>
 
+   <section>
+    <heading>
+Aktualisierung der NIS-Datenbank
+    </heading>
 
-
-
-1.1 Aktualisierung der NIS-Datenbank
-
+    <textblock>
 Sobald man eine Map modifizieren möchte, um zum Beispiel einen neuen
-Slaveserver oder einen neuen User hinzuzufügen, muß man die
+Slaveserver oder einen neuen User hinzuzufügen, muss man die
 NIS-Datenbank aktualisieren. Dies geht wie folgt.
+    </textblock>
 
-Um einen Slaveserver hinzuzufügen genügt es, ypinit -s charly auf
+    <textblock>
+Um einen Slaveserver hinzuzufügen genügt es, <command>ypinit -s charly</command> auf
 dem neuen Slaveserver auszuführen, und seinen Namen in die Datei
-/var/yp/ypservers des Masterservers einzufügen.
+<path>/var/yp/ypservers</path> des Masterservers einzufügen.
+    </textblock>
 
+    <textblock>
 Wenn man einen neuen User anlegt, können sich mehrere Maps verändert
 haben (passwd, shadow, alias, etc ...).
+    </textblock>
 
-Sobald man eine Map modifiziert hat, darf man nicht vergessen, ein make
-im Verzeichnis /var/yp/ des Masterservers zu machen: dies aktualisiert
+    <textblock>
+Sobald man eine Map modifiziert hat, darf man nicht vergessen, ein <ref chapter="make">make</ref>
+im Verzeichnis <path>/var/yp/</path> des Masterservers zu machen: dies aktualisiert
 seine Datenbank, indem es die Information integriert und auf die Slaves
-verteilt (mit dem Kommando yppush).
+verteilt (mit dem Kommando <command>yppush</command>).
+    </textblock>
 
-Das Program rpc.ypxfrd erlaubt es, die Transaktion zwischen einem
+    <textblock>
+Das Program <command>rpc.ypxfrd</command> erlaubt es, die Transaktion zwischen einem
 Masterserver und seinen Slaves zu beschleunigen. Es gestattet einem
 Slave, die Datenbank des Master-Servers einfach zu kopieren, anstatt sie
-komplett neu zu erstellen. rpc.ypxfrd muß zur selben Zeit gestartet werden
-wie ypserv und nur auf dem Master. Dieses Programm ist notwendig für
-sehr große Maps.
+komplett neu zu erstellen. <command>rpc.ypxfrd</command> muss zur selben Zeit gestartet werden
+wie <command>ypserv</command> und nur auf dem Master. Dieses Programm ist notwendig für
+sehr grosse Maps.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Benutzungsratschläge zum Schluss
+   </heading>
 
-
-
-1 Benutzungsratschläge zum Schluss
-
-Jederman weiß, daß NIS nicht gesichert ist. Trotzdem sind die Dienste,
-die es zur Verfügung stellt so nützlich, daß es schade wäre, es nicht zu
-benutzen. Man muß deshalb einige Vorsichtsmaßnahmen außerhalb von NIS
+   <textblock>
+Jederman weiss, dass NIS nicht gesichert ist. Trotzdem sind die Dienste,
+die es zur Verfügung stellt so nützlich, dass es schade wäre, es nicht zu
+benutzen. Man muss deshalb einige Vorsichtsmassnahmen ausserhalb von NIS
 treffen, wenn man es benutzen will.
+   </textblock>
 
+   <textblock>
 Genauso wie es einige Passwörter gibt, die man leicht erraten kann,
 werden auch NIS-Domänennamen benutzt, die vorhersehbar sind.
 Offensichtliche Kandidaten sind, wenn man einmal den (Maschinen-) Namen
 des NIS-Servers herausbekommen hat, der komplette oder teilweise Name
 des Servers oder auch der Name der Organisation, zu der der Server
-gehört. ypwhich gestattet es, den Namen der Domäne zu testen!
+gehört. <command>ypwhich</command> gestattet es, den Namen der Domäne zu testen!
+   </textblock>
 
+   <textblock>
 Der NIS-Domänenname erscheint an mehreren Stellen, besonders im
-Verzeichnis /var/yp, oder auch in einem Unterverzeichnis, das während
+Verzeichnis <path>/var/yp</path>, oder auch in einem Unterverzeichnis, das während
 der NIS-Installation angelegt wurde (auf dem(n) Server(n), aber auch auf
-den Klienten) und den Namen der NIS-Domäne trägt. Man muß deshalb die
+den Klienten) und den Namen der NIS-Domäne trägt. Man muss deshalb die
 Zugangsrechte zu diesem Verzeichnis genau festlegen. Man darf auf es
-keinen Fall, nicht einmal read only, mit NFS exportieren. Jeder kann
+keinen Fall, nicht einmal read only, mit <ref chapter="nfs">NFS</ref> exportieren. Jeder kann
 dann dieses Verzeichnis auf seiner eigenen Maschine mounten, um den
 Domänennamen herauszufinden.
+   </textblock>
 
-Darüber hinaus schadet es nicht, tcp_wrapper zu benutzen. Damit kann man
-nämlich den portmap-Prozess kontrollieren, und verhindern, daß jederman
+   <textblock>
+Darüber hinaus schadet es nicht, <strong>tcp_wrapper</strong> zu benutzen. Damit kann man
+nämlich den <command>portmap</command>-Prozess kontrollieren, und verhindern, dass jederman
 RPC-Requests auf die eigene Maschine absetzt.
+   </textblock>
 
+   <textblock>
 Es ist ebenfalls von Vorteil, die Defaultroute nicht über Ihren
 NIS-Server zu legen, sondern statisches Routing zu den Klienten und den
 Slaveservern zu benutzen. Der Server kennt auf diese Art nur Routen zu
 genau festgelegten Maschinen und kann deshalb nicht auf Requests von
 unbekannten Maschinen antworten.
+   </textblock>
 
-Auf dem Router-Level erlaubt eine Firewall, den Zugang zu den
+   <textblock>
+Auf dem Router-Level erlaubt eine <ref chapter="iptables">Firewall</ref>, den Zugang zu den
 NIS-Servern effektiv zu kontrollieren.
+   </textblock>
 
+   <textblock>
 Diese Ratschläge ergeben sich aus dem gesunden Menschenverstand. Sie
 verändern nicht die Sicherheit von NIS selbst, sondern nur den Rahmen
 darum herum.Trotz dieser Probleme bleibt NIS ein effektives und
 praktisches Werkzeug.
+   </textblock>
+  </section>
+ </split>
+</chapter>
