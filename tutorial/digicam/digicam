@@ -1,183 +1,269 @@
-<!--
-  * Titel: Digitalkamera Installieren und Konfigurieren
-  * [c] Anton Pussep
-  * Autor: Anton Pussep <DarXMailX@gmx.de>
-  * Layout: Anton Pussep <DarXMailX@gmx.de>
-  * Lizenz: GFDL
-  *
-  * $Revision: 1.0 $
-  * $Source: $
-  *
-  * Diese Datei ist Teil von SelfLinux  http://www.selflinux.org
-  *
-  *** $Id: $
--->
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>Digitalkamera installieren und konfigurieren</title>
 
+ <author>
+  <name>Anton Pussep</name>
+  <mailto>DarXMailX@gmx.de</mailto>
+ </author>
 
-Digitalkamera Installieren und Konfigurieren (nur USB PTP Class)
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
 
-<!-- Beginn Aufzählung -->
+ <license>GFDL</license>
 
-Inhaltsverzeichnis:
+ <index>digicam</index>
 
-1. Über dieses Dokument
-2. Technische Informationen
-3. Benötigte Software Installieren
-4. Benutzerrechte Setzen
-5. Zugriff im Textmodus
-6. Links
+ <split>
+  <section>
+   <heading>
+Über dieses Dokument
+   </heading>
 
-<!-- Ende Aufzählung -->
-
-
-
-1. Über dieses Dokument
-
+   <textblock>
 Zwar beschreibt dieses Dokument die Installation von Anfang an,
 doch ist dies in den meisten Fällen nicht notwendig, da die Kameras
 oftmals voll automatisch erkannt und konfiguriert werden. Ist dies
 jedoch nicht der Fall, so soll dieses Dokument dabei helfen, Fehler
 zu beheben und die Benutzung zu optimieren.
+   </textblock>
 
+   <textblock>
 Quellen:
-<!-- LINK: url="http://gphoto.sourceforge.net/doc/manual/" -->
-http://gphoto.sourceforge.net/doc/manual/
-<!-- ENDLINK -->
-<!-- LINK: url="http://www.debianforum.de/wiki/find/Digitalkameras+ohne+usb-storage" -->
-http://www.debianforum.de/wiki/find/Digitalkameras+ohne+usb-storage
-<!-- ENDLINK -->
+   </textblock>
 
+   <ul>
+    <li>
+<ref lang="en" url="http://gphoto.sourceforge.net/doc/manual/">http://gphoto.sourceforge.net/doc/manual/</ref>
+    </li>
+    <li>
+<ref lang="de" url="http://www.debianforum.de/wiki/find/Digitalkameras+ohne+usb-storage">http://www.debianforum.de/wiki/find/Digitalkameras+ohne+usb-storage</ref>
+    </li>
+   </ul>
+  </section>
 
+  <section>
+   <heading>
+Technische Informationen
+   </heading>
 
-2. Technische Informationen
-
-Einige Digitalkameras werden als USB-Speicher über das usb-storage Modul
-angesprochen, andere hingegen über das PTP (Picture Transfer Protocol).
+   <textblock>
+Einige Digitalkameras werden als USB-Speicher über das <strong>usb-storage</strong> Modul
+angesprochen, andere hingegen über das <strong>PTP</strong> (Picture Transfer Protocol).
 Dieser Artikel bezieht sich nur auf die letzteren!
+   </textblock>
 
+   <textblock>
 Dieser Artikel entstand und wurde getestet unter Debian 3.1 (sarge),
 Kernel 2.6.7, digikam 0.62 (KDE 3.2.3) und einer Canon PowerShot A75.
+   </textblock>
 
+   <textblock>
 Leider gab es ab und zu Abstürze der Kommunikation mit der
 Digitalkamera, in diesen Fällen musste die Kamera wiederholt
 aus- und wieder eingeschaltet werden.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Benötigte Software Installieren
+   </heading>
 
+   <ul>
+    <li>
+<strong>libgphoto2-2</strong> - die Bibliothek, die die Kommunikation erlaubt
+    </li>
+    <li>
+<strong>gphoto2</strong> - über dieses Programm können Sie im Textmodus auf die Kamera zugreifen
+    </li>
+    <li>
+<strong>gtkam</strong> - das gleiche wie gphoto2 mit grafischer Oberfläche für GNOME
+    </li>
+    <li>
+<strong>digikam</strong> - das gleiche wie gphoto2 mit grafischer Oberfläche für KDE
+    </li>
+   </ul>
 
-3. Benötigte Software Installieren
-
-<!-- Beginn Listing>
-
-libgphoto2-2 - die Bibliothek, die die Kommunikation erlaubt
-gphoto2 - über dieses Programm können Sie im Textmodus auf die Kamera zugreifen
-gtkam - das gleiche wie gphoto2 mit grafischer Oberfläche für GNOME
-digikam - das gleiche wie gphoto2 mit grafischer Oberfläche für KDE
-
-<!-- Ende Listing>
-
-gtkam und digikam sind dem Funktionsumfang nach völlig gleichwertig, so dass
+   <textblock>
+<command>gtkam</command> und <command>digikam</command> sind dem Funktionsumfang nach völlig gleichwertig, so dass
 der einzelne Benutzer für sich selbst entscheiden muss, welches er lieber
 verwenden möchte.
+   </textblock>
+  </section>
 
+  <section>
+   <heading>
+Benutzerrechte Setzen
+   </heading>
 
-
-4. Benutzerrechte Setzen
-
-Sie sollten nicht immer als root auf die Digitalkamera zugreifen, sondern nach
-Möglichkeit immer als normaler Benutzer. Sollte es Ihnen schon jetzt
-möglich sein, als normaler Benutzer (nicht als root), mit Ihrer Digitalkamera
+   <textblock>
+Sie sollten nicht immer als <ref chapter="nutzer_unter_linux" iref="root">root</ref> auf die
+Digitalkamera zugreifen, sondern nach Möglichkeit immer als normaler Benutzer. Sollte es Ihnen
+schon jetzt möglich sein, als normaler Benutzer (nicht als root), mit Ihrer Digitalkamera
 zu arbeiten, so hat Ihr Linux-System dies bereits für Sie vorkonfiguriert und
 sie können dieses Kapitel überspringen.
+   </textblock>
 
-Im folgenden werden wir eine Gruppe camera anlegen und dieser
+   <textblock>
+Im folgenden werden wir eine Gruppe <strong>camera</strong> anlegen und dieser
 den Zugriff auf die Digitalkamera erlauben.
+   </textblock>
 
-Legen Sie die Gruppe camera an:
+   <textblock>
+Legen Sie die Gruppe <strong>camera</strong> an:
+   </textblock>
 
-$ groupadd camera
+   <shell>
+    <root>
+groupadd camera
+    </root>
+   </shell>
 
+   <textblock>
 Es gibt mehrere Skripte, die bestimmte Zugriffsrechte setzen, diese werden
-unter /usr/share/doc/libgphoto2-2/linux-hotplug/ abgelegt.
-Wählen Sie die Datei mit der .group-Endung:
+unter <path>/usr/share/doc/libgphoto2-2/linux-hotplug/</path> abgelegt.
+Wählen Sie die Datei mit der <path>.group</path>-Endung:
+   </textblock>
 
-$ cp /usr/share/doc/libgphoto2-2/linux-hotplug/usbcam.group /etc/hotplug/usb/
+   <shell>
+    <root>
+cp /usr/share/doc/libgphoto2-2/linux-hotplug/usbcam.group /etc/hotplug/usb/
+    </root>
+   </shell>
 
-In dieser Datei setzen Sie die Gruppe auf camera:
+   <textblock>
+In dieser Datei setzen Sie die Gruppe auf <strong>camera</strong>:
+   </textblock>
+
+   <file>
+    <content>
 GROUP=camera
+    </content>
+   </file>
 
-Das Modul hotplug führt, sobald eine Digitalkamera angeschlossen und
-eingeschaltet wird, nur die Datei usbcam (falls vorhanden) aus. Also machen
-wir einen Link mit dem Namen usbcam auf unsere Datei, die wir vorher
+   <textblock>
+Das Modul <command>hotplug</command> führt, sobald eine Digitalkamera angeschlossen und
+eingeschaltet wird, nur die Datei <path>usbcam</path> (falls vorhanden) aus. Also machen
+wir einen Link mit dem Namen <path>usbcam</path> auf unsere Datei, die wir vorher
 noch ausführbar machen:
+   </textblock>
 
-$ cd /etc/hotplug/usb
-$ chmod +x usbcam.group
-$ ln -s usbcam.group usbcam
+   <shell>
+    <root>
+cd /etc/hotplug/usb
+chmod +x usbcam.group
+ln -s usbcam.group usbcam
+    </root>
+   </shell>
 
-Ab sofort können alle Benutzer der Gruppe camera auf ihre Digitalkamera zugreifen!
+   <textblock>
+Ab sofort können alle Benutzer der Gruppe <strong>camera</strong> auf ihre Digitalkamera zugreifen!
+   </textblock>
+  </section>
 
+  <section>
+   <heading>
+Zugriff im Textmodus
+   </heading>
 
-
-5. Zugriff im Textmodus
-
+   <textblock>
 Puristen und solche, die gerade im Textmodus arbeiten müssen, können ganz
-bequem über das Programm gphoto2 auf die Digitalkamera zugreifen, dazu
+bequem über das Programm <command>gphoto2</command> auf die Digitalkamera zugreifen, dazu
 bedarf es nur weniger Befehle.
+   </textblock>
 
+   <textblock>
 Zunächst wechseln Sie in das Verzeichnis, in welchem später die Bilder
 gespeichert werden sollen:
+   </textblock>
 
-$ cd /home/user/pics
+   <shell>
+    <user>
+cd /home/user/pics
+    </user>
+   </shell>
 
+   <textblock>
 Sie schließen die Digitalkamera an, schalten sie ein und schauen, ob sie
 erkannt wurde:
-$ gphoto2 --auto-detect
+   </textblock>
+
+   <shell>
+    <root>
+gphoto2 --auto-detect
+    </root>
+    <output>
 # Modell                         Port
 # ----------------------------------------------------------
 # USB PTP Class Camera           usb:
+    </output>
+   </shell>
 
+   <textblock>
 Hier wurde sie völlig richtig als eine USB PTP Class Digitalkamera erkannt.
+   </textblock>
 
+   <textblock>
 Sie laden alle Dateien herunter:
+   </textblock>
 
-$ gphoto2 --get-all-files
+   <shell>
+    <user>
+gphoto2 --get-all-files
+    </user>
+   </shell>
 
+   <textblock>
 Und löschen alle Dateien von der Digitalkamera:
+   </textblock>
 
-$ gphoto2 --delete-all-files
+   <shell>
+    <user>
+gphoto2 --delete-all-files
+    </user>
+   </shell>
 
+   <textblock>
 Dies ist alles, was ein einfacher Benutzer benötigt. Für die grafischen
-Programme digikam und gtkam existieren schon sehr gute offizielle
-Dokumentationen. Im Kapitel "Links" werden die entsprechenden Verweise
+Programme <command>digikam</command> und <command>gtkam</command> existieren schon sehr gute offizielle
+Dokumentationen. Im Kapitel <ref iref="links">Links</ref> werden die entsprechenden Verweise
 aufgelistet.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Links
+   </heading>
 
-
-6. Links
-
+   <textblock>
 gphoto-Dokumentation, sehr gut, da es die Grundlagen und die Benutzung
 beschreibt, leider nur auf Englisch:
+<ref lang="en" url="http://gphoto.sourceforge.net/doc/manual/">http://gphoto.sourceforge.net/doc/manual/</ref>
+   </textblock>
 
-<!-- LINK: url="http://gphoto.sourceforge.net/doc/manual/" -->
-http://gphoto.sourceforge.net/doc/manual/
-<!-- ENDLINK -->
-
+   <textblock>
 digikam-Homepage:
+<ref lang="en" url="http://digikam.sourceforge.net/">http://digikam.sourceforge.net/</ref>
+   </textblock>
 
-<!-- LINK: url="http://digikam.sourceforge.net/" -->
-http://digikam.sourceforge.net/
-<!-- ENDLINK -->
-
+   <textblock>
 digikam-Anwenderhandbuch:
+<ref lang="de" url="http://m4l.berlios.de/pub/Bildbearbeitung/Digitalkamera/DE-DIGIKAM-ANWENDERHANDBUCH.html">http://m4l.berlios.de/pub/Bildbearbeitung/Digitalkamera/DE-DIGIKAM-ANWENDERHANDBUCH.html</ref>
+   </textblock>
 
-<!-- LINK: url="http://m4l.berlios.de/pub/Bildbearbeitung/Digitalkamera/DE-DIGIKAM-ANWENDERHANDBUCH.html" -->
-http://m4l.berlios.de/pub/Bildbearbeitung/Digitalkamera/DE-DIGIKAM-ANWENDERHANDBUCH.html
-<!-- ENDLINK -->
-
+   <textblock>
 gtkam-Homepage mit Anwenderhandbuch:
-
-<!-- LINK: url="http://www.gphoto.org/proj/gtkam/" -->
-http://www.gphoto.org/proj/gtkam/
-<!-- ENDLINK -->
-
+<ref lang="en" url="http://www.gphoto.org/proj/gtkam/">http://www.gphoto.org/proj/gtkam/</ref>
+   </textblock>
+  </section>
+ </split>
+</chapter>
