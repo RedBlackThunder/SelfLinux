@@ -1,127 +1,199 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ../../tools/plain2xml/plain2xml.pl: Beginn des Headers -->
 <!--
-  * Titel: Journaling Dateisysteme für Linux
-  * [c] Jörn Bruns
-  * Autor: Jörn Bruns <joern_bruns@gmx.de <mailto:joern_bruns@gmx.de>>
-  * Layout:
-  * Lizenz: GFDL
-  *
-  * $Revision: 1.5 $
-  * $Source: /selflinux/tutorial/dateisysteme_journaling/dateisysteme_journaling,v $
-  *
-  * Diese Datei ist Teil von SelfLinux http://www.selflinux.org
-  *
-  *** $Id: dateisysteme_journaling,v 1.5 2004/06/13 20:44:58 Nem0 Exp $
-  -->
+ * Titel: Journaling Dateisysteme für Linux
+ * [c] Jörn Bruns
+ * Autor: Jörn Bruns <joern_bruns@gmx.de>
+ * Layout: Matthias Hagedorn <matthias.hagedorn@selflinux.org>
+ * Lizenz: GFDL
+ *
+ * $Revision: 1.5 $
+ * $Source: /selflinux/tutorial/dateisysteme_journaling/dateisysteme_journaling,v $
+ *
+ * Diese Datei ist Teil von SelfLinux http://www.selflinux.org
+ *
+ *** $Id: dateisysteme_journaling,v 1.5 2004/06/13 20:44:58 Nem0 Exp $
 
+-->
+<!-- ../../tools/plain2xml/plain2xml.pl: Ende des Headers -->
+<!-- ../../tools/plain2xml/plain2xml.pl: Beginn des Wurzel-Nodes Level 0 -->
+<!-- ../../tools/plain2xml/plain2xml.pl: Beginn des Chapter Starts -->
+<chapter runlevel="user">
 
+ <title>Journaling Dateisysteme für Linux</title>
 
-Journaling Dateisysteme für Linux
+ <author>
+  <name>Jörn Bruns</name>
+  <mailto>joern_bruns@gmx.de</mailto>
+ </author>
 
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.org</mailto>
+ </layout>
 
+ <license>
+    GFDL
+ </license>
 
-1 Vorbemerkung
+ <index>dateisysteme_journaling</index>
 
+<!-- ../../tools/plain2xml/plain2xml.pl: Ende des Chapter Starts -->
+
+ <split>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 1 -->
+  <section>
+   <heading>
+Vorbemerkung
+   </heading>
+
+   <textblock>
 Ein Dateisystem ermöglicht das Ablegen und Bearbeiten von Dateien und
-Verzeichnissen auf einem Datenträger.
+Verzeichnissen auf einem Datenträger.<br/>
 Damit ist hier nicht die Hierarchie des UNIX-Verzeichnisbaumes mit
-/var, /usr ... gemeint, sondern die unterliegende Struktur, um
+<path>/var</path>, <path>/usr</path> ... gemeint, sondern die unterliegende Struktur, um
 die Daten physikalisch auf dem Datenträger abzulegen.
+   </textblock>
 
+   <textblock>
 Für Linux gibt es inzwischen eine größere Auswahl an Dateisystemen mit
-jeweils verschiedenen Vor- und Nachteilen.
-Da wären einerseits das traditionelle Ext2, andererseits die Journaling 
-Dateisysteme Ext3, ReiserFS, JFS und XFS.
+jeweils verschiedenen Vor- und Nachteilen.<br/>
+Da wären einerseits das traditionelle <ref iref="Ext2 und Ext3">Ext2</ref>, andererseits die Journaling
+Dateisysteme <ref iref="Ext2 und Ext3">Ext3</ref>, <ref iref="ReiserFS">ReiserFS</ref>, <ref iref="IBM-JFS">JFS</ref> und <ref iref="SGI-XFS">XFS</ref>.
 Es gilt nun, für die jeweilige Nutzung das am besten geeignete
 auszuwählen.
+   </textblock>
 
-In diesem Artikel wird die Bezeichnung "Journaling-Dateisystem"
-verwendet. Deutsche Übersetzungen wie etwa "protokollierendes
-Dateisystem" haben sich bislang nicht durchsetzen können und
+   <textblock>
+In diesem Artikel wird die Bezeichnung <strong>Journaling-Dateisystem</strong>
+verwendet. Deutsche Übersetzungen wie etwa <strong>protokollierendes
+Dateisystem</strong> haben sich bislang nicht durchsetzen können und
 würden daher möglicherweise ein zügiges Auffinden des Kapitels
 verhindern.
+   </textblock>
 
+  </section>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 1 -->
+ </split>
 
+ <split>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 1 -->
+  <section>
+   <heading>
+Wichtige Eigenschaften eines Dateisystems
+   </heading>
 
-1 Wichtige Eigenschaften eines Dateisystems
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+Journaling
+    </heading>
 
-
-
-1.1 Journaling
-
+    <textblock>
 Dies ist die wohl wichtigste Eigenschaft der neueren Dateisysteme.
 Ein Journal ermöglicht es, ein Dateisystem nach einem plötzlichen
 Systemausfall in einem konsistenten Zustand zu erhalten.
 Damit sind langwierige Dateisystem-Tests nach einem solchen Ausfall 
 nicht mehr notwendig.
+    </textblock>
 
+    <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 3 -->
+    <section>
+     <heading>
+Woher kommen inkonsistente Zustände nach einem Systemausfall?
+     </heading>
 
-
-1.1.1 Woher kommen inkonsistente Zustände nach einem Systemausfall?
-
+     <textblock>
 Daten werden nicht sofort auf den Datenträger geschrieben, sondern
 aus Performance-Gründen zunächst im Arbeitsspeicher gehalten.
 Für die Anwendungen gelten die Daten aber schon in diesem Zustand
 als gespeichert, damit diese zügig weiterarbeiten können.
 Im Arbeitsspeicher wird zusätzlich die Reihenfolge der
 Schreibzugriffe so umgestellt, dass die Kopfbewegungen der Festplatte
-erheblich reduziert werden. 
+erheblich reduziert werden.<br/> 
 Die Daten werden anschließend, mit einer gewissen zeitlichen 
 Verzögerung, in einem Rutsch auf die Festplatte geschrieben.
 Dieses als Caching bezeichnete Verfahren ermöglicht ein wesentlich
 schnelleres Arbeiten.
+     </textblock>
 
+     <textblock>
 Fällt nun aber plötzlich der Strom aus, ist nicht klar, in welchem
-Zustand die Daten gerade waren.
+Zustand die Daten gerade waren.<br/>
 Sind sie auf die Platte geschrieben oder waren sie noch im
 Arbeitsspeicher?
+     </textblock>
 
+     <textblock>
 Deshalb ist in solch einem Fall ohne Journaling eine Prüfung aller
 Dateien notwendig, was bei größeren Festplatten sehr lange, bis zu
-mehrere Stunden, dauern kann.
+mehrere Stunden, dauern kann.<br/>
 Dies ist für Produktiv-Systeme in der Regel nicht akzeptabel.
+     </textblock>
 
+     <textblock>
 Darüber hinaus kann bei Inkonsistenzen ein manueller Eingriff notwendig
 werden, schlimmstenfalls lässt sich das Dateisystem
 nicht mehr reparieren, was allerdings sehr selten vorkommt.
+     </textblock>
 
+     <textblock>
 Das Journaling-Dateisystem vermeidet derartig lange
 Dateisystem-Prüfungen. Darüber hinaus werden die genannten
 Inkonsistenzen, die in seltenen
 Fällen das Dateisystem zerstören können, verhindert.
+     </textblock>
 
+    </section>
+    <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 3 -->
+    <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 3 -->
+    <section>
+     <heading>
+Wie funktioniert ein Journaling-Dateisystem?
+     </heading>
 
+     <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 4 -->
+     <section>
+      <heading>
+Metadaten
+      </heading>
 
-1.1.1 Wie funktioniert ein Journaling-Dateisystem?
-
-
-
-1.1.1.1 Metadaten
-
+      <textblock>
 Ein Dateisystem benötigt interne Verwaltungs-Strukturen, welche
 die eigentlichen Daten der Festplatte organisieren und griffbereit
-halten.
+halten.<br/>
 Solche internen Strukturen werden Metadaten genannt und sind sozusagen
 die Daten über die Daten.
 Die Metadaten definieren z.B., wo die Datenblöcke einer Datei zu finden
 sind, wer Besitzer ist, die Rechte, die letzten Zugriffszeitpunkte
 und anderes mehr.
+      </textblock>
 
+      <textblock>
 Diese Verwaltungsdaten müssen unbedingt konsistent gehalten werden.
 So lässt sich auf eine Datei nicht zugreifen, wenn die Datenblöcke
 nicht dort sind, wo sie laut Metadaten zu sein haben.
 Oder es könnte passieren, dass bestimmte Datenblöcke als nicht belegt
 definiert sind, obwohl dort Daten abgelegt sind, die somit
 überschrieben werden könnten. 
+      </textblock>
 
+      <textblock>
 Wird eine Datei neu angelegt, so werden in mindestens fünf
 verschiedenen Strukturen der Metadaten Änderungen vorgenommen.
 Gibt es während dieser Änderungen einen Systemausfall, ist das
 Dateisystem inkonsistent - es sei denn, es gibt ein Journal.
+      </textblock>
 
+     </section>
+     <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 4 -->
+     <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 4 -->
+     <section>
+      <heading>
+Journal
+      </heading>
 
-
-1.1.1.1 Journal
-
+      <textblock>
 Bevor eine Änderung an den Metadaten vorgenommen wird, wie durch das
 Anlegen einer neuen Datei, werden die dafür nötigen
 Metadaten-Änderungen zunächst ausschließlich in das Journal
@@ -129,70 +201,105 @@ geschrieben, welches eine Art Log-Datei darstellt.
 Diese Einträge im Journal gelten solange nicht für das Dateisystem,
 bis die Journal-Einträge mit einem "commit" abgeschlossen werden.
 Erst dann werden die neuen Metadaten auf die Festplatte geschrieben.
+      </textblock>
 
-Wie soll dies nun vor Inkonsistenzen nach einem Systemabsturz schützen?
+      <textblock>
+Wie soll dies nun vor Inkonsistenzen nach einem Systemabsturz schützen?<br/>
 Nach einem Neustart zieht das Dateisystem als erstes das Journal zu
 Rate.
-Sind die Einträge im Journal schon mit einem "commit" abgeschlossen, 
+Sind die Einträge im Journal schon mit einem <strong>commit</strong> abgeschlossen, 
 sind die Metadaten gültig und die Einträge werden auf die Festplatte
 übertragen.
-Fehlt das "commit" als abschließender Eintrag, werden die Metadaten
+Fehlt das <strong>commit</strong> als abschließender Eintrag, werden die Metadaten
 nicht
 von dem Journal auf die Festplatte geschrieben, sondern verworfen.
+      </textblock>
 
-Bei Dateisystemen ohne Journal, wie Ext2, müssen dagegen alle Metadaten
+      <textblock>
+Bei Dateisystemen ohne Journal, wie <strong>Ext2</strong>, müssen dagegen alle Metadaten
 überprüft werden, ob sie konsistent sind, was die erwähnten langen
 Wartezeiten bewirkt.
+      </textblock>
 
+      <textblock>
 Was ist nun mit den eigentlichen Daten, wann werden diese auf die 
-Festplatte gespeichert?
+Festplatte gespeichert?<br/>
 Das ist bei den verschiedenen Dateisystemen verschieden implementiert.
-Bei Ext3 werden zunächst die eigentlichen Daten auf die Festplatte
+Bei <strong>Ext3</strong> werden zunächst die eigentlichen Daten auf die Festplatte
 geschrieben,
 erst anschließend wird das abschließende Commit im Journal gesetzt.
 Bei den anderen Journaling Dateisystemen können dagegen die Metadaten
 schon auf die Festplatte geschrieben werden, bevor die Daten komplett
 auf der Festplatte sind, was zu Problemen führen kann, aber
 schneller ist.
-Hier hat Ext3 in Sachen Sicherheit die Nase vorn.
+Hier hat <strong>Ext3</strong> in Sachen Sicherheit die Nase vorn.
+      </textblock>
 
+      <textblock>
 Die Integrität der eigentlichen Daten stellt das Journal leider nicht
 sicher.
 Es kann also durchaus sein, das nach einem Absturz eine Datei einen
 Mix aus einer alten und neuen Version enthält.
-Auch hier hat Ext3 die Nase vorn, denn nur Ext3 kann über die
+Auch hier hat <strong>Ext3</strong> die Nase vorn, denn nur <strong>Ext3</strong> kann über die
 Metadaten hinaus auch die Datenänderungen selbst mitprotokollieren,
-mehr dazu siehe [LINK Ext2 und Ext3]
+mehr dazu siehe <ref iref="Ext2 und Ext3">Ext2 und Ext3</ref>
+      </textblock>
 
+     </section>
+     <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 4 -->
+    </section>
+    <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 3 -->
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+Binärbäume
+    </heading>
 
-
-1.1 Binärbäume
-
+    <textblock>
 Ein Binärbaum ermöglicht einen beschleunigten Zugriff auf die
 Informationen der Verzeichniseinträge, insbesondere bei Verzeichnissen
 mit vielen Dateien und Unterverzeichnissen.
-Bei einem traditionellen Dateisystem wie Ext2/Ext3 müssen der Reihe
+Bei einem traditionellen Dateisystem wie <strong>Ext2/Ext3</strong> müssen der Reihe
 nach alle Verzeichniseinträge durchgegangen werden, bis der gesuchte
 Eintrag gefunden ist.
 Somit ermöglicht ein Binärbaum ein beschleunigtes Suchen im
 Dateisystem.
+    </textblock>
 
-Beispiel: Wird ein Verzeichnis mit 1000 Einträgen nach einem Dateinamen
+    <textblock>
+Beispiel:
+    </textblock>
+
+    <hint>
+Wird ein Verzeichnis mit 1000 Einträgen nach einem Dateinamen
 durchsucht, sind ohne Binärbaum-Struktur durchschnittlich 500
 Suchaktionen
 notwendig, mit Hilfe eines Binärbaum dagegen nur 10.
-
+    </hint>
+    
+    <textblock>
 Allerdings benötigt ein Binärbaum mehr Rechenzeit, da das System
 komplexer ist und nach Bearbeitung der Verzeichniseinträge erneut
 ausbalanciert werden muss.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+Flexibleres setzen der Rechte durch ACLs (Access Control Lists)
+    </heading>
 
-
-1.1 Flexibleres setzen der Rechte durch ACLs (Access Control Lists)
-
-Außer ReiserFS können alle hier genannten Dateisysteme um ACLs
+    <textblock>
+Außer <strong>ReiserFS</strong> können alle hier genannten
+Dateisysteme um <ref lang="de" url="http://de.wikipedia.org/wiki/ACL">ACLs</ref>
 erweitert werden.
+    </textblock>
 
+    <textblock>
 Der Vorteil liegt im Wegfall der Unix-typischen
 Beschränkung, das Rechte auf eine Datei oder ein Verzeichnis nur für
 je einen Besitzer, eine Gruppe und alle anderen gesetzt werden kann.
@@ -202,45 +309,67 @@ insbesondere für Netzwerkanwendungen sehr nützlich ist.
 So kann einer Gruppe Lese-, einer anderen Gruppe Schreibrecht
 gegeben werden, alle anderen können ausgeschlossen werden.
 Weitere Informationen zu ACLs sind zu finden unter
-[LINK SelfLinux-->Sicherheit-->Erweiterte Dateiattribute]
+[LINK SelfLinux->Sicherheit->Erweiterte Dateiattribute]
+    </textblock>
 
+    <textblock>
 Es können allerdings bislang nur wenige Linux-Programme diese
-erweiterten Rechte nutzen, wie etwa Samba.
+erweiterten Rechte nutzen, wie etwa <ref lang="de" url="http://de.wikipedia.org/wiki/Samba_(Software)">Samba</ref>.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+Geschwindigkeit
+    </heading>
 
-
-1.1 Geschwindigkeit
-
+    <textblock>
 Es sind nicht wenige Geschwindigkeitstests veröffentlicht worden.
 Je nach Testumgebung und Zeitpunkt unterscheiden sich die Ergebnisse
 erheblich, widersprechen sich zum Teil, deshalb müssen sie mit
 großer Vorsicht genossen werden.
+    </textblock>
 
+    <textblock>
 Außerdem entwickeln sich die neueren Dateisysteme rasant, so dass die
 Tests oft schon veraltet sind.
 Und es ist die Frage, wie relevant die Geschwindigkeit für die Praxis
 ist.
 Deshalb sind hier nur allgemeine Tendenzen der Dateisysteme angegeben.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+Regelmäßige Dateisystem-Check
+    </heading>
 
-
-1.1 Regelmäßige Dateisystem-Check
-
+    <textblock>
 Journaling verhindert leider nicht die regelmäßigen
 Dateisystem-Überprüfungen, wie oft behauptet wird.
-Ist der "maximum mount count" (oft nach dem 24. mounten) oder aber
-der "check intervall" (oft nach einem halben Jahr ohne
+Ist der <strong>maximum mount count</strong> (oft nach dem 24. mounten) oder aber
+der <strong>check intervall</strong> (oft nach einem halben Jahr ohne
 Dateisystem-Check)
 überschritten, löst ein Neustart eine Dateisystemprüfung aus, was 
 natürlich oft sehr störend ist.
 Es sollen damit einerseits Fehler im Dateisystem-Code begegnet, 
 andererseits frühzeitig Hardware-Fehler erkannt werden, wie etwa 
 defekte Sektoren.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+Datei- und Dateisystemgrößen
+    </heading>
 
-
-1.1 Datei- und Dateisystemgrößen
-
+    <textblock>
 Die in Veröffentlichungen oft angeführten maximalen Dateisystem- und
 Dateigrößen sind zur Zeit nicht relevant.
 Mit einem 32-Bit System ist die maximale Dateigröße 2 GB, egal,
@@ -249,172 +378,273 @@ Bei einem 64-Bit System dagegen beschränkt
 der Kernel 2.6 die maximale Dateigröße auf 1TByte, 
 was zur Zeit wohl sehr selten erreicht werden sollte.
 Alle hier genannten Dateisysteme können mit diesen Größen umgehen.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+  </section>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 1 -->
+ </split>
 
+ <split>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 1 -->
+  <section>
+   <heading>
+Verschiedene Dateisysteme für verschiedene Zwecke
+   </heading>
 
-2 Verschiedene Dateisysteme für verschiedene Zwecke
-
+   <textblock>
 Alle beschriebenen Dateisysteme sind im Kernel 2.6 und ab Kernel
 2.4.25 integriert.
+   </textblock>
 
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+Ext2 und Ext3
+    </heading>
 
-
-2.1 Ext2 und Ext3
-
-Bis vor kurzem war Ext2 das einzig ernsthaft nutzbare
+    <textblock>
+Bis vor kurzem war <strong>Ext2</strong> das einzig ernsthaft nutzbare
 Linux-Dateisystem.
 Es ist sehr stabil, da es seit 1993 für Linux entwickelt und
-korrigiert wird.
-Ext2 enthält keine Journal-Funktion und muss ohne Binärbaum auskommen,
-Ext3 ist ein Ext2, das um das Journaling erweitert wurde.
-Ext2 kann in Ext3 umgewandelt werden und umgekehrt.
+korrigiert wird.<br/>
+<strong>Ext2</strong> enthält keine Journal-Funktion und muss ohne Binärbaum
+auskommen,<br/>
+<strong>Ext3</strong> ist ein <strong>Ext2</strong>, das um das Journaling erweitert wurde.<br/>
+<strong>Ext2</strong> kann in <strong>Ext3</strong> umgewandelt werden und umgekehrt.
+    </textblock>
 
+    <textblock>
 Die Geschwindigkeit scheint erstaunlich gut zu sein für die klassische,
-"unmoderne" Architektur des Dateisystems. Nur bei sehr große Dateien im
+<strong>unmoderne</strong> Architektur des Dateisystems. Nur bei sehr große Dateien im
 GB-Bereich sowie bei Verzeichnissen mit tausenden von Dateien scheint
 Ext2/3 von der Konkurrenz deutlich abgehängt zu werden. Aber selbst
 dazu
 geben die verschiedenen Tests keine eindeutige Aussage.
+    </textblock>
 
-Wie bereits weiter oben erwähnt, hat Ext3 zwei Features, welche die
-anderen "modernen" Dateisysteme nicht haben.
+    <textblock>
+Wie bereits weiter oben erwähnt, hat <strong>Ext3</strong> zwei Features, welche die
+anderen <strong>modernen</strong> Dateisysteme nicht haben.
+    </textblock>
 
+    <textblock>
 Einmal ist das Zusammenspiel von Metadaten und Journal exakter
-synchronisiert, denn das "commit" wird erst in das Journal geschrieben,
+synchronisiert, denn das <strong>commit</strong> wird erst in das Journal geschrieben,
 wenn die eigentlichen Daten wirklich auf der Festplatte sind. (Dies ist
 zur Beschleunigung übrigens deaktivierbar mit der Mount-Option
-"data=writeback".)
+<command>data=writeback</command>.)
+    </textblock>
 
-Zum anderen kann Ext3 als einziger Kandidat auch die Daten
+    <textblock>
+     Zum anderen kann <strong>Ext3</strong> als einziger Kandidat auch die Daten
 selbst in sein Journal eintragen, was aber meistens einen
 starken Geschwindigkeitseinbruch zu bewirken scheint. Um diese
-Funktion zu aktivieren, muss die Mount-Optionenn "data=journal" in die
-"/etc/fstab" eingetragen werden.
+Funktion zu aktivieren, muss die Mount-Optionenn <command>data=journal</command> in die
+<path>/etc/fstab</path> eingetragen werden.
 Wird dies so eingerichtet, empfiehlt sich zur Beschleunigung das 
 Auslagern des Journals auf eine weitere Festplatte.
+    </textblock>
 
-Des Weiteren hat Ext2/3 die meisten ergänzenden Zusatz-Programme.
+    <textblock>
+Des Weiteren hat <strong>Ext2/3</strong> die meisten ergänzenden Zusatz-Programme.
+    </textblock>
 
+    <textblock>
 Wenn es also darum geht, ein sehr zuverlässiges Linux aufzusetzen, die
 Geschwindigkeit des Dateisystems nicht das Allerwichtigste ist,
 scheint Ext3 eine sehr gute Wahl zu sein.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+ReiserFS
+    </heading>
 
-
-2.3 ReiserFS
-
-Reiser wurde als einziges der hier erwähnten Journaling Dateisysteme 
+    <textblock>
+<strong>ReiserFS</strong> wurde als einziges der hier erwähnten Journaling Dateisysteme 
 komplett neu für Linux geschrieben.
 Es ist das neueste Dateisystem, gleichzeitig ist es jedoch auch
 das am längsten für Linux verfügbare Journaling-Dateisystem.
+    </textblock>
 
+    <textblock>
 Es nutzt das Binärbaum-Konzept nicht nur für die Verzeichniseinträge,
 sondern teilweise auch für die Daten selbst, was kein anderes der hier
 aufgeführten Dateisysteme umsetzt.
+    </textblock>
 
+    <textblock>
 Durch den konsequenten Einsatz neuer Techniken sollte man annehmen,
 ReiserFS sei das schnellste aller Dateisysteme.
 Den Tests nach zu urteilen ist dies aber nicht unbedingt so.
-Es zeigt sich jedoch, dass ReiserFS viele kleine Dateien
+Es zeigt sich jedoch, dass <strong>ReiserFS</strong> viele kleine Dateien
 schnell löschen kann wie kein anderes Linux-Dateisystem.
+    </textblock>
 
-ReiserFS unterstützt im Kernel 2.6 als einziges Dateisystem keine
-ACLs, was dieses Dateisystem für den Fileserver Samba weniger
+    <textblock>
+<strong>ReiserFS</strong> unterstützt im Kernel 2.6 als einziges Dateisystem keine
+<ref iref="Flexibleres setzen der Rechte durch ACLs (Access
+Control Lists)">ACLs</ref>, was dieses Dateisystem für den Fileserver Samba weniger
 attraktiv macht, zumindest wenn dort diese erweiterten Rechte genutzt 
 werden sollen.
+    </textblock>
 
-Es scheint so, dass es relativ wenig Hilfs-Programme für Reiser FS gibt.
+    <textblock>
+Es scheint so, dass es relativ wenig Hilfs-Programme für <strong>ReiserFS</strong> gibt.
+    </textblock>
 
-ReiserFS gilt in den neueren Tests als sehr stabil.
+    <textblock>
+<strong>ReiserFS</strong> gilt in den neueren Tests als sehr stabil.
 Es gab in der Vergangenheit mehrere Probleme 
 mit einigen Anwendungen, wie mit NFS, die aber anscheinend inzwischen
 behoben sind.
+    </textblock>
 
-Mit einigen Einschränkungen muss ReiserFS leben:
+    <textblock>
+Mit einigen Einschränkungen muss <strong>ReiserFS</strong> leben:
+    </textblock>
 
-	* Softraid ist nicht implementiert
-	* Die Blockgröße ist auf 4K festgelegt
-	* Es ist auf x86-Plattformen beschränkt
-	* Quota, also Beschränkung auf eine maximalen Größe, die z.B.
-	  ein Home-Verzeichnis haben darf, wird nicht unterstützt
-	* Es unterstützt keine ACLs
+    <ul>
+     <li>Softraid ist nicht implementiert</li>
+     <li>Die Blockgröße ist auf 4K festgelegt</li>
+     <li>Es ist auf x86-Plattformen beschränkt</li>
+     <li>Quota, also Beschränkung auf eine maximalen Größe, die z.B.
+	 ein Home-Verzeichnis haben darf, wird nicht unterstützt</li>
+     <li>Es unterstützt keine ACLs</li>
+    </ul>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+IBM-JFS
+    </heading>
 
-
-2.4 IBM-JFS
-
-Unter OS2 und AIX schon länger bewährt, hat IBM JFS auf Linux portiert
-und unter GNU freigegeben. JFS ist Bestandteil des Standard-Kernels
+    <textblock>
+Unter OS2 und AIX schon länger bewährt, hat <strong>IBM JFS</strong> auf Linux portiert
+und unter GNU freigegeben. <strong>JFS</strong> ist Bestandteil des Standard-Kernels
 ab der Version 2.4.20.
+    </textblock>
 
+    <textblock>
 Die anfänglichen Stabilitätsprobleme scheinen überwunden. 
 Die Entwicklung ist aber noch nicht sehr weit vorangeschritten, so 
 gibt es keine Quotas und die Hilfswerkzeuge, welche unter AIX zur 
 Verfügung stehen, sind unter Linux nur zu einem geringem Umfang 
 verfügbar. 
 Auch die Dokumentation ist bisher eher knapp gehalten.
+    </textblock>
 
-Unter Performance-Aspekten spielt JFS an vorderster Reihe mit.
+    <textblock>
+Unter Performance-Aspekten spielt <strong>JFS</strong> an vorderster Reihe mit.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+   <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 2 -->
+   <section>
+    <heading>
+SGI-XFS
+    </heading>
 
-
-2.5 SGI-XFS
-
-Auch XFS scheint inzwischen stabil zu laufen. In einigen Tests holt
+    <textblock>
+Auch <strong>XFS</strong> scheint inzwischen stabil zu laufen. In einigen Tests holt
 es sich Performance-Siege ein, v.a. beim Kopieren vieler kleiner
 Dateien als auch im Umgang mit sehr großen Dateien im GB Bereich.
+    </textblock>
 
-Der Bootmanager LILO muss so konfiguriert werden, das er in den MBR
+    <textblock>
+Der Bootmanager <command>LILO</command> muss so konfiguriert werden, das er in den MBR
 (Master Boot Record),
 nicht in die Root-Partition installiert wird, damit das System
 bootfähig ist.
-GRUB, ein anderer Bootmanager, kann seit der Version 0.91 mit XFS
+<command>GRUB</command>, ein anderer Bootmanager, kann seit der Version 0.91 mit <strong>XFS</strong>
 umgehen.
+    </textblock>
 
-Von den hier vorgestellten Dateisystemen ist XFS als letztes in den 
+    <textblock>
+Von den hier vorgestellten Dateisystemen ist <strong>XFS</strong> als letztes in den 
 Kernel 2.4 integriert worden, seit der Version 2.4.25.
 Im Kernel 2.6 ist es seit dem ersten Release dabei.
+    </textblock>
 
-XFS hat viele Werkzeuge zur Verwaltung des Dateisystems zu bieten,
-wie etwa zur Daten-Sicherung inklusive der ACL-Rechte (xfsdump),
-Partitionen vergrößern (xfs_growfs) oder Rettungs-Tools.
+    <textblock>
+<strong>XFS</strong> hat viele Werkzeuge zur Verwaltung des Dateisystems zu bieten,
+wie etwa zur Daten-Sicherung inklusive der ACL-Rechte (<command>xfsdump</command>),
+Partitionen vergrößern (<command>xfs_growfs</command>) oder Rettungs-Tools.
 Von der Anzahl und Vielseitigkeit dieser Werkzeuge her kann dem nur
-Ext2/3 das Wasser reichen. Außerdem ist die Dokumentation 
+<strong>Ext2/3</strong> das Wasser reichen. Außerdem ist die Dokumentation 
 umfangreich.
+    </textblock>
 
+   </section>
+   <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 2 -->
+  </section>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 1 -->
+ </split>
 
+ <split>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Beginn eines Nodes Level 1 -->
+  <section>
+   <heading>
+Fazit
+   </heading>
 
-1 Fazit
-
+   <textblock>
 Für eine normale Workstation, einen Laptop und selbst für viele
 Server-Systeme ist es nicht relevant, welches der genannten Dateisystem
 genutzt wird, solange es über Journaling-Funktionalitäten verfügt.
 Der Anwender wird die Unterschiede selten zu spüren bekommen.
+   </textblock>
 
+   <textblock>
 Soll Samba mit ACLs genutzt werden, sollte ein Dateisystem um diese
-Funktionalität ergänzt werden. Nur ReiserFS ist dazu derzeit nicht
+Funktionalität ergänzt werden. Nur <strong>ReiserFS</strong> ist dazu derzeit nicht
 in der Lage und schließt sich somit für diesen Anwendungsfall aus.
+   </textblock>
 
-Ext2, vor allem aber Ext3 scheinen noch lange nicht überlebt zu sein.
-Ext3 hat einige Funktionen, die kein anderes der hier genannten
-Dateisystem bieten kann, siehe [Internal LINK "Ext2 und Ext3"] .
-Vor allem ist Ext2/3 das bewährteste Dateisystem, das weitgehend
+   <textblock>
+<strong>Ext2</strong>, vor allem aber <strong>Ext3</strong> scheinen noch lange nicht überlebt zu sein.
+<strong>Ext3</strong> hat einige Funktionen, die kein anderes der hier genannten
+Dateisystem bieten kann, siehe <ref iref="Ext2 und Ext3">Ext2 und Ext3</ref> .
+Vor allem ist <strong>Ext2/3</strong> das bewährteste Dateisystem, das weitgehend
 fehlerbereinigt ist.
 Soll also ein möglichst stabiles System eingerichtet werden, könnte 
-Ext3 die erste Wahl sein.
+<strong>Ext3</strong> die erste Wahl sein.
+   </textblock>
 
-ReiserFS scheint inzwischen ebenfalls einen sehr stabilen Status
+   <textblock>
+<strong>ReiserFS</strong> scheint inzwischen ebenfalls einen sehr stabilen Status
 erreicht zu haben und hat sich seit einigen Jahren bewährt.
+   </textblock>
 
+   <textblock>
 Aufgrund der noch geringen Verbreitung gibt es nicht so viel Hilfe
-und Erfahrungen mit JFS und XFS unter Linux.
+und Erfahrungen mit <strong>JFS</strong> und <strong>XFS</strong> unter Linux.
+   </textblock>
 
-Die Beurteilungen von XFS und JFS fallen in den Tests sehr
+   <textblock>
+Die Beurteilungen von <strong>XFS</strong> und <ref>JFS</ref> fallen in den Tests sehr
 unterschiedlich aus. Dies liegt vermutlich auch an der kurzen
 Bewährungszeit und deren noch relativ seltenem Einsatz unter Linux.
 Schließlich ist es nicht jedermanns Sache,
 einen Kernel zu patchen und zu kompilieren.
 Da der Linux-Kernel nun alle erwähnten
-Dateisysteme von Haus aus dabei hat, wird die Nutzung von JFS und XFS
+Dateisysteme von Haus aus dabei hat, wird die Nutzung von <strong>JFS</strong> und <strong>XFS</strong>
 unter Linux sicherlich zunehmen, da sie somit in jeder kommenden 
 Linux-Distribution enthalten sind.
+   </textblock>
+  </section>
+  <!-- ../../tools/plain2xml/plain2xml.pl: Ende eines Nodes Level 1 -->
+ </split>
+
+<!-- ../../tools/plain2xml/plain2xml.pl: Beginn des Chapter Endes -->
+</chapter>
+<!-- ../../tools/plain2xml/plain2xml.pl: Ende des Chapter Endes -->
+<!-- ../../tools/plain2xml/plain2xml.pl: Ende des Wurzel-Nodes Level 0 -->
