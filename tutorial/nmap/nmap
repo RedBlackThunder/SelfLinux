@@ -1,61 +1,128 @@
-nmap - der Netzwerksicherheits-Scanner
+<?xml version="1.0" encoding="iso-8859-1"?>
 
-
-Geschrieben von Marc Ruef, erweitert und verändert 
-durch Gabriel Welsche.
-
-
-
-Zusammenfassung
-
-Das kleine Port Scanning Tool namens nmap wird hier mit dem 
-Ziel vorgestellt, die schier erschreckend scheinenden Funktionen 
-in vollem Umfang nutzen zu können. Die verschiedenen Techniken 
-werden ebenfalls knapp erläutert, sodass dieser Artikel nicht 
-nur ausschließlich für Nutzer von nmap interessant sein dürfte.
-
-Nmap bietet im Gegensatz zu Konkurrenzprodukten erweiterte 
-TCP- und UDP - Funktionalitäten, die mit einer Portion Wissen 
-das Leben eines Netzwerk-Administrators extrem 
-erleichtern können. 
-
-
-
-1 Einführung
-
+<chapter>
+ <title>nmap - der Netzwerksicherheits-Scanner</title>
+ 
+ <author>
+  <name>Gabriel Welsche</name>
+ </author>
+ 
+ <author>
+  <name>Marc Ruef</name>
+ </author>
+ 
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
+ 
+ <license>GFDL</license>
+ 
+ <index>nmap</index>
+ 
+ <description>
+  <textblock>
+Das kleine Port Scanning Tool namens <command>nmap</command> wird hier mit dem
+Ziel vorgestellt, die schier erschreckend scheinenden Funktionen
+in vollem Umfang nutzen zu können. Die verschiedenen Techniken
+werden ebenfalls knapp erläutert, sodass dieser Artikel nicht
+nur ausschließlich für Nutzer von <command>nmap</command> interessant sein dürfte.
+  </textblock>
+  
+  <textblock>
+<command>nmap</command> bietet im Gegensatz zu Konkurrenzprodukten erweiterte
+TCP- und UDP - Funktionalitäten, die mit einer Portion Wissen
+das Leben eines Netzwerk-Administrators extrem erleichtern können.
+  </textblock>
+ </description>
+ 
+ <split>
+  <section>
+   <heading>
+Einführung
+   </heading>
+   
+   <textblock>
 nmap - der "Network Mapper" - wurde entwickelt, um 
 Systemadministratoren und anderen kuriosen Individuen die 
 Möglichkeit zu geben, Netzwerke zu analysieren, festzustellen 
 welche Hosts aktiv sind und welche Dienste durch sie 
 bereitgestellt werden. nmap ist ein so genannter 
-Portscanner (scannen = abtasten), d.h. er prüft 
+Portscanner (scannen = abtasten), d. h. er prüft 
 IP - Netzwerkkomponenten auf geöffnete bzw. geschlossene 
 TCP/UDP - Ports. Dabei werden eine  Vielzahl  verschiedener 
-Abtastverfahren unterstützt, zum Beispiel 
-
-# UDP- und TCP Connects
-# TCP SYN-Scans
-# FTP-Proxy (Bounce-Attacks)
-# Reverse-Ident
-# ICMP-Scans (Ping-Schleife)
-# FIN - Scans
-# ACK Schleifen (Antwortpakete)
-# X-MAS
-# SYN-Schleifen
-# Null - Scan.
-
+Abtastverfahren unterstützt, zum Beispiel
+   </textblock>
+   
+   <ul>
+    <li>
+UDP- und TCP Connects
+    </li>
+    <li>
+TCP SYN-Scans
+    </li>
+    <li>
+FTP-Proxy (Bounce-Attacks)
+    </li>
+    <li>
+Reverse-Ident
+    </li>
+    <li>
+ICMP-Scans (Ping-Schleife)
+    </li>
+    <li>
+FIN - Scans
+    </li>
+    <li>
+ACK Schleifen (Antwortpakete)
+    </li>
+    <li>
+X-MAS
+    </li>
+    <li>
+SYN-Schleifen
+    </li>
+    <li>
+Null - Scan
+    </li>
+   </ul>
+   
+   <textblock>
 Ebenso bietet nmap eine  Vielzahl von zusätzlichen Möglichkeiten,
 wie
-#  Betriebssystemerkennung mit TCP/IP Fingerabdruck, 
-#  Stealth - Scans, 
-#  dynamische Verzögerung und Übertragungsberechnungen,
-#  Parallel - Scans, 
-#  Abfragen von inaktiven Hosts über parallele Pings, 
-#  Portfilter - Identifikation, 
-#  RPC - Scans, 
-#  Scans auf fragmentierte Pakete sowie 
-#  Ziel- und Port- Scans.
-
+   </textblock>
+   
+   <ul>
+    <li>
+Betriebssystemerkennung mit TCP/IP Fingerabdruck,
+    </li>
+    <li>
+Stealth - Scans,
+    </li>
+    <li>
+dynamische Verzögerung und Übertragungsberechnungen,
+    </li>
+    <li>
+Parallel - Scans,
+    </li>
+    <li>
+Abfragen von inaktiven Hosts über parallele Pings,
+    </li>
+    <li>
+Portfilter - Identifikation,
+    </li>
+    <li>
+RPC - Scans,
+    </li>
+    <li>
+Scans auf fragmentierte Pakete sowie
+    </li>
+    <li>
+Ziel- und Port- Scans.
+    </li>
+   </ul>
+   
+   <textblock>
 Das  Resultat eines nmap - Durchlaufs ist normalerweise eine
 Liste sämtlicher interessanter Ports der "gescannten" Geräte.
 Sofern eine Zuweisung stattfinden kann, benennt nmap die 
@@ -74,26 +141,41 @@ Der ungefilterte Status wird in den meisten aller Fälle
 auftreten. Deshalb wird ein solcher nur immer  dann
 explizit ausgewiesen, wenn die  meisten der gescannten Ports
 gefiltert sind.
-
+   </textblock>
+   
+   <textblock>
 (Leider) benötigen viele Techniken (z.B. die kernelnahen 
 raw sockets) root-Privilegien.  Aus  diesem Grund 
 ist es oftmals erforderlich, nmap als root auszuführen.
-
-
-
-1.1 Anwendung
-
+   </textblock>
+   
+   <section>
+    <heading>
+Anwendung
+    </heading>
+    
+    <textblock>
 Wie bei den meisten zeilenorientierten Programmen in einer Linux-Umgebung 
 wird mit dem Parameter -h bzw. dem parameterlosen Aufruf von nmap die 
 Hilfefunktion auf dem Bildschirm ausgegeben. Die Syntax für 
 das kleine Wunderding ist wie folgt festgelegt (Ins Deutsche übersetzt):
-
- nmap [Scan-Typ(en)] [Optionen] <Host oder Netz #1 ... [#N]> Scan-Typen
-
+    </textblock>
+    
+    <shell>
+     <user>
+nmap [Scan-Typ(en)] [Optionen] <Host oder Netz #1 ... [#N]> Scan-Typen
+     </user>
+    </shell>
+    
+    <textblock>
 Folgend nun die original Ausgabe von nmap ohne Parameter-Eingabe:
-
- mruef@prometheus:~ > nmap
-
+    </textblock>
+    
+    <shell>
+     <user>
+nmap
+     </user>
+     <output>
 nmap V. 2.3BETA6 usage: nmap [Scan Type(s)] [Options] <host or net #1 ...[#N]>
 Scan types
   -sT tcp connect() port scan
@@ -136,63 +218,95 @@ Hostnames specified as internet hostname or IP address. Optional '/mask'
 specifies subnet. For example: cert.org/24 or 192.88.209.5/24 or 
 192.88.209.0-255 or '128.88.209.*' all scan CERT's Class C. 
 SEE THE MAN PAGE FOR MORE THOROUGH EXPLANATIONS AND EXAMPLES.
-
-mruef@prometheus:~ > _
-
-
-
-
-1 Mögliche Scan - Techniken (nmap Optionen)
-
+     </output>
+    </shell>
+   </section>
+  </section>
+  
+  <section>
+   <heading>
+Mögliche Scan - Techniken (nmap Optionen)
+   </heading>
+   
+   <textblock>
 Je nach dem welche Optionen verwendet wurden, ist nmap in
 der Lage, Auskunft über die folgenden Charakteristiken des
-Zielsystems zu geben:  
- * Genutztes  Betriebssystem
- * TCP- Sequenznummern
- * Benutzername, unter der die an die Ports 
-   gebundene Software abläuft
- * DNS-Name
- * ob es sich um ein Smurf - System handelt
+Zielsystems zu geben:
+   </textblock>
+   
+   <ul>
+    <li>
+Genutztes  Betriebssystem
+    </li>
+    <li>
+TCP- Sequenznummern
+    </li>
+    <li>
+Benutzername, unter der die an die Ports 
+gebundene Software abläuft
+    </li>
+    <li>
+DNS-Name
+    </li>
+    <li>
+ob es sich um ein Smurf - System handelt
 und viele mehr.
-
+    </li>
+   </ul>
+   
+   <textblock>
 Die Kombination verschiedener Optionen ist immer dann
 möglich, wenn ein Zusammenspiel auch Sinn macht. Einige Parameter
 können nur in Verbindung mit spezifischen Scan-Methoden
-genutzt werden.  
-
-
-
-1.1 Ping - Suchlauf
-
+genutzt werden.
+   </textblock>
+   
+   <section>
+    <heading>
+Ping - Suchlauf
+    </heading>
+    
+    <textblock>
 Mit dem Parameter -sP kann nmap die aktiven Hosts in 
 einem Netzwerk zu ermitteln. Dabei wird traditionell ein 
 ICMP-ECHO-(Typ 8)-Paket an ein Ziel geschickt, 
 wobei bei dessen Erreichbarkeit mit einem 
 ICMP-ECHO-REPLY-(Typ 0)-Paket als Antwort signalisiert wird.
-
+    </textblock>
+    
+    <textblock>
 Viele gewissenhafte Firewall- und Systemadministratoren filtern  
 unnötigen ICMP - Verkehr. nmap greift in diesem Falle auf eine 
 andere Technik zurück - es wird ein  TCP - Datagramm mit gesetztem 
 ACK - Flag an einen potentiell offenen Port des Zielsystems  
 geschickt. Der Empfang eines RST-Paketes bedeutet, dass das 
-Zielsystem vorhanden und ansprechbar ist.  
-
+Zielsystem vorhanden und ansprechbar ist.
+    </textblock>
+    
+    <textblock>
 Führt auch diese Technik nicht zum Erfolg, so versucht nmap eine
 weitere Methode, die auf ein SYN - Datagramm zurückgreift, das auf ein 
-RST oder SYN/ACK wartet. 
-
+RST oder SYN/ACK wartet.
+    </textblock>
+    
+    <textblock>
 Wichtig ist zu wissen, dass der Ping - Zugriff standardmäßig 
 erfolgt. Wird dies nicht gewünscht, so ist mit 
-<!-- LINK: iref="Scannen ohne vorheriges An-ping-en des Hosts"-->dem 
-Parameter -P0<!-- ENDLINK --> dieses Verhalten zu deaktivieren.
-
+<ref iref="Scannen ohne vorheriges An-ping-en des Hosts">dem Parameter -P0</ref>
+dieses Verhalten zu deaktivieren.
+    </textblock>
+    
+    <textblock>
 Für Mass-Pings sind andere Tools nutzbar, deren Herangehensweise 
-oftmalsczu besseren Resultaten führt (Zum Beispiel fping, gping 
+oftmalsc zu besseren Resultaten führt (Zum Beispiel fping, gping 
 und Hping.).
-
-*BEISPIEL*
-mruef@prometheus:~ > nmap -sP 192.168.0.0/24
-
+    </textblock>
+    
+    <shell>
+     <user>
+nmap -sP 192.168.0.0/24
+     </user>
+     <output>
  Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
  Host gateway.matrix.net (192.168.0.1) appears to be up.
  Host prometheus.matrix.net (192.168.0.2) appears to be up.
@@ -200,61 +314,76 @@ mruef@prometheus:~ > nmap -sP 192.168.0.0/24
  Host margrit.matrix.net (192.168.0.4) appears to be up.
  Host roadrunner.matrix.net (192.168.0.5) appears to be up.
  Nmap run completed -- 256 IP addresses (5 hosts up) scanned in 1 second
- mruef@prometheus:~ > _
-
-
-
-
-1.1 TCP - Port Scan mit Verbindungsaufbau
-
+     </output>
+    </shell>
+   </section>
+   
+   <section>
+    <heading>
+TCP - Port Scan mit Verbindungsaufbau
+    </heading>
+    
+    <textblock>
 Der Parameter -sT führt einen normalen TCP - Port Scan durch, bei dem 
 eine Verbindung zum  Ziel - Port aufgebaut wird. Der Client beginnt 
 mit der Übertragung eines SYN-Paketes an den Server. Jener 
 quittiert den Empfang mit einem SYN-/ACK-Paket und wartet dann auf den 
 Erhalt einer weiteren Bestätigung durch ein ACK-Paket von Seiten des 
 Clients (3-Way-Handshake).
-
+    </textblock>
+    
+    <textblock>
 Diese Scanning - Technik ist sehr leicht zu entdecken und
 wird mit größter Wahrscheinlichkeit in  den  Protokoll-Dateien 
 des Zielsystems auftauchen. Dies ist die einzige Scan - Technik
 für unprivilegierte Anwender.
-
-*BEISPIELE*
-
+    </textblock>
+    
+    <textblock>
 BeOS 4.5
-
-mruef@gateway:~ > nmap -sT 192.168.0.2
-
+    </textblock>
+    
+    <shell>
+     <user>
+nmap -sT 192.168.0.2
+     </user>
+     <output>
 Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
 Interesting ports on prometheus.matrix.net (192.168.0.2):
 Port State Protocol Service
 23 open tcp telnet
 
 Nmap run completed -- 1 IP address (1 host up) scanned in 2 seconds
-
-mruef@gateway:~ > _
-
-============================================
-
+     </output>
+    </shell>
+    
+    <textblock>
 Microsoft Windows 98
-
-mruef@prometheus:~ > nmap -sT 192.168.0.3
-
+    </textblock>
+    
+    <shell>
+     <user>
+nmap -sT 192.168.0.3
+     </user>
+     <output>
  Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
  Interesting ports on rieekan.matrix.net (192.168.0.3):
  Port State Protocol Service
  139 open tcp netbios-ssn
 
  Nmap run completed -- 1 IP address (1 host up) scanned in 8 seconds
-
- mruef@prometheus:~ > _
-
-============================================
-
-bei SuSE Linux 6.3
-
-mruef@prometheus:~ > nmap -sT 192.168.0.1
-
+     </output>
+    </shell>
+    
+    <textblock>
+SuSE Linux 6.3
+    </textblock>
+    
+    <shell>
+     <user>
+nmap -sT 192.168.0.1
+     </user>
+     <output>
  Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
  Interesting ports on gateway.matrix.net (192.168.0.1):
  Port State Protocol Service
@@ -264,17 +393,20 @@ mruef@prometheus:~ > nmap -sT 192.168.0.1
  8080 open tcp http-proxy
 
  Nmap run completed -- 1 IP address (1 host up) scanned in 0 seconds
-
- mruef@prometheus:~ > _
-
-
-
-1.1 Stealth - Port Scan
-
+     </output>
+    </shell>
+   </section>
+   
+   <aection>
+    <heading>
+Stealth - Port Scan
+    </heading>
+    
+    <textblock>
 Mit Stealth - Scans (Tarnkappen) kann die Netzwerkanalyse
 verdeckt erfolgen. Viele 
-<!-- LINK: chapter="iptables"-->Firewall- <!--ENDLINK --> und
-<!-- LINK: chapter="ids"-->IDS - Systeme<!-- ENDLINK --> sind
+<ref chapter="iptables">Firewall-</ref> und
+<ref chapter="ids">IDS - Systeme</ref> sind
 gegen solche  Scans machtlos. Wie funktioniert das? 
 Das 3-Way Handshake Protokoll wird missachtet oder 
 anders gesagt: ein Stealth - Scan führt keinen kompletten 
@@ -282,11 +414,14 @@ Verbindungsaufbau durch. Die Interpretation der Antworten
 der Opferrechner führt zu den gewünschten Erkenntnissen.
 Weil keine vollständige TCP - Verbindung zustande kommt, 
 spricht man auch vom "halboffenen Scan".
-
-
-
-1.1.1 TCP - SYN - Stealth Portscan
-
+    </textblock>
+    
+    <section>
+     <heading>
+TCP - SYN - Stealth Portscan
+     </heading>
+     
+     <textblock>
 Der Parameter -sS erlaubt es, einen halboffenen Scan durchzuführen.
 Es wird einfach ein SYN-Paket zum Ziel-Port übertragen. 
 Antwortet der Ziel-Port mit SYN/ACK, kann davon ausgegangen werden, 
@@ -296,30 +431,40 @@ Wahrscheinlichkeit ein inaktiver Port zugeordnet werden.
 (Das Client-System überträgt nach dem Empfang des Paketes 
 des Hosts ein RST/ACK-Paket, sodass keine vollständige Verbindung 
 hergestellt wird.)
-
+     </textblock>
+     
+     <textblock>
 Diese Scanning - Technik funktioniert normalerweise nur bei 
 UNIX-basierenden TCP - Stacks. Es zeigt sich wieder einmal die 
 inkorrekte Implementierung der Windows - Stacks.
-
-Beispiele
-
-bei BeOS 4.5
-
- gateway:~ > nmap -sS 192.168.0.2
-
+     </textblock>
+     
+     <textblock>
+BeOS 4.5
+     </textblock>
+     
+     <shell>
+      <root>
+nmap -sS 192.168.0.2
+      </root>
+      <output>
  Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
  Interesting ports on prometheus.matrix.net (192.168.0.2):
  Port State Protocol Service  23 open tcp telnet
 
  Nmap run completed -- 1 IP address (1 host up) scanned in 3 seconds
-
- gateway:~ > _
-
-================================
-bei Microsoft Windows 98
-
- prometheus:~ > nmap -sS 192.168.0.3
-
+      </output>
+     </shell>
+     
+     <textblock>
+Microsoft Windows 98
+     </textblock>
+     
+     <shell>
+      <root>
+nmap -sS 192.168.0.3
+      </root>
+      <output>
  Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
  Interesting ports on rieekan.matrix.net (192.168.0.3):
  Port State Protocol Service
@@ -336,14 +481,18 @@ bei Microsoft Windows 98
  7006 open tcp afs3-errors
 
  Nmap run completed -- 1 IP address (1 host up) scanned in 20 seconds
-
- prometheus:~ > _
-
-================================
-bei SuSE Linux 6.3
-
- prometheus:~ > nmap -sS 192.168.0.1
-
+      </output>
+     </shell>
+     
+     <textblock>
+SuSE Linux 6.3
+     </textblock>
+     
+     <shell>
+      <root>
+nmap -sS 192.168.0.1
+      </root>
+      <output>
  Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
  Interesting ports on gateway.matrix.net (192.168.0.1):
  Port State Protocol Service
@@ -353,24 +502,30 @@ bei SuSE Linux 6.3
  8080 open tcp http-proxy
 
  Nmap run completed -- 1 IP address (1 host up) scanned in 0 seconds
-
- prometheus:~ > _
-
-
-
-1.1.1 Stealth FIN-, Xmas-Tree- oder Null-Scan-Modis
-
+      </output>
+     </shell>
+    </section>
+    
+    <section>
+     <heading>
+Stealth FIN-, Xmas-Tree- oder Null-Scan-Modis
+     </heading>
+     
+     <textblock>
 Die zugrundeliegende Idee besteht darin, dass laut RFC 793, S.64 
 geschlossene Ports auf derartige Zugriffe mit einem  RST - Datagramm 
 antworten während ansprechbare Ports die Anfragen ignorieren. Der FIN-
 Scan nutzt ein TCP - Datagramm mit gesetztem FIN - Flag, während 
 der Xmas - Tree - Scan die TCP - Flags FIN,  URG und PSH aktiviert. 
-Der Null - Scan schaltet alle optionalen Flags ab. 
-
+Der Null - Scan schaltet alle optionalen Flags ab.
+     </textblock>
+     
+     <textblock>
 Einige  Firewall - Systeme  (z.B. Paket-Filter) sind in der Lage,
 verdächtige SYN-Aktivitäten zu erkennen. Ebenso können 
 Programme wie Synlogger oder Courtney  diese SYN - Portscans  
 als solche ausweisen.
+     </textblock>
 
 
 
