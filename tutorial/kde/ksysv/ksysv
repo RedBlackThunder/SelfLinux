@@ -6,44 +6,59 @@ Version 1.03.06 (2001-03-21)
 
 Copyright © 1998, 2000, 2001 Peter Putzer
 
-Es ist erlaubt, dieses Dokument zu kopieren, zu vertreiben und/oder zu ändern gemäß den Bedingungen der GNU Free Documentation Licence, Version 1.1 oder irgend einer späteren Version, wie sie von der Free Software Foundation veröffentlicht wurde; ohne die invarianten Abschnitte, ohne Texte auf der vorderen Umschlagseite, und ohne Texte auf der hinteren Umschlagseite. Eine Kopie der Lizenz findet sich im Abschnitt "GNU Free Documentation License".
+Es ist erlaubt, dieses Dokument zu kopieren, zu vertreiben und/oder zu ändern gemäß den Bedingungen 
+der GNU Free Documentation Licence, Version 1.1 oder irgend einer späteren Version, 
+wie sie von der Free Software Foundation veröffentlicht wurde; ohne die invarianten Abschnitte, 
+ohne Texte auf der vorderen Umschlagseite, und ohne Texte auf der hinteren Umschlagseite. 
+Eine Kopie der Lizenz findet sich im Abschnitt "GNU Free Documentation License".
+
 
 Dieses Handbuch beschreibt den KDE System V Init Editor KSysV.
+
 
 Inhaltsverzeichnis
 
 1. Einführung
+
+
 2. Eine kurze Beschreibung von System V init
 
-    Warum all diese Runlevel?
+Warum all diese Runlevel?
+
 
 3. Grundlagen der Bildschirmabläufe
 
-    Maus
-    Tastatur
-    Die Menü-Einträge
+Maus
+Tastatur
+Die Menü-Einträge
 
-        Das Menü Datei
-        Das Menü Bearbeiten
-        Das Menü Werkzeuge
-        Das Menü Einstellungen
-        Das Menü Hilfe
+Das Menü Datei
+Das Menü Bearbeiten
+Das Menü Werkzeuge
+Das Menü Einstellungen
+Das Menü Hilfe
+
 
 4. Konfiguration
 
-    Gültige Abschnitte der Konfigurationsdateien
+Gültige Abschnitte der Konfigurationsdateien
 
-        [Path Settings]
-        [Colors]
-        [Geometry]
-        [Andere Einstellungen]
+[Path Settings]
+[Colors]
+[Geometry]
+[Andere Einstellungen]
+
 
 5. Fragen und Antworten
+
+
 6. Standardbedeutung der Runlevel
+
+
 7. Lizenz
+
+
 A. Installation
-
-
 
 
 Kapitel 1. Einführung
@@ -52,20 +67,26 @@ Willkommen zum KDE System V init Editor, eher bekannt (und im folgenden auch so 
 als KSysV. Dieser Abschnitt führt ein paar Konzepte ein und beschreibt, was Sie mit KSysV tun können.
 
 
-
-
-
 Kapitel 2. Eine kurze Beschreibung von System V init
 
-Die folgende Erläuterung ist ?geliehen?von tksysv (einer Inspirationsquelle für KSysV)
+Die folgende Erläuterung ist "geliehen" von tksysv (einer Inspirationsquelle für KSysV)
 
-Die System V init entwickelt sich rasch zum Standard für die Kontrolle von Programmstarts beim Hochfahren des Systems in der Linux® Welt. Und zwar deshalb, weil sie leichter zu benutzen, mächtiger und zugleich flexibler ist als die traditionelle BSD-init.
+Die System V init entwickelt sich rasch zum Standard für die Kontrolle von Programmstarts beim Hochfahren 
+des Systems in der Linux® Welt. Und zwar deshalb, weil sie leichter zu benutzen, mächtiger und zugleich 
+flexibler ist als die traditionelle BSD-init.
 
-Ich werde hier nicht weiter auf geschichtliche Aspekte eingehen (v.a. weil ich darüber selbst nichts weiß :-).
+Ich werde hier nicht weiter auf geschichtliche Aspekte eingehen 
+(v.a. weil ich darüber selbst nichts weiß :-).
 
-Die init-Binärdatei liegt unter /sbin und nicht unter /etc. Dies ist deshalb wichtig, weil vielleicht jemand versuchen könnte, eine Maschine auf System V init umzustellen, ohne eine Neuinstallation und Neuformatierung vorzunehmen. Der Linux® Kernel sieht zuerst unter /etc nach einer init-Datei. Deshalb müssen Sie sichergehen, dass die alte init von dort entfernt wurde, falls es dort eine gab.
+Die init-Binärdatei liegt unter /sbin und nicht unter /etc. Dies ist 
+deshalb wichtig, weil vielleicht jemand versuchen könnte, eine Maschine auf 
+System V init umzustellen, ohne eine Neuinstallation und Neuformatierung vorzunehmen. 
+Der Linux® Kernel sieht zuerst unter /etc nach einer init-Datei. Deshalb müssen Sie sichergehen, 
+dass die alte init von dort entfernt wurde, falls es dort eine gab.
 
-Die SysV init unterscheidet sich auch dadurch von der BSD init, dass sich die Konfigurationsdateien in einem Unterordner von /etc befinden statt direkt in /etc. Dieser Ordner heißt rc.d. Dort finden Sie rc.sysinit und folgende weitere Ordner:
+Die SysV init unterscheidet sich auch dadurch von der BSD init, dass sich die Konfigurationsdateien 
+in einem Unterordner von /etc befinden statt direkt in /etc. Dieser 
+Ordner heißt rc.d. Dort finden Sie rc.sysinit und folgende weitere Ordner:
 
     *
 
