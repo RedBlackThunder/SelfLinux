@@ -1,59 +1,66 @@
- <!--
-  * Titel: Fenster-Manager IceWM, seine Bedienung und Konfiguration
-  * [c] Robin Haunschild
-  * Autor: Robin Haunschild <H@unschild.de>
-  * Layout:
-  * Lizenz: GPL
-  *
-  * $Revision: 1.2 $
-  * $Source: /selflinux/tutorial/icewm/icewm,v $
-  *
-  * Diese Datei ist Teil von SelfLinux http://www.selflinux.org
-  *
-  *** $Id: icewm,v 1.2 2004/07/15 16:31:48 Konqui Exp $
-  -->
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>IceWM</title>
 
+ <author>
+  <name>Robin Haunschild</name>
+  <mailto>H@unschild.de</mailto>
+ </author>
 
-1 Einleitung
+ <layout>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@pingos.org</mailto>
+ </layout>
 
-<!-- KEYWORDS: IceWM; Fenstermanager; IceWM-Konfiguration -->
+ <license>GPL</license>
 
+ <index>icewm</index>
+
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
 IceWM ist ein Fenster-Manager für die grafische Oberfläche. Er gehört
 nicht zu den großen Desktopumgebungen wie KDE und GNOME. Trotzdem
 ist er ein Fenster-Manager, der auch ein gewisses Maß an Komfort für
 Nutzer älterer Computer bietet.
+   </textblock>
 
+   <textblock>
 Eine weitere Zielgruppe als Nutzer des IceWM sind Linux-Nutzer, die
 Windows-ähnliche Oberflächen gewohnt sind. Ein großer Vorteil des
 IceWM ist sein hohes Maß an Konfigurationsoptionen.
 Des weiteren benötigt nicht jeder Linux-Anwender eine umfassende
 Desktop-Umgebung. Für viele Zwecke reicht ein Fenster-Manager
 vollkommen aus.
+   </textblock>
 
-Dieser Artikel stellt einen Teil der Konfigurationsmöglichkeiten des
-IceWM dar.
-Der Autor verwendet die IceWM-Versionen 1.0.9.2-7 (woody, Debian 3.0)
-und 1.2.13-2 (sarge, voraussichtlich Debian 3.1). Daher
-bezieht sich die Beschreibung des IceWM und seine Konfiguration auf
-diese beiden Versionen. Verwenden Sie andere Versionen, so kann es
-sein, dass manches, das Sie hier lesen, bei Ihnen anders aussieht
-oder anders gehandhabt werden muss.
-
+   <textblock>
 Dieser Text erhebt selbstverständig nicht den Anspruch auf
 Vollständigkeit bezüglich der Konfiguration des IceWM. Er soll dem
-Leser "nur" einen leichten Einstieg in die Nutzung des IceWM
+Leser <strong>nur</strong> einen leichten Einstieg in die Nutzung des IceWM
 ermöglichen  und einige besonders nützliche Konfigurationsoptionen
 vorstellen.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Aussehen und Bedienung des Fenster-Managers IceWM
+   </heading>
 
+   <section>
+    <heading>
+Die Werkzeugleiste
+    </heading>
 
-2 Aussehen und Bedienung des Fenster-Managers IceWM
-
-
-
-2.1 Die Werkzeugleiste
-
+    <textblock>
 Der IceWM zeigt sich in den meisten Standard-Installationen mit einer
 Werkzeugleiste und schwarzem Hintergrund. Unten rechts in der
 Werkzeugleiste ist eine Uhr zu sehen. Links neben der Uhr werden in
@@ -61,44 +68,55 @@ kleinen Grafiken die Prozessor- und Neztwerkkartenauslastung
 angezeigt. Bewegt man den Mauszeiger
 über die Grafiken, so bekommt man in einem kleinen Fenster nähere
 Informationen.
+    </textblock>
 
+    <textblock>
 Weiter links in der Werkzeugleiste ist Platz für offene oder noch zu
 öffnende Anwendungen. Dannach folgt der Arbeitsflächenumschalter.
 Standardmäßig bringt der IceWM vier Arbeitsflächen mit. Diese Anzahl
-läßt sich auch erhöhen, aber darauf wird später eingegangen. Die
-verwendete Arbeitsfläche kann außer mit einem Klick auf das
+läßt sich auch erhöhen, aber darauf wird im Abschnitt
+<ref iref="Konfiguration der Arbeitsflächen">Konfiguration der Arbeitsflächen</ref>
+eingegangen. Die verwendete Arbeitsfläche kann außer mit einem Klick auf das
 entsprechende Arbeitsflächensymbol auch mit der Tastenkombination
-[Meta] + [Pfeiltaste nach links] oder [Meta] +
-[Pfeiltaste nach rechts] gewechselt werden. Zwischen den geöffneten
-Anwendungen auf der aktiven Arbeitsfläche kann man mit der
-Tastenkombination [Alt] + [Tab] vorwärts und mit [Alt] +
-[Umschalttaste] + [Tab] rückwärts wechseln.
+<keycomb><key>Meta</key><key>Pfeiltaste nach links</key></keycomb> oder
+<keycomb><key>Meta</key><key>Pfeiltaste nach rechts</key></keycomb> gewechselt
+werden. Zwischen den geöffneten Anwendungen auf der aktiven Arbeitsfläche kann
+man mit der Tastenkombination <keycomb><key>Alt</key><key>Tab vorwärts</key></keycomb>
+und mit <keycomb><key>Alt</key><key>Umschalttaste</key><key>Tab rückwärts</key></keycomb>
+wechseln.
+    </textblock>
 
+    <textblock>
 Neben den Arbeitsflächenumschaltern haben Schnellstarter ihren Platz.
 Nach einer Standard-Installation verbergen sich dort Programme, wie
-ein Terminal-Emulator und ein Web Browser. Welche Programme exakt
+ein Terminal-Emulator und ein Web-Browser. Welche Programme exakt
 bei einem Mausklick darauf gestartet werden, ist genauso von der
-Konfiguration, wie auch davon welche Termial-Emulatoren / Web Browser
+Konfiguration, wie auch davon welche Termial-Emulatoren / Web-Browser
 installiert sind, abhängig.
+    </textblock>
 
+    <textblock>
 Links von den Schnellstartern befindet sich die Fensterliste. Sie
 zeigt nach einem Mausklick die gestarteten Programme an. Die Anzeige
 ist nach Arbeitsflächen sortiert. Die Fensterleiste wird ebenfalls
 angezeigt, wenn man mit der Maus auf einen freien Bereich der
 Arbeitsfläche klickt. Ganz links befindet sich ein Knopf,
 der nach einem Mausklick ein Menü häufig verwendeter Anwendungen
-zeigt. Im folgenden wird er "Menüknopf" genannt. Ein Rechtsklick auf
+zeigt. Im folgenden wird er <strong>Menüknopf</strong> genannt. Ein Rechtsklick auf
 die Arbeitsfläche öffnet an der Mauszeigerposition dasselbe Menü.
-Standardmäßig
-enthält dieses Menü Programme und Untermenüs. Welche Menüs und
-Programme standardmäßig auftauchen, ist von der Gesamtinstallation
+Standardmäßig enthält dieses Menü Programme und Untermenüs. Welche Menüs
+und Programme standardmäßig auftauchen, ist von der Gesamtinstallation
 des Systems abhängig. Im Folgenden wird erklärt, wie man die bisher
 genannten Elemente des IceWM verändern kann.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Die Fensterleisten
+    </heading>
 
-
-2.2 Die Fensterleisten
-
+    <textblock>
 Die Titelzeilen von Fenstern werden beim IceWM sowohl bezüglich ihrer
 Funktion als auch ihres Aussehens maßgeblich von dem verwendeten Motiv
 bestimmt. Auf die Verwendung von Motiven wird später genauer
@@ -110,7 +128,9 @@ so macht das gar nichts, denn über das Fenstermenü sind die genannten
 und viele weiteren Funtkionen erreichbar. Das Fenstermenü erscheint
 ebenfalls, wenn man mit der rechten Maustaste auf die Titelzeile
 des Fensters klickt.
+    </textblock>
 
+    <textblock>
 Zwei besonders nützliche Funktionen in dem Fenstermenü sollen nicht
 unerwähnt bleiben. Mit der Ebenen-Funktion kann man bestimmen, welche
 Fenster andere Fenster überdecken dürfen, obwohl sie nicht aktiviert sind.
@@ -118,11 +138,18 @@ Die Prioritätenverteilung geht von Menü (überdeckt alle anderen
 Fenster) über normal bis Desktop (wird von allen Anderen überdeckt).
 Mit verschieben nach kann man das aktuelle Fenster auf eine andere
 Arbeitsfläche verschieben.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Konfiguration des Fenster-Managers IceWM
+   </heading>
 
-
-3 Konfiguration des Fenster-Managers IceWM
-
+   <textblock>
 Das Aussehen und die Funktionalität des IceWM wird in verschiedenen
 Konfigurationsdateien festgelegt. Ein grafisches
 Konfigurationswerkzeug fehlt ihm noch. Das mag zu Anfang abschreckend
@@ -130,199 +157,316 @@ wirken, aber nach einer kurzen Beschäftigung mit den
 Konfigurationsdateien und ihrem Aufbau kann man seinen IceWM schneller
 und einfacher konfigurieren als mit einem Kontrollzentrum für den
 IceWM.
+   </textblock>
 
+   <section>
+    <heading>
+Ort der Konfigurationsdateien
+    </heading>
 
-
-3.1 Ort der Konfigurationsdateien
-
+    <textblock>
 Nach einer Standard-Installation des IceWM liegen die systemweiten
 Konfigurationsdateien bei den meisten Distributionen unter:
+    </textblock>
 
-/etc/X11/icewm
+    <textblock>
+<path>/etc/X11/icewm</path>
+    </textblock>
 
+    <textblock>
 Jedem Nutzer steht es frei, sich seine eigenen Konfigurationsdateien
 für seine IceWM-Konfiguration anzulegen. Das geeignete Verzeichnis
-(.icewm) dazu ist meist vom Benutzer in seinem persönlichen
+(<path>.icewm</path>) dazu ist meist vom Benutzer in seinem persönlichen
 Verzeichnis zu erstellen. Benutzerspezifische Konfigurationsdateien
 liegen also im folgenden Verzeichnis:
+    </textblock>
 
-$HOME/.icewm
+    <textblock>
+<path>$HOME/.icewm</path>
+    </textblock>
 
+    <textblock>
 Existieren sowohl systemweite, als auch beutzerspezifische
 Konfigurationsdateien, so werden die benutzerspezifischen Dateien für
 diesen Benutzer verwendet.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Konfiguration der Werkzeugleiste
+    </heading>
 
-
-3.2 Konfiguration der Werkzeugleiste
-
+    <textblock>
 Die Konfigurationsdatei, die das Aussehen und die Funktion der
-Werkzeugleiste bestimmt, heißt "toolbar". Der Inhalt sollte
+Werkzeugleiste bestimmt, heißt <path>toolbar</path>. Der Inhalt sollte
 folgendermaßen aussehen:
+    </textblock>
 
-prog <Name> <Icon> <Programmdatei>
+    <file>
+     <content>
+prog &lt;Name&gt; &lt;Icon&gt; &lt;Programmdatei&gt;
+     </content>
+    </file>
 
-"prog" bedeutet, dass der Schnellstarter ein Programm starten soll.
-Dabei sind <Name> der Name des Programms, <Icon> eine Bilddatei
-(ggf. mit vollständigem Pfad) und <Programmdatei> die ausführbare
+    <textblock>
+<strong>prog</strong> bedeutet, dass der Schnellstarter ein Programm starten soll.
+Dabei sind &lt;Name&gt; der Name des Programms, &lt;Icon&gt; eine Bilddatei
+(ggf. mit vollständigem Pfad) und &lt;Programmdatei&gt; die ausführbare
 Datei, um das Programm zu starten. Der Autor hat beispielweise den
 folgenden Eintrag hinzugefügt:
+    </textblock>
 
+    <file>
+     <content>
 prog Dillo -- dillo
+     </content>
+    </file>
 
+    <textblock>
 Dillo ist der beschreibende Name des Programmes. Er erscheint, wenn
 man den Mauszeiger über den Schnellstarter bewegt. Anstatt einer
 Bild-Datei folgen zwei Bindestriche. Daher wird kein Bild angezeigt.
-Stattdessen erscheint auf dem Knopf <Name>, hier also "Dillo". dillo
+Stattdessen erscheint auf dem Knopf &lt;Name&gt;, hier also <strong>Dillo</strong>. dillo
 ist der Name der ausführbaren Datei. Sie liegt beim Autor im
-Suchpfad ($PATH). Programmnamen mit Leerzeichen müssen in
+Suchpfad. Programmnamen mit Leerzeichen müssen in
 Anführungsstriche gesetzt werden. Werden ausführbaren Dateien mit
 Optionen (von Leerzeichen getrennt) angegeben, so müssen diese
 nicht in Anführungsstriche gesetzt werden, Beispiel:
+    </textblock>
 
+    <file>
+     <content>
 prog "Elvis X11" -- /usr/bin/elvis -G x11
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+Konfiguration des Menüs
+    </heading>
 
-
-3.3 Konfiguration des Menüs
-
+    <textblock>
 Das Aussehen und die Funktion des Menüknopfes werden durch die Datei
-"menu" bestimmt. Die Datei kann die folgenden Elemente enthalten:
+<path>menu</path> bestimmt. Die Datei kann die folgenden Elemente enthalten:
+    </textblock>
 
-prog <Name> <Icon> <Programmdatei>
+    <file>
+     <content>
+prog &lt;Name&gt; &lt;Icon&gt; &lt;Programmdatei&gt;
 separator
-menu <Name> folder {
-   prog <Name> <Icon> <Programmdatei>
+menu &lt;Name&gt; folder {
+   prog &lt;Name&gt; &lt;Icon&gt; &lt;Programmdatei&gt;
 }
+     </content>
+    </file>
 
-Die erste Zeile ist im Abschnitt 3.2 erläutert worden. Sie hat hier
-dieselbe Bedeutung. Der Befehl
-"separator" bewirkt die Abtrennung durch einen horizontalen Strich
+    <textblock>
+Die erste Zeile ist im Abschnitt
+<ref iref="Konfiguration der Werkzeugleiste">Konfiguration der Werkzeugleiste</ref>
+erläutert worden. Sie hat hier dieselbe Bedeutung. Der Befehl
+<strong>separator</strong> bewirkt die Abtrennung durch einen horizontalen Strich
 in dem Menü.
+    </textblock>
 
-"menu" bedeutet, dass hier ein Untermenü definiert wird. <Name> ist
+    <textblock>
+<strong>menu</strong> bedeutet, dass hier ein Untermenü definiert wird. &lt;Name&gt; ist
 die Bezeichnung des Untermenüs, die im Menü zu sehen sein soll.
-Anschließend muß ein "folder {" folgen. Dieses Untermenü kann sowohl
+Anschließend muß ein <strong>folder {</strong> folgen. Dieses Untermenü kann sowohl
 Programmstarter also auch weitere Untermenüs enthalten. Das Ende des
-Menüs wird durch "}" gekennzeichnet. Die Einrückung im obigen
-Beispiel ist freiwillig und sorgt "nur" für Übersichtlichkeit.
+Menüs wird durch <strong>}</strong> gekennzeichnet. Die Einrückung im obigen
+Beispiel ist freiwillig und sorgt <strong>nur</strong> für Übersichtlichkeit.
+    </textblock>
 
-Die Datei "programs" bestimmt das Aussehen des Untermenüs Programme.
-Der Aufbau von "programs" folgt dem obigen Schema. Daher kann die
-Datei "programs" wie oben beschrieben verändert werden.
+    <textblock>
+Die Datei <path>programs</path> bestimmt das Aussehen des Untermenüs Programme.
+Der Aufbau von <path>programs</path> folgt dem obigen Schema. Daher kann die
+Datei <path>programs</path> wie oben beschrieben verändert werden.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Weitere Konfigurationsdateien
+    </heading>
 
-
-3.4 Weitere Konfigurationsdateien
-
-In der Datei "preferences" können viele Eigenschaften des IceWM
+    <textblock>
+In der Datei <path>preferences</path> können viele Eigenschaften des IceWM
 festgelegt werden. Die einzelnen Optionen und Schalter sind gut
 kommentiert. Ein Kommentar beginnt in den IceWM-Konfigurationsdateien
-mit einem "#". Das gilt nicht nur für die Datei "preferences", sondern
+mit einem <strong>#</strong>. Das gilt nicht nur für die Datei <path>preferences</path>, sondern
 für die anderen IceWM-Konfigurationsdateien.
+    </textblock>
 
-Die Datei "keys" definiert Tastaturkürzel. Eine Zeile wie z. B.:
+    <textblock>
+Die Datei <path>keys</path> definiert Tastaturkürzel. Eine Zeile wie z. B.:
+    </textblock>
 
+    <file>
+     <content>
 key "Alt+Ctrl+d"     dillo
+     </content>
+    </file>
 
-bewirkt, dass bei dem gleichzeitigen Drücken der Tasten [Strg] + 
-[Alt] + d dillo gestartet wird.
+    <textblock>
+bewirkt, dass bei dem gleichzeitigen Drücken der Tasten
+<keycomb><key>Strg</key><key>Alt</key><key>d</key></keycomb> dillo gestartet wird.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Konfiguration der Arbeitsflächen
+    </heading>
 
-
-3.4.1 Konfiguration der Arbeitsflächen
-
-In der Datei "preferences" wird unter Anderem die Anzahl und die
+    <textblock>
+In der Datei <path>preferences</path> wird unter Anderem die Anzahl und die
 Bezeichnung der Arbeitsflächen festgelegt. Die Zeile
+    </textblock>
 
+    <file>
+     <content>
 WorkspaceNames=" 1 ", " 2 ", " 3 ", " 4 "
+     </content>
+    </file>
 
+    <textblock>
 ist die Standardeinstellung. Sie legt fest, dass es vier verschiedene
-Arbeitsflächen gibt, die mit "1", "2", "3" und "4" bezeichnet sind.
+Arbeitsflächen gibt, die mit <strong>1</strong>, <strong>2</strong>,
+<strong>3</strong> und <strong>4</strong> bezeichnet sind.
 Die Bezeichner können auch Buchstaben sein. Daher kann man sich
 Arbeitsflächen für E-Mail, Büroprogramme, u.s.w reservieren und sie
 auch dementsprechend bezeichnen, Beispiel:
+    </textblock>
 
+    <file>
+     <content>
 WorkspaceNames=" E-Mail ", " News ", " Office ", " Multimedia "
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+Motive
+    </heading>
 
-
-3.5 Motive
-
+    <textblock>
 Mit IceWM-Motiven kann man das Aussehen des IceWM noch mehr verändern.
 Je nach Installation sind mehr oder weniger Motive installiert. Man
 kann sich von mehreren Seiten im Internet die verschiedensten Motive
 herunterladen. Durch einen Klick auf den Menüknopf und Motive bekommt
 man eine Auswahl der installierten Motive angezeigt. Das Standard-
-Motiv des IceWM ist Infadel2.
+Motiv des IceWM ist <strong>Infadel2</strong>.
+    </textblock>
 
+    <textblock>
 Es gibt systemweit installierte Motive, und Motive die nur der
 Benutzer verwenden kann, der sie installiert hat. Erstere liegen
 unter dem Verzeichnis:
+    </textblock>
 
-/usr/X11R6/lib/X11/icewm/themes (Woody und Sarge)
+    <textblock>
+<path>/usr/share/icewm/themes</path>
+    </textblock>
 
-Im unstable-Zweig von Debian hat sich der Pfad zu den systemweiten
-Motiven geändert. Er lautet:
-
-/usr/share/icewm/themes
-
+    <textblock>
 Motive eines Benutzers liegen unter:
+    </textblock>
 
-$HOME/.icewm/themes
+    <textblock>
+<path>$HOME/.icewm/themes</path>
+    </textblock>
 
+    <textblock>
 Andere Distributionen, andere Pfade: RedHat beispielsweise verwendet
 die folgenden Pfade:
+    </textblock>
 
-/usr/share/apps/kwin/icewm-themes (systemweit)
-/home/user/.kde/share/apps/kwin/icewm-themes (Benutzer-Motive)
+    <textblock>
+<path>/usr/share/apps/kwin/icewm-themes</path> (systemweit) und
+<path>/home/user/.kde/share/apps/kwin/icewm-themes</path> (Benutzer-Motive)
+    </textblock>
 
+    <textblock>
 Ein Motiv besteht aus einem Verzeichnis, das den Motivnamen trägt,
 sowie Bild- und Konfigurations-Dateien.
+    </textblock>
 
+    <textblock>
 Damit man nicht nach jedem IceWM-Start sein Lieblingsmotiv einstellen
 muss, kann man einen eigenen Standard setzen. Je nach Version fügt man
 eine Zeile wie:
+    </textblock>
 
-Theme="<Motiv>/default.theme"
+    <file>
+     <content>
+Theme="&lt;Motiv&gt;/default.theme"
+     </content>
+    </file>
 
-in die Datei "preferences" hinzu oder erstellt eine Datei mit dem
-Namen "theme" mit dieser Zeile als Inhalt. Anstatt <Motiv> setzt man
-den Namen des Motivs ein, Beispiel: Um das Motiv 18k als Standard zu
+    <textblock>
+in die Datei <path>preferences</path> hinzu oder erstellt eine Datei mit dem
+Namen <path>theme</path> mit dieser Zeile als Inhalt. Anstatt &lt;Motiv&gt; setzt man
+den Namen des Motivs ein, Beispiel: Um das Motiv <strong>18k</strong> als Standard zu
 setzen, wäre die folgende Zeile nötig:
+    </textblock>
 
+    <file>
+     <content>
 Theme="18k/default.theme"
+     </content>
+    </file>
+   </section>
 
+   <section>
+    <heading>
+Icons
+    </heading>
 
-
-3.6 Icons
-
+    <textblock>
 Von Haus aus bringt der IceWM keine Icons auf der Arbeitsfläche mit.
 Es gibt jedoch Wege und Möglichkeiten, Icons mit ihm zu verwenden.
 Zwei Möglichkeiten, den IceWM mit Icons auszustatten werden nun
 beschrieben:
+    </textblock>
 
+    <textblock>
 Der Desktop-File-Manager (DFM) erzeugt Icons auf der IceWM-
 Arbeitsfläche. Außerdem erzeugt ein Rechtsklick mit der Maus auf
 einen freien Teil der Arbeitsfläche bei aktiviertem DFM ein anderes
-Kontextmenü. Man ruft den DFM mit "dfm" auf. Die Datei sollte im
-Suchpfad ($PATH) liegen. Bei einer Debian-Installation lautet der
-komplette Pfad beispielsweise: /usr/bin/dfm
+Kontextmenü. Man ruft den DFM mit <command>dfm</command>" auf. Die Datei sollte im
+Suchpfad liegen. Bei einer Debian-Installation lautet der
+komplette Pfad beispielsweise: <path>/usr/bin/dfm</path>
+    </textblock>
 
+    <textblock>
 Das andere Programm, das dem IceWM Icons verschafft ist der GNOME-
-Midnight-Commander. Er wird mit "gmc" aufgerufen, wenn er installiert
-ist. Bei einer Standard-Debian-Installation liegt der gmc in demselben
-Verzeichnis wie dfm. Der gmc verwendet GNOME-Icons zur Anzeige. Die
+Midnight-Commander. Er wird mit <command>gmc</command> aufgerufen, wenn er installiert
+ist. Bei einer Standard-Debian-Installation liegt der <command>gmc</command> in demselben
+Verzeichnis wie <command>dfm</command>. Der <command>gmc</command> verwendet GNOME-Icons zur Anzeige. Die
 Icons und der Datei-Manager des DFM wirken gegen die GNOME-Icons und
-den gmc etwas spartanisch.
+den <command>gmc</command> etwas spartanisch.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Rückmeldung
+   </heading>
 
-
-4 Rückmeldung
-
+   <textblock>
 Der Autor freut sich über konstruktive Kritik, gefundene Fehler,
 Anregungen, etc.
-Zu erreichen ist er per E-Mail an <H@unschild.de>.
+   </textblock>
 
+   <textblock>
 Viel Spaß bei der Konfiguration und der Nutzung Ihres IceWM.
-
+   </textblock>
+  </section>
+ </split>
+</chapter>
