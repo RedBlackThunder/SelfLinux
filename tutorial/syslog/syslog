@@ -372,7 +372,7 @@ Die folgende Übersicht nennt die definierten Prioritäten:
 
       <td><strong>warning</strong></td>
       <td>Warnungen, also Meldungen, die
-      nicht-fatale Fehler anzeuigen.</td>
+      nicht-fatale Fehler anzeigen.</td>
 
      </tr>
 
@@ -527,7 +527,7 @@ Konfiguration von Syslog
    <textblock>
 Über eine zentrale Datei wird das Verhalten von Syslog gesteuert.
 Zusätzlich akzeptiert Syslog einige Kommandozeilen-Parameter, die
-das Verhalten beeinflussen. 
+das Verhalten beeinflussen.
    </textblock>
 <!-- 3.1. Kapitel -->
   <section>
@@ -584,7 +584,7 @@ beispielsweise über das Netzwerk verschickt werden.
     <heading>
 Meldungsbeschreibung
     </heading>
-    
+
      <textblock>
 Die Meldungsbeschreibung ist eine Liste aus
 Facility/Priority-Paaren. Das wird so verwendet: Ist eine Meldung
@@ -602,7 +602,7 @@ Kernelmeldungen lassen sich beispielsweise durch:
      </textblock>
 
      <textblock>
-<command>kern.warning</command> 
+<command>kern.warning</command>
      </textblock>
 
      <textblock>
@@ -642,7 +642,7 @@ auch höherer Priorität passen, kann man vor die Priority ein
 Gleichheitszeichen (<command>=</command>) setzen, beispielsweise <command>*.=warning</command>. In
 solchen Fällen muß man aber unbedingt Regeln haben, die auch die
 wichtigeren Meldungen verarbeiten, sonst fehlen am Ende die
-wichtigsten Meldungen! 
+wichtigsten Meldungen!
      </textblock>
 
      <textblock>
@@ -653,7 +653,7 @@ selten sieht.
 
      <textblock>
 Widersprechen sich Bedingungen einer durch Semikolon getrennten
-Bedingungsliste, so gilt die zuletzt beschriebene, also 
+Bedingungsliste, so gilt die zuletzt beschriebene, also
      </textblock>
 
      <textblock>
@@ -707,12 +707,12 @@ man meist über
  <key>ATL</key>
  <key>F10</key>
 </keycomb>
-oder 
+oder
 <keycomb mode="hold">
  <key>STRG</key>
  <key>ALT</key>
  <key>F10</key>
-</keycomb> 
+</keycomb>
 erreicht).
      </textblock>
 
@@ -738,11 +738,11 @@ Meldungen erscheinen dann "mitten im Terminaltext" und
 "verunstalten" das
 Layout der laufenden Anwendung (wenn man zum Beispiel gerade
 einen Editor offen hat. Etliche Anwendungen haben eine
-Möglichkeit, die Anzeige neuzuzeichnen, häufig 
+Möglichkeit, die Anzeige neuzuzeichnen, häufig
 
      <keycomb mode="hold">
       <key>STRG</key>
-      <key>L</key> 
+      <key>L</key>
      </keycomb>
 ).
      </textblock>
@@ -750,7 +750,7 @@ Möglichkeit, die Anzeige neuzuzeichnen, häufig
     </section>
 <!-- 3.1.3. Kapitel -->
     <section>
-   
+
      <heading>
 Beispielkonfigurationsdatei
      </heading>
@@ -763,65 +763,65 @@ Es folgt ein Beispiel mit ausführlichen Kommentaren.
      <title>
      /etc/syslog.conf
      </title>
-     <content> <![CDATA[	
+     <content> <![CDATA[
 #/etc/syslog.conf: Syslogkonfigurationsdatei
 #Zur Trennung der "linken" und "rechten" Seite sollten
 #   Tabstops verwendet werden (moderne GNU/Linux Syslog
 #   Implementierungen kommen meist auch mit Leerzeichen klar)
 
 #sehr wichtige Warnungen vom Kernel, und alle Fehler außer
-#   evtl. Passwortvertipper auf die Konsole ALT-F10 loggen. 
+#   evtl. Passwortvertipper auf die Konsole ALT-F10 loggen.
 #   Zur Erinnerung: .warn schließt höhere Meldungen (also err,
 #   crit, alert, emerg) mit ein. Diese landen also auch auf
 #   ALT-F10.
-kern.warning;*.err;authpriv.none	/dev/tty10
+kern.warning;*.err;authpriv.none        /dev/tty10
 
 #Die gleichen Meldungen für die xconsole bereitstellen
 #  (Hier wird ein FIFO verwendet, der von xconsole
 #   ausgelesen wird)
-kern.warn;*.err;authpriv.none   	|/dev/xconsole
+kern.warn;*.err;authpriv.none           |/dev/xconsole
 
-#ALLE Meldungen auf ALT-F9. Das ist für einen schnellen Überblick 
+#ALLE Meldungen auf ALT-F9. Das ist für einen schnellen Überblick
 #  bei "Echtzeit-Fehleranalyse" hilfreich
-*.*                              	/dev/tty9
+*.*                                     /dev/tty9
 
 #alle sehr schweren Fehler direkt an alle Benutzer in die Konsolen
 #  schreiben. In solchen Fällen ist das System vermutlich eh kaum
 #  noch benutzbar. Eventuell sieht man aber kurz vor dem Absturz
 #  noch eine Fehlermeldung und kann nach einem Neustart etwas
 #  ändern
-*.emerg                         	*
+*.emerg                                 *
 
 #Root möchte eventuell auch schon "crit" auf der Console sehen,
 #  wenn er zufällig gerade an dem System arbeitet:
-#*.crit					root
+#*.crit                                 root
 
-#Alle EMail-Meldungen in eine eigene Datei. Diese Datei wird 
+#Alle EMail-Meldungen in eine eigene Datei. Diese Datei wird
 #  aus Performance-Gründen nicht nach jeder Zeile synchronisiert,
 #  (aber schwere Fehler schreiben wir nochmal in eine extra Datei)
-mail.*                          	-/var/log/mail
+mail.*                                  -/var/log/mail
 
 #Warnungen in eine extra Datei. Diese wird hier nicht sync'd (bei
 #  langsameren Systemen hilfreich)
-*.=warn;*.=err                  	-/var/log/warn
+*.=warn;*.=err                          -/var/log/warn
 
 #"crit" und höhere kommen in die gleiche Datei, aber sync'd
-*.crit                           	/var/log/warn
+*.crit                                  /var/log/warn
 
 #alles außer "debug" und mail in eine andere Datei
-*.info;mail.none                	-/var/log/messages
+*.info;mail.none                        -/var/log/messages
 
 #Für die Fehlersuche hilft oft eine Datei, die sämtliche
 #Informationen enthält
-#*.*					-/var/log/allmessages
+#*.*                                    -/var/log/allmessages
 
 #Hat man einen Loghost, soll dieser eine Kopie von allen
 #  Meldungen erhalten
-#*.*					@192.168.1.1
+#*.*                                    @192.168.1.1
 
 #Weniger wichtige Systeme sollen das Netzwerk nicht unnötig
 #  belasten
-#*.warn					@192.168.1.1
+#*.warn                                 @192.168.1.1
      ]]> </content>
     </file>
 
@@ -1008,14 +1008,14 @@ zu setzen. Hierzu öffnet man dazu einfach die Datei
 so, dass die
 erwünschten Startoptionen verwendet werden. Diese werden hier
 einfach eingetragen.
-   </textblock> 
+   </textblock>
 
    <textblock>
 Auch unter <name>RedHat</name> muß man nicht mehr die Datei <command>/etc/init.d/syslog</command>
 bearbeiten, unter <command>/etc/sysconfig/syslog</command> kann man durch Ändern
 von <command>SYSLOGD_OPTIONS=""</command> (z.B. <command>"-r -m 0 -s picard.inka.de:zeibig.net</command>")
 die gewünschten Startoptionen angeben.
-   </textblock> 
+   </textblock>
 
   </section>
 <!-- 3.3. Kapitel -->
@@ -1037,7 +1037,7 @@ Störungen ist, soll hier natürlich möglichst nichts fehlen.
 
 <!-- 3.3.1. Kapitel -->
    <section>
-     
+
     <heading>
 Vorteile des Remote-Logging
     </heading>
@@ -1045,7 +1045,7 @@ Vorteile des Remote-Logging
      <textblock>
 Oft hat man in LANs einen zentralen Host, der
 Netzwerk-Syslog-Meldungen erhält, und diese in Dateien schreibt.
-Diesen Host nennt man <strong>Loghost</strong>. 
+Diesen Host nennt man <strong>Loghost</strong>.
      </textblock>
 
      <textblock>
@@ -1063,7 +1063,7 @@ um sich zu tarnen und seine Herkunft zu verschleiern. Wenn nun
 aber der Administrator einen Loghost verwendet, ist es
 unwahrscheinlicher, dass auch dieser gleichzeitig gehackt wird. So
 kann er auf dem Loghost die Meldungen analysieren und wichtige
-Informationen über den Angriff erlangen. 
+Informationen über den Angriff erlangen.
      </textblock>
 
      <textblock>
@@ -1122,7 +1122,7 @@ Konfiguration des Loghosts
 Die Konfiguration des Loghosts ist einfach. Man muß lediglich den
 Empfang aktivieren, in dem man Syslog mit der Option <command>-r</command>
 startet. Bei SuSE-Systemen öffnet man dazu einfach die Datei
-<command>/etc/rc.config</command>, und ändert 
+<command>/etc/rc.config</command>, und ändert
      </textblock>
 
      <file>
@@ -1136,7 +1136,7 @@ startet. Bei SuSE-Systemen öffnet man dazu einfach die Datei
 so, dass die
 Startoption <command>-r</command> verwendet wird. Die IP Adressen der Hosts, die
 den Loghost verwenden, sollte man in die Datei <command>/etc/hosts</command>
-eintragen, um Fehlern bei DNS Ausfällen vorzubeugen. 
+eintragen, um Fehlern bei DNS Ausfällen vorzubeugen.
      </textblock>
 
      <textblock>
@@ -1153,13 +1153,13 @@ verwenden. Hat er ein SuSE-System, trägt er einfach in
      </textblock>
 
      <file>
-    
+
       <title>
-   /etc/rc.config 
+   /etc/rc.config
       </title>
 
       <content> <![CDATA[SYSLOGD_PARAMS="-r -s selflinux.de" ]]> </content>
-    
+
      </file>
 
      <textblock>
@@ -1170,13 +1170,13 @@ Datei <command>/etc/services</command> vorhanden sein:
      </textblock>
 
      <file>
-    
+
       <title>
-   /etc/services 
+   /etc/services
       </title>
 
       <content> <![CDATA[syslog          514/udp ]]> </content>
-    
+
      </file>
 
      <textblock>
@@ -1233,7 +1233,7 @@ Nachrichten auf den <command>Loghost 192.168.1.1</command> loggen, verwendet man
      /etc/syslog.conf
      </title>
 
-      <content> <![CDATA[ *.*			@192.168.1.1 ]]> </content>
+      <content> <![CDATA[ *.*                   @192.168.1.1 ]]> </content>
 
      </file>
 
@@ -1247,7 +1247,7 @@ Um nur wichtige Meldungen zu verschicken, kann man
      /etc/syslog.conf
      </title>
 
-      <content> <![CDATA[ *.warn		@192.168.1.1 ]]> </content>
+      <content> <![CDATA[ *.warn                @192.168.1.1 ]]> </content>
 
      </file>
 
@@ -1276,7 +1276,7 @@ oder auf SuSE-Systemen das Startscript verwenden:
      </textblock>
 
      <shell>
- 
+
       <root path="~">
 rcsyslog reload
       </root>
@@ -1292,7 +1292,7 @@ Meldungen verloren.
    </section>
 <!-- 3.3.5. Kapitel -->
    <section>
- 
+
     <heading>
 Beispiel für Logeinträge
     </heading>
@@ -1309,24 +1309,24 @@ Ein fiktives Beispiel:
       </title>
 
       <content>
-      <![CDATA[	
+      <![CDATA[
 Mar 10 13:30:30 atlas syslogd 1.3-3: restart.
 
 Apr  1 13:02:01 ns1 named[124]: XX+/127.0.0.1/1.1.168.192.
                                 in-addr.arpa/PTR/IN
 Apr  1 13:02:01 www httpd[123]: GET /login.cgi?username=steffen
 Apr  1 13:02:03 www httpd[123]: Starting authorization for
-				"steffen" from "ws1.selflinux.de"
+                                "steffen" from "ws1.selflinux.de"
 Apr  1 13:02:04 radius radiusd[125]: autorization request from
-				"www.selflinux.de" for "steffen"
-Apr  1 13:02:04 db kernel: end_request: I/O error, dev 03:02 (hda), 
-				sector 58138452
-Apr  1 13:02:04 db postmaster[111]: Database error: disk read failed 
+                                "www.selflinux.de" for "steffen"
+Apr  1 13:02:04 db kernel: end_request: I/O error, dev 03:02 (hda),
+                                sector 58138452
+Apr  1 13:02:04 db postmaster[111]: Database error: disk read failed
                                 (I/O error)
 Apr  1 13:02:04 radius radiusd[125]: authorization request for
-				"steffen" failed (database error)
+                                "steffen" failed (database error)
 Apr  1 13:02:03 www httpd[123]: Authorization for "steffen" failed
-				(incorrect password)
+                                (incorrect password)
       ]]>
       </content>
 
@@ -1426,7 +1426,7 @@ dann kann man es nicht vergessen.
     </section>
 <!-- 3.4.2. Kapitel -->
     <section>
-    
+
      <heading>
 Bootkonfiguration
      </heading>
@@ -1436,7 +1436,7 @@ Syslog sollte stets laufen. Syslog benötigt meist Schreibzugriff
 auf Festplatten. Bei Konfigurationen mit einem zentralen Loghost
 wird weiterhin das Netzwerk benötigt. Daher sollte man Syslog
 unmittelbar nach dem Hochfahren des Netzwerkes starten. Auf
-SuSE-Systemen verhält sich das bereits so. 
+SuSE-Systemen verhält sich das bereits so.
      </textblock>
 
      <textblock>
@@ -1456,7 +1456,7 @@ machen (bei SuSE-Systemen ist es der Fall).
    </section>
 <!-- 3.4.3. Kapitel -->
    <section>
-    
+
     <heading>
 Syslog-Konfiguration
     </heading>
@@ -1485,7 +1485,7 @@ Weitere Informationen und ein Beispiel finden sich im Abschnitt
    </section>
 <!-- 3.4.4. Kapitel -->
    <section>
-    
+
     <heading>
 Einheitliche Netzwerkzeit
      </heading>
@@ -1520,7 +1520,7 @@ Auskunft darüber gibt das Kommando:
      </textblock>
 
      <shell>
- 
+
       <root path="~">
  netstat -an --inet | grep 514
       </root>
@@ -1590,25 +1590,25 @@ bei SuSE-Systemen) auch automatisch den Kernel-Logger. Andere
 Systeme haben hier eventuell ein eigenes <command>rc-Script</command>. Dieses sollte
 dann in jedem Fall direkt nach Syslog gestartet werden.
    </textblock>
- 
+
    <textblock>
 Um Syslog manuell zu starten, verwendet man:
    </textblock>
 
    <shell>
- 
+
     <root path="~">
  /etc/rc.d/syslog start
     </root>
 
    </shell>
-   
+
    <textblock>
 oder bei SuSE-Systemen kurz:
-   </textblock>    
+   </textblock>
 
    <shell>
- 
+
     <root path="~">
  rcsyslog start
     </root>
@@ -1673,22 +1673,22 @@ Die wichtigsten Optionen sind:
 
     <tr>
 
-    <td><command>-p</command> &lt;Fac.&gt;.&lt;Pri.&gt;</td>	
+    <td><command>-p</command> &lt;Fac.&gt;.&lt;Pri.&gt;</td>
     <td>Angegenene Priorität und Facility<br/>
-	verwenden. Mögliche Werte sind die<br/>
-	gleichen wie die in <command>/etc/syslog.conf</command><br/>
-	verwendbaren, siehe Abschnitt "Quellen von<br/>
-	Meldungen" und "Priorität von Meldungen".<br/>
-	Wird diese Option nicht angegeben, wird<br/>
-	<command>user.notice</command> verwendet.</td>
+        verwenden. Mögliche Werte sind die<br/>
+        gleichen wie die in <command>/etc/syslog.conf</command><br/>
+        verwendbaren, siehe Abschnitt "Quellen von<br/>
+        Meldungen" und "Priorität von Meldungen".<br/>
+        Wird diese Option nicht angegeben, wird<br/>
+        <command>user.notice</command> verwendet.</td>
 
     </tr>
 
     <tr>
 
-     <td><command>-t</command> &lt;Tag&gt;</td>		
+     <td><command>-t</command> &lt;Tag&gt;</td>
      <td>Angegebenes "Tag" verwenden. Meist wird<br/>
-	hier der Name des Scriptes verwendet.</td>
+        hier der Name des Scriptes verwendet.</td>
 
     </tr>
 
@@ -1702,9 +1702,9 @@ enthalten könnte, sollte man sie mit <command>--</command> abtrennen, um zu
 vermeiden, dass Meldungsteile als Optionen mißinterpretiert
 werden. Ein Beispiel:
    </textblock>
-   
+
    <shell>
-    
+
     <user path="~">
 logger -i -t MeinProgramm -- Ich bin eine Meldung.
     </user>
@@ -1714,19 +1714,19 @@ logger -i -t MeinProgramm -- Ich bin eine Meldung.
    <textblock>
 Dies erzeugt dann folgenden Logdatei-Eintrag:
    </textblock>
-   
+
    <shell>
     <user path="~">
 logger -i -t MeinProgramm -- Ich bin eine Meldung.
     </user>
-   
+
     <output>
 Apr 13 13:02:04 atlas MeinProgramm[6178]: Ich bin eine Meldung.
     </output>
 
    </shell>
 
-   <textblock> 
+   <textblock>
 Die zweite Art des Aufrufes unterscheidet sich in der Art, wie
 die Meldung übergeben wird. Wird nämlich keine auf der
 Kommandozeile angeben, liest logger die Standard-Eingabe. Damit
@@ -1747,7 +1747,7 @@ Scripten kann man deshalb beispielsweise komfortabel schreiben:
    </textblock>
 
    <file>
-   
+
     <title>
 Beispielscript
     </title>
@@ -1797,7 +1797,7 @@ Logdateien auswerten
    <textblock>
 Sehr wichtig ist es natürlich, die erzeugten Logdateien
 auszuwerten. Gewöhnlich hat ein Administrator jedoch nicht die
-Zeit, täglich tausende von Zeilen zu lesen. 
+Zeit, täglich tausende von Zeilen zu lesen.
    </textblock>
 
    <textblock>
@@ -1843,7 +1843,7 @@ richtig zu betreuen, da im Produktionsbetrieb natürlich keine
 Zeit bleibt, täglich stundenlang Logfiles auszuwerten, die fast
 immer langweilig sind.
    </textblock>
- 
+
  </section>
 
 </split>
@@ -1892,9 +1892,9 @@ Es folgt eine unvollständige Liste:
 HOWTOs oder andere Dokumentationen sind mir nicht bekannt. Über
 Hinweise freue ich mich natürlich jederzeit.
    </textblock>
-  
+
   </section>
- 
+
 </split>
 
 </chapter>
