@@ -34,6 +34,306 @@ Hintergrund zu schicken und umgekehrt.
 
 
 
+1.1 Informationen über Prozesse
+
+<!-- KEYWORDS: Prozesse; Prozessverwaltung; -->
+
+
+
+1.1.1 ps
+
+<!-- KEYWORDS: ps; -->
+
+In einem Multitasking-Betriebssystem wie Linux läuft zu jedem
+Zeitpunkt eine Vielzahl von Prozessen, über die es interessante Dinge
+herauszufinden gibt. Dazu gibt es das Kommando ps:
+
+$ ps
+  PID TTY      TIME CMD
+18301 pts/1    0:00 bash
+18901 pts/1    0:00 ps
+
+Die Ausgabe bedeutet, dass unser Pinguin momentan zwei Prozesse
+betreibt: Eine Shell und ps selbst.
+
+Die einzelnen Spalten bedeuten folgendes:
+
+<!-- Beginn Aufzählung -->
+
+- Die PID (Prozess ID) ist eine Nummer, die jeden Prozess eindeutig
+identifiziert.
+
+- Unter TTY wird der Name des Terminals angegeben, das den Prozess
+kontrolliert. Meist bedeutet dieser Name, dass der Prozess von diesem
+Terminal aus gestartet worden ist, und für die Ein- und Ausgabe
+benutzt wird.
+
+- TIME zeigt die von jedem dieser Prozesse
+bisher genutzte Rechenzeit an.
+
+- CMD (oder COMMAND) zeigt den Befehl an, mit dem der Prozess
+gestartet worden ist.
+
+<!-- Ende Aufzählung -->
+
+ps hat eine Unmenge von Optionen, die alle dazu dienen, die
+Berge von Daten, die sich über Prozesse gewinnen lassen, zu
+filtern. Die einfachste Möglichkeit der Auflistung
+aller laufenden Prozesse ist "ps -ax". Es werden alle
+Prozesse aufgelistet, auch diejenigen, die nicht vom
+aktuellen Benutzer gestartet wurden und die, die nicht mit
+einem Terminal verbunden sind (also im Hintergrund laufen).
+Diese Liste ist normalerweise sehr lang, daher sind nur die
+ersten paar Zeilen wiedergegeben.
+
+$ps -ax
+PID     TTY             STATE   TIME    COMMAND
+1       ?               S       0:04    init [2]
+2       ?               SW      0:00    [keventd]
+3       ?               SWN     0:00    [ksoftirqd_CPU0]
+...
+
+Bei ps -ax wird auch noch der Status (STATE) des jeweiligen
+Prozesses ausgegeben. Dabei werden folgen Abkürzungen verwendet:
+
+<!-- Beginn Aufzählung -->
+
+- D (Deep sleeping) Der Prozess befindet sich in einem
+ununterbrechbarer Schlaf
+
+- R (Running) Der Prozess verarbeitet im Moment gerade Daten.
+
+- S (Sleeping) Der Prozess wartet auf irgendein Ereignis um Daten
+zu verarbeiten.
+
+- T (Traced) Der Prozess wurde angehalten.
+
+- Z (Zombie) Zombies sind
+Prozesse, die eigentlich schon beendet sein sollten, aber
+immer noch auf irgendetwas warten. Sie können immer mal
+wieder vorkommen und stellen keinen Grund zur Besorgnis dar,
+solange sie nicht in Mengen auftreten und es sich nicht um
+viele Zombies mit gleichem Namen handelt.
+
+<!-- Ende Aufzählung -->
+
+Stehen neben diesen Statusmeldungen noch ein oder mehrere Zeichen
+bedeuten diese folgendes:
+
+<!-- Beginn Aufzählung -->
+
+- W bedeutet, dass der Prozess in den Swap-Speicher ausgelagert
+wurde und somit keine Speicherseiten belegt werden.
+
+- < bedeutet, dass der Prozess mit einer höheren Priorität läuft.
+
+- N bedeutet genau das Gegenteil. Der Prozess läuft mit einer
+niedrigeren Priorität.
+
+- L (Locked) bedeutet, dass der Prozess im Speicher geladen
+wurde und auch dort gehalten wird.
+
+<!-- Ende Aufzählung -->
+
+
+
+1.1.1 pstree
+
+<!-- KEYWORDS: pstree; -->
+
+Linux merkt sich, wenn ein Programm ein anderes startet.
+Wenn der "Elternprozess" beendet wird, wird auch für das Ende
+aller "Kindprozesse" gesorgt, damit diese nicht für immer
+herumliegen und Platz wegnehmen. Die "Baumstruktur" der
+laufenden Prozesse wird mit pstree oder mit ps und der
+Option "-f" angezeigt:
+
+$ pstree
+init-+-atd
+     |-automount
+     |-cron
+     |-httpd---httpd
+     |-inetd
+     |-kbgndwm
+     |-kblankscrn.kss
+     |-kdm-+-X
+     |     `-kdm---kwm
+     |-kflushd
+
+     |-kfm-+-Eterm---bash---pstree
+     |     |-netscape---netscape
+     |     `-xemacs
+...
+
+Hier ist ein umfangreicher Ast. Man sieht, wie der Autor an
+diesem Text mit XEmacs unter KDE schreibt.
+Gleichzeitig laufen noch ein Terminalfenster
+(Eterm), in dem gerade pstree ausprobiert wird und Netscape.
+
+
+
+1.1.1 top
+
+<!-- KEYWORDS: top; -->
+
+Der Systemverwalter kann seine Augen und Ohren nicht überall
+haben, darum braucht er ein Programm, das ihm die
+wichtigsten Prozesse anzeigt, die auf dem System laufen. Die
+wichtigsten sind die, die am meisten Rechenzeit oder am
+meisten Speicher belegen. Nach diesen Kriterien entscheidet
+top.
+
+## Hier bitte einen Screenshot von top einbauen.
+
+top fasst alle bisher genannten Kommandos zusammen und fügt
+noch einiges hinzu.
+
+<!-- Beginn Aufzählung -->
+
+- Ganz oben stehen die von w bekannten
+Werte (Systemzeit, Uptime, angemeldete Benutzer und Auslastung).
+
+- In der nächsten Zeile
+kommt die Anzahl der laufenden Prozesse und ihre Zustände.
+Die Zustände wurden bereits bei
+<!-- LINK iref="ps" -->ps<!-- ENDLINK -->
+erklärt.
+
+- Die dritte Zeile zeigt den prozentualen Anteil an, womit sich der
+(oder die) Prozessor(en) in den letzten Sekunden beschäftigt hat
+(haben).
+
+- user: Mit user sind Prozesse gemeint, die von den Benutzern des
+Systems gestartet worden sind
+
+- system: Hierbei sind sämtliche Prozesse gemeint, die vom
+System gestartet worden sind.
+
+- nice: Damit sind all die Prozesse gemeint, die nicht mit einem
+nice von 0 null laufen.
+
+- idle: Mit idle wird die noch zur Verfügung stehende Prozessorlast
+bezeichnet.
+
+- Nun kommen noch die von free bekannten Speicherangaben.
+
+- Als letztes folgt die Liste mit den ressourcenträchtigesten
+  Prozessen. Im Gegensatz zu ps werden bei top weitere
+  Informationen zu den einzelnen Prozessen ausgegeben:
+
+- User gibt den Namen des Users an, unter welchem der Prozess läuft.
+
+- PR gibt die Priorität des Prozesses an
+
+- NI gibt den Nice-Wert an. Ein negativer Wert bedeutet
+eine höhere Priorität, ein positiver Wert eine
+geringere Priorität
+
+- VIRT gibt die gesamte Anzahl an Speicher an, den dieser
+Prozess benötigt, inklusive den Code, den Daten und
+den geteilten Bibliotheken.
+
+- RES gibt die Belegung des physikalischen Arbeitsspeichers
+an. Auslagerungen im Swap-Speicher werden hier nicht
+berücksichtigt.
+
+- SHR gibt die Anzahl des Speichers an Daten an, die auch
+von anderen Prozessen genutzt werden können.
+
+- S gibt den Status des Prozesses an. Siehe dazu auch
+die Erklärung bei ps
+
+- %CPU gibt an wieviel Prozent von der gesamten Prozessorleistung
+der Prozess benötigt.
+
+- %MEM gibt dasselbe wie %CPU an, diesmal aber bezogen auf den
+physikalischen Arbeitsspeicher.
+
+<!-- Ende Aufzählung -->
+
+
+
+1.1.1 tload
+
+Die Aufgabe von tload ist es, die durchschnittliche Systemlast in
+einer einfachen ASCII-Grafik darzustellen. Mit der Option -d
+kann die Zeit in Sekunden angeben werden, nach der die
+Grafik aktualisiert wird. Mit -s wird die Skalierung angegeben,
+also wie viele Zeilen für eine Einheit verwendet werden. Je
+größer die Zahl ist, desto gröber die Darstellung.
+
+
+
+1.1.1 fuser
+
+Manchmal kann es ganz nützlich sein, festzustellen welche
+Prozesse eine bestimmte Datei benutzen. Für diese
+Aufgabe gibt es den Befehl fuser gefolgt vom Dateinamen.
+
+$fuser ksycoca
+ksycoca:        463 463m 471 471m 539 539m 546 546m
+
+Diese Ausgabe sagt aus, dass die Datei ksycoca von den Prozessen
+mit der PID 463, 471, 539 und 546 benutzt wird. Gefolgt von der PID
+wird ein Buchstabe mit ausgegeben (in diesem Fall ist es immer ein
+m). Dieser Buchstabe gibt an, wie der Prozess auf die Datei
+zugreift. Konkret bedeuten die Buchstaben folgendes:
+
+<!-- Beginn Aufzählung -->
+
+- c: Die Datei wird vom Prozess als Verzeichnis behandelt
+
+- e: Die Datei ist ausführbar und wird vom Prozess ausgeführt.
+
+- f: Die Datei wurde vom Prozess geöffnet. Im Standard-Modus
+wird das f weg gelassen. Somit ist auch klar, warum in
+unserem Beispiel jede PID zweimal angegeben wurde.
+
+- m: Die Datei ist eine Bibliothek, die gemeinsam von den
+Prozessen genutzt wird.
+
+- r: wird verwendet, wenn es sich um das Wurzelverzeichnis
+(root-Verzeichnis) handelt.
+
+<!-- Ende Aufzählung -->
+
+Auch für fuser gibt es noch eine Reihe weiterer Optionen.
+Interessant dabei ist die Option -n. Diese erwartet noch eine
+weitere Angabe:
+
+<!-- Anfang Aufzählung -->
+
+- file, wenn es sich um eine Datei handelt. Dabei bewirkt
+fuser -n file ksycoca dasselbe wie fuser ksycoca
+
+- udp, wenn sich die darauf folgende Angabe um einen
+<!-- LINK: chapter="tcpip" iref="UDP - User Datagram Protocol" -->UDP-Port<!-- ENDLINK -->
+handelt.
+
+- tcp bedeutet das gleiche wie udp mit dem Unterschied, dass ein
+<!-- LINK: chapter="tcpip" iref="TCP - Transmission Control Protocol " -->TCP-Port<!-- ENDLINK -->
+gemeint ist.
+
+<!-- Ende Aufzählung -->
+
+Der oben beschriebe Buchstaben-Code ist auch für die Port-Angaben
+gültig, da unter Linux Ports auch als Dateien behandelt werden.
+
+Weiter wichtige Optionen sind noch:
+
+<!-- Anfang Aufzählung -->
+
+-a: Dabei werden auch Dateien ausgegeben, auf die gerade
+kein Prozess zugreift.
+
+-u: Gibt in Klammern den zur PID gehörenden Benutzernamen aus.
+
+-v (verbose) gibt mehr Informationen aus.
+
+<!-- Ende Aufzählung -->
+
+
+
 1.1 kill
 
 <!-- KEYWORDS: kill; ps; -->
