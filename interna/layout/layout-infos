@@ -1,0 +1,327 @@
+*************************************************
+		Infos für Layouter		
+*************************************************
+
+Autor: 	Johnny Graber <selflinux@jgraber.ch>
+	(Teamleiter Layout)
+
+
+
+
+-------------------------
+1 Ziel dieses Dokumentes
+-------------------------
+
+Das Ziel ist die Optimierung und Vereinfachung der Abläufe
+im Layout-Team. Alle Infos hier sind auch sonst schon irgendwo
+allgemein aufgeschrieben, allerdings nicht so direkt aufs Layout
+zugeschnitten.
+
+Bei Fragen/Anregungen/Kritik meldet man sich am besten direkt 
+via Email <selflinux@jgraber.ch> bei mir.
+
+
+
+
+
+------------
+2 Material
+------------
+Was wird an Material und Software benötigt, um als Layouter zu 
+arbeiten? Die geringen Materialien werden hier aufgelistet.
+
+
+
+2.1 CVS / Sourceforge Benutzernamen
+-----------------------------------
+
+Damit die Arbeit einfach zu erledigen ist, benötigt man CVS. Ob
+dies über die Konsole oder ein grafisches Programm gemacht wird 
+ist egal. 
+
+Eine allgemeine CVS-Einführung mit den schrittweisen Abläufen 
+aller Teams gibt es im Dokument cvs.dox im CVS-Verzeichnis 
+/interna/dokumente
+
+Für Cervisia, einer grafischen CVS-Oberfläche, gibt es mit 
+cervisia.dox eine eigenständige Doku.
+
+Um auf das CVS-Verzeichnis bei Sourceforge schreibend zugreifen zu
+können benötigt man dort einen Benutzernamen. Die Dateien 
+welcome_message und ssh-bei-sourceforge unter interna/dokumente 
+im CVS-Verzeichnis geben Auskunft über die notwendigen Schritte. 
+
+
+2.2 XML - Erklärung
+-------------------
+
+Alle notwendigen Erklärungen zum bei Selflinux verwendeten XML 
+gibt es unter /interna/dokumente in der Datei xml-referenz. Sie 
+enthält auch eine Beschreibung zu fast jedem benutzten XML-Tag. 
+
+Wem dies nicht genügt kann zudem noch im Ordner xml-anleitung/ 
+eine in HTML erstellte Anleitung finden. Diese ist abgesehen 
+von einer grösseren Einleitung (mit genauem Ablaufschema und 
+einem Text über Sinn und Zweck) mit der xml-referenz identisch. 
+Dennoch ein lesenwertes Dokument.
+
+Bei Unklarheiten empfielt sich auch ein Blick in bereits 
+gelayoutete Texte.
+
+
+
+2.3 Editor
+----------
+
+Da wir mit XML arbeiten kann jeder Editor verwendet werden, der 
+gewöhnlichen Text (ASCII / keine nicht druckbaren Zeichen) 
+abspeichern kann. 
+
+Jeder kann den Editor verwenden, der ihm am besten gefällt.
+
+
+
+2.4 Slcompile
+-------------
+
+Slcompile dient zur Umwandlung von XML in ein Ausgabeformat (momentan 
+nur HTML). Es kann von http://selflinux.sourceforge.net/xml/slcompile.tar.bz2 
+heruntergeladen werden. Da die Layouter stets mit der aktuellsten 
+Version arbeiten sollten, müssen die aktuellen xsl-Files aus dem CVS 
+geholt werden. Diese finden sich unter /interna/xml.
+
+
+
+2.5 mksl2
+---------
+
+"mksl2" ist eine Weiterentwicklung des auf slcompile basierenden
+mksl. Diese Tools können nicht nur einzelne Dateien übersetzen.
+mksl2 ist in dem Dokument "release-infos" ausführlich
+beschrieben und gerade für Layouter sehr hilfreich, da es auch
+über einen Einzeldateimodus verfügt. Bei Interesse bitte
+"release-infos" lesen.
+
+
+
+--------------------
+3 Der Arbeitsablauf
+--------------------
+
+
+3.1 Arbeit beschaffen
+---------------------
+
+Da etliche Leute im Layout beschäftigt sind, muss die Textvergabe ein 
+wenig organisiert werden. Schliesslich sollen ja nicht einige Texte 
+mehrmals und andere nicht formatiert werden.
+
+In der Mailingliste werden in regelmässigen Abständen Statusberichte
+des Layouts gepostet. Darin befindet sich eine Liste mit nicht 
+zugeteilten Texten. Doraus sucht man sich einen aus und meldet dies via 
+Liste dem Teamchef und den anderen Layoutern. Dafür genügt eine einfache 
+Antwort auf die Email mit der Bemerkung, dass man diesen Text bearbeitet.
+
+Nun kann die Arbeit begonnen werden.
+
+
+
+3.2 CVS: Text holen (Format-Ast)
+--------------------------------
+
+Als erstes muss man sich den Text aus dem CVS holen. Wenn man noch über 
+keine Arbeitsversion verfügt, muss mit dem folgenden Befehl eine 
+Arbeitsversion beschafft werden:
+
+$ export CVS_RSH=ssh
+
+$ cvs -z3 -d:ext:developername@cvs.SelfLinux.sourceforge.net:/cvsroot/selflinux 
+co tutorial  (alles eine Zeile)
+
+
+Danach wechselt man in das entsprechende Verzeichnis und kopiert den Text 
+in eine temporäre Datei (Bsp: cp text text.tmp). 
+
+Nun wechselt man in den Format-Ast, da die formatierte Textversion nur 
+eine Version sein soll. Dies geschieht über
+
+$ cvs update -r format
+
+Wenn sich der gewählte Text schon 
+in diesem Ast befunden hat, ist das Dokument noch vorhanden. Falls nicht 
+muss es wieder hergestellt werden:
+
+$ mv text.tmp text
+$ cvs add text
+$ cvs commit text
+
+Das Dokument text wurde nun in dem Format-Ast hinzugefügt. Zur Bearbeitung 
+muss dies jetzt mit 
+
+$ cvs edit text 
+
+cvs mitgeteilt werden. (Wer ein watch gesetzt hatte, empfängt nun eine
+Email mit der Info, dass jemand an dem Text arbeitet.)
+
+Mit der Formatierung kann nun begonnen werden.
+
+
+
+3.3 Text formatieren und kontrollieren
+--------------------------------------
+
+Mit Hilfe seines Lieblingseditors macht man sich nun an die Formatierung
+des Textes. Wie unter dem Punkt Material erklärt findet man die XML-Tags
+im Dokument xml-referenz.
+
+Nachdem der Text formatiert wurde, muss die eigene Arbeit kontrolliert 
+werden. Dabei Hilft einem slcompile. Durch dessen Aufruf und die Übergabe
+seines Textes wird eine HTML-Version generiert. Falls es einen 
+Syntax-Fehler im XML gibt, meldet slcompile dies. Diese Fehler sollten
+vor dem nächsten Arbeitsschritt behoben werden.
+
+Wenn slcompile keinen Fehler bemerkt, bedeutet dies leider nicht,dass es
+im Dokument keine Fehler gibt. Um diese zu finden gibt es die Quality.
+
+
+
+3.4 Arbeit abschliessen
+-----------------------
+
+Nachdem der Text ohne Fehlermeldungen durch slcompile konvertiert wurde,
+muss der Text wieder ins CVS. Dies geschieht mit
+
+$ cvs status
+$ cvs commit text
+
+Wichtig ist, dass man sich im Format-Ast befindet. Daher wird zuerst 
+cvs status aufgerufen. Unter Sticky Tag sollte format stehen.
+
+Über commit wird der Text dann ins CVS hinzugefügt. Es muss eine kleine
+Meldung zur Änderung verfasst werden. Diese sollte es ermöglichen, dass 
+man auch nach einem halben Jahr noch nachvollziehen kann, was sich dabei 
+geändert hat. Da standartmässig VI dazu aufgerufen wird, kann nach der 
+Kommentareingabe mit [esc] :wq  VI verlassen werden.
+
+Nachdem die Arbeit abgeschlossen und im CVS ist, sollte noch eine Email
+an die Mailingliste und/oder den Leiter des Layoutteams geschickt werden.
+So können dann die nachfolgenden Arbeiten angegangen werden. 
+
+
+
+
+
+-----------------------------------
+4. Spezielle Hinweise für Layouter
+-----------------------------------
+
+Da diese Hinweise nur die Layouter betreffen, werden diese
+hier nochmal aufgeführt. Damit das Dokument nicht zu gross
+wird, werden zu allgemeinen Themen/Erkärungen nur Hinweise
+auf mehr Informationen gegeben.
+
+
+
+4.1 CVS
+--------
+
+CVS ermöglicht es ja, dass mehrere Leute gleichzeitig an einem Text arbeiten 
+können. Dies nutzt aber nur etwas, wenn man über die aktuellste Version
+der Arbeit verfügt. 
+Daher ist es wichtig, dass häufig eingecheckt wird. Es ist dabei nicht 
+nötig, dass nach jedem speichern ein commit ausgeführt wird. 
+
+Vor grösseren Arbeitspausen sollte man aber seine Arbeit zurückschreiben.
+Vorallem, wenn man weiss, dass man die nächsten 1 bis 2 Wochen daran nicht
+mehr arbeiten kann.
+
+Nach einer Pause immer daran denken, cvs update auszuführen. Falls seither
+jemand am Text gearbeitet hat, will man dessen Arbeit ja auch nutzen.
+
+
+
+4.2 XML-Tags
+------------
+
+Bei der Erstellung des Testrelease sind etliche Kleinigkeiten aufgetaucht,
+die wir vereinheitlichen sollten:
+
+
+- einheitliches Einrücken: Statt Tab pro Ebene nur ein Leerzeichen.
+
+- Rechtschreibefehler NUR in der Plainversion ändern (keinesfalls in der Formatversion)
+
+- Den Tag <index> nicht vergessen
+
+- Abstände verwenden (für die übersichtlichkeit nach Formatblöcken eine leere 
+  Zeile einfügen)
+
+
+
+4.3 Das Mergen von Texten
+-------------------------
+
+Nachdem ersten Layout bleibt der Text ja nicht ewig so bestehen. Entweder
+wird er ergänzt oder es findet sich doch noch ein Fehler. Da dieser in 
+der Plainversion korrigiert wird, muss die Korrektur auch noch in die 
+Formatversion eingebunden werden.
+
+Da dieser Vorgang ein wenig komplexer ist, erfolgt hier eine ausführlichere 
+Beschreibung als in cvs.dox. Der Ablauf und die Befehle sind aber die gleichen.
+
+Wir wechseln in den Ordner, in dem unser Dokument liegt. Da wir uns um die 
+Formatierung kümmern wollen, sind wir im Format-Ast. Solle man sich noch nicht
+dort befinden, wechselt man mit 
+
+$ cvs update -r format
+
+dort hin. Als erstes holen wir uns die aktuellste Version des Textes und 
+markieren diese Version im CVS mit dem Tag format-merge_vorher.
+
+$ cvs update
+$ cvs tag -c format_merge_vorher-JJJJ_MM_TT <datei>
+
+Damit wissen wir nachher, was die Basis aus dem Format-Ast war. Nun werden alle 
+Änderungen in der Plainversion seit dem letzten merge eingebunden. (Diese 
+Stelle ist mit dem tag format-merged markiert)
+
+
+$ cvs update -j format-merged -j HEAD <datei>
+CVS: merging Changes between 1.4 and 1.6)
+
+Da dieser Vorgang häufig Konflikte verursacht, müssen diese von Hand behoben 
+werden. Je nach Text und Änderungen gibt es mehr oder weniger zu tun.
+
+Nach dem alle Konflikte beseitigt sind, wird der Text ins CVS hinzugefügt.
+
+$ cvs commit <datei>
+
+Damit beim nächsten merge nicht wieder die gleichen Probleme auftauchen, müssen
+wir den Tag format-merged verschieben. Dazu Löschen wir den alten Tag und 
+markieren die aktuelle Version im Plain-Ast. (Diese wird durch Verwenden von 
+HEAD automatisch gefunden.)
+Vorher machen wir aber noch eine Sicherung der alten Position format-merged
+
+$ cvs tag -c -r format-merged format_merged_vorher-JJJJ_MM_TT <datei>
+
+
+
+Achtung: Beim Löschen von Tags unbedingt den Dateinamen angeben! Sonst wird der
+	 Tag format-merged bei allen Dokumenten in diesem Ordner gelöscht.
+
+
+$ cvs tag -d format-merged <datei>
+$ cvs tag -c -r HEAD format-merged <datei>
+
+Nun markieren wir noch die aktuelle Version im Format-Ast als diejenige, in die
+hineingemerget wurde.
+
+$ cvs tag -c format_merge_nachher-JJJJ_MM_TT
+
+Während der ganzen Arbeit hier musste der Format-Ast nie verlassen werden. CVS
+findet automatisch den gewünschten Ast.
+Wenn der Ablauf hier trotz dieser ausführlichen Beschreibung nicht verstanden 
+wird, kann man sich an mich wenden. Ein blosses Eintippen der Befehle sollte
+aber auch zum gewünschten Erfolg führen.
+
+
