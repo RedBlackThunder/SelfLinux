@@ -65,7 +65,7 @@ wird man aber ein Problem haben, sein ganzes System auf ein
 Medium zu schreiben. Einen Streamer haben die wenigsten
 Heimanwender und auf eine CD passt ein komplettes System selten.
     </textblock>
-     
+
     <textblock>
 Zudem dauert ein ganzes Backup ziemlich lange. Da man meist
 ungeduldig ist, kommt die lange Dauer des Backups als
@@ -74,30 +74,30 @@ Dateien speichern, die man schon seit Wochen nicht mehr
 angefasst hat?
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Differentielles Backup
     </heading>
-    
+
     <textblock>
 Bei einem differentiellen Backup werden nur die seit dem letzten
 vollständigen Backup geänderten Dateien gesichert. Dies spart
 sowohl Zeit als auch Speicherplatz.
     </textblock>
-     
+
     <textblock>
 Bei einer Wiederherstellung der Daten muss man aber mit mehreren
 Medien arbeiten. Einerseits das vollständige Backup einspielen und
 danach noch das differentielle Backup.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Inkrementelles Backup
     </heading>
-     
+
     <textblock>
 Beim inkrementellen Backup werden nur die Dateien gespeichert,
 die sich seit dem letzten Backup, geändert haben. Daher eignet
@@ -105,12 +105,12 @@ sich das inkrementelle Backup besonders für die tägliche
 Sicherung.
     </textblock>
    </section>
-   
+
    <section>
     <heading>
 Backup-Medien
     </heading>
-     
+
     <textblock>
 Als Backup-Medium kann man alles verwenden, auf das man Daten
 speichern kann. Dies reicht von der <name>Floppy-Diskette</name> über <name>Zips</name>,
@@ -211,13 +211,13 @@ Einsparen von Kosten.
     </textblock>
 
     <textblock>
-So machen wir an den ersten 8 Tagen 8 Backups und brauchen 8 CDs. 
-Dies mag auf den ersten Blick übertrieben erscheinen. Aber wie viel 
-kostet ein Rohling? Wie wichtig ist die Arbeit und wie viel Zeit 
+So machen wir an den ersten 8 Tagen 8 Backups und brauchen 8 CDs.
+Dies mag auf den ersten Blick übertrieben erscheinen. Aber wie viel
+kostet ein Rohling? Wie wichtig ist die Arbeit und wie viel Zeit
 steckt dahinter?<br/>
-Berechnet man die Kosten eines Datenverlustes (Erstellungszeit * 
-Stundensatz), überwiegt diese Summe um Längen den Preis von 
-8 CD-RWs. Zumal diese 8 CDs ja wiederverwendet werden können. 
+Berechnet man die Kosten eines Datenverlustes (Erstellungszeit *
+Stundensatz), überwiegt diese Summe um Längen den Preis von
+8 CD-RWs. Zumal diese 8 CDs ja wiederverwendet werden können.
     </textblock>
    </section>
 
@@ -254,7 +254,7 @@ Dies stellt kein grosses Problem dar, da man mit der Option
 Daher wird im Verlauf des Textes <command>tar</command> immer auch mit <command>-f</command>
 aufgerufen.
    </textblock>
-   
+
    <textblock>
 <command>tar</command> ist zwar ein älteres Programm, doch ist es sehr weit
 verbreitet und unter vielen Systemen verfügbar. So kann man
@@ -308,8 +308,8 @@ Inkrementelles Backup mit tar
     </heading>
 
     <textblock>
-<command>tar</command> wurde vor allem für ganze Backups gemacht. Es gibt aber 
-einige mehr oder weniger einfache Möglichkeiten, inkrementelle 
+<command>tar</command> wurde vor allem für ganze Backups gemacht. Es gibt aber
+einige mehr oder weniger einfache Möglichkeiten, inkrementelle
 Backups zu machen.
     </textblock>
 
@@ -327,8 +327,8 @@ tar -vcf /mnt/disk2/backup-1.tar -g zeitstempel /home/
     </shell>
 
     <textblock>
-Beim inkrementellen Backup lautet der Aufruf bis auf den Archivnamen 
-gleich, doch sichert <command>tar</command> diesmal nur die Dateien, die sich seit dem 
+Beim inkrementellen Backup lautet der Aufruf bis auf den Archivnamen
+gleich, doch sichert <command>tar</command> diesmal nur die Dateien, die sich seit dem
 vollen Backup geändert haben.
     </textblock>
 
@@ -345,7 +345,7 @@ tar -N 2002-11-01 -Pcf /mnt/disk2/backup-1.tar /home/
     </shell>
 
     <textblock>
-Will man ein eigenes kleines Backupscript schreiben, das einem 
+Will man ein eigenes kleines Backupscript schreiben, das einem
 alle Dateien sichert, die neuer als 5 Tage sind, kann man <command>date</command>
 zur Mitarbeit bewegen:
     </textblock>
@@ -386,10 +386,10 @@ gunzip backup-1.tar.gz
     </shell>
 
     <textblock>
-Es gibt bei <command>tar</command> aber auch eine integrierte Methode. Mit der 
-Option <command>-z</command> wird <command>gzip</command> durch <command>tar</command> aufgerufen und es gibt keinen 
-Umweg über einen zweiten Befehl. Neben <command>gzip</command> kann auch <command>bzip2</command> 
-für die Komprimierung verwendet werden. Dafür dient die 
+Es gibt bei <command>tar</command> aber auch eine integrierte Methode. Mit der
+Option <command>-z</command> wird <command>gzip</command> durch <command>tar</command> aufgerufen und es gibt keinen
+Umweg über einen zweiten Befehl. Neben <command>gzip</command> kann auch <command>bzip2</command>
+für die Komprimierung verwendet werden. Dafür dient die
 Option <command>-j</command>.
     </textblock>
 
@@ -412,10 +412,11 @@ backup-1.tar.gz
     </heading>
 
     <textblock>
-Eine der wichtigsten Schritte beim Anlegen eines Backups ist 
+Eine der wichtigsten Schritte beim Anlegen eines Backups ist
 dessen Überprüfung. Mit der Option <command>-d</command> geht dies sehr einfach,
 sofern man noch in dem Verzeichnis ist, in dem man tar gestartet
-hatte und die Option <command>-P</command> verwendete:
+hatte, keine Komprimierung <command>-z</command> oder <command>-j</command> und
+die Option <command>-P</command> verwendet hat:
     </textblock>
 
     <shell>
@@ -425,7 +426,7 @@ tar -df /mnt/disk2/backup-1.tar
     </shell>
 
     <textblock>
-Wenn alles stimmt, gibt <command>tar</command> keine Fehlermeldung aus. Hat man 
+Wenn alles stimmt, gibt <command>tar</command> keine Fehlermeldung aus. Hat man
 <command>-P</command> nicht verwendet, muss man <command>tar</command> den Pfad mitgeben:
     </textblock>
 
@@ -436,7 +437,7 @@ tar -C /home -df /mnt/disk2/backup-1.tar
     </shell>
 
     <textblock>
-Diese Option geht ebenfalls, wenn man zwischenzeitlich das 
+Diese Option geht ebenfalls, wenn man zwischenzeitlich das
 Verzeichnis gewechselt hat.<br/>
 Will man wissen, was alles im Archiv ist, genügt ein <command>-t</command>
     </textblock>
@@ -464,7 +465,7 @@ Nachdem das Archiv ordentlich geschrieben und geprüft wurde,
 kann man sich erst einmal ruhig zurücklehnen. Da aber
 erfahrungsgemäss immer etwas passieren kann, sollte man auch
 etwas über die Wiederherstellung wissen. Die dafür notwendige
-Option ist <command>-x</command> (extract = extrahieren). Damit man weiss was 
+Option ist <command>-x</command> (extract = extrahieren). Damit man weiss was
 gerade passiert, gibt es <command>-v</command> (verbose = wortreich):
     </textblock>
 
@@ -475,7 +476,7 @@ tar -xvzf /mnt/disk2/backup-1.tar.gz
     </shell>
 
     <textblock>
-oder mit zusätzlicher Pfadangabe und einem nicht komprimierten 
+oder mit zusätzlicher Pfadangabe und einem nicht komprimierten
 Archiv:
     </textblock>
 
@@ -496,12 +497,12 @@ cpio
 
    <textblock>
 <command>cpio</command> (copy in/out) ist <command>tar</command> sehr ähnlich, doch kann es im Gegensatz
-dazu mit beschädigten Archiven umgehen. So kann man den unbeschadeten 
+dazu mit beschädigten Archiven umgehen. So kann man den unbeschadeten
 Teil des Archivs meistens noch retten.
-Allerdings funktioniert <command>cpio</command> nur auf Festplatten mit dem 
+Allerdings funktioniert <command>cpio</command> nur auf Festplatten mit dem
 Dateisystem <name>ext2</name>.
    </textblock>
-   
+
    <section>
     <heading>
 Vollständiges Backup mit cpio
@@ -509,7 +510,7 @@ Vollständiges Backup mit cpio
 
     <textblock>
 Will man die zu sichernden Dateien an <command>cpio</command> übergeben, müssen diese
-nach einem speziellen Muster mitgeteilt werden. Pro übergebene 
+nach einem speziellen Muster mitgeteilt werden. Pro übergebene
 Zeile erwartet <command>cpio</command> einen Dateinamen. Daher verwendet man am Besten
 eine Pipe:
     </textblock>
@@ -545,7 +546,7 @@ Inkrementelles Backup mit cpio
     </heading>
 
     <textblock>
-Mit <command>find</command> kann man sich nicht nur Verzeichnisebenen anzeigen lassen, 
+Mit <command>find</command> kann man sich nicht nur Verzeichnisebenen anzeigen lassen,
 sondern Dateien auch auf ihre letzte Modifikation prüfen. Daher genügt
 die Ergänzung des vorhin verwendeten Befehls um <command>-mtime -5</command> um alle
 Dateien zu erhalten, die in den letzten 5 Tagen geändert wurden:
@@ -569,7 +570,7 @@ Für weitere Optionen von <command>find</command> empfielt sich ein Blick in
     </heading>
 
     <textblock>
-Ein Nachteil von <command>cpio</command> ist die fehlende direkte Überprüfung der 
+Ein Nachteil von <command>cpio</command> ist die fehlende direkte Überprüfung der
 gesicherten Dateien. Um einen wirklichen Vergleich zu machen,
 müsste man die Dateien in ein anderes Verzeichnis entpacken und
 mit Hilfe von <command>diff</command> sicherstellen, das die Dateien korrekt sind.
@@ -593,12 +594,12 @@ cpio -itvI /mnt/disk2/backup-2
     </shell>
 
     <textblock>
-Da die Option <command>i</command> das Archiv auspacken würde, setzt man um dies zu 
+Da die Option <command>i</command> das Archiv auspacken würde, setzt man um dies zu
 Verhindern ein <command>t</command> davor. Über <command>I</command> teilt man das Verzeichnis mit und dank <command>v</command>
 werden die Dateirechte ebenfalls ausgegeben.
     </textblock>
    </section>
-    
+
    <section>
     <heading>
 Zurückspielen mit cpio
