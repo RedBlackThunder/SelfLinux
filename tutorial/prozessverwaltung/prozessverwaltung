@@ -1,0 +1,164 @@
+<!--
+   * Titel: Prozessverwaltung
+   *
+   * [c] Ferdinand Hahmann
+   * Autor: Ferdinand Hahmann <FerdinandHahmann@gmx.net>
+   *
+   * Lizenz: GPL
+   *
+   * $Revision: 1.3 $
+   * $Source: /selflinux/sammelbecken/prozessverwaltung/prozessverwaltung,v $
+   *
+   * Diese Datei ist Teil von SelfLinux  http://www.selflinux.org
+   *
+   *** $ $
+-->
+
+
+Prozessverwaltung
+
+
+
+1 Einleitung
+
+<!-- KEYWORDS: Prozessverwaltung; Prozesse; ps; -->
+
+Linux ist ein Multitasking-Betriebssystem. Das heißt, es können
+mehrere Programme zur selben Zeit ablaufen. Üblicherweise benutzt
+jeder Anwender ein Programm im "Vordergrund", während mögliche
+weitere im "Hintergrund" ablaufen. Es ist ein Mechanismus vorhanden,
+um Hintergrundprozesse zu beeinflussen, sie beispielsweise anzuhalten,
+fortzusetzen oder zu beenden. Ebenso unterstützen die meisten Shells
+Job-Control, also die Möglichkeit, Vordergrundprozesse in den
+Hintergrund zu schicken und umgekehrt.
+
+
+
+1.1 kill
+
+<!-- KEYWORDS: kill; ps; -->
+
+kill ist - trotz seines Namens - nicht nur zum Beenden von Prozessen
+geeignet. Es kann alle möglichen Signale an die Prozesse senden, die
+von dem Benutzer gestartet wurden, der kill aufruft. Ist dieser
+Benutzer der Systemverwalter, dann sind ihm alle Prozesse zugänglich.
+
+Der Aufruf ist:
+
+kill <Signal> <Prozess-ID>
+
+Die Prozess-ID (PID) können Sie beispielsweise aus der Ausgabe des
+Programmes
+<!-- FUTURELINK: chapter="Auf das kommende Kapitel information_basic" iref="Informationen über Prozesse" -->ps<!-- ENDLINK -->
+entnehmen:
+
+$ ps
+[...]
+19376 pts/0    00:00:00 ps
+
+Hier ist die PID des ps-Prozesses selbst die 19376.
+
+Wenn die PID negativ ist, wird <Signal> nicht an einen bestimmten
+Prozess gesendet, sondern an alle Prozesse mit der angegebenen PGID.
+Der Befehl lautet also dann folgendermaßen:
+
+kill <Signal> -<PGID>
+
+Anstelle der Prozess-ID kann auch -1 angegeben werden. Dabei wird
+<Signal> an alle Prozesse gesendet, ausser dem kill-Prozess
+selbst und init. Zudem zeigt dieser Befehl nur bei den Prozessen
+Wirkung, bei welchen man die nötigen Rechte hat.
+
+Wenn Sie kein Signal angeben, sendet kill das Signal 15 (SIGTERM),
+das die meisten Programme dazu veranlasst, hinter sich aufzuräumen,
+um sich dann zu beenden.
+
+Weitere wichtige Signale sind SIGHUP (1) und SIGKILL (9).
+SIGHUP steht für "hang-up". Wenn ein Benutzer sich über das
+Netzwerk angemeldet hat und die Verbindung abbricht, z. B.
+weil ein Modem auflegt (eben ein "hang-up"), wird dieses Signal
+an alle Prozesse gesendet, die während dieser Anmeldesitzung
+gestartet wurden. Sie werden dann beendet.
+
+SIGKILL tut genau das, was sein Name andeutet: Es unternimmt alles,
+um einem Prozess den Garaus zu machen. Auch wenn ein hartnäckiger
+Prozess nach einem
+
+$ kill -SIGKILL 12345
+
+möglicherweise noch in der Ausgabe von ps erscheint, bekommt er
+jedoch keine Rechenzeit mehr zugewiesen.
+
+Eine Liste mit allen Signalen finden Sie entweder in der Manpage
+von kill (man 1 kill) oder mit dem Befehl kill -l.
+
+Die Option -p sendet kein Signal an den Prozess, sondern gibt
+nur den Namen des zur PID passenden Prozesses aus.
+
+Die bash-Shell enthält einen eingebauten Befehl kill, der im
+Prinzip dieselbe Auswirkung wie /bin/kill hat, jedoch zwei Vorteile
+bietet:
+Er erlaubt die Verwendung von Job-IDs statt PIDs,
+und wenn Sie die maximale Anzahl von Prozessen gestartet haben, die
+Ihr Systemverwalter ihnen zubilligt, können Sie einen davon beenden,
+ohne dazu einen weiteren Prozess mit /bin/kill starten zu müssen.
+Die Eingabe von kill startet den in die bash eingebauten kill-Befehl.
+/bin/kill verwendet den externen kill-Befehl.
+
+
+
+1.1. killall
+
+killall bewirkt im Prinzip dasselbe wie kill; es sendet Signale an
+Prozesse. Der Unterschied zwischen kill und killall ist, an
+welchen Prozesse ein Signal gesendet wird. Bei killall wird
+nicht die PID des Prozesses angegeben, sondern dessen Name. Da
+allerdings der Name, im Gegensatz zur PID, nicht eindeutig ist,
+wird das Signal an alle Prozesse mit diesem Namen gesendet.
+Der genaue Aufruf lautet so:
+
+killall [Option] [Signal] <Name>
+
+Wenn <Name> einen "/" enthält so ist damit nicht der Name eines
+Prozesses gemeint, sondern der Name einer auszuführenden Datei.
+Dabei wird ein Signal an alle Prozesse gesendet, die diese
+Datei ausführen.
+
+Die Signale sind dieselben wie bei kill. Ohne Angabe von Signal wird
+auch ein SIGHUP (15) gesendet.
+
+Eine wichtige Option ist -e (--exact). Normalerweise wertet
+killall nur die
+ersten 15 Zeichen von <Name> aus. Haben nun zwei Prozesse
+unterschiedliche
+Namen stimmen aber trotzdem in den ersten 15 Zeichen überein, so sind
+dennoch beide Prozesse von killall betroffen. Die Option -e erzwingt
+dass der volle Name ausgewertet wird.
+
+Eventuell will man nicht blind alle Prozesse mit gleichen Namen beenden,
+sondern vorher noch eine Nachfrage haben. Dafür gibt es die Option
+-i (--interactive).
+
+
+
+1 nice
+
+<!-- KEYWORDS: nice; -->
+
+Unter Linux ist es möglich, dass mehrere Befehle, auch Jobs
+genannt, zur gleichen Zeit ausgeführt werden. Da allerdings
+nicht alle Ressourcen unbegrenzt zur Verfügung stehen, muss
+eine Auswahl getroffen werden, welche Priorität ein Job hat.
+Diese Aufgabe erledigt der Befehl nice:
+
+nice <Priorität> <Befehl> [Argumente]
+
+<Priorität> ist für normale User eine Zahl zwischen 0 und 19,
+wobei 19 die niedrigste Priorität ist. Der Superuser hat die
+Möglichkeit Prioritäten von -20 bis 19 zu vergeben. Dabei
+ist -20 die höchste Priorität.
+
+<Befehl> ist der eigentliche Befehl, der ausgeführt werden
+soll. [Argumente] sind dabei Optionen, die
+an <Befehl> übergeben werden.
+
