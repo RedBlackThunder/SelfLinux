@@ -20,7 +20,7 @@
 
  <description> 
   <textblock>
-GNU wget ist ein praktisches Tool, um Dateien aus dem Web zu 
+GNU <command>wget</command> ist ein praktisches Tool, um Dateien aus dem Web zu 
 laden. Über zahlreiche Optionen kann man genau das 
 erreichen. Sogar abgebrochene Downloads können
 wieder aufgenommen werden. Es werden Dateien und Seiten sowohl
@@ -63,7 +63,7 @@ wget http://mesh.dl.sourceforge.net/sourceforge/selflinux/SelfLinux-0.10.0-html.
 
    <textblock>
 Sollte der Download ausirgend einem Grund abbrechen, kann er 
-mit der Option <command>-c wieder</command> aufgenommen werden:
+mit der Option <command>-c</command> wieder aufgenommen werden:
    </textblock>
 
    <shell>
@@ -71,16 +71,16 @@ mit der Option <command>-c wieder</command> aufgenommen werden:
 wget -c http://mesh.dl.sourceforge.net/sourceforge/selflinux/SelfLinux-0.10.0-html.tar.gz
     </user>
     <output>
-    --21:41:52--  http://mesh.dl.sourceforge.net/sourceforge/selflinux/SelfLinux-0.10.0-html.tar.gz
-               => `SelfLinux-0.10.0-html.tar.gz'
-	       Auflösen des Hostnamen »mesh.dl.sourceforge.net«.... 213.203.218.122
-	       Verbindungsaufbau zu mesh.dl.sourceforge.net[213.203.218.122]:80... verbunden.
-	       HTTP Anforderung gesendet, warte auf Antwort... 206 Partial Content
-	       Länge: 4,039,004 (noch 3,963,516) [application/x-tar]
+--21:41:52--  http://mesh.dl.sourceforge.net/sourceforge/selflinux/SelfLinux-0.10.0-html.tar.gz
+          => `SelfLinux-0.10.0-html.tar.gz'
+Auflösen des Hostnamen »mesh.dl.sourceforge.net«.... 213.203.218.122
+Verbindungsaufbau zu mesh.dl.sourceforge.net[213.203.218.122]:80... verbunden.
+HTTP Anforderung gesendet, warte auf Antwort... 206 Partial Content
+Länge: 4,039,004 (noch 3,963,516) [application/x-tar]
 
-	       100%[+++==========================================================>] 4,039,004    112.39K/s    ETA 00:00
+100%[+++==========================================================>] 4,039,004    112.39K/s    ETA 00:00
 
-	       21:42:25 (120.79 KB/s) - »SelfLinux-0.10.0-html.tar.gz« gespeichert [4039004/4039004]
+21:42:25 (120.79 KB/s) - »SelfLinux-0.10.0-html.tar.gz« gespeichert [4039004/4039004]
     </output>
    </shell>
 
@@ -92,7 +92,7 @@ ETA steht die verbleibende Zeit.
    </textblock>
 
    <textblock>
-+-Zeichen im Statusbalken zeigen Dateifragmente, die durch Wiederaufnahme 
+<strong>+</strong>-Zeichen im Statusbalken zeigen Dateifragmente, die durch Wiederaufnahme 
 des Downloads fortgesetzt wurden.
    </textblock>
 
@@ -148,7 +148,7 @@ geladen werden und das können schnell mehrere hundert Megabyte sein.
    </textblock>
 
    <textblock>
-Die Option <command>-l num</command> steht für "level" und passt 
+Die Option <command>-l num</command> steht für <strong>level</strong> und passt 
 die Tiefe von <command>-r</command> an. <command>num</command> muss durch eine beliebige
 positive Zahl ersetzt werden. 
    </textblock>
@@ -161,7 +161,7 @@ wget -r -l 2 www.selflinux.org
   
    <textblock>
 Speichert alle Dateien, die über eine andere Datei verlinkt sind,
-im Verzeichnis <strong>www.selflinux.org</strong>
+im Verzeichnis <path>www.selflinux.org</path>
 Die gefundene Verzeichnisstruktur wird dabei übernommen. Allerdings wird 
 nur 2 Ebenen tief gesucht, was bei großen Kapiteln dazu führt, daß
 nicht alle Dateien heruntergeladen werden.
@@ -205,7 +205,7 @@ Die Verzeichnisstruktur wird nun komplett übernommen.
 Neben diesen beiden bietet <command>wget</command> noch eine dritte 
 Möglichkeit. Hierbei wird die Verzeichnisstruktur übernommen, doch 
 wird der Ordner mit dem Domainnamen weggelassen. Dies erreicht man 
-mit <command>-nH (--no-host-directories)</command>.
+mit <command>-nH</command> (<command>--no-host-directories</command>).
     </textblock>
    </section>  
 
@@ -216,9 +216,9 @@ Nur bestimmte Dateitypen herunterladen
     
     <textblock> 
 Wildcards können bei <command>wget</command> nicht verwendet werden, wenn die
-Dateien per http geladen werden.
+Dateien per <strong>http</strong> geladen werden.
 Es gibt aber dennoch eine Möglichkeit, nur spezielle Dateitypen zu bekommen.
-Dafür muss man eine Liste mit <command>-A (--accept)</command> erstellen.
+Dafür muss man eine Liste mit <command>-A</command> (<command>--accept</command>) erstellen.
 FTP kennt wildcards!
     </textblock>
 
@@ -257,11 +257,11 @@ Grössenbegrenzung des Downloads
     <textblock>
 Auf die Größe des Downloads kann aber nicht nur über <command>-A
 </command> und <command>-R</command> Einfluss genommen werden, sondern
-auch mittels <command>-Q (--quota)</command>. Die Größenangabe erfolgt
+auch mittels <command>-Q</command> (<command>--quota</command>). Die Größenangabe erfolgt
 in Bytes und legt den Wert für den ganzen Download fest. 
 Da die Angabe großer Werte in Bytes mühsam ist, kann man auch 
-andere Einheiten verwenden. Für Megabytes wird an die Zahl ein m
-angehängt, für Kilobytes dient ein k.
+andere Einheiten verwenden. Für <strong>Megabytes</strong> wird an die Zahl ein <strong>m</strong>
+angehängt, für <strong>Kilobytes</strong> dient ein <strong>k</strong>.
     </textblock>
      
     <shell>
@@ -285,10 +285,10 @@ Dateien vor Download auf Datum prüfen
      
     <textblock>    
 Holt man sich öfters Daten vom gleichen Server, möchte man ja nur
-die neuesten Dateien herunterladen. Mit <command>-N (--timestamping)</command>
+die neuesten Dateien herunterladen. Mit <command>-N</command> (<command>--timestamping</command>)
 veranlasst man <command>wget</command>, vor dem Download das Datum der Datei auf dem
 Server mit dem der lokalen Kopie zu vergleichen. Nur wenn die 
-lokale Datei veraltet ist, beginnt wget mit dem Download.
+lokale Datei veraltet ist, beginnt <command>wget</command> mit dem Download.
     </textblock>
 
     <shell>
@@ -306,7 +306,7 @@ Verwenden eines Proxy-Servers
     <textblock>
 Will man einen Proxy-Server verwenden, genügt die Option 
 <command>-Y on/off</command>. Dabei wird auf die Umgebungsvariablen
-<command>$http_proxy</command> und <command>$FTP_PROXY</command> ausgelesen. Diese müssen
+<path>$http_proxy</path> und <path>$FTP_PROXY</path> ausgelesen. Diese müssen
 natürlich gesetzt werden:
     </textblock>
 
@@ -331,8 +331,8 @@ Die Dateien /etc/wgetrc und .wgetrc
    <textblock>
 Eine große Anzahl der Startoptionen können in diese 
 Konfigurationsdateien eingetragen werden. Die Datei 
-<strong>/etc/wgetrc</strong> gilt für alle User, die 
-<strong>~/.wgetrc</strong> nur für den jeweiligen Benutzer.
+<path>/etc/wgetrc</path> gilt für alle User, die 
+<path>~/.wgetrc</path> nur für den jeweiligen Benutzer.
    </textblock>
     
    <textblock>
@@ -381,68 +381,68 @@ waitretry = 10
     <pdf-column width="50"/>
     <pdf-column/>
     <tr>
-     <td>-V</td>
-     <td>--version</td>
+     <td><command>-V</command></td>
+     <td><command>--version</command></td>
      <td>Gibt die Version an</td>
     </tr>
     <tr>
-     <td>-h</td>
-     <td>--help</td>
+     <td><command>-h</command></td>
+     <td><command>--help</command></td>
      <td>Zeigt die Hilfe an</td>
     </tr>
     <tr>
-     <td>-c</td>
-     <td>--continue</td>
+     <td><command>-c</command></td>
+     <td><command>--continue</command></td>
      <td>Nimmt den Download wieder auf</td>
     </tr>
     <tr>
-     <td>-N</td>
-     <td>--timestamping</td>
+     <td><command>-N</command></td>
+     <td><command>--timestamping</command></td>
      <td>Besorgt nur neuere Dateien, als lokal vorhanden sind</td>
     </tr>
     <tr>
-     <td>-r</td>
-     <td>--recursive</td>
+     <td><command>-r</command></td>
+     <td><command>--recursive</command></td>
      <td>Lädt Dateien rekursiv herunter</td>
     </tr>
     <tr>
-     <td>-o</td>
-     <td>--output-file=datei</td>
+     <td><command>-o</command></td>
+     <td><command>--output-file=datei</command></td>
      <td>Speicher die Ausgabe in datei</td>
     </tr>
     <tr>
-     <td>-i</td>
-     <td>--input-file=datei</td>
+     <td><command>-i</command></td>
+     <td><command>--input-file=datei</command></td>
      <td>Liest URLs aus datei</td>
     </tr>
     <tr>  
-     <td>-q</td>
-     <td>--quiet</td>
+     <td><command>-q</command></td>
+     <td><command>--quiet</command></td>
      <td>Unterdrückt die Ausgabe</td>
     </tr>
     <tr>
-     <td>-v</td>
-     <td>--verbose</td>
+     <td><command>-v</command></td>
+     <td><command>--verbose</command></td>
      <td>Zeigt ausführlicher an, was wget macht</td>
     </tr>
     <tr>
-     <td>-Y on/off</td>
-     <td>--proxy=on/off</td>
+     <td><command>-Y on/off</command></td>
+     <td><command>--proxy=on/off</command></td>
      <td>Proxy ein- oder ausschalten</td>
     </tr>
     <tr>
-     <td>-Q2m</td>
-     <td>--quota=2m</td>
+     <td><command>-Q2m</command></td>
+     <td><command>--quota=2m</command></td>
      <td>Beschränkt den Download auf 2 MB</td>
     </tr>
     <tr>
-     <td>-nd</td>
-     <td>--no-directories</td>
+     <td><command>-nd</command></td>
+     <td><command>--no-directories</command></td>
      <td>Erstellt keine Verzeichnisse</td>
     </tr>
     <tr>
-     <td>-nH</td>
-     <td>--no-host-directories</td>
+     <td><command>-nH</command></td>
+     <td><command>--no-host-directories</command></td>
      <td>Erstellt Ordner, lässt aber das Hostverzeichnis weg</td>
     </tr>
    </table> 	
