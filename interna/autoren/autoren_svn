@@ -12,13 +12,14 @@ Stand: 31.10.2004		$Revision: 1.11 $
 Wer noch NIE mit SVN gearbeitet hat, sollte diesen Text erstmal
 insgesamt durchlesen und erst dann ans experimentieren gehen!
 
-Für unserer Texte verwenden wir das SVN (Subversion Version Control System)
+Für unsere Texte verwenden wir das SVN (Subversion Version Control System)
 als Versionsverwaltungssystem. SVN ist ein geniales Werkzeug. Es
 ermöglicht zwei Dinge. Zum einen die Historienverwaltung von Dateien
 und zum anderen die Zusammenarbeit von mehreren Personen an diesen
 Dateien. Wenn du mehr über das SVN erfahren willst, dann lies doch mal
 die Doku zu SVN auf der Homepage (http://http://svnbook.red-bean.com/svnbook-1.1/svn-book.html).
-Diese ist zwar sehr umfangreichund in Englisch, aber auch sehr interessant.
+Diese ist zwar sehr umfangreichund in Englisch, aber auch sehr interessant. Demnächst wird
+der Text auch auf Deutsch bei SelfLinux verfügbar sein.
 
 Hier soll lediglich gezeigt werden, welche svn-Befehle die
 Autoren für alltägliche Arbeit benötigen und auf was geachtet werden
@@ -33,7 +34,7 @@ dich in der entsprechenden Programm-Dokumentation.
 
 
 
-2 Allgemein Regeln
+2 Allgemeine Regeln
 
 
 
@@ -98,7 +99,7 @@ Dann wechselst du in dieses Verzeichnis:
 user$ cd /home/<username>/selflinux/svn
 
 Als nächstes logst du dich wie oben beschrieben in das Pingos.org-CVS ein.
-Mit folgenden Befehl wird das gesamte
+Mit folgendem Befehl wird das gesamte
 SL-Repository als Arbeitskopie "ausgecheckt":
 
 svn checkout https://ssl.pingos.org/svn/selflinux/trunk
@@ -154,6 +155,11 @@ user$ svn commit  "Text ueber ... eingefuegt" <neuer_text>
 Damit wird unser neuer Text endgültig in unser SVN-Repository
 eingefügt.
 
+Eine andere Möglichkeit ist:
+
+user$ svn add <neuer_text>
+user$ svn commit <neuer_text>
+
 Es wird der Standard-Editor geöffnet um einen Kommentar in das log-file
 schreiben zu können. Hier sollte sehr kurz und prägnant reingeschrieben werden,
 was man an der Datei gemacht hat (z.B. Rechtschreibfehler korrigiert
@@ -166,8 +172,8 @@ oder um Kapitel soundso erweitert). Bloß keine Romane schreiben!
 Bilder werden immer in dem Verzeichnis des Textes 
 abgelegt. Die Schritte sind analog zu den Texten.
 
-Wenn man mehrere Bilder hat, kann man diese natürlich auch mit einem
-Male einchecken.
+Wenn man mehrere Bilder hat, kann man diese natürlich auf einmal
+einchecken.
 
 user$ svn add bildname1.png bildname2.png bildname3.png
 
@@ -203,8 +209,8 @@ einfügen:
 
 user$ svn commit "Ergänzungen zu ... angebracht" <text>
 
-Dieser Zyklus (siehe auch unten bei Zusammenfassung) sollte bei jeder
-neuen Bearbeitung der Datei erneut durchlaufen werden!
+Dieser Zyklus sollte bei jeder neuen Bearbeitung der Datei erneut
+durchlaufen werden!
 
 
 
