@@ -1,0 +1,618 @@
+
+ <!--
+  * Titel: Verschlüsselte Dateisysteme
+  * [c] Markus Hoffmann
+  * Autor:Markus Hoffmann <mar.hoff@gmx.net>
+  * Layout:
+  * Lizenz: GNU GPL
+  *
+  * $Revision: 1.8 $
+  * $Source: /selflinux/tutorial/dateisysteme_verschluesselt/dateisysteme_verschluesselt,v $
+  *
+  * Diese Datei ist Teil von SelfLinux http://www.selflinux.org
+  *
+  *** $Id: dateisysteme_verschluesselt,v 1.8 2004/06/01 20:04:45 ketterer Exp $
+  -->
+
+
+
+Verschlüsselte Dateisysteme
+
+<!-- KEYWORDS: Dateisysteme; Verschlüsselung; Kryptografie; Daten;
+               Passwort; Verschlüsselungsverfahren; Sicherheit; Bit;
+               Brute Force; verschlüsseln; entschlüsseln; Crypto-API;
+               Loopback-Device; PGP; GnuPG; Partition; Twofish; DES;
+               SuSE; Mandrake; Advanced Encryption Standard; AES;
+               Rijndael; Loop-AES; losetup; symmetrisch; Systemstart;
+               Blockdevice; Verschlüsselungsalgorithmus; fstab; RSA;
+               encryption; Yast2; System; Installation; Kryptodatei;
+               AES128; Mandrake Kontrollzentrum; DiskDrake; Kernel;
+               Bootloader; 128; Blowfish; IDEA; asymmetrisch; public
+               key; private key; -->
+
+Dieses Tutorial beschreibt, wie man Daten unter Linux verschlüsselt 
+abspeichern kann.
+
+
+
+1. Vorwort
+
+
+
+1.1 Was bedeutet Kryptografie?
+
+<!-- KEYWORDS:	Kryptografie; Verschlüsseln;
+		Verschlüsselungsverfahren; Verschlüsselungsmethoden;
+		Brute-Force; Verschlüsselungsalgorithmus; -->
+
+
+Das Wort "Kryptografie" kommt aus dem Griechischen und bedeutet
+"Geheimschrift". Übertragen auf die Anwendung von Kryptografie
+im Informationstechnologie-Bereich (IT-Bereich)
+bedeutet dies das Verschlüsseln von sensiblen Daten, 
+wie zum Beispiel Passwörtern, damit kein Unbefugter diese Daten
+einsehen kann. Es gibt viele verschiedene Verschlüsselungsverfahren
+im IT-Bereich, die sich erheblich in ihrer Sicherheit unterscheiden. 
+
+Es ist notwendig, die Verschlüsselungsmethoden ständig 
+weiterzuentwickeln, damit eine höchstmögliche Sicherheit garantiert 
+werden kann. Im Zeitalter von immer schnelleren CPUs, die ihre
+Rechenleistung in so genannten Clustern zusammenschalten können, ist
+es möglich, in einem absehbaren Zeitraum verschlüsselte Daten zu 
+entschlüsseln. Dabei wird mittels reiner Rechenleistung nacheinander
+jedes Passwort zur Entschlüsselung ausprobiert. Diese so genannte 
+"Brute Force"-Methode kann somit nach einigen Stunden oder sogar
+erst nach Tagen oder Jahren, je nach Verschlüsselungsalgorithmus, 
+das richtige Passwort finden. Für weitere Erläuterungen, auch im
+Zusammenhang mit spezifischen Fachbegriffen, schauen Sie im Anhang 
+unter "Fachbegriffe" nach. 
+
+
+
+1.1 Haftungsausschluss
+
+Der Autor übernimmt keine Garantie auf die hier beschriebenen
+Verfahren
+und übernimmt keine Haftung für eventuelle Hardwareschäden und/oder
+Datenverluste oder sonstige Schäden. Bei Arbeiten am Dateisystem
+sollte man nie ohne Backup verfahren. Sichern Sie, bevor Sie
+fortfahren, Ihre Daten auf einen gesonderten Datenträger, um
+Datenverluste zu vermeiden.
+
+
+
+1. Einführung
+
+
+
+1.1 Verschlüsselung mittels des Loopback-Device
+
+Verschlüsselte Dateisysteme eignen sich hervorragend, wenn man mit
+vielen vertrauenswürdigen Daten umgeht. Vor allem bei Notebooks
+eignet sich eine verschlüsselte Partition, falls dieses einmal
+abhanden kommen sollte.
+Somit hat nur der Besitzer Zugriff auf die von ihm mittels eines
+Passworts verschlüsselten Daten.
+
+Will man nur einzelne Daten verschlüsseln, besteht auch die
+Möglichkeit der Verwendung von Verschlüsselungsprogrammen wie z.B.
+PGP oder GnuPG, die neben dem Verschlüsseln von
+Mails auch dazu verwendet werden können. Sehen Sie dazu auch das
+GnuPG-Handbuch in SelfLinux. Will man jedoch eine größere Anzahl von
+Dateien oder ganze Verzeichnisse verschlüsseln, wird dies schnell
+umständlich.
+Um komfortabler zu arbeiten, kann man daher die
+Verschlüsselungsfunktion des Loopback-Device (siehe Anhang) nutzen,
+mit dem man eine kompletter Partition verschlüsseln kann.
+
+Der Anwender merkt in der Regel keinen Unterschied beim
+Festplattenzugriff zwischen einer Partition mit Verschlüsselung
+und einer Partition ohne Verschlüsselung. Da die
+Krypto-Funktion des Loopback-Devices unabhängig vom Dateisystem
+arbeitet, kann damit theoretisch
+jedes beliebige Dateisystem verwendet werden. Dateisysteme mit
+Journaling-Funktionalität (siehe Kapitel
+<!-- FUTURELINK: chapter="dateisysteme_journaling" -->"Journaling Dateisysteme für Linux"<!-- ENDLINK -->
+sind dabei aber mit Vorsicht zu genießen. Wenn eine Datei als
+Behälter für das verschlüsselte Dateisystem dienen soll, darf auf
+keinen Fall ein Journaling Dateisystem verwendet werden. Wenn
+eine eigene Partition das Dateisystem aufnehmen wird, kann unter
+Umständen ein Journaling Dateisystem verwendet
+werden. Näheres dazu steht (auf Englisch) im
+<!-- LINK: url="http://loop-aes.sourceforge.net/loop-AES.README" -->Loop-AES-README<!-- ENDLINK -->
+. Wer auf Nummer Sicher gehen will, verzichtet auf die
+Journaling-Funktion im verschlüsselten Dateisystem.
+
+Aktuelle 2.4er und 2.6er Kernel haben bereits starke Verschlüsselung
+integriert, somit entfällt das Einspielen der Crypto-API, welche
+für ältere Kernel-Versionen unter http://www.kerneli.org/cryptoapi/
+zu finden ist. Alternativ kann auch Loop-AES unter
+http://loop-aes.sourceforge.net/ verwendet werden. Sehen Sie dazu
+auch den Abschnitt "Verschlüsselung mittels Loop-AES".
+
+
+
+1.1 Verschlüsselte Dateisysteme durch losetup
+
+Die SuSE-Distribution unterstützt seit der Version
+7.2 den symmetrischen Verschlüsselungsalgorithmus Twofish, der
+als sehr sicher gilt.
+So hat man hier den Vorteil, keinen neuen Kernel übersetzen zu
+müssen. Die nachfolgenden Verfahren mit dem Kommando losetup können
+auch bei der Distribution Mandrake Linux angewandt werden, jedoch
+steht bei Mandrake nur AES zur Verfügung.
+
+Die Twofish-Verschlüsselungsfunktion liegt bei SuSE in Form eines
+Moduls vor.
+Um dieses benötigte Modul zu laden, gibt man als Benutzer root
+folgenden Befehl auf der Kommandozeile ein:
+
+root@linux#  modprobe loop_fish2
+
+Damit das regelmäßig beim Systemstart geschieht, kann man den Befehl
+in die  Datei /etc/init.d/boot.local einfügen.
+
+Nun hat man zwei Möglichkeiten, Daten zu verschlüsseln. Mit dem
+Loopback-Device ist es möglich, in einer Datei ein ganzes
+Dateisystem unterzubringen und diese Datei dann wie eine
+gewöhnliche Partition anzusprechen. Die zweite Möglichkeit
+ist die Nutzung einer richtigen Partition. Als erstes werden wir
+eine Datei als gewöhnliches Blockdevice verwenden, um dort
+verschlüsselte Daten abzuspeichern. 
+Dies eignet sich gut, um das Krypto-Loopback-Device erst einmal zu
+testen.
+
+
+
+1.1.1 Verschlüsseltes Dateisystem in einer Datei
+
+Wie bereits erwähnt, kann man mit
+einem Loopback-Device eine Datei wie ein
+Blockdevice ansprechen. Diese Datei befindet sich dann wie eine
+herkömmliche Datei in einem unverschlüsselten Dateisystem. Die Datei
+dient also gewissermaßen als Container für die Daten.
+
+Zunächst muss eine entsprechend große Datei angelegt werden, die
+später das Dateisystem inklusive der verschlüsselten Daten aufnehmen
+wird. Wählen Sie die Dateigröße nicht zu klein, da sie später nicht
+mehr geändert werden kann. Je größer die Datei ist, umso mehr Daten
+kann sie auch aufnehmen:
+
+root@linux#  dd if=/dev/urandom of=/securefile bs=1024k count=100
+
+Dieser Befehl erstellt eine Datei namens securefile im
+Root-Verzeichnis, die aus /dev/urandom mit zufälligen Bytes
+"aufgefüllt" wird. Die Größe der Datei beträgt in diesem Fall
+100MB (1024k x 100). Danach wird diese Datei mit dem
+Loopback-Device verbunden. Als Parameter wird der gewünschte
+Verschlüsselungsalgorithmus angegeben.
+
+Achten Sie bei der Vergabe des Passwortes zum Verschlüsseln darauf,
+dass Sie es korrekt eingeben, da es nur einmal abgefragt wird.
+Merken Sie sich Ihr Passwort gut, denn nachträglich kann es nicht
+mehr geändert werden. In dieser Datei wird danach noch ein Dateisystem
+untergebracht:
+
+root@linux#  losetup -e twofish /dev/loop0 /securefile
+root@linux#  mke2fs /dev/loop0
+
+Danach wird es über das Verzeichnis /secure in das Dateisystem
+gemountet:
+
+root@linux#  mkdir /secure
+root@linux#  mount -t ext2 /dev/loop0 /secure
+
+Um auch hier nicht immer die Befehle manuell eingeben zu müssen,
+kann man einen Eintrag in der Datei /etc/fstab vornehmen.
+
+# /etc/fstab
+/securefile   /secure   ext2   defaults,noauto,loop,encryption=twofish,user   0  0
+
+In der ersten Spalte steht die Datei beziehungsweise die Partition,
+in der zweiten Spalte das Verzeichnis als Mountpoint, in der dritten
+Spalte das Dateisystem und in der vierten Spalte die Optionen.
+Die fünfte und sechste Spalte dienen zur Überprüfung und Wartung
+des Dateisystems. Die Option noauto können Sie auch weglassen,
+dann werden Sie beim Systemstart immer nach dem Passwort gefragt,
+um das verschlüsselte Dateisystem mounten zu können. Geben Sie kein
+Passwort ein, startet das System trotzdem, nur ohne das
+verschlüsselte Dateisystem einzubinden.
+Beim Booten wird die Datei /etc/init.d/boot.crypto ausgewertet und
+das Passwort abgeglichen. Erfolgt dies in korrekter Weise, wird
+das Modul loop_fish2 geladen, losetup ausgeführt und unter dem
+angegebenen Verzeichnis gemountet.
+
+Am sichersten ist es jedoch, das verschlüsselte Dateisystem nicht
+automatisch beim Start einbinden zu lassen, da so kein Passwort beim
+Booten abgefragt wird und eine unbefugte Person somit auch nicht gleich
+erkennt, dass auf dem System ein verschlüsseltes Dateisystem existiert.
+
+Nach dem Eintrag in die Datei /etc/fstab genügt es, das entsprechende
+Verzeichnis zu mounten, um nach Angabe des Passworts auf die
+verschlüsselten Daten zugreifen zu können:
+
+root@linux#  mount /secure
+
+Vergessen Sie nie, das Verzeichnis auch wieder auszuhängen, sonst
+haben andere Benutzer ohne Angabe des Passworts Zugriff auf Ihre Daten:
+
+root@linux#  umount /secure
+
+Damit nicht nur der Benutzer root so auf das verschlüsselte
+Dateisystem zugreifen kann, ändern Sie am besten den Besitzer sowie
+die Gruppe des Mountpoint. Dazu ändern Sie den Eigentümer des
+Verzeichnisses auf Ihren Benutzernamen, mit dem Sie sich gewöhnlich
+am System einloggen:
+
+root@linux#  chown benutzername.gruppe /secure
+
+Zusätzlich ändern Sie noch die Zugriffsrechte auf dieses Verzeichnis
+so, dass nur Sie selbst darauf zugreifen können:
+
+root@linux#  chmod 700 /secure
+
+
+
+1.1.1 Verschlüsseltes Dateisystem auf einer Partition
+
+Anstelle einer Datei kann man auch eine ganze Partition dazu
+verwenden, um die verschlüsselten Daten abzuspeichern.
+Die Vorgehensweise erfolgt ähnlich wie beim Verschlüsseln
+in einer Datei. Als erstes muss man wieder mit dem Befehl losetup
+die Partition mit dem Loopback-Device verbinden:
+
+root@linux#  losetup -e twofish /dev/loop1 /dev/hda5
+root@linux#  mke2fs /dev/loop1
+
+Hier wird also die Partition /dev/hda5 mit dem Algorithmus Twofish
+verschlüsselt. Danach kann man die Partition wieder ins Dateisystem
+einhängen:
+
+root@linux#  mkdir /geheim
+root@linux#  mount -t ext2 /dev/loop1 /geheim
+
+Solange die Partition im Verzeichnisbaum gemountet und mit dem
+Loopback-Device verbunden ist, kann jeder ohne Kenntnis des
+Passwortes darauf zugreifen. Deswegen ist es zu empfehlen, die
+Partition nach Gebrauch gleich wieder aus dem Dateisystem zu
+entfernen und vom Loopback-Device zu trennen:
+
+root@linux#  umount /geheim
+root@linux#  losetup -d /dev/loop1
+
+Möchten Sie wieder auf Ihre Daten im verschlüsselten Dateisystem
+zugreifen, verbinden Sie einfach die entsprechende Partition erneut
+mit dem Loopback-Device und geben das zuvor gewählte Passwort wieder
+ein. Danach mounten Sie das Loopback-Device wie gehabt über das
+erstellte Verzeichnis.
+
+Um nicht jedes Mal manuell das Loopback-Device mit der Partition zu
+verknüpfen und dann in das Dateisystem einzubinden, kann man auch
+hier einen Eintrag in der Datei /etc/fstab hinzufügen:
+
+# /etc/fstab
+/dev/hda5     /geheim    ext2   defaults,noauto,loop,encryption=twofish,user     0  0
+
+
+
+1.1 Verschlüsseltes Dateisystem während der Installation
+
+
+
+1.1.1 Während der Installation von SuSE Linux
+
+Seit SuSE 8.1 bietet Yast2 während der Installation die Möglichkeit
+für ein verschlüsseltes Dateisystem. Auch nachträglich ist es möglich,
+über das KDE-Startmenü (System | Yast2) bei der SuSE-Distribution
+Partitionen mit einer Verschlüsselung zu versehen. Unter dem Punkt
+System kann man hier nochmals den Partitionierer aufrufen. Allerdings
+gehen auf diesen Partitionen sämtliche schon vorhandene Daten verloren.
+
+Während der Installation hat man die Möglichkeit, bei der
+manuellen Partitionierung eine verschlüsselte Partition einzurichten.
+Man wählt die gewünschte Partition aus und klickt auf den Button
+"Bearbeiten". Danach erscheint ein Dialogfenster.
+Hier befindet sich unter anderem die Option "Dateisystem
+verschlüsseln", die man ankreuzen muss. 
+
+Danach richtet Yast2 die Partition mit einem verschlüsselten
+Dateisystem ein. Einzige Ausnahme sind
+die Root-, Boot-, Swap- und /usr-Partitionen, bei denen es nicht
+erlaubt ist, ein verschlüsseltes  Dateisystem einzurichten.
+Das Passwort muss zudem mindestens fünf Zeichen enthalten.
+Zusätzlich können nur primäre Partitionen mit einem
+verschlüsselten Dateisystem erstellt werden.
+
+Ansonsten kann man mit  dem Button "Kryptodatei..." beliebige
+verschlüsselte Dateien erzeugen, die dann mithilfe eines 
+Loopback-Devices als blockorientierte Geräte angesprochen werden.
+Sehen Sie dazu auch den Abschnitt 
+"Verschlüsseltes Dateisystem in einer Datei". Hat man ein
+verschlüsseltes Dateisystem erstellt, wird bei jedem Bootvorgang
+nach dem Passwort gefragt, damit dieses auch ins Dateisystem
+eingebunden werden kann. Gibt man das Passwort falsch oder
+überhaupt nicht an, startet das System trotzdem, 
+jedoch ohne das verschlüsselte Dateisystem einzubinden.
+
+Haben Sie sich in Ihrem System eingeloggt, ändern Sie besser noch
+die Zugriffsrechte des Verzeichnisses, an dem Ihr verschlüsseltes
+Dateisystem gemountet ist, damit Sie auch mit Ihrem
+standardmäßigen Benutzername darauf zugreifen können:
+
+root@linux#  chown benutzername.gruppe /geheim
+root@linux#  chmod 700 /geheim
+
+Nun ist nur noch der Eigentümer berechtigt, auf das Verzeichnis
+/geheim zuzugreifen. Beachten Sie, dass jeder auf das Verzeichnis
+zugreifen kann, so lange es gemountet ist. Deshalb sollten Sie nach
+der Arbeit immer das Verzeichnis aus dem Dateisystem mit umount
+aushängen:
+
+root@linux#  umount /geheim
+
+
+
+1.1.1 Während der Installation von Mandrake Linux
+
+Auch bei der Distribution Mandrake Linux hat man die Möglichkeit,
+während der Installation ein verschlüsseltes Dateisystem anzulegen.
+Dazu wechselt man beim Punkt "Partitionierung" in den "Experten-Modus".
+Danach wählt man die gewünschte Partition in dem Balkendiagramm
+aus und wählt unter "Optionen" encrypted.
+
+Danach
+wählt man ein Passwort. Standardmäßig kommt AES128 als 
+Verschlüsselungsalgorithmus zum Einsatz. Umständlicherweise muss
+das Passwort mindestens 20 Zeichen lang sein. Nach der Installation
+wird dann während des Bootvorgangs und Einbindens der lokalen
+Dateisysteme immer der Bootvorgang kurz angehalten, damit man das
+Passwort eingeben kann.
+
+Wollen Sie nachträglich eine Partition verschlüsseln, können Sie
+das ebenfalls bei Mandrake im "Mandrake Kontrollzentrum" mittels
+einer grafischen Oberfläche machen. Unter dem Punkt "Einhängepunkte"
+befindet sich der Assistent "DiskDrake", der Ihnen bei der
+Verwaltung von Festplattenpartitionen behilflich ist. Die
+Benutzeroberfläche ist identisch mit der bei der Installation.
+Zuerst wählen Sie wieder eine Partition aus dem Balkendiagramm,
+wechseln dann in den "Experten-Modus" und können dann unter
+"Optionen" die Verschlüsselung einstellen.
+
+
+
+1. Verschlüsselung ab Kernel 2.4.22
+
+Ab Kernel 2.4.22 ist das bekannte Crypto-API
+(http://cryptoapi.sourceforge.net/) 
+in den Kernel integriert worden. Damit wurde der Kernel um einige
+zusätzliche  Verschlüsselungsalgorithmen erweitert. Um diese nutzen
+zu können, müssen Sie einen neuen Kernel ab Version 2.4.22
+kompilieren. Achten Sie darauf, dass Sie während des
+Konfigurierens des neuen Kernels unter der Kategorie "Cryptographic
+options" die Option "Cryptographic API" inklusive der darunter
+liegenden Optionen auswählen, damit es nach dem Kompilieren auch
+im Kernel integriert ist. Für zusätzliche Informationen bezüglich 
+des Kompilierens eines neuen Kernels wird auf das Kapitel 
+"Erzeugen eines eigenen Kernels" von SelfLinux verwiesen.
+
+Um das Crypto-API nun nach dem Booten des Systems mit dem neuen
+Kernel auch nutzen zu können, müssen das Program losetup sowie
+einige andere Programme (mount, umount,swapon und swapoff) aktuell
+sein. Sämtliche erwähnte Programme befinden sich im Paket util-linux.
+Dieses Paket sollte in Version 2.12 oder höher installiert sein
+(2.11y reicht möglicherweise auch). Wenn es für Ihre jeweilige
+Distribution kein aktuelles Paket gibt, finden Sie
+<!-- LINK iref="1. Verschlüsselung mit Loop-AES" -->hier<!-- ENDLINK -->
+im nächsten Abschnitt eine Anleitung, wie Sie die Programme von Hand
+aktualisieren können. Vorsicht! Dies ist ein erheblicher Eingriff
+in Ihr System. Fertigen Sie auf jeden Fall Backups an! Es ist
+ganz besonders bei so zentralen Programmen immer die bessere Idee,
+das jeweilige Paket zu installieren, als die Programme an der
+Paketverwaltung Ihrer Distribution vorbei zu aktualisieren.
+
+Nachdem Sie Ihr System mit dem neuen Kernel gebootet und die
+nötige Version der util-linux-Programme installiert haben, können
+Sie die Verschlüsselungsfunktionen nutzen.
+
+Beispielsweise können Sie Ihre Daten nun durch AES verschlüsseln:
+
+root@linux  dd if=/dev/urandom of=/secfile bs=1024 count=1000
+root@linux  losetup -e AES -k 128 /dev/loop2 /secfile
+root@linux  mke2fs /dev/loop2
+root@linux  mkdir /secfolder
+root@linux  mount -t ext2 /dev/loop2 /secfolder
+
+
+
+1. Verschlüsselung mit Loop-AES
+
+Eine weitere Möglichkeit, Daten unter Linux zu verschlüsseln,
+besteht darin, den Kernel entsprechend zu patchen, um ihn damit
+um weitere Verschlüsselungsalgorithmen zu erweitern.
+
+Dies funktioniert unter anderem mit Loop-AES. Mit Loop-AES erweitern
+Sie den Kernel und das Programm losetup um den
+Verschlüsselungsalgorithmus AES (Rijndael), der als vertrauenswürdig
+gilt.
+
+Um Loop-AES nutzen zu können, müssen Sie erst den Kernel-Quellcode
+bei www.kernel.org downloaden und unter /usr/src entpacken.
+Danach benötigen Sie noch das aktuelle Loop-AES-Paket, dass Sie
+unter http://loop-aes.sourceforge.net herunterladen können.
+Achten Sie auf die vom Loop-AES-Paket benötigte Version von
+util-linux (s.u.), die Sie eventuell ebenfalls unter
+http://www.kernel.org/pub/linux/utils/util-linux/
+herunterladen müssen. Nach dem Entpacken müssen Sie den Kernel
+patchen:
+
+root@linux # cd /usr/src
+root@linux # tar -xjvf linux-2.4.23.tar.bz2
+root@linux # tar -xjvf loop-AES-v2.0b.tar.bz2
+root@linux # cd linux-2.4.23
+root@linux # patch -Np1 -i /usr/src/loop-AES-v2.0b/kernel-2.4.23.diff
+
+Als nächstes konfigurieren Sie den Kernel:
+
+root@linux # make menuconfig
+
+Achten Sie darauf, dass bei einem 2.4er Kernel
+unter der Kategorie "Block devices" die
+Optionen "Loopback device support",
+"AES encrypted loop device support", "RAM disk support" und
+"Initial RAM disk (initrd) support" angewählt sind.
+
+Bei einem 2.6er Kernel benötigen Sie "Loopback device support" und
+"Cryptoloop Support" unter "Device Drivers" -> "Block Devices" sowie
+"Cryptographic API" und die Algorithmen Ihrer Wahl (empfehlenswert
+ist z.B. AES) unter "Cryptographic options".
+
+Näheres zum Kompilieren eines eigenen Kernels finden Sie
+<!-- LINK: chapter="kernel" iref="Erzeugen eines eigenen Kernels" -->hier<!-- ENDLINK -->
+in einem eigenen Kapitel zum Thema Kernel.
+
+Nachdem das System mit dem neuen Kernel läuft, muss noch das
+Programm losetup um den Algorithmus AES erweitert werden. Dazu
+wird das Quellpaket util-linux-2.12.tar.gz benötigt, in dem unter
+anderem losetup enthalten ist:
+
+root@linux # tar -xzvf util-linux-2.12.tar.gz
+root@linux # cd util-linux-2.12
+root@linux # patch -Np1 -i /usr/src/loop-AES-v2.0b/util-linux-2.12.diff
+
+Standardmäßig müssen Sie 20 Zeichen für das Passwort eingeben, dies
+können Sie mit dem folgenden Befehl ändern:
+
+root@linux # CFLAGS="-02 - DLOOP_PASSWORD_MIN_LENGTH=14" ; export CFLAGS
+
+Wenn Ihnen Sicherheit an erster Stelle steht, lassen Sie diesen
+Befehl aus. Schließlich wird das neue losetup konfiguriert und
+kompiliert:
+
+root@linux # ./configure && make lib mount
+
+Das neue Programm losetup muss dann noch ins entsprechende
+Verzeichnis kopiert werden. Zusätzlich wird noch dessen neue
+Manpage installiert:
+
+root@linux # cd mount
+root@linux # cp losetup /sbin
+root@linux # rm -f /usr/share/man/man8/losetup.8.gz
+root@linux # cp losetup.8 /usr/share/man/man.8
+
+Nun steht ihnen das neue losetup inklusive AES-Verschlüsselung zur
+Verfügung. Wie unter "Verschlüsselte Dateisysteme durch losetup"
+beschrieben, können Sie losetup einsetzen:
+
+root@linux # losetup -e aes128 /dev/loop1 /dev/hda5
+root@linux # mke2fs /dev/loop1
+root@linux # mkdir /aes
+root@linux # mount -t ext2 /dev/loop1 /aes
+
+Um weitere Optionen des neuen losetups zu erfahren, sehen Sie
+sich dessen Manpage an:
+
+user@linux # man losetup
+
+
+
+1. Anhang
+
+
+
+1.1 Fachbegriffe
+
+
+
+1.1.1 Verschlüsselungsalgorithmus
+
+Ein Verschlüsselungsalgorithmus ist ein Verfahren, wie man Daten
+Ver- und Entschlüsseln kann. Dazu werden durch bestimmte mathematische
+Berechnungen die Daten auf Bit-Ebene "durcheinandergewürfelt". Es gibt
+unterschiedliche Stärken von Verschlüsselungsalgorithmen, die mit der
+Schlüssellänge in Bit angegeben werden. Je mehr Bit beziehungsweise
+je länger der Schlüssel, umso sicherer ist er in der Regel. Da immer
+leistungsfähigere Computer entwickelt werden, müssen auch
+stets aufwendigere Verschlüsselungsmethoden entwickelt werden.
+Aktuell gilt zum Beispiel, dass ein Schlüssel mindestens 128 Bit lang
+sein sollte, um vor  "Brute Force"-Angriffen relativ sicher sein zu
+können.
+
+
+
+1.1.1 Symmetrischer Verschlüsselungsalgorithmus
+
+Bei diesen Verschlüsselungsverfahren wird der gleiche Schlüssel zum
+Ver- und  Entschlüsseln benutzt. Der Vorteil dieser symmetrischen
+Verfahren liegt darin, dass sie mathematisch weniger aufwendig und somit
+schneller als asymmetrische Verschlüsselungsalgorithmen sind. Der
+Anwender merkt in der Regel keinen Unterschied zwischen einem
+symmetrisch verschlüsselten Dateisystem und einem
+gewöhnlichem Dateisystem. Beim Verschlüsseln unter Linux mit dem
+Loopback-Device kommen ausschließlich symmetrische
+Verschlüsselungsalgorithmen zum Einsatz. Bekannte symmetrische
+Verschlüsselungsalgorithmen sind zum Beispiel DES, IDEA, 
+Twofish, Blowfish und AES.
+
+
+
+1.1.1 Asymmetrischer Verschlüsselungsalgorithmus
+
+Bei diesen Verschlüsselungsverfahren werden zum Verschlüsseln und
+Entschlüsseln zwei unterschiedliche Schlüssel benutzt. Zur
+Veranschaulichung kann man sich in etwa ein Schloss und den dazugehörigen
+Schlüssel vorstellen. Beim asymmetrischen Verschlüsselungsverfahren
+gibt es einen so genannten "public Key" zum Verschlüsseln
+von Daten und einen so genannten "private Key" zum Entschlüsseln der
+Daten. Der Vorteil besteht darin, dass man gefahrlos den
+"öffentlichen Schlüssel" verteilen kann, mit dem andere Personen
+dann Daten verschlüsseln können. Nur die Person, die sich im Besitz 
+des "privaten Schlüssels" befindet, ist dann in der Lage, die Daten
+wieder zu entschlüsseln, da es praktisch unmöglich ist, Rückschlüsse
+vom "public Key" auf den "private Key" zu ziehen. Dieses Verfahren
+wird zum Beispiel beim Versenden von verschlüsselten E-Mails (GnuPG)
+angewandt. Ein asymmetrischer Verschlüsselungsalgorithmus ist zum
+Beispiel RSA.
+
+
+
+1.1.1 Brute Force
+
+Bei der so genannten "Brute Force"-Methode wird versucht, das
+Passwort zu erraten. Dabei wird jede mögliche Kombination ausprobiert,
+bis der richtige Schlüssel gefunden ist. Dazu gibt es spezielle Programme,
+die diesen Vorgang automatisiert abarbeiten.
+
+
+
+1.1.1 Kryptografie
+
+Kryptografie bedeutet die Lehre vom Ver- und Entschlüsseln von Daten.
+Dadurch kann ein gewisser Datenschutz aufrecht erhalten werden.
+
+
+
+1.1.1 Loopback-Device
+
+Mit einem Loopback-Device (/dev/loop0) kann auf gewöhnliche Dateien
+wie auf Block-Devices (Festplatten, CD-ROMs) zugegriffen werden.
+Damit ist es möglich, komplette Dateisysteme in einer Datei unterzubringen
+und diese wie eine Partition zu verwenden. Zusätzlich bietet ein
+Loopback-Device eine Krypto-Funktion, mit der Daten verschlüsselt werden
+können. Dabei wird theoretisch zwischen der Partition oder der Datei und
+dem Dateisystem das Loopback-Device geschaltet. Das Loopback-Device
+ver- beziehungsweise entschlüsselt die Daten dann während des
+"Weitergebens". Standardmäßig unterstützt das Loopback-Device aufgrund
+bestimmter Im- und Exportbeschränkungen einiger Länder nur eine schwache
+XOR-Verschlüsselung. Manche Distributionen wie zum Beispiel 
+SuSE statten das Loopback-Device mit zusätzlichen
+Verschlüsselungsalgorithmen aus.
+
+
+
+1.1 Kontakt und Feedback
+
+Wenn Sie irgendwelche Fragen, Anregungen, Kritik oder Ideen bezüglich
+dieses Tutorials haben, würde ich mich über eine E-Mail freuen.
+
+Markus Hoffmann
+mar.hoff@gmx.net
