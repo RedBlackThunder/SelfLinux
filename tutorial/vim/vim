@@ -143,7 +143,8 @@ test01.txt</command> eine Datei öffnen.
 Wenn Sie eine Datei auf eine dieser Weisen geöffnet oder beim Speichern
 einen Dateinamen angegeben haben, brauchen Sie nun beim nächsten Speichern nicht
 mehr den Dateinamen eingeben. Es genügt das ex-Kommando <command>:w</command>.
-Um zu speichern und den Editor zu verlassen genügt <command>:wq</command>.
+Um zu speichern und den Editor zu verlassen genügt <command>:wq</command> oder
+das vim-Kommando <command>ZZ</command>.
   </textblock>
 </section>
 
@@ -156,8 +157,10 @@ Mehrere Dateien öffnen
 Sie können vim beim Starten auch mehrere Dateinamen übergeben: <command>vi *.cpp
 *.h</command>. Dabei wird die zuerst genannte Datei direkt geöffnet und kann
 bearbeitet werden. Wenn Sie mit der Bearbeitung der nächsten beginnen wollen,
-erreichen Sie dies über den ex-Befehl <command>:next</command>. Zur vorherigen
-Datei gelangen Sie entsprechend mit <command>:prev</command>.
+erreichen Sie dies über den ex-Befehl <command>:next</command> oder der Kurzform 
+<command>:n</command>. Zur vorherigen
+Datei gelangen Sie entsprechend mit <command>:prev</command> oder der Kurzform 
+<command>:N</command>.
   </textblock>
 </section>
 
@@ -194,7 +197,7 @@ Kopieren und Einfügen
 
   <textblock>
 Sie haben in vi nicht nur die Möglichkeit, 26 Markierungen zu setzen, Sie können
-auch 26 Puffer zum Kopieren und Einfügen verwenden (was ein großer Vorteil von
+auch 36 Puffer (1 .. 0 und a .. z) zum Kopieren und Einfügen verwenden (was ein großer Vorteil von
 vi gegenüber anderen Editoren ist).
   </textblock>
 
@@ -233,7 +236,16 @@ Befehlen.
   </textblock>
 
   <textblock>
-Mit <command>b</command> können Sie ein Wort zurück und mit w eines nach vorne.
+Mit <command>b</command> können Sie ein Wort zurück und mit <command>w</command> 
+eines nach vorne, jeweils zum Wortanfang.
+Dabei sind nicht nur Leerzeichen Worttrenner. Bei der Zeichensequenz 
+"Test+wort#-()-weiter" beispielsweise muss man fünfmal das Kommando
+<command>w</command> anwenden, um vom Anfang des Wortes bis zum Ende zu gelangen. 
+Die verwandten Befehle <command>B</command> und <command>W</command> sehen nur 
+Leerzeichen als Worttrenner an. Die Befehle <command>e</command> und <command>E</command>
+springen jeweils bis zum Wortende vor. Dabei gilt dieselbe Unterscheidung der 
+Worttrenner wie oben vorgestellt.
+
 Einen Satz zurück kommen Sie mit <command>(</command> und einen vor entsprechend
 mit <command>)</command>. Auch hier geben vorangestellte Zahlen den
 Wiederholungsfaktor an: <command>5(</command> bewegt den Cursor 5 Sätze zurück
@@ -280,9 +292,9 @@ mit <command>d0</command> löschen und bis zum Ende mit <command>d$</command>.
 
   <textblock>
 Bei einigen Kommandos kann man auch einen Bereich voranstellen, auf den sie sich
-beziehen sollen. So entfernen Sie mit <command>1,5d</command> die ersten fünf
+beziehen sollen. So entfernen Sie mit <command>:1,5d</command> die ersten fünf
 Zeilen einer Datei. Statt Zeilennummern können Sie auch Markierungen verwenden:
-<command>'a,'bd</command>.
+<command>:'a,'bd</command>.
   </textblock>
 </section>
 
@@ -292,7 +304,9 @@ Suchen und Ersetzen allgemein
   </heading>
 
   <textblock>
-Suchen und Ersetzen können Sie in vi mit regulären Ausdrücken. Hier eine
+Suchen und Ersetzen können Sie in vi mit 
+<!-- LINK: chapter="regex" -->regulären Ausdrücken<!-- ENDLINK -->. 
+Hier eine
 Einführung in reguläre Ausdrücke zu geben würde den Rahmen dieser
 Kurz-Einführung sprengen.
   </textblock>
@@ -307,7 +321,7 @@ werden soll, verwenden Sie <command>/wort/i</command>.
 Um Text zu ersetzen, müssen Sie in den ex-Modus wechseln. Folgendes Kommando
 ersetzt alle Vorkommen von "Unix" mit "Linux":
 <command>:1,$s/Unix/Linux/g</command> (Bereich: 1,$, also vom Anfang bis zum
-Ende der Datei "s" für "substitude", "ersetzen". Das "g" am Ende steht für
+Ende der Datei "s" für "substitute", "ersetzen". Das "g" am Ende steht für
 "global". Wird das g weggelassen, wird bei jeder Zeile bloss das erste 
 Vorkommen von Unix ersetzt. Sehr nett ist es, dass man eben auch innerhalb 
 eines bestimmten
@@ -468,14 +482,18 @@ Wenn Sie beim Editieren automatische Einrückung bevorzugen, versuchen Sie mal
 Wichtige vi-Kommandos
   </heading>
 
-  <textblock>
+<section>
+  <heading>
 Konvention
+  </heading>
+  <textblock>
 Im folgenden werden einige oft benutzte vim-Kommandos aufgelistet. Fast alle
 diese Kommandos sind für den Kommandomodus. ex-Kommandos werden durch das
 <command>:</command> am Anfang gekennzeichnet. Manche Kommandos haben noch ein
 [Count] vorangestellt. Das heißt, dass das Kommando normalerweise einmal, bei 
 einer vorher gedrückten Zahl n aber n-mal ausgeführt wird.
   </textblock>
+</section>
 
 <section>
   <heading>
@@ -538,6 +556,11 @@ Beenden
    <tr>
     <td><command>:wq</command></td>
     <td>Speichern und vi verlassen.</td>
+   </tr>
+
+   <tr>
+    <td><command>ZZ</command></td>
+    <td>Ebenfalls speichern und vi verlassen.</td>
    </tr>
 
    <tr>
@@ -959,25 +982,25 @@ Sonstige Goodies
    </tr>
 
    <tr>
-    <td><command>...</command></td>
+    <td><command>.</command></td>
     <td>Wiederholt die letzte Editieraktion,</td>
    </tr>
 
    <tr>
     <td><command>%</command></td>
     <td>(über einer Klammer)  Springt auf die korrespondierende
-Klammer\end{center}.
+Klammer.
     </td>
    </tr>
 
    <tr>
-    <td><command>:u</command></td>
+    <td><command>:u</command> oder <command>u</command></td>
     <td>(undo) Rückgängig.</td>
    </tr>
 
    <tr>
-    <td><command>:r</command></td>
-    <td>(redo) Wieder herstellen.</td>
+    <td><command>:redo</command></td>
+    <td>(redo) Wiederherstellen.</td>
    </tr>
 
   </table>
