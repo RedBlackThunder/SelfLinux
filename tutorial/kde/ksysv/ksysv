@@ -87,69 +87,113 @@ Der Linux® Kernel sieht zuerst unter /etc nach einer init-Datei. Deshalb müssen 
 dass die alte init von dort entfernt wurde, falls es dort eine gab.
 </textblock>
 
-
-
-
-
-
+<textblock>
 Die SysV init unterscheidet sich auch dadurch von der BSD init, dass sich die Konfigurationsdateien 
 in einem Unterordner von /etc befinden statt direkt in /etc. Dieser 
 Ordner heißt rc.d. Dort finden Sie rc.sysinit und folgende weitere Ordner:
+</textblock>
 
-    *
+<textblock>
+<ul>
+<li>
+init.d/
+</li>
+<li>
+rc0.d/
+</li>
+<li>
+rc1.d/
+</li>
+<li>
+rc2.d/
+</li>
+<li>
+rc3.d/
+</li>
+<li>
+rc4.d/
+</li>
+<li>
+rc5.d/
+</li>
+<li>
+rc6.d/
+</li>
+</ul>
+</textblock>
 
-      init.d/
-    *
+<textblock>
+init.d enthält eine ganze Menge Skripte. Grundsätzlich benötigen Sie ein Skript für 
+jeden Systemdienst, den Sie beim Hochfahren des Systems bzw. beim Wechsel auf ein 
+anderes Runlevel starten möchten. Systemdienste beinhalten solche Dinge wie Netzwerk, 
+NFS, sendmail, httpd etc. Systemdienste beinhalten dagegen nicht solche Sachen 
+wie setserial, das nur einmal gestartet wird. Solche Aufrufe gehören nach rc.local.
+</textblock>
 
-      rc0.d/
-    *
+<textblock>
+rc.local sollte seinerseits unter /etc/rc.d liegen, wenn Sie es benötigen. 
+Die meisten Systeme besitzen diese Datei, auch wenn es eigentlich nicht viel Verwendung 
+dafür gibt. Sie können ebenfalls ein rc.serial in /etc/rc.d anlegen, wenn Sie beim 
+Hochfahren etwas ausführen lassen wollen, was mit dem seriellen Anschluss zu tun hat.
+</textblock>
 
-      rc1.d/
-    *
-
-      rc2.d/
-    *
-
-      rc3.d/
-    *
-
-      rc4.d/
-    *
-
-      rc5.d/
-    *
-
-      rc6.d 
-
-init.d enthält eine ganze Menge Skripte. Grundsätzlich benötigen Sie ein Skript für jeden Systemdienst, den Sie beim Hochfahren des Systems bzw. beim Wechsel auf ein anderes Runlevel starten möchten. Systemdienste beinhalten solche Dinge wie Netzwerk, NFS, sendmail®, httpd etc. Systemdienste beinhalten dagegen nicht solche Sachen wie setserial, das nur einmal gestartet wird. Solche Aufrufe gehören nach rc.local.
-
-rc.local sollte seinerseits unter /etc/rc.d liegen, wenn Sie es benötigen. Die meisten Systeme besitzen diese Datei, auch wenn es eigentlich nicht viel Verwendung dafür gibt. Sie können ebenfalls ein rc.serial in /etc/rc.d anlegen, wenn Sie beim Hochfahren etwas ausführen lassen wollen, was mit dem seriellen Anschluss zu tun hat.
-
+<textblock>
 Der Ablauf ist folgender:
+</textblock>
 
-   1.
+<textblock>
+<ol>
+<li>
+der Kernel sucht an verschiedenen Stellen nach dem Programm init und startet die erste, die er findet;
+</li>
+<li>
+init startet /etc/rc.d/rc.sysinit.
+</li>
+<li>
+rc.sysinit tut eine Menge notwendiger Dinge und startet dann rc.serial (wenn es existiert);
+</li>
+<li>
+init startet rc.local
+</li>
+<li>
+nit startet alle Skripte für das voreingestellte Runlevel.
+</li>
+</ol>
+</textblock>
 
-      der Kernel sucht an verschiedenen Stellen nach dem Programm init und startet die erste, die er findet;
-   2.
+<textblock>
+Das standardmäßige Runlevel ist in /etc/inittab eingetragen. Sie sollten im Anfangsbereich 
+eine Zeile wie die folgende sehen:
+</textblock>
 
-      init startet /etc/rc.d/rc.sysinit.
-   3.
 
-      rc.sysinit tut eine Menge notwendiger Dinge und startet dann rc.serial (wenn es existiert);
-   4.
-
-      init startet rc.local
-   5.
-
-      init startet alle Skripte für das voreingestellte Runlevel. 
-
-Das standardmäßige Runlevel ist in /etc/inittab eingetragen. Sie sollten im Anfangsbereich eine Zeile wie die folgende sehen:
-
+<shell>
+<output>
 id:3:initdefault:
+</output>
+</shell>
 
-An diesem Punkt können Sie einen Blick in die zweite Spalte werfen und wahrscheinlich feststellen, dass das voreingestellte Runlevel 3 ist. Wenn Sie das ändern möchten, dann können Sie /etc/inittab von Hand bearbeiten und die "3" ändern. Seien Sie sehr vorsichtig, wenn Sie an der inittab Änderungen durchführen. Falls Sie doch etwas durcheinandergebracht haben, dann kommen Sie zur Reparatur wieder heran, indem Sie das System neu starten und folgendes ausführen:
+<textblock>
+An diesem Punkt können Sie einen Blick in die zweite Spalte werfen und wahrscheinlich 
+feststellen, dass das voreingestellte Runlevel 3 ist. Wenn Sie das ändern möchten, 
+dann können Sie /etc/inittab von Hand bearbeiten und die "3" ändern. Seien Sie sehr 
+vorsichtig, wenn Sie an der inittab Änderungen durchführen. Falls Sie doch etwas 
+durcheinandergebracht haben, dann kommen Sie zur Reparatur wieder heran, indem Sie das 
+System neu starten und folgendes ausführen:
+</textblock>
 
+<shell>
+<output>
 LILO boot: linux single
+</output>
+</shell>
+
+
+
+
+</split>
+</chapter>
+
 
 Dies sollte Ihnen ermöglichen, in den Einzelnutzer-Modus zu kommen und die Reparatur vorzunehmen.
 
