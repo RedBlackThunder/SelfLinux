@@ -184,17 +184,17 @@ LILO boot: linux single
 </output>
 </shell>
 
-
-
-</section>
-</split>
-</chapter>
-
-<!--
+<textblock>
 Dies sollte Ihnen ermöglichen, in den Einzelnutzer-Modus zu kommen und die Reparatur vorzunehmen.
+</textblock>
 
-Aber wie startet es nun all die richtigen Skripte? Wenn Sie ls -l eingeben in rc3.d, dann sehen Sie wahrscheinlich etwas wie das Folgende:
+<textblock>
+Aber wie startet es nun all die richtigen Skripte? Wenn Sie ls -l eingeben 
+in rc3.d, dann sehen Sie wahrscheinlich etwas wie das Folgende:
+</textblock>
 
+<shell>
+<output>
 lrwxrwxrwx 1 root root 13 13:11 S10network -> ../init.d/network
 lrwxrwxrwx 1 root root 16 13:11 S30syslog -> ../init.d/syslog
 lrwxrwxrwx 1 root root 14 13:32 S40cron -> ../init.d/cron
@@ -205,67 +205,207 @@ lrwxrwxrwx 1 root root 18 13:11 S75keytable -> ../init.d/keytable
 lrwxrwxrwx 1 root root 23 13:11 S80sendmail -> ../init.d/sendmail.init
 lrwxrwxrwx 1 root root 18 13:11 S90lpd -> ../init.d/lpd.init
 lrwxrwxrwx 1 root root 11 13:11 S99local -> ../rc.local
+</output>
+</shell>
 
-Sie werden bemerken, das sich in diesem Ordner keine richtigen Dateien befinden. Stattdessen ist jeder Eintrag hier eine Verknüpfung zu einem der Skripte im Verzeichnis init.d.
+<textblock>
+Sie werden bemerken, das sich in diesem Ordner keine richtigen 
+Dateien befinden. Stattdessen ist jeder Eintrag hier eine Verknüpfung 
+zu einem der Skripte im Verzeichnis init.d.
+</textblock>
 
-Die Verknüpfungen haben auch ein S und eine Nummer am Anfang. Das S besagt, dass dieses bestimmte Skript gestartet werden soll, so wie umgekehrt ein K den Stopp bedeuten würde. Die Nummer dient einfach der Anordnung.Tatsächlich startet init alle Systemdienste in der Reihenfolge, in der sie erscheinen. Sie können die Nummern also doppelt vergeben, aber es wird Sie nur selbst durcheinander bringen. Sie benötigen bloß irgendeine zweistellige Zahl, zusammen mit einem großgeschriebenen S oder K um einen Systemdienst zu starten oder anzuhalten.
+<textblock>
+Die Verknüpfungen haben auch ein S und eine Nummer am Anfang. 
+Das S besagt, dass dieses bestimmte Skript gestartet werden soll, 
+so wie umgekehrt ein K den Stopp bedeuten würde. Die Nummer dient einfach 
+der Anordnung.Tatsächlich startet init alle Systemdienste in der Reihenfolge, 
+in der sie erscheinen. Sie können die Nummern also doppelt vergeben, aber es wird 
+Sie nur selbst durcheinander bringen. Sie benötigen bloß irgendeine zweistellige Zahl, 
+zusammen mit einem großgeschriebenen S oder K um einen Systemdienst zu starten oder anzuhalten.
+</textblock>
 
-Wie startet und stoppt init eigentlich Systemdienste? Ganz einfach: Jedes der Skripte ist so geschrieben, dass es ein Argument wie start und stop akzeptiert. Sie können diese Skripte tatsächlich von Hand auf der Kommandozeile folgendermaßen starten:
+<textblock>
+Wie startet und stoppt init eigentlich Systemdienste? Ganz einfach: 
+Jedes der Skripte ist so geschrieben, dass es ein Argument wie start 
+und stop akzeptiert. Sie können diese Skripte tatsächlich von Hand auf der 
+Kommandozeile folgendermaßen starten:
+</textblock>
 
-/etc/rc.d/init.d/httpd.init 
-stop
+<shell>
+<root path="/root">
+/etc/rc.d/init.d/httpd.init stop
+</root>
+</shell>
 
-Dies würde den httpd-Server anhalten. Init liest einfach den Namen, und wenn der ein K beinhaltet, dann wird das Skript mit dem Argument stop aufgerufen. Wenn er ein S beinhaltet, dann wird das Skript mit dem Argument start aufgerufen.
+<textblock>
+Dies würde den httpd-Server anhalten. Init liest einfach den 
+Namen, und wenn der ein K beinhaltet, dann wird das Skript mit dem 
+Argument stop aufgerufen. Wenn er ein S beinhaltet, dann wird das 
+Skript mit dem Argument start aufgerufen.
+</textblock>
+
+<section>
+
+<heading>
 Warum all diese Runlevel?
+</heading>
 
-Manche Leute wünschen sich eine einfache Art, Maschinen für viele Zwecke einzurichten. Ich könnte z.B. ein ?server?-Runlevel haben, das nur httpd, sendmail, networking etc. laufen lässt. Darüber hinaus könnte ich auch noch ein ?Benutzer?-Runlevel haben, das z.B. xdm startet. 
+<textblock>
+Manche Leute wünschen sich eine einfache Art, 
+Maschinen für viele Zwecke einzurichten. Ich könnte z.B. 
+ein "Server"-Runlevel haben, das nur httpd, sendmail, networking etc. 
+laufen lässt. Darüber hinaus könnte ich auch noch ein "Benutzer"-Runlevel haben, 
+das z.B. xdm startet. 
+</textblock>
 
+</section>
 
+</section>
 
+</split>
 
+<split>
 
+<section>
 
-Kapitel 3. Grundlagen der Bildschirmabläufe
+<heading>
+Grundlagen der Bildschirmabläufe
+</heading>
 
-Hier lernen Sie die Benutzung von KSysV. Sie sollte nicht sehr schwierig sein, weil das Programm so benutzerfreundlich wie möglich angelegt wurde.
+<textblock>
+Hier lernen Sie die Benutzung von KSysV. Sie sollte nicht sehr 
+schwierig sein, weil das Programm so benutzerfreundlich wie 
+möglich angelegt wurde.
+</textblock>
+
+<section>
+
+<heading>
 Maus
+</heading>
 
-Die Verwendung von KSysV mit einer Maus oder einem anderen Zeigegerät ist einfach, um nicht zu sagen trivial: Ziehen Sie einfach einen Eintrag aus dem Bereich der Verfügbaren Systemdienste auf eins der sechs Runlevel, um es auf diesem Level zu starten (bzw. zu stoppen).
+<textblock>
+Die Verwendung von KSysV mit einer Maus oder einem anderen 
+Zeigegerät ist einfach, um nicht zu sagen trivial: Ziehen Sie 
+einfach einen Eintrag aus dem Bereich der Verfügbaren Systemdienste auf eins 
+der sechs Runlevel, um es auf diesem Level zu starten (bzw. zu stoppen).
+</textblock>
 
-Sie können Skripte auch zwischen Runleveln verschieben oder die Position innerhalb eines Levels verändern, indem sie es woanders hin ziehen. Dabei wird der Eintrag von seinem ursprünglichen Runlevel (oder seiner Position) entfernt. Dies geschieht nur dann nicht, wenn sie einen Eintrag aus dem Bereich der Verfügbaren Systemdienste herausziehen.
+<textblock>
+Sie können Skripte auch zwischen Runleveln verschieben oder 
+die Position innerhalb eines Levels verändern, indem sie es 
+woanders hin ziehen. Dabei wird der Eintrag von seinem ursprünglichen 
+Runlevel (oder seiner Position) entfernt. Dies geschieht nur dann nicht, wenn 
+sie einen Eintrag aus dem Bereich der Verfügbaren Systemdienste herausziehen.
+</textblock>
+
+<hint>
 Anmerkung
+</hint>
 
-Beachten Sie: Einträge werden verschoben, wenn Sie diese in einen neuen Bereich ziehen. Um sie lediglich auf eine neues Runlevel zu kopieren, müssen Sie ausdrücklich Kopieren aus dem Menü Bearbeiten oder aus dem Kontextmenü wählen und in den Zielbereich Einfügen - sogar dann, wenn derselbe Eintrag bereits zuvor im Zielbereich der Aktion existiert hat.
+<hint>
+Beachten Sie: Einträge werden verschoben, wenn Sie diese in 
+einen neuen Bereich ziehen. Um sie lediglich auf eine neues Runlevel 
+zu kopieren, müssen Sie ausdrücklich Kopieren aus dem Menü Bearbeiten 
+oder aus dem Kontextmenü wählen und in den Zielbereich Einfügen - sogar dann, 
+wenn derselbe Eintrag bereits zuvor im Zielbereich der Aktion existiert hat.
+</hint>
 
-Die ?Sortiernummer? eines Eintrags kann manchmal nicht berechnet werden. In so einem Fall müssen Sie die Sortiernummern der umgebenden Einträge bearbeiten, bevor Sie nochmals versuchen können, den Systemdienst einzufügen.
+<textblock>
+Die "Sortiernummer" eines Eintrags kann manchmal nicht berechnet 
+werden. In so einem Fall müssen Sie die Sortiernummern der umgebenden 
+Einträge bearbeiten, bevor Sie nochmals versuchen können, den Systemdienst einzufügen.
+</textblock>
+
+<hint>
 Anmerkung
+</hint>
 
+<hint>
 Beachten Sie: Sortiernummern können von 00 bis 99 reichen, nicht höher.
+</hint>
 
+<textblock>
 Sie können Einträge löschen, indem Sie sie in den Papierkorb ziehen.
+</textblock>
+
+<hint>
 Warnung
+</hint>
 
-Beachten Sie: Gegenwärtig gibt es keine Möglichkeit, Einträge wiederherzustellen, die in den Papierkorb geworfen wurden. Seien Sie also vorsichtig. 
+<hint>
+Beachten Sie: Gegenwärtig gibt es keine Möglichkeit, Einträge 
+wiederherzustellen, die in den Papierkorb geworfen wurden. 
+Seien Sie also vorsichtig. 
+</hint>
 
+</section>
 
+<section>
+
+<heading>
 Tastatur
+</heading>
 
-Sie können die Tabulator-Taste benutzen, um die verschiedenen Arbeitsbereiche zu aktivieren (Verfügbare Systemdienste, Runlevel 1 Start, Runlevel 1 Stop etc.) sowie die Cursor-Tasten, um eine Auswahl ober- oder unterhalb der bisherigen zu treffen.
+<textblock>
+Sie können die Tabulator-Taste benutzen, um die verschiedenen 
+Arbeitsbereiche zu aktivieren (Verfügbare Systemdienste, Runlevel 1 Start, 
+Runlevel 1 Stop etc.) sowie die Cursor-Tasten, um eine Auswahl ober- oder 
+unterhalb der bisherigen zu treffen.
+</textblock>
 
-Um einen Eintrag in einen anderen Runlevel zu verschieben schneiden Sie ihn mit Ausschneiden in die Zwischenablage (sie können auch Strg+X benutzen) und fügen Sie ihn in das gewünschte Runlevel mit Einfügen (mit Strg+V).
+<textblock>
+Um einen Eintrag in einen anderen Runlevel zu verschieben schneiden 
+Sie ihn mit Ausschneiden in die Zwischenablage (sie können auch Strg+X benutzen) 
+und fügen Sie ihn in das gewünschte Runlevel mit Einfügen (mit Strg+V).
+</textblock>
 
-Um die Sortiernummer oder den Namen eines Eintrags manuell zu ändern, drücken Sie die Eingabe-Taste, um den Eigenschaften-Dialog zu öffnen. Benutzen Sie die Tabulator-Taste, um zwischen verschiedenen Feldern zu wechseln. Schließen Sie den Dialog durch erneutes Drücken der Eingabe-Taste, um die Änderungen zu akzeptieren, oder drücken Sie Esc, um die Änderungen zu verwerfen. 
+<textblock>
+Um die Sortiernummer oder den Namen eines Eintrags manuell zu ändern, 
+drücken Sie die Eingabe-Taste, um den Eigenschaften-Dialog zu öffnen. 
+Benutzen Sie die Tabulator-Taste, um zwischen verschiedenen Feldern zu wechseln. 
+Schließen Sie den Dialog durch erneutes Drücken der Eingabe-Taste, um die Änderungen 
+zu akzeptieren, oder drücken Sie Esc, um die Änderungen zu verwerfen. 
+</textblock>
 
+</section>
 
+<section>
 
-
-
+<heading>
 Die Menü-Einträge
+</heading>
 
+<textblock>
 Es folgt eine Punkt-für-Punkt-Erläuterung der Menüs von KSysV.
-Das Menü Datei
+</textblock>
 
-Wegen der Gefahr des Datenverlusts bitten alle Einträge im Menü Datei um Bestätigung, bevor sie ihre Arbeit tun.
+<section>
+
+<heading>
+Das Menü Datei
+</heading>
+
+<textblock>
+Wegen der Gefahr des Datenverlusts bitten alle Einträge im Menü Datei um 
+Bestätigung, bevor sie ihre Arbeit tun.
+</textblock>
+
+
+</section>
+</section>
+</section>
+</split>
+
+</chapter>
+
+<!--
+
+
+
+
+
+
 
 Datei->Zuletzt gespeicherte Konfiguration...
 
