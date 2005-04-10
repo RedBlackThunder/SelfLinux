@@ -1,0 +1,820 @@
+Das Handbuch zu KPackage
+
+Toivo Pedaste (toivo ucs.uwa.edu.au)
+Überprüfung: Lauri Watts
+Deutsche Übersetzung: Frank Schütte
+Version 3.0.8 (2002-10-08)
+
+Copyright © 2000 Toivo Pedaste
+
+Es ist erlaubt, dieses Dokument zu kopieren, zu vertreiben und/oder zu ändern gemäß den Bedingungen der GNU Free Documentation Licence, Version 1.1 oder irgend einer späteren Version, wie sie von der Free Software Foundation veröffentlicht wurde; ohne die invarianten Abschnitte, ohne Texte auf der vorderen Umschlagseite, und ohne Texte auf der hinteren Umschlagseite. Eine Kopie der Lizenz findet sich im Abschnitt "GNU Free Documentation License".
+
+Dieses Handbuch beschreibt KPackage Version 2.0
+
+Inhaltsverzeichnis
+
+1. Einleitung
+2. Grundsätzliches
+
+    Drag & Drop
+    Die Baumansicht der Pakete
+    Aktualisierte und neue Pakete in der Baumansicht
+    Paketinformationsbereich
+    Root-Zugriff
+    Pakete installieren
+    Pakete deinstallieren
+
+3. Menüs
+
+    Das Menü Datei
+    Das Menü Pakete
+    Das Menü Zwischenspeicher
+    Das Menü Spezial
+    Das Menü Einstellungen
+    Das Menü Hilfe
+    Werkzeugleiste
+
+4. Team und Lizenz
+A. Installation
+
+    Wie bekomme ich KPackage?
+    Voraussetzungen
+
+
+
+
+
+
+
+
+
+Kapitel 1. Einleitung
+
+KPackage ist eine einheitliche graphische Benutzeroberfläche für die RPM-, Debian-, Slackware- und BSD-Paketmanager, ähnlich dem Programm GLINT. KPackage ist Teil der KDE-Benutzeroberfläche und zeichnet sich durch nahtlose Integration in den KDE Dateimanager konqueror aus. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kapitel 2. Grundsätzliches
+
+Die Oberfläche von KPackage ist in 2 Ansichten geteilt. Die linke Ansicht zeigt alle Pakete in einer Baumstruktur an. Mit Hilfe der Karteireiter können Sie wählen, ob nur die installierten, nur die aktualisierten (mit neuen, verbesserten Versionen), nur die verfügbaren (lokal oder auch von fremden Rechnern via FTP erreichbar) oder alle Pakete dargestellt werden. Wenn Sie in der Baumansicht ein Paket ausgewählt haben, werden in der rechte Ansicht Informationen über das Paket dargestellt.
+Drag & Drop
+
+KPackage unterstützt Drag & Drop, das heißt Sie können Pakete aus einem anderen Fenster auf KPackage ziehen, um sie zu installieren. Sie können diese Funktion auch dazu verwenden, um eine Datei auf den Dialog "Datei suchen" zu ziehen und das zugehörige Paket suchen zu lassen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Die Baumansicht der Pakete
+
+Sofern KPackage normal gestartet wurde, wird auf der linken Ansicht eine Baumansicht der installierten Pakete und optional auch von neuen und aktualisierten Paketen angezeigt.
+
+Die Karteireiter oberhalb der Baumansicht bestimmen, welche Pakete angezeigt werden: Installierte, Aktualisierte, Verfügbare oder Alle.
+
+Die Baumansicht der Pakete zeigt die Namen, Paketgröße, die Version und (im Falle eines verfügbaren Paketes, das ein installiertes aktualisieren würde) die Version des bereits installierten Paketes.
+
+Bei Auswahl eines Paketes aus dem Baum werden im rechten Bereich Informationen über das Paket angezeigt. Weiterhin sind folgende Aktionen möglich:
+
+    *
+
+      Die Anzeige der Statusinformationen für das Paket.
+    *
+
+      Die Anzeige der in einem installierten Paket enthaltenen Dateien ist möglich. Wählt man eine Datei der Liste, wird die Datei mit Hilfe des Dateimanager geöffnet.
+    *
+
+      Die Überprüfung der Dateien eines Paketes. Existierende Dateien erhalten einen grünen Haken, fehlende Dateien ein rotes Kreuz.
+    *
+
+      Deinstallation eines installierten Paketes
+    *
+
+      Installation eines verfügbaren Paketes
+
+Ein einzelnes Paket wird durch einen Mausklick auf seinen Namen ausgewält. Wenn Sie auf den Punkt in der Markieren-Spalte klicken, wird das Paket mit einem Haken markiert, eine weiterer Mausklick hebt die Markierung wieder auf. Umschalt+linke Maustaste markiert eine Reihe von Paketen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Aktualisierte und neue Pakete in der Baumansicht
+
+Sie können in den Einstellugen für jeden Pakettyp Speicherorte (auch URLs von fremden Rechnern) angeben. Wählen Sie dazu im Menü Url nicht installierter Pakete den Pakettypen aus und machen Sie dort Angaben über die Pfade zu den Dateien.
+
+KPackage kann Verzeichnisse, die RPM-Pakete enthalten, lesen und diese Pakete als neue oder aktualisierte Pakete in die Baumansicht integrieren. Die Pakete können direkt untersucht und installiert werden. Die Versionsinformation wird zunächst nur aus dem Dateinamen gewonnen, für nähere Informationen benutzen Sie bitte den Untersuchen-Knopf. Mittels einer Option können Sie KPackage veranlassen, beim Start alle lokalen Verzeichnisse zu durchsuchen, um die Paketinformation zu gewinnen. Dies verlangsamt den Start von KPackage, jedoch werden danach die kompletten Beschreibungen aller Paket angezeigt.
+
+Für Debian-Pakete,die mit dem Programm dpkg bearbeitet werden, kann auf verfügbare Pakete kann auf drei Arten zugegriffen werden, die auf drei Arten von Karteikarten für Dateipfade festgelegt werden.
+
+    *
+
+      Tragen Sie die URL eines FTP-Servers für Debian-Distribution ein (z.B. ftp://ftp.debian.org/) und wählen Sie die gewünschte Version und Architektur. KPackage sieht an den Standardorten nach den Packages-Dateien, die die Paketbeschreibungen der verfügbaren Pakete enthalten. Die Pakete werden der Baumansicht hinzugefügt und können untersucht und installiert werden.
+    *
+
+      Tragen sie das Basis-Verzeichnis der Debian-Distribution zusammen mit den Paketdateien ein, die Sie interessieren. Wenn Sie das Programm dselect installiert haben, kann die Datei /var/lib/dpkg/available als Paketdatei genutzt werden, um die von dselect genutzte Distribution zu beschreiben.
+    *
+
+      Außerdem können Sie analog zu RPM-Paketen Verzeichnisse angeben, die nach Debian-Paketen durchsucht werden.
+
+Für Debian-Pakete, die über APT bearbeitet werden, kann die Position der nicht installierten Paketverzeichnisse in der Datei /etc/apt/sources.list festgelegt werden. Das Menü Speicherort kann außerdem für Debin-Pakete verwendet werden. Diese Pakete werden über apt geholt und zwischengespeichert, nicht von KPackage.
+
+Slackware-Distributionen stellen nur sehr wenig Informationen über installierte Software zur Verfügung. Es ist jedoch möglich, durch die Datei PACKAGES.TXT Informationen über die installierte Software zu erhalten. Diese Datei entspricht Debians Packages-Datei. Außerdem benutzen Slackware-Distributionen eine spezielle Verzeichnisstruktur, in der die .tgz-Archive und die Datei PACKAGES.TXT abgelegt sind.
+
+In Slackware-Paketen sind jedoch keine Information über die Version des Paketes enthalten. Daher kann KPackage nicht feststellen, ob ein Paket neuer als das installierte ist.
+
+Bei BSD-Paketen muss der Pfad zu den Portierungen angegeben werden, welcher sowohl eine INDEX-Datei (enthält die Beschreibungen aller Pakete) als auch ein Verzeichnis namens All beinhaltet, in dem sich alle Pakete befinden. Außerdem können Sie beliebige Verzeichnisse angeben, die nach Paketen durchsucht werden.
+
+Verzeichnisse und Pakete von fremden Rechnern werden von KPackage zwischengespeichert. Die Pakete werden in ~/.kpackage zwischengespeichert und Verzeichnissinhalte in ~/.kpackage/dir.
+Anmerkung
+
+Um auf Verzeichnisse von fremden Rechnern per FTP zugreifen zu können, kann es notwendig sein, in den Browser-Einstellungen die Option FTP Proxy zu deaktivieren.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Paketinformationsbereich
+
+Im rechten Bereich befinden sich Karteikarten für zwei unterschiedliche Informationen über ausgewählte Pakete
+
+    *
+
+      Die Karteikarte Eigenschaften zeigt Informationen über das ausgewählte Paket an. Unter Abhängigkeiten befinden sich Verknüpfungen zu den aufgelisteten Paketen, Installierte sind in der Standardschriftart nicht Installierte kursiv dargestellt.
+    *
+
+      Die Karteikarte Dateiliste zeigt die Dateien an, die im Paket enthalten sind. Für installierte Pakete wird außerdem der Status jeder Datei angezeigt.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Root-Zugriff
+
+KPackage erfordert root-Zugriffsrechte für die Installation / Deinstallation von Paketen. Das kann erreicht werden, indem man KPackage als root startet, z.B. mittels KDE su.
+
+Alternativ, falls KPackage als normaler Benutzer ausgeführt wird, versucht das Programm zur Installation / Deinstallation root-Rechte durch Anmeldung an einem Pseudo-Terminal mit dem Befehl su oder ssh zu erlangen. Im Bedarfsfall erscheint ein Terminalfenster, in das das root-Passwort eingegeben werden muss. Das funktioniert nur, wenn das Anforderungszeichen (Prompt) mit einem # endet.
+
+Das funktioniert nicht bei RPM-Paketen, da diese von KPackage intern verarbeitet werden. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pakete installieren
+
+Sie können ein Paket installieren, indem Sie
+
+    *
+
+      es aus einem Konqueror-Fenster auf ein laufendes KPackage ziehen,
+    *
+
+      im Konqueror auf das Paket klicken und damit KPackage starten,
+    *
+
+      KPackage starten und im Menü Öffnen wählen oder
+    *
+
+      es in der Baumansicht auswählen.
+
+Ein ausgewähltes Paket wird mit der Untersuchen Funktion geöffnet und die Paketinformationen werden angezeigt. Sofern das Paket nicht lokal vorhanden ist, wird es von dem fremden Rechner geholt.
+
+Für markierte Pakete öffnet den Knopf Markierte Pakete installieren im linken Bereich das Installationsfenster.
+
+Das Installationsfenster listet die zu installierenden Pakete auf und ermöglicht die Angabe von Optionen. Der Bereich rechts ist ein integriertes Terminalfenster, in welchem die Installationsprogramme ausgeführt werden, in diesem Bereich erfolgt die Interaktion mit interaktiven Installationsprogrammen.
+
+RPM-Pakete werden ein wenig unterschiedlich von anderen Pakettypen behandelt, da KPackage die Installation selbst durchführt. Der rechte Bereich dient in diesem Fall nur zur Anzeige von etwaigen Fehlermeldungen. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pakete deinstallieren
+
+Um ein Paket zu entfernen, wälen Sie es mit der Maus und benutzen Sie die Deinstallieren-Funktion in der rechten Ansicht. Nach Betätigen öffnet sich ein Dialogfenster mit Optionen. Der Deinstallieren-Knopf entfernt das Paket aus dem System.
+
+Um mehrere Pakete zu deinstallieren, markieren Sie in der Baumansicht die gewünschten Pakete und betätigen Sie den Knopf Markierte Pakete deinstallieren. Nach Betätigen öffnet sich ein Dialogfenster mit Optionen. Wählen Sie Deinstallieren und alle markierten Pakete werden aus dem System entfernt.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kapitel 3. Menüs
+
+Beschreibung der KPackage-Menüs.
+Das Menü Datei
+
+Folgende Einträge sind im Menü Datei enthalten:
+
+Datei->Öffnen (Strg+O)
+
+    Öffnet einen Dialog, um lokale und entfernte, per FTP erreichbare Pakete zu öffnen.
+Datei->Zuletzt geöffnete Dateien
+
+    Zeigt eine Liste mit den zuletzt bearbeiteten Dateien.
+Datei->Paket suchen (Strg+F)
+
+    Sucht unter den installierten Paketen nach solchen, die den Suchbegriff im Paketnamen enthalten. 
+Datei->Datei suchen
+
+    Sucht in allen installierten Paketen nach Dateien, die dem Suchbegriff entsprechen. Sie können als Jokerzeichen den "*" benutzen, wenn Sie den Dateinamen nicht exakt angeben können oder wollen. Bei der Suche wird zwischen Groß- und Kleinschreibung unterschieden. Mit der Eingabe "*etscape* werden sowohl netscape, Netscape als auch NetsapeLogo.xpm gefunden! Nachdem Sie eine Datei markiert haben, werden die Informationen über das Paket in der rechten Ansicht des Hauptfensters dargestellt.
+Datei->Erneut laden (F5)
+
+    Liest die Paket-Informationen und baut die Baumansicht neu auf.
+Datei->Beenden (Strg+Q)
+
+    Beendet KPackage 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Das Menü Pakete
+
+Folgende Einträge sind im Menü Pakete enthalten:
+
+Pakete->Zurück (Alt+Nach links)
+
+    Dient zur Navigation zwischen den Verweisen voneinander abhängiger Pakete in der rechten Ansicht.
+Pakete->Vorwärts (Alt+Nach rechts)
+
+    Vorwärts-Knopf für die Navigation über die Verknüpfungen in den Eigenschaften im rechten Bereich.
+Pakete->Unterverzeichnisse anzeigen
+
+    Erweitert die Baumansicht um Unterverzeichnisse. Alle Pakete werden angezeigt.
+Pakete->Unterverzeichnis ausblenden
+
+    Blendet die Unterverzeichnisse in der Baumansicht aus, so dass die Baumstruktur besser erkennbar ist.
+Pakete->Auswahl löschen
+
+    Die Auswahl der markierten Pakete wird zurückgesetzt.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Das Menü Zwischenspeicher
+
+Folgende Eintrage sind im Menü Zwischenspeicher enthalten:
+
+Zwischenspeicher->Verzeichnis-Zwischenspeicher leeren
+
+    Löscht zwischengespeicherte Kopien von Verzeichnissen von fremden Rechnern.
+Zwischenspeicher->Paket-Zwischenspeicher leeren
+
+    Löscht zwischengespeicherte Kopien von Paketen, die von fremden Rechner geholt worden sind.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Das Menü Spezial
+
+Im Menü Spezial befinden sich Aktionen für spezielle Pakettypen:
+
+Spezial-> APT: Debian
+
+    Aktualisieren
+
+        Aktualisiert apt-Indizes aus den Paket-Quellen.
+    Upgrade
+
+        Aktualisiert die Debin-Installation auf die neuesten Versionen aller Pakete.
+    Fixup
+
+        apt berücksichtigt Abhängigkeiten sehr strikt. Dieser Punkt versucht, Abhängigkeitsprobleme zu lösen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Das Menü Einstellungen
+
+Folgende Einträge sind im Menü Einstellungen enthalten:
+
+Einstellungen->Werkzeugleiste anzeigen
+
+    Aktiviert bzw. Deaktiviert die Darstellung der Werkzeugleiste.
+Einstellungen->Einstellungen speichern
+
+    Speichert geänderte Optionen sofort und nicht erst beim Beenden von KPackage.
+Einstellungen->Tastenzuordnungen vornehmen
+
+    Öffnet den KDE Standarddialog für die Zuordnung von Tasten zu bestimmten Aktionen. Hier können Sie Kurzbefehle für Funktionen von KPackage definieren.
+Einstellungen->Werkzeugleisten einrichten
+
+    Öffnet den KDE Standarddialog für die Einrichtung der Werkzeugleisten. Hier können Sie Position und Aussehen der Werkzeugleiste bestimmen, sowie welche Elemente die Werkzeugleiste enthalten soll.
+Einstellungen->KPackage einrichten...
+
+    Typen
+
+        Die Pakettypen, die das Programm verarbeiten sollen. Debian mit DPKG und APT sind unabhängig aufgeführt. Man sollte nicht beide Einträge gleichzeitig aktivieren.
+    Verzeichnis-Zwischenspeicher
+
+        Hier können Sie bestimmen, ob Verzeichnisse fremder Rechner zwischengespeichert werden sollen.
+    Paket-Zwischenspeicher
+
+        Hier können Sie bestimmen, ob Pakete von fremden Rechnern zwischengespeichert werden sollen. 
+    Verschiedenes
+
+        SSH für privilegierte Kommandos benutzen
+
+            Verwendet ssh an Stelle von su für die Ausführunge privilegierter Befehle.
+        Dateiliste überprüfen
+
+            Ist diese Option markiert, wird anhand der Dateiliste des Paketes überprüft, ob der Dateistatus von Dateien verändert wurde. So können Sie Veränderungen von Paketen nach der Installation aufspüren.
+        Informationen aller lokalen Paketdateien einlesen
+
+            Ist diese Option markiert, werden die Paketinformationen nicht nur aus dem Dateinamen abgeleitet. Stattdessen werden alle lokalen Pakete analysiert. Dies verlangsamt den Start von KPackage, ergibt aber genauere Informationen.
+
+Einstellungen->URL nicht installierter Pakete
+
+    URL RPM
+
+        Hier können Sie Speicherorte für Paketdateien angeben. Dies können sowohl Pfade in ihrer lokalen Verzeichnisstruktur sein, wie auch Verzeichnisse auf fremden Rechnern, die via FTP erreicht werden können. Sie können hier einen Eintrag vornehmen, indem Sie den Speicherort einfach selbst eingeben. Wenn Sie auf den Knopf ... drücken, öffnet sich ein Dateiauswahldialog, mit dessen Hilfe sie ein Verzeichnis auswählen können. Mit dem Ankreuzfeld Benutzen können Sie bestimmen, ob der angegebene Pfad tatsächlich benutzt werden soll. Mit dem Ankreuzfeld Unterverzeichnisse bestimmen Sie, ob auch Unterverzeichnisse nach Paketen durchsucht werden sollen. Um die Übersichtlichkeit zu erhöhen, sind mehrere Felder vorgesehen, in denen Sie Pfade zu Paketen eintragen können.
+    URL BSD
+
+        Unterhalb des ersten Karteireiters können Sie den Speicherort der Portierungen angeben.
+
+        Unterhalb der anderen Karteireiter können sie Verzeichnisse angeben, die BSD-Pakete enthalten, also solche, die die Datei INDEX enthalten.
+    URL DEB
+
+        Es sind drei Typen von Karteikarten vorgesehen.
+
+            *
+
+              Die ersten drei Karteikarten haben einen Eintrag für die Position des Debian-Distributionsverzeichnisbaumes, ein Auswahlfeld für den Distributionsnamen und eines für die Rechnerarchitektur.
+            *
+
+              Die nächsten zweil Karteikarten ermöglichen die Angaben eines Debian-Distributionsverzeichnisbaumes und darin die Position von Paketdateien.
+            *
+
+              Die letzten drei Karteikarten ermöglichen die Angabe von Verzeichnissen wie für RPM-Dateien.
+
+    URL SLACK
+
+        Für Slackware-Pakete sind drei Typen von Karteikarten vorgesehen.
+
+            *
+
+              In der ersten Karteikarte geben sie den Speicherort der Datei PACKAGES.TXT an, welche Informationen über die installierten Pakete bereitstellt.
+            *
+
+              Unterhalb der nächsten vier Karteireiter können Sie Speicherorte von Basis-Verzeichnissen von Slackware-Distributionen eintragen. Dies ist der Verzeichniszweig, der die .tgz-Dateien sowie die dazugehörigen PACKAGES.TXT-Dateien enthält.
+            *
+
+              Die letzten beiden Karteikarten sind für Verzeichnisse vorgesehen, in denen sich Slackware-Pakete, aber keine PACKAGES.TXT-Dateien befinden.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Das Menü Hilfe
+
+Folgende Einträge sind im Menü Hilfe enthalten:
+
+Hilfe->Inhalt... (F1)
+
+    Startet das Hilfe-System von KDE mit der KPackage-Hilfe (diesem Dokument).
+Hilfe->Was ist das? (Umschalt+F1)
+
+    Ändert den Mauscursor zu einer Kombination von Zeiger und Fragezeichen. Das Klicken auf ein Element innerhalb von KPackage öffnet ein Hilfefenster, das die Funktion des Elementes beschreibt (wenn es denn Hilfe für das bestimmte Element gibt).
+Hilfe->Berichten Sie Probleme oder Wünsche...
+
+    Öffnet den Dialog für Problemberichte, in dem man Fehler und Wünsche berichten kann.
+Hilfe->Über KPackage
+
+    Zeigt Versions- und Autoreninformationen an.
+Hilfe->Über KDE
+
+    Zeigt Versionsinformation und Grundsätzliches zu KDE an.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Werkzeugleiste
+
+    *
+
+      Öffnen
+    *
+
+      Zurück
+    *
+
+      Nach vorne
+    *
+
+      Unterverzeichnisse anzeigen
+    *
+
+      Unterverzeichnisse ausblenden
+    *
+
+      Paket suchen
+    *
+
+      Datei suchen
+    *
+
+      Erneut laden
+    *
+
+      Beenden
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kapitel 4. Team und Lizenz
+
+KPackage
+
+Program copyright 1999-2000 Damyan Pepper, Toivo Pedaste
+
+Documentation copyright 2000 Toivo Pedaste (toivo ucs.uwa.edu.au)
+
+Übersetzung: Frank Schütte (F.Schuette t-online.de)
+
+Diese Dokumentation ist unter den Bedingungen der GNU Free Documentation License veröffentlicht.
+
+Dieses Programm ist unter den Bedingungen der GNU General Public License veröffentlicht.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Anhang A. Installation
+Wie bekomme ich KPackage?
+
+KPackage ist Teil des KDE-Projekts http://www.kde.org/.
+
+KPackage können Sie im kdeadmin-Paket finden auf ftp://ftp.kde.org/pub/kde/, der Haupt-FTP-Site des KDE-Projekts.
+
+Für Informationen über Bezug und Kompilierung von KPackage siehe http://www.kde.org/install-source.html.
+
+Weitere Informationen zur Kompilierung sind unter folgender URL zu erhalten: http://www.kde.org/compilationfaq.html
+
+Zu KPackage gibt es eine eigene Homepage: http://www.general.uwa.edu.au/u/toivo/kpackage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Voraussetzungen
+
+Um KPackage benutzen zu können, benötigen Sie folgende Bibliotheken und Programme:
+
+    *
+
+      Qt? 3.x und KDE 3.1
+
+Um den Inhalt von Debian-Paketen anzeigen zu können, wird keine weitere Software benötigt. Zum Installieren und Entfernen benötigen Sie jedoch:
+
+    *
+
+      den dpkg-Paketmanager oder
+    *
+
+      apt-get und apt-cache
+
+Für BSD-Pakete benötigen Sie folgende Programme:
+
+    *
+
+      pkg_info
+    *
+
+      pkg_add
+    *
+
+      pkg_delete
+
+Für Slackware-Pakete benötigen Sie folgende Programme:
+
+    *
+
+      installpkg
+    *
+
+      removepkg
+
+Um mit Redhat Paketen (RPM) arbeiten zu können benötigen Sie:
+
+    *
+
+      RPM und RPM-DEVEL mindestens Version 3.0
+    *
+
+      die Bibliotheken, die benötigt werden, um RPM zu kompilieren. Dies sind:
+          o
+
+            libdb - Die Berkeley Datenbank Bibliothek
+          o
+
+            libz und libz-dev - Bibliotheken zur Komprimierung
+          o
+
+            RPM benötigt die gettext-Routinen, die sich in libc6 oder in libintl befinden.
+          o
+
+            RPM 3.0 benötigt eventuell das popt-Paket.
+
+Damit KPackage RPM-Pakete bearbeiten kann, muss die RPM-Datenbank initialisiert worden sein. Falls die Eingabe rpm -qa auf der Befehlszeile die Fehlermeldung unable to open.... zur Folge hat, initialisieren Sie die Datenbank mit dem Kommando rpm --rebuilddb neu.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
