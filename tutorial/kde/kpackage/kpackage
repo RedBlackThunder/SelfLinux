@@ -80,6 +80,328 @@ in den KDE Dateimanager konqueror aus.
 Grundsätzliches
 </heading>
 
+<textblock>
+Die Oberfläche von KPackage ist in 2 Ansichten geteilt. Die linke Ansicht zeigt 
+alle Pakete in einer Baumstruktur an. Mit Hilfe der Karteireiter können Sie wählen, 
+ob nur die installierten, nur die aktualisierten (mit neuen, verbesserten Versionen), 
+nur die verfügbaren (lokal oder auch von fremden Rechnern via FTP erreichbar) oder 
+alle Pakete dargestellt werden. Wenn Sie in der Baumansicht ein Paket ausgewählt 
+haben, werden in der rechte Ansicht Informationen über das Paket dargestellt.
+</textblock>
+
+<section>
+
+<heading>
+Drag and Drop
+</heading>
+
+<textblock>
+KPackage unterstützt Drag and Drop, das heißt Sie können Pakete aus einem anderen 
+Fenster auf KPackage ziehen, um sie zu installieren. Sie können diese Funktion 
+auch dazu verwenden, um eine Datei auf den Dialog "Datei suchen" zu ziehen und 
+das zugehörige Paket suchen zu lassen.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Die Baumansicht der Pakete
+</heading>
+
+<textblock>
+Sofern KPackage normal gestartet wurde, wird auf der linken Ansicht eine Baumansicht 
+der installierten Pakete und optional auch von neuen und aktualisierten Paketen angezeigt.
+</textblock>
+
+<textblock>
+Die Karteireiter oberhalb der Baumansicht bestimmen, welche Pakete angezeigt werden: 
+Installierte, Aktualisierte, Verfügbare oder Alle.
+</textblock>
+
+<textblock>
+Die Baumansicht der Pakete zeigt die Namen, Paketgröße, die Version und (im Falle eines 
+verfügbaren Paketes, das ein installiertes aktualisieren würde) die Version des bereits 
+installierten Paketes.
+</textblock>
+
+<textblock>
+Bei Auswahl eines Paketes aus dem Baum werden im rechten Bereich Informationen über 
+das Paket angezeigt. Weiterhin sind folgende Aktionen möglich:
+</textblock>
+
+<ul>
+<li>
+Die Anzeige der Statusinformationen für das Paket.
+</li>
+<li>
+Die Anzeige der in einem installierten Paket enthaltenen Dateien ist möglich. 
+Wählt man eine Datei der Liste, wird die Datei mit Hilfe des Dateimanager geöffnet.
+</li>
+<li>
+Die Überprüfung der Dateien eines Paketes. Existierende Dateien erhalten 
+einen grünen Haken, fehlende Dateien ein rotes Kreuz.
+</li>
+<li>
+Deinstallation eines installierten Paketes
+</li>
+<li>
+Installation eines verfügbaren Paketes
+</li>
+</ul>
+
+<textblock>
+Ein einzelnes Paket wird durch einen Mausklick auf seinen Namen ausgewält. Wenn 
+Sie auf den Punkt in der Markieren-Spalte klicken, wird das Paket mit einem Haken 
+markiert, eine weiterer Mausklick hebt die Markierung wieder auf. Umschalt+linke 
+Maustaste markiert eine Reihe von Paketen.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Aktualisierte und neue Pakete in der Baumansicht
+</heading>
+
+<textblock>
+Sie können in den Einstellugen für jeden Pakettyp Speicherorte (auch URLs von 
+fremden Rechnern) angeben. Wählen Sie dazu im Menü Url nicht installierter 
+Pakete den Pakettypen aus und machen Sie dort Angaben über die Pfade zu den Dateien.
+</textblock>
+
+<textblock>
+KPackage kann Verzeichnisse, die RPM-Pakete enthalten, lesen und diese Pakete als 
+neue oder aktualisierte Pakete in die Baumansicht integrieren. Die Pakete können 
+direkt untersucht und installiert werden. Die Versionsinformation wird zunächst 
+nur aus dem Dateinamen gewonnen, für nähere Informationen benutzen Sie bitte den 
+Untersuchen-Knopf. Mittels einer Option können Sie KPackage veranlassen, beim 
+Start alle lokalen Verzeichnisse zu durchsuchen, um die Paketinformation zu gewinnen. 
+Dies verlangsamt den Start von KPackage, jedoch werden danach die kompletten 
+Beschreibungen aller Paket angezeigt.
+</textblock>
+
+<textblock>
+Für Debian-Pakete,die mit dem Programm dpkg bearbeitet werden, kann auf 
+verfügbare Pakete kann auf drei Arten zugegriffen werden, die auf drei 
+Arten von Karteikarten für Dateipfade festgelegt werden.
+</textblock>
+
+<ul>
+<li>
+Tragen Sie die URL eines FTP-Servers für Debian-Distribution ein 
+(z.B. ftp://ftp.debian.org/) und wählen Sie die gewünschte Version und 
+Architektur. KPackage sieht an den Standardorten nach den Packages-Dateien, 
+die die Paketbeschreibungen der verfügbaren Pakete enthalten. Die Pakete 
+werden der Baumansicht hinzugefügt und können untersucht und installiert werden.
+</li>
+<li>
+Tragen sie das Basis-Verzeichnis der Debian-Distribution zusammen mit 
+den Paketdateien ein, die Sie interessieren. Wenn Sie das Programm dselect 
+installiert haben, kann die Datei /var/lib/dpkg/available als Paketdatei genutzt 
+werden, um die von dselect genutzte Distribution zu beschreiben.
+</li>
+<li>
+Außerdem können Sie analog zu RPM-Paketen Verzeichnisse angeben, 
+die nach Debian-Paketen durchsucht werden.
+</li>
+</ul>
+
+<textblock>
+Für Debian-Pakete, die über APT bearbeitet werden, kann die Position der 
+nicht installierten Paketverzeichnisse in der Datei /etc/apt/sources.list 
+festgelegt werden. Das Menü Speicherort kann außerdem für Debin-Pakete verwendet 
+werden. Diese Pakete werden über apt geholt und zwischengespeichert, nicht von KPackage.
+</textblock>
+
+<textblock>
+Slackware-Distributionen stellen nur sehr wenig Informationen über installierte 
+Software zur Verfügung. Es ist jedoch möglich, durch die Datei PACKAGES.TXT 
+Informationen über die installierte Software zu erhalten. Diese Datei entspricht 
+Debians Packages-Datei. Außerdem benutzen Slackware-Distributionen eine spezielle 
+Verzeichnisstruktur, in der die .tgz-Archive und die Datei PACKAGES.TXT abgelegt sind.
+</textblock>
+
+<textblock>
+In Slackware-Paketen sind jedoch keine Information über die Version des Paketes 
+enthalten. Daher kann KPackage nicht feststellen, ob ein Paket neuer als das installierte ist.
+</textblock>
+
+<textblock>
+Bei BSD-Paketen muss der Pfad zu den Portierungen angegeben werden, welcher 
+sowohl eine INDEX-Datei (enthält die Beschreibungen aller Pakete) als auch 
+ein Verzeichnis namens All beinhaltet, in dem sich alle Pakete befinden. 
+Außerdem können Sie beliebige Verzeichnisse angeben, die nach Paketen durchsucht werden.
+</textblock>
+
+<textblock>
+Verzeichnisse und Pakete von fremden Rechnern werden von KPackage zwischengespeichert. 
+Die Pakete werden in ~/.kpackage zwischengespeichert und Verzeichnissinhalte in ~/.kpackage/dir.
+</textblock>
+
+<hint>
+<strong>Anmerkung</strong>
+</hint>
+
+<hint>
+Um auf Verzeichnisse von fremden Rechnern per FTP zugreifen zu können, kann es 
+notwendig sein, in den Browser-Einstellungen die Option FTP Proxy zu deaktivieren.
+</hint>
+
+</section>
+
+<section>
+
+<heading>
+Paketinformationsbereich
+</heading>
+
+<textblock>
+Im rechten Bereich befinden sich Karteikarten für zwei unterschiedliche 
+Informationen über ausgewählte Pakete
+</textblock>
+
+<ul>
+<li>
+Die Karteikarte Eigenschaften zeigt Informationen über das ausgewählte Paket 
+an. Unter Abhängigkeiten befinden sich Verknüpfungen zu den aufgelisteten Paketen, 
+Installierte sind in der Standardschriftart nicht Installierte kursiv dargestellt.
+</li>
+<li>
+Die Karteikarte Dateiliste zeigt die Dateien an, die im Paket enthalten sind. 
+Für installierte Pakete wird außerdem der Status jeder Datei angezeigt
+</li>
+</ul>
+
+</section>
+
+<section>
+
+<heading>
+Root-Zugriff
+</heading>
+
+<textblock>
+KPackage erfordert root-Zugriffsrechte für die Installation / Deinstallation 
+von Paketen. Das kann erreicht werden, indem man KPackage als root startet, 
+z.B. mittels KDE su.
+</textblock>
+
+<textblock>
+Alternativ, falls KPackage als normaler Benutzer ausgeführt wird, versucht das 
+Programm zur Installation / Deinstallation root-Rechte durch Anmeldung an einem 
+Pseudo-Terminal mit dem Befehl su oder ssh zu erlangen. Im Bedarfsfall erscheint 
+ein Terminalfenster, in das das root-Passwort eingegeben werden muss. Das 
+funktioniert nur, wenn das Anforderungszeichen (Prompt) mit einem # endet.
+</textblock>
+
+<textblock>
+Das funktioniert nicht bei RPM-Paketen, da diese von KPackage intern verarbeitet werden.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Pakete installieren
+</heading>
+
+<textblock>
+Sie können ein Paket installieren, indem Sie
+</textblock>
+
+<ul>
+<li>
+es aus einem Konqueror-Fenster auf ein laufendes KPackage ziehen,
+</li>
+<li>
+im Konqueror auf das Paket klicken und damit KPackage starten,
+</li>
+<li>
+KPackage starten und im Menü Öffnen wählen oder
+</li>
+<li>
+es in der Baumansicht auswählen.
+</li>
+</ul>
+
+<textblock>
+Ein ausgewähltes Paket wird mit der Untersuchen Funktion geöffnet 
+und die Paketinformationen werden angezeigt. Sofern das Paket nicht 
+lokal vorhanden ist, wird es von dem fremden Rechner geholt.
+</textblock>
+
+<textblock>
+Für markierte Pakete öffnet den Knopf Markierte Pakete installieren im 
+linken Bereich das Installationsfenster.
+</textblock>
+
+<textblock>
+Das Installationsfenster listet die zu installierenden Pakete auf und 
+ermöglicht die Angabe von Optionen. Der Bereich rechts ist ein integriertes 
+Terminalfenster, in welchem die Installationsprogramme ausgeführt werden, in 
+diesem Bereich erfolgt die Interaktion mit interaktiven Installationsprogrammen.
+</textblock>
+
+<textblock>
+RPM-Pakete werden ein wenig unterschiedlich von anderen Pakettypen behandelt, 
+da KPackage die Installation selbst durchführt. Der rechte Bereich dient in 
+diesem Fall nur zur Anzeige von etwaigen Fehlermeldungen.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Pakete deinstallieren
+</heading>
+
+<textblock>
+Um ein Paket zu entfernen, wälen Sie es mit der Maus und benutzen Sie die 
+Deinstallieren-Funktion in der rechten Ansicht. Nach Betätigen öffnet sich 
+ein Dialogfenster mit Optionen. Der Deinstallieren-Knopf entfernt das Paket 
+aus dem System.
+</textblock>
+
+<textblock>
+Um mehrere Pakete zu deinstallieren, markieren Sie in der Baumansicht die 
+gewünschten Pakete und betätigen Sie den Knopf Markierte Pakete deinstallieren. 
+Nach Betätigen öffnet sich ein Dialogfenster mit Optionen. Wählen Sie Deinstallieren 
+und alle markierten Pakete werden aus dem System entfernt.
+</textblock>
+
+</section>
+
+</section>
+
+</split>
+
+<split>
+
+<section>
+
+<heading>
+Menüs
+</heading>
+
+<textblock>
+Beschreibung der KPackage-Menüs.
+</textblock>
+
+<section>
+
+<heading>
+Das Menü Datei
+</heading>
+
+
+
+</section>
+
 </section>
 
 </split>
@@ -89,343 +411,6 @@ Grundsätzliches
 
 
 <!--
-Kapitel 2. Grundsätzliches
-
-Die Oberfläche von KPackage ist in 2 Ansichten geteilt. Die linke Ansicht zeigt 
-alle Pakete in einer Baumstruktur an. Mit Hilfe der Karteireiter können Sie wählen, 
-ob nur die installierten, nur die aktualisierten (mit neuen, verbesserten Versionen), 
-nur die verfügbaren (lokal oder auch von fremden Rechnern via FTP erreichbar) oder 
-alle Pakete dargestellt werden. Wenn Sie in der Baumansicht ein Paket ausgewählt 
-haben, werden in der rechte Ansicht Informationen über das Paket dargestellt.
-Drag & Drop
-
-KPackage unterstützt Drag & Drop, das heißt Sie können Pakete aus einem anderen 
-Fenster auf KPackage ziehen, um sie zu installieren. Sie können diese Funktion 
-auch dazu verwenden, um eine Datei auf den Dialog "Datei suchen" zu ziehen und 
-das zugehörige Paket suchen zu lassen.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Die Baumansicht der Pakete
-
-Sofern KPackage normal gestartet wurde, wird auf der linken Ansicht eine Baumansicht 
-der installierten Pakete und optional auch von neuen und aktualisierten Paketen angezeigt.
-
-Die Karteireiter oberhalb der Baumansicht bestimmen, welche Pakete angezeigt werden: 
-Installierte, Aktualisierte, Verfügbare oder Alle.
-
-Die Baumansicht der Pakete zeigt die Namen, Paketgröße, die Version und (im Falle eines 
-verfügbaren Paketes, das ein installiertes aktualisieren würde) die Version des bereits 
-installierten Paketes.
-
-Bei Auswahl eines Paketes aus dem Baum werden im rechten Bereich Informationen über 
-das Paket angezeigt. Weiterhin sind folgende Aktionen möglich:
-
-    *
-
-      Die Anzeige der Statusinformationen für das Paket.
-    *
-
-      Die Anzeige der in einem installierten Paket enthaltenen Dateien ist möglich. 
-Wählt man eine Datei der Liste, wird die Datei mit Hilfe des Dateimanager geöffnet.
-    *
-
-      Die Überprüfung der Dateien eines Paketes. Existierende Dateien erhalten 
-einen grünen Haken, fehlende Dateien ein rotes Kreuz.
-    *
-
-      Deinstallation eines installierten Paketes
-    *
-
-      Installation eines verfügbaren Paketes
-
-Ein einzelnes Paket wird durch einen Mausklick auf seinen Namen ausgewält. Wenn 
-Sie auf den Punkt in der Markieren-Spalte klicken, wird das Paket mit einem Haken 
-markiert, eine weiterer Mausklick hebt die Markierung wieder auf. Umschalt+linke 
-Maustaste markiert eine Reihe von Paketen.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Aktualisierte und neue Pakete in der Baumansicht
-
-Sie können in den Einstellugen für jeden Pakettyp Speicherorte (auch URLs von 
-fremden Rechnern) angeben. Wählen Sie dazu im Menü Url nicht installierter 
-Pakete den Pakettypen aus und machen Sie dort Angaben über die Pfade zu den Dateien.
-
-KPackage kann Verzeichnisse, die RPM-Pakete enthalten, lesen und diese Pakete als 
-neue oder aktualisierte Pakete in die Baumansicht integrieren. Die Pakete können 
-direkt untersucht und installiert werden. Die Versionsinformation wird zunächst 
-nur aus dem Dateinamen gewonnen, für nähere Informationen benutzen Sie bitte den 
-Untersuchen-Knopf. Mittels einer Option können Sie KPackage veranlassen, beim 
-Start alle lokalen Verzeichnisse zu durchsuchen, um die Paketinformation zu gewinnen. 
-Dies verlangsamt den Start von KPackage, jedoch werden danach die kompletten 
-Beschreibungen aller Paket angezeigt.
-
-Für Debian-Pakete,die mit dem Programm dpkg bearbeitet werden, kann auf 
-verfügbare Pakete kann auf drei Arten zugegriffen werden, die auf drei 
-Arten von Karteikarten für Dateipfade festgelegt werden.
-
-    *
-
-      Tragen Sie die URL eines FTP-Servers für Debian-Distribution ein 
-(z.B. ftp://ftp.debian.org/) und wählen Sie die gewünschte Version und 
-Architektur. KPackage sieht an den Standardorten nach den Packages-Dateien, 
-die die Paketbeschreibungen der verfügbaren Pakete enthalten. Die Pakete 
-werden der Baumansicht hinzugefügt und können untersucht und installiert werden.
-    *
-
-      Tragen sie das Basis-Verzeichnis der Debian-Distribution zusammen mit 
-den Paketdateien ein, die Sie interessieren. Wenn Sie das Programm dselect 
-installiert haben, kann die Datei /var/lib/dpkg/available als Paketdatei genutzt 
-werden, um die von dselect genutzte Distribution zu beschreiben.
-    *
-
-      Außerdem können Sie analog zu RPM-Paketen Verzeichnisse angeben, 
-die nach Debian-Paketen durchsucht werden.
-
-Für Debian-Pakete, die über APT bearbeitet werden, kann die Position der 
-nicht installierten Paketverzeichnisse in der Datei /etc/apt/sources.list 
-festgelegt werden. Das Menü Speicherort kann außerdem für Debin-Pakete verwendet 
-werden. Diese Pakete werden über apt geholt und zwischengespeichert, nicht von KPackage.
-
-Slackware-Distributionen stellen nur sehr wenig Informationen über installierte 
-Software zur Verfügung. Es ist jedoch möglich, durch die Datei PACKAGES.TXT 
-Informationen über die installierte Software zu erhalten. Diese Datei entspricht 
-Debians Packages-Datei. Außerdem benutzen Slackware-Distributionen eine spezielle 
-Verzeichnisstruktur, in der die .tgz-Archive und die Datei PACKAGES.TXT abgelegt sind.
-
-In Slackware-Paketen sind jedoch keine Information über die Version des Paketes 
-enthalten. Daher kann KPackage nicht feststellen, ob ein Paket neuer als das installierte ist.
-
-Bei BSD-Paketen muss der Pfad zu den Portierungen angegeben werden, welcher 
-sowohl eine INDEX-Datei (enthält die Beschreibungen aller Pakete) als auch 
-ein Verzeichnis namens All beinhaltet, in dem sich alle Pakete befinden. 
-Außerdem können Sie beliebige Verzeichnisse angeben, die nach Paketen durchsucht werden.
-
-Verzeichnisse und Pakete von fremden Rechnern werden von KPackage zwischengespeichert. 
-Die Pakete werden in ~/.kpackage zwischengespeichert und Verzeichnissinhalte in ~/.kpackage/dir.
-Anmerkung
-
-Um auf Verzeichnisse von fremden Rechnern per FTP zugreifen zu können, kann es 
-notwendig sein, in den Browser-Einstellungen die Option FTP Proxy zu deaktivieren.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Paketinformationsbereich
-
-Im rechten Bereich befinden sich Karteikarten für zwei unterschiedliche 
-Informationen über ausgewählte Pakete
-
-    *
-
-      Die Karteikarte Eigenschaften zeigt Informationen über das ausgewählte Paket 
-an. Unter Abhängigkeiten befinden sich Verknüpfungen zu den aufgelisteten Paketen, 
-Installierte sind in der Standardschriftart nicht Installierte kursiv dargestellt.
-    *
-
-      Die Karteikarte Dateiliste zeigt die Dateien an, die im Paket enthalten sind. 
-Für installierte Pakete wird außerdem der Status jeder Datei angezeigt.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Root-Zugriff
-
-KPackage erfordert root-Zugriffsrechte für die Installation / Deinstallation 
-von Paketen. Das kann erreicht werden, indem man KPackage als root startet, 
-z.B. mittels KDE su.
-
-Alternativ, falls KPackage als normaler Benutzer ausgeführt wird, versucht das 
-Programm zur Installation / Deinstallation root-Rechte durch Anmeldung an einem 
-Pseudo-Terminal mit dem Befehl su oder ssh zu erlangen. Im Bedarfsfall erscheint 
-ein Terminalfenster, in das das root-Passwort eingegeben werden muss. Das 
-funktioniert nur, wenn das Anforderungszeichen (Prompt) mit einem # endet.
-
-Das funktioniert nicht bei RPM-Paketen, da diese von KPackage intern verarbeitet werden. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Pakete installieren
-
-Sie können ein Paket installieren, indem Sie
-
-    *
-
-      es aus einem Konqueror-Fenster auf ein laufendes KPackage ziehen,
-    *
-
-      im Konqueror auf das Paket klicken und damit KPackage starten,
-    *
-
-      KPackage starten und im Menü Öffnen wählen oder
-    *
-
-      es in der Baumansicht auswählen.
-
-Ein ausgewähltes Paket wird mit der Untersuchen Funktion geöffnet 
-und die Paketinformationen werden angezeigt. Sofern das Paket nicht 
-lokal vorhanden ist, wird es von dem fremden Rechner geholt.
-
-Für markierte Pakete öffnet den Knopf Markierte Pakete installieren im 
-linken Bereich das Installationsfenster.
-
-Das Installationsfenster listet die zu installierenden Pakete auf und 
-ermöglicht die Angabe von Optionen. Der Bereich rechts ist ein integriertes 
-Terminalfenster, in welchem die Installationsprogramme ausgeführt werden, in 
-diesem Bereich erfolgt die Interaktion mit interaktiven Installationsprogrammen.
-
-RPM-Pakete werden ein wenig unterschiedlich von anderen Pakettypen behandelt, 
-da KPackage die Installation selbst durchführt. Der rechte Bereich dient in 
-diesem Fall nur zur Anzeige von etwaigen Fehlermeldungen. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Pakete deinstallieren
-
-Um ein Paket zu entfernen, wälen Sie es mit der Maus und benutzen Sie die 
-Deinstallieren-Funktion in der rechten Ansicht. Nach Betätigen öffnet sich 
-ein Dialogfenster mit Optionen. Der Deinstallieren-Knopf entfernt das Paket 
-aus dem System.
-
-Um mehrere Pakete zu deinstallieren, markieren Sie in der Baumansicht die 
-gewünschten Pakete und betätigen Sie den Knopf Markierte Pakete deinstallieren. 
-Nach Betätigen öffnet sich ein Dialogfenster mit Optionen. Wählen Sie Deinstallieren 
-und alle markierten Pakete werden aus dem System entfernt.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Kapitel 3. Menüs
-
-Beschreibung der KPackage-Menüs.
 Das Menü Datei
 
 Folgende Einträge sind im Menü Datei enthalten:
