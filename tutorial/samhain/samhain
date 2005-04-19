@@ -6,8 +6,8 @@ Autor: Rainer Wichmann
 Ist ein Computer an das Internet angeschlossen, so besteht zwangsläufig
 die Gefahr, dass Fremde versuchen, über bekannte Schwachstellen 
 in den Rechner einzubrechen, um ihn für eigene, meist illegale
-Zwecke zu mißbrauchen. In der Regel wird ein solcher Einbrecher 
-versuchen, ein sogenanntes Rootkit zu installieren, um die dauerhafte 
+Zwecke zu missbrauchen. In der Regel wird ein solcher Einbrecher 
+versuchen, ein so genanntes Rootkit zu installieren, um die dauerhafte 
 Kontrolle der Computers zu sichern und seine Anwesenheit zu verbergen.
 Andererseits sind die Veränderungen, die ein Einbrecher verursacht,
 eine hervorragende Möglichkeit, ihn schnellstmöglichst zu entdecken.
@@ -21,7 +21,7 @@ regelmäßig zu überprüfen, ob eine dieser Dateien manipuliert wurde.
 
 Zusätzlich besteht die Möglichkeit, die Integrität des Kernels zu überwachen,
 d.h. zu testen, ob der Kernel zur Laufzeit manipuliert wurde, 
-login/logout-Vorgänge zu melden, und/oder
+Login/Logout-Vorgänge zu melden, und/oder
 das gesamte Dateisystem regelmäßig nach SUID-Programmen zu durchsuchen.
 
 
@@ -125,7 +125,7 @@ bash # make install-boot
 
 Bei der Installation von Samhain ist zu berücksichtigen, dass Samhain
 voraussetzt, dass nur vertrauenswürdige Benutzer Schreibrechte auf den
-Pfaden zu Konfigutations-, Log-, und Datenbank-Dateien haben. Dies gilt 
+Pfaden zu Konfigurations-, Log-, und Datenbank-Dateien haben. Dies gilt 
 auch für Mitglieder von Gruppen, soweit Gruppen-Schreibrechte bestehen.
 
 Standardmäßig sind nur root und der Benutzer von Samhain 
@@ -439,7 +439,7 @@ warn    Warnungen
 mark    Zeitmarken
 err     Fehler
 crit    kritische Probleme
-alert   Start/stop des Programmes; Fehler, die zum Programmabbruch führen
+alert   Start/Stopp des Programmes; Fehler, die zum Programmabbruch führen
 
 Der gewünschte Level wird eingestellt in der '[Log]'-Sektion der
 Konfigurationsdatei mit den Optionen der Form 'xxxSeverity = level':
@@ -470,7 +470,7 @@ LogSeverity = err
 4.2.2 Konfigurierbare Levels (Dringlichkeitsstufen)
 
 Der Level einer Nachricht ist im Allgemeinen festgelegt. Die
-folgenden Nachrichten haben konfigurierbare Levels: Anderungen bei 
+folgenden Nachrichten haben konfigurierbare Levels: Änderungen bei 
 überwachten Dateien, Zugriffsfehler bei Dateien 
 und Directories, Dateien mit ungültigen UIDs/GIDs oder seltsamen Dateinamen
 (nicht-druckbare Zeichen). Diese Levels werden konfiguriert in der
@@ -505,7 +505,7 @@ SeverityNames=info
 Die folgenden Ereignisklassen sind definiert: 
 
 EVENT	Überwachte Ereignisse (z.B. Änderungen einer Datei)
-START	Start/stop-Meldungen
+START	Start/Stopp-Meldungen
 STAMP	Zeitmarken
 LOGKEY	Der Schlüssel zur Verifikation der Log-Datei (siehe Abschnitt <!-- LINK iref="Verifikation der lokalen Log-Datei" -->Verifikation der lokalen Log-Datei<!-- ENDLINK -->)
 ERROR	Fehlermeldungen
@@ -571,7 +571,7 @@ SetMailNum = 10
 # Nachrichten in der Warteschlange ist konfigurierbar:
 SetMailTime = 86400
 #
-# Schliesslich ist es möglich, die Subjekt-Zeile der Email zu bestimmen:
+# Schließlich ist es möglich, die Subjekt-Zeile der Email zu bestimmen:
 MailSubject = xyz
 ===================================
 
@@ -589,7 +589,7 @@ der Konfigurationsdatei:
 # Zunächst wird der Name der Datenbank benötigt (standardmäßig 'samhain')
 SetDBName = samhain
 #
-# Ausserdem ist der Name der Log-Tabelle anzugeben:
+# Außerdem ist der Name der Log-Tabelle anzugeben:
 SetDBTable = log
 #
 # Auf welchem Rechner läuft der Datenbank-Server ?
@@ -643,7 +643,7 @@ welche nicht.
 
 5.1 Vordefinierte Policys
 
-Die folgenden Policies sind vordefiniert:
+Die folgenden Policys sind vordefiniert:
 
 ReadOnly   Nur die Zeit des letzten Zugriffs (access time) darf sich ändern.
 
@@ -663,7 +663,7 @@ Attributes  Nur Veränderungen von Eigentümer/Gruppe oder Zugriffsrechten
 IgnoreAll   Alle Veränderungen werden ignoriert, aber die Existenz einer Datei
 	    wird geprüft.
 
-IgnoreNone  Alle Veränderungen einschliesslich der Zugriffszeit werden
+IgnoreNone  Alle Veränderungen einschließlich der Zugriffszeit werden
 	    berichtet. Praktisch bedeutet dies allerdings, dass nun die 
 	    Zeit der letzten Inode-Änderung anstelle der Zeit des letzten
 	    Zugriffs ignoriert wird.
@@ -749,14 +749,14 @@ für den absoluten Pfad.
 5.6 Hardlink Test
 
 Unter UNIX oder Linux hat eine Directory üblicherweise ebensoviele Hardlinks
-wie sie Unterverzeichnisse hat (einschliesslich '.' und '..'). Samhain testet 
+wie sie Unterverzeichnisse hat (einschließlich '.' und '..'). Samhain testet 
 dies - die Idee dabei ist, dass ein Rootkit ein Unterverzeichnis verbergen
 kann, aber in der Regel nicht die Zahl der Hardlinks des darüberliegenden
 Verzeichnisses korrigiert. Dieser Test lässt sich ausschalten mit der Option
 'UseHardlinkCheck = no' in der '[Misc]'-Sektion.
 
 Das Wurzelverzeichnis einer ReiserFS-Partition hat zwei 
-zusätztliche Hardlinks.
+zusätzliche Hardlinks.
 Für solche Fälle ist es möglich, mit der Option 
 'HardlinkOffset = N:/directory'
 in der '[Misc]'-Sektion eine Korrektur anzugeben. Dabei ist N gleich
@@ -791,7 +791,7 @@ RDEV (Gerätenummer) und/oder MOD (Zugriffsrechte und Dateityp).
 
 Dabei ist zu beachten, dass eine Policy in der Konfigurationsdatei 
 geändert werden muss, bevor sie benutzt wird, d.h. im nachfolgenden 
-Beispiel wäre es falsch, die '[Misc]'-Sektion hintanzustellen:
+Beispiel wäre es falsch, die '[Misc]'-Sektion hinten anzustellen:
 
 ========= /etc/samhainrc =================
 [Misc]
@@ -996,7 +996,7 @@ Der Befehl 'yule -P passwort' erzeugt eine einzige, sehr lange Zeile mit
 der notwendigen Verifikations-Information. Diese Zeile enthält die
 Zeichenkette 'HOSTNAME', die ersetzt werden muss durch den Namen des
 Rechners, auf dem Samhain läuft (dies geschieht hier mit dem
-'sed'-Befehl). Schliesslich muss diese Zeile in die '[Clients]'-Sektion
+'sed'-Befehl). Schließlich muss diese Zeile in die '[Clients]'-Sektion
 der Konfigurationsdatei von Yule eingetragen werden. 
 
 Für jeden Rechner, auf dem Samhain laufen soll, muss eine solcher
@@ -1018,7 +1018,7 @@ Yule die entsprechende Datei in seinem Datenverzeichnis
 (standardmäßig /var/lib/yule/). Wenn client.example.com
 der Name des Rechners ist, auf dem Samhain läuft, so muss
 
-- die Konfigurationsdatei rc.client.example.com heissen, und
+- die Konfigurationsdatei rc.client.example.com heißen, und
 
 - die Datenbank file.client.example.com.
 
@@ -1075,7 +1075,7 @@ Datenbank- und Konfigurationsdateien. Dabei ist folgendes zu beachten:
 Zur Verifikation der Signatur muss Samhain mit der entsprechenden
 Option übersetzt sein: './configure --with-gpg=/PFAD_ZU_GPG'.
 
-Es empfielt sich, den Fingerabdruck des verwendeten GnuPG-Schlüssels
+Es empfiehlt sich, den Fingerabdruck des verwendeten GnuPG-Schlüssels
 mit anzugeben, damit Samhain auch überprüfen kann, ob der korrekte
 Schlüssel zum Signieren verwendet wurde. 
 
@@ -1128,7 +1128,7 @@ Dabei gibt es beim Übersetzen der Quellen die folgenden Optionen:
   werden. Ein Hilfsprogramm 'samhain_stealth' steht zur Verfügung,
   um die Konfigurationsdatei zu verstecken: 
   'samhain_stealth -s bild.ps konfigurationsdatei' zum Verstecken,
-  'samhain_stealth -g bild.ps', umd die versteckte Datei wieder zu
+  'samhain_stealth -g bild.ps', um die versteckte Datei wieder zu
   sehen. 
 
 - Mit "--enable-khide=/boot/System.map-$(uname -r)" (das Argument
@@ -1162,13 +1162,13 @@ Option nicht verfügbar, da durch einen Kernel-Patch die Datei
 
 
 
-7.4 Überwachung von login/logout-Vorgängen
+7.4 Überwachung von Login/Logout-Vorgängen
 
 Wird Samhain mit der Option '--enable-login-watch' übersetzt, so
-ist es möglich, login/logout-Vorgänge zu überwachen. D.h. es wird
+ist es möglich, Login/Logout-Vorgänge zu überwachen. D.h. es wird
 eine Nachricht geschickt, wenn ein solcher Vorgang stattfindet.
 
-Diese Funktion beruht auf der Überwaching der 
+Diese Funktion beruht auf der Überwachung der 
 <!-- LINK: chapter="grundlagen_sicherheit" iref="Überwachung der Verbindungen (Login / Connection Accounting)" -->wtmp<!-- ENDLINK -->-Datei
 in regelmäßigen Abständen (standardmäßig 300 Sekunden). 
 
@@ -1198,7 +1198,7 @@ Leerzeichen vor und nach dem Gleichheitszeichen optional.
 
 Alles, was vor der ersten Sektion und nach einem '[EOF]' steht,
 wird ignoriert. Es ist nicht generell notwendig, die Datei mit
-'[EOF]' abzuschliessen, aber empfehlenswert, wenn am Ende der
+'[EOF]' abzuschließen, aber empfehlenswert, wenn am Ende der
 Datei Dinge stehen, die nicht als Optionen interpretiert werden
 sollen (z.B. eine GnuPG-Signatur, siehe Abschnitt
 <!-- LINK: iref="Signierte Datenbank- und Konfigurationsdateien" -->Signierte Datenbank- und Konfigurationsdateien<!-- ENDLINK -->).
@@ -1353,7 +1353,7 @@ DatabaseClass (logging zu relationaler Datenbank).
 Das Argument ist eine Liste (mit Komma oder Leerzeichen getrennt)
 von zugelassenen Ereignisklassen:
 EVENT	Überwachte Ereignisse (z.B. Änderungen einer Datei)
-START	Start/stop-Meldungen
+START	Start/Stopp-Meldungen
 STAMP	Zeitmarken
 LOGKEY	Der Schlüssel zur Verifikation der Log-Datei (siehe Abschnitt <!-- LINK iref="Verifikation der lokalen Log-Datei" -->Verifikation der lokalen Log-Datei<!-- ENDLINK -->)
 ERROR	Fehlermeldungen
@@ -1372,17 +1372,17 @@ SyslogSeverity = err
 
 
 
-8.5 Überwachung von login/logout-Ereignissen
+8.5 Überwachung von Login/Logout-Ereignissen
 
 In der Sektion '[Utmp]' 
-werden Optionen für die Überwachung von login/logout-Ereignissen
+werden Optionen für die Überwachung von Login/Logout-Ereignissen
 gesetzt.
 
 LoginCheckActive = yes|no      'yes' zum Einschalten, 'no' zum Ausschalten
 LoginCheckInterval = Sekunden  Intervall zwischen Überprüfungen
-SeverityLogin = Level          Level/Dringlichkeitsstufe für login-Ereignis
+SeverityLogin = Level          Level/Dringlichkeitsstufe für Login-Ereignis
 SeverityLoginMulti = Level     Level/Dringlichkeitsstufe für  mehrfaches Login
-SeverityLogout = Level         Level/Dringlichkeitsstufe für logout-Ereignis
+SeverityLogout = Level         Level/Dringlichkeitsstufe für Logout-Ereignis
 
 ========= /etc/samhainrc =================
 [Utmp]  
@@ -1507,7 +1507,7 @@ ChecksumTest = none|init|update|check Die Standard-Handlung, wenn nicht auf der
                               Kommandozeile angegeben (keine|Datenbank 
                               initialisieren|Datenbank aktualisieren|mit
                               Datenbank vergleichen). Standard ist 'none'
-VersionString = Zeichenkette  In der Datenbank 'Zeichnkette' zum Markieren
+VersionString = Zeichenkette  In der Datenbank 'Zeichenkette' zum Markieren
                               der Version einsetzen (zusammen mit Rechner-Name
                               und Zeitstempel)
 SetNiceLevel = -19..19        Priorität des Prozesses für Dateiprüfung setzen
@@ -1522,7 +1522,7 @@ UseHardlinkCheck = yes|no     Anzahl Hardlinks für Verzeichnisse prüfen
 HardlinkOffset=N:/Pfad        Ausnahme für Hardlink-Prüfung. N ist der 
                               Unterschied (tatsächliche - erwartet) für /Pfad.
 AddOKChars = N1, N2, ..       Liste der akzeptablen Zeichen (Byte-Werte) für
-                              den Test auf seltsame Dateinamen. Nn muss 
+                              den Test auf seltsame Dateinamen. Nn muß 
                               entweder hexadezimal (führendes '0x': 0xNN), 
 			      oktal (führende Null: 0NNN), oder dezimal sein.
 			      Mit 'all' als Argument wird der Test 
@@ -1537,14 +1537,14 @@ ReportOnlyOnce = yes|no       Jede Dateiveränderung nur einmal berichten
                               (Standard: yes = ja)
 ReportFullDetail = yes|no     Alle Details zu einer veränderten Datei 
                               berichten (Standard: no = nein)
-UseLocalTime = yes|no         Zeitstempel für Datien in lokaler Zeit statt GMT
+UseLocalTime = yes|no         Zeitstempel für Dateien in lokaler Zeit statt GMT
                               berichten. Diese Option sollte nicht benutzt 
                               werden, wenn Beltane eingesetzt wird.
 SetConsole = Gerät            Das Konsolen-Gerät bestimmen 
                               (Standard: /dev/console).
 MessageQueueActive = yes|no   Die System V IPC message queue benutzen 
                               (Standard: no = nein).
-SetMailTime = Sekunden        Maximale Zeispanne zwischen Email-Nachrichten
+SetMailTime = Sekunden        Maximale Zeitspanne zwischen Email-Nachrichten
                               (Standard: 86400).
 SetMailNum = 0..127           Maximale Anzahl wartender Emails in interner
                               Warteschlange.
@@ -1593,11 +1593,11 @@ RedefUser0 = +XXX|-XXX        Den Test XXX zur Policy 'User0' hinzufügen
 RedefUser1 = +XXX|-XXX        Den Test XXX zur Policy 'User1' hinzufügen
                               bzw. von dieser wegnehmen (Liste möglich).
 SetLogServer = IP-Adresse     Adresse des Log-Servers
-MACType=HASH-TIGER|HMAC-TIGER Die Art der Authentifizierungs-Kodes wählen.
+MACType=HASH-TIGER|HMAC-TIGER Die Art der Authentifizierungs-Codes wählen.
                               Falls diese Option benutzt wird, muss für Yule
                               und Samhain derselbe Wert gesetzt sein. Standard
                               ist HMAC-TIGER.
-SetReverseLookup = yes|no     Wenn nein (no), dann keinen reverse DNS-lookup
+SetReverseLookup = yes|no     Wenn nein (no), dann keinen reverse DNS-Lookup
                               durchführen, wenn Verbindung zu einem Rechner
                               hergestellt wird, der mit Namen statt IP-Adresse
                               angegeben ist.
@@ -1652,7 +1652,7 @@ SetType = log|srv             Mit 'log' wird das Programm als Log-Möglichkeit
                               aufgerufen, wenn sich der Status eines Clients
                               ändert.
 SetCommandline = Liste        Die Kommandozeile (also Argumente für das Skript)
-SetEnviron = Variable=Wert    Umgebungsvariable (kan mehrfach benutzt werden)
+SetEnviron = Variable=Wert    Umgebungsvariable (kann mehrfach benutzt werden)
 SetChecksum = TIGER Prüfsumme Tiger/192-Prüfsumme des Skripts (optional)
 SetCredentials = Benutzer     Der Benutzer, als der das Skript ausgeführt
                               werden soll.
