@@ -1,8 +1,38 @@
-Autor: Rainer Wichmann
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>Richtlinien zur Systemverwaltung</title>
 
-1 Einleitung
+ <author>
+  <name>Rainer Wichman</name>
+  <mailto>rwichmann@hs.uni-hamburg.de</mailto>
+ </author>
 
+ <layout>
+  <name>Alexander Fischer</name>
+  <mailto>alexander.fischer@selflinux.org</mailto>
+ </layout>
+
+ <license>GFDL</license>
+
+ <index>samhain</index>
+
+ <description>
+  <textblock>
+Samhain ist ein Werkzeug zur Überprüfung der Integrität eines Rechners
+bzw. des Betriebssystems des Rechners und/oder der darauf gespeicherten
+Daten.
+  </textblock>
+ </description>
+
+ <split>
+  <section>
+
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
 Ist ein Computer an das Internet angeschlossen, so besteht zwangsläufig
 die Gefahr, dass Fremde versuchen, über bekannte Schwachstellen 
 in den Rechner einzubrechen, um ihn für eigene, meist illegale
@@ -11,61 +41,84 @@ versuchen, ein so genanntes Rootkit zu installieren, um die dauerhafte
 Kontrolle der Computers zu sichern und seine Anwesenheit zu verbergen.
 Andererseits sind die Veränderungen, die ein Einbrecher verursacht,
 eine hervorragende Möglichkeit, ihn schnellstmöglichst zu entdecken.
+   </textblock>
 
-Samhain ist ein Werkzeug zur Überprüfung der Integrität eines Rechners
+   <textblock>
+<command>Samhain</command> ist ein Werkzeug zur Überprüfung der 
+Integrität eines Rechners
 bzw. des Betriebssystems des Rechners und/oder der darauf gespeicherten
 Daten. Die Grundfunktion von Samhain besteht darin, eine Datenbank mit 
 Prüfsummen und anderen Eigenschaften aller zu überwachenden 
 Dateien zu erstellen, um anschließend
 regelmäßig zu überprüfen, ob eine dieser Dateien manipuliert wurde.
+   </textblock>
 
+   <textblock>
 Zusätzlich besteht die Möglichkeit, die Integrität des Kernels zu überwachen,
 d.h. zu testen, ob der Kernel zur Laufzeit manipuliert wurde, 
 Login/Logout-Vorgänge zu melden, und/oder
 das gesamte Dateisystem regelmäßig nach SUID-Programmen zu durchsuchen.
+   </textblock>
 
+    <section>
+     <heading>
+Unterschied zu anderen Einbruchserkennungssystemen (IDS)
+     </heading>
 
-
-1.1 Unterschied zu anderen <!-- LINK: chapter="grundlagen_sicherheit" iref="Einbruchserkennung (Intrusion Detection)" -->Einbruchserkennungssystemen (IDS)<!-- ENDLINK -->
-
+     <textblock>
 Bei Systemen zur Entdeckung von Einbrechern oder Einbruchsversuchen
-(Intrusion Detection Systems; IDS) unterscheidet man generell 
-Netzwerk-basierte IDS (NIDS), die an einer 
+(<name>Intrusion Detection Systems</name>; <name>IDS</name>) unterscheidet man generell 
+Netzwerk-basierte <name>IDS</name> (<name>NIDS</name>), die an einer 
 zentralen Stelle den Netzwerkverkehr
-überwachen, und Host-basierte IDS, die den lokalen Computer überwachen.
+überwachen, und Host-basierte <name>IDS</name>, die den lokalen Computer überwachen.
+     </textblock>
 
-Der Vorteil eines NIDS besteht offensichtlich darin, dass man nur ein
+     <textblock>
+Der Vorteil eines <name>NIDS</name> besteht offensichtlich darin, dass man nur ein
 Überwachungssystem an einer zentralen Stelle installieren muss. Andererseits
 kann ein solches System nur Angriffsversuche erkennen, deren Muster
 bereits bekannt sind; und nach der Entdeckung eines Angriffsversuches
 ist nicht unbedingt klar, ob er nun erfolgreich war oder nicht. Ein 
-praktische Problem besteht auch darin, Fehlalarme zu reduzieren,
+praktisches Problem besteht auch darin, Fehlalarme zu reduzieren,
 ohne dabei echte Angriffsversuche zu übersehen.
+     </textblock>
 
+     <textblock>
 Eine Host-basierte Anwendung zur Verifikation der Systemintegrität
-wie Samhain ist natürlich aufwendiger zu 
+wie <command>Samhain</command> ist natürlich aufwendiger zu 
 installieren, wenn man mehrere Computer überwachen möchte. Andererseits
 kann ein solches System auch Angriffe mit neuartigen, bisher unbekannten
 Methoden erkennen. Die Problematik von Fehlalarmen ist deutlich reduziert,
 da das System nur Alarm schlägt, wenn tatsächlich Veränderungen an einem
 Computer stattgefunden haben.
-
+     </textblock>
+     
+     <textblock>
 Besonders in großen Firmennetzen besteht ein großes Problem auch in
 Angriffen von innerhalb; z.B. von mitgebrachten Laptops aus, oder mit
 Hilfe von Passworten, die sich ein Angreifer z.B. durch geschickt geführte
 Telefongespräche verschafft hat. Auch bei solchen Angriffen kann ein
-Host-basiertes System wie z.B. Samhain eine Manipulation des Systems 
+Host-basiertes System wie z.B. <command>Samhain</command> eine Manipulation des Systems 
 erkennen.
+     </textblock>
+    </section>
+  </section>
+ </split>
 
-
-
-2  Installation, Konfiguration und Initialisierung 
-
+ <split>
+  <section>
+   <heading>
+Installation, Konfiguration und Initialisierung 
+   </heading>
+   
+   <textblock>
 Samhain wird als Quellcode unter der GNU Public License frei angeboten,
 und die jeweils aktuellste Version ist erhältlich unter der URL
 http://www.la-samhna.de/samhain/samhain-current.tar.gz
-
-Zum Übersetzen der Quellen ist ein ANSI C Compiler wie z.B. GNU gcc
+   </textblock>
+   
+   <textblock>
+Zum Übersetzen der Quellen ist ein <name>ANSI C Compiler</name> wie z.B. <name>GNU gcc</name>
 erforderlich. Einige optionale Funktionen erfordern weitere Software
 (siehe Abschnitte 
 <!-- LINK iref="Unterstützte Log-Möglichkeiten" -->Unterstützte Log-Möglichkeiten<!-- ENDLINK --> 
@@ -75,25 +128,35 @@ Insbesondere setzt die Verwendung von
 signierten Konfigurations- und Datenbank-Dateien die Installation
 von GnuPG (GNU Privacy Guard, gpg) voraus (siehe Abschnitt 
 <!-- LINK iref="Signierte Datenbank- und Konfigurationsdateien" -->Signierte Datenbank- und Konfigurationsdateien<!-- ENDLINK -->).
+   </textblock>
 
-
-
-2.1 Installation 
-
+    <section>
+     
+     <heading>
+Installation 
+     </heading>
+     
+     <textblock>
 Nach dem Herunterladen kann man das tar-Paket auspacken, worauf man 
 zwei Dateien erhält: zum einen ein weiteres
 tar-Paket mit dem eigentlichen Quellcode, und zum anderen dessen 
 PGP-Signatur.
-
+     </textblock>
+     
+     <textblock>
 =========== term ===================
 bash $ tar xzvf samhain-current.tar.gz
 samhain-X.Y.Z.tar.gz
 samhain-X.Y.Z.tar.gz.asc
 =========== / term==================
-
+     </textblock>
+     
+     <textblock>
 Nun kann man (optional) die Signatur überprüfen - alle Versionen von
 Samhain sind mit dem Schlüssel 0x0F571F6C (Rainer Wichmann) signiert:
-
+     </textblock>
+     
+     <textblock>
 =========== term ===================
 bash $ gpg --verify samhain-X.Y.Z.tar.gz.asc samhain-X.Y.Z.tar.gz
 gpg: WARNING: using insecure memory!
@@ -102,9 +165,10 @@ gpg: Signature made Mon Nov  8 07:38:21 2004 CET using DSA key ID 0F571F6C
 gpg: Good signature from "Rainer Wichmann <rwichmann@la-samhna.de>"
 gpg:                 aka "Rainer Wichmann <rwichmann@hs.uni-hamburg.de>"
 =========== / term==================
-
+</textblock>
+    <textblock>
 Die Übersetzung der Quellen erfolgt dann nach dem 'Standardverfahren':
-
+</textblock>
 =========== term ===================
 bash $ tar xzvf samhain-X.Y.Z.tar.gz
 bash $ cd samhain-X.Y.Z/
@@ -119,7 +183,7 @@ bash # make install
 bash # make install-boot
 =========== / term==================
 
-
+SPLIT !!!
 
 2.2 Vertrauenswürdige Benutzer
 
@@ -187,7 +251,7 @@ Für letzteres
 sollte entweder der Befehl "samhain -t update" verwendet werden, oder
 die Datenbank zuvor verschoben werden.
 
-
+SPLIT !!!!
 
 3 Allgemeines zur Benutzung 
 
@@ -260,7 +324,7 @@ gleich starten, so kann man dies mit folgendem Befehl tun:
 bash # samhain start
 =========== / term==================
 
-
+SPLIT !!!!
 
 3.3 Pflege der Datenbank
 
@@ -327,7 +391,7 @@ Dabei gibt es folgende Einschränkungen:
   Schlüssel enthalten wie das sendende Samhain-Programm (siehe Abschnitt 
   <!-- LINK iref="Verifikation des Samhain-Programmes" -->Verifikation des Samhain-Programmes<!-- ENDLINK -->). 
 
-
+SPLITT
 
 3.6 Verifikation der lokalen Log-Datei
 
@@ -373,7 +437,7 @@ somit prinzipiell möglich, die Integrität eines Samhain-Programmes zu
 überprüfen, dass auf einem entfernten Rechner läuft, und per Email
 Log-Berichte schickt.
 
-
+SPLITT
 
 4 Konfiguration der Logging-Eigenschaften
 
@@ -465,7 +529,7 @@ LogSeverity = err
 # PreludeSeverity = crit
 ===================================
 
-
+SPLITT
 
 4.2.2 Konfigurierbare Levels (Dringlichkeitsstufen)
 
@@ -1683,3 +1747,5 @@ wird Yule folgende Fehlermeldung ausgeben:
 "Invalid connection attempt: Not in client list", und wird in dieser 
 Fehlermeldung auch sagen, welchen Namen es für den Client ermittelt hat:
 'client="client.example.com"'.
+
+</chapter>
