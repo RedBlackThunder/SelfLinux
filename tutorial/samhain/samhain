@@ -114,24 +114,23 @@ Installation, Konfiguration und Initialisierung
    <textblock>
 Samhain wird als Quellcode unter der GNU Public License frei angeboten,
 und die jeweils aktuellste Version ist erhältlich unter der URL
-http://www.la-samhna.de/samhain/samhain-current.tar.gz
+<ref lang="de" url="http://www.la-samhna.de/samhain/samhain-current.tar.gz">
+http://www.la-samhna.de/samhain/samhain-current.tar.gz</ref>
    </textblock>
    
    <textblock>
 Zum Übersetzen der Quellen ist ein <name>ANSI C Compiler</name> wie z.B. <name>GNU gcc</name>
 erforderlich. Einige optionale Funktionen erfordern weitere Software
-(siehe Abschnitte 
-<!-- LINK iref="Unterstützte Log-Möglichkeiten" -->Unterstützte Log-Möglichkeiten<!-- ENDLINK --> 
-und 
-<!-- LINK iref="Weitere Eigenschaften von Samhain" -->Weitere Eigenschaften von Samhain<!-- ENDLINK -->). 
+(siehe Abschnitte <ref iref="Unterstützte Log-Möglichkeiten">Unterstützte Log-Möglichkeiten</ref>
+und <ref iref="Weitere Eigenschaften von Samhain">Weitere Eigenschaften von Samhain</ref>). 
 Insbesondere setzt die Verwendung von
 signierten Konfigurations- und Datenbank-Dateien die Installation
-von GnuPG (GNU Privacy Guard, gpg) voraus (siehe Abschnitt 
-<!-- LINK iref="Signierte Datenbank- und Konfigurationsdateien" -->Signierte Datenbank- und Konfigurationsdateien<!-- ENDLINK -->).
+von <name>GnuPG</name> (<name>GNU Privacy Guard</name>, <name>gpg</name>) voraus (siehe Abschnitt 
+<ref iref="Signierte Datenbank- und Konfigurationsdateien">Signierte Datenbank- und Konfigurationsdateien</ref>).
    </textblock>
 
     <section>
-     
+
      <heading>
 Installation 
      </heading>
@@ -143,323 +142,494 @@ tar-Paket mit dem eigentlichen Quellcode, und zum anderen dessen
 PGP-Signatur.
      </textblock>
      
-     <textblock>
-=========== term ===================
-bash $ tar xzvf samhain-current.tar.gz
+     <shell>
+      <user path="~">
+tar xzvf samhain-current.tar.gz
+      </user>
+      <output>
 samhain-X.Y.Z.tar.gz
 samhain-X.Y.Z.tar.gz.asc
-=========== / term==================
-     </textblock>
-     
+      </output>
+     </shell>
+
      <textblock>
 Nun kann man (optional) die Signatur überprüfen - alle Versionen von
-Samhain sind mit dem Schlüssel 0x0F571F6C (Rainer Wichmann) signiert:
+Samhain sind mit dem Schlüssel <name>0x0F571F6C (Rainer Wichmann)</name> signiert:
      </textblock>
      
-     <textblock>
-=========== term ===================
-bash $ gpg --verify samhain-X.Y.Z.tar.gz.asc samhain-X.Y.Z.tar.gz
+     <shell>
+      <user path="~">
+gpg --verify samhain-X.Y.Z.tar.gz.asc samhain-X.Y.Z.tar.gz
+      </user>
+      <output>
+       <![CDATA[
 gpg: WARNING: using insecure memory!
 gpg: please see http://www.gnupg.org/faq.html for more information
 gpg: Signature made Mon Nov  8 07:38:21 2004 CET using DSA key ID 0F571F6C
 gpg: Good signature from "Rainer Wichmann <rwichmann@la-samhna.de>"
 gpg:                 aka "Rainer Wichmann <rwichmann@hs.uni-hamburg.de>"
-=========== / term==================
-</textblock>
-    <textblock>
-Die Übersetzung der Quellen erfolgt dann nach dem 'Standardverfahren':
-</textblock>
-=========== term ===================
-bash $ tar xzvf samhain-X.Y.Z.tar.gz
-bash $ cd samhain-X.Y.Z/
-bash $ ./configure && make
-=========== / term==================
+	]]>
+      </output>
+     </shell>
 
+     <textblock>
+Die Übersetzung der Quellen erfolgt dann nach dem <name>Standardverfahren</name>:
+     </textblock>
+     
+     <shell>
+      <user path="~">
+tar xzvf samhain-X.Y.Z.tar.gz
+      </user>
+      <user path="~">
+cd samhain-X.Y.Z/
+      </user>
+      <user path="~/samhain-X.Y.Z">
+<![CDATA[
+./configure && make
+]]>
+      </user>
+     </shell>
+
+     <textblock>
 ... ebenso wie die Installation:
+     </textblock>
+     
+     <shell>
+      <user path="~/samhain-X.Y.Z">
+su
+      </user>
+      <output>
+Password:
+      </output>
+      <input>
+geheimes_root_passwort
+      </input>
+      <root path="/home/user/samhain-X.Y.Z">
+make install
+      </root>
+      <root path="/home/user/samhain-X.Y.Z">
+make install-boot
+      </root>
+     </shell>
 
-=========== term ===================
-bash $ su
-bash # make install
-bash # make install-boot
-=========== / term==================
+    </section>
 
-SPLIT !!!
-
-2.2 Vertrauenswürdige Benutzer
-
+    <section>
+     <heading>
+Vertrauenswürdige Benutzer
+     </heading>
+     
+     <textblock>
 Bei der Installation von Samhain ist zu berücksichtigen, dass Samhain
 voraussetzt, dass nur vertrauenswürdige Benutzer Schreibrechte auf den
 Pfaden zu Konfigurations-, Log-, und Datenbank-Dateien haben. Dies gilt 
 auch für Mitglieder von Gruppen, soweit Gruppen-Schreibrechte bestehen.
-
-Standardmäßig sind nur root und der Benutzer von Samhain 
+     </textblock>
+     
+     <textblock>
+Standardmäßig sind nur root und der Benutzer von <command>Samhain</command>
 vertrauenswürdig. Zusätzliche vertrauenswürdige Benutzer lassen sich
-beim Übersetzen von Samhain definieren über die Option
-'--with-trusted=0,uid1,uid2,...'
+beim Übersetzen von <command>Samhain</command> definieren über die Option
+<command>--with-trusted=0,uid1,uid2,...</command>
+     </textblock>
+     
+    </section>
+    
+    <section>
+	    
+     <heading>
+Konfiguration
+     </heading>
 
+     <textblock>
+Die Konfigurationsdatei heißt standardmäßig <path>/etc/samhainrc</path>. Wer sie lieber
+unter <path>/usr/local/etc/</path> haben möchte, kann dies bei der Übersetzung der
+Quellen mit <command>./configure --prefix=/usr/local</command> erzwingen.
+     </textblock>
 
-
-2.3 Konfiguration
-
-Die Konfigurationsdatei heißt standardmäßig /etc/samhainrc. Wer sie lieber
-unter /usr/local/etc/ haben möchte, kann dies bei der Übersetzung der
-Quellen mit "./configure --prefix=/usr/local" erzwingen.
-
+     <textblock>
 Bei der Installation wird eine Standard-Konfigurationsdatei installiert,
 die man in der Regel zunächst an die eigenen Bedürfnisse anpassen möchte.
+     </textblock>
 
+     <textblock>
 Die Syntax der Konfigurationsdatei lehnt sich an an INI-Dateien: es gibt
 einzelne Sektionen, die jeweils mit einer Überschrift in eckigen Klammern
 beginnen, und die "Parameter=Wert"-Zeilen enthalten. Leere Zeilen sowie
 Zeilen, die mit "#" beginnen, werden ignoriert; in "Parameter=Wert"-Zuweisungen
 werden Leerzeichen vor "Parameter", vor und nach dem Gleichheitszeichen, sowie
 am Zeilenende ignoriert.
+     </textblock>
 
+     <textblock>
 Die wesentlichen Eigenschaften, die konfiguriert werden sollten, sind:
-
-- das Logging (siehe Abschnitt <!-- LINK: iref="Konfiguration der Logging-Eigenschaften" -->Konfiguration der Logging-Eigenschaften<!-- ENDLINK -->), 
-  d.h. wie ausführlich soll 
-  Samhain seine Aktivität 
-  protokollieren, und welche Methoden soll es benutzen ?, und
-
-- die Integritätseigenschaften innerhalb des Dateisystems (siehe
-  Abschnitt 
-  <!-- LINK: iref="Konfiguration der Integritätseigenschaften innerhalb des Dateisystems" -->Konfiguration der Integritätseigenschaften innerhalb des Dateisystems<!-- ENDLINK -->), 
-  d.h. welche
-  Dateien sollen überwacht werden, und welche Eigenschaften dieser
-  Dateien sollen überprüft werden ? 
-
-
-
-2.4 Initialisierung
-
+     </textblock>
+     
+     <textblock>
+      <ol>
+       <li>
+das Logging (siehe Abschnitt <ref iref="Konfiguration der Logging-Eigenschaften">Konfiguration der Logging-Eigenschaften</ref>), d.h. wie ausführlich soll <name>Samhain</name> seine Aktivität
+protokollieren, und welche Methoden soll es benutzen ?, und
+       </li>
+       <li>
+die Integritätseigenschaften innerhalb des Dateisystems (siehe Abschnitt
+<ref iref="Konfiguration der Integritätseigenschaften innerhalb des Dateisystems"> 
+Konfiguration der Integritätseigenschaften innerhalb des Dateisystems</ref>), d.h. welche
+Dateien sollen überwacht werden, und welche Eigenschaften dieser Dateien sollen überprüft werden?
+       </li>
+      </ol>
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Initialisierung
+     </heading>
+     
+     <textblock>
 Nach der Überprüfung und Anpassung der Konfiguration kann nun durch
-den Benutzer "root" die Datenbank initialisiert werden:
+den Benutzer <command>root</command> die Datenbank initialisiert werden:
+     </textblock>
 
-=========== term ===================
-bash # samhain -t init
-=========== / term==================
+     <shell>
+      <root path="~">
+samhain -t init
+      </root>
+     </shell>
 
+     <textblock>
 Je nach Umfang der zu überwachenden Dateien kann die Initialisierung
 mehrere Minuten dauern. Die erzeugte Datenbank wird standardmäßig
-nach /var/lib/samhain/samhain_file geschrieben.
+nach <path>/var/lib/samhain/samhain_file</path> geschrieben.
+     </textblock>
 
+     <textblock>
 Zu beachten ist dabei, dass grundsätzlich an das Dateiende angehängt wird,
 falls die Datei bereits vorhanden ist. Dieser Befehl ist also nicht dazu
 geeignet, eine bereits vorhandene Datenbank zu aktualisieren. 
 Für letzteres
-sollte entweder der Befehl "samhain -t update" verwendet werden, oder
+sollte entweder der Befehl <command>samhain -t update</command> verwendet werden, oder
 die Datenbank zuvor verschoben werden.
+     </textblock>
+    </section>
+  </section>
 
-SPLIT !!!!
+ </split>
+ 
+ <split>
+	 
+  <section>
+    
+   <heading>
+Allgemeines zur Benutzung
+   </heading>
+   
+    <section>
+     
+     <heading>
+Die Datenbank
+     </heading>
 
-3 Allgemeines zur Benutzung 
-
-
-
-3.1 Die Datenbank
-
+     <textblock>
 Standardmäßig wird die Datenbank 
-nach /var/lib/samhain/samhain_file geschrieben.
+nach <path>/var/lib/samhain/samhain_file</path> geschrieben.
 Nach der Initialisierung der Datenbank ist in dieser der aktuelle Zustand
 der überwachten Dateien gespeichert: Prüfsummen des Dateiinhaltes,
-Dateigröße, 
-Zugriffsrechte, Eigentümer und Gruppe, Zeiten, Anzahl von Hardlinks,
+Dateigröße, Zugriffsrechte, Eigentümer und Gruppe, Zeiten, Anzahl von Hardlinks,
 die Nummer der Inode, und (bei Geräten) die Gerätenummer.
+     </textblock>
 
-Samhain benutzt standardmäßig den TIGER192-Prüfsummenalgorithmus.
+     <textblock>
+<name>Samhain</name> benutzt standardmäßig den TIGER192-Prüfsummenalgorithmus.
 Optional kann auch SHA-1 oder MD5 benutzt werden (MD5 wird wegen möglicher
 Schwächen nicht mehr empfohlen).
+     </textblock>
 
+     <textblock>
 Diese Datenbank sollte natürlich vor unabsichtlichem oder böswilligem
 Überschreiben gesichert werden. Dazu bieten sich mehrere Möglichkeiten
 an:
+     </textblock>
 
-- (a) die Datenbank kann auf einem nicht beschreibbaren Gerät 
-  gespeichert werden,
-  z.B. ein USB-Stick, der auf 'nicht beschreibbar' geschaltet ist,
+     <ol>
+      <li>
+(a) die Datenbank kann auf einem nicht beschreibbaren Gerät gespeichert werden,
+z.B. ein USB-Stick, der auf 'nicht beschreibbar' geschaltet ist,
+      </li>
+      <li>
+(b) die Datenbank kann mit <ref chapter="gpg_handbuch">GnuPG</ref> signiert werden, 
+wie <ref iref="Signierte Datenbank- und Konfigurationsdateien">weiter unten</ref>.
+beschrieben wird - dies schützt zwar nicht davor, dass sie überschrieben wird, 
+ermöglicht aber, eine solche Manipulation zu erkennen -, oder
+      </li>
+      <li>
+(c) die Datenbank kann auf einem anderen Rechner gespeichert werden,
+und Samhain kann so konfiguriert werden, dass die Datenbank beim Start
+von diesem Rechner heruntergeladen wird (siehe Abschnitt 
+<ref iref="Logging zu einem Log-Server (Yule)">Logging zu einem Log-Server (Yule)</ref>).
+      </li>
+     </ol>
+    </section>
 
-- (b) die Datenbank kann mit 
-  <!-- LINK: chapter="gpg_handbuch" -->GnuPG<!-- ENDLINK --> 
-  signiert werden, wie 
-  <!-- LINK: iref="Signierte Datenbank- und Konfigurationsdateien" -->weiter unten<!-- ENDLINK --> 
-  beschrieben wird - dies schützt zwar
-  nicht davor, dass sie überschrieben wird, ermöglicht aber, eine
-  solche Manipulation zu erkennen -, oder
+    <section>
 
-- (c) die Datenbank kann auf einem anderen Rechner gespeichert werden,
-  und Samhain kann so konfiguriert werden, dass die Datenbank beim Start
-  von diesem Rechner heruntergeladen wird (siehe Abschnitt 
-  <!-- LINK: iref="Logging zu einem Log-Server (Yule)" -->Logging zu einem Log-Server (Yule)<!-- ENDLINK -->).
+     <heading>
+Verifikation der System-Integrität
+     </heading>
 
-
-
-3.2 Verifikation der System-Integrität
-
+     <textblock>
 Die Verifikation der System-Integrität erfolgt durch Vergleich der
 überwachten Dateien mit den Angaben, die in der Datenbank gespeichert
-sind. Manuell (oder per cron) kann dies erfolgen mit dem Kommando:
+sind. Manuell (oder per <command>cron</command>) kann dies erfolgen mit dem Kommando:
+     </textblock>
 
-=========== term ===================
-bash # samhain -t check
-=========== / term==================
+     <shell> 
+      <root path="~">
+samhain -t check
+      </root>
+     </shell>
 
+     <textblock>
 Eine wesentliche Eigenschaft von Samhain besteht jedoch darin, dass
 es zum Einsatz als Dämon entwickelt wurde. D.h. Samhain startet 
 automatisch beim Booten des Rechners, überwacht das Dateisystem, und
 meldet Veränderungen entsprechen den eingestellten 
 Logging-Eigenschaften (siehe Abschnitt 
-<!-- LINK: iref="Konfiguration der Logging-Eigenschaften" -->Konfiguration der Logging-Eigenschaften<!-- ENDLINK -->). Bei der Installation wird
+<ref iref="Konfiguration der Logging-Eigenschaften">
+Konfiguration der Logging-Eigenschaften</ref>). Bei der Installation wird
 mit dem Kommando:
+     </textblock>
 
-=========== term ===================
-bash # make install-boot
-=========== / term==================
+     <shell>
+      <root path="~">
+make install-boot
+      </root>
+     </shell>
 
-dafür gesorgt, dass Samhain beim nächsten Booten gestartet wird.
-Will man nach der Initialisierung der Datenbank den Samhain-Dämon
+     <textblock>
+dafür gesorgt, dass <name>Samhain</name> beim nächsten Booten gestartet wird.
+Will man nach der Initialisierung der Datenbank den <name>Samhain-Daemon</name>
 gleich starten, so kann man dies mit folgendem Befehl tun:
+     </textblock>
 
-=========== term ===================
-bash # samhain start
-=========== / term==================
+     <shell>
+      <root path="~">
+samhain start
+      </root>
+     </shell>
+    </section>
 
-SPLIT !!!!
+    <section>
+     <heading>
+Pflege der Datenbank
+     </heading>
 
-3.3 Pflege der Datenbank
-
+     <textblock>
 Natürlich gibt es in einem Dateisystem durchaus auch gewollte Veränderungen,
 z.B. infolge von mehr oder weniger regelmäßigen Sicherheits-Aktualisierungen. Nach
-solchen Veränderungen muss die Datenbank von Samhain jeweils auf aktuellen
+solchen Veränderungen muss die Datenbank von <name>Samhain</name> jeweils auf aktuellen
 Stand gebracht werden. Dies erfolgt mit dem Kommando:
+     </textblock>
 
-=========== term ===================
-bash # samhain -t update [--interactive] [-l none] [-e none]
-=========== / term==================
+     <shell>
+      <root path="~">
+       <![CDATA[
+samhain -t update [--interactive] [-l none] [-e none]
+       ]]>
+      </root>
+     </shell>
 
+     <textblock>
 Die in Klammern gesetzten Optionen sind nicht notwendig, aber gegebenfalls
 hilfreich:
+     </textblock>
 
-- Mit --interactive fragt Samhain bei jeder entdeckten Veränderung, 
-  ob der entsprechende Eintrag in der Datenbank geändert werden
-  soll.
+     <ol>
+      <li>
+Mit --interactive fragt Samhain bei jeder entdeckten Veränderung, 
+ob der entsprechende Eintrag in der Datenbank geändert werden soll.
+      </li>
 
-- Falls das Update der Datenbank stattfindet, während der Samhain-Dämon
-  läuft, sollte man darauf achten, Konflikte beim Logging zu vermeiden,
-  indem man bestimmte Log-Optionen nicht benutzt. Dies gilt insbesondere
-  für die lokale Log-Datei (ausschalten mit '-l none') sowie für
-  Logging zu einem Log-Server (siehe Abschnitt 
-  <!-- LINK: iref="Logging zu einem Log-Server (Yule)" -->Logging zu einem Log-Server (Yule)<!-- ENDLINK -->; ausschalten mit
-  '-e none'). 
+      <li>
+Falls das Update der Datenbank stattfindet, während der <name>Samhain-Daemon</name>
+läuft, sollte man darauf achten, Konflikte beim Logging zu vermeiden,
+indem man bestimmte Log-Optionen nicht benutzt. Dies gilt insbesondere
+für die lokale Log-Datei (ausschalten mit <command>'-l none'</command>) sowie für
+Logging zu einem Log-Server (siehe Abschnitt <ref iref="Logging zu einem Log-Server (Yule)">
+Logging zu einem Log-Server (Yule)</ref>; ausschalten mit <command>'-e none'</command>). 
+      </li>
+     </ol>
+    </section>
 
-
-
-3.4 Inhalt der Datenbank ansehen
-
+    <section>
+     <heading>
+Inhalt der Datenbank ansehen
+     </heading>
+     
+     <textblock>
 Wenn man den Inhalt der Datenbank ansehen möchte, kann man folgenden
 Befehl benutzen:
+     </textblock>
 
-=========== term ===================
-bash # samhain [-a] -d /pfad/zur/datenbank
-=========== / term==================
+     <shell>
+      <root path="~">
+       <![CDATA[
+samhain [-a] -d /pfad/zur/datenbank
+       ]]>
+      </root>
+     </shell>
 
-Dies liefert eine Ausgabe, die ähnlich ist wie 'ls -l'. Mit der 
-Option '-a' werden weitere Details angezeigt, die man bei 'ls -l'
-nicht erhält (z.B. die Prüfsumme einer Datei). 
+     <textblock>
+Dies liefert eine Ausgabe, die ähnlich ist wie <command>ls -l</command>. Mit der 
+Option <command>-a</command> werden weitere Details angezeigt, die man bei <command>ls -l</command>
+nicht erhält (z.B. die Prüfsumme einer Datei).
+     </textblock>
+    </section>
 
-
-
-3.5 Verifikation der Email-Nachrichten von Samhain
-
+    <section>
+     <heading>
+Verifikation der Email-Nachrichten von Samhain
+     </heading>
+     
+     <textblock>
 Wird Email als Log-Option benutzt, so ist es möglich, zu überprüfen,
 ob die erhaltenen Emails tatsächlich von Samhain stammen. Hierzu
 gibt es den das Kommando:
+     </textblock>
 
-=========== term ===================
-bash # samhain -M /pfad/zur/mailbox
-=========== / term==================
+     <shell>
+      <root path="~">
+       <![CDATA[
+samhain -M /pfad/zur/mailbox
+       ]]>
+      </root>
+     </shell>
 
+     <textblock>
 Dabei gibt es folgende Einschränkungen:
+     </textblock>
 
-- (1) alle Email sollten in einer Datei sein (z.B eine Mailbox im 'mbox'
-  Format), 
+     <ol>
+      <li>
+(1) alle Email sollten in einer Datei sein (z.B eine Mailbox im <command>mbox</command> Format), 
+      </li>
+      <li>
+(2) die jeweils erste Email nach dem Start von Samhain kann nicht verifiziert werden, und
+      </li>
+      <li>
+(3) das zur Verifikation benutzte Samhain-Programm muss den selben
+Schlüssel enthalten wie das sendende Samhain-Programm (siehe Abschnitt 
+<ref iref="Verifikation des Samhain-Programmes">Verifikation des Samhain-Programmes</ref>). 
+      </li>
+     </ol>
+    </section>
+  
+    <section>
+     <heading>
+Verifikation der lokalen Log-Datei
+     </heading>
 
-- (2) die jeweils erste Email nach dem Start von Samhain kann nicht 
-  verifiziert werden, und
-
-- (3) das zur Verifikation benutzte Samhain-Programm muss den selben
-  Schlüssel enthalten wie das sendende Samhain-Programm (siehe Abschnitt 
-  <!-- LINK iref="Verifikation des Samhain-Programmes" -->Verifikation des Samhain-Programmes<!-- ENDLINK -->). 
-
-SPLITT
-
-3.6 Verifikation der lokalen Log-Datei
-
+     <textblock>
 Wird die lokale Log-Datei benutzt, so ist es möglich, zu überprüfen,
 ob die Einträge tatsächlich von Samhain stammen, und nicht verändert
 wurden. Hierzu gibt es den das Kommando:
+     </textblock>
 
-=========== term ===================
-bash # samhain -M /pfad/zur/logdatei
-=========== / term==================
+     <shell>
+      <root path="~">
+       <![CDATA[
+samhain -M /pfad/zur/logdatei
+       ]]>
+      </root>
+     </shell>
 
+     <textblock>
 Dabei gibt es folgende Einschränkungen:
+     </textblock>
+ 
+     <ol>
+      <li>
+(1) es ist ein Schlüssel notwendig, der nach Eröffnung der Log-Datei
+per Email geschickt wird, falls (und nur falls) auch Email als Log-Option
+benutzt wird, und
+      </li>
+      <li>
+(2) das zur Verifikation benutzte Samhain-Programm muss den selben
+Schlüssel enthalten wie das sendende Samhain-Programm (siehe Abschnitt 
+<ref iref="Verifikation des Samhain-Programmes">Verifikation des Samhain-Programmes</ref>). 
+      </li>
+     </ol>
+    </section>
 
-- (1) es ist ein Schlüssel notwendig, der nach Eröffnung der Log-Datei
-  per Email geschickt wird, falls (und nur falls) auch Email als Log-Option
-  benutzt wird, und
+    <section>
+     <heading>
+Verifikation des Samhain-Programmes
+     </heading>
 
-- (2) das zur Verifikation benutzte Samhain-Programm muss den selben
-  Schlüssel enthalten wie das sendende Samhain-Programm (siehe Abschnitt 
-  <!-- LINK iref="Verifikation des Samhain-Programmes" -->Verifikation des Samhain-Programmes<!-- ENDLINK -->). 
-
-
-
-3.7 Verifikation des Samhain-Programmes
-
+     <textblock>
 Beim Übersetzen der Quellen wird standardmäßig ein zufällig erzeugter
-Schlüssel eingebettet. Der Wert dieses Schlüssels wird von './configure'
+Schlüssel eingebettet. Der Wert dieses Schlüssels wird von <command>./configure</command>
 am Ende angezeigt (die Zahlen sind nur Beispiele):
+     </textblock>
 
-            Base key: 1076404394,1083932597
+     <shell>
+      <output>
+Base key: 1076404394,1083932597
+      </output>
+     </shell>
 
+     <textblock>
 Ein Samhain-Programm mit identischem Schlüssel lässt sich erzeugen, indem
-man als Option für './configure' angibt: '--enable-base=1076404394,1083932597'.
+man als Option für <command>./configure</command> angibt:
+<command>--enable-base=1076404394,1083932597</command>.
+     </textblock>
 
-Da sich Emails (siehe Abschnitt 
-<!-- LINK iref="Verifikation der Email-Nachrichten von Samhain" -->Verifikation der Email-Nachrichten von Samhain<!-- ENDLINK -->
- - und lokale Log-Dateien 
-(siehe Abschnitt 
-<!-- LINK iref="Verifikation der lokalen Log-Datei" -->Verifikation der lokalen Log-Datei<!-- ENDLINK -->)
- - nur verifizieren lassen, wenn verifizierendes und
-erzeugendes Programm den selben eingebetteten Schlüssel haben, ist es
-somit prinzipiell möglich, die Integrität eines Samhain-Programmes zu 
-überprüfen, dass auf einem entfernten Rechner läuft, und per Email
+     <textblock>
+Da sich Emails (siehe Abschnitt <ref iref="Verifikation der Email-Nachrichten von Samhain">
+Verifikation der Email-Nachrichten von Samhain</ref> - und lokale Log-Dateien (siehe Abschnitt 
+<ref iref="Verifikation der lokalen Log-Datei">Verifikation der lokalen Log-Datei</ref>)
+ - nur verifizieren lassen, wenn verifizierendes und erzeugendes Programm den selben 
+eingebetteten Schlüssel haben, ist es somit prinzipiell möglich, die Integrität eines 
+Samhain-Programmes zu überprüfen, dass auf einem entfernten Rechner läuft, und per Email
 Log-Berichte schickt.
+     </textblock>
+    </section>
+  </section>
+ </split>
 
-SPLITT
+ <split>
+  <section>
+   <heading>
+Konfiguration der Logging-Eigenschaften
+   </heading>
 
-4 Konfiguration der Logging-Eigenschaften
-
+   <textblock>
 Samhain verfügt über viele verschiedene Log-Möglichkeiten, die teilweise
 erst durch entsprechende Optionen beim Übersetzten der Quellen verfügbar
 werden.
-
+   </textblock>
+  
+   <textblock>
 Jede unterstützte Log-Option lässt sich über die 
 Konfigurationsdatei gesondert konfigurieren und
 ein- oder ausschalten.
-
-
-
-4.1 Unterstützte Log-Möglichkeiten
-
+   </textblock>
+    
+    <section>
+     <heading>
+Unterstützte Log-Möglichkeiten
+     </heading>
+    
+     <textblock>
 Samhain unterstützt
-standardmäßig Email, Syslog, eine Logdatei (/var/log/samhain_log), 
-und die Konsole (bzw. stderr, wenn Samhain nicht als Dämon läuft).
+standardmäßig <name>Email</name>, <name>Syslog</name>, eine Logdatei (<path>/var/log/samhain_log</path>), 
+und die Konsole (bzw. stderr, wenn Samhain nicht als Daemon läuft).
 Weiterhin ist es möglich, Log-Nachrichten an ein externes Skript oder
 ein Programm zu übergeben, und auf diese Weise beliebige weitere
 Log-Möglichkeiten zu realisieren.
+     </textblock>
 
+     <textblock>
 Weitere Möglichkeiten sind:
 
 - (a) Logging zu einem Log-Server. Dies wird weiter unten in einem 
@@ -769,7 +939,9 @@ Dies kann global geändert werden mit dem
 Eintrag 'SetRecursionLevel = zahl' in der '[Misc]'-Sektion, 
 wobei 'zahl' die Anzahl der
 Rekursionsebenen angibt (maximal 99).
+     </textblock>
 
+     <textblock>
 Weiterhin ist es möglich, die Rekursionstiefe für ein Verzeichnis individuell
 zu konfigurieren, indem man die gewünschte Anzahl Rekursionsebenen dem
 Verzeichnis voranstellt:
@@ -818,7 +990,9 @@ dies - die Idee dabei ist, dass ein Rootkit ein Unterverzeichnis verbergen
 kann, aber in der Regel nicht die Zahl der Hardlinks des darüberliegenden
 Verzeichnisses korrigiert. Dieser Test lässt sich ausschalten mit der Option
 'UseHardlinkCheck = no' in der '[Misc]'-Sektion.
+     </textblock>
 
+     <textblock>
 Das Wurzelverzeichnis einer ReiserFS-Partition hat zwei 
 zusätzliche Hardlinks.
 Für solche Fälle ist es möglich, mit der Option 
@@ -837,7 +1011,9 @@ lässt sich die Menge der "guten" Zeichen erweitern; dabei ist N1 ... der
 vorzeichenlose Byte-Wert des Zeichen in hexadezimaler (0xNN), 
 oktaler (0NNN)
 oder dezimaler Notation.
+     </textblock>
 
+     <textblock>
 Mit 'AddOKChars = all' lässt sich dieser Test komplett ausschalten.
 
 
@@ -852,7 +1028,9 @@ HLN (Anzahl Hardlinks), INO (Inode-Nummer), USR (Besitzer), GRP (Gruppe),
 MTM (Zeit der letzten Änderung), ATM (Zeit des letzten Zugriffs), 
 CTM (Zeit der letzten Inode-Änderung), SIZ (Dateigröße), 
 RDEV (Gerätenummer) und/oder MOD (Zugriffsrechte und Dateityp).
+     </textblock>
 
+     <textblock>
 Dabei ist zu beachten, dass eine Policy in der Konfigurationsdatei 
 geändert werden muss, bevor sie benutzt wird, d.h. im nachfolgenden 
 Beispiel wäre es falsch, die '[Misc]'-Sektion hinten anzustellen:
@@ -927,7 +1105,9 @@ Die meisten Programme zur Überwachung der Systemintegrität sind
 nur für einen einzelnen Rechner gedacht, und bieten von sich
 aus keine Unterstützung für die zentralisierte Überwachung 
 mehrerer Rechner. 
+     </textblock>
 
+     <textblock>
 Samhain hingegen unterstützt (optional) sowohl zentralisiertes Logging
 als auch die zentrale Verwaltung. Konkret bedeutet dies:
 
@@ -961,13 +1141,17 @@ Yule wird aus den gleichen Quellen übersetzt wie Samhain. Das
 '--enable-network=server' aufgerufen werden; ansonsten erfolgt
 das Übersetzen und Installieren analog zu Samhain. Als Name
 des installierten Programmes wird standardmäßig 'Yule' gesetzt.
+     </textblock>
 
+     <textblock>
 Um Missverständnissen vorzubeugen: auch wenn Yule aus den gleichen
 Quellen übersetzt wird, ist es dennoch ein von
 Samhain verschiedenes Programm. Genausowenig wie Samhain
 als Log-Server dienen kann, kann Yule die Integrität des
 Systems überprüfen.
+     </textblock>
 
+     <textblock>
 Alle Konfigurations-Optionen, die die Überprüfung des Systems
 betreffen, sind also irrelevant für Yule; Konfigurations-Optionen
 bezüglich des Loggings sind dagegen auch für Yule gültig
@@ -982,7 +1166,9 @@ Samhain kann nur Log-Nachrichten an Yule schicken, wenn es mit
 der hierfür nötigen Unterstützung übersetzt wurde. Dazu ist es
 notwendig, das 'configure'-Skript mit der Option
 '--enable-network=client' aufzurufen.
+     </textblock>
 
+     <textblock>
 Möchte man außerdem auch die Konfigurationsdatei und die
 Samhain-Datenbank vom Log-Server herunterladen, so sind
 die folgenden weiteren Optionen für 'configure' notwendig:
@@ -991,7 +1177,9 @@ Name des Log-Rechners ist),
 '--with-config-file=REQ_FROM_SERVER/etc/samhainrc' (das 'REQ_FROM_SERVER'
 sagt Samhain, dass die Datei vom Server geholt werden soll), und
 '--with-data-file=REQ_FROM_SERVER/var/lib/samhain/samhain_file'.
+     </textblock>
 
+     <textblock>
 Dabei ist folgendes zu beachten:
 
 - Wird ein Pfad nach 'REQ_FROM_SERVER' angegeben, so spielt dieser
@@ -1020,11 +1208,15 @@ einen Schlüssel vereinbaren, der für die weitere Kommunikation
 benutzt wird. Die Authentifizierung erfolgt über das
 <!-- LINK: url="http://srp.stanford.edu/" -->Secure Remote Password (SRP)<!-- ENDLINK --> 
 Protokoll.
+     </textblock>
 
+     <textblock>
 Hierzu sind zwei 'Zutaten' notwendig: Samhain muss ein 
 gültiges Passwort kennen, und Yule muss das Passwort 
 (das für jeden Rechner verschieden sein kann) verifizieren können.
+     </textblock>
 
+     <textblock>
 Ein zufälliges Passwort lässt sich erzeugen mit:
 
 bash# yule -G
@@ -1042,7 +1234,9 @@ Das Hilfsprogramm samhain_setpwd wird erzeugt, wenn man Yule
 (erstes Argument, also 'samhain'), und schreibt eine Kopie 
 mit dem gewünschten Suffix (zweites Argument, also 'new'), in die
 das Passwort (drittes Argument) eingebettet ist.
+     </textblock>
 
+     <textblock>
 Um das Passwort verifizieren zu können, braucht Yule in seiner
 Konfigurationsdatei (standardmäßig /etc/yulerc) einen 
 entsprechenden Eintrag in der '[Clients]'-Sektion. Falls
@@ -1062,11 +1256,15 @@ Zeichenkette 'HOSTNAME', die ersetzt werden muss durch den Namen des
 Rechners, auf dem Samhain läuft (dies geschieht hier mit dem
 'sed'-Befehl). Schließlich muss diese Zeile in die '[Clients]'-Sektion
 der Konfigurationsdatei von Yule eingetragen werden. 
+     </textblock>
 
+     <textblock>
 Für jeden Rechner, auf dem Samhain laufen soll, muss eine solcher
 Eintrag gemacht werden. Das jeweilige Passwort kann, muss aber nicht
 verschieden sein.
+     </textblock>
 
+     <textblock>
 Ist Yule bereits gestartet, so muss mit 
 <!-- LINK: chapter="prozessverwaltung" iref="kill" -->kill<!-- ENDLINK -->
 das Signal SIGHUP an Yule geschickt werden, damit Änderungen der
@@ -1098,12 +1296,16 @@ die gewählten
 ignoriert werden (d.h. wenn Samhain
 konfiguriert ist, eine bestimmte Nachricht an Yule zu schicken,
 wird Yule diese Nachricht auch tatsächlich loggen). 
+     </textblock>
 
+     <textblock>
 Um Nachrichten von Samhain durch Yule (nochmals) zu filtern und/oder 
 Log-Möglichkeiten zu benutzen, die für große Datenmengen eher wenig geeignet
 sind, muss Yule so eingestellt werden, dass auch Nachrichten von Samhain
 den  Filter-Einstellungen von Yule unterliegen.
+     </textblock>
 
+     <textblock>
 Hierzu muss man in der '[Misc]'-Sektion die Optionen 
 'UseClientSeverity = yes' und 'UseClientClass = yes' setzen.
 
@@ -1138,11 +1340,15 @@ Datenbank- und Konfigurationsdateien. Dabei ist folgendes zu beachten:
 
 Zur Verifikation der Signatur muss Samhain mit der entsprechenden
 Option übersetzt sein: './configure --with-gpg=/PFAD_ZU_GPG'.
+     </textblock>
 
+     <textblock>
 Es empfiehlt sich, den Fingerabdruck des verwendeten GnuPG-Schlüssels
 mit anzugeben, damit Samhain auch überprüfen kann, ob der korrekte
 Schlüssel zum Signieren verwendet wurde. 
+     </textblock>
 
+     <textblock>
 Weiterhin ist es möglich, die TIGER192-Prüfsumme des GnuPG-Programmes 
 mit anzugeben. Dies schließt die
 Lücke, dass ein Einbrecher die Samhain-Datenbank modifizieren könnte,
@@ -1219,7 +1425,9 @@ verändert wurde. Hierzu ist es notwendig, beim Übersetzen der
 Quellen die Option "--with-kcheck=/boot/System.map-$(uname -r)" 
 anzugeben (d.h. das Argument ist die zum Kernel passende 
 System.map-Datei).
+     </textblock>
 
+     <textblock>
 Mit dem Standard-Kernel neuerer Fedora Core-Systeme ist diese 
 Option nicht verfügbar, da durch einen Kernel-Patch die Datei 
 /dev/kmem nicht mehr lesbar (oder beschreibbar) ist.
@@ -1231,7 +1439,9 @@ Option nicht verfügbar, da durch einen Kernel-Patch die Datei
 Wird Samhain mit der Option '--enable-login-watch' übersetzt, so
 ist es möglich, Login/Logout-Vorgänge zu überwachen. D.h. es wird
 eine Nachricht geschickt, wenn ein solcher Vorgang stattfindet.
+     </textblock>
 
+     <textblock>
 Diese Funktion beruht auf der Überwachung der 
 <!-- LINK: chapter="grundlagen_sicherheit" iref="Überwachung der Verbindungen (Login / Connection Accounting)" -->wtmp<!-- ENDLINK -->-Datei
 in regelmäßigen Abständen (standardmäßig 300 Sekunden). 
@@ -1280,7 +1490,9 @@ Konfigurationsdatei.
 Bedingte Anweisungen ermöglichen es, in die Konfigurationsdatei
 Optionen zu schreiben, die nur auf bestimmten Rechnern interpretiert
 (und sonst ignoriert) werden.
+     </textblock>
 
+     <textblock>
 Die Bedingung kann entweder der Name des Rechners sein, oder das
 Tripel Betriebssystem:Version:Hardware, das man mit 'uname -srm' 
 erhält. Durch Voranstellen eines Ausrufezeichens kann die
@@ -1313,11 +1525,15 @@ $end
 Die möglichen Sektionsnamen sind hier:
 [Attributes], [LogFiles], [GrowingLogFiles], [IgnoreAll], 
 [IgnoreNone], [ReadOnly], [User0], [User1], und [Prelink].
+     </textblock>
 
+     <textblock>
 Jede dieser Sektionen entspricht einer gleichnamigen 
 <!-- LINK: iref="Vordefinierte Policys" -->Policy<!-- ENDLINK --> 
 zur Überwachung der Dateien in der betreffenden Sektion.
+     </textblock>
 
+     <textblock>
 Jede dieser Sektionen kann beliebig viele Einträge der Form
 'file = /absoluter/pfad/zur/datei' und 
 'dir = optionale_rekursionstiefe/absoluter/pfad/zum/verzeichnis'
@@ -1349,7 +1565,9 @@ ist es möglich, die Dringlichkeitsstufe mancher Ereignisse
 anzupassen. Mögliche Dringlichkeitsstufen sind:
 none (nichts loggen), debug (niedrigste Stufe), 
 info, notice, warn, mark, err, crit, alert (höchste Stufe).
+     </textblock>
 
+     <textblock>
 Mögliche Ereignisse sind hier: 
 
 - Veränderungen von überwachten
@@ -1397,23 +1615,31 @@ werden die gewünschten
 und eventuell 
 <!-- LINK: iref="Ereignisklassen" -->Ereignisklassen<!-- ENDLINK --> 
 eingestellt.
+     </textblock>
 
+     <textblock>
 Mögliche Optionen für Dringlichkeitsstufen sind: 
 MailSeverity (Email), PrintSeverity (Konsole), LogSeverity (Logdatei),
 SyslogSeverity (Syslog), PreludeSeverity (Prelude), 
 ExportSeverity (logging zu Yule), ExternalSeverity (externe Skripte),
 DatabaseSeverity (logging zu relationaler Datenbank).
+     </textblock>
 
+     <textblock>
 Die zuweisbaren Dringlichkeitsstufen sind: none (kein Logging), 
 debug (niedrigste Stufe), info, notice, warn, mark, err, crit, 
 alert (höchste Stufe).
+     </textblock>
 
+     <textblock>
 Mögliche Optionen für Ereignisklassen (Standard ist alle) sind: 
 MailClass (Email), PrintClass (Konsole), LogClass (Logdatei),
 SyslogClass (Syslog), PreludeClass (Prelude), 
 ExportClass (logging zu Yule), ExternalClass (externe Skripte),
 DatabaseClass (logging zu relationaler Datenbank).
+     </textblock>
 
+     <textblock>
 Das Argument ist eine Liste (mit Komma oder Leerzeichen getrennt)
 von zugelassenen Ereignisklassen:
 EVENT	Überwachte Ereignisse (z.B. Änderungen einer Datei)
