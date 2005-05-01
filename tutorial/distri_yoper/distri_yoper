@@ -224,6 +224,238 @@ Grafikarte mit vesa Darstellung Probleme bereitet.
 Andernfalls beginnt die CD nach 30 Sekunden selbstständig mit dem Bootvorgang.
 </textblock>
 
+<image height="300">
+<filename>nach_dem_booten.png</filename>
+<title>Nach dem Booten</title>
+</image>
+
+<textblock>
+Nach dem Booten werden Sie aufgefordert, durch Eingabe des Wortes "yoper" 
+und Bestätigen durch die Enter-Taste die Installation zu beginnen. Es 
+folgen nun die Lizenzbestimmungen die Sie lesen und akzeptieren müssen um mit 
+der Installation fortzufahren. Bestätigen Sie die Aufforderung mit "yes" und 
+der Enter-Taste.
+</textblock>
+
+<textblock>
+Es gibt die Möglichkeit die Dateien der CD zu überprüfen. Es wird eine 
+MD5-Checksummen-Überprüfung durchgeführt um eine Installation mit 
+fehlerhaften ISOs zu vermeiden.
+</textblock>
+
+<image height="300">
+<filename>integrations_test_der_cd.png</filename>
+<title>Integrationstest der CD</title>
+</image>
+
+</section>
+
+<section>
+
+<heading>
+Auswahl der Festplatte
+</heading>
+
+<textblock>
+Sie werden jetzt dazu aufgefordert, eine Festplatte zur Installation 
+auszuwählen. Das Dialogfenster zeigt Ihnen die aktuellen Festplatte(n) 
+in Ihrem Computer an.
+</textblock>
+
+<textblock>
+Bedenken Sie bitte das es unter Linux kein Laufwerk C:\ gibt, sondern die 
+Laufwerke wie folgt gegliedert sind: "hdx" hd heist Harddisk (Festplatte), 
+das x steht für den Bus an dem die Festplatte hängt. Die erste Festplatte 
+ist hda, die zweite Festplatte ist hdb und so fort. Ähnliches gilt für 
+scsi-Systeme, die Bezeichnung ist "sdx" statt "hdx". Dabei bedeutet sd eine scsi 
+Disc, das x steht wiederum für den Bus an dem die Festplatte hängt, auch 
+die Bezeichnung ist ähnlich: sda für die erste Festplatte und so fort.
+</textblock>
+
+<textblock>
+Die Auswahl einer Partition erfolgt in Kapitel 4.4.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Das Partitionieren
+</heading>
+
+<textblock>
+Der hier verlinkte Text war Bestandteil der Original Yoper Version 2.1 
+Dokumentation. Folgende Abfrage erscheint bei der Installation von Yoper.
+</textblock>
+
+<image height="300">
+<filename>abfrage_qtparted_oder_cfdisk.png</filename>
+<title>Abfrage qtparted oder cfdisk</title>
+</image>
+
+<textblock>
+Folgen sie bitte nun der Beschreibung im <ref chapter="partitionieren">Partitionieren Text</ref>.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Festlegen der swap-, home- und Installations-Partition
+</heading>
+
+<textblock>
+Wie im Kapitel 4.2 bereits beschrieben haben Sie sich für eine 
+Festplatte entschieden diese hat nun auch Partitionen.
+</textblock>
+
+<textblock>
+Eine Festplatte kann verschiedene Partitionen enthalten, jede einzelne von 
+ihnen ist ein separater Festplattenabschnitt. So kann eine Festplatte 
+mehrere Betriebssysteme enthalten, oder aber für verschiedene Datenbereiche 
+bzw. Dateisysteme benutzt werden. Zu den oben genannten Parametern "hda" 
+kommt nun noch die Nummer der Partition. Wenn sie auf der Festplatte hda 
+die erste Partition nehmen wollen wäre es "hda1" die zweite Partition 
+"hda2" und so fort. Bei scsi-Systemen "sda1" und so fort.
+</textblock>
+
+<section>
+
+<heading>
+Auswahl der swap Partition
+</heading>
+
+<textblock>
+Das Installationsprogramm fragt sie nun nach der swap Partition, 
+in unserem Beispiel /dev/hda2, Sie sollten nun die von Ihnen 
+erstellte swap Partition auswählen.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Auswahl der home Partition
+</heading>
+
+<textblock>
+Das Installationsprogramm fragt Sie nun nach der home Partition, 
+in unserem Beispiel /dev/hda3, haben Sie die Partition neu erstellt 
+sollten Sie ''ja'' auswählen um diese zu formatieren.
+</textblock>
+
+<textblock>
+Machen sie ein Update einer bestehenden Installation, oder wollen Sie 
+bestehende Daten auf der Partition behalten, wählen Sie bitte "nein" 
+aus.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Auswahl der root Partition
+</heading>
+
+<textblock>
+Das Installationsprogramm fragt Sie nun nach der root Partition, 
+in unserem Beispiel /dev/hda1, diese Partition müssen sie im 
+jeden Fall formatieren.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Auswahl der Dateisysteme
+</heading>
+
+<textblock>
+Yoper bietet in der Version 2.1 folgende Dateisysteme für die Partitionen an:
+</textblock>
+
+<table border="1">
+<th>
+<td>Dateisystem</td>
+<td>Beschreibung</td>
+</th>
+<tr>
+<td>ext2</td>
+<td>Dies ist das eigentliche Linux Dateisystem, es ist ausgereift und sicher. 
+Es unterstützt kein Journaling, weshalb eine Überprüfung des 
+Dateisystems eine (lange) Weile dauert.</td>
+</tr>
+<tr>
+<td>ext3</td>
+<td>Dies ist die Journaling Version des ext2 Dateisystems. Journaling verhindert 
+lange Wartezeiten beim booten des Computers wenn ihr Dateisystem Fehler 
+enthalten sollte.</td>
+</tr>
+<tr>
+<td>reiserfs</td>
+<td>Dies ist ein Journaling Dateisystem das performanter ist als ext2 und ext3, 
+es ist besonders auf kleine Dateigrössen optimiert.</td>
+</tr>
+<tr>
+<td>reiser4</td>
+<td>Dies ist die neuste Variante des reiserfs, es arbeitet besser mit 
+großen Dateien zusammen als reiserfs und hat automatische Dateisystem 
+Modifikation. Es arbeitet auch mit log Dateien zusammen, die sich an 
+verschiedenen Orten im Dateisystem befinden oder deren Ort 
+sich ändert.</td>
+</tr>
+</table>
+
+<textblock>
+Wie auf dem folgenden Screenshot abgebildet, können sie das 
+Dateisystem mit der Leertaste auswählen und die Einstellung mit 
+ENTER übernehmen.
+</textblock>
+
+<image height="300">
+<filename>filesystem_auswahl.png</filename>
+<title>Auswahl des Filesystems</title>
+</image>
+
+</section>
+
+</section>
+
+<section>
+
+<heading>
+Festlegen der zu installierenden Software
+</heading>
+
+<textblock>
+Je nachdem welche ISO-Datei sie heruntergeladen haben, wird ein 
+Basis-KDE (1600 MegaByte), oder ein minimales System installiert 
+(ca. 400 MegaByte). Beide Optionen bieten Ihnen die Möglichkeit, 
+ein komplettes System so zu installieren, wie Sie es für Ihre Ansprüche 
+brauchen. Ab Kapitel 7 erfahren Sie wie Sie mit apt ihr System 
+erweitern können.
+</textblock>
+
+<textblock>
+Yoper installiert sich nun selbstständig weiter auf Ihrem Computer. 
+Abhängig von Ihrem System kann dies zwischen 5 und 15 Minuten dauern.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Spracheinstellungen vornehmen
+</heading>
+
+
+
 </section>
 
 </section>
@@ -232,142 +464,8 @@ Andernfalls beginnt die CD nach 30 Sekunden selbstständig mit dem Bootvorgang.
 
 </chapter>
 
-
-
-
-
 <!--
 3. Die Installation
-
-3.1 Von CD-ROM Booten
-
-
-* Bild:nach_dem_booten
-
-Nach dem Booten werden Sie aufgefordert, durch Eingabe des Wortes
-"yoper" und Bestätigen durch die Enter-Taste die Installation zu
-beginnen. Es folgen nun die Lizenzbestimmungen die Sie lesen und
-akzeptieren müssen um mit der Installation fortzufahren. Bestätigen
-Sie die Aufforderung mit "yes" und der Enter-Taste.
-Es gibt die Möglichkeit die Dateien der CD zu überprüfen. Es wird eine
-MD5-Checksummen-Überprüfung durchgeführt um eine Installation mit
-fehlerhaften ISO?s zu vermeiden.
-
-* Bild:integrations_test_der_cd
-
-3.2 Auswahl der Festplatte
-
-Sie werden jetzt dazu aufgefordert, eine Festplatte zur Installation
-auszuwählen. Das Dialogfenster zeigt Ihnen die aktuellen Festplatte(n)
-in Ihrem Computer an.
-Bedenken Sie bitte das es unter Linux kein Laufwerk C:\ gibt, sondern
-die Laufwerke wie folgt gegliedert sind: "hdx" hd heist Harddisk
-(Festplatte), das x steht für den Bus an dem die Festplatte hängt.
-Die erste Festplatte ist hda, die zweite Festplatte ist hdb und so
-fort. Ähnliches gilt für scsi-Systeme, die Bezeichnung ist "sdx" statt
-''hdx''. Dabei bedeutet sd eine scsi Disc, das x steht wiederum für
-den Bus an dem die Festplatte hängt, auch die Bezeichnung ist
-ähnlich: sda für die erste Festplatte und so fort.
-Die Auswahl einer Partition erfolgt später (Kapitel 3.4).
-
-
-3.3 Das Partitionieren
-
-Der hier verlinkte Text war Bestandteil der Original
-Yoper Version 2.1 Dokumentation. Folgende Abfrage erscheint bei der
-Installation von Yoper.
-
-* Bild: abfrage_qtparted_oder_cfdisk
-
-Folgen sie bitte nun der Beschreibung im Partitionieren Text.
-
-http://www.selflinux.org/selflinux/ Partitionieren Text
-
-
-3.4 Festlegen der swap-, home- und Installations-Partition
-
-Wie im Kapitel 3.2 bereits beschrieben haben Sie sich für eine
-Festplatte entschieden diese hat nun auch Partitionen.
-Eine Festplatte kann verschiedene Partitionen enthalten, jede einzelne
-von ihnen ist ein separater Festplattenabschnitt. So kann eine
-Festplatte mehrere Betriebssysteme enthalten, oder aber für
-verschiedene Datenbereiche bzw. Dateisysteme benutzt werden. Zu den
-oben genannten Parametern "hda" kommt nun noch die Nummer der
-Partition. Wenn sie auf der Festplatte hda die erste Partition nehmen
-wollen wäre es "hda1" die zweite Partition "hda2" und so fort. Bei
-scsi-Systemen "sda1" und so fort.
-
-
-3.4.1 Auswahl der swap Partition
-
-Das Installationsprogramm fragt sie nun nach der swap Partition, in
-unserem Beispiel /dev/hda2, Sie sollten nun die von Ihnen erstellte
-swap Partition auswählen. 
-
-
-3.4.2 Auswahl der home Partition
-
-Das Installationsprogramm fragt Sie nun nach der home Partition, in
-unserem Beispiel /dev/hda3, haben Sie die Partition neu erstellt
-sollten Sie ''ja'' auswählen um diese zu formatieren. 
-Machen sie ein Update einer bestehenden Installation, oder wollen Sie
-bestehende Daten auf der Partition behalten, wählen Sie bitte "nein"
-aus. 
-
-
-3.4.3 Auswahl der root Partition
-
-Das Installationsprogramm fragt Sie nun nach der root Partition, in
-unserem Beispiel /dev/hda1, diese Partition müssen sie im jeden Fall
-formatieren.
-
-
-3.4.4 Auswahl der Dateisysteme
-
-Yoper bietet in der Version 2.1 folgende Dateisysteme für die
-Partitionen an:
-
-ext2 
-Dies ist das eigentliche Linux Dateisystem, es ist ausgereift und
-sicher. Es unterstützt kein
-Journaling, weshalb eine Überprüfung des Dateisystems eine (lange)
-Weile dauert.
-
-ext3 
-Dies ist die Journaling Version des ext2 Dateisystems. Journaling
-verhindert lange Wartezeiten beim booten des Computers wenn ihr
-Dateisystem Fehler enthalten sollte.
-
-reiserfs
-Dies ist ein Journaling Dateisystem das performanter ist als ext2 und
-ext3, es ist besonders auf kleine Dateigrössen optimiert.
-
-reiser4
-Dies ist die neuste Variante des reiserfs, es arbeitet besser mit
-großen Dateien zusammen als reiserfs und hat automatische Dateisystem
-Modifikation. Es arbeitet auch mit log Dateien
-zusammen, die sich an verschiedenen Orten im Dateisystem befinden oder
-deren Ort sich
-ändert.
-
-Wie auf dem folgenden Screenshot abgebildet, können sie das
-Dateisystem mit der Leertaste
-auswählen und die Einstellung mit ENTER übernehmen.
-
-* Bild: filesystem_auswahl
-
-
-3.5 Festlegen der zu installierenden Software
-
-Je nachdem welche ISO-Datei sie heruntergeladen haben, wird ein
-Basis-KDE (1600 MegaByte), oder ein minimales System installiert
-(ca. 400 MegaByte). Beide Optionen bieten Ihnen die Möglichkeit, ein
-komplettes System so zu installieren, wie Sie es für Ihre Ansprüche
-brauchen. Ab Kapitel 6 erfahren Sie wie Sie mit apt ihr System
-erweitern können.
-Yoper installiert sich nun selbstständig weiter auf Ihrem Computer.
-Abhängig von Ihrem System kann dies zwischen 5 und 15 Minuten dauern.
-
 
 3.6 Spracheinstellungen vornehmen
 
