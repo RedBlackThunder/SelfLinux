@@ -454,7 +454,168 @@ Abhängig von Ihrem System kann dies zwischen 5 und 15 Minuten dauern.
 Spracheinstellungen vornehmen
 </heading>
 
+<textblock>
+Yoper bietet nun im Installationsprogramm die Möglichkeit 
+zwischen verschiedenen Sprachvarianten auszuwählen.
+</textblock>
 
+<image height="300">
+<filename>sprach_auswahl.png</filename>
+<title>Sprachauswahl</title>
+</image>
+
+<textblock>
+Nach dem Neustart des Systems wird die hier eingestellte Variante 
+geladen. Diese Einstellung gilt nur für die Konsolenausgabe der 
+shell. Für X-Window müssen sie diese Einstellung in sax2 
+vornehmen. KDE braucht noch das kdei18n-de Paket, das Sie 
+bequem über apt einspielen können. GNOME verwendet die hier 
+eingestellte Sprachvariante automatisch.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+PCMCIA
+</heading>
+
+<textblock>
+Im nächsten Schritt der Installation werden Sie danach 
+gefragt ob die PCMCIA-Unterstützung geladen werden soll. 
+Wenn sie über einen Laptop oder über PCMCIA Erweiterungen für 
+einen PC verfügen sollten sie hier mit ja antworten.
+</textblock>
+
+<image height="300">
+<filename>pcmcia_auswahl.png</filename>
+<title>PCMCIA Auswahl</title>
+</image>
+
+</section>
+
+<section>
+
+<heading>
+Das Netzwerk konfigurieren
+</heading>
+
+<textblock>
+Vor dem " Netzwerk Setup " werden Sie gefragt, welche Internetverbindung Sie benutzen:
+</textblock>
+
+<textblock>
+"Would you like to run networksetup now? If this is a DIALUP system, please choose No."
+</textblock>
+
+<textblock>
+Sollten Sie sich direkt ins Internet einwählen, so beantworten sie diese Frage mit Nein.
+</textblock>
+
+<section>
+
+<heading>
+DHCP (Dynamic Host Configuration Protocol)
+</heading>
+
+<textblock>
+DHCP ist eine Funktion, um ihr Netzwerk automatisch einzurichten und zu 
+verbinden. Um DHCP zu benutzen, muß ein Computer in Ihrem 
+Netzwerk bereits vorhanden sein, der die notwendigen Einstellungen 
+übernimmt. Dieses ist in vielen Büros der Fall, und kann bei 
+einigen Verbindungen möglich sein ( z.B. bei einem DSL-Router). 
+</textblock>
+
+<textblock>
+Wenn Sie sich unsicher sind, sprechen Sie mit Ihrem Netzwerkadministrator 
+oder schauen Sie in die Anleitungsbücher Ihres Routers. Wenn Sie sich dazu 
+entscheiden, DHCP zu benutzen, werden die nächsten Schritte übersprungen.
+</textblock>
+
+<textblock>
+Falls Sie sich unsicher sind, ob Ihr Computer DHCP verwendet, ist es am besten, 
+"Nein" auszuwählen und ihr Netzwerk manuell einzurichten. Falls sie die Frage bejahen, 
+und kein DHCP haben, dauert der Bootvorgang immer sehr lange. 
+</textblock>
+
+<textblock>
+Sie können das Problem damit beheben, in dem Sie auf "Y" klicken nach dem Booten, 
+"Run command" auswählen, "kdesu konsole" sowie Ihr Root-Passwort eingeben, 
+und "networksetup" in die daraufhin erscheinende Konsole eingeben.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Netzwerk von Hand konfigurieren
+</heading>
+
+<textblock>
+Wenn sie an einem Lokalen- oder in einem Firmen Netzwerk angeschlossen sind 
+das kein DHCP zur Verfügung, stellt müssen Sie das Netzwerk von "Hand" 
+konfigurieren. Wenn es einen Netzwerk Administrator gibt fragen 
+sie ihn nach den unten angegebenen Daten.
+</textblock>
+
+<section>
+
+<heading>
+Hostname eingeben
+</heading>
+
+<textblock>
+Der Hostname ist der Name, der Sie in Ihrem Netzwerk identifiziert. 
+Ihr Standort hat vielleicht ein Namensschema oder einen Standard für 
+die Namensgebung der Computer. Wenn nicht, wählen Sie einen für Sie 
+sicheren Namen. Sollten Sie einer Arbeitsgruppe angehören, dann hängen 
+Sie diese an Ihrem Hostnamen, z.B. "computer. arbeitsgruppe". Wenn Sie 
+keiner Arbeitsgruppe angehören, brauchen Sie sich darum nicht zu kümmern.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Gateway eingeben
+</heading>
+
+<textblock>
+Ein Gateway ist ein Computer, der andere Computer im Netzwerk 
+zusammen verbindet (in der Regel ins Internet).
+</textblock>
+
+<textblock>
+Bei Netzwerkcomputern, die nicht direkt auf Ihr Netzwerk zugreifen 
+können, brauchen Sie ein Gateway.
+</textblock>
+
+<textblock>
+Sollten Sie so einen Computer in Ihrem Netzwerk haben, dann tragen Sie hier dessen IP ein.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Internet Protokoll Eingeben
+</heading>
+
+<textblock>
+Obwohl es eigentlich ein Internet-Protocol ist, wird TCP/IP 
+auch für die Kommunikation innerhalb Netzwerke verwendet. Dies 
+ist eine einfache Möglichkeit über das Netzwerk auch ins Internet 
+zu gelangen. Wenn Sie mit einem lokalen Netzwerk verbunden sind, 
+befragen Sie Ihren Netzwerkadministrator nach der IP-Adresse.
+</textblock>
+
+</section>
+
+</section>
 
 </section>
 
@@ -467,98 +628,9 @@ Spracheinstellungen vornehmen
 <!--
 3. Die Installation
 
-3.6 Spracheinstellungen vornehmen
-
-Yoper bietet nun im Installationsprogramm die Möglichkeit
-zwischen verschiedenen Sprachvarianten auszuwählen.
-
-* Bild: sprach_auswahl
-
-Nach dem Neustart des Systems wird die hier eingestellte Variante
-geladen. Diese Einstellung gilt nur für die Konsolenausgabe der
-shell. Für X-Window müssen sie diese Einstellung in sax2
-vornehmen. KDE braucht noch das kdei18n-de Paket, das Sie bequem über
-apt einspielen können. GNOME verwendet die hier eingestellte
-Sprachvariante automatisch.  
-
-
-3.7 PCMCIA
-
-Im nächsten Schritt der Installation werden Sie danach gefragt ob die
-PCMCIA-Unterstützung geladen werden soll. Wenn sie über einen Laptop
-oder über PCMCIA Erweiterungen für einen PC verfügen sollten sie hier
-mit ja antworten.
-
-* Bild: pcmcia_auswahl
-
 
 3.8 Das Netzwerk konfigurieren
-
-Vor dem " Netzwerk Setup " werden Sie gefragt, welche
-Internetverbindung Sie benutzen:
-"Would you like to run networksetup now? If this is a DIALUP system,
-please choose No. "
-Sollten Sie sich direkt ins Internet einwählen, so beantworten sie
-diese Frage mit Nein.
-
-
-3.8.1 DHCP ( Dynamic Host Configuration Protocol )
-
-DHCP ist eine Funktion, um ihr Netzwerk automatisch einzurichten und
-zu verbinden. Um DHCP zu benutzen, muß ein Computer in Ihrem Netzwerk
-bereits vorhanden sein, der die notwendigen Einstellungen übernimmt.
-Dieses ist in vielen Büros der Fall, und kann bei einigen
-Verbindungen möglich sein ( z.B. bei einem DSL-Router).
-Wenn Sie sich unsicher sind, sprechen Sie mit Ihrem
-Netzwerkadministrator oder schauen Sie in die Anleitungsbücher Ihres
-Routers. Wenn Sie sich dazu entscheiden, DHCP zu benutzen, werden die
-nächsten Schritte übersprungen.
-Falls Sie sich unsicher sind, ob Ihr Computer DHCP verwendet, ist es
-am besten, "Nein" auszuwählen und ihr Netzwerk manuell einzurichten.
-Falls sie die Frage bejahen, und kein DHCP haben, dauert der
-Bootvorgang immer sehr lange. Sie können das Problem damit beheben,
-in dem Sie auf " Y " klicken nach dem Booten, " Run command "
-auswählen, " kdesu konsole " sowie Ihr Root-Passwort eingeben, und
-"networksetup" in die daraufhin erscheinende Konsole eingeben.
-
-
 3.8.2 Netzwerk von Hand konfigurieren
-
-Wenn sie an einem Lokalen- oder in einem Firmen Netzwerk
-angeschlossen sind das kein DHCP zur Verfügung, stellt müssen Sie das
-Netzwerk von "Hand" konfigurieren. Wenn es einen Netzwerk
-Administrator gibt fragen sie ihn nach den unten angegebenen Daten.
-
-
-3.8.2.1 Hostname eingeben
-
-Der Hostname ist der Name, der Sie in Ihrem Netzwerk identifiziert.
-Ihr Standort hat vielleicht ein Namensschema oder einen Standard für
-die Namensgebung der Computer. Wenn nicht, wählen Sie einen für Sie
-sicheren Namen. Sollten Sie einer Arbeitsgruppe angehören, dann
-hängen Sie diese an Ihrem Hostnamen, z.B. " computer. arbeitsgruppe ".
-Wenn Sie keiner Arbeitsgruppe angehören, brauchen Sie sich darum
-nicht zu kümmern.
-
-
-3.8.2.2 Gateway eingeben
-
-Ein Gateway ist ein Computer, der andere Computer im Netzwerk zusammen
-verbindet (in der Regel ins Internet).
-Bei Netzwerkcomputern, die nicht direkt auf Ihr Netzwerk zugreifen
-können, brauchen Sie ein Gateway.
-Sollten Sie so einen Computer in Ihrem Netzwerk haben, dann tragen Sie
-hier dessen IP ein.
-
-
-3.8.2.3 Internet Protokoll Eingeben
-
-Obwohl es eigentlich ein Internet-Protocol ist, wird TCP/IP auch für
-die Kommunikation innerhalb Netzwerke verwendet. Dies ist eine
-einfache Möglichkeit über das Netzwerk auch ins Internet zu gelangen.
-Wenn Sie mit einem lokalen Netzwerk verbunden sind, befragen Sie Ihren
-Netzwerkadministrator nach der IP-Adresse.
-
 
 3.8.2.4 Netzwerkmaske Eingeben
 
