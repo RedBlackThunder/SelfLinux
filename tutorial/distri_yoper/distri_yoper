@@ -380,10 +380,10 @@ Yoper bietet in der Version 2.1 folgende Dateisysteme für die Partitionen an:
 </textblock>
 
 <table border="1">
-<th>
-<td>Dateisystem</td>
-<td>Beschreibung</td>
-</th>
+<tr>
+<th>Dateisystem</th>
+<th>Beschreibung</th>
+</tr>
 <tr>
 <td>ext2</td>
 <td>Dies ist das eigentliche Linux Dateisystem, es ist ausgereift und sicher. 
@@ -602,7 +602,7 @@ Sollten Sie so einen Computer in Ihrem Netzwerk haben, dann tragen Sie hier dess
 <section>
 
 <heading>
-Internet Protokoll Eingeben
+Internet Protokoll eingeben
 </heading>
 
 <textblock>
@@ -615,7 +615,326 @@ befragen Sie Ihren Netzwerkadministrator nach der IP-Adresse.
 
 </section>
 
+<section>
+
+<heading>
+Netzwerkmaske eingeben
+</heading>
+
+<textblock>
+Die Netzwerkmaske wird dazu benutzt, um festzustellen, ob ein Computer 
+im Netzwerk direkt erreichbar ist (LAN), oder ob er über den Gateway 
+erreichbar ist. Wenn Sie unsicher sind, fragen Sie Ihren Netzwerkadministrator. 
+Für kleine Netzwerke ist dies normalerweise "255.255.255.0".
+</textblock>
+
 </section>
+
+<section>
+
+<heading>
+Broadcastadresse eingeben
+</heading>
+
+<textblock>
+Die Broadcastadresse ist eine spezielle Adresse, auf die alle 
+Computer im Netzwerk reagieren, wenn sie richtig eingestellt ist. 
+Normalerweise beinhalten die ersten drei Zahlen die von den Computern 
+im Netzwerk, gefolgt von der Nummer 144, z.B. wenn Ihr Computer die 
+IP-Adresse 192.168.1.1 hat, dann dürfte die Broadcastadresse 192.168.1.255 
+sein. Wie immer gilt auch hier: Fragen sie sicherheitshalber 
+Ihren Netzwerkadministrator.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+DNS-Server eingeben
+</heading>
+
+<textblock>
+Ein Domain Name System (DNS) ist ein Server, der Ihre Computernamen 
+und Internetadressen anhand numerischen Angaben verwaltet. Vom Prinzip 
+her genauso, als wenn Sie ins Telefonbuch schauen, um die Telefonnummer 
+einer Person zu suchen. Ohne DNS müßten Sie die numerische IP-Adresse 
+der jeweiligen Internetseite kennen, um hierauf zugreifen zu können. 
+Geben Sie bitte die genaue, gültige DNS hier ein. Sollten Sie einen 
+Router bzw. ein Gateway besitzen, funktioniert möglicherweise dieser 
+als DNS-Server. Schauen Sie dies in der betreffenden Betriebsanleitung 
+nach. Ansonsten geben Sie die IP-Adresse Ihres Providers an. Haben Sie 
+einen Netzwerkadministrator, so befragen Sie diesen nach den genauen 
+Angaben.
+</textblock>
+
+</section>
+
+</section>
+
+<section>
+
+<heading>
+DSL konfigurieren
+</heading>
+
+<textblock>
+Die DSL-Konfiguration von Yoper ist Standardmässig installiert. 
+Der Zugang wird über rp-pppoe konfiguriert. Dies können sie im 
+Anschluss an die Installation durchführen.
+</textblock>
+
+<section>
+
+<heading>
+Der brüllende Pinguin
+</heading>
+
+<textblock>
+Da es schon mehrere Beschreibungen für das Einrichten von rp-pppoe
+gibt, sei hier auf den <ref chapter="adsl">adsl Text von SelfLinux</ref> und die
+hervorragenden Seite von 
+<ref lang="de" url="http://www.adsl4linux.de/howtos/">http://www.adsl4linux.de/howtos</ref> verwiesen.
+</textblock>
+
+</section>
+
+</section>
+
+</section>
+
+<section>
+
+<heading>
+Grundeinstellungen zum Start
+</heading>
+
+<textblock>
+Sie werden nun gefragt ob sie Grafisch oder auf der Konsole arbeiten wollen.
+</textblock>
+
+<textblock>
+Wollen Sie X-Window beim Starten aktivieren?
+</textblock>
+
+<textblock>
+X-Window ist die Basis für ein grafisches System, hier dem KDE. Wenn Sie mit "Yes" zustimmen, 
+wird es automatisch vorkonfiguriert.
+</textblock>
+
+<textblock>
+Wenn dies eine Minimalinstallation für textbasiertes Arbeiten sein soll, 
+verneinen Sie die Frage mit "No".
+</textblock>
+
+<section>
+
+<heading>
+Lilo im MBR (Master Boot Record)
+</heading>
+
+<textblock>
+LILO, der " Linux Loader ", ist eine Software, welche 
+Ihr Betriebssystem identifiziert, bzw. Sie eine Auswahl der auf 
+Ihrem Computer vorhandenen Betriebssysteme vornehmen läßt.
+</textblock>
+
+<textblock>
+Wenn Sie ein installiertes Microsoft Windows (R) auf Ihrem Computer 
+haben, so wird dies automatisch erkannt und auch eingebunden.
+</textblock>
+
+<textblock>
+Beachten Sie daher bitte, daß es sich als sehr sinnvoll erweist, von ggf. 
+anderen vorhandenen Betriebssystemen Bootdisketten zu 
+erstellen, bzw. diese bereit zu halten.
+</textblock>
+
+<textblock>
+Im Anschluß an die Installation läßt sich LILO dann nachkonfigurieren. 
+Es besteht nun auch die Möglichkeit GRUB einen weiteren Bootlader der unter 
+Linux viele Anhänger hat einzubinden. GRUB ist experimental in Yoper 
+eingebunden und verfügt noch nicht über die Unterstützung wie LILO.
+</textblock>
+
+<textblock>
+Beachten Sie bitte das die verwendete GRUB Version Reiser4 nicht 
+unterstützt. Für Reiser4 müssen sie LILO verwenden.
+</textblock>
+
+<image height="300">
+<filename>lilo_oder_grub_auswahl.png</filename>
+<title>Auswahl lilo oder grub</title>
+</image>
+
+</section>
+
+<section>
+
+<heading>
+Bootrecord in der root Partition
+</heading>
+
+<textblock>
+Wenn sie den Bootrecord nach "/" schreiben denken sie daran 
+die Partition in Ihren bestehenden Bootloader zu integrieren oder 
+sie nutzen die Bootdiskette. Ihr yoper wird nach dem beenden der 
+Installation nicht selbstständig starten.
+</textblock>
+
+</section>
+
+</section>
+
+<section>
+
+<heading>
+ALSA Soundtreiber installieren
+</heading>
+
+<textblock>
+Im nächsten Schritt der Installation können Sie Ihren 
+Soundkartentreiber auswählen.
+</textblock>
+
+<textblock>
+Advanced Linux Sound Architectur (ALSA) setup, bietet Ihnen 
+nun die Möglichkeit Ihre Soundkarte auszuwählen und sie automatisch 
+in das System einzubinden. Wählen Sie bitte ja aus um dies zu tun.
+</textblock>
+
+<image height="300">
+<filename>soundkarte_konfigurieren_mit_alsa.png</filename>
+<title>Soundkarte konfigurieren</title>
+</image>
+
+</section>
+
+<section>
+
+<heading>
+Zeitzone einstellen
+</heading>
+
+<textblock>
+Jetzt werden Sie nach einigen lokalen Informationen und Ihrer Zeitzone 
+gefragt. Tragen Sie hier Ihren Ländercode für Ihre Region ein. 
+Sobald Sie "Enter" gedrückt haben, wird Ihnen eine Liste von Länder 
+in Ihrer Region angezeigt. Geben Sie hier Ihr Land ein und Ihre 
+Regionalen Einstellungen sind komplett.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Benutzerdaten eingeben
+</heading>
+
+<textblock>
+GNU/Linux Distributionen sind netzwerkorientiert, das heisst 
+sie müssen sich mit einem Namen und einem Passwort im System anmelden. 
+Dies sollten sie unbedingt tun damit dritte keinen Zugang zu Ihren 
+Daten erlangen. Es ist eine Unsitte sich automatisch in ein System 
+einzuloggen oder gar als Supernutzer root zu arbeiten.
+</textblock>
+
+<section>
+
+<heading>
+Nutzer einrichten
+</heading>
+
+<textblock>
+Als nächstes werden Sie nach einem Benutzernamen und einem Paßwort 
+für die Identifizierung in Ihrem System gefragt. Dies wird Ihr 
+Standard-Login sein. Ein Unix basiertes System unterscheidet zwischen 
+Gross- und Kleinschreibung. Benutzen sie für Ihren Nutzernamen nur 
+kleine Buchstaben da sie sonst Schwierigkeiten bekommen da das 
+Anmeldeskript nur kleine Buchstaben erwartet.
+</textblock>
+
+<textblock>
+Merken Sie sich Ihr Paßwort gut, es ist der Schlüssel für Ihren Computerzugriff.
+</textblock>
+
+<textblock>
+Der Benutzername sollte relativ kurz, aber eindeutig sein. Er kann 
+Buchstaben und Zahlen enthalten, aber keine Sonder- oder Leer- Zeichen. 
+Die einzigen erlaubten Sonderzeichen sind "-" 
+(Bindestrich) und "_" (Unterstrich).
+</textblock>
+
+<textblock>
+Das Paßwort hingegen darf alle möglichen erwünschten Zeichen enthalten. In der 
+Regel sollte es so gross wie möglich aber mindestens sechs- bis achtstellig 
+sein. Die Verwendung von Sonderzeichen, Zahlen und Großbuchstaben helfen 
+Ihnen dabei, ein möglichst sicheres Paßwort zu erstellen. Sie werden zur 
+wiederholten Eingabe Ihres angegeben Paßwortes gebeten. Sollten Sie hier einen 
+falschen Eintrag machen, werden Sie dazu aufgefordert, es erneut zu versuchen. 
+Das System wird Ihre Eingabe des Paßwortes nicht auf dem Display anzeigen.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+Supernutzer root einrichten
+</heading>
+
+<textblock>
+Nun werden Sie zum Erstellen eines Root-Paßwortes aufgefordert. root 
+ist der Systemadministrator Ihres Linux-Systemes. Er allein hat 
+uneingeschränkten Zugriff auf die Betriebsinterna Ihres Computers. 
+Normalerweise sollten Sie sich lediglich als normaler Benutzer in 
+Ihr System einloggen, als root nur dann, wenn Sie systemspezifische 
+Änderungen vornehmen wollen. Dies dient der Sicherheit und Stabilität 
+Ihres Systems.
+</textblock>
+
+<textblock>
+Wichtig: Begeben sie sich niemals als Root in das Internet, da Sie 
+sonst Angreifern die bequemste Tür zum Einfall öffnen.
+</textblock>
+
+</section>
+
+</section>
+
+<section>
+
+<heading>
+Beenden der Installation
+</heading>
+
+<textblock>
+Schließen Sie nun die Installation in den folgenden Zeilen mit exit 
+(Enter) und reboot (Enter) ab. Wenn Ihr Computer neu startet, 
+nehmen sie die Yoper-Installations-CD aus CD-ROM-Laufwerk. 
+Jetzt wird YOS gestartet.
+</textblock>
+
+</section>
+
+</section>
+
+</split>
+
+<split>
+
+<section>
+
+<heading>
+Neustarten und grafischen Login konfigurieren
+</heading>
+
+<section>
+
+<heading>
+SaX2
+</heading>
 
 </section>
 
@@ -626,179 +945,6 @@ befragen Sie Ihren Netzwerkadministrator nach der IP-Adresse.
 </chapter>
 
 <!--
-3. Die Installation
-
-
-3.8 Das Netzwerk konfigurieren
-3.8.2 Netzwerk von Hand konfigurieren
-
-3.8.2.4 Netzwerkmaske Eingeben
-
-Die Netzwerkmaske wird dazu benutzt, um festzustellen, ob ein Computer
-im Netzwerk direkt erreichbar ist (LAN), oder ob er über den Gateway
-erreichbar ist. Wenn Sie unsicher sind, fragen Sie Ihren
-Netzwerkadministrator. Für kleine Netzwerke ist dies normalerweise
-"255.255.255.0".
-
-
-3.8.2.5  Broadcastadresse Eingeben
-
-Die Broadcastadresse ist eine spezielle Adresse, auf die alle Computer
-im Netzwerk reagieren, wenn sie richtig eingestellt ist.
-Normalerweise beinhalten die ersten drei Zahlen die von den Computern
-im Netzwerk, gefolgt von der Nummer 144, z.B. wenn Ihr Computer die
-IP-Adresse 192.168.1.1 hat, dann dürfte die Broadcastadresse
-192.168.1.255 sein. Wie immer gilt auch hier: Fragen sie
-sicherheitshalber Ihren Netzwerkadministrator.
-
-
-3.8.2.6 DNS-Server Eingeben
-
-Ein Domain Name System ( DNS ) ist ein Server, der Ihre Computernamen
-und Internetadressen anhand numerischen Angaben verwaltet. Vom
-Prinzip her genauso, als wenn Sie ins Telefonbuch schauen, um die
-Telefonnummer einer Person zu suchen. Ohne DNS müßten Sie die
-numerische IP-Adresse der jeweiligen Internetseite kennen, um hierauf
-zugreifen zu können. Geben Sie bitte die genaue, gültige DNS hier
-ein. Sollten Sie einen Router bzw. ein Gateway besitzen, funktioniert
-möglicherweise dieser als DNS-Server. Schauen Sie dies in der
-betreffenden Betriebsanleitung nach. Ansonsten geben Sie die
-IP-Adresse Ihres Providers an. Haben Sie einen Netzwerkadministrator,
-so befragen Sie diesen nach den genauen Angaben.
-
-
-3.8.3 DSL Konfigurieren
-
-Die DSL-Konfiguration von Yoper ist Standardmässig installiert. 
-Der Zugang wird über rp-pppoe konfiguriert. Dies können sie im 
-Anschluss an die Installation durchführen. 
-
-
-3.8.3.1 Der brüllende Pinguin
-
-Da es schon mehrere Beschreibungen für das Einrichten von rp-pppoe
-gibt, sei hier auf einen Artikel von SelfLinux verwiesen und der
-hervorragenden Seite von adsl4linux.de .
-
-***LINKS***
-http://selflinux.org/selflinux/html/adsl.html
-http://www.adsl4linux.de/howtos/rp-pppoe.php?PROVIDER=AOL&DIST=RH90
-***LINKS***
-
-3.9 Grundeinstellungen zum Start
-
-Sie werden nun gefragt ob sie Grafisch oder auf der Konsole arbeiten
-wollen.
-Wollen Sie X-Window beim Starten aktivieren?
-X-Window ist die Basis für ein grafisches System, hier dem KDE. 
-Wenn Sie mit ''Yes'' zustimmen, wird es automatisch vorkonfiguriert.
-Wenn dies eine Minimalinstallation für textbasiertes
-Arbeiten sein soll, verneinen Sie die Frage mit ''No''.
-
-
-3.9.1 Lilo im MBR (Master Boot Record)
-
-LILO, der " Linux Loader ", ist eine Software, welche Ihr
-Betriebssystem identifiziert, bzw. Sie eine Auswahl der auf Ihrem
-Computer vorhandenen Betriebssysteme vornehmen läßt.
-Wenn Sie ein installiertes Microsoft Windows (R) auf Ihrem Computer
-haben, so wird dies automatisch erkannt und auch eingebunden.
-Beachten Sie daher bitte, daß es sich als sehr sinnvoll erweist, von
-ggf. anderen vorhandenen Betriebssystemen Bootdisketten zu erstellen,
-bzw. diese bereit zu halten.
-Im Anschluß an die Installation läßt sich LILO dann nachkonfigurieren.
-Es besteht nun auch die Möglichkeit GRUB einen weiteren Bootlader der
-unter Linux viele Anhänger hat einzubinden. GRUB ist experimental in
-Yoper eingebunden und verfügt noch nicht über die Unterstützung
-wie LILO. 
-Beachten Sie bitte das die verwendete GRUB Version Reiser4 nicht
-unterstützt. Für Reiser4 müssen sie LILO verwenden.
-
-* Bild: lilo_oder_grub_auswahl
-
-
-3.9.3 Bootrecord in der root Partition
-
-Wenn sie den Bootrecord nach "/" schreiben denken sie daran die
-Partition in Ihren bestehenden Bootloader zu integrieren oder sie
-nutzen die Bootdiskette. Ihr yoper wird nach dem beenden der
-Installation nicht selbstständig starten.
-
-
-3.10 ALSA Soundtreiber installieren
-
-Im nächsten Schritt der Installation können Sie Ihren
-Soundkartentreiber auswählen.
-Advanced Linux Sound Architectur (ALSA) setup, bietet Ihnen nun die
-Möglichkeit Ihre Soundkarte auszuwählen und sie automatisch in das
-System einzubinden. Wählen Sie bitte ja aus um dies zu tun.
-
-* Bild: soundkarte_konfigurieren
-
-
-3.11 Zeitzone einstellen
-
-Jetzt werden Sie nach einigen lokalen Informationen und Ihrer Zeitzone
-gefragt. Tragen Sie hier Ihren Ländercode für Ihre Region ein. Sobald
-Sie " Enter " gedrückt haben, wird Ihnen eine Liste von Länder in
-Ihrer Region angezeigt. Geben Sie hier Ihr Land ein und Ihre
-Regionalen Einstellungen sind komplett.
-
-
-3.12 Benutzerdaten eingeben
-
-GNU/Linux Distributionen sind netzwerkorientiert, das heisst sie
-müssen sich mit einem Namen und einem Passwort im System anmelden.
-Dies sollten sie unbedingt tun damit dritte keinen Zugang zu Ihren
-Daten erlangen. Es ist eine Unsitte sich automatisch in ein System
-einzuloggen oder gar als Supernutzer root zu arbeiten.
-
-
-3.12.1 Nutzer einrichten
-
-Als nächstes werden Sie nach einem Benutzernamen und einem Paßwort für
-die Identifizierung in Ihrem System gefragt. Dies wird Ihr
-Standard-Login sein. Ein Unix basiertes System unterscheidet zwischen
-Gross- und Kleinschreibung. Benutzen sie für Ihren Nutzernamen nur
-kleine Buchstaben da sie sonst Schwierigkeiten bekommen da das
-Anmeldeskript nur kleine Buchstaben erwartet.
-Merken Sie sich Ihr Paßwort gut, es ist der Schlüssel für Ihren
-Computerzugriff.
-Der Benutzername sollte relativ kurz, aber eindeutig sein. Er kann
-Buchstaben und Zahlen enthalten, aber keine Sonder- oder Leer-
-Zeichen. Die einzigen erlaubten Sonderzeichen sind " -" (Bindestrich)
-und " _ " (Unterstrich).
-Das Paßwort hingegen darf alle möglichen erwünschten Zeichen
-enthalten. In der Regel sollte es so gross wie möglich aber mindestens
-sechs- bis achtstellig sein. Die Verwendung von Sonderzeichen,
-Zahlen und Großbuchstaben helfen Ihnen dabei, ein möglichst sicheres
-Paßwort zu erstellen. Sie werden zur wiederholten Eingabe Ihres
-angegeben Paßwortes gebeten. Sollten Sie hier einen falschen Eintrag
-machen, werden Sie dazu aufgefordert, es erneut zu versuchen. Das
-System wird Ihre Eingabe des Paßwortes nicht auf dem Display
-anzeigen.
-
-
-3.12.2 Supernutzer root einrichten
-
-Nun werden Sie zum Erstellen eines Root-Paßwortes aufgefordert. root
-ist der Systemadministrator Ihres Linux-Systemes. Er allein hat
-uneingeschränkten Zugriff auf die Betriebsinterna Ihres Computers.
-Normalerweise sollten Sie sich lediglich als normaler Benutzer in
-Ihr System einloggen, als root nur dann, wenn Sie systemspezifische
-Änderungen vornehmen wollen. Dies dient der Sicherheit und Stabilität
-Ihres Systems.
-Wichtig: Begeben sie sich niemals als Root in das Internet, da Sie
-sonst Angreifern die bequemste Tür zum Einfall öffnen.
-
-
-3.13 Beenden der Installation
-
-Schließen Sie nun die Installation in den folgenden Zeilen mit
-exit (Enter) und reboot (Enter) ab. Wenn Ihr Computer neu startet,
-nehmen sie die Yoper-Installations-CD aus CD-ROM-Laufwerk. Jetzt wird
-YOS gestartet.
-
 
 4. Neustarten und grafischen Login konfigurieren
 
