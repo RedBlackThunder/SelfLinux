@@ -54,7 +54,8 @@ Teile der Englischen Übersetzung dieses Textes sind von
   </textblock>
 
   <textblock>
-<name email="lars.neubert@yoper.de">Lars Neubert</name> und <name email="h.kriege@freenet.de">Helmut Kriege</name>
+<name email="lars.neubert@yoper.de">Lars Neubert</name> und 
+<name email="h.kriege@freenet.de">Helmut Kriege</name>
   </textblock>
 
 <textblock>
@@ -107,11 +108,22 @@ YOPER Your Operating System
 </heading>
 
 <textblock>
-Yoper ist ein schnelles auf intel i686 Prozessoren optimiertes Desktop Betriebssystem. Es ist aus den original Quellen kompiliert (from scratch) und kombiniert sie mit den besten Eigenschaften der grossen Distributionen. Es unterscheidet sich aber Grundlegend von ihnen da es kompakt, standardisiert, auf den Desktop optimiert ist, dadurch schneller als das was Sie von den grossen Distributionen gewohnt sind. Es nutzt in der Verbindung mit den original Quellen für die Grundinstallation, RPM das Red Hat Paketsystem und Apt4rpm das daß einspielen neuer Pakete zum Kinderspiel werden lässt. Es verwendet die kudzu Hardware-Erkennung und die Start-Skripte von Red Hat. Des weiteren das Hardware Setup von Knoppix. Zur einfachen Konfiguration von X-Free wird Sax2 von SuSE verwendet. Es ist geplant Yast2 von SuSE zur Systemverwaltung einzubinden.
+Yoper ist ein schnelles auf intel i686 Prozessoren optimiertes Desktop 
+Betriebssystem. Es ist aus den original Quellen kompiliert (from scratch) 
+und kombiniert sie mit den besten Eigenschaften der grossen Distributionen. 
+Es unterscheidet sich aber Grundlegend von ihnen da es kompakt, standardisiert, 
+auf den Desktop optimiert ist, dadurch schneller als das was Sie von den grossen 
+Distributionen gewohnt sind. Es nutzt in der Verbindung mit den original Quellen 
+für die Grundinstallation, RPM das Red Hat Paketsystem und Apt4rpm das daß einspielen 
+neuer Pakete zum Kinderspiel werden lässt. Es verwendet die kudzu Hardware-Erkennung 
+und die Start-Skripte von Red Hat. Des weiteren das Hardware Setup von Knoppix. Zur 
+einfachen Konfiguration von X-Free wird Sax2 von SuSE verwendet. Es ist geplant Yast2 
+von SuSE zur Systemverwaltung einzubinden.
 </textblock>
 
 <textblock>
-An Software werden Kernel 2.6.8, OpenOffice 1.1.2, KDE 3.3, Xfree4.4.0, Mozilla 1.7 und hunderte anderer Softwarepakete mitgeliefert.
+An Software werden Kernel 2.6.8, OpenOffice 1.1.2, KDE 3.3, Xfree4.4.0, Mozilla 1.7 
+und hunderte anderer Softwarepakete mitgeliefert.
 </textblock>
 
 <textblock>
@@ -994,179 +1006,296 @@ gestartet und sie können sich in Ihrem System einloggen.
 
 </split>
 
-</chapter>
+<split>
 
-<!--
+<section>
 
-5. Konfigurieren des Systems
+<heading>
+Konfigurieren des Systems
+</heading>
 
-Yoper.com beinhaltet einen Synchronisationsservice, der es Ihnen
-erlaubt, Ihr System immer auf den aktuellen Stand zu halten. Dieser
-Service erlaubt es Ihnen, regelmäßig oder gelegentlich nach Updates
-zu schauen. Downloaden und installieren Sie diese Updates. Die
-Pakete, die heruntergeladen werden, sind schon kompiliert und stehen
-jedermann kostenlos zur freien Verfügung. Es ist auch möglich
-sogenannte "Third-Party-Software (von Drittanbietern)" zu
-installieren. Diese werden nicht von Yoper unterstützt
-und sind nicht in den Updates enthalten.
+<textblock>
+Yoper.com beinhaltet einen Synchronisationsservice, der es Ihnen 
+erlaubt, Ihr System immer auf den aktuellen Stand zu halten. Dieser 
+Service erlaubt es Ihnen, regelmäßig oder gelegentlich nach Updates 
+zu schauen. Downloaden und installieren Sie diese Updates. Die Pakete, 
+die heruntergeladen werden, sind schon kompiliert und stehen jedermann 
+kostenlos zur freien Verfügung. Es ist auch möglich sogenannte 
+"Third-Party-Software (von Drittanbietern)" zu installieren. Diese 
+werden nicht von Yoper unterstützt und sind nicht in den Updates 
+enthalten.
+</textblock>
 
+<section>
 
-5.1 Debian Installer APT
+<heading>
+Debian Installer APT
+</heading>
 
-<Zitat aus dem APT-Howto>
-http://www.debian.org/doc/manuals/apt-howto/ch-apt-get.de.html
+<textblock>
+Zitat aus dem APT-Howto <ref lang="de" url="http://www.debian.org/doc/manuals/apt-howto/ch-apt-get.de.html">
+http://www.debian.org/doc/manuals/apt-howto/ch-apt-get.de.html</ref>
+</textblock>
 
-Am Anfang war das .tar.gz. Benutzer mussten jedes Programm, welches
-Sie auf ihren GNU/Linux-Systemen benutzen wollten, selbst kompilieren.
-Zu Beginn der Entwicklung des Debian-Projekts erachtete man es für
-notwendig, dass das System eine Methode zum Verwalten der Pakete, die
-auf dem System installiert sind, enthält. Man gab dieser Methode den
-Namen dpkg. Dadurch war das erste "Paket" auf GNU/Linux geboren, bevor
-Red Hat sich entschied, ihr eigenes RPM-System zu erschaffen.
-Schnell standen die Macher von GNU/Linux vor einem neuen Problem. Sie
-brauchten ein schnelles, praktisches und effizientes Mittel, um Pakete
-zu installieren, das Abhängigkeiten automatisch behandeln und ihre
-Konfigurationsdateien während des Aktualisierens berücksichtigen
-würde.
+<quotation>
+Am Anfang war das .tar.gz. Benutzer mussten jedes Programm, 
+welches Sie auf ihren GNU/Linux-Systemen benutzen wollten, selbst 
+kompilieren. Zu Beginn der Entwicklung des Debian-Projekts erachtete 
+man es für notwendig, dass das System eine Methode zum Verwalten der 
+Pakete, die auf dem System installiert sind, enthält. Man gab dieser 
+Methode den Namen dpkg. Dadurch war das erste "Paket" auf GNU/Linux 
+geboren, bevor Red Hat sich entschied, ihr eigenes RPM-System zu erschaffen.
+</quotation>
 
-Und wieder war es das Debian-Projekt, das den Weg machte und APT, das
-"Advanced Packaging Tool", welches seitdem von Connectiva auf RPM
-portiert und von einigen anderen Distributionen übernommen wurde, das
+<quotation>
+Schnell standen die Macher von GNU/Linux vor einem neuen Problem. 
+Sie brauchten ein schnelles, praktisches und effizientes Mittel, 
+um Pakete zu installieren, das Abhängigkeiten automatisch behandeln 
+und ihre Konfigurationsdateien während des Aktualisierens berücksichtigen würde.
+</quotation>
+
+<quotation>
+Und wieder war es das Debian-Projekt, das den Weg machte und APT, das 
+"Advanced Packaging Tool", welches seitdem von Connectiva auf RPM 
+portiert und von einigen anderen Distributionen übernommen wurde, das 
 Licht der Welt erblicken ließ.
-<Zitat ende>
-APT verwendet zum arbeiten die Datei /etc/apt/sources.list in der eine
-Liste von Quellen enthalten ist, von denen Pakete installiert werden
-können. Ab der Version V2.0pre3 sieht sie unter Yoper folgendermassen
-aus:
+</quotation>
 
-***LINKS***
+<textblock>
+APT verwendet zum arbeiten die Datei /etc/apt/sources.list 
+in der eine Liste von Quellen enthalten ist, von denen Pakete 
+installiert werden können. Ab der Version V2.0pre3 sieht sie 
+unter Yoper folgendermassen aus:
+</textblock>
+
+<file>
+<title>sources.list</title>
+<content>
 rpm ftp://us2.yoper.com/pub/linux/yoper/yoper version2 os
 rpm-src ftp://us2.yoper.com/pub/linux/yoper/yoper version2 os
-***LINKS***
+</content>
+</file>
 
-Der erste Link enthält die vorkompilierten Pakete, der zweite die
-Quellen der zur Verfügung stehenden Pakete. Die Quellen brauchen Sie
-aber nur, wenn Sie einmal Schwierigkeiten haben sollten mit einem
-vorkompilierten Programm.
-Wenn sie diese Datei ändern müssen, z.B. wenn es mehr oder andere
-Quellen für Yoper geben sollte, vergessen sie nicht ein apt-get
+<textblock>
+Der erste Link enthält die vorkompilierten Pakete, der zweite die 
+Quellen der zur Verfügung stehenden Pakete. Die Quellen brauchen 
+Sie aber nur, wenn Sie einmal Schwierigkeiten haben sollten mit 
+einem vorkompilierten Programm.
+</textblock>
+
+<textblock>
+Wenn sie diese Datei ändern müssen, z.B. wenn es mehr oder andere 
+Quellen für Yoper geben sollte, vergessen sie nicht ein apt-get 
 update zu machen.
+</textblock>
+
+<textblock>
 APT erkennt Abhängigkeiten zwischen den Paketen. Es löst sie 
-entweder auf, oder installiert die benötigten Programme. Wenn 
-dies nicht möglich ist, gestattet apt nicht dass ein Programm 
-installiert wird. Damit bleiben andere installierte
-Programme lauffähig.
+entweder auf, oder installiert die benötigten Programme. Wenn dies 
+nicht möglich ist, gestattet apt nicht dass ein Programm installiert 
+wird. Damit bleiben andere installierte Programme lauffähig.
+</textblock>
 
+</section>
 
-5.2 Grundlegende Befehle
+<section>
 
-Wie oben schon angeführt gibt es Befehle um APT zu steuern. Die
-Grundlegenden werden Ihnen nun weiter unten vorgestellt. Sie brauchen 
-wenn Sie mit APT arbeiten eine Konsole mit root Rechte. Dies ist der
-einzige root Zugang den Sie im Internet nutzen sollten! Die Gefahr
-dass in dieser Zeit in Ihr System eingebrochen wird ist vorhanden.
-Da Sie ja diesen Prozess überwachen, sollte es nicht zu
-tragischen Ereignissen für Ihr System kommen. Sie können, wenn sie
-auf Konsole arbeiten, mit "su" und Ihrem Supernutzer-Passwort root
-Rechte erlangen. Das selbe gilt für jedes X-Terminal wenn sie eine
-GUI benutzen. Verwenden sie nicht "su -" denn das würde einem
-Angreifer erlauben auch auf Bereiche Zugriff zu erlangen, den
-wirklich nur root haben sollte.
+<heading>
+Grundlegende Befehle
+</heading>
 
+<textblock>
+Wie oben schon angeführt gibt es Befehle um APT zu steuern. 
+Die Grundlegenden werden Ihnen nun weiter unten vorgestellt. Sie 
+brauchen wenn Sie mit APT arbeiten eine Konsole mit root Rechte. 
+Dies ist der einzige root Zugang den Sie im Internet nutzen sollten! 
+Die Gefahr dass in dieser Zeit in Ihr System eingebrochen wird ist 
+vorhanden. Da Sie ja diesen Prozess überwachen, sollte es nicht zu 
+tragischen Ereignissen für Ihr System kommen. Sie können, wenn sie 
+auf Konsole arbeiten, mit "su" und Ihrem Supernutzer-Passwort root 
+Rechte erlangen. Das selbe gilt für jedes X-Terminal wenn sie eine 
+GUI benutzen. Verwenden sie nicht "su -" denn das würde einem Angreifer 
+erlauben auch auf Bereiche Zugriff zu erlangen, den wirklich nur root 
+haben sollte.
+</textblock>
 
-5.2.1 apt-get update
+<section>
 
-apt-get update wird dazu verwendet die Paket-Datenbank ihres Computers
-zu aktuallisieren. Aus den in Ihrer lokalen Paket-Datenbank
-gespeicherten Informationen werden die Programme installiert. Bevor
-Sie Pakete installieren, sollten sie immer ein apt-get update machen.
+<heading>
+apt-get update
+</heading>
 
+<textblock>
+apt-get update wird dazu verwendet die Paket-Datenbank ihres 
+Computers zu aktuallisieren. Aus den in Ihrer lokalen Paket-Datenbank 
+gespeicherten Informationen werden die Programme installiert. Bevor Sie 
+Pakete installieren, sollten sie immer ein apt-get update machen.
+</textblock>
 
-5.2.2 apt-get upgrade
+</section>
 
-Ein apt-get upgrade können sie ausführen wenn Sie Ihr yoper auf den
-aktuellen Stand bringen wollen. Es installiert abhängig von Ihrer
-bestehenden Paket-Datenbank aktualisierte Versionen der bereits
-installierten Programme. Wenn Sie ''apt-get -s upgrade'' ausführen,
-werden Ihnen die zu aktualisierenden Programme angezeigt aber sonst
-passiert nichts. Der Parameter ''-s'' simuliert nur das installieren
-der Programme.
-Wenn Ihnen APT sagt das es Programme zurückhält, liegt das daran dass
-sie sonst ein unstabiles System erhalten können, da Abhängigkeiten der
-Pakete nicht aufgelöst werden können. Dazu aber später mehr.
+<section>
 
+<heading>
+apt-get upgrade
+</heading>
 
-5.2.3 apt-get dist-upgrade
+<textblock>
+Ein apt-get upgrade können sie ausführen wenn Sie Ihr yoper auf den 
+aktuellen Stand bringen wollen. Es installiert abhängig von Ihrer 
+bestehenden Paket-Datenbank aktualisierte Versionen der bereits 
+installierten Programme. Wenn Sie ''apt-get -s upgrade'' ausführen, 
+werden Ihnen die zu aktualisierenden Programme angezeigt aber sonst 
+passiert nichts. Der Parameter ''-s'' simuliert nur das installieren der 
+Programme.
+</textblock>
 
-Ein ''apt-get dist-upgrade'' wird in der Regel gemacht wenn es eine
-neue Version des Betriebssystems gibt. Ein apt-get dist-upgrade''
-kann auch dazu dienen Pakete zu installieren, die wegen bisher
-ungelöster Abhängigkeiten nicht installiert wurden. 
-Dabei versucht apt  andere Pakete gezielt nachzuladen, die zur
-Erfüllung der Abhängigkeiten notwendig sind.  Auch diesen Vorgang
-können sie mit der Angabe ''-s'' simulieren.
+<textblock>
+Wenn Ihnen APT sagt das es Programme zurückhält, liegt das daran dass sie sonst 
+ein unstabiles System erhalten können, da Abhängigkeiten der Pakete nicht aufgelöst 
+werden können. Dazu aber später mehr.
+</textblock>
 
+</section>
 
-5.2.4 apt-cache search
+<section>
 
-Wenn sie ein Paket suchen, können sie es mit apt-cache search suchen.
-Sie brauchen nicht einmal den genauen Namen zu kennen, das eingeben
-von ''apt-cache search dvd'' zeigt ihnen alle Pakete an die entweder
-im Namen oder der Beschreibung die Buchstaben dvd enthalten.
+<heading>
+apt-get dist-upgrade
+</heading>
 
+<textblock>
+Ein "apt-get dist-upgrade" wird in der Regel gemacht wenn es eine 
+neue Version des Betriebssystems gibt. Ein "apt-get dist-upgrade" 
+kann auch dazu dienen Pakete zu installieren, die wegen bisher 
+ungelöster Abhängigkeiten nicht installiert wurden.
+</textblock>
 
-5.2.5 apt-get install (Paketname)
+<textblock>
+Dabei versucht apt andere Pakete gezielt nachzuladen, die zur Erfüllung 
+der Abhängigkeiten notwendig sind. Auch diesen Vorgang können sie mit 
+der Angabe "-s" simulieren.
+</textblock>
 
-Wenn sie Ihr zu installierendes Programm gefunden haben, können Sie es
-mit ''apt-get install Paketname'' installieren. Wenn das gewünschte 
-Programm andere Programme braucht um lauffähig zu sein,
-werden diese gleich mit installiert. 
-Sollten die Abhängigkeiten nicht aufgelöst werden können,
-wird das Programm auch nicht installiert. Auch hier können Sie zur
-Simulation den Parameter ''-s'' verwenden.
+</section>
 
+<section>
 
-5.2.6 apt-get remove (Paketname)
+<heading>
+apt-cache search
+</heading>
 
-Ein weiterer weg Abhängigkeiten aufzulösen ist es das/die Paket/e die
-Ihrer Installation im Wege stehen zu löschen. Das ist zwar nicht der
-Grund warum es diesen Befehl gibt, er ist vielmehr dazu gedacht
-Programme zu löschen, die Sie nicht mehr benutzen wollen sogar oder
-nie benutzt haben. Dies hat den Vorteil das sie ein schlankes =
-schnelles System haben. apt-get remove (Paketname) löscht das
-Programm und alle Programme die von ihm abhängen. Deshalb ist auch
-dort der Parameter ''-s'' sehr nützlich um unangenehme Überraschungen
-zu vermeiden.
+<textblock>
+Wenn sie ein Paket suchen, können sie es mit apt-cache search suchen. 
+Sie brauchen nicht einmal den genauen Namen zu kennen, das eingeben von 
+"apt-cache search dvd" zeigt ihnen alle Pakete an die entweder im Namen 
+oder der Beschreibung die Buchstaben dvd enthalten.
+</textblock>
 
+</section>
 
-5.2.7 synaptic das GUI Frontend für APT
+<section>
 
-Synaptic ist ein Frontend für apt. Alle oben angegebene Möglichkeiten
+<heading>
+apt-get install (Paketname)
+</heading>
+
+<textblock>
+Wenn sie Ihr zu installierendes Programm gefunden haben, können Sie es 
+mit "apt-get install Paketname" installieren. Wenn das gewünschte 
+Programm andere Programme braucht um lauffähig zu sein, werden 
+diese gleich mit installiert.
+</textblock>
+
+<textblock>
+Sollten die Abhängigkeiten nicht aufgelöst werden können, wird das 
+Programm auch nicht installiert. Auch hier können Sie zur Simulation 
+den Parameter "-s" verwenden.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+apt-get remove (Paketname)
+</heading>
+
+<textblock>
+Ein weiterer weg Abhängigkeiten aufzulösen ist es das/die Paket/e die 
+Ihrer Installation im Wege stehen zu löschen. Das ist zwar nicht der 
+Grund warum es diesen Befehl gibt, er ist vielmehr dazu gedacht 
+Programme zu löschen, die Sie nicht mehr benutzen wollen sogar oder 
+nie benutzt haben. Dies hat den Vorteil das sie ein schlankes = schnelles 
+System haben. apt-get remove (Paketname) löscht das Programm und alle 
+Programme die von ihm abhängen. Deshalb ist auch dort der Parameter "-s" 
+sehr nützlich um unangenehme Überraschungen zu vermeiden.
+</textblock>
+
+</section>
+
+<section>
+
+<heading>
+synaptic das GUI Frontend für APT
+</heading>
+
+<textblock>
+Synaptic ist ein Frontend für apt. Alle oben angegebene Möglichkeiten 
 haben sie auch unter Synaptic.
-Auch synaptic braucht root Rechte, seien Sie also vorsichtig. Sie
+</textblock>
+
+<textblock>
+Auch synaptic braucht root Rechte, seien Sie also vorsichtig. Sie 
 finden synaptic unter System >> Package Manager im KDE-Starter.
-Wie bei apt sollten sie erst ein Update machen in dem sie auf den
-Schalter Auffrischen klicken. Der Schalter "Aktualisierungen
-vormerken" gibt ihnen die Möglichkeit zwischen einem "Normalen" und
-einem "Intelligenten" Update, der Unterschied wird in einem
-Hinweisfenster erklärt.
-Es gibt in Synaptic auch die Möglichkeit nach Paketen zu suchen. Dies
-erreichen Sie, in dem Sie den ''Suchen'' Icon anklicken und in das
-Eingabefeld den zu suchenden Paketnamen eingeben. Sie können mit 
-verschiedenen Kriterien Ihre Suche ausweiten.
-Links sehen Sie eine Zusammenfassung der einzelnen Paketgruppen die
-zur Auswahl stehen. Rechts die einzelnen Pakete mit einer kurzen
-Beschreibung des Inhalts. Grüne Felder vor dem Paketnamen sind
-bereits installierte Pakete, graue noch nicht installierte.
-Beim anklicken eines grauen Feldes können Sie das Paket zur
-Installation vormerken, Bei einem grünem erhalten Sie die Möglichkeit
-das Paket nochmals zu installieren, es zu löschen (nur das Paket)
-oder vollständig zu löschen (mit allen Paketen die von ihm abhängen).
-Sie können mehrere Pakete zum Installieren vormerken. Wenn Sie alle
-Pakete die Sie installieren wollen selektiert haben, betätigen Sie
-bitte das ''Anwenden'' Icon. Wenn es  keine  Abhängigkeitsprobleme
-unter den einzelnen Paketen gibt werden die Pakete wie unter apt
-installiert.
+</textblock>
 
+<textblock>
+Wie bei apt sollten sie erst ein Update machen in dem sie auf den Schalter 
+Auffrischen klicken. Der Schalter "Aktualisierungen vormerken" gibt 
+ihnen die Möglichkeit zwischen einem "Normalen" und einem "Intelligenten" 
+Update, der Unterschied wird in einem Hinweisfenster erklärt.
+</textblock>
 
--->
+<textblock>
+Es gibt in Synaptic auch die Möglichkeit nach Paketen zu suchen. 
+Dies erreichen Sie, in dem Sie den "Suchen" Icon anklicken und in das 
+Eingabefeld den zu suchenden Paketnamen eingeben. Sie können mit verschiedenen 
+Kriterien Ihre Suche ausweiten.
+</textblock>
+
+<textblock>
+Links sehen Sie eine Zusammenfassung der einzelnen Paketgruppen die zur Auswahl 
+stehen. Rechts die einzelnen Pakete mit einer kurzen Beschreibung des Inhalts. 
+Grüne Felder vor dem Paketnamen sind bereits installierte Pakete, graue noch 
+nicht installierte.
+</textblock>
+
+<textblock>
+Beim anklicken eines grauen Feldes können Sie das Paket 
+zur Installation vormerken, Bei einem grünem erhalten Sie die Möglichkeit das Paket 
+nochmals zu installieren, es zu löschen (nur das Paket) oder vollständig zu 
+löschen (mit allen Paketen die von ihm abhängen).
+</textblock>
+
+<textblock>
+Sie können mehrere Pakete 
+zum Installieren vormerken. Wenn Sie alle Pakete die Sie installieren wollen 
+selektiert haben, betätigen Sie bitte das "Anwenden" Icon.
+</textblock>
+
+<textblock>
+Wenn es keine 
+Abhängigkeitsprobleme unter den einzelnen Paketen gibt werden die Pakete wie 
+unter apt installiert.
+</textblock>
+
+</section>
+
+</section>
+
+</section>
+
+</split>
+
+</chapter>
