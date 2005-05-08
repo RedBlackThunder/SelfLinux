@@ -2,19 +2,44 @@
 
 <chapter>
  <title>Das Handbuch zu KSysV</title>
-
+ 
  <author>
-   <name>Peter Putzer</name>
-   <mailto>putzer@kde.org</mailto>
+  <name>Frank Börner</name>
+  <mailto>f.boerner@selflinux.org</mailto>
  </author>
-
+ 
+ <author>
+  <name>Volker Dose</name>
+  <mailto>vpdose@cpmgut.toppoint.de</mailto>
+ </author>
+ 
+ <author>
+  <name>Thomas Diehl</name>
+  <mailto>th.diehl@gmx.net</mailto>
+ </author>
+ 
+ <author>
+  <name>Eric Bischoff</name>
+  <mailto>e.bischoff@noos.fr</mailto>
+ </author>
+ 
+ <author>
+  <name>Peter Putzer</name>
+  <mailto>putzer@kde.org</mailto>
+ </author>
+ 
  <layout>
-   <name>Frank Börner</name>
-   <mailto>f.boerner@selflinux.org</mailto>
+  <name>Florian Frank</name>
+  <mailto>florian.frank@frankprivat.de</mailto>
+ </layout>
+ 
+ <layout>
+  <name>Frank Börner</name>
+  <mailto>f.boerner@selflinux.org</mailto>
  </layout>
 
  <license>
-   GFDL
+  GFDL
  </license>
 
  <index>kde_ksysv</index>
@@ -26,167 +51,174 @@ Dieses Handbuch beschreibt den KDE System V Init Editor KSysV.
  </description>
 
  <split>
+  <section>
 
-<section>
-
-<heading>
+   <heading>
 Einführung
-</heading>
+   </heading>
 
-<image height="300">
-     <filename>ksysv-gesamt.png</filename>
-     <title>KDE System V init Editor</title>
-    </image>
+   <image height="200">
+    <filename>ksysv-gesamt.png</filename>
+    <title>KDE System V init Editor</title>
+   </image>
 
-<textblock>
-Willkommen zum KDE System V init Editor, eher bekannt (und im folgenden auch so benannt) 
-als KSysV. Dieser Abschnitt führt ein paar Konzepte ein und beschreibt, was Sie mit KSysV tun können.
-</textblock>
+   <textblock>
+Willkommen zum KDE System V init Editor, eher bekannt (und im folgenden auch so
+benannt) als KSysV. Dieser Abschnitt führt ein paar Konzepte ein und beschreibt,
+was Sie mit KSysV tun können.
+   </textblock>
+  </section>
+ </split>
 
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Eine kurze Beschreibung von System V init
-</heading>
+   </heading>
 
-<textblock>
-Die folgende Erläuterung ist "geliehen" von tksysv (einer Inspirationsquelle für KSysV)
-</textblock>
+   <textblock>
+Die folgende Erläuterung ist geliehen von tksysv (einer Inspirationsquelle für
+KSysV)
+   </textblock>
 
-<textblock>
-Die System V init entwickelt sich rasch zum Standard für die Kontrolle von Programmstarts beim Hochfahren 
-des Systems in der Linux Welt. Und zwar deshalb, weil sie leichter zu benutzen, mächtiger und zugleich 
-flexibler ist als die traditionelle BSD-init.
-</textblock>
+   <textblock>
+Die System V init entwickelt sich rasch zum Standard für die Kontrolle von
+Programmstarts beim Hochfahren des Systems in der Linux Welt. Und zwar deshalb,
+weil sie leichter zu benutzen, mächtiger und zugleich flexibler ist als die
+traditionelle BSD-init.
+   </textblock>
 
-<textblock>
+   <textblock>
 Ich werde hier nicht weiter auf geschichtliche Aspekte eingehen 
 (v.a. weil ich darüber selbst nichts weiß :-).
-</textblock>
+   </textblock>
 
-<textblock>
-Die init-Binärdatei liegt unter <path>/sbin</path> und nicht unter <path>/etc</path>. Dies ist 
-deshalb wichtig, weil vielleicht jemand versuchen könnte, eine Maschine auf 
-System V init umzustellen, ohne eine Neuinstallation und Neuformatierung vorzunehmen. 
-Der Linux Kernel sieht zuerst unter <path>/etc</path> nach einer init-Datei. Deshalb müssen Sie sichergehen, 
+   <textblock>
+Die init-Binärdatei liegt unter <path>/sbin</path> und nicht unter
+<path>/etc</path>. Dies ist deshalb wichtig, weil vielleicht jemand versuchen
+könnte, eine Maschine auf System V init umzustellen, ohne eine Neuinstallation
+und Neuformatierung vorzunehmen. Der Linux Kernel sieht zuerst unter
+<path>/etc</path> nach einer init-Datei. Deshalb müssen Sie sichergehen, 
 dass die alte init von dort entfernt wurde, falls es dort eine gab.
-</textblock>
+   </textblock>
 
-<textblock>
-Die SysV init unterscheidet sich auch dadurch von der BSD init, dass sich die Konfigurationsdateien 
-in einem Unterordner von <path>/etc</path> befinden statt direkt in <path>/etc</path>. Dieser 
-Ordner heißt <path>rc.d</path>. Dort finden Sie <command>rc.sysinit</command> und folgende weitere Ordner:
-</textblock>
+   <textblock>
+Die SysV init unterscheidet sich auch dadurch von der BSD init, dass sich die
+Konfigurationsdateien in einem Unterordner von <path>/etc</path> befinden statt
+direkt in <path>/etc</path>. Dieser Ordner heißt <path>rc.d</path>. Dort finden
+Sie <command>rc.sysinit</command> und folgende weitere Ordner:
+   </textblock>
 
-<ul>
-<li>
+   <ul>
+    <li>
 init.d/
-</li>
-<li>
+    </li>
+    <li>
 rc0.d/
-</li>
-<li>
+    </li>
+    <li>
 rc1.d/
-</li>
-<li>
+    </li>
+    <li>
 rc2.d/
-</li>
-<li>
+    </li>
+    <li>
 rc3.d/
-</li>
-<li>
+    </li>
+    <li>
 rc4.d/
-</li>
-<li>
+    </li>
+    <li>
 rc5.d/
-</li>
-<li>
+    </li>
+    <li>
 rc6.d/
-</li>
-</ul>
+    </li>
+   </ul>
 
-<textblock>
-<path>init.d</path> enthält eine ganze Menge Skripte. Grundsätzlich benötigen Sie ein Skript für 
-jeden Systemdienst, den Sie beim Hochfahren des Systems bzw. beim Wechsel auf ein 
-anderes Runlevel starten möchten. Systemdienste beinhalten solche Dinge wie <command>Netzwerk, 
-NFS, sendmail, httpd etc.</command> Systemdienste beinhalten dagegen nicht solche Sachen 
-wie <command>setserial</command>, das nur einmal gestartet wird. Solche Aufrufe gehören nach <path>rc.local</path>.
-</textblock>
+   <textblock>
+<path>init.d</path> enthält eine ganze Menge Skripte. Grundsätzlich benötigen
+Sie ein Skript für jeden Systemdienst, den Sie beim Hochfahren des Systems bzw.
+beim Wechsel auf ein anderes Runlevel starten möchten. Systemdienste beinhalten
+solche Dinge wie <command>Netzwerk, NFS, sendmail, httpd etc.</command>
+Systemdienste beinhalten dagegen nicht solche Sachen wie
+<command>setserial</command>, das nur einmal gestartet wird. Solche Aufrufe
+gehören nach <path>rc.local</path>.
+   </textblock>
 
-<textblock>
-<path>rc.local</path> sollte seinerseits unter <path>/etc/rc.d</path> liegen, wenn Sie es benötigen. 
-Die meisten Systeme besitzen diese Datei, auch wenn es eigentlich nicht viel Verwendung 
-dafür gibt. Sie können ebenfalls ein <command>rc.serial</command> in <path>/etc/rc.d</path> anlegen, wenn Sie beim 
-Hochfahren etwas ausführen lassen wollen, was mit dem seriellen Anschluss zu tun hat.
-</textblock>
+   <textblock>
+<path>rc.local</path> sollte seinerseits unter <path>/etc/rc.d</path> liegen,
+wenn Sie es benötigen. Die meisten Systeme besitzen diese Datei, auch wenn es
+eigentlich nicht viel Verwendung dafür gibt. Sie können ebenfalls ein
+<command>rc.serial</command> in <path>/etc/rc.d</path> anlegen, wenn Sie beim 
+Hochfahren etwas ausführen lassen wollen, was mit dem seriellen Anschluss zu tun
+hat.
+   </textblock>
 
-<textblock>
+   <textblock>
 Der Ablauf ist folgender:
-</textblock>
+   </textblock>
 
-<ol>
-<li>
-der Kernel sucht an verschiedenen Stellen nach dem Programm init und startet die erste, die er findet;
-</li>
-<li>
+   <ol>
+    <li>
+der Kernel sucht an verschiedenen Stellen nach dem Programm init und startet die
+erste, die er findet;
+    </li>
+    <li>
 <command>init</command> startet <path>/etc/rc.d/rc.sysinit</path>.
-</li>
-<li>
+    </li>
+    <li>
 <command>rc.sysinit</command> tut eine Menge notwendiger Dinge und startet 
 dann <command>rc.serial</command> (wenn es existiert);
-</li>
-<li>
+    </li>
+    <li>
 <command>init</command> startet <command>rc.local</command>
-</li>
-<li>
+    </li>
+    <li>
 <command>init</command> startet alle Skripte für das voreingestellte Runlevel.
-</li>
-</ol>
+    </li>
+   </ol>
 
-<textblock>
-Das standardmäßige Runlevel ist in <path>/etc/inittab</path> eingetragen. Sie sollten im Anfangsbereich 
-eine Zeile wie die folgende sehen:
-</textblock>
+   <textblock>
+Das standardmäßige Runlevel ist in <path>/etc/inittab</path> eingetragen. Sie
+sollten im Anfangsbereich eine Zeile wie die folgende sehen:
+   </textblock>
 
-
-<shell>
-<output>
+   <shell>
+    <output>
 id:3:initdefault:
-</output>
-</shell>
+    </output>
+   </shell>
 
-<textblock>
-An diesem Punkt können Sie einen Blick in die zweite Spalte werfen und wahrscheinlich 
-feststellen, dass das voreingestellte Runlevel 3 ist. Wenn Sie das ändern möchten, 
-dann können Sie <path>/etc/inittab</path> von Hand bearbeiten und die "3" ändern. Seien Sie sehr 
-vorsichtig, wenn Sie an der inittab Änderungen durchführen. Falls Sie doch etwas 
-durcheinandergebracht haben, dann kommen Sie zur Reparatur wieder heran, indem Sie das 
-System neu starten und folgendes ausführen:
-</textblock>
+   <textblock>
+An diesem Punkt können Sie einen Blick in die zweite Spalte werfen und
+wahrscheinlich feststellen, dass das voreingestellte Runlevel 3 ist. Wenn Sie
+das ändern möchten, dann können Sie <path>/etc/inittab</path> von Hand
+bearbeiten und die <strong>3</strong> ändern. Seien Sie sehr vorsichtig, wenn
+Sie an der inittab Änderungen durchführen. Falls Sie doch etwas
+durcheinandergebracht haben, dann kommen Sie zur Reparatur wieder heran, indem
+Sie das System neu starten und folgendes ausführen:
+   </textblock>
 
-<shell>
-<output>
+   <shell>
+    <output>
 LILO boot: linux single
-</output>
-</shell>
+    </output>
+   </shell>
 
-<textblock>
-Dies sollte Ihnen ermöglichen, in den Einzelnutzer-Modus zu kommen und die Reparatur vorzunehmen.
-</textblock>
+   <textblock>
+Dies sollte Ihnen ermöglichen, in den Einzelnutzer-Modus zu kommen und die
+Reparatur vorzunehmen.
+   </textblock>
 
-<textblock>
-Aber wie startet es nun all die richtigen Skripte? Wenn Sie <command>ls -l</command> eingeben 
-in <path>rc3.d</path>, dann sehen Sie wahrscheinlich etwas wie das Folgende:
-</textblock>
+   <textblock>
+Aber wie startet es nun all die richtigen Skripte? Wenn Sie
+<command>ls -l</command> eingeben in <path>rc3.d</path>, dann sehen Sie
+wahrscheinlich etwas wie das Folgende:
+   </textblock>
 
-<shell>
-<output>
+   <shell>
+    <output>
 lrwxrwxrwx 1 root root 13 13:11 S10network -> ../init.d/network
 lrwxrwxrwx 1 root root 16 13:11 S30syslog -> ../init.d/syslog
 lrwxrwxrwx 1 root root 14 13:32 S40cron -> ../init.d/cron
@@ -197,789 +229,963 @@ lrwxrwxrwx 1 root root 18 13:11 S75keytable -> ../init.d/keytable
 lrwxrwxrwx 1 root root 23 13:11 S80sendmail -> ../init.d/sendmail.init
 lrwxrwxrwx 1 root root 18 13:11 S90lpd -> ../init.d/lpd.init
 lrwxrwxrwx 1 root root 11 13:11 S99local -> ../rc.local
-</output>
-</shell>
+    </output>
+   </shell>
 
-<textblock>
+   <textblock>
 Sie werden bemerken, das sich in diesem Ordner keine richtigen 
 Dateien befinden. Stattdessen ist jeder Eintrag hier eine Verknüpfung 
 zu einem der Skripte im Verzeichnis <path>init.d</path>.
-</textblock>
+   </textblock>
 
-<textblock>
+   <textblock>
 Die Verknüpfungen haben auch ein S und eine Nummer am Anfang. 
 Das S besagt, dass dieses bestimmte Skript gestartet werden soll, 
 so wie umgekehrt ein K den Stopp bedeuten würde. Die Nummer dient einfach 
 der Anordnung.Tatsächlich startet init alle Systemdienste in der Reihenfolge, 
-in der sie erscheinen. Sie können die Nummern also doppelt vergeben, aber es wird 
-Sie nur selbst durcheinander bringen. Sie benötigen bloß irgendeine zweistellige Zahl, 
-zusammen mit einem großgeschriebenen S oder K um einen Systemdienst zu starten oder anzuhalten.
-</textblock>
+in der sie erscheinen. Sie können die Nummern also doppelt vergeben, aber es
+wird Sie nur selbst durcheinander bringen. Sie benötigen bloß irgendeine
+zweistellige Zahl, zusammen mit einem großgeschriebenen S oder K um einen
+Systemdienst zu starten oder anzuhalten.
+   </textblock>
 
-<textblock>
-Wie startet und stoppt <command>init</command> eigentlich Systemdienste? Ganz einfach: 
-Jedes der Skripte ist so geschrieben, dass es ein Argument wie start 
+   <textblock>
+Wie startet und stoppt <command>init</command> eigentlich Systemdienste? Ganz
+einfach: Jedes der Skripte ist so geschrieben, dass es ein Argument wie start 
 und stop akzeptiert. Sie können diese Skripte tatsächlich von Hand auf der 
 Kommandozeile folgendermaßen starten:
-</textblock>
+   </textblock>
 
-<shell>
-<root path="/root">
+   <shell>
+    <root path="/root">
 /etc/rc.d/init.d/httpd.init stop
-</root>
-</shell>
+    </root>
+   </shell>
 
-<textblock>
+   <textblock>
 Dies würde den httpd-Server anhalten. <command>Init</command> liest einfach den 
 Namen, und wenn der ein K beinhaltet, dann wird das Skript mit dem 
-Argument <command>stop</command> aufgerufen. Wenn er ein S beinhaltet, dann wird das 
-Skript mit dem Argument <command>start</command> aufgerufen.
-</textblock>
+Argument <command>stop</command> aufgerufen. Wenn er ein S beinhaltet, dann wird
+das Skript mit dem Argument <command>start</command> aufgerufen.
+   </textblock>
 
-<section>
-
-<heading>
+   <section>
+    <heading>
 Warum all diese Runlevel?
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Manche Leute wünschen sich eine einfache Art, 
 Maschinen für viele Zwecke einzurichten. Ich könnte z.B. 
 ein "Server"-Runlevel haben, das nur httpd, sendmail, networking etc. 
-laufen lässt. Darüber hinaus könnte ich auch noch ein "Benutzer"-Runlevel haben, 
-das z.B. xdm startet. 
-</textblock>
+laufen lässt. Darüber hinaus könnte ich auch noch ein "Benutzer"-Runlevel
+haben, das z. B. xdm startet. 
+    </textblock>
+   </section>
+  </section>
+ </split>
 
-</section>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Grundlagen der Bildschirmabläufe
-</heading>
+   </heading>
 
-<textblock>
+   <textblock>
 Hier lernen Sie die Benutzung von KSysV. Sie sollte nicht sehr 
 schwierig sein, weil das Programm so benutzerfreundlich wie 
 möglich angelegt wurde.
-</textblock>
+   </textblock>
 
-<section>
+   <section>
 
-<heading>
+    <heading>
 Maus
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Die Verwendung von KSysV mit einer Maus oder einem anderen 
 Zeigegerät ist einfach, um nicht zu sagen trivial: Ziehen Sie 
 einfach einen Eintrag aus dem Bereich der Verfügbaren Systemdienste auf eins 
 der sechs Runlevel, um es auf diesem Level zu starten (bzw. zu stoppen).
-</textblock>
+    </textblock>
 
-<textblock>
+    <textblock>
 Sie können Skripte auch zwischen Runleveln verschieben oder 
 die Position innerhalb eines Levels verändern, indem sie es 
 woanders hin ziehen. Dabei wird der Eintrag von seinem ursprünglichen 
 Runlevel (oder seiner Position) entfernt. Dies geschieht nur dann nicht, wenn 
 sie einen Eintrag aus dem Bereich der Verfügbaren Systemdienste herausziehen.
-</textblock>
+    </textblock>
 
-<hint>
+    <hint>
 Anmerkung
-</hint>
+    </hint>
 
-<hint>
+    <hint>
 Beachten Sie: Einträge werden verschoben, wenn Sie diese in 
 einen neuen Bereich ziehen. Um sie lediglich auf eine neues Runlevel 
 zu kopieren, müssen Sie ausdrücklich Kopieren aus dem Menü Bearbeiten 
 oder aus dem Kontextmenü wählen und in den Zielbereich Einfügen - sogar dann, 
 wenn derselbe Eintrag bereits zuvor im Zielbereich der Aktion existiert hat.
-</hint>
+    </hint>
 
-<textblock>
+    <textblock>
 Die "Sortiernummer" eines Eintrags kann manchmal nicht berechnet 
 werden. In so einem Fall müssen Sie die Sortiernummern der umgebenden 
-Einträge bearbeiten, bevor Sie nochmals versuchen können, den Systemdienst einzufügen.
-</textblock>
+Einträge bearbeiten, bevor Sie nochmals versuchen können, den Systemdienst
+einzufügen.
+    </textblock>
 
-<hint>
+    <hint>
 Anmerkung
-</hint>
+    </hint>
 
-<hint>
+    <hint>
 Beachten Sie: Sortiernummern können von 00 bis 99 reichen, nicht höher.
-</hint>
+    </hint>
 
-<textblock>
+    <textblock>
 Sie können Einträge löschen, indem Sie sie in den Papierkorb ziehen.
-</textblock>
+    </textblock>
 
-<hint>
+    <hint>
 Warnung
-</hint>
+    </hint>
 
-<hint>
+    <hint>
 Beachten Sie: Gegenwärtig gibt es keine Möglichkeit, Einträge 
 wiederherzustellen, die in den Papierkorb geworfen wurden. 
 Seien Sie also vorsichtig. 
-</hint>
+    </hint>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Tastatur
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Sie können die Tabulator-Taste benutzen, um die verschiedenen 
 Arbeitsbereiche zu aktivieren (Verfügbare Systemdienste, Runlevel 1 Start, 
 Runlevel 1 Stop etc.) sowie die Cursor-Tasten, um eine Auswahl ober- oder 
 unterhalb der bisherigen zu treffen.
-</textblock>
+    </textblock>
 
-<textblock>
+    <textblock>
 Um einen Eintrag in einen anderen Runlevel zu verschieben schneiden 
-Sie ihn mit Ausschneiden in die Zwischenablage (sie können auch Strg+X benutzen) 
-und fügen Sie ihn in das gewünschte Runlevel mit Einfügen (mit Strg+V).
-</textblock>
+Sie ihn mit Ausschneiden in die Zwischenablage (sie können auch Strg+X
+benutzen) und fügen Sie ihn in das gewünschte Runlevel mit Einfügen (mit
+Strg+V).
+    </textblock>
 
-<textblock>
+    <textblock>
 Um die Sortiernummer oder den Namen eines Eintrags manuell zu ändern, 
 drücken Sie die Eingabe-Taste, um den Eigenschaften-Dialog zu öffnen. 
-Benutzen Sie die Tabulator-Taste, um zwischen verschiedenen Feldern zu wechseln. 
-Schließen Sie den Dialog durch erneutes Drücken der Eingabe-Taste, um die Änderungen 
-zu akzeptieren, oder drücken Sie Esc, um die Änderungen zu verwerfen. 
-</textblock>
+Benutzen Sie die Tabulator-Taste, um zwischen verschiedenen Feldern zu
+wechseln. Schließen Sie den Dialog durch erneutes Drücken der Eingabe-Taste, um
+die Änderungen zu akzeptieren, oder drücken Sie Esc, um die Änderungen zu
+verwerfen. 
+    </textblock>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Die Menü-Einträge
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Es folgt eine Punkt-für-Punkt-Erläuterung der Menüs von KSysV.
-</textblock>
+    </textblock>
 
-<section>
-
-<heading>
+    <section>
+     <heading>
 Das Menü Datei
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Wegen der Gefahr des Datenverlusts bitten alle Einträge im Menü Datei um 
 Bestätigung, bevor sie ihre Arbeit tun.
-</textblock>
+     </textblock>
 
-<table border="1">
-<tr>
-<th>Menupunkt</th>
-<th>Beschreibung</th>
-<th>Tastaturkürzel</th>
-</tr>
-<tr>
-<td>Zuletzt gespeicherte Konfiguration</td>
-<td>Alle durchgeführten Änderungen verwerfen und die letzte gespeicherte Konfiguration aufrufen.</td>
-<td></td>
-</tr>
-<tr>
-<td>Öffnen</td>
-<td>Eine gespeicherte Konfiguration laden.</td>
-<td>Ctrl+O</td>
-</tr>
-<tr>
-<td>Einstellungen speichern</td>
-<td>Macht Ihre Änderungen dauerhaft wirksam. Es werden keine Sicherungsdateien angelegt. 
-Seien Sie also vorsichtig.</td>
-<td>Ctrl+S</td>
-</tr>
-<tr>
-<td>Speichern unter</td>
-<td>Eine Kopie der neuen Konfiguration speichern.</td>
-<td></td>
-</tr>
-<tr>
-<td>Logdatei speichern</td>
-<td>Speichert den Ablauf der durchgeführten Änderungen.</td>
-<td>Ctrl+L</td>
-</tr>
-<tr>
-<td>Logdatei drucken</td>
-<td>Die Logdatei ausdrucken.</td>
-<td>Ctrl+P</td>
-</tr>
-<tr>
-<td>Beenden</td>
-<td>Beendet KSysV.</td>
-<td>Ctrl+Q</td>
-</tr>
-</table>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column width="200"/>
+      <pdf-column/>
+      <tr>
+       <th>
+Menüpunkt
+       </th>
+       <th>
+Beschreibung
+       </th>
+       <th>
+Tastaturkürzel
+       </th>
+      </tr>
+      <tr>
+       <td>
+Zuletzt gespeicherte Konfiguration
+       </td>
+       <td>
+Alle durchgeführten Änderungen verwerfen und die letzte gespeicherte
+Konfiguration aufrufen.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Öffnen
+       </td>
+       <td>
+Eine gespeicherte Konfiguration laden.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>O</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Einstellungen speichern
+       </td>
+       <td>
+Macht Ihre Änderungen dauerhaft wirksam. Es werden keine Sicherungsdateien
+angelegt.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>S</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Speichern unter
+       </td>
+       <td>
+Eine Kopie der neuen Konfiguration speichern.
+       </td>
+       <td></td>
+      </tr>
+      <tr>
+       <td>
+Logdatei speichern
+       </td>
+       <td>
+Speichert den Ablauf der durchgeführten Änderungen.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>L</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Logdatei drucken
+       </td>
+       <td>
+Die Logdatei ausdrucken.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>P</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Beenden
+       </td>
+       <td>
+Beendet KSysV.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>Q</key></keycomb>
+       </td>
+      </tr>
+     </table>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Das Menü Bearbeiten
-</heading>
+     </heading>
 
-<table border="1">
-<tr>
-<th>Menupunkt</th>
-<th>Beschreibung</th>
-<th>Tastaturkürzel</th>
-</tr>
-<tr>
-<td>Rückgängig</td>
-<td>Macht die letzte nicht gespeicherte Änderung rückgängig.</td>
-<td>Ctrl+Z</td>
-</tr>
-<tr>
-<td>Wiederherstellen</td>
-<td>Letzte rückgängig gemachte Aktion wieder herstellen.</td>
-<td>Ctrl+Umschalt+Z</td>
-</tr>
-<tr>
-<td>Ausschneiden</td>
-<td>Schneidet den gerade ausgewählten Systemdienst aus und kopiert den Eintrag in die Zwischenablage.</td>
-<td>Ctrl+X</td>
-</tr>
-<tr>
-<td>Kopieren</td>
-<td>Kopiert den gerade ausgewählten Systemdienst in die Zwischenablage ohne ihn zu löschen.</td>
-<td>Ctrl+C</td>
-</tr>
-<tr>
-<td>Einfügen</td>
-<td>Fügt den Inhalt der Zwischenablage an der aktuellen Cursorposition ein.</td>
-<td>Ctrl+V</td>
-</tr>
-<tr>
-<td>Eigenschaften</td>
-<td>Öffnet den Dialog Eigenschaften für den gerade ausgewählten Systemdienst.</td>
-<td></td>
-</tr>
-</table>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column width="200"/>
+      <pdf-column/>
+      <tr>
+       <th>
+Menüpunkt
+       </th>
+       <th>
+Beschreibung
+       </th>
+       <th>
+Tastaturkürzel
+       </th>
+      </tr>
+      <tr>
+       <td>
+Rückgängig
+       </td>
+       <td>
+Macht die letzte nicht gespeicherte Änderung rückgängig.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>Z</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Wiederherstellen
+       </td>
+       <td>
+Letzte rückgängig gemachte Aktion wieder herstellen.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>Umschalt</key><key>Z</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Ausschneiden
+       </td>
+       <td>
+Schneidet den gerade ausgewählten Systemdienst aus und kopiert den Eintrag in
+die Zwischenablage.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>X</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Kopieren
+       </td>
+       <td>
+Kopiert den gerade ausgewählten Systemdienst in die Zwischenablage ohne ihn zu
+löschen.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>C</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Einfügen
+       </td>
+       <td>
+Fügt den Inhalt der Zwischenablage an der aktuellen Cursorposition ein.
+       </td>
+       <td>
+<keycomb><key>Ctrl</key><key>V</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Eigenschaften
+       </td>
+       <td>
+Öffnet den Dialog Eigenschaften für den gerade ausgewählten Systemdienst.
+       </td>
+       <td>
+       </td>
+      </tr>
+     </table>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Das Menü Extras
-</heading>
+     </heading>
 
-<table border="1">
-<tr>
-<th>Menupunkt</th>
-<th>Beschreibung</th>
-<th>Tastaturkürzel</th>
-</tr>
-<tr>
-<td>Systemdienst starten</td>
-<td>Startet den angewählten Systemdienst.</td>
-<td></td>
-</tr>
-<tr>
-<td>Systemdienst anhalten</td>
-<td>Den angewählten Systemdienst anhalten.</td>
-<td></td>
-</tr>
-<tr>
-<td>Systemdienst neu starten</td>
-<td>Den angewählten Systemdienst neu starten.</td>
-<td></td>
-</tr>
-<tr>
-<td>Systemdienst bearbeiten</td>
-<td>Dem angewählten Systemdienst bearbeiten.</td>
-<td></td>
-</tr>
-</table>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column width="200"/>
+      <pdf-column/>
+      <tr>
+       <th>
+Menüpunkt
+       </th>
+       <th>
+Beschreibung
+       </th>
+       <th>
+Tastaturkürzel
+       </th>
+      </tr>
+      <tr>
+       <td>
+Systemdienst starten
+       </td>
+       <td>
+Startet den angewählten Systemdienst.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Systemdienst anhalten
+       </td>
+       <td>
+Den angewählten Systemdienst anhalten.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Systemdienst neu starten
+       </td>
+       <td>
+Den angewählten Systemdienst neu starten.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Systemdienst bearbeiten
+       </td>
+       <td>
+Dem angewählten Systemdienst bearbeiten.
+       </td>
+       <td>
+       </td>
+      </tr>
+     </table>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Das Menü Einstellungen
-</heading>
+     </heading>
 
-<table border="1">
-<tr>
-<th>Menupunkt</th>
-<th>Beschreibung</th>
-<th>Tastaturkürzel</th>
-</tr>
-<tr>
-<td>Werkzeugleiste anzeigen</td>
-<td>Anzeige der Werkzeugleiste ein- und ausschalten.</td>
-<td></td>
-</tr>
-<tr>
-<td>Statusleiste anzeigen</td>
-<td>Anzeige der Statusleiste ein- und ausschalten.</td>
-<td></td>
-</tr>
-<tr>
-<td>Logdatei anzeigen</td>
-<td>Schaltet die Anzeige der Logdatei in einem extra Fenster ein oder aus (alle Vorgänge, 
-Fehlermeldungen, usw. werden in einer Logdatei gespeichert).
-</td>
-<td></td>
-</tr>
-<tr>
-<td>Einstellungen speichern</td>
-<td>Alle bisher erwähnten Einstellungen gelten nur bis zum nächsten Systemstart, 
-es sei denn, Sie wählen diesen Menüpunkt. Dies gilt einschließlich der Fenstergröße und -aufteilung. 
-</td>
-<td></td>
-</tr>
-<tr>
-<td>Tastenzuordnungen vornehmen</td>
-<td>Die Zuordnungen von Tastendrücken zu Aktionen verändern.</td>
-<td></td>
-</tr>
-<tr>
-<td>Werkzeugleisten einrichten</td>
-<td>Die Werkzeugleisten nach Ihren Wünschen anpassen.</td>
-<td></td>
-</tr>
-<tr>
-<td>SysV-Init Editor einrichten</td>
-<td>Das Verhalten von KSysV anpassen. </td>
-<td></td>
-</tr>
-</table>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column width="200"/>
+      <pdf-column/>
+      <tr>
+       <th>
+Menüpunkt
+       </th>
+       <th>
+Beschreibung
+       </th>
+       <th>
+Tastaturkürzel
+       </th>
+      </tr>
+      <tr>
+       <td>
+Werkzeugleiste anzeigen
+       </td>
+       <td>
+Anzeige der Werkzeugleiste ein- und ausschalten.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Statusleiste anzeigen
+       </td>
+       <td>
+Anzeige der Statusleiste ein- und ausschalten.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Logdatei anzeigen
+       </td>
+       <td>
+Schaltet die Anzeige der Logdatei in einem extra Fenster ein oder aus
+(alle Vorgänge, Fehlermeldungen, usw. werden in einer Logdatei gespeichert).
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Einstellungen speichern
+       </td>
+       <td>
+Alle bisher erwähnten Einstellungen gelten nur bis zum nächsten
+Systemstart, es sei denn, Sie wählen diesen Menüpunkt. Dies gilt einschließlich
+der Fenstergröße und -aufteilung. 
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Tastenzuordnungen vornehmen
+       </td>
+       <td>
+Die Zuordnungen von Tastendrücken zu Aktionen verändern.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Werkzeugleisten einrichten
+       </td>
+       <td>
+Die Werkzeugleisten nach Ihren Wünschen anpassen.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+SysV-Init Editor einrichten
+       </td>
+       <td>
+Das Verhalten von KSysV anpassen.
+       </td>
+       <td>
+       </td>
+      </tr>
+     </table>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Das Menü Hilfe
-</heading>
+     </heading>
 
-<table border="1">
-<tr>
-<th>Menupunkt</th>
-<th>Beschreibung</th>
-<th>Tastaturkürzel</th>
-</tr>
-<tr>
-<td>Inhalt</td>
-<td>Startet das Hilfe-System von KDE mit der KSysV-Hilfe (diesem Dokument).</td>
-<td>F1</td>
-</tr>
-<tr>
-<td>Was ist das?</td>
-<td>Ändert den Mauscursor zu einer Kombination von Zeiger und Fragezeichen. Das Klicken auf 
-ein Element innerhalb von KSysV öffnet ein Hilfefenster, das die Funktion des Elementes 
-beschreibt (wenn es denn Hilfe für das bestimmte Element gibt).
-</td>
-<td>Umschalt+F1</td>
-</tr>
-<tr>
-<td>Berichten Sie Probleme oder Wünsche</td>
-<td>Öffnet den Dialog für Problemberichte, in dem man Fehler und Wünsche berichten kann.</td>
-<td></td>
-</tr>
-<tr>
-<td>Über KSysV</td>
-<td>Zeigt Versions- und Autoreninformationen an.</td>
-<td></td>
-</tr>
-<tr>
-<td>Über KDE</td>
-<td>Zeigt Versionsinformation und Grundsätzliches zu KDE an.</td>
-<td></td>
-</tr>
-</table>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column width="200"/>
+      <pdf-column/>
+      <tr>
+       <th>
+Menüpunkt
+       </th>
+       <th>
+Beschreibung
+       </th>
+       <th>
+Tastaturkürzel
+       </th>
+      </tr>
+      <tr>
+       <td>
+Inhalt
+       </td>
+       <td>
+Startet das Hilfe-System von KDE mit der KSysV-Hilfe (diesem Dokument).
+       </td>
+       <td>
+<keycomb><key>F1</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Was ist das?
+       </td>
+       <td>
+Ändert den Mauscursor zu einer Kombination von Zeiger und
+Fragezeichen. Das Klicken auf ein Element innerhalb von KSysV öffnet ein
+Hilfefenster, das die Funktion des Elementes beschreibt (wenn es denn Hilfe für
+das bestimmte Element gibt).
+       </td>
+       <td>
+<keycomb><key>Umschalt</key><key>F1</key></keycomb>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Berichten Sie Probleme oder Wünsche
+       </td>
+       <td>
+Öffnet den Dialog für Problemberichte, in dem man Fehler und Wünsche berichten
+kann.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Über KSysV
+       </td>
+       <td>
+Zeigt Versions- und Autoreninformationen an.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Über KDE
+       </td>
+       <td>
+Zeigt Versionsinformation und Grundsätzliches zu KDE an.
+       </td>
+       <td>
+       </td>
+      </tr>
+     </table>
+    </section>
+   </section>
+  </section>
+ </split>
 
-</section>
-
-</section>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Konfiguration
-</heading>
+   </heading>
 
-<textblock>
-Alle Einstellungen werden gespeichert in <path>$KDEHOME/share/config/ksysvrc</path>. 
-Voreinstellungen werden der globalen Datei <path>($KDEDIR/share/config/ksysvrc)</path> entnommen, 
-falls sie verfügbar ist. Andernfalls werden sie von KSysV wiederhergestellt. Änderungen 
-an den Voreinstellungen werden gespeichert in einer lokalen <path>ksysvrc</path>.
-</textblock>
+   <textblock>
+Alle Einstellungen werden gespeichert in
+<path>$KDEHOME/share/config/ksysvrc</path>. 
+Voreinstellungen werden der globalen Datei
+<path>($KDEDIR/share/config/ksysvrc)</path> entnommen, 
+falls sie verfügbar ist. Andernfalls werden sie von KSysV wiederhergestellt.
+Änderungen an den Voreinstellungen werden gespeichert in einer lokalen
+<path>ksysvrc</path>.
+   </textblock>
 
-<section>
-
-<heading>
-Gültige Abschnitte der Konfigurationsdateien
-</heading>
-
-<textblock>
+   <textblock>
 Abschnitte und Schlüsselwerte der Konfigurationsdateien, die vom 
 Programm erkannt werden, sowie ihre Voreinstellungen:
-</textblock>
+   </textblock>
 
-<section>
-
-<heading>
+   <section>
+    <heading>
 [Path Settings]
-</heading>
+    </heading>
 
-<table border="1">
-<tr>
-<th>Schlüsselwort</th>
-<th>Voreinstellung</th>
-<th>Beschreibung</th>
-</tr>
-<tr>
-<td>ScriptPath</td>
-<td>/etc/rc.d/init.d</td>
-<td>Pfad zu den Skripten zum Starten und Beenden der Systemdienste.</td>
-</tr>
-<tr>
-<td>RunlevelPath</td>
-<td>/etc/rc.d</td>
-<td>Pfad zu den Ordnern für die Runlevel.</td>
-</tr>
-</table>
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+Schlüsselwort
+      </th>
+      <th>
+Voreinstellung
+      </th>
+      <th>
+Beschreibung
+      </th>
+     </tr>
+     <tr>
+      <td>
+ScriptPath
+      </td>
+      <td>
+/etc/rc.d/init.d
+      </td>
+      <td>
+Pfad zu den Skripten zum Starten und Beenden der Systemdienste.
+      </td>
+     </tr>
+     <tr>
+      <td>
+RunlevelPath
+      </td>
+      <td>
+/etc/rc.d
+      </td>
+      <td>
+Pfad zu den Ordnern für die Runlevel.
+      </td>
+     </tr>
+    </table>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 [Colors]
-</heading>
+    </heading>
 
-<table border="1">
-<tr>
-<th>Schlüsselwort</th>
-<th>Voreinstellung</th>
-<th>Beschreibung</th>
-</tr>
-<tr>
-<td>Changed</td>
-<td>red</td>
-<td>Farbe für geänderte Einträge</td>
-</tr>
-<tr>
-<td>New</td>
-<td>blue</td>
-<td>Farbe für neue Einträge</td>
-</tr>
-</table>
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+Schlüsselwort
+      </th>
+      <th>
+Voreinstellung
+      </th>
+      <th>
+Beschreibung
+      </th>
+     </tr>
+     <tr>
+      <td>
+Changed
+      </td>
+      <td>
+red
+      </td>
+      <td>
+Farbe für geänderte Einträge
+      </td>
+     </tr>
+     <tr>
+      <td>
+New
+      </td>
+      <td>
+blue
+      </td>
+      <td>
+Farbe für neue Einträge
+      </td>
+     </tr>
+    </table>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 [Geometry]
-</heading>
+    </heading>
 
-<table border="1">
-<tr>
-<th>Schlüsselwort</th>
-<th>Voreinstellung</th>
-<th>Beschreibung</th>
-</tr>
-<tr>
-<td>Width</td>
-<td></td>
-<td>Breite des Hauptfensters von KSysV</td>
-</tr>
-<tr>
-<td>Height</td>
-<td></td>
-<td>Höhe des Hauptfensters von KSysV</td>
-</tr>
-</table>
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+Schlüsselwort
+      </th>
+      <th>
+Voreinstellung
+      </th>
+      <th>
+Beschreibung
+      </th>
+     </tr>
+     <tr>
+      <td>
+Width
+      </td>
+      <td>
+      </td>
+      <td>
+Breite des Hauptfensters von KSysV
+      </td>
+     </tr>
+     <tr>
+      <td>
+Height
+      </td>
+      <td>
+      </td>
+      <td>
+Höhe des Hauptfensters von KSysV
+      </td>
+     </tr>
+    </table>
+   </section>
 
-</section>
+   <section>
+    <heading>
+[andere Einstellungen]
+    </heading>
 
-<section>
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <th>
+Schlüsselwort
+      </th>
+      <th>
+Voreinstellung
+      </th>
+      <th>
+Beschreibung
+      </th>
+     </tr>
+     <tr>
+      <td>
+ToolBar
+      </td>
+      <td>
+true
+      </td>
+      <td>
+Werkzeugleiste anzeigen?
+      </td>
+     </tr>
+     <tr>
+      <td>
+StatusBar
+      </td>
+      <td>
+true
+      </td>
+      <td>
+Statusleiste anzeigen?
+      </td>
+     </tr>
+     <tr>
+      <td>
+ShowLog
+      </td>
+      <td>
+true
+      </td>
+      <td>
+Logfenster anzeigen?
+      </td>
+     </tr>
+     <tr>
+      <td>
+PanningFactor
+      </td>
+      <td>
+80
+      </td>
+      <td>
+PanningFactor = Prozentualer Fensteranteil, der für das Logfenster reserviert
+wird.
+      </td>
+     </tr>
+    </table>
+   </section>
+  </section>
+ </split>
 
-<heading>
-[Andere Einstellungen]
-</heading>
-
-<table border="1">
-<tr>
-<th>Schlüsselwort</th>
-<th>Voreinstellung</th>
-<th>Beschreibung</th>
-</tr>
-<tr>
-<td>ToolBar</td>
-<td>true</td>
-<td>Werkzeugleiste anzeigen?</td>
-</tr>
-<tr>
-<td>StatusBar</td>
-<td>true</td>
-<td>Statusleiste anzeigen?</td>
-</tr>
-<tr>
-<td>ShowLog</td>
-<td>true</td>
-<td>Logfenster anzeigen?</td>
-</tr>
-<tr>
-<td>PanningFactor</td>
-<td>80</td>
-<td>PanningFactor = Prozentualer Fensteranteil, der für das Logfenster reserviert wird.</td>
-</tr>
-</table>
-
-</section>
-
-</section>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Fragen und Antworten
-</heading>
+   </heading>
 
-<textblock>
+   <textblock>
 <strong>Ich habe mit den Standard-Runleveln herumexperimentiert, und jetzt 
-startet die Maschine beständig neu. Was kann ich tun?</strong>
-</textblock>
+startet die Maschine beständig neu. Was kann ich tun?</strong><br/>
+Geben Sie am LILO-Prompt <command>linux single</command> ein und drücken Sie die
+Eingabe-Taste, um im Einzelnutzer-Modus zu starten. Dann bearbeiten Sie die
+Datei <path>/etc/inittab</path> und ändern das standardmäßige Runlevel auf einen
+vernünftigen Wert (3 sollte normalerweise in Ordnung sein).
+   </textblock>
 
-<textblock>
-Geben Sie am LILO-Prompt <command>linux single</command> ein und drücken Sie die Eingabe-Taste, 
-um im Einzelnutzer-Modus zu starten. Dann bearbeiten Sie die Datei <path>/etc/inittab</path> und 
-ändern das standardmäßige Runlevel auf einen vernünftigen Wert 
-(3 sollte normalerweise in Ordnung sein).
-</textblock>
-
-<textblock>
-<strong>Meine Maschine "hängt" kurz nach dem Neustart.</strong>
-</textblock>
-
-<textblock>
+   <textblock>
+<strong>Meine Maschine "hängt" kurz nach dem Neustart.</strong><br/>
 Bitte schauen Sie bei Frage 1 nach!
-</textblock>
+   </textblock>
 
-<textblock>
+   <textblock>
 <strong>Ich habe einige Systemdienste mit KSysV zur Ausführung unter Runlevel X 
-vorgesehen, aber sie werden nicht ausgeführt.</strong>
-</textblock>
-
-<textblock>
+vorgesehen, aber sie werden nicht ausgeführt.</strong><br/>
 Wenn Sie SuSE oder Delix (DLD) benutzen, dann müssen Sie zusätzliche 
-Dateien in /etc bearbeiten, die nur in diesen Distributionen vorhanden sind. 
-Bitte lesen Sie die Details im Handbuch der Distribution nach.
-</textblock>
+Dateien in <path>/etc</path> bearbeiten, die nur in diesen Distributionen
+vorhanden sind. Bitte lesen Sie die Details im Handbuch der Distribution nach.
+   </textblock>
 
-<hint>
-Anmerkung
-</hint>
+   <textblock>
+<strong>Anmerkung</strong>
+   </textblock>
 
-<hint>
+   <hint>
 Die Art, wie Systemdienste in diesen Distributionen gestartet werden, 
 vereinfacht die Konfiguration für die proprietären Einrichtungsprogramme 
 dieser Distributionen, entspricht aber leider keinem Standard. Die Autoren 
 von KSysV planen eine Erweiterung des Programms für diesen Ansatz.
-</hint>
+   </hint>
 
-<hint>
+   <hint>
 Falls Sie eine andere Distribution verwenden: Überprüfen Sie bitte, 
 ob alle Konfigurationsdateien vorhanden sind, die vom jeweiligen Systemdienst 
-benötigt werden (und auch, ob sie sich im richtigen Verzeichnis befinden). Manche Dämonen 
-(wie z.B. Apache bzw. httpd) gehen einfach stumm über Bord, wenn ihre Konfigurationsdateien 
-nicht vorhanden oder falsch eingerichtet sind.
-</hint>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+benötigt werden (und auch, ob sie sich im richtigen Verzeichnis befinden).
+Manche Dämonen (wie z. B. Apache bzw. httpd) gehen einfach stumm über Bord, wenn
+ihre Konfigurationsdateien nicht vorhanden oder falsch eingerichtet sind.
+   </hint>
+  </section>
+  
+  <section>
+   <heading>
 Standardbedeutung der Runlevel
-</heading>
+   </heading>
 
-<textblock>
+   <textblock>
 Die Bedeutung der Linux-Runlevel variiert von Distribution zu Distribution, 
 kann sogar von Version zu Version unterschiedlich sein. Falls Sie eine weitere 
 Distribution nutzen, senden Sie mir bitte Informationen über die Runlevel, 
 damit diese diesem Handbuch zugefügt werden können.
-</textblock>
+   </textblock>
 
-<table border="1">
-<tr>
-<th>Runlevel</th>
-<th>Beschreibung</th>
-</tr>
-<tr>
-<td>Runlevel 0</td>
-<td>Halt (fährt die Maschine runter)</td>
-</tr>
-<tr>
-<td>Runlevel 1</td>
-<td>Einzelbenutzermodus</td>
-</tr>
-<tr>
-<td>Runlevel 2</td>
-<td>Konsolenmodus, ohne NFS</td>
-</tr>
-<tr>
-<td>Runlevel 3</td>
-<td>Konsolenmodus mit allen Netzdiensten</td>
-</tr>
-<tr>
-<td>Runlevel 4</td>
-<td>Nicht verwendet</td>
-</tr>
-<tr>
-<td>Runlevel 5</td>
-<td>Mehrbenutzer-Modus - mit X11 und vollem Netzwerk</td>
-</tr>
-<tr>
-<td>Runlevel 6</td>
-<td>Neustart</td>
-</tr>
-</table>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
-Lizenz
-</heading>
-
-<textblock>
-KSysV Copyright (c) 1997-1998 <name>Peter Putzer</name>
-</textblock>
-
-<ul>
-<li>
-<name email="putzer@kde.org">Peter Putzer</name>, - Entwickler 
-</li>
-</ul>
-
-<textblock>
-Handbuch:
-</textblock>
-
-<ul>
-<li>
-<name email="putzer kde.org">Peter Putzer</name>
-</li>
-<li>
-<name email="e.bischoff@noos.fr">Eric Bischoff</name>, - Bearbeiter 
-</li>
-</ul>
-
-<textblock>
-Übersetzer: <name email="th.diehl@gmx.net">Thomas Diehl</name>
-</textblock>
-
-<textblock>
-Übersetzer: <name email="vpdose@cpmgut.toppoint.de">Volker Dose</name>
-</textblock>
-
-<textblock>
-Diese Dokumentation ist unter den Bedingungen der 
-<ref chapter="gfdl_de">GNU Free Documentation License</ref> veröffentlicht.
-</textblock>
-
-<textblock>
-Dieses Programm ist unter den Bedingungen der 
-<ref chapter="gpl_de">GNU General Public License</ref> veröffentlicht.
-</textblock>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
-Anhang A. Installation
-</heading>
-
-<textblock>
-KSysV ist Teil des KDE-Projekts <ref lang="en" url="http://www.kde.org/">http://www.kde.org</ref>.
-</textblock>
-
-<textblock>
-KSysV können Sie im kdeadmin-Paket finden auf 
-<ref lang="en" url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ref>, 
-der Haupt-FTP-Site des KDE-Projekts.
-</textblock>
-
-<textblock>
-Um KSysV auf Ihrem System zu kompilieren und zu installieren, 
-schreiben Sie das Folgende in das Hauptverzeichnis in der KSysV-Distribution:
-</textblock>
-
-<shell>
-<root path="~">
-./configure
-</root>
-</shell>
-
-<shell>
-<root path="~">
-make
-</root>
-</shell>
-
-<shell>
-<root path="~">
-make install
-</root>
-</shell>
-
-<textblock>
-Da KSysV autoconf und automake benutzt, sollte es dabei keine 
-Schwierigkeiten geben. Sollten dennoch Probleme auftauchen, wenden Sie 
-sich bitte an die KDE-Mailinglisten.
-</textblock>
-
-</section>
-
-</split>
-
+   <table>
+    <pdf-column/>
+    <pdf-column/>
+    <pdf-column/>
+    <tr>
+     <th>
+Runlevel
+     </th>
+     <th>
+Beschreibung
+     </th>
+    </tr>
+    <tr>
+     <td>
+Runlevel 0
+     </td>
+     <td>
+Halt (fährt die Maschine runter)
+     </td>
+    </tr>
+    <tr>
+     <td>
+Runlevel 1
+     </td>
+     <td>
+Einzelbenutzermodus
+     </td>
+    </tr>
+    <tr>
+     <td>
+Runlevel 2
+     </td>
+     <td>
+Konsolenmodus, ohne NFS
+     </td>
+    </tr>
+    <tr>
+     <td>
+Runlevel 3
+     </td>
+     <td>
+Konsolenmodus mit allen Netzdiensten
+     </td>
+    </tr>
+    <tr>
+     <td>
+Runlevel 4
+     </td>
+     <td>
+Nicht verwendet
+     </td>
+    </tr>
+    <tr>
+     <td>
+Runlevel 5
+     </td>
+     <td>
+Mehrbenutzer-Modus - mit X11 und vollem Netzwerk
+     </td>
+    </tr>
+    <tr>
+     <td>
+Runlevel 6
+     </td>
+     <td>
+Neustart
+     </td>
+    </tr>
+   </table>
+  </section>
+ </split>
 </chapter>
