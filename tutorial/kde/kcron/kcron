@@ -2,6 +2,16 @@
 
 <chapter>
  <title>Das Handbuch zu KCron</title>
+ 
+ <author>
+  <name>Frank Börner</name>
+  <mailto>f.boerner@selflinux.org</mailto>
+ </author>
+ 
+ <author>
+  <name>Robert Schröter</name>
+  <mailto>robert-schroeter@gmx.de</mailto>
+ </author>
 
  <author>
   <name>Morgan N. Sandquist</name>
@@ -25,937 +35,982 @@ KCron ist eine Anwendung, mit der man andere Programme nach Zeitplan starten kan
   </textblock>
  </description>
 
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Einleitung
-</heading>
+   </heading>
 
-<image height="300">
-     <filename>kcron-gesamt.png</filename>
-     <title>KCron</title>
-    </image>
+   <image height="200">
+    <filename>kcron-gesamt.png</filename>
+    <title>KCron</title>
+   </image>
 
-<textblock>
+   <textblock>
 KCron ist eine Anwendung, mit der man andere Programme nach einem Zeitplan 
 im Hintergrund laufen lassen kann. Es ist eine graphische Oberfläche für das UNIX-Systemprogramm cron.
-</textblock>
+   </textblock>
+  </section>
+ </split>
 
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Benutzung von KCron
-</heading>
+   </heading>
 
-<textblock>
+   <textblock>
 <strong>Wichtig</strong>
-</textblock>
+   </textblock>
 
-<textblock>
+   <textblock>
 Ihr System muss zuerst den cron-Dämon crond starten, sonst funktioniert KCron nicht.
-</textblock>
+   </textblock>
 
-<section>
-
-<heading>
+   <section>
+    <heading>
 Starten von KCron
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Beim Start von KCron sehen Sie eine Liste bereits eingestellter Aufgaben und 
 dazugehöriger Umgebungsvariablen. Wenn Sie KCron als "root" benutzen, erscheint 
 dies sowohl für alle Benutzer des Systems als auch für systeminterne Aufgaben. 
 Jeder Ordner kann auf- und zugeklappt werden.
-</textblock>
+    </textblock>
 
-
-<image height="300">
+    <image height="150">
      <filename>kcron-start.png</filename>
      <title>KCron nach dem Start als Benutzer root</title>
     </image>
 
-<section>
-
-<heading>
+    <section>
+     <heading>
 Eingeplante Aufgaben
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Die eingestellten Aufgaben erscheinen in einem Aufgaben-Ordner. Für jede Aufgabe wird angezeigt:
-</textblock>
+     </textblock>
 
-<table border="1">
-<tr>
-<td>Name</td>
-<td>Bezeichnung der Aufgabe</td>
-</tr>
-<tr>
-<td>Wert</td>
-<td>Programmname und Parameter</td>
-</tr>
-<tr>
-<td>Beschreibung</td>
-<td>Ausführliche Beschreibung der eingeplanten Aufgabe</td>
-</tr>
-</table>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column/>
+      <tr>
+       <td>
+Name
+       </td>
+       <td>
+Bezeichnung der Aufgabe
+       </td>
+      </tr>
+      <tr>
+       <td>
+Wert
+       </td>
+       <td>
+Programmname und Parameter
+       </td>
+      </tr>
+      <tr>
+       <td>
+Beschreibung
+       </td>
+       <td>
+Ausführliche Beschreibung der eingeplanten Aufgabe
+       </td>
+      </tr>
+     </table>
 
-<textblock>
+     <textblock>
 Bei einer deaktivierten Aufgabe werden Programmname und Parameter nicht angezeigt 
 und unter Beschreibung erscheint deaktiviert.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Umgebungsvariablen
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Umgebungsvariablen erscheinen in einem Variablen-Ordner. Für jede Variable wird angezeigt:
-</textblock>
+     </textblock>
 
-<table border="1">
-<tr>
-<td>Name</td>
-<td>Name der Variablen</td>
-</tr>
-<tr>
-<td>Wert</td>
-<td>Wert der Variablen</td>
-</tr>
-<tr>
-<td>Beschreibung</td>
-<td>Beschreibung der Variablen</td>
-</tr>
-</table>
+     <table>
+      <pdf-column width="150"/>
+      <pdf-column/>
+      <tr>
+       <td>
+Name
+       </td>
+       <td>
+Name der Variablen
+       </td>
+      </tr>
+      <tr>
+       <td>
+Wert
+       </td>
+       <td>
+Wert der Variablen
+       </td>
+      </tr>
+      <tr>
+       <td>
+Beschreibung
+       </td>
+       <td>
+Beschreibung der Variablen
+       </td>
+      </tr>
+     </table>
 
-<textblock>
+     <textblock>
 Die hier erscheinenden Umgebungsvariablen setzen die sonst bestehenden 
 Umgebungsvariablen für alle aufgeführten Aufgaben außer Kraft. Bei einer 
 deaktivierten Variable erscheint als Beschreibung deaktiviert.
-</textblock>
+     </textblock>
 
-<image height="300">
-     <filename>kcron-hauptfenster.png</filename>
-     <title>Das Hauptfenster vo KCron</title>
-    </image>
+     <image height="150">
+      <filename>kcron-hauptfenster.png</filename>
+      <title>Das Hauptfenster vo KCron</title>
+     </image>
+    </section>
+   </section>
 
-</section>
-
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Neue Aufgabe hinzufügen
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Um eine neue Aufgabe zu erstellen, wählen Sie zuerst den Aufgaben-Ordner an. 
 Gehen Sie dann im Menü zu Bearbeiten->Neu.... Alternativ dazu können Sie auch mit 
 der rechte Maustaste auf den Aufgaben-Ordner klicken und im erscheinenden 
 Kontext-Menü Neu... auswählen, oder einfach Strg+N drücken.
-</textblock>
+    </textblock>
 
-<section>
-
-<heading>
+    <section>
+     <heading>
 Der Dialog Aufgabe bearbeiten
-</heading>
+     </heading>
 
-<image height="300">
-     <filename>kcron-neue_aufgabe.png</filename>
-     <title>Der Dialog Aufgabe bearbeiten</title>
-    </image>
+     <image height="300">
+      <filename>kcron-neue_aufgabe.png</filename> 
+      <title>Der Dialog Aufgabe bearbeiten</title>
+     </image>
 
-<table border="1">
-<tr>
-<td>Kommentar</td>
-<td>Hier können Sie eine Beschreibung der Aufgabe eingeben</td>
-</tr>
-<tr>
-<td>Programm</td>
-<td>Geben Sie hier den Namen des zu startenden Programms ein. Sie können entweder einen 
+     <table>
+      <pdf-column/>
+      <pdf-column/>
+      <tr>
+       <td>Kommentar</td>
+       <td>Hier können Sie eine Beschreibung der Aufgabe eingeben</td>
+      </tr>
+      <tr>
+       <td>Programm</td>
+       <td>Geben Sie hier den Namen des zu startenden Programms ein. Sie können entweder einen 
 relativen oder einen absoluten Pfadnamen angeben. Wenn Sie das Programm zuerst suchen 
-möchten, drücken Sie Auswählen...</td>
-</tr>
-<tr>
-<td>An</td>
-<td>Ob eine Aufgabe ausgeführt wird, können Sie über das Ankreuzfeld Aktiviert bestimmen</td>
-</tr>
-<tr>
-<td>Keine Meldungen</td>
-<td>Schaltet die Ausgabe des Befehls und der Ausgabe des Befehls ab</td>
-</tr>
-<tr>
-<td>Monate</td>
-<td>Wählen Sie die Monate aus, in denen die Aufgabe ausgeführt werden soll</td>
-</tr>
-<tr>
-<td>Tage im Monat</td>
-<td>Wählen Sie die Tage im Monat aus, an denen die Aufgabe ausgeführt werden soll</td>
-</tr>
-<tr>
-<td>Wochentage</td>
-<td>Wählen Sie die Wochentage aus, an denen die Aufgabe ausgeführt werden soll</td>
-</tr>
-<tr>
-<td>Täglich</td>
-<td>Wenn die Aufgabe jeden Tag ausgeführt werden soll, wählen Sie Jeden Tag ausführen</td>
-</tr>
-<tr>
-<td>Stunden</td>
-<td>Wählen Sie die Stunde(n), zu der die Aufgabe ausgeführt werden soll</td>
-</tr>
-<tr>
-<td>Minuten</td>
-<td>Wählen Sie die Minute(n), zu der die Aufgabe ausgeführt werden soll. Mit KCron können 
-Sie die Minuten in Fünferschritten angeben</td>
-</tr>
-<tr>
-<td>OK</td>
-<td>Stellt die Aufgabe fertig</td>
-</tr>
-<tr>
-<td>Abbrechen</td>
-<td>Bricht die Bearbeitung der Aufgabe ab</td>
-</tr>
-</table>
+möchten, drücken Sie Auswählen...
+       </td>
+      </tr>
+      <tr>
+       <td>
+An
+       </td>
+       <td>
+Ob eine Aufgabe ausgeführt wird, können Sie über das Ankreuzfeld Aktiviert bestimmen
+       </td>
+      </tr>
+      <tr>
+       <td>
+Keine Meldungen
+       </td>
+       <td>
+Schaltet die Ausgabe des Befehls und der Ausgabe des Befehls ab
+       </td>
+      </tr>
+      <tr>
+       <td>
+Monate
+       </td>
+       <td>
+Wählen Sie die Monate aus, in denen die Aufgabe ausgeführt werden soll
+       </td>
+      </tr>
+      <tr>
+       <td>
+Tage im Monat
+       </td>
+       <td>
+Wählen Sie die Tage im Monat aus, an denen die Aufgabe ausgeführt werden soll
+       </td>
+      </tr>
+      <tr>
+       <td>
+Wochentage
+       </td>
+       <td>
+Wählen Sie die Wochentage aus, an denen die Aufgabe ausgeführt werden soll
+       </td>
+      </tr>
+      <tr>
+       <td>
+Täglich
+       </td>
+       <td>
+Wenn die Aufgabe jeden Tag ausgeführt werden soll, wählen Sie Jeden Tag ausführen
+       </td>
+      </tr>
+      <tr>
+       <td>
+Stunden
+       </td>
+       <td>
+Wählen Sie die Stunde(n), zu der die Aufgabe ausgeführt werden soll
+       </td>
+      </tr>
+      <tr>
+       <td>
+Minuten
+       </td>
+       <td>
+Wählen Sie die Minute(n), zu der die Aufgabe ausgeführt werden soll. Mit KCron können 
+Sie die Minuten in Fünferschritten angeben
+       </td>
+      </tr>
+      <tr>
+       <td>
+OK
+       </td>
+       <td>
+Stellt die Aufgabe fertig
+       </td>
+      </tr>
+      <tr>
+       <td>
+Abbrechen
+       </td>
+       <td>
+Bricht die Bearbeitung der Aufgabe ab
+       </td>
+      </tr>
+     </table>
 
-<textblock>
+     <textblock>
 Wenn Sie sowohl Monatstag(e) als auch Wochentag(e) angeben, wird die Aufgabe sowohl bei 
 einem passenden Datum als auch an einem passenden Wochentag ausgeführt. Wenn Sie z.B. 
 den 1. und 15. und Sonntag auswählen, wird das Programm am 1. und 15. der gewählten Monate 
 unabhängig vom Wochentag ausgeführt, und außerdem an jedem Sonntag der Monate, egal, auf 
 welches Datum sie fallen.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Die Aufgabe ist erst dann fertig aufgenommen, wenn die crontab gespeichert wurde.
-</textblock>
+     </textblock>
+    </section>
+   </section>
 
-</section>
-
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Aufgaben verwalten
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Wie bei der Erstellung neuer Aufgaben werden Änderungen erst dann aktiv, wenn die crontab 
 gespeichert wurde.
-</textblock>
+    </textblock>
 
-<section>
-
-<heading>
+    <section>
+     <heading>
 Aufgaben ausschneiden
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Aufgabe auszuschneiden, wählen sie zuerst die zu entfernende Aufgabe an. Gehen Sie 
 dann zu Bearbeiten->Ausschneiden.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken und 
 Ausschneiden auswählen, oder Sie drücken einfach Strg-X.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Aufgaben kopieren
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Aufgabe zu kopieren, wählen sie zuerst die zu kopierende Aufgabe an. Gehen 
 Sie dann zu Bearbeiten->Kopieren.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken und 
 Kopieren auswählen, oder Sie drücken einfach Strg+C.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Aufgaben einfügen
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Aufgabe einzufügen, muss zuerst eine in die Zwischenablage ausgeschnitten oder 
 kopiert worden sein. Erst dann ist "Einfügen" überhaupt verfügbar. Wählen sie den 
 Aufgaben-Ordner an. Gehen Sie dann zu Bearbeiten->Einfügen.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf den Aufgaben -Ordner 
 klicken und Einfügen auswählen, oder Sie drücken einfach Strg+V.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Aufgaben bearbeiten
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um Änderungen an einer Aufgabe vorzunehmen, wählen Sie zuerst eine an. Gehen Sie dann 
 zum Menüpunkt Bearbeiten-> Ändern....
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken und 
 Ändern... auswählen, oder Sie drücken einfach Strg+O. Es erscheint dann der Dialog Aufgabe 
 bearbeiten, in dem Sie wie oben beschrieben die gewählte Aufgabe bearbeiten können.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Aufgaben löschen
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Aufgabe zu löschen, wählen Sie die zu löschende Aufgabe an. Gehen Sie dann 
 zum Menüpunkt Bearbeiten-> Löschen.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken und 
 Löschen auswählen.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Aufgaben aktivieren/deaktivieren
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Aufgabe zu aktivieren oder zu deaktiveren, wählen Sie sie an, und bestimmen den 
 Zustand mit dem Menüpunkt Bearbeiten->Aktiviert. Inaktive Aufgaben sind in ihrer Beschreibung 
 mit Inaktiv gekennzeichnet.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken und 
 Aktiviert auswählen. Vergewissern Sie sich nach dem Aktivieren, dass Programmname, 
 Parameter und Beschreibung korrekt angezeigt werden.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Aufgaben starten
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Aufgabe sofort auszuführen, wählen Sie diese aus und gehen Sie dann zu 
 Bearbeiten->Jetzt starten.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken 
 und Jetzt starten auswählen.
-</textblock>
+     </textblock>
+    </section>
+   </section>
 
-</section>
-
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Umgebungsvariablen hinzufügen
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Um eine neue Umgebungsvariable zu erstellen, wählen Sie zuerst den Variablen-Ordner an. 
 Gehen Sie dann zum Menüpunkt Bearbeiten->Neu....
-</textblock>
+    </textblock>
 
-<textblock>
+    <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf den Variablen -Ordner 
 klicken und Neu... auswählen, oder Sie drücken einfach Strg+N.
-</textblock>
+    </textblock>
 
-<section>
-
-<heading>
+    <section>
+     <heading>
 Der Dialog Variablen bearbeiten
-</heading>
+     </heading>
 
-<image height="300">
-     <filename>kcron-neue-variable.png</filename>
-     <title>Der Dialog Variablen bearbeiten</title>
-    </image>
+     <image height="300">
+      <filename>kcron-neue-variable.png</filename>
+      <title>Der Dialog Variablen bearbeiten</title>
+     </image>
 
-<table border="1">
-<tr>
-<td>Variable</td>
-<td>Geben Sie den Namen der Variablen ein. Sie können auch eine aus der Liste der am 
+     <table>
+      <pdf-column/>
+      <pdf-column/>
+      <pdf-column/>
+      <tr>
+       <td>
+Variable
+       </td>
+       <td>
+Geben Sie den Namen der Variablen ein. Sie können auch eine aus der Liste der am 
 häufigsten benutzten Umgebungsvariablen wählen; klicken Sie hierzu auf den Pfeil neben 
-dem Feld für den Variablennamen. Dies sind:</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>HOME</td>
-<td>Ordner, der anstelle des normalen Persönlichen Orders des Benutzers verwendet werden soll.</td>
-</tr>
-<tr>
-<td></td>
-<td>MAILTO</td>
-<td>Um E-Mails aus dem aufzurufenden Programm an eine andere als die normale Adresse zu schicken</td>
-</tr>
-<tr>
-<td></td>
-<td>PATH</td>
-<td>Pfadliste, in der nach ausführbaren Programmen gesucht wird.</td>
-</tr>
-<tr>
-<td></td>
-<td>SHELL</td>
-<td>Shell, die anstelle der normalen Shell benutzt wird</td>
-</tr>
-<tr>
-<td>Wert</td>
-<td>Geben Sie hier den Wert der Variablen ein.</td>
-<td></td>
-</tr>
-<tr>
-<td>Kommentar</td>
-<td>Geben Sie eine Beschreibung der Variablen ein, also wofür sie verwendet wird.</td>
-<td></td>
-</tr>
-<tr>
-<td>Aktiviert</td>
-<td>Um die Variable zu deaktivieren oder wieder zu aktivieren, klicken Sie auf Aktiviert.</td>
-<td></td>
-</tr>
-<tr>
-<td>OK</td>
-<td>Stellt das Bearbeiten der Variable fertig.</td>
-<td></td>
-</tr>
-<tr>
-<td>Abbrechen</td>
-<td>Bricht die Bearbeitung der Variablen ab</td>
-<td></td>
-</tr>
-</table>
+dem Feld für den Variablennamen. Dies sind:
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+       </td>
+       <td>
+HOME
+       </td>
+       <td>
+Ordner, der anstelle des normalen Persönlichen Orders des Benutzers verwendet werden soll.
+       </td>
+      </tr>
+      <tr>
+       <td>
+       </td>
+       <td>
+MAILTO
+       </td>
+       <td>
+Um E-Mails aus dem aufzurufenden Programm an eine andere als die normale Adresse zu schicken
+       </td>
+      </tr>
+      <tr>
+       <td>
+       </td>
+       <td>
+PATH
+       </td>
+       <td>
+Pfadliste, in der nach ausführbaren Programmen gesucht wird.
+       </td>
+      </tr>
+      <tr>
+       <td>
+       </td>
+       <td>
+SHELL
+       </td>
+       <td>
+Shell, die anstelle der normalen Shell benutzt wird
+       </td>
+      </tr>
+      <tr>
+       <td>
+       Wert
+       </td>
+       <td>
+Geben Sie hier den Wert der Variablen ein.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Kommentar
+       </td>
+       <td>
+Geben Sie eine Beschreibung der Variablen ein, also wofür sie verwendet wird.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Aktiviert
+       </td>
+       <td>
+Um die Variable zu deaktivieren oder wieder zu aktivieren, klicken Sie auf Aktiviert.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+OK
+       </td>
+       <td>
+Stellt das Bearbeiten der Variable fertig.
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+       <td>
+Abbrechen
+       </td>
+       <td>
+Bricht die Bearbeitung der Variablen ab
+       </td>
+       <td>
+       </td>
+      </tr>
+     </table>
 
-<textblock>
+     <textblock>
 Die Umgebungsvariable ist erst dann fertig aufgenommen, wenn die crontab gespeichert wurde.
-</textblock>
+     </textblock>
+    </section>
+   </section>
 
-</section>
-
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Umgebungsvariablen verwalten
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Wie bei der Erstellung neuer Variablen werden Änderungen erst dann vorgenommen, wenn 
 die crontab gespeichert wurde.
-</textblock>
+    </textblock>
 
-<section>
-
-<heading>
+    <section>
+     <heading>
 Umgebungsvariablen ausschneiden
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Variable auszuschneiden, wählen sie zuerst die zu entfernende Variable an. 
 Gehen Sie dann zu Bearbeiten->Ausschneiden.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken und 
 Ausschneiden auswählen, oder Sie drücken einfach Strg-X.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Umgebungsvariablen kopieren
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Umgebungsvariable zu kopieren, wählen Sie zuerst die zu kopierende Variable an. 
 Gehen Sie dann zu Bearbeiten->Kopieren.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Variable klicken 
 und Kopieren auswählen, oder Sie drücken einfach Strg+C.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Umgebungsvariablen einfügen
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Umgebungsvariable einzufügen, muss zuerst eine in die Zwischenablage 
 ausgeschnitten oder kopiert worden sein. Erst dann ist die Option "Einfügen" überhaupt 
 verfügbar. Wählen Sie den Variablen-Ordner an. Gehen Sie dann zu Bearbeiten->Einfügen.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf den Aufgaben -Ordner 
 klicken und Einfügen auswählen, oder Sie drücken einfach Strg+V.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Umgebungsvariablen bearbeiten
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Variable zu verändern, wählen sie zuerst die zu bearbeitende Variable an. 
 Gehen Sie dann zu Bearbeiten->Ändern....
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Variable klicken 
 und Ändern auswählen, oder Sie drücken einfach Strg+O.Es erscheint dann der Dialog 
 Variablen bearbeiten in dem Sie wie oben beschrieben die Variable bearbeiten können.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Umgebungsvariablen löschen
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Umgebungsvariable zu löschen, wählen Sie zuerst die Variable an. Gehen 
 Sie dann zu Bearbeiten->Löschen.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Aufgabe klicken 
 und Löschen auswählen.
-</textblock>
+     </textblock>
+    </section>
 
-</section>
-
-<section>
-
-<heading>
+    <section>
+     <heading>
 Umgebungsvariablen aktivieren/deaktivieren
-</heading>
+     </heading>
 
-<textblock>
+     <textblock>
 Um eine Umgebungsvariable zu aktivieren oder zu deaktiveren , wählen Sie sie an, 
 und legen Sie den Zustand mit dem Menüpunkt Bearbeiten->Aktiviert fest. Bei einer 
 deaktivierten Variable erscheint unter "Beschreibung" Deaktiviert.
-</textblock>
+     </textblock>
 
-<textblock>
+     <textblock>
 Alternativ dazu können Sie auch mit der rechten Maustaste auf die Variable 
 klicken und Aktiviert auswählen. Vergewissern Sie sich, dass Name und Wert 
 der Variablen korrekt angezeigt werden.
-</textblock>
+     </textblock>
+    </section>
+   </section>
 
-</section>
-
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 crontab speichern
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Wenn alle Aufgaben und Umgebungsvariablen eingegeben oder verändert wurden, 
 müssen Sie noch die crontab abspeichern. Wählen Sie dazu den Menüpunkt Datei->Speichern.
-</textblock>
+    </textblock>
 
-<textblock>
+    <textblock>
 Alternativ dazu können Sie auch einfach Strg+S drücken. Veränderungen oder 
 Ergänzungen an Aufgaben oder Variablen werden erst dann aktiv.
-</textblock>
+    </textblock>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 crontab drucken
-</heading>
+    </heading>
 
-<textblock>
+    <textblock>
 Um die gespeicherte Version der crontab auszudrucken, wählen Sie den Menüpunkt Datei->Drucken.
-</textblock>
+    </textblock>
 
-<image height="300">
+    <image height="300">
      <filename>kcron-drucken.png</filename>
      <title>crontab drucken</title>
     </image>
 
-<textblock>
+    <textblock>
 Es erscheint der Standard-KDE-Druckdialog. Falls man Ausklappen wählt, sieht man, 
 das es zwei zusätzliche KCron-spezifische Optionen im Druckdialog gibt.
-</textblock>
+    </textblock>
 
-<table border="1">
-<tr>
-<td>Crontab drucken</td>
-<td>Druckt die crontab für den aktuellen Benutzer.</td>
-</tr>
-<tr>
-<td>Alle Crontabs drucken</td>
-<td>Druckt die crontab aller Benutzer auf dem System. Diese Option ist nur für 
-Benutzer zugänglich, die erweiterte Berechtigungen besitzen.</td>
-</tr>
-</table>
+    <table>
+     <pdf-column/>
+     <pdf-column/>
+     <tr>
+      <td>
+Crontab drucken
+      </td>
+      <td>
+Druckt die crontab für den aktuellen Benutzer.
+      </td>
+     </tr>
+     <tr>
+      <td>
+Alle Crontabs drucken
+      </td>
+      <td>
+Druckt die crontab aller Benutzer auf dem System. Diese Option ist nur für 
+Benutzer zugänglich, die erweiterte Berechtigungen besitzen.
+      </td>
+     </tr>
+    </table>
+   </section>
+  </section>
+ </split>
 
-</section>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Kommando-Referenz
-</heading>
+   </heading>
 
-<section>
-
-<heading>
+   <section>
+    <heading>
 Das Menü Datei
-</heading>
+    </heading>
 
-<table border="1">
-<tr>
-<td>Speichern</td>
-<td>Strg+S</td>
-<td>Speichert Änderungen in der crontab</td>
-</tr>
-<tr>
-<td>Drucken</td>
-<td>Strg+P</td>
-<td>Druckt die crontab</td>
-</tr>
-<tr>
-<td>Beenden</td>
-<td>Strg+Q</td>
-<td>Beendet KCron</td>
-</tr>
-</table>
+    <table>
+     <pdf-column/>
+     <pdf-column/>
+     <pdf-column/>
+     <tr>
+      <td>
+Speichern
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>S</key></keycomb>
+      </td>
+      <td>
+Speichert Änderungen in der crontab
+      </td>
+     </tr>
+     <tr>
+      <td>
+Drucken
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>P</key></keycomb>
+      </td>
+      <td>
+Druckt die crontab
+      </td>
+     </tr>
+     <tr>
+      <td>
+Beenden
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>Q</key></keycomb>
+      </td>
+      <td>
+Beendet KCron
+      </td>
+     </tr>
+    </table>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Das Menü Bearbeiten
-</heading>
+    </heading>
 
-<table border="1">
-<tr>
-<td>Ausschneiden</td>
-<td>Strg+X</td>
-<td>Schneidet die ausgewählte Aufgabe oder Variable aus</td>
-</tr>
-<tr>
-<td>Kopieren</td>
-<td>Strg+C</td>
-<td>Kopiert die ausgewählte Aufgabe oder Variable in die Zwischenablage</td>
-</tr>
-<tr>
-<td>Einfügen</td>
-<td>Strg+V</td>
-<td>Fügt eine Aufgabe oder Variable aus der Zwischenablage ein</td>
-</tr>
-<tr>
-<td>Neu...</td>
-<td>Strg+N</td>
-<td>Erstellt eine neue Aufgabe oder Variable</td>
-</tr>
-<tr>
-<td>Ändern...</td>
-<td>Strg+O</td>
-<td>Bearbeitet die ausgewählte Aufgabe oder Variable</td>
-</tr>
-<tr>
-<td>Löschen</td>
-<td></td>
-<td>Löscht die ausgewählte Aufgabe oder Variable</td>
-</tr>
-<tr>
-<td>Aktiviert</td>
-<td></td>
-<td>Aktiviert die ausgewählte Aufgabe oder Variable</td>
-</tr>
-<tr>
-<td>Jetzt starten</td>
-<td></td>
-<td>Führt die ausgewählte Aufgabe sofort aus</td>
-</tr>
-</table>
+    <table>
+     <pdf-column/>
+     <pdf-column/>
+     <pdf-column/>
+     <tr>
+      <td>
+Ausschneiden
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>X</key></keycomb>
+      </td>
+      <td>
+Schneidet die ausgewählte Aufgabe oder Variable aus
+      </td>
+     </tr>
+     <tr>
+      <td>
+Kopieren
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>C</key></keycomb>
+      </td>
+      <td>
+Kopiert die ausgewählte Aufgabe oder Variable in die Zwischenablage
+      </td>
+     </tr>
+     <tr>
+      <td>
+Einfügen
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>V</key></keycomb>
+      </td>
+      <td>
+Fügt eine Aufgabe oder Variable aus der Zwischenablage ein
+      </td>
+     </tr>
+     <tr>
+      <td>
+Neu...
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>N</key></keycomb>
+      </td>
+      <td>
+Erstellt eine neue Aufgabe oder Variable
+      </td>
+     </tr>
+     <tr>
+      <td>
+Ändern...
+      </td>
+      <td>
+<keycomb><key>Strg</key><key>O</key></keycomb>
+      </td>
+      <td>
+Bearbeitet die ausgewählte Aufgabe oder Variable
+      </td>
+     </tr>
+     <tr>
+      <td>
+Löschen
+      </td>
+      <td>
+      </td>
+      <td>
+Löscht die ausgewählte Aufgabe oder Variable
+      </td>
+     </tr>
+     <tr>
+      <td>
+Aktiviert
+      </td>
+      <td>
+      </td>
+      <td>
+Aktiviert die ausgewählte Aufgabe oder Variable
+      </td>
+     </tr>
+     <tr>
+      <td>
+Jetzt starten
+      </td>
+      <td>
+      </td>
+      <td>
+Führt die ausgewählte Aufgabe sofort aus
+      </td>
+     </tr>
+    </table>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Das Menü Einstellungen
-</heading>
+    </heading>
 
-<table border="1">
-<tr>
-<td>Werkzeugleiste anzeigen</td>
-<td></td>
-<td>Ein-/Ausblenden der Werkzeugleiste</td>
-</tr>
-<tr>
-<td>Statusleiste anzeigen</td>
-<td></td>
-<td>Ein-/Ausblenden der Statusleiste</td>
-</tr>
-</table>
+    <table>
+     <pdf-column/>
+     <pdf-column/>
+     <pdf-column/>
+     <tr>
+      <td>
+Werkzeugleiste anzeigen
+      </td>
+      <td>
+      </td>
+      <td>
+Ein-/Ausblenden der Werkzeugleiste
+      </td>
+     </tr>
+     <tr>
+      <td>
+Statusleiste anzeigen
+      </td>
+      <td>
+      </td>
+      <td>
+Ein-/Ausblenden der Statusleiste
+      </td>
+     </tr>
+    </table>
+   </section>
 
-</section>
-
-<section>
-
-<heading>
+   <section>
+    <heading>
 Das Hilfe Menü
-</heading>
+    </heading>
 
-<table border="1">
-<tr>
-<td>Inhalt...</td>
-<td>F1</td>
-<td>Startet das Hilfe-System von KDE mit der KCron-Hilfe</td>
-</tr>
-<tr>
-<td>Was ist das?</td>
-<td>Umschalt+F1</td>
-<td>Ändert den Mauscursor zu einer Kombination von Zeiger und Fragezeichen. Das 
+    <table>
+     <pdf-column/>
+     <pdf-column/>
+     <pdf-column/>
+     <tr>
+      <td>
+Inhalt...
+      </td>
+      <td>
+<keycomb><key>F1</key></keycomb>
+      </td>
+      <td>
+Startet das Hilfe-System von KDE mit der KCron-Hilfe
+      </td>
+     </tr>
+     <tr>
+      <td>
+Was ist das?
+      </td>
+      <td>
+<keycomb><key>Umschalt</key><key>F1</key></keycomb>
+      </td>
+      <td>
+Ändert den Mauscursor zu einer Kombination von Zeiger und Fragezeichen. Das 
 Klicken auf ein Element innerhalb von KCron öffnet ein Hilfefenster, das die 
-Funktion des Elementes beschreibt (wenn es denn Hilfe für das bestimmte Element gibt).</td>
-</tr>
-<tr>
-<td>Berichten Sie Probleme oder Wünsche...</td>
-<td></td>
-<td>Öffnet den Dialog für Problemberichte, in dem man Fehler und Wünsche berichten kann</td>
-</tr>
-<tr>
-<td>Über KCron</td>
-<td></td>
-<td>Zeigt Versions- und Autoreninformationen an</td>
-</tr>
-<tr>
-<td>Über KDE</td>
-<td></td>
-<td>Zeigt Versionsinformation und Grundsätzliches zu KDE an</td>
-</tr>
-</table>
+Funktion des Elementes beschreibt (wenn es denn Hilfe für das bestimmte Element gibt).
+      </td>
+     </tr>
+     <tr>
+      <td>
+Berichten Sie Probleme oder Wünsche...
+      </td>
+      <td>
+      </td>
+      <td>
+Öffnet den Dialog für Problemberichte, in dem man Fehler und Wünsche berichten kann
+      </td>
+     </tr>
+     <tr>
+      <td>
+Über KCron
+      </td>
+      <td>
+      </td>
+      <td>
+Zeigt Versions- und Autoreninformationen an
+      </td>
+     </tr>
+     <tr>
+      <td>
+Über KDE
+      </td>
+      <td>
+      </td>
+      <td>
+Zeigt Versionsinformation und Grundsätzliches zu KDE an
+      </td>
+     </tr>
+    </table>
+   </section>
+  </section>
+ </split>
 
-</section>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
+ <split>
+  <section>
+   <heading>
 Fragen und Antworten
-</heading>
+   </heading>
 
-<textblock>
+   <textblock>
 <strong>Warum passiert nichts, wenn ich Aufgaben und/oder Umgebungsvariablen ändere?</strong>
-</textblock>
+   </textblock>
 
-<textblock>
+   <textblock>
 Ergänzungen oder Änderungen werden erst dann aktiv, wenn die crontab gespeichert wurde.
-</textblock>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
-Mitwirkende und Lizenz
-</heading>
-
-<textblock>
-KCron
-</textblock>
-
-<ul>
-<li>
-Copyright für das Programm 2000 <name email="gary@meyer.net">Gary Meyer</name>
-</li>
-<li>
-Copyright für die Dokumentation 2000 <name email="morgan@pipeline.com">Morgan N. Sandquist</name>
-</li>
-<li>
-Übersetzt von <name email="robert-schroeter@gmx.de">Robert Schröter</name>
-</li>
-</ul>
-
-<textblock>
-Diese Dokumentation ist unter den Bedingungen der 
-<ref chapter="gfdl_de">GNU Free Documentation License</ref> veröffentlicht.
-</textblock>
-
-<textblock>
-Dieses Programm ist unter den Bedingungen der 
-<ref chapter="gpl_de">GNU General Public License</ref> veröffentlicht.
-</textblock>
-
-</section>
-
-</split>
-
-<split>
-
-<section>
-
-<heading>
-Anhang A. Installieren
-</heading>
-
-<section>
-
-<heading>
-Wie bekomme ich KCron?
-</heading>
-
-<textblock>
-KCron ist Teil des KDE-Projekts <ref lang="en" url="http://www.kde.org/">http://www.kde.org</ref>.
-</textblock>
-
-<textblock>
-KCron können Sie im kdeadmin-Paket finden auf 
-<ref lang="en" url="ftp://ftp.kde.org/pub/kde/">ftp://ftp.kde.org/pub/kde/</ref>, 
-der Haupt-FTP-Site des KDE-Projekts.
-</textblock>
-
-</section>
-
-<section>
-
-<heading>
-Voraussetzungen
-</heading>
-
-<textblock>
-Um KCron erfolgreich kompilieren zu können, brauchen Sie folgende Bibliotheken und Programme:
-</textblock>
-
-<ul>
-<li>
-cron, zum Beispiel vixie-cron. KCron benutzt den Befehl crontab, um die 
-Zeitpläne der Benutzer zu verändern.
-</li>
-<li>
-Ein POSIX-konformes UNIX, zum Beispiel mit glibc. KCron benutzt Standard-Befehle 
-von UNIX, um Zeit und Datum zu erfahren.
-</li>
-</ul>
-
-</section>
-
-<section>
-
-<heading>
-Kompilierung und Installation
-</heading>
-
-<textblock>
-Um KCron auf Ihrem System zu kompilieren und zu installieren, 
-schreiben Sie das Folgende in das Hauptverzeichnis in der KCron-Distribution:
-</textblock>
-
-<shell>
-<root path="~">
-./configure
-</root>
-</shell>
-
-<shell>
-<root path="~">
-make
-</root>
-</shell>
-
-<shell>
-<root path="~">
-make install
-</root>
-</shell>
-
-<textblock>
-Da KCron autoconf und automake benutzt, sollte es dabei keine 
-Schwierigkeiten geben. Sollten dennoch Probleme auftauchen, wenden Sie 
-sich bitte an die KDE-Mailinglisten.
-</textblock>
-
-</section>
-
-</section>
-
-</split>
-
+   </textblock>
+  </section>
+ </split>
 </chapter>
+
