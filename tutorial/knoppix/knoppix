@@ -800,14 +800,621 @@ Die zweite Stufe
         </textblock>
 
         <textblock>
+Die zunächst wichtigste Einstellung am Bootprompt ist die Auswahl der "richtigen" Sprache am Bootprompt. Benutzer aus deutschen Landen müssen sich darüber keine Gedanken machen, da Knoppix standardmäßig die deutsche Lokalisierung verwendet. Anwender aus anderen Sprachbereichen geben den folgenden Befehl zur Lokalisierung ein:
+        </textblock>
 
+        <shell>
+
+        <output>
+boot: knoppix lang="Landeskürzel"
+        </output>
+
+        </shell>
+
+        <textblock>
+Die folgende Tabelle zeigt die Kürzel der wichtigsten Lokalisierungen:
+        </textblock>
+
+        <table border="1">
+        <pdf-column width="100"/>
+        <pdf-column width="100"/>
+        <pdf-column/>
+
+        <tr>
+
+        <th>
+Kürzel
+        </th>
+
+        <th>
+Lokalisierung
+        </th>
+
+        </tr>
+
+        <tr>
+
+        <td>
+de
+        </td>
+
+        <td>
+deutsch (Standard)
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+be
+        </td>
+
+        <td>
+belgisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+ch
+        </td>
+
+        <td>
+schweizerisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+cn
+        </td>
+
+        <td>
+vereinfachtes Chinesisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+dk
+        </td>
+
+        <td>
+dänisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+es
+        </td>
+
+        <td>
+spanisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+fi
+        </td>
+
+        <td>
+finnisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+he
+        </td>
+
+        <td>
+hebräisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+it
+        </td>
+
+        <td>
+italienisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+jp
+        </td>
+
+        <td>
+japanisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+nl
+        </td>
+
+        <td>
+niederländisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+pl
+        </td>
+
+        <td>
+polnisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+ru
+        </td>
+
+        <td>
+russisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+tr
+        </td>
+
+        <td>
+türkisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+tw
+        </td>
+
+        <td>
+taiwanesisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+uk
+        </td>
+
+        <td>
+britisches Englisch
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+us
+        </td>
+
+        <td>
+amerikanisches English
+        </td>
+
+        </tr>
+
+        </table>
+
+        <textblock>
+<strong>Die automatische Hardwareerkennung</strong>
         </textblock>
 
         <textblock>
-
+Nach dem Start führt Knoppix eine Hardwareerkennung durch, die zumindest auf dem Gebiet der Linuxdistributionen ihresgleichen sucht. Dabei werden die verschiedenen Bestandteile deines PCs identifiziert und in das System eingebunden. Da diese Prozedur bei jedem Systemstart im Gegensatz zu einem fest installierten System neu durchlaufen wird, nimmt das Booten der Live-CD eine gewisse Zeit in Anspruch. Die folgende Tabelle zeigt die Erkennungszeiten für verschiedene Systemkonfigurationen:
         </textblock>
 
+        <table border="1">
+        <pdf-column width="220"/>
+        <pdf-column width="50"/>
+        <pdf-column width="90"/>
+        <pdf-column width="50"/>
+        <pdf-column/>
+
+        <tr>
+
+        <th>
+Prozessor
+
+        </th>
+
+        <th>
+RAM
+        </th>
+
+        <th>
+CD-ROM
+        </th>
+
+        <th>
+Autoconf-Zeit
+        </th>
+
+        </tr>
+
+        <tr>
+
+        <td>
+AMD Athlon 64 / 3200+ (2 GHz)
+        </td>
+
+        <td>
+1 GB
+        </td>
+
+        <td>
+52x
+        </td>
+
+        <td>
+35 Sek.
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+Intel Pentium 4 (2,6 GHz)
+        </td>
+
+        <td>
+512 MB
+        </td>
+
+        <td>
+48x
+        </td>
+
+        <td>
+40 Sek.
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+Intel Pentium M (1,5 GHz)
+        </td>
+
+        <td>
+1 GB
+        </td>
+
+        <td>
+
+        </td>
+
+        <td>
+40 Sek.
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+AMD Duron (1 GHz)
+        </td>
+
+        <td>
+256 MB
+        </td>
+
+        <td>
+32x
+        </td>
+
+        <td>
+45 Sek.
+        </td>
+
+        </tr>
+
+        <tr>
+
+        <td>
+AMD Athlon (600 MHz)
+        </td>
+
+        <td>
+128 MB
+        </td>
+
+        <td>
+24x
+        </td>
+
+        <td>
+1 Min. 30 Sek.
+        </td>
+
+        </tr>
+
+        </table>
+
+        <textblock>
+<strong>Das X-Window-System</strong>
+        </textblock>
+
+        <textblock>
+Nach Fertigstellung der Autokonfiguration erscheint am unteren Bildschirmrand die kurze Meldung:
+        </textblock>
+
+        <shell>
+
+        <output>
+INIT: Entering runlevel 5
+        </output>
+
+        </shell>
+
+        <textblock>
+Dies bedeutet, dass Knoppix nun versucht, das grafische X-Window-System zu starten. Wenn deine Karte vom Grafiksystem unterstützt wird, dann sollte nach kurzer Zeit ein schwarzes Kreuz auf einem grau gestreiften Hintergrund erscheinen, ein Indiz für den korrekten Start von X.
+        </textblock>
+
+        <textblock>
+<strong>Die KDE Desktopoberfläche</strong>
+        </textblock>
+
+        <textblock>
+Im letzten Schritt wird schließlich die eigentliche Benutzeroberfläche geladen. Im Falle von Knoppix ist dies das K Desktop Environment, kurz KDE. Erscheint zu guter Letzt die Knoppix-HTML-Startseite, dann hast du gewonnen: Linux, X-Windows und KDE laufen auf deinem Computer!
+        </textblock>
+
+        <image height="200">
+        <filename>Der_Knoppix_Desktop_nach_dem_Start.png</filename>
+        <title>Der Knoppix Desktop nach dem Start</title>
+        </image>
+
+        <textblock>
+<strong>FAQ (Frequently asked questions)</strong>
+        </textblock>
+
+        <textblock>
+<strong>Wie ändere ich die Sprachlokalisierung des Desktops?</strong>
+        </textblock>
+
+        <textblock>
+Gib am Bootprompt die gewünschte Sprache für Desktop und Keyboard über den Knoppix-Cheatcode lang ein. Beispiel: Für eine US-englische Lokalisierung wählt man:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: knoppix lang=us
+        </output>
+
+        </shell>
+
+        <textblock>
+<strong>Während des Bootvorgangs erscheint die Meldung:</strong>
+        </textblock>
+
+        <shell>
+
+        <output>
+cloop: read error
+        </output>
+
+        </shell>
+
+        <textblock>
+Hier gibt es offenbar ein Problem, die Knoppix-CD zu lesen. Entweder ist dein CD-ROM-Laufwerk oder die Knoppix-CD defekt. Letzteres kann man direkt durch die Eingabe des folgenden Kommandos am Bootprompt testen:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: knoppix testcd
+        </output>
+
+        </shell>
+
+        <textblock>
+<strong>Ich erhalte einen schwarzen Bildschirm, nachdem das X-Window-System gestartet wurde.</strong>
+        </textblock>
+
+        <textblock>
+Offenbar arbeitet Knoppix in diesem Fall mit einer Auflösung, die dein Monitor nicht unterstützt. Z.B. hat Knoppix erkannt, dass die Grafikkarte deines PCs in der Lage ist, 1024x768 Bildpunkte darzustellen, aber der Monitor stellt keine dafür erforderliche Zeilenwechselfrequenz zur Verfügung. In diesem Fall sollte die zu verwendende Auflösung direkt am Bootprompt angegeben werden:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: knoppix screen=800x600
+        </output>
+
+        </shell>
+
+        <textblock>
+Laptopbesitzer müssen in diesem Zusammenhang für eine vernünftige Darstellung oft in den Framebuffermodus wechseln:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: fb1024x768
+        </output>
+
+        </shell>
+
+        <textblock>
+<strong>Warum wird der Bildschirm während des Bootens schwarz?</strong>
+        </textblock>
+
+        <textblock>
+Dies geschieht häufig bei billigen TFT-Monitoren. In diesem Fall verwendet der Kernel die Framebufferkonsole, aber der Monitor beherrscht diesen Modus nicht. Schalte zum Beheben des Problems den Framebuffermodus mit folgendem Befehl aus:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: knoppix vga=normal
+        </output>
+
+        </shell>
+
+        <textblock>
+<strong>Warum funktioniert meine Maus nicht?</strong>
+        </textblock>
+
+        <textblock>
+Dieses Problem tritt dann auf, wenn eine PS2-Maus in Verbindung mit einem 9-poligen seriellen Adapter verwendet wird. Versuche in diesem Fall, eine Maus mit direktem 9-poligen Anschluss zu verwenden.
+        </textblock>
+
+        <textblock>
+<strong>Während des Bootens erscheint die Meldung:</strong>
+        </textblock>
+
+        <shell>
+
+        <output>
+Initrd extends beyond end of memory
+        </output>
+
+        </shell>
+
+        <textblock>
+In diesem Fall übergibt dein Mainboard dem Linux-Kernel die Größe des verbauten RAMs falsch. Hier muss die korrekte Größe des Hauptspeichers am Bootprompt definiert werden:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: knoppix mem=256M
+        </output>
+
+        </shell>
+
+        <textblock>
+<strong>Der Bootvorgang bricht mit der folgenden Meldung ab:</strong>
+        </textblock>
+
+        <shell>
+
+        <output>
+Could not find the KNOPPIX filesystem, sorry. Dropping you to a (very limited) shell
+        </output>
+
+        </shell>
+
+        <textblock>
+Hier scheint es Probleme zu geben, auf das komprimierte Knoppix-Abbild der CD zuzugreifen. Der Fehler taucht häufig in Verbindung mit CD-ROM-Laufwerken auf, die via PCMCIA am Computer angeschlossen sind. Dieses Problem lässt sich mit folgendem Cheatcode umgehen:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: knoppix ide2=0x180 nopcmcia
+        </output>
+
+        </shell>
+
+        <textblock>
+Sollte das nicht funktionieren, so wird offenbar dein PCMCIA-Laufwerk nicht unterstützt. Auch für diesen Fall gibt es eine Lösung: Kopiere das Verzeichnis KNOPPIX von der CD auf eine Linux-lesbare Partition auf deine Festplatte. Das kann eine Partition sein, die  z.B. mit einem FAT oder FAT32-Dateisystem formatiert wurde. Das kopierte Abbild kann dann mit folgenden Cheatcode gestartet werden:
+        </textblock>
+
+        <shell>
+
+        <output>
+boot: knoppix fromhd=/dev/hda1
+        </output>
+
+        </shell>
+
        </section>
+
+     </section>
+
+     <section>
+
+      <heading>
+Knoppix beenden
+      </heading>
+
+      <textblock>
+Nachdem du nun Knoppix zum Laufen gebracht hast, kann der Desktop erforscht werden. Teste die vielen Programme, die das System mitbringt. Keine Angst, du kannst keinen Schaden an deinem Rechner anrichten: Knoppix greift in der Standardeinstellung nur lesend auf deine Hardware zu. Wie beendet man nun aber das System?
+      </textblock>
+
+      <textblock>
+Obwohl es im Falle von Knoppix nicht schadet, einfach den Ausschaltknopf des Rechners zu betätigen, wollen wir uns an dieser Stelle keine schlechten Manieren angewöhnen. Das Herunterfahren des Systems verläuft ähnlich wie bei Windows, nur das man an Stelle des "Start-Symbols das K-Symbol zum Abmelden bzw. Herunterfahren anklickt.
+      </textblock>
+
+        <image height="100">
+        <filename>Knoppix_sauber_beenden.png</filename>
+        <title>Knoppix sauber beenden</title>
+        </image>
+
+      <textblock>
+Der Shutdown des Systems erfolgt dann in folgenden Stufen:
+      </textblock>
+
+      <ol>
+
+      <li>
+Nach Bestätigung des Abmeldedialogs wird zunächst die grafische Oberfläche beendet.
+      </li>
+
+      <li>
+Am Ende des Shutdownprozesses wird die CD ausgeworfen.
+      </li>
+
+      <li>
+Nachdem man die CD aus dem Laufwerk entfernt und die Schublade geschlossen hat, kann der Rechner durch das Betätigen der Eingabetaste ausgeschaltet werden. Sollte das nicht funktionieren, so kannst du den PC an dieser Stelle getrost "hart" ausschalten.
+      </li>
+
+      </ol>
+
+      <hint>
+<strong>Tipp</strong>
+      </hint>
+
+      <hint>
+Ganz fix lässt sich der Rechner mit der Tastenkombination <keycomb><key>Strg</key><key>Alt</key><key>Backspace</key></keycomb> herunterfahren.
+      </hint>
 
      </section>
 
