@@ -1,173 +1,71 @@
-\documentclass[10pt,a4paper,DIV15,titlepage,headsepline,footsepline,bibtotoc,idxtotoc]{scrbook}
+<?xml version="1.0" encoding="iso-8859-1"?>
 
-%% PLEASE NOTE, that the following lines to detect whether we are
-%% running as pdflatex or latex are error prone!  I only use them
-%% because my LaTeX-installation does not contain ifpdf.sty!
-%% BITTE BEACHTET, das die folgenden Zeilen anfaellig fuer Fehler
-%% sind.  Die aktuelle und richtige Loesung waere die Verwendung des
-%% Pakets ifpdf.sty, das mir jedoch derzeit nicht zur Verfuegung
-%% steht.
-\newif\ifpdf \ifx\pdfoutput\undefined
-\pdffalse % we are not running pdflatex
-\else
-\pdfoutput=1 % we are running pdflatex
-\pdfcompresslevel=9 % compression level for text and image;
-\pdftrue
-\fi
+<chapter>
+ <cvs>
+  <name>
+  </name>
+  <id>
+  </id>
+  <revision>
+  </revision>
+  <source>
+  </source>
+ </cvs>
+ <title>XEmacs auf Deutsch</title>
+ 
+ <author>
+  <name>Stefan Kamphausen</name>
+  <mailto>mail@skamphausende</mailto>
+ </author>
 
-\usepackage[latin1]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{textcomp}
-\usepackage{ngerman}
-\usepackage{fancyhdr}
-\usepackage{makeidx}
-\usepackage{verbatim}
-\makeindex
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                       VERBATIM
-\makeatletter
-\def\verbatim@font{\normalfont\ttfamily\footnotesize
-                   \hyphenchar\font\m@ne
-                   \let\do\do@noligs
-                   \verbatim@nolig@list}
-\makeatother
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                       TEX4HT
-%% LaTeX to HTML
-%% http://www.cis.ohio-state.edu/~gurari/TeX4ht/
-%% einkommentieren und mit 'htlatex ...tex' TeXen
-%% \usepackage[html,sections+,3,png]{tex4ht}
+ <layout>
+  <name>Matthias Hagedorn</name>
+  <mailto>matthias.hagedorn@selflinux.de</mailto>
+ </layout>
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                       FONTS
-\font\fc=cmss10   scaled 800
-\font\ft=phvr8r   scaled 800
+ <license>
+  GFDL
+ </license>
+
+ <index>xemacs</index>
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                     HEADER/FOOTER
-\pagestyle{fancy}
-\fancyhead[LO,RE]{\slshape \leftmark}
-\fancyhead[LE,RO]{\slshape \rightmark}
-\fancyhead[C]{}
-\fancyfoot[LE,RO]{\bfseries \thepage}
-\fancyfoot[LO,RE]{\small\slshape XEmacs auf Deutsch}
-\fancyfoot[C]{}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
-% meine screenshots sind ziemlich gross, daher:
-\renewcommand{\floatpagefraction}{.7}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                 PDF or not to PDF
-\ifpdf
-%\makeatletter
-%\@twosidefalse
-%\makeatother
-% die naechsten drei zeilen sind die empfohlene ersetzung fuer
-% times.sty
-\usepackage{mathptmx}
-\usepackage[scaled=.90]{helvet}
-\usepackage{courier}
-\usepackage{thumbpdf}
-\usepackage[pdftex,xdvi]{graphicx}
-\usepackage[pdftex,colorlinks=true,backref]{hyperref}
-\usepackage[pdftex]{color}
-\else
-\usepackage{graphicx}
-\usepackage[colorlinks=false,backref]{hyperref}
-\fi
+ <description>
+  <textblock>
+Eine pragmaprogrammatische Einleitung mit vielen Beispielen und
+bunten Bildern in etwas mehr als nur einen Texteditor.
+<ref lang="de" url="http://www.skamphausen.de/xemacs">http://www.skamphausen.de/xemacs</ref>
+   <image>
+    <title>XEmacs</title>
+    <filename>xemacs-plain.png</filename>
+   </image>
+  </textblock>
+ </description>
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                  META INFORMATION
-\newcommand{\version}{2.04}
-\author{Stefan Kamphausen}
-\subject{
-  \begin{center}
-    \includegraphics[width=0.66\textwidth]{xemacs-plain}
-  \end{center}
-Version -- \version}
-\title{XEmacs auf Deutsch}
-\titlehead{%
-  \begin{minipage}[b]{0.4\textwidth}
-    Eine pragmaprogrammatische Einleitung mit vielen Beispielen und
-    bunten Bildern in etwas mehr als nur einen Texteditor.
-    \href{http://www.skamphausen.de/xemacs}
-    {\nolinkurl{http://www.skamphausen.de/xemacs}}
-  \end{minipage}
-  }
-
-\lowertitleback{%
-  Copyright \copyright\ 2000-2004 Stefan Kamphausen\\[2ex]
-    
-  Gesetzt, getippt und gestaltet mit Freier Software (\LaTeX,
-  XEmacs und Gimp).\\[2ex]
-
-  Permission is granted to copy, distribute and or modify this
-  document under the terms of the GNU Free Documentation
-  License, Version 1.1 or any later version published by the
-  Free Software Foundation; with no Invariant Sections,
-  with no Front-Cover Texts, and with no Back-Cover
-  Texts. A copy of the license can be obtained from \cite{fdl}.
-}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newbox\mybox%
-\newcount\len%
-\newcount\halflen%
-\newcommand{\key}[1] {\texttt{%
-\setbox\mybox=%
-\hbox{\footnotesize #1}%
-\len=\wd\mybox%
-\advance\len by 370000%
-\halflen=\len%
-\divide \halflen by 2%
-\unitlength1sp%
-\begin{picture}(\len,600000)(0, 140000)%
-\put(\halflen, 300000){\oval(\len, 600000)}%
-\put(185000, 140000){\unhbox\mybox}%
-\end{picture}}\index{Tastatureingabe!#1}}
+ <split>
+  <section>
+   <heading>
+Vorneweg
+   </heading>
+   <section>
+    <heading>
+Er war's, er war's -- Ich war's, ich war's
+    </heading>
 
-\newcommand{\mx}[1]{\key{M-x} \texttt{#1}\index{M-x\ldots!#1}%
-  \index{Tastatureingabe!M-x #1}}
-\newcommand{\cx}[1]{\key{C-x} \key{#1}\index{C-x\ldots!#1}%
-  \index{Tastatureingabe!C-x #1}}
-\newcommand{\cc}[1]{\key{C-c} \key{#1}\index{C-c\ldots!#1}%
-  \index{Tastatureingabe!C-c #1}}
-\newcommand{\ch}[1]{\key{C-h} \key{#1}\index{C-h\ldots!#1}%
-  \index{Tastatureingabe!C-h #1}}
-\newcommand{\script}[1]{{\scshape#1}}
-\newcommand{\file}[1]{{\ttfamily\small#1}}
-\newcommand{\variable}[1]{{\ttfamily\small#1}\index{Variablen!#1}}
-\newcommand{\package}[1]{{\sffamily#1}\index{Pakete!#1}}
-\newcommand{\programm}[1]{{\ttfamily#1}\index{Programme!#1}}
-\newcommand{\buffer}[1]{{\ttfamily#1}\index{Spezielle Buffer!#1}}
-\newcommand{\command}[1]{{\ttfamily#1}\index{Funktionen!#1}}
-
-
-\hyphenation{XEmacs}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{document}
-\maketitle
-
-\tableofcontents
-%\listoffigures
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Vorneweg}
-\label{cha:vorneweg}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Er war's, er war's -- Ich war's, ich war's}
-\label{sec:ich-wars}
+    <textblock>
 Lasst mich ganz zu Beginn eine wichtige Sache loswerden.
-Verantwortlich für den ganzen Kram hier bin \emph{ich}, Stefan, und
+Verantwortlich für den ganzen Kram hier bin <italic>ich</italic>, Stefan, und
 alles, was ich hier so wiedergebe, funktioniert für mich auf meinen
-Systemen. 
+Systemen.
+    </textblock> 
 
+    <textblock>
 Wenn es bei der Verwendung der hier dargebotenen Code-Kunststückchen
 zu irgendwelchen Problemen kommt, stürmt bitte nicht gleich zu den
 jeweiligen Newsgroups oder (noch schlimmer) direkt zu den
@@ -175,36 +73,54 @@ Entwicklern.  Ich muss zumindest so weit Verantwortung übernehmen,
 dass ich eventuell überholten oder schlicht falschen Informationen und
 Beispielen hier selber nachgehen muss.  Also: schickt erstmal eine
 EMail an mich.
+    </textblock>
 
+    <textblock>
 Dazu auch gleich noch: ich setze nur ein einziges Betriebssytem ein:
-Linux (ich habe Erfahrungen mit SuSE, RedHat und Gentoo).  Fragen nach
+     <ref chapter="was_ist_linux">Linux</ref> (ich habe Erfahrungen mit <ref lang="de" url="http://www.novell.com/de-de/linux/suse/">SuSE</ref>, <ref lang="de" url="http://www.redhat.de/">RedHat</ref> und <ref lang="de" url="http://www.gentoo.de/">Gentoo</ref>).  Fragen nach
 der Anwendbarkeit und Konfiguration auf anderen Systemen kann ich
 nicht beantworten.  Ich nehme aber gerne entsprechende Kapitel hier
 mit auf, wenn sie jemand bereitstellt und dafür auch gerade steht.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Er war's, er war's -- Du warst's, du warst's}
-\label{sec:du-warsts}
-Nur für die Leser, die es nicht ohnehin als selbstverständlich ansehen
-\ldots
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Er war's, er war's -- Du warst's, du warst's
+    </heading>
+    <textblock>
+Nur für die Leser, die es nicht ohnehin als selbstverständlich ansehen ...
+    </textblock>
+
+    <textblock>
 Jeglicher Code und jegliche Anleitung hier wird ohne Verantwortung
 oder Sicherheit für die Datenintegrität auf Seiten des Lesers
-abgegeben.  Jeder Anweder und jede Anwenderin ist ganz alleine selber
+abgegeben. Jeder Anweder und jede Anwenderin ist ganz alleine selber
 dafür verantwortlich, dass seine/ihre Dateien keinen Schaden nehmen,
 er/sie keine Mails verliert oder sonstwie inhaltlichen Schaden davon
 trägt.  Wer das nicht einsieht oder versteht, sollte am Ende dieses
 Satzes aufhören zu lesen und das Thema XEmacs einfach ganz schnell
 vergessen.
+    </textblock>
 
+    <textblock>
 So, und jetzt kann es losgehen.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{\texttt{xemacs \&}}
-\label{cha:intro}
+ <split>
+  <section>
+   <heading>
+xemacs &
+   </heading>
+
+   <textblock>
 Der Titel diese Kapitels zeigt eine folgenschwere Eingabezeile in
-einer Shell.  Die Eingabe des Befehls \texttt{xemacs \&} startet (im
+einer Shell.  Die Eingabe des Befehls <command>xemacs &</command> startet (im
 Hintergrund) einen XEmacs und damit eine Maschinerie, die
-ihresgleichen sucht\footnote{OK, ihresgleichen ist leicht gefunden:
+ihresgleichen sucht <!-- OK, ihresgleichen ist leicht gefunden:
   der GNU Emacs, der Vater und Bruder des XEmcas zugleich ist. Im hier
   vorliegenden Schriftstück wenden wir uns jedoch dem XEmacs zu,
   wenngleich Vieles in gleicher oder ähnlicher Form auch auf den GNU
@@ -214,41 +130,54 @@ ihresgleichen sucht\footnote{OK, ihresgleichen ist leicht gefunden:
   dieser blöden Trennungen, die vermutlich positivste und damit das
   Gegenstück dürfte die Zwischenzeitliche Trennung und spätere
   Wiedervereinigung mit deutlichen Vorteilen des GCC sein.  Aber das
-  hier ist ja kein Buch über die Geschichte der Freien Software.}  Das
+  hier ist ja kein Buch über die Geschichte der Freien Software.-->  Das
 Ergebnis (sofern nicht bereits irgendwelche Konfigurationen
 vorgenommen wurden) sieht so aus, wie auf dem Titelblatt dieser
 Dokumentation.
+   </textblock>
 
+   <textblock>
 Der XEmacs ist im Kern eigentlich ein LISP-Interpreter und eine
 Anzeige-Maschine, die einige wenige grundlegende
 Texteditor-Funktionalitäten liefert.  Es mag nicht weiter verwundern,
 dass es eine solche grundlegende Funktion gibt, die bei Drücken der
-\key{Q}-Taste den Buchstaben "`Q"' an aktueller Position einfügt,
+    <keycomb mode="hold">
+     <key>Q</key>
+    </keycomb>-Taste den Buchstaben "Q" an aktueller Position einfügt,
 dass jedoch die Funktion zum Springen in die nächste Zeile
-\emph{nicht} zu diesen Grundfunktionen zählt sollte schon ein wenig
+<italic>nicht</italic> zu diesen Grundfunktionen zählt sollte schon ein wenig
 verwundern.  Die Erklärung ist einfach die, dass diese Funktion in
-LISP, genauer in Emacs Lisp \emph{Elisp} (noch genauer in der
+LISP, genauer in <ref lang="de" url="http://de.wikipedia.org/wiki/Elisp">Emacs Lisp</ref> <italic>Elisp</italic> (noch genauer in der
 XEmacs-Version von Elisp) geschrieben ist.
+   </textblock>
 
+   <textblock>
 Und eben das zeichnet den XEmacs aus.  Möglichst viele Funktion sollen
 in ELisp realisiert werden.  Das ergibt eine Flexibilität, die sich
 dem angehenden XEmacs-Adepten noch nicht erschließt, auf die der alte
 Guru aber unter keinen Umständen jemals wieder verzichten mag.
+   </textblock>
 
+   <textblock>
 Aus diesem Grunde an dieser Stelle ein ernstzunehmende Warnung:  Hat
 man einmal den nicht ganz einfachen Einstieg genommen, wird sich so
 ziemliche jede andere Komponente, die ein Editieren von Text zulässt
 (Formulare in Browsern, spezialisierte IDEs für diverse
-Programmiersprachen, EMail-Programme o.\,ä.) mickrig bis unterträglich
+Programmiersprachen, EMail-Programme o.ä.) mickrig bis unterträglich
 anfühlen. 
+   </textblock>
 
+   <textblock>
 In der vorliegenden Dokumentation wollen wir uns den XEmacs einmal
-genauer anschauen und im Vorbeigehen noch einiges über Lisp lernen. 
+genauer anschauen und im Vorbeigehen noch einiges über Lisp lernen.
+   </textblock> 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Die Maschine läuft an}
-\label{sec:xemacs-start}\index{Startablauf}
-%
+   <section>
+    <heading>
+Die Maschine läuft an
+    </heading>
+    
+    <textblock>
 Zu Beginn nehmen wir jedoch den Start des XEmacs mal etwas genauer
 unter die Lupe.  Der Kern des XEmacs ist in C geschrieben und somit
 für den unbedarften Anwender eher uninteressant.  Das macht aber auch
@@ -259,135 +188,233 @@ ganz viele Systembibliotheken einliest.  Dieser Kern ist es auch, der
 auf verschiedene Architekturen, wie Linux, BSD oder auch Microsoft
 Windows, portiert werden muss -- ein weiterer Grund dafür, ihn
 möglichst schmal zu halten.
+    </textblock>
 
+    <textblock>
 Nachdem sich der XEmacs in unserem Betriebssystem häuslich
 eingerichtet und einen scharfen Blick auf seine Umgebung und einige
 dort vorkommende Programme, Bibliotheken und andere Resourcen geworfen
 hat, startet als nächstes die ELisp-Maschinerie, und schaut sich
 ihrerseits im System um.  Sie findet all die Sachen, die sie verwenden
 könnte, wenn es drauf ankommt und lädt die grundlegenden Funktionen
-ein.  Sozusagen die \emph{nicht ganz so grundlegenden Funktionen},
-oder auch die \emph{grundlegenden Funktionen 2}.
+ein.  Sozusagen die <italic>nicht ganz so grundlegenden Funktionen</italic>,
+oder auch die <italic>grundlegenden Funktionen 2</italic>.
+    </textblock>
 
-Der erste Zugriffspunkt für uns ist die Datei
-\file{XEM/\-site-packages/\-lisp/\-site-start\-.el}. \footnote{Ich
+    <textblock>
+Der erste Zugriffspunkt für uns ist die Datei <path>XEM/site-packages/lisp/site-start-.el</path>}. \footnote<!--Ich
   verwende hier \texttt{XEM} als Abkürzung für das Basis-Verzeichnis,
   in dem der XEmacs installiert wurde.  Üblicherweise wird das sowas
-  sein wie \file{/usr/\-share/\-xemacs/\-21.4.4}.}.  Dort wird ein
+  sein wie \file{/usr/\-share/\-xemacs/\-21.4.4}.--> Dort wird ein
 Systemadministrator all die Einstellungen vornehmen, die er gerne
 allen Anwendern auf dem System als Voreinstellung anbieten möchte.
+    </textblock>
 
+    <textblock>
 Wer diese Datei nun ändert, wird sich vermutlich beim nächsten
 Systemstart wundern, dass die Änderungen gar nicht aufgetaucht sind.
 Dass liegt vermutlich daran,  dass es eine Datei fast gleichen Namens,
-nur mit der Endung \file{.elc} gibt.   Eine solche Datei ist eine
+nur mit der Endung <path>.elc</path> gibt.   Eine solche Datei ist eine
 kompilierte Lisp-Datei, die einfach etwas schneller geladen werden
 kann.  Wann immer eine solche Datei vorliegt, wird XEmacs sie beim
 Laden vorziehen.  Wie solche erstellt werden, beschreibt
-Abschnitt~\ref{sec:bytecompile}.  
+Abschnitt <ref iref="Punkt elc -- Bytekompilate">Punkt elc -- Bytekompilate
+     </ref>.
+    </textblock>
 
+    <textblock>
 Im darauffolgenden Schritt der Initialisierung kommt der große Moment,
 auf den der versierte XEmacs-Anwender gewartet hat: die
 Benutzer-eigene Initialisierungs-Datei
-\file{\$HOME/\-.xemacs/\-init.el} wird geladen!\footnote{Eigentlich
+<path>$HOME/.xemacs/init.el</path> wird geladen!<!--Eigentlich
   ist es ja schade, dass es nicht mehr die sagenumwobene
   \file{\$HOME/.emacs} ist, weil damit solche Sprüche wie ``HOME is
   where .emacs is'' zumindest für XEmacser nicht mehr angebracht sind.
   Da aber in der Vergangenheit die \texttt{Dotemacs} doch oftmals nur
   noch zum Unterscheiden der beiden großen Emacs-Versionen und
   entsprechendem Nachladen separater Initialisierungsdateien diente,
-  ist der Schritt nur konsequent.}
+  ist der Schritt nur konsequent.}-->
+    </textblock>
 
+    <textblock>
 Dieses ist der wohl wichtigste Punkt beim Starten des XEmacs, denn ab
 dieser Stelle kann jeder Anwender seine eigenen Definitionen
 vornehmen.  Wie das genau geht, erklärt Abschnitt
-\ref{cha:konfiguration}. 
+<ref iref="Konfiguration">Konfiguration</ref>.
+    </textblock>
 
+    <textblock>
 In einer weiteren Phase der Anwender-spezifischen Einrichtung wird das
 Customize-System mit seinen Einstellungen geladen (siehe Abschnitt
-\ref{sec:customize}).
+     <ref iref="Customize">Customize</ref>).
+    </textblock>
 
+    <textblock>
 Abschließend wird noch eine weitere System-Datei geladen, mit der der
 Administrator nach belieben einige Einstellungen vornehmen kann, die
 nach dem Laden der Anwender-spezifischen Dateien in Kraft treten:
-\file{XEM/lisp/default.el} Es solle sich jedoch kein Administrator der
+<path>XEM/lisp/default.el</path> Es solle sich jedoch kein Administrator der
 irrigen Annahme hingeben, auf diesem Wege Einstellungen erzwingen zu
 können, da jeder User das Laden dieser Datei unterdrücken kann.
+    </textblock>
 
+    <textblock>
 Und kurz danach steht der XEmacs dem Anwender voll zur Verfügung.  Es
 ist Voreinstellung, dass jetzt zunächst ein Hilfe-Fenster mit den
 wichtigsten Details eingeblendet wird, das beim ersten Tastendruck
-verschwindet und durch den \buffer{*scratch*}-Buffer ersetzt wird.
+verschwindet und durch den <name>*scratch*</name>-Buffer ersetzt wird.
+    </textblock>
 
+    <textblock>
 Dieser Buffer ist jedoch nicht als echtes Text-Dokument gedacht (wie
 ja auch ein kleiner Hinweis ganz oben erläutert), sondern für kurze
 Notizen und zum Evaluieren von Lisp-Code.
+    </textblock>
+   </section>
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{C-x C-c}
-\label{sec:kill-emacs}\index{Beenden}
+   <section>
+    <heading>
+C-x C-c
+    </heading>
+
+    <textblock>
 Die vielleicht wichtigste Aktion nach dem Starten ist das Beenden des
 Programms.  Da der Emacs entworfen und programmiert wurde, als es
 heute gängige Programme und Systeme noch lange nicht gab, hält er sich
 schlicht und ergreifend nicht an die Schemata, die durch solche
 gängigen Programme eingeführt und verbreitet wurden.  Und beim
 Versuch, das Programm zu beenden, kann man dieses auch gleich spüren:
-das verbreitete \key{C-q}, also das Drücken der \key{Control} oder
-auch \key{Strg}-Taste zusammen mit \key{q} bewirkt jedenfalls nicht
+das verbreitete
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>q</key>
+     </keycomb>, also das Drücken der 
+     <keycomb>
+      <key>Control</key>
+     </keycomb> oder
+     auch
+     <keycomb>
+      <key>Strg</key>
+     </keycomb>-Taste zusammen mit
+     <keycomb>
+      <key>q</key>
+     </keycomb> bewirkt jedenfalls nicht
 das gewünschte.  Stattdessen erzielt man das Programmende mit
-\cx{C-c}, oder etwas ausführlicher: \mx{kill-emacs}.
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb>
+      <key>C</key>
+      <key>c</key>
+     </keycomb>, oder etwas ausführlicher:
+     <keycomb mode="hold">
+      <key>M</key>
+      <key>x</key>
+     </keycomb>
+     <name>kill-emacs</name>.
+    </textblock>
 
+    <textblock>
 So ganz im Vorbeigehen haben wir dabei auch gleich die typische
 Schreibweise für XEmacs-Tastatur-Sequenzen
-kennengelernt\index{Tasten!Schreibweise}.  Dabei steht ein \key{C-}
+kennengelernt.  Dabei steht ein
+     <keycomb mode="hold">
+      <key>C-</key>
+     </keycomb>
 immer für das gleichzeitige Drücken der Steuerungstaste und ein
-\key{M-} für die Meta-Taste.  Nun habe die wenigsten Tastaturen eine
-echte Meta-Taste eingebaut\footnote{Ich kenne die eigentlich nur von
-  Rechnern von SUN}, und dort wird üblicherweise die \key{Alt}-Taste
+     <keycomb mode="hold">
+      <key>M-</key>
+     </keycomb>
+für die Meta-Taste.  Nun habe die wenigsten Tastaturen eine
+echte Meta-Taste eingebaut <!--Ich kenne die eigentlich nur von
+     Rechnern von SUN-->, und dort wird üblicherweise die
+     <keycomb mode="hold">
+      <key>Alt</key>
+     </keycomb>}-Taste
 diese Funktion übernehmen.  Ist das einmal nicht der Fall, kann man
-sich immer noch durch Drücken von \key{Esc} und drauf folgendem
+sich immer noch durch Drücken von
+     <keycomb mode="hold">
+      <key>Esc</key>
+     </keycomb>
+und drauf folgendem
 Drücken der Folgetasten helfen.
- 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Buffer, Windows, Frames}
-\label{sec:nomen}
+    </textblock>
+   </section>
+
+   <section>
+    <heading>
+Buffer, Windows, Frames
+    </heading>
+
+    <textblock>
 Wie bereits erwähnt, gilt für XEmacs vieles, was heute Standard ist,
-\emph{nicht}.  So ist ein XEmacs-\-\emph{Window} nicht das, was man
-sich gemeinhin unter einem "`Window"' vorstellt.  Daher wollen wir uns
+<italic>nicht</italic>.  So ist ein XEmacs-<italic>Window</italic> nicht das, was man
+sich gemeinhin unter einem "Window" vorstellt.  Daher wollen wir uns
 kurz einen Überblick über die in diesem Bereich gängige Nomenklatur
 verschaffen und en passant auch gleich noch einige wichtige
 Tastenkürzel dabei kennenlernen.
+    </textblock>
 
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{frame}
-    \caption{Ein XEmacs-Frame (das ganze Fenster) mit einigen
-      markierten Bereichen:  \emph{Gelb:} die Menubar, \emph{lila:}
-      Toolbar, \emph{rot:} drei Windows, teilweise durch horizontale,
-      teilweise durch vertikale Teilung entstanden, \emph{grün} die zu
-      den Windows gehörenden Modelines sowie \emph{blau:} die im
+    <image>
+     <title>Ein XEmacs-Frame (das ganze Fenster) mit einigen
+      markierten Bereichen: <italic>Gelb:</italic> die Menubar,<italic>lila:</italic>
+      Toolbar, <italic>rot:</italic> drei Windows, teilweise durch horizontale,
+      teilweise durch vertikale Teilung entstanden, <italic>grün</italic> die zu
+      den Windows gehörenden Modelines sowie <italic>blau:</italic> die im
       Moment als Echo-Area agierende letzte Zeile (nur eine Ausgabe),
-      die aber auch als Minibuffer zu Eingaben auffordert.}
-    \label{fig:frame}
-  \end{center}
-\end{figure}
+      die aber auch als Minibuffer zu Eingaben auffordert.
+     </title>
+     <filename>frame.png</filename>
+    </image>
 
-Zur Verdeutlichung kann die Abbildung~\ref{fig:frame} herangezogen
-werden, die einige Elemente beschreibt. 
+    <textblock>
+Zur Verdeutlichung kann die Abbildung herangezogen
+werden, die einige Elemente beschreibt.
+    </textblock>
 
-\begin{description}
-\item[Frame]\index{Frame} Ein Frame ist ein XEmacs-Fenster, also das,
+    <textblock>
+     <strong>Frame</strong>
+    </textblock>
+
+    <quotation>
+  Ein Frame ist ein XEmacs-Fenster, also das,
   was woanders meist Fenster/Window heißt.  Zu einem einzelnen
-  XEmacs-Prozess können viele Frames gehören, die sich mit \key{C-x}
-  \key{5} \key{2} erstellen und mit \key{C-x} \key{5} \key{0} wieder
+  XEmacs-Prozess können viele Frames gehören, die sich mit
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb>
+      <key>5</key>
+      <key>2</key>
+     </keycomb>
+  erstellen und mit
+     <keycomb mode="hold">
+      <key>C</key>
+      <key>x</key>
+     </keycomb>
+     <keycomb>
+      <key>5</key>
+      <key>0</key>
+     </keycomb>
+  wieder
   schließen lassen.  Ein Frame hat keinerlei Einfluss darauf, welche
   Dateien im XEmacs gerade geöffnet sind, aber ein Frame kann eine
   gruppierende Wirkung haben.  Auch gelten manche Einstellungen immer
-  Frame-spezifisch, wie z.\,B.\ das Vorhanden sein einer Menu-Leiste.
-  Es soll hier darauf verzichtet werden, \emph{Frame} in irgendeiner
-  Form einzudeutschen auf \emph{Rahmen} oder etwas ähnliches.  Wir
+  Frame-spezifisch, wie z.B. das Vorhanden sein einer Menu-Leiste.
+  Es soll hier darauf verzichtet werden, <italic>Frame</italic> in irgendeiner
+  Form einzudeutschen auf <italic>Rahmen</italic> oder etwas ähnliches.  Wir
   wollen es ja nicht zu weit treiben.
-\item[Window]\index{Window} Wenn ein Frame ein Window ist, was ist
+    </quotation>
+
+    
+    <textblock>
+     <strong>Window</strong>
+    </textblock>
+
+    <quotation>
+  Wenn ein Frame ein Window ist, was ist
   dann ein Window?  Im XEmacsjargon bezeichnet ein Window
   gewissermaßen ein Unterfenster.  Jeder Frame kann mit der Eingabe
   \cx{2} bzw.\ \cx{3} horizontal oder vertikal gesplittet werden.  Die
@@ -399,7 +426,14 @@ werden, die einige Elemente beschreibt.
   zu wissen, dass man das Fenster, in dem man sich gerade befindet mit
   \cx{0} wieder los wird, oder aber mit \cx{1} zum einzig
   abendfüllenden Window macht.
-\item[Buffer]\index{Buffer} Ein Buffer nun bezeichnet das Konzept, mit
+    </quotation>
+
+    <textblock>
+     <strong>Buffer</strong>
+    </textblock>
+    
+    <quotation>
+  Ein Buffer nun bezeichnet das Konzept, mit
   dem der XEmacs seine Daten präsentiert.  In den allermeisten Fällen
   wird ein Buffer eine Datei enthalten, und auch entsprechend benamt
   sein.  Es gibt aber durchaus auch andere Buffer, wie die Buffer, die
@@ -409,9 +443,13 @@ werden, die einige Elemente beschreibt.
   Programmierer geht das sogar soweit, dass es manche Funktion gibt,
   Text in einem Buffer zu bearbeiten, die man für Text in reiner
   String-Form nicht hat.
+    </quotation>
 
+    <quotation>
   Zugriff auf die Buffer-Liste liefern unter anderem das Buffer-Menu
   in der Menu-Leiste, aber auch die Eingabe \cx{C-b}
+    </quotation>
+    
 \item[Menu-Leiste]\index{Menu} Nicht ganz überraschend weil
   überraschend standardkonform ist die Menu-Leiste am oberen Rand des
   Frames.  Sie verändert sich oft in Abhängigkeit vom Inhalt des
@@ -584,6 +622,9 @@ werden, die einige Elemente beschreibt.
 \end{description}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   </section>
+
+   <section>
 \section{(defun () ``und andere Klammern'' )}
 \label{sec:lisp-intro}\index{ELisp!Grundlagen}
 Eigentlich will der Leser ja am liebsten alles schon ausprobieren,
@@ -617,6 +658,9 @@ als für Funktionsaufrufe, die hier aber zunächst nicht interessieren
 sollen.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   </section>
+
+   <section>
 \section{Tutorial}
 \label{sec:tutorial}\index{Tutorial}
 Dieses Kapitel wird in dieser Anleitung sehr kurz ausfallen,
@@ -662,6 +706,9 @@ gleiches gilt für die Auswahl der Sprache\footnote{So, jetzt ist aber
   genug gefüllt hier!}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   </section>
+
+   <section>
 \section{(describe-\ldots) -- Hilfe zur Selbsthilfe}
 \label{sec:help}
 Zum Abschluss der Einleitung soll noch ein wenig Hilfe zur Selbsthilfe
@@ -731,6 +778,11 @@ gesammelt:
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   </section>
+  </section>
+ </split>
+
+ 
 \chapter{Anwendungen und Major-Modes}
 \label{cha:anwendungen}
 In diesem Kapitel wollen wir uns möglichst vielen mehr oder minder
@@ -4853,8 +4905,6 @@ to permit their use in free software.
 \printindex
 
 \end{document}
-% Make this the Master File for Emacs-AUC-TeX:
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: t
-%%% End: 
+Gesetzt, getippt und gestaltet mit Freier Software (LaTeX,
+XEmacs und Gimp).
+</chapter>
