@@ -342,12 +342,6 @@ public class Document {
 				transformer.setParameter("silent", "false");
 			}
 
-			if (mksl3.debug==true) {
-				transformer.setParameter("debug", "true");
-			} else {
-				transformer.setParameter("debug", "false");
-			}
-
 			// Uebersetze XML
 			transformer.transform(xmlsource, new StreamResult(new NullOutputStream()));
 

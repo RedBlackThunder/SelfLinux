@@ -30,7 +30,6 @@ public class mksl3 {
 	public static boolean make_pdf = false;
 	public static boolean validate = false;
 	public static boolean silent = false;
-	public static boolean debug  = false;
 
 	public static void main(String[] args) {
 		String sep = System.getProperty("file.separator");
@@ -47,9 +46,6 @@ public class mksl3 {
 			}
 			if (args[i].equals("--silent")) {
 				silent=true;
-			}
-			if (args[i].equals("--debug")) {
-				debug=true;
 			}
 			if (args[i].startsWith("--basedir=")) {
 				basedir=args[i].substring(args[i].indexOf("=")+1, args[i].length());
@@ -91,10 +87,10 @@ public class mksl3 {
 				(make_html==true && (variant==null || variant=="")) ) {
 			System.err.println("Usage:");
 			System.err.println("Generate full release:");
-			System.err.println("    java mksl3 [--silent] [--debug] --variant=[online|download] --basedir=<absolute path> --outputdir=<absolut path> [--version=x.x.x] [--file=<relative path>[,<relative path>]]");
+			System.err.println("    java mksl3 [--silent] --variant=[online|download] --basedir=<absolute path> --outputdir=<absolut path> [--version=x.x.x] [--file=<relative path>[,<relative path>]]");
 			System.err.println("");
 			System.err.println("Generate HTML-output:");
-			System.err.println("    java mksl3 --html [--silent] [--debug] --variant=[online|download] --basedir=<absolut path> --outputdir=<absolute path> [--version=x.x.x] [--file=<relative path>[,<relative path>]]  [--version=x.x.x]");
+			System.err.println("    java mksl3 --html [--silent] --variant=[online|download] --basedir=<absolut path> --outputdir=<absolute path> [--version=x.x.x] [--file=<relative path>[,<relative path>]]  [--version=x.x.x]");
 			System.err.println("Generate PDF-output:");
 			System.err.println("    java mksl3 --pdf [--silent] --basedir=<absolute path> --outputdir=<absolute path> [--version=x.x.x] [--file=<relative path>[,<relative path>]]");
 			System.err.println("Validate XML-files:");
@@ -205,13 +201,6 @@ public class mksl3 {
 				System.out.print("Erzeuge Inhaltsverzeichnisse ... ");
 				Dirs.make(outputdir+sep+"index.xml",basedir+sep+"stylesheets"+sep+"html"+sep+"dirs.xsl");
 				System.out.println("erledigt");
-
-				// Erzeuge Linkübersicht
-				if (debug==true) {
-					System.out.print("Erzeuge externes Linkverzeichnis ... ");
-					DebugLinks.make(outputdir+sep+"index.xml",basedir+sep+"stylesheets"+sep+"html"+sep+"debuglinks.xsl");
-					System.out.println("erledigt");
-				}
 			}
 		}
 
