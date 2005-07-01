@@ -196,7 +196,7 @@ public class Document {
 					if (kollision==true) {
 						System.err.println("\nFEHLER: Namenskollision gefunden:\n");
 						System.err.println("Index: "+index);
-						System.err.println("Datei: "+ xmlfile);
+						System.err.println("Datei: "+xmlfile);
 						System.exit(1);
 					} else {
 						indexlist.add(index);
@@ -277,7 +277,7 @@ public class Document {
 					in = new BufferedInputStream(in);
 
 					// Oeffne Outputstream zum Kopieren
-					OutputStream out = new FileOutputStream(mksl3.outputdir+sep+mksl3.version+sep+"bilder"+sep+images.get(i));
+					OutputStream out = new FileOutputStream(mksl3.outputdir+sep+mksl3.version+sep+"bilder"+sep+index+"_"+images.get(i));
 					out = new BufferedOutputStream(out);
 						
 					// Gebe Dateinamen zur Kontrolle auf stdout aus
