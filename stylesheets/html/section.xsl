@@ -137,6 +137,8 @@
      <xsl:attribute name="src" saxon:disable-output-escaping="yes">
       <xsl:value-of select="normalize-space($img_dir)"/>
       <xsl:text>/</xsl:text>
+      <xsl:value-of select="normalize-space($index_file)"/>
+      <xsl:text>_</xsl:text>
       <xsl:value-of select="normalize-space(filename)"/>
      </xsl:attribute>
      <xsl:attribute name="alt">
