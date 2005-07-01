@@ -47,7 +47,7 @@ Für den Lese-Zugriff auf das SelfLinux-SVN-Repository auf
 pingos.org gibt es folgende Möglichkeit:
 
 Über Web:
-http://subversion.pingos.org/selflinux/trunk/
+http://subversion.pingos.org/cgi-bin/viewcvs.cgi/
 
 
 
@@ -66,18 +66,35 @@ Dann wechselst du in dieses Verzeichnis:
 
 user$ cd /home/<username>/selflinux/svn
 
+Jetzt benötigen wir noch einige kleine Skripte und Anpassungen, um um
+unzulänglichkeiten von Subversion herumzuarbeiten:
+
+1. Die Datei /usr/local/bin/svnssl mit folgendem Inhalt anlegen:
+
+#!/bin/sh
+# access svnserve daemon over an SSL tunnel
+exec openssl s_client -quiet -connect $1:3690 2> /dev/null
+
+2. Nun müssen wir Subversion noch mitteilen, dass wir dieses Skript
+verwenden wollen. Hierzu muss man die Datei
+/home/<username>/.subversion/config editieren. Es muss folgendes enthalten
+sein:
+
+[tunnels]
+ssl = svnssl
+
 Als nächstes logst du dich wie oben beschrieben in das Pingos.org-SVN ein.
 Mit folgendem Befehl wird das gesamte
 SL-Repository als Arbeitskopie readonly "ausgecheckt":
 
-svn checkout http://subversion.pingos.org/selflinux/trunk/
+svn checkout svn+ssl://neptun.pingos.org/selflinux/trunk/
 
 Dies ist für alle möglich, die keinen Schreibzugriff auf das SVN haben.
 
 
 Für alle mit Schreibzugriff checkt man mit folgendem Befehl aus:
 
-svn checkout https://neptun.pingos.org/subversion/selflinux/trunk
+svn checkout svn+ssl://neptun.pingos.org/selflinux/trunk
 
 Diesen Checkout der Arbeitskopie macht man eigentlich nur
 einmal. Später wird die Arbeitskopie durch den "svn update"-Befehl
