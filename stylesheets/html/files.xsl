@@ -72,17 +72,6 @@
         <xsl:text>&#160;</xsl:text>
        </td>
        <td colspan="2">
-        <xsl:if test="($debug = 'true') and not(count(//split/section) > 1)">
-         <table bgcolor="#CCCCCC">
-          <tr>
-           <td>
-            <xsl:call-template name="keyword-list"/>
-             <strong><xsl:text>Links auf dieses Kapitel:</xsl:text></strong><br/>
-            <xsl:call-template name="linkstohere"/>
-           </td>
-          </tr>
-         </table>
-        </xsl:if>
         <xsl:apply-templates select="section"/>
         <br/>
        </td>

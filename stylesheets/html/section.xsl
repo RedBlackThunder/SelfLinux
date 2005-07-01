@@ -61,9 +61,6 @@
       <xsl:value-of select="heading"/>
      </a>
     </h4>
-    <xsl:if test="$debug = 'true'">
-     <xsl:call-template name="debug-ch-infobox"/>
-    </xsl:if>
     <xsl:apply-templates/>
    </td>
   </tr>
@@ -85,9 +82,6 @@
      <xsl:value-of select="generate-id()"/>
     </xsl:attribute>
    </a>
-   <xsl:if test="$debug = 'true'">
-    <xsl:call-template name="debug-ch-infobox"/>
-   </xsl:if>
   </xsl:if> <!-- @name -->
   <xsl:apply-templates/>
  </p>

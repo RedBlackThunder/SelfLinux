@@ -24,7 +24,6 @@
  <xsl:param name="variant">.</xsl:param>
  <xsl:param name="pdfsize">.</xsl:param>
  <xsl:param name="silent">false</xsl:param>
- <xsl:param name="debug">false</xsl:param>
  <xsl:param name="version">.</xsl:param>
 
  <xsl:variable name="img_dir">../bilder</xsl:variable>
@@ -36,7 +35,6 @@
  <xsl:include href="toc.xsl"/>
  <xsl:include href="section.xsl"/>
  <xsl:include href="format.xsl"/>
- <xsl:include href="debuginfos.xsl"/>
 
  <!--
   Die Vorlage fuer den Root-Knoten (nicht das Root-Element) ist der

@@ -46,20 +46,6 @@
      </xsl:call-template>
     </xsl:for-each>
     <br/><br/>
-
-    <!-- evtl. Debugging-Ausgabe -->
-    <xsl:if test="$debug = 'true'">
-     <table bgcolor="#CCCCCC">
-      <tr>
-       <td>
-        <xsl:call-template name="keyword-list"/>
-        <strong><xsl:text>Links auf dieses Kapitel:</xsl:text></strong><br/>
-        <xsl:call-template name="linkstohere"/>
-       </td>
-      </tr>
-     </table>
-    </xsl:if>
-
    </td>
   </tr>
   <tr>

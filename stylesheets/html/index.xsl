@@ -21,7 +21,6 @@
  <xsl:param name="pwd"></xsl:param>  
  <xsl:param name="dest">index.xml</xsl:param>
  <xsl:param name="silent">false</xsl:param>
- <xsl:param name="debug">false</xsl:param>
 
  <!--
   Bedeutung der Parameter:
@@ -32,8 +31,6 @@
         gespeichert.
 
   silent: wird nicht genutzt.
-
-  debug: Erzeuge zusätzliche Einträge fürs Debuggen von Links
  -->
 
  <xsl:output method="text" encoding="iso-8859-1"/>
@@ -152,18 +149,9 @@
 
  <!--
   ref-Template
-  Falls debug gesetzt ist, werden alle ref-Tags in die Ausgabe übernommen
-  und mit Zeilennummern versehen.
  -->
  
  <xsl:template match="ref">
-  <xsl:if test="$debug = 'true'">
-   <xsl:copy>
-    <xsl:attribute name="line"><xsl:value-of select="saxon:lineNumber()"/></xsl:attribute>
-    <xsl:apply-templates select="@*" mode="copy"/>
-    <xsl:apply-templates mode="copy"/>
-   </xsl:copy>
-  </xsl:if>
  </xsl:template>
 
  <!--
