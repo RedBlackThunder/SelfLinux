@@ -29,4 +29,4 @@ do
     fi
 done
 
-javac -classpath "$LOCALCLASSPATH" -d /tmp/mksl3 ${DIR}/*.java
+javac -Xlint:unchecked -classpath "$LOCALCLASSPATH" -d /tmp/mksl3 ${DIR}/*.java

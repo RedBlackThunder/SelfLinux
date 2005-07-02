@@ -15,13 +15,13 @@ import java.io.*;
 import java.util.*;
 
 public class Filelist {
-	static public ArrayList dateiliste;
+	static public ArrayList <String> dateiliste;
 	
 	static public void make(String xmlfile) {
 		String sep = System.getProperty("file.separator");
 		
 		// Reserviere Speicherplatz fuer ArrayList dateiliste
-		dateiliste = new ArrayList();
+		dateiliste = new ArrayList<String>();
 
 		// <document> einlesen
 		try {

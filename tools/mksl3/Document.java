@@ -34,12 +34,12 @@ public class Document {
 	private static Templates htmlstylesheet;
 	private static String[] types = {"B","KB","MB","GB","TB"};
 	private static Driver pdfdriver;
-	private static ArrayList indexlist;
+	private static ArrayList <String> indexlist;
 
 	private String xmlfile;
 	private String pdffile;
 	private String index;
-	private ArrayList images;
+	private ArrayList <String> images;
 	private String pdfsize;
 
 	static public void set_xsl2htmlfile(String file) {
@@ -137,11 +137,11 @@ public class Document {
 		
 		//Reserviere Speicher fuer ArrayList indexlist
 		if (indexlist==null) {
-			indexlist = new ArrayList();
+			indexlist = new ArrayList<String>();
 		}
 		
 		// Reserviere Speicher fuer ArrayList images
-		images = new ArrayList();
+		images = new ArrayList<String>();
 		try {
 			// Oeffne Inputstream fuer die XML-Datei
 			FileInputStream fin = new FileInputStream(xmlfile);
