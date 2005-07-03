@@ -105,7 +105,7 @@ public class mksl3 {
 			validate=true;
 		}
 		
-		// Überprüfe Versionsnummer
+		// Überpruefe Versionsnummer
 		if (version==null || version=="") {
 			SimpleDateFormat SLDateFormat = new SimpleDateFormat("yyyyMMdd");
 			Date date = new Date();

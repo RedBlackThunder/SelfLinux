@@ -37,7 +37,7 @@ public class Index {
 			// Erzeuge eine Instanz von transformerfactory
 			TransformerFactory tfactory = TransformerFactory.newInstance();
 
-			// Setze Attribute für transformerfactory
+			// Setze Attribute fuer transformerfactory
 			tfactory.setAttribute(FeatureKeys.LINE_NUMBERING, new Boolean(true));
 
 			// Erzeuge einen transformer fuer das Stylesheet

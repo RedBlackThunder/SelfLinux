@@ -55,7 +55,7 @@ public class Document {
 			// Erzeuge neue Transformerfactory
 			TransformerFactory tfactory = TransformerFactory.newInstance();
 
-			// Setze Attribute für transformerfactory
+			// Setze Attribute fuer transformerfactory
 			tfactory.setAttribute(FeatureKeys.LINE_NUMBERING, new Boolean(true));
 
 			// Erzeuge kompiliertes Stylesheet
@@ -182,7 +182,7 @@ public class Document {
 					indextag = indextag.replaceAll("</?index>","");
 					index = indextag.trim();
 					
-					// Überprüfe auf Namenskollision
+					// Ueberpruefe auf Namenskollision
 					boolean kollision=false;
 					if (indexlist!=null && indexlist.size()>0) {
 						for (int i=0; i<indexlist.size(); i++) {
@@ -371,7 +371,7 @@ public class Document {
 		// PDF-Driver zuruecksetzen
 		pdfdriver.reset();
 				
-		// Konfiguration des Arbeitsverzeichnisses für relative Pfade
+		// Konfiguration des Arbeitsverzeichnisses fuer relative Pfade
 		org.apache.fop.configuration.Configuration.put("baseDir",xmlfile.substring(0,xmlfile.lastIndexOf(sep)));
 	
 		try {
