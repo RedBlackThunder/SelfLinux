@@ -154,7 +154,7 @@ public class Document {
 			// Analysiere Inputstream
 			while ((line = in.readLine()) != null) {
 				// Ignoriere Kommentare
-				if (line.matches("^.*<!---.*$")) {
+				if (line.matches("^.*<!--.*$")) {
 					if (line.matches("^.*-->.*$")) {
 						break;
 					} else {

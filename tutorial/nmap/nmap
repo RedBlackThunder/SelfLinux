@@ -5,6 +5,7 @@
  
  <author>
   <name>Gabriel Welsche</name>
+  <mailto>gabriel.welsche@web.de</mailto>
  </author>
  
  <author>
@@ -43,14 +44,12 @@ Einführung
    </heading>
    
    <textblock>
-nmap - der "Network Mapper" - wurde entwickelt, um 
-Systemadministratoren und anderen kuriosen Individuen die 
-Möglichkeit zu geben, Netzwerke zu analysieren, festzustellen 
-welche Hosts aktiv sind und welche Dienste durch sie 
-bereitgestellt werden. nmap ist ein so genannter 
-Portscanner (scannen = abtasten), d. h. er prüft 
-IP - Netzwerkkomponenten auf geöffnete bzw. geschlossene 
-TCP/UDP - Ports. Dabei werden eine  Vielzahl  verschiedener 
+nmap - der <strong>Network Mapper</strong> - wurde entwickelt, um
+Systemadministratoren und anderen kuriosen Individuen die Möglichkeit zu geben,
+Netzwerke zu analysieren, festzustellen welche Hosts aktiv sind und welche
+Dienste durch sie bereitgestellt werden. nmap ist ein so genannter Portscanner
+(scannen = abtasten), d. h. er prüft IP - Netzwerkkomponenten auf geöffnete bzw.
+geschlossene TCP/UDP - Ports. Dabei werden eine Vielzahl verschiedener
 Abtastverfahren unterstützt, zum Beispiel
    </textblock>
    
@@ -88,8 +87,7 @@ Null - Scan
    </ul>
    
    <textblock>
-Ebenso bietet nmap eine  Vielzahl von zusätzlichen Möglichkeiten,
-wie
+Ebenso bietet nmap eine  Vielzahl von zusätzlichen Möglichkeiten, wie
    </textblock>
    
    <ul>
@@ -123,30 +121,27 @@ Ziel- und Port- Scans.
    </ul>
    
    <textblock>
-Das  Resultat eines nmap - Durchlaufs ist normalerweise eine
-Liste sämtlicher interessanter Ports der "gescannten" Geräte.
-Sofern eine Zuweisung stattfinden kann, benennt nmap die 
-bekannten Ports direkt mit ihrem Service-Namen, Portnummer, 
-Status (offen, gefiltert, ungefiltert) und Protokoll. 
-Der Status "offen" (engl. open) bedeutet, dass das 
-Zielsystem in der  Lage  ist, auf diesem Port 
-Verbindungen anzunehmen . "Gefiltert" (engl. filtered)
-weist  darauf  hin, dass ein dediziertes Firewall - System, 
-TCP/IP-Filter oder  Netzwerk-Element  die Arbeit  von  nmap 
-behindert und somit keine verlässlichen Rückschlüsse gezogen 
-werden  können.  "Ungefiltert" (engl unfiltered) heißt, 
-dass nmap den Port kennt, jedoch beim Zugriff  keinerlei  
-Filtermechanismen  ausgemacht  werden konnten. 
-Der ungefilterte Status wird in den meisten aller Fälle 
-auftreten. Deshalb wird ein solcher nur immer  dann
-explizit ausgewiesen, wenn die  meisten der gescannten Ports
-gefiltert sind.
+Das  Resultat eines <command>nmap</command> - Durchlaufs ist normalerweise eine
+Liste sämtlicher interessanter Ports der <strong>gescannten</strong> Geräte.
+Sofern eine Zuweisung stattfinden kann, benennt nmap die bekannten Ports direkt
+mit ihrem Service-Namen, Portnummer, Status (offen, gefiltert, ungefiltert) und
+Protokoll. Der Status <strong>offen</strong> (engl. open) bedeutet, dass das
+Zielsystem in der Lage ist, auf diesem Port Verbindungen anzunehmen.
+<strong>Gefiltert</strong> (engl. filtered) weist darauf hin, dass ein
+dediziertes Firewall - System, TCP/IP-Filter oder  Netzwerk-Element die Arbeit
+von nmap behindert und somit keine verlässlichen Rückschlüsse gezogen werden
+können.  <strong>Ungefiltert</strong> (engl unfiltered) heißt, dass nmap den
+Port kennt, jedoch beim Zugriff keinerlei Filtermechanismen ausgemacht werden
+konnten. Der ungefilterte Status wird in den meisten aller Fälle auftreten.
+Deshalb wird ein solcher nur immer dann explizit ausgewiesen, wenn die meisten
+der gescannten Ports gefiltert sind.
    </textblock>
    
    <textblock>
-(Leider) benötigen viele Techniken (z.B. die kernelnahen 
-raw sockets) root-Privilegien.  Aus  diesem Grund 
-ist es oftmals erforderlich, nmap als root auszuführen.
+(Leider) benötigen viele Techniken (z. B. die kernelnahen raw sockets)
+<ref chapter="nutzer_unter_linux" iref="root">root</ref>-Privilegien. Aus diesem
+Grund ist es oftmals erforderlich, <command>nmap</command> als
+<ref chapter="nutzer_unter_linux" iref="roor">root</ref> auszuführen.
    </textblock>
    
    <section>
@@ -155,20 +150,21 @@ Anwendung
     </heading>
     
     <textblock>
-Wie bei den meisten zeilenorientierten Programmen in einer Linux-Umgebung 
-wird mit dem Parameter -h bzw. dem parameterlosen Aufruf von nmap die 
-Hilfefunktion auf dem Bildschirm ausgegeben. Die Syntax für 
-das kleine Wunderding ist wie folgt festgelegt (Ins Deutsche übersetzt):
+Wie bei den meisten zeilenorientierten Programmen in einer Linux-Umgebung wird
+mit dem Parameter <command>-h</command> bzw. dem parameterlosen Aufruf von
+<command>nmap</command> die Hilfefunktion auf dem Bildschirm ausgegeben. Die
+Syntax für das kleine Wunderding ist wie folgt festgelegt (ins Deutsche übersetzt):
     </textblock>
     
     <shell>
      <user>
-nmap [Scan-Typ(en)] [Optionen] <Host oder Netz #1 ... [#N]> Scan-Typen
+nmap [Scan-Typ(en)] [Optionen] &lt;Host oder Netz #1 ... [#N]&gt; Scan-Typen
      </user>
     </shell>
     
     <textblock>
-Folgend nun die original Ausgabe von nmap ohne Parameter-Eingabe:
+Folgend nun die original Ausgabe von <command>nmap</command> ohne
+Parameter-Eingabe:
     </textblock>
     
     <shell>
@@ -176,7 +172,8 @@ Folgend nun die original Ausgabe von nmap ohne Parameter-Eingabe:
 nmap
      </user>
      <output>
-nmap V. 2.3BETA6 usage: nmap [Scan Type(s)] [Options] <host or net #1 ...[#N]>
+      <![CDATA[
+nmap V. 2.3BETA6 usage: nmap [Scan Type(s)] [Options] <host or net #1 ...[#N]>;
 Scan types
   -sT tcp connect() port scan
   -sS tcp SYN stealth port scan (must be root)
@@ -218,20 +215,22 @@ Hostnames specified as internet hostname or IP address. Optional '/mask'
 specifies subnet. For example: cert.org/24 or 192.88.209.5/24 or 
 192.88.209.0-255 or '128.88.209.*' all scan CERT's Class C. 
 SEE THE MAN PAGE FOR MORE THOROUGH EXPLANATIONS AND EXAMPLES.
+      ]]>
      </output>
     </shell>
    </section>
   </section>
-  
+ </split>
+ 
+ <split>
   <section>
    <heading>
 Mögliche Scan - Techniken (nmap Optionen)
    </heading>
    
    <textblock>
-Je nach dem welche Optionen verwendet wurden, ist nmap in
-der Lage, Auskunft über die folgenden Charakteristiken des
-Zielsystems zu geben:
+Je nach dem welche Optionen verwendet wurden, ist <command>nmap</command> in
+der Lage, Auskunft über die folgenden Charakteristiken des Zielsystems zu geben:
    </textblock>
    
    <ul>
@@ -242,23 +241,20 @@ Genutztes  Betriebssystem
 TCP- Sequenznummern
     </li>
     <li>
-Benutzername, unter der die an die Ports 
-gebundene Software abläuft
+Benutzername, unter der die an die Ports gebundene Software abläuft
     </li>
     <li>
 DNS-Name
     </li>
     <li>
-ob es sich um ein Smurf - System handelt
-und viele mehr.
+ob es sich um ein Smurf - System handelt und viele mehr.
     </li>
    </ul>
    
    <textblock>
-Die Kombination verschiedener Optionen ist immer dann
-möglich, wenn ein Zusammenspiel auch Sinn macht. Einige Parameter
-können nur in Verbindung mit spezifischen Scan-Methoden
-genutzt werden.
+Die Kombination verschiedener Optionen ist immer dann möglich, wenn ein
+Zusammenspiel auch Sinn macht. Einige Parameter können nur in Verbindung mit
+spezifischen Scan-Methoden genutzt werden.
    </textblock>
    
    <section>
@@ -267,39 +263,37 @@ Ping - Suchlauf
     </heading>
     
     <textblock>
-Mit dem Parameter -sP kann nmap die aktiven Hosts in 
-einem Netzwerk zu ermitteln. Dabei wird traditionell ein 
-ICMP-ECHO-(Typ 8)-Paket an ein Ziel geschickt, 
-wobei bei dessen Erreichbarkeit mit einem 
-ICMP-ECHO-REPLY-(Typ 0)-Paket als Antwort signalisiert wird.
+Mit dem Parameter <command>-sP</command> kann <command>nmap</command> die
+aktiven Hosts in  einem Netzwerk zu ermitteln. Dabei wird traditionell ein
+ICMP-ECHO-(Typ 8)-Paket an ein Ziel geschickt, wobei bei dessen Erreichbarkeit
+mit einem ICMP-ECHO-REPLY-(Typ 0)-Paket als Antwort signalisiert wird.
     </textblock>
     
     <textblock>
-Viele gewissenhafte Firewall- und Systemadministratoren filtern  
-unnötigen ICMP - Verkehr. nmap greift in diesem Falle auf eine 
-andere Technik zurück - es wird ein  TCP - Datagramm mit gesetztem 
-ACK - Flag an einen potentiell offenen Port des Zielsystems  
-geschickt. Der Empfang eines RST-Paketes bedeutet, dass das 
-Zielsystem vorhanden und ansprechbar ist.
+Viele gewissenhafte Firewall- und Systemadministratoren filtern unnötigen ICMP -
+Verkehr. <command>nmap</command> greift in diesem Falle auf eine andere Technik
+zurück - es wird ein TCP - Datagramm mit gesetztem ACK - Flag an einen
+potentiell offenen Port des Zielsystems geschickt. Der Empfang eines RST-Paketes
+bedeutet, dass das Zielsystem vorhanden und ansprechbar ist.
     </textblock>
     
     <textblock>
-Führt auch diese Technik nicht zum Erfolg, so versucht nmap eine
-weitere Methode, die auf ein SYN - Datagramm zurückgreift, das auf ein 
+Führt auch diese Technik nicht zum Erfolg, so versucht <command>nmap</command>
+eine weitere Methode, die auf ein SYN - Datagramm zurückgreift, das auf ein
 RST oder SYN/ACK wartet.
     </textblock>
     
     <textblock>
-Wichtig ist zu wissen, dass der Ping - Zugriff standardmäßig 
-erfolgt. Wird dies nicht gewünscht, so ist mit 
-<ref iref="Scannen ohne vorheriges An-ping-en des Hosts">dem Parameter -P0</ref>
+Wichtig ist zu wissen, dass der Ping - Zugriff standardmäßig erfolgt. Wird dies
+nicht gewünscht, so ist mit dem Parameter
+<ref iref="Scannen ohne vorheriges An-ping-en des Hosts">-P0</ref>
 dieses Verhalten zu deaktivieren.
     </textblock>
     
     <textblock>
-Für Mass-Pings sind andere Tools nutzbar, deren Herangehensweise 
-oftmalsc zu besseren Resultaten führt (Zum Beispiel fping, gping 
-und Hping.).
+Für Mass-Pings sind andere Tools nutzbar, deren Herangehensweise oftmals zu
+besseren Resultaten führt (Zum Beispiel <command>fping</command>,
+<command>gping</command> und <command>hping</command>).
     </textblock>
     
     <shell>
@@ -307,13 +301,13 @@ und Hping.).
 nmap -sP 192.168.0.0/24
      </user>
      <output>
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Host gateway.matrix.net (192.168.0.1) appears to be up.
- Host prometheus.matrix.net (192.168.0.2) appears to be up.
- Host rieekan.matrix.net (192.168.0.3) appears to be up.
- Host margrit.matrix.net (192.168.0.4) appears to be up.
- Host roadrunner.matrix.net (192.168.0.5) appears to be up.
- Nmap run completed -- 256 IP addresses (5 hosts up) scanned in 1 second
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Host gateway.matrix.net (192.168.0.1) appears to be up.
+Host prometheus.matrix.net (192.168.0.2) appears to be up.
+Host rieekan.matrix.net (192.168.0.3) appears to be up.
+Host margrit.matrix.net (192.168.0.4) appears to be up.
+Host roadrunner.matrix.net (192.168.0.5) appears to be up.
+Nmap run completed -- 256 IP addresses (5 hosts up) scanned in 1 second
      </output>
     </shell>
    </section>
@@ -324,19 +318,17 @@ TCP - Port Scan mit Verbindungsaufbau
     </heading>
     
     <textblock>
-Der Parameter -sT führt einen normalen TCP - Port Scan durch, bei dem 
-eine Verbindung zum  Ziel - Port aufgebaut wird. Der Client beginnt 
-mit der Übertragung eines SYN-Paketes an den Server. Jener 
-quittiert den Empfang mit einem SYN-/ACK-Paket und wartet dann auf den 
-Erhalt einer weiteren Bestätigung durch ein ACK-Paket von Seiten des 
-Clients (3-Way-Handshake).
+Der Parameter <command>-sT</command> führt einen normalen TCP - Port Scan durch,
+bei dem eine Verbindung zum Ziel - Port aufgebaut wird. Der Client beginnt mit
+der Übertragung eines SYN-Paketes an den Server. Jener quittiert den Empfang mit
+einem SYN-/ACK-Paket und wartet dann auf den Erhalt einer weiteren Bestätigung
+durch ein ACK-Paket von Seiten des Clients (3-Way-Handshake).
     </textblock>
     
     <textblock>
-Diese Scanning - Technik ist sehr leicht zu entdecken und
-wird mit größter Wahrscheinlichkeit in  den  Protokoll-Dateien 
-des Zielsystems auftauchen. Dies ist die einzige Scan - Technik
-für unprivilegierte Anwender.
+Diese Scanning - Technik ist sehr leicht zu entdecken und wird mit größter
+Wahrscheinlichkeit in den Protokoll-Dateien des Zielsystems auftauchen. Dies ist
+die einzige Scan - Technik für unprivilegierte Anwender.
     </textblock>
     
     <textblock>
@@ -366,12 +358,12 @@ Microsoft Windows 98
 nmap -sT 192.168.0.3
      </user>
      <output>
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on rieekan.matrix.net (192.168.0.3):
- Port State Protocol Service
- 139 open tcp netbios-ssn
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on rieekan.matrix.net (192.168.0.3):
+Port State Protocol Service
+139 open tcp netbios-ssn
 
- Nmap run completed -- 1 IP address (1 host up) scanned in 8 seconds
+Nmap run completed -- 1 IP address (1 host up) scanned in 8 seconds
      </output>
     </shell>
     
@@ -397,23 +389,20 @@ nmap -sT 192.168.0.1
     </shell>
    </section>
    
-   <aection>
+   <section>
     <heading>
 Stealth - Port Scan
     </heading>
     
     <textblock>
-Mit Stealth - Scans (Tarnkappen) kann die Netzwerkanalyse
-verdeckt erfolgen. Viele 
-<ref chapter="iptables">Firewall-</ref> und
-<ref chapter="ids">IDS - Systeme</ref> sind
-gegen solche  Scans machtlos. Wie funktioniert das? 
-Das 3-Way Handshake Protokoll wird missachtet oder 
-anders gesagt: ein Stealth - Scan führt keinen kompletten 
-Verbindungsaufbau durch. Die Interpretation der Antworten 
-der Opferrechner führt zu den gewünschten Erkenntnissen.
-Weil keine vollständige TCP - Verbindung zustande kommt, 
-spricht man auch vom "halboffenen Scan".
+Mit Stealth - Scans (Tarnkappen) kann die Netzwerkanalyse verdeckt erfolgen.
+Viele <ref chapter="iptables">Firewall-</ref> und
+<ref chapter="ids">IDS - Systeme</ref> sind gegen solche Scans machtlos.
+Wie funktioniert das? Das 3-Way Handshake Protokoll wird missachtet oder anders
+gesagt: ein Stealth - Scan führt keinen kompletten Verbindungsaufbau durch. Die
+Interpretation der Antworten der Opferrechner führt zu den gewünschten
+Erkenntnissen. Weil keine vollständige TCP - Verbindung zustande kommt, spricht
+man auch vom <strong>halboffenen Scan</strong>.
     </textblock>
     
     <section>
@@ -422,21 +411,19 @@ TCP - SYN - Stealth Portscan
      </heading>
      
      <textblock>
-Der Parameter -sS erlaubt es, einen halboffenen Scan durchzuführen.
-Es wird einfach ein SYN-Paket zum Ziel-Port übertragen. 
-Antwortet der Ziel-Port mit SYN/ACK, kann davon ausgegangen werden, 
-dass der Port den Listening - Status besitzt. 
-Wird RST/ACK zurückgegeben, kann mit ziemlicher 
-Wahrscheinlichkeit ein inaktiver Port zugeordnet werden. 
-(Das Client-System überträgt nach dem Empfang des Paketes 
-des Hosts ein RST/ACK-Paket, sodass keine vollständige Verbindung 
-hergestellt wird.)
+Der Parameter <command>-sS</command> erlaubt es, einen halboffenen Scan
+durchzuführen. Es wird einfach ein SYN-Paket zum Ziel-Port übertragen. Antwortet
+der Ziel-Port mit SYN/ACK, kann davon ausgegangen werden, dass der Port den
+Listening - Status besitzt. Wird RST/ACK zurückgegeben, kann mit ziemlicher
+Wahrscheinlichkeit ein inaktiver Port zugeordnet werden. (Das Client-System
+überträgt nach dem Empfang des Paketes des Hosts ein RST/ACK-Paket, sodass keine
+vollständige Verbindung hergestellt wird.)
      </textblock>
      
      <textblock>
-Diese Scanning - Technik funktioniert normalerweise nur bei 
-UNIX-basierenden TCP - Stacks. Es zeigt sich wieder einmal die 
-inkorrekte Implementierung der Windows - Stacks.
+Diese Scanning - Technik funktioniert normalerweise nur bei UNIX-basierenden
+TCP - Stacks. Es zeigt sich wieder einmal die inkorrekte Implementierung der
+Windows - Stacks.
      </textblock>
      
      <textblock>
@@ -448,11 +435,11 @@ BeOS 4.5
 nmap -sS 192.168.0.2
       </root>
       <output>
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on prometheus.matrix.net (192.168.0.2):
- Port State Protocol Service  23 open tcp telnet
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on prometheus.matrix.net (192.168.0.2):
+Port State Protocol Service  23 open tcp telnet
 
- Nmap run completed -- 1 IP address (1 host up) scanned in 3 seconds
+Nmap run completed -- 1 IP address (1 host up) scanned in 3 seconds
       </output>
      </shell>
      
@@ -465,22 +452,22 @@ Microsoft Windows 98
 nmap -sS 192.168.0.3
       </root>
       <output>
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on rieekan.matrix.net (192.168.0.3):
- Port State Protocol Service
- 41 open tcp graphics
- 134 open tcp ingres-net
- 139 open tcp netbios-ssn
- 168 open tcp rsvd
- 174 open tcp mailq
- [...]
- 2430 open tcp venus
- 2604 open tcp ospfd
- 4500 open tcp sae-urn
- 6110 open tcp softcm
- 7006 open tcp afs3-errors
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on rieekan.matrix.net (192.168.0.3):
+Port State Protocol Service
+41 open tcp graphics
+134 open tcp ingres-net
+139 open tcp netbios-ssn
+168 open tcp rsvd
+174 open tcp mailq
+[...]
+2430 open tcp venus
+2604 open tcp ospfd
+4500 open tcp sae-urn
+6110 open tcp softcm
+7006 open tcp afs3-errors
 
- Nmap run completed -- 1 IP address (1 host up) scanned in 20 seconds
+Nmap run completed -- 1 IP address (1 host up) scanned in 20 seconds
       </output>
      </shell>
      
@@ -493,15 +480,15 @@ SuSE Linux 6.3
 nmap -sS 192.168.0.1
       </root>
       <output>
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on gateway.matrix.net (192.168.0.1):
- Port State Protocol Service
- 21 open tcp ftp
- 23 open tcp telnet
- 139 open tcp netbios-ssn
- 8080 open tcp http-proxy
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on gateway.matrix.net (192.168.0.1):
+Port State Protocol Service
+21 open tcp ftp
+23 open tcp telnet
+139 open tcp netbios-ssn
+8080 open tcp http-proxy
 
- Nmap run completed -- 1 IP address (1 host up) scanned in 0 seconds
+Nmap run completed -- 1 IP address (1 host up) scanned in 0 seconds
       </output>
      </shell>
     </section>
@@ -512,1051 +499,1301 @@ Stealth FIN-, Xmas-Tree- oder Null-Scan-Modis
      </heading>
      
      <textblock>
-Die zugrundeliegende Idee besteht darin, dass laut RFC 793, S.64 
-geschlossene Ports auf derartige Zugriffe mit einem  RST - Datagramm 
-antworten während ansprechbare Ports die Anfragen ignorieren. Der FIN-
-Scan nutzt ein TCP - Datagramm mit gesetztem FIN - Flag, während 
-der Xmas - Tree - Scan die TCP - Flags FIN,  URG und PSH aktiviert. 
-Der Null - Scan schaltet alle optionalen Flags ab.
+Die zugrundeliegende Idee besteht darin, dass laut RFC 793, S.64 geschlossene
+Ports auf derartige Zugriffe mit einem RST - Datagramm antworten während
+ansprechbare Ports die Anfragen ignorieren. Der FIN-Scan nutzt ein TCP -
+Datagramm mit gesetztem FIN - Flag, während der Xmas - Tree - Scan die TCP -
+Flags FIN, URG und PSH aktiviert. Der Null - Scan schaltet alle optionalen
+Flags ab.
      </textblock>
      
      <textblock>
-Einige  Firewall - Systeme  (z.B. Paket-Filter) sind in der Lage,
-verdächtige SYN-Aktivitäten zu erkennen. Ebenso können 
-Programme wie Synlogger oder Courtney  diese SYN - Portscans  
-als solche ausweisen.
+Einige  Firewall - Systeme (z. B. Paket-Filter) sind in der Lage, verdächtige
+SYN-Aktivitäten zu erkennen. Ebenso können Programme wie Synlogger oder Courtney
+diese SYN - Portscans als solche ausweisen.
      </textblock>
-
-
-
-a) Stealth - FIN Portscan
-
-  Der Parameter -sF veranlasst nmap, einen Stealth - FIN Scan 
-  durchzuführen. Dabei wird einfach ein FIN-Paket zum Ziel-Port 
-  übertragen.  Nach der Empfehlung von RFC 793
- (http://www.ietf.org/rfc/rfc0793.txt) 
-  müsste der Host danach RST für alle geschlossenen Ports zurückgeben.
-
-  Beispiele
-
-  bei BeOS 4.5
-
- gateway:~ > nmap -sF 192.168.0.2
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on prometheus.matrix.net (192.168.0.2):
- Port State Protocol Service
- 23 open tcp telnet
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 4 seconds
-
- gateway:~ > _
- 
-  =================================
-  bei Microsoft Windows 98
-
- prometheus:~ > nmap -sF 192.168.0.3
-
- tarting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- No ports open for host rieekan.matrix.net (192.168.0.3)
- Nmap run completed -- 1 IP address (1 host up) scanned in 21 seconds
-
- prometheus:~ > _
-
-  ================================
-  bei SuSE Linux 6.3
-
- prometheus:~ > nmap -sF 192.168.0.1
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on gateway.matrix.net (192.168.0.1):
- Port State Protocol Service
- 21 open tcp ftp
- 23 open tcp telnet
- 139 open tcp netbios-ssn
- 8080 open tcp http-proxy
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 0 seconds
-
- prometheus:~ > _
-
-
-
-b) TCP - Xmas - Tree Portscan
-
-  Der Parameter -sX ermöglicht das Senden eines 
-  FIN-, URG- und PUSH - Paketes zum gewünschten Ziel-Port. 
-  Nach den Empfehlungen von RFC 792 
-   (http://www.ietf.org/rfc/rfc0792.txt) 
-  müsste der Host RST für alle geschlossenen Ports zurückgeben.
-
-  Es sind root - Rechte für das Durchführen eines solchen 
-  Scans von Nöten. Meistens funktioniert dieser Scan nur bei 
-  Systemen mit UNIX-Protokollstapeln.
-
- Beispiele
- bei BeOS 4.5
-
- gateway:~ > nmap -sX 192.168.0.2
-
- Interesting ports on prometheus.matrix.net (192.168.0.2):
- Port State Protocol Service
- 23 open tcp telnet
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 3 seconds
-
- gateway:~ > _
-
- ================================
- bei Microsoft Windows 98
-
- prometheus:~ > nmap -sX 192.168.0.3
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- No ports open for host rieekan.matrix.net (192.168.0.3)
- Nmap run completed -- 1 IP address (1 host up) scanned in 19 seconds
-
- prometheus:~ > _
-
- ================================
- bei SuSE Linux 6.3
-
- prometheus:~ > nmap -sX 192.168.0.1
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on gateway.matrix.net (192.168.0.1):
- Port State Protocol Service
- 21 open tcp ftp
- 23 open tcp telnet
- 139 open tcp netbios-ssn
- 8080 open tcp http-proxy
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
-
- prometheus:~ > _
-
-  
-
-c) TCP - Null Portscan
-
-  Mit dem Parameter -sN führt nmap einen sogenannten TCP-Null-Scan durch, 
-  bei dem alle Markierungen (Flags) ausgeschaltet werden. Nach den 
-  Empfehlungen aus RFC 793 (http://www.ietf.org/rfc/rfc0793.txt) 
-  müsste das Ziel-System RST für alle geschlossenen Ports retournieren.
- 
-  Für den TCP-Null-Scan sind wieder Root-Rechte notwendig. Dieser Scan 
-  funktioniert meist nur bei Systemen mit UNIX-IP-Stacks.
-
- 
-
- Beispiele
- bei BeOS 4.5
-
- gateway:~ > nmap -sX 192.168.0.2
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on prometheus.matrix.net (192.168.0.2):
- Port State Protocol Service
- 23 open tcp telnet
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 4 seconds
-
- gateway:~ > _
-
- ================================
- bei Microsoft Windows 98
-
- prometheus:~ > nmap -sX 192.168.0.3
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- No ports open for host rieekan.matrix.net (192.168.0.3)
- Nmap run completed -- 1 IP address (1 host up) scanned in 19 seconds
-
- prometheus:~ > _
-
- ================================
- bei SuSE Linux 6.3
-
- prometheus:~ > nmap -sN 192.168.0.1
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on gateway.matrix.net (192.168.0.1):
- Port State Protocol Service
- 21 open tcp ftp
- 23 open tcp telnet
- 139 open tcp netbios-ssn
- 8080 open tcp http-proxy
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
-
- prometheus:~ > _
-
- 
-
-
-1.1 TCP/ACK-Scan
-
-Mit der Option -sA wird diese erweiterte Scan - Technik 
-angewendet, um ein Paketfilter- Regelwerk zu identifizieren. 
-Zusätzlich kann  diese Methode eine Stateful Inspection 
-(<!-- LINK: chapter="iptables"-->iptables<!--ENDLINK -->) 
-aufzeigen.
-
-Dieser Scan - Typ schickt ein ACK - Paket an den 
-spezifizierten Zielport. Kommt ein RST zurück, wird  der  
-besagte Port als "unfiltered" (dt. ungefiltert) 
-eingestuft. Wird keine Rückantwort empfangen
-(oder kommt ein ICMP unreachable zurück), so
-weist nmap den Port als "filtered" (dt. gefiltert)
-aus.  Wichtig  ist, dass  nmap normalerweise keine
-"unfiltered"-Meldung ausgibt. So sind keine  Ports in  der
-Ausgabe  ein  Indiz  dafür,  dass  alle  Zugriffe
-durchgekommen sind (und ein RST verursacht  haben).
-Dieser Scan wird die Ports nie in einem "open" (dt.
-offenen) Status zeigen.
-
-
-
-
-1.1 Window - Scan
-
-Diese erweiterte Scan - Technik, die mit Parameter "-sW" 
-ausgewählt wird, ist dem ACK - Scan sehr ähnlich,
-außer, dass hiermit manchmal auch offene, ungefilterte  
-und gefilterte Ports durch eine Anomalie in der 
-durch die Betriebssysteme gewählten TCP - Window - Size 
-entdeckt werden können. 
-
- 
-
-1.1 UDP - Portscan
-
-Mit dem Parameter -sU führt nmap einen UDP - Portscan durch,
-bei dem lediglich ein UDP-Paket (siehe  RFC  768) 
-zum Ziel-Port übertragen wird. Wenn der Ziel-Port mit 
-der Nachricht "ICMP Port unreachable" den Erhalt quittiert, 
-ist der Port inaktiv und somit geschlossen. 
-
-Entgegen der weitläufigen Meinung, UDP-Scanning sei sinnlos, 
-soll in diesem Zusammenhang auf die  Lücke in  Solaris'  
-rpcbind  hingewiesen werden. rpcbind kann am undokumentierten 
-UDP - Port 32770 gefunden werden. Es ist also vollkommen 
-irrelevant, ob Port 111 durch eine Firewall blockiert wird 
-oder nicht. Als zweites Beispiel für die Sicherheitsrelevanz 
-von UDP sei die populäre, von cDc entwickelte Backdoor namens 
-Back - Orifice genannt, durch die Windows-Maschinen über 
-einen frei wählbaren UDP - Port gesteuert werden können. 
-Und drittens sollten die vielen potentiell verwundbaren 
-UDP - basierten Dienste nicht vergessen werden: SNMP, TFTP, 
-NFS, etc.
-
-Ein UDP - Scan kann sich extrem in die Länge ziehen, 
-wenn im großen Umfang Paketfilter eingesetzt werden. 
-nmap ist in der Lage, Limitierungen hinsichtlich der maximalen 
-Anzahl ausgehender ICMP-Fehlernachrichten (RFC  1812 Abs. 4.3.2.8) 
-zu  erkennen und mit einer dynamischen 
-Geschwindigkeitsreduzierung zu reagieren. Dies verhindert das 
-Verstopfen des  Netzwerks mit unnötigen  Paketen, die 
-sowieso vom Zielsystem ignoriert werden würden.
-
-Einmal mehr typisch, ignoriert Microsoft die
-Empfehlungen des RFCs, weshalb eine  Einschränkung
-ausgehender  ICMP - Fehlermeldungen gänzlich bei der
-TCP/IP - Implementierung auf Windows 9x und NT fehlt.
-Das Scannen sämtlicher UDP-Ports auf einer Windows - Maschine 
-ist somit kein größeres Problem.
-
-*BEISPIELE*
+     
+     <section>
+      <heading>
+Stealth - FIN Portscan
+      </heading>
+      
+      <textblock>
+Der Parameter <command>-sF</command> veranlasst nmap, einen Stealth - FIN Scan
+durchzuführen. Dabei wird einfach ein FIN-Paket zum Ziel-Port übertragen. Nach
+der Empfehlung von
+<ref lang="en" url="http://www.ietf.org/rfc/rfc0793.txt">RFC 793</ref> müsste
+der Host danach RST für alle geschlossenen Ports zurückgeben. Beispiele:
+      </textblock>
+      
+      <textblock>
 bei BeOS 4.5
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sF 192.168.0.2
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on prometheus.matrix.net (192.168.0.2):
+Port State Protocol Service
+23 open tcp telnet
 
- gateway:~ > nmap -sU 192.168.0.2
+Nmap run completed -- 1 IP address (1 host up) scanned in 4 seconds
+       </output>
+      </shell>
+      
+      <textblock>
+bei Microsoft Windows 98
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sF 192.168.0.3
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+No ports open for host rieekan.matrix.net (192.168.0.3)
+Nmap run completed -- 1 IP address (1 host up) scanned in 21 seconds
+       </output>
+      </shell>
+      
+      <textblock>
+bei SuSE Linux 6.3
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sF 192.168.0.1
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on gateway.matrix.net (192.168.0.1):
+Port State Protocol Service
+21 open tcp ftp
+23 open tcp telnet
+139 open tcp netbios-ssn
+8080 open tcp http-proxy
 
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on prometheus.matrix.net (192.168.0.2):
- Port State Protocol Service
- 1 open udp tcpmux
- 2 open udp compressnet
- 3 open udp compressnet
- 4 open udp unknown
- 5 open udp rje
- [...]
- 10080 open udp amanda
- 17007 open udp isode-dua
- 18000 open udp biimenu
- 31337 open udp BackOrifice
- 47557 open udp dbbrowse
+Nmap run completed -- 1 IP address (1 host up) scanned in 0 seconds
+       </output>
+      </shell>
+     </section>
+     
+     <section>
+      <heading>
+TCP - Xmas - Tree Portscan
+      </heading>
+      
+      <textblock>
+Der Parameter <command>-sX</command> ermöglicht das Senden eines FIN-, URG- und
+PUSH - Paketes zum gewünschten Ziel-Port. Nach den Empfehlungen von
+<ref lang="en" url="http://www.ietf.org/rfc/rfc0792.txt">RFC 792</ref>
+müsste der Host RST für alle geschlossenen Ports zurückgeben.
+      </textblock>
+      
+      <textblock>
+Es sind <ref chapter="nutzer_unter_linux" iref="root">root</ref> - Rechte für
+das Durchführen eines solchen Scans von Nöten. Meistens funktioniert dieser Scan
+nur bei Systemen mit UNIX-Protokollstapeln. Beispiele
+      </textblock>
+      
+      <textblock>
+bei BeOS 4.5
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sX 192.168.0.2
+       </root>
+       <output>
+Interesting ports on prometheus.matrix.net (192.168.0.2):
+Port State Protocol Service
+23 open tcp telnet
+
+Nmap run completed -- 1 IP address (1 host up) scanned in 3 seconds
+       </output>
+      </shell>
+      
+      <textblock>
+bei Microsoft Windows 98
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sX 192.168.0.3
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+No ports open for host rieekan.matrix.net (192.168.0.3)
+Nmap run completed -- 1 IP address (1 host up) scanned in 19 seconds
+       </output>
+      </shell>
+      
+      <textblock>
+bei SuSE Linux 6.3
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sX 192.168.0.1
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on gateway.matrix.net (192.168.0.1):
+Port State Protocol Service
+21 open tcp ftp
+23 open tcp telnet
+139 open tcp netbios-ssn
+8080 open tcp http-proxy
+
+Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
+       </output>
+      </shell>
+     </section>
+     
+     <section>
+      <heading>
+TCP - Null Portscan
+      </heading>
+      
+      <textblock>
+Mit dem Parameter <command>-sN</command> führt <command>nmap</command> einen
+sogenannten TCP-Null-Scan durch, bei dem alle Markierungen (Flags) ausgeschaltet
+werden. Nach den Empfehlungen aus
+<ref lang="en" url="http://www.ietf.org/rfc/rfc0793.txt">RFC 793</ref> müsste
+das Ziel-System RST für alle geschlossenen Ports retournieren.
+      </textblock>
+      
+      <textblock>
+Für den TCP-Null-Scan sind wieder Root-Rechte notwendig. Dieser Scan
+funktioniert meist nur bei Systemen mit UNIX-IP-Stacks. Beispiele:
+      </textblock>
+      
+      <textblock>
+bei BeOS 4.5
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sX 192.168.0.2
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on prometheus.matrix.net (192.168.0.2):
+Port State Protocol Service
+23 open tcp telnet
+
+Nmap run completed -- 1 IP address (1 host up) scanned in 4 seconds
+       </output>
+      </shell>
+      
+      <textblock>
+bei Microsoft Windows 98
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sX 192.168.0.3
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+No ports open for host rieekan.matrix.net (192.168.0.3)
+Nmap run completed -- 1 IP address (1 host up) scanned in 19 seconds
+       </output>
+      </shell>
+      
+      <textblock>
+bei SuSE Linux 6.3
+      </textblock>
+      
+      <shell>
+       <root>
+nmap -sN 192.168.0.1
+       </root>
+       <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on gateway.matrix.net (192.168.0.1):
+Port State Protocol Service
+21 open tcp ftp
+23 open tcp telnet
+139 open tcp netbios-ssn
+8080 open tcp http-proxy
+
+Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
+       </output>
+      </shell>
+     </section>
+    </section>
+   </section>
+   
+   <section>
+    <heading>
+TCP/ACK-Scan
+    </heading>
+    
+    <textblock>
+Mit der Option <command>-sA</command> wird diese erweiterte Scan - Technik
+angewendet, um ein Paketfilter- Regelwerk zu identifizieren. Zusätzlich kann
+diese Methode eine Stateful Inspection (<ref chapter="iptables">iptables</ref>)
+aufzeigen.
+    </textblock>
+    
+    <textblock>
+Dieser Scan - Typ schickt ein ACK - Paket an den spezifizierten Zielport. Kommt
+ein RST zurück, wird der besagte Port als <strong>unfiltered</strong>
+(dt. ungefiltert) eingestuft. Wird keine Rückantwort empfangen (oder kommt ein
+ICMP unreachable zurück), so weist nmap den Port als <strong>filtered</strong>
+(dt. gefiltert) aus. Wichtig ist, dass <command>nmap</command> normalerweise
+keine <strong>unfiltered</strong>-Meldung ausgibt. So sind keine Ports in der
+Ausgabe ein Indiz dafür, dass alle Zugriffe durchgekommen sind (und ein RST
+verursacht haben). Dieser Scan wird die Ports nie in einem <strong>open</strong>
+(dt. offenen) Status zeigen.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Window - Scan
+    </heading>
+    
+    <textblock>
+Diese erweiterte Scan - Technik, die mit Parameter <command>-sW</command>
+ausgewählt wird, ist dem ACK - Scan sehr ähnlich, außer, dass hiermit manchmal
+auch offene, ungefilterte und gefilterte Ports durch eine Anomalie in der durch
+die Betriebssysteme gewählten TCP - Window - Size entdeckt werden können.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+UDP - Portscan
+    </heading>
+    
+    <textblock>
+Mit dem Parameter <command>sU</command> führt <command>nmap</command> einen
+UDP - Portscan durch, bei dem lediglich ein UDP-Paket (siehe RFC 768) zum
+Ziel-Port übertragen wird. Wenn der Ziel-Port mit der Nachricht
+<strong>ICMP Port unreachable</strong> den Erhalt quittiert, ist der Port
+inaktiv und somit geschlossen.
+    </textblock>
+    
+    <textblock>
+Entgegen der weitläufigen Meinung, UDP-Scanning sei sinnlos, soll in diesem
+Zusammenhang auf die Lücke in  Solaris' rpcbind  hingewiesen werden. rpcbind
+kann am undokumentierten UDP - Port 32770 gefunden werden. Es ist also
+vollkommen irrelevant, ob Port 111 durch eine Firewall blockiert wird oder
+nicht. Als zweites Beispiel für die Sicherheitsrelevanz von UDP sei die
+populäre, von cDc entwickelte Backdoor namens Back - Orifice genannt, durch die
+Windows-Maschinen über einen frei wählbaren UDP - Port gesteuert werden können.
+Und drittens sollten die vielen potentiell verwundbaren UDP - basierten Dienste
+nicht vergessen werden: SNMP, TFTP, NFS, etc.
+    </textblock>
+    
+    <textblock>
+Ein UDP - Scan kann sich extrem in die Länge ziehen, wenn im großen Umfang
+Paketfilter eingesetzt werden. <command>nmap</command> ist in der Lage,
+Limitierungen hinsichtlich der maximalen Anzahl ausgehender
+ICMP-Fehlernachrichten (RFC 1812 Abs. 4.3.2.8) zu erkennen und mit einer
+dynamischen Geschwindigkeitsreduzierung zu reagieren. Dies verhindert das
+Verstopfen des  Netzwerks mit unnötigen Paketen, die sowieso vom Zielsystem
+ignoriert werden würden.
+    </textblock>
+    
+    <textblock>
+Einmal mehr typisch, ignoriert Microsoft die Empfehlungen des RFCs, weshalb eine
+Einschränkung ausgehender ICMP - Fehlermeldungen gänzlich bei der TCP/IP -
+Implementierung auf Windows 9x und NT fehlt. Das Scannen sämtlicher UDP-Ports
+auf einer Windows - Maschine ist somit kein größeres Problem. Beispiele:
+    </textblock>
+    
+    <textblock>
+bei BeOS 4.5
+    </textblock>
+    
+    <shell>
+     <root>
+nmap -sU 192.168.0.2
+     </root>
+     <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on prometheus.matrix.net (192.168.0.2):
+Port State Protocol Service
+1 open udp tcpmux
+2 open udp compressnet
+3 open udp compressnet
+4 open udp unknown
+5 open udp rje
+[...]
+10080 open udp amanda
+17007 open udp isode-dua
+18000 open udp biimenu
+31337 open udp BackOrifice
+47557 open udp dbbrowse
 
  Nmap run completed -- 1 IP address (1 host up) scanned in 23 seconds
-
- gateway:~ > _
-
-================================
-bei Microsoft Windows 98
-
- prometheus:~ > nmap -sU 192.168.0.3
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on rieekan.matrix.net (192.168.0.3):
- Port State Protocol Service
- 137 open udp netbios-ns
- 138 open udp netbios-dgm
- 1025 open udp blackjack
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 15 seconds
-
- prometheus:~ > _
-
-
-
-1.1  IP protocol-Scans
+     </output>
+    </shell>
     
-Diese Methode kommt dann zum Tragen, wenn 
-herausgefunden werden soll, welche IP - Protokolle  
-das Zielsystem unterstützt.
-Bei dieser Technik wird für jedes IP - Protokoll ein 
-RAW - IP - Paket mit fehlendem Protokoll - Header (ohne Daten) 
-an  das Zielsystem geschickt wird. Wird darauf mit
-einer "ICMP protocol unreachable" - Fehlermeldung reagiert,
-so ist davon auszugehen, dass das Zielsystem das Protokoll 
-nicht beherscht. Nun kann nmap eine Liste der unterstützten 
-Protokolle erstellen.
+    <textblock>
+bei Microsoft Windows 98
+    </textblock>
+    
+    <shell>
+     <root>
+nmap -sU 192.168.0.3
+     </root>
+     <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on rieekan.matrix.net (192.168.0.3):
+Port State Protocol Service
+137 open udp netbios-ns
+138 open udp netbios-dgm
+1025 open udp blackjack
 
-Einige  Betriebssysteme (z.B. AIX, HP-UX und Digital UNIX) 
-und Firewall-Lösungen verzichten gänzlich auf das Versenden 
-der "ICMP protocol unreachable" - Fehlermeldungen. Als 
-Resultat eines solchen Verhaltens behauptet nmap, 
-dass sämtliche Protokolle "offen" sind.
-
-
-
-1.1 Verbergen der Identität - Idle-Scan 
-
-Diese erweiterte Scan - Technik, die mit Parameter "-sI" 
-gewählt wird, ermöglicht ein "verstecktes" Scannen 
-der TCP-Ports eines Zielssystems  
-(dies bedeutet, dass keinerlei Pakete mit der richtigen
-IP - Absenderadresse verschickt werden). 
-
-Neben der absoluten Gewissheit, nicht direkt
-erkannt zu werden, können durch einen derartigen 
-Scan IP - basierte Vertrauensbeziehungen aufgedeckt 
-werden. Das Port - Listing zeigt die offenen Ports 
-aus der Sicht eines beliebigen Zombie-Systems,
-welches durch den Parameter (-sI <Zombie-Host[:Zielport]>) 
+Nmap run completed -- 1 IP address (1 host up) scanned in 15 seconds
+     </output>
+    </shell>
+   </section>
+   
+   <section>
+    <heading>
+IP protocol-Scans
+    </heading>
+    
+    <textblock>
+Diese Methode kommt dann zum Tragen, wenn herausgefunden werden soll, welche
+IP - Protokolle das Zielsystem unterstützt. Bei dieser Technik wird für jedes
+IP - Protokoll ein RAW - IP - Paket mit fehlendem Protokoll - Header
+(ohne Daten) an das Zielsystem geschickt wird. Wird darauf mit einer
+<strong>ICMP protocol unreachable</strong> - Fehlermeldung reagiert, so ist
+davon auszugehen, dass das Zielsystem das Protokoll nicht beherscht. Nun kann
+<command>nmap</command> eine Liste der unterstützten Protokolle erstellen.
+    </textblock>
+    
+    <textblock>
+Einige Betriebssysteme (z.B. AIX, HP-UX und Digital UNIX) und Firewall-Lösungen
+verzichten gänzlich auf das Versenden der
+<strong>ICMP protocol unreachable</strong> - Fehlermeldungen. Als Resultat eines
+solchen Verhaltens behauptet <command>nmap</command>, dass sämtliche Protokolle
+<strong>offen</strong> sind.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Verbergen der Identität - Idle-Scan
+    </heading>
+    
+    <textblock>
+Diese erweiterte Scan - Technik, die mit Parameter <command>-sI</command>
+gewählt wird, ermöglicht ein <strong>verstecktes</strong> Scannen der TCP-Ports
+eines Zielssystems (dies bedeutet, dass keinerlei Pakete mit der richtigen
+IP - Absenderadresse verschickt werden).
+    </textblock>
+    
+    <textblock>
+Neben der absoluten Gewissheit, nicht direkt erkannt zu werden, können durch
+einen derartigen Scan IP - basierte Vertrauensbeziehungen aufgedeckt werden.
+Das Port - Listing zeigt die offenen Ports aus der Sicht eines beliebigen
+Zombie-Systems, welches durch den Parameter (-sI &lt;Zombie-Host[:Zielport]&gt;) 
 explizit angegeben werden kann.
-
-
-
-1.1 RPC - Scan (Option "-sR")
-
-Diese Methode arbeitet in Kombination mit den  meisten  
-möglichen Scan - Typen von nmap zusammen. Jeder als offen 
-identifizierte TCP- bzw. UDP- Port wird mit einer Vielzahl 
-von SunRPC - Nullkommandos überflutet, um eine 
-Identifizierung des am RPC - Port lauschenden Dienstes 
-vorzunehmen.  
-
-Kann ein solcher Dienst ermittelt werden, wird dessen
-Programmname und die Version ausgelesen. Beim Einsatz eines
-Portmappers sei hier das Verwenden von "rpcinfo -p" erwähnt.
-
-
-
-1.1 FTP - "Bounce - Attack" Portscan
-
-Diese Scanning - Technik spielt heutzutage fast keine Rolle mehr, 
-denn es basiert auf einem "Feature" des FTP-Protokolls, welches
-bei den meisten Servern mittlerweile deaktiviert wurde. Es wird
-mit Parameter -b <ftp_relay_host> aktiviert und ermöglicht das 
-erfolgreiche und graziöse Vertuschen der Scan - Herkunft. 
-
-Die Technik wurde von Hobbit bei Bugtraq 1995 
-(http://geek-girl.com/bugtraq/1995_3/0047.html) veröffentlicht: 
-Es wird versucht, Verbindungen zu einem FTP-Server durch den 
-Missbrauch des Ports für FTP - Proxy - Verbindungen zu vertuschen. 
-Wie Hobbit relativ detailliert im o.g. Bericht beschreibt,
-können solche Angriffe für die Übermittlung von fast nicht 
-zurückverfolgbaren Mails und News, für Attacken auf beliebige 
-Systeme durch das Füllen von Festplatten oder das Durchbrechen von 
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+RPC - Scan
+    </heading>
+    
+    <textblock>
+Diese Methode arbeitet in Kombination mit den  meisten möglichen Scan - Typen
+von <command>nmap</command> zusammen. Jeder als offen identifizierte TCP- bzw.
+UDP - Port wird mit einer Vielzahl von SunRPC - Nullkommandos überflutet, um
+eine Identifizierung des am RPC - Port lauschenden Dienstes vorzunehmen.
+    </textblock>
+    
+    <textblock>
+Kann ein solcher Dienst ermittelt werden, wird dessen Programmname und die
+Version ausgelesen. Beim Einsatz eines Portmappers sei hier das Verwenden von
+<command>rpcinfo -p</command> erwähnt.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+FTP - "Bounce - Attack" Portscan
+    </heading>
+    
+    <textblock>
+Diese Scanning - Technik spielt heutzutage fast keine Rolle mehr, denn es
+basiert auf einem <strong>Feature</strong> des FTP-Protokolls, welches bei den
+meisten Servern mittlerweile deaktiviert wurde. Es wird mit Parameter
+<command>-b &lt;ftp_relay_host&gt;</command> aktiviert und ermöglicht das
+erfolgreiche und graziöse Vertuschen der Scan - Herkunft.
+    </textblock>
+    
+    <textblock>
+Die Technik wurde von Hobbit bei
+<ref lang="en" url="http://geek-girl.com/bugtraq/1995_3/0047.html">Bugtraq 1995</ref>
+veröffentlicht: Es wird versucht, Verbindungen zu einem FTP-Server durch den
+Missbrauch des Ports für FTP - Proxy - Verbindungen zu vertuschen. Wie Hobbit
+relativ detailliert im o. g. Bericht beschreibt, können solche Angriffe für die
+Übermittlung von fast nicht zurückverfolgbaren Mails und News, für Attacken auf
+beliebige Systeme durch das Füllen von Festplatten oder das Durchbrechen von
 Firewalls genutzt werden.
-
-Zugleich sind hohe Anforderungen für das Gelingen 
-dieser Attacke nötig: Der FTP-Server muss ein beschreibbares 
-Verzeichnis haben  sowie falsche Port-Informationen mit dem 
-PORT - Befehl von nmap erlauben. Es sei erwähnt, dass 
-diesen Anforderungen an das Zielsystem ein solcher Scan 
+    </textblock>
+    
+    <textblock>
+Zugleich sind hohe Anforderungen für das Gelingen dieser Attacke nötig: Der
+FTP-Server muss ein beschreibbares Verzeichnis haben sowie falsche
+Port-Informationen mit dem PORT - Befehl von <command>nmap</command> erlauben.
+Es sei erwähnt, dass diesen Anforderungen an das Zielsystem ein solcher Scan
 sehr zeitintensiv sein kann.
-
-
-
-1 Parameter für zusätzliche Optionen
-
-Keine der folgenden Optionen ist zwingend erforderlich.
-Einige von ihnen können sind jedoch äußerst sinnvoll.
-
-
-
-1.1 Bestimmte Ports / Portbereiche auswählen
-
-Der Parameter -p legt fest, welche Ports gescannt
-werden sollen. Wird bei der Wahl der Zielports auf
-diese Option verzichtet, werden sämtliche 
-"well-known Ports" zwischen 1 und 1024
-sowie alle in der services - Datei von nmap 
-gelisteten Dienste gescannt. 
-Für einen  IP - Protokoll - Scan  (-sO) legt 
-der Parameter -p die zu scannende Protokoll-Nummer 
-(0-255) fest.
-
-Beispiele: '-p 23' wird lediglich einen Zugriff auf den 
-Port 23 (Telnet) der Zielsysteme durchführen. 
-'-p 20-30,139,60000-' scannt die Ports zwischen 20 und 30, 
-Port 139 und  alle  Ports größer als 60000. 
-
-Bei gleichzeitigem TCP- und UDP - Portscan wird das 
-jeweilige  Protokoll durch  ein  vorangestelltes 
-"T:" oder "U:" angewählt. Für die übergebenen Ports gilt
-so lange das spezifizierte Übertragungsprotokoll, bis  
-ein anderes angegeben wird (Beispiel 
-"-p U:53,111,137,T:21-25,80" = UDP-Ports 
-53, 111 und 137 sowie die TCP - Ports 21 bis
-25 und 80). Bei einem gleichzeitigen TCP- und UDP - Scan 
-muss mindestens eine  TCP - Scan - Variante 
-(-sS, -sF oder -sT) angegeben werden. 
-
-
-
-1.1 Wiederaufnahme eines abgebrochenen Scan
-
-Die Option --resume <Protokoll-Dateiname> reaktiviert 
-einen Netzwerk-Scan, der durch das Drücken von Control-C
-unterbrochen wurde. 
-
-
-
-1.1 Performance-Optimierung
-
-
-
-1.1.1 Schneller Scannen
-
-Mit der Funktion -F wird ähnlich wie beim 
-<!-- LINK: ref="http://linux.maruhn.com/sec/strobe.html "-->
-Strobe 
-<!-- ENDLINK -->
-(einfacher und schneller TCP-Portscanner) ein ziemlich schneller Scan 
-durchgeführt, da nur die Ports angesprochen werden, die in /etc/services 
-angeführt wurden. Normalerweise reicht ein Scan auf diese Standard-Ports 
-aus, da damit die gängigsten Dienste in Erfahrung gebracht werden können.
-
-
-
-1.1.1 DNS-Auflösung deaktivieren
-
-Um einen Ping-Scan zu beschleunigen, kann mit der Option -n 
-die DNS-Auflösung ausgeschaltet werden.
-
-
-
-1.1.1 Begrenzung der Sockets (Vermeidung eines Zusammenbruchs des Zielsystems)
-
-Mit -M <Maximale Sockets> wird die maximale Anzahl der Sockets 
-bei einem parallel durchgeführten TCP  connect()-Scan  festgelegt.
-Dies  ist  zum  Beispiel  in Situationen nützlich,
-wenn der Scanvorgang künstlich verlangsamt werden
-soll, damit das Zielsystem nicht unter der Last der
-Zugriffe  zusammenbricht. Eine andere Herangehensweise ist 
-die Verwendung von 
-<!-- LINK: iref="TCP - SYN - Stealth Portscan"-->-sS<!-- ENDLINK -->.
-
-
-
-1.1 Scannen ohne vorheriges An-ping-en des Hosts
-
-Der Parameter -P0 verhindert das Pingen eines Hosts,  
-bevor dieser gescannt wird. So können ganze Netzwerke 
-gescannt werden, die aufgrund einer restriktiv konfigurierten
-Firewall keine ICMP echo requests/ responses) zulassen. 
-Microsoft.com ist ein Beispiel für ein solch gut geschütztes 
-Netzwerk, in dem nur die Verwendung dieser Option zum 
-gewünschten Resultat führt.
-
-
-
-1.1 Klein fragmentierte Pakete für "Stealth-Scans"
-
-Durch die zusätzlich Option -f werden sehr kleine 
-fragmentierte Pakete für SYN-, FIN-, Xmas- oder NULL- Scans verwendet. 
-Das bedeutet, dass die TCP - Header auf mehrere Pakete verteilt 
-werden. Ziel ist es, den Scan vor 
-<!-- LINK: chapter="iptables"-->Firewall- <!--ENDLINK --> und
-<!-- LINK: chapter="ids"-->IDS - Systemen<!-- ENDLINK -->
-zu verstecken. Gerade bei älteren Geräten werden 
-die Pakete oftmals nicht zuerst defragmentiert. Heutzutage reihen 
-Paketfilter in den meisten Fällen die einzelnen Pakete in 
-eine Warteschlange ein, bevor sie mit der Auswertung / Filterung 
-beginnen. Damit rückt das Ziel dieser Option in weite Ferne.
-
-Bei verschiedenen Testläufen ist wurde festgestellt,
-dass ein SYN - Scan mit einer großen Anzahl 
-klein fragmentierter Pakete in einer kleinen Anzahl 
-Versuche nmap verfälschte Daten ausgab. Der 
-Test lief von einem SuSE Linux 6.3-Client mit 10 MBit/Sek. 
-(Koaxial-Kabel) gegen ein SuSE Linux 6.3-Gateway. Nmap 
-behauptete in einigen Fällen, dass zwischen dem 
-zweitletzten wirklich offenen Port 139 (netbios-ssn) 
-und dem allerletzten Port 8080 (http-proxy) ein 
-gefilterter TCP - Port offen sei.
-
-
-
-1.1. Timing-Einstellungen
-
-Mit Nmap können Scans weitestgehend unentdeckt bleiben. 
-In einigen Fällen kann mit zusätzlichen Optionen das 
-Timing noch feiner abgestimmt werden. 
-
-Mit den -T Optionen Paranoid, Sneaky, Polite, Normal, 
-Aggressive und Insane lässt sich das Timing der Scans 
-auf das Zielsystem einstellen:
-
-* Der Paranoid - Modus scannt sehr langsam, in der Hoffnung,
-  nicht von Intrusion Detection-Systemen entdeckt zu
-  werden. Er serialisiert alle Scand und 
-  wartet im Normalfall einfach fünf Minuten bis zur Sendung 
-  des Folgepaketes.
-
-* Der Sneaky - Modus (dt. schleichend) ist mit dem 
-  Paranoid-Modus vergleichbar, allerdings sendet dieser 
-  die Pakete im Abstand von 15 Sekunden.
-
-* Der Polite - Modus (dt. höflich) verringert die Netzlast und 
-  verkleinert die Gefahr des Zusammenbrechens der Zielmaschine. 
-  Er serialisiert ebenfalls die zu sendenden Pakte und wartet 
-  dazwischen mindestens 0.4 Sekunden.
-
-* Der Normal-Modus scannt so schnell wie möglich, 
-  ohne das Netz dabei zu überlasten. 
-
-* Im Aggressive-Modus (dt.  aggressiv) wird eine Wartezeit 
-  von 5 Minuten zwischen den einzelnen Hosts hinzugefügt, 
-  jedoch wird nie länger als 1.25 Sekunden auf Antworten
-  gewartet.  
-
-* Der Insane - Modus (dt. geisteskrank) ist lediglich 
-  in sehr schnellen Netzwerken verwendbar, oder überall 
-  dort zu empfehlen, wo einzelne Resultatsinformationen 
-  verloren gehen dürfen. Zwischen den einzelnen Systemen 
-  werden 75 Sekunden und zwischen den Zugriffen 
-  300 ms gewartet. 
-
-Weiterhin sind verschiedene sehr feingranulare 
-Einstellungen mit verschiedenen Parametern wie 
-z.B. --host_timeout, --max_rtt_timeout, 
---initial_rtt_timeout, --max_parallelism, 
---scan_delay, etc. möglich.
-
-
-
-1.1 Fingerprints zur Ermittlung des Betriebssystems
-
-Mit -O wird ein so genannter Fingerabdruck des gescannten 
-Systems angefertigt. Es wird eine Anzahl spezifischer 
-Tests mit dem Ziel ausgeführt, das typische Verhalten der 
-jeweiligen TCP/IP - Implementierungen zu erkennen.
-Die erhaltenen Informationen stellen quasi einen 
-'Fingerabdruck' des Systems dar, der mit bekannten
-Betriebssystem-Fingerabdrücken verglichen wird. Diese
-sind in der nmap-os-fingerprints Datei zu finden.
-
-Es kommt nahezu nie vor, dass ein falsches Betriebssystem 
-prognostiziert wird, solange die Protokollstapel beim Host 
-nicht manipuliert wurden. Es kann höchstens vorkommen, 
-dass nmap dem Fingerabdruck des Computers kein 
-Betriebssystem zuordnen kann. Sollte es einem Endanwender von 
-nmap möglich sein das Betriebssystem zu identifizieren, 
-kann er per CGI-Script auf 
-http://www.insecure.org/cgi-bin/nmap-submit.cgi aktiv zur 
-Perfektionierung von nmap beitragen.
-
-Die Option -O aktiviert weiterhin einige zusätzliche Tests
-wie z.B. das Messen der "Uptime" (wann wurde das Zielsystem 
-das letzte Mal neu gestartet) oder die  Klassifizierung  der
-Berechenbarkeit der TCP-Sequenznummer (wie schwer es ist,
-eine bestehende Verbindung zu entführen).
-
-Mit Eingriffen in die Handhabung des Betriebssystems bei 
-Verbindungs-Anforderungen und direkt beim Protokollstapel 
-könnte ein anderes Betriebssystem vorgetäuscht werden. 
-Diese Aktion ist jedoch mit dem bitteren Beigeschmack 
-eines möglichen Performance- und Stabilitäts-Verlusts 
-des Betriebssystems verbunden.
-
-*BEISPIELE*
-bei Microsoft Windows 98
-
- prometheus:~ > nmap 192.168.0.3 -O
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on rieekan.matrix.net (192.168.0.3):
- Port State Protocol Service
- 139 open tcp netbios-ssn
-
- TCP Sequence Prediction: Class=trivial time dependency
- Difficulty=0 (Trivial joke)
- Remote operating system guess: Windows NT4 / Win95 / Win98
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 7 seconds
-
- prometheus:~ > _
-==========================
-bei SuSE Linux 6.3
-
- prometheus:~ > nmap 192.168.0.3 -O
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on gateway.matrix.net (192.168.0.1):
- Port State Protocol Service
- 21 open tcp ftp
- 23 open tcp telnet
- 139 open tcp netbios-ssn
- 8080 open tcp http-proxy
-
- TCP Sequence Prediction: Class=random positive increments
- Difficulty=2150475 (Good luck!)
- Remote operating system guess: Linux 2.1.122 - 2.2.12
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
-
- prometheus:~ > _
-
-==========================
-bei unbekanntem Betriebssystem
-
- prometheus:~ > nmap 192.168.0.6 -O
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on hidden.matrix.net (192.168.0.6):
- Port State Protocol Service
- 7 open tcp echo
- 9 open tcp discard
- 13 open tcp daytime
- 17 open tcp qotd
- 19 open tcp chargen
- [...]
- 465 open tcp smtps
- 1030 open tcp iad1
- 1433 open tcp ms-sql-s
- 6667 open tcp irc
- 6668 open tcp irc
-
- TCP Sequence Prediction: Class=trivial time dependency
- Difficulty=11 (Easy)
- No OS matches for host (If you know what OS is running on it, 
- 	see http://www.insecure.org/cgi-bin/nmap-submit.cgi).
- TCP/IP fingerprint:
- TSeq(Class=RI%gcd=1%SI=F4F9)
- TSeq(Class=TD%gcd=1%SI=A)
- TSeq(Class=TD%gcd=1%SI=B)
- T1(Resp=Y%DF=Y%W=4470%ACK=S++%Flags=AS%Ops=M)
- T2(Resp=Y%DF=N%W=0%ACK=S%Flags=AR%Ops=)
- T3(Resp=Y%DF=Y%W=4470%ACK=S++%Flags=AS%Ops=M)
- T4(Resp=Y%DF=N%W=0%ACK=O%Flags=R%Ops=)
- T5(Resp=Y%DF=N%W=0%ACK=S++%Flags=AR%Ops=)
- T6(Resp=Y%DF=N%W=0%ACK=O%Flags=R%Ops=)
- T7(Resp=Y%DF=N%W=0%ACK=S++%Flags=AR%Ops=)
- T7(Resp=N)
- PU(Resp=Y%DF=N%TOS=0%IPLEN=38%RIPTL=148%RID=E%RIPCK=E%UCK=F%ULEN=134%DAT=E)
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 19 seconds
-
- prometheus:~ > _
-
-
-
-1.1 Besitzer eines Prozesses ermitteln
-
-Mit dem Parameter -I wird die identd - Information laut 
-RFC 1413 (http://www.ietf.org/rfc/rfc1413.txt) über die 
-laufenden Prozesse auf dem Ziel-System eingeholt. 
-
-*BEISPIELE*
-
-bei Microsoft Windows 98
-
- prometheus:~ > nmap 192.168.0.3 -I
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on rieekan.matrix.net (192.168.0.3):
- Port State Protocol Service Owner
- 139 open tcp netbios-ssn
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 6 seconds
-
- prometheus:~ > _
-==============================
- bei SuSE Linux 6.3
-
- prometheus:~ > nmap 192.168.0.1 -I
-
- Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
- Interesting ports on gateway.matrix.net (192.168.0.1):
- Port State Protocol Service Owner
- 21 open tcp ftp mruef
- 23 open tcp telnet
- 139 open tcp netbios-ssn rieekan
- 8080 open tcp http-proxy lanman
-
- Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
-
- prometheus:~ > _
-
-
-
-
-1.1 zusätzliche TCP- und ICMP- Optionen
-
-
-
-1.1.1 TCP - Pings
-
-Diese Funktion ist immer dann anzuwenden, wenn die 
-Erreichbarkeit von Systemen oder Netzwerken identifiziert 
-werden soll und eine Überprüfung mittels ICMP vom 
-Zielsystem nicht zugelassen wird.
-
-Der Parameter -PT <Port> verwendet einen TCP-Ping-Scan 
-um zu verifizieren, welche Hosts im Netzwerk erreichbar 
-sind. Diese Option kann auch ohne die Definierung eines 
-Ports verwendet werden (standardmäßig wird 
-HTTP-Port TCP/80 verwendet).
-
-Ansprechbare Systeme sollten auf das gesendete 
-TCP-Datagramm (ACK-Flag gesetzt) mit einem RST
-antworten. 
-
-
-
-1.1.1 TCP-SYN-Suchlauf bei TCP-Ping-Scan
-
-Hierbei kann mit der Option -PS ein SYN-Suchlauf 
-anstelle des standardmäßigen ACK-Suchlaufs bei 
-TCP - Ping - Scans verwendet werden.
-Das Setzen des Zielports erfolgt auf die selbe Art 
-und Weise wie bei den zuvor erläuterten TCP - Pings.
-
-
-
-1.1.1 TCP reverse ident-Scanning
-
-Mit Option  -I wird das TCP  reverse ident - Scanning
-aktiviert. Wie Dave Goldsmith in einem Bugtraq-
-Posting aus dem Jahre 1996  publiziert  hat,
-ermöglicht das ident - Protokoll (RFC  1413)  das
-Identifizieren des Besitzers eines TCP - Dienstes. 
-
-
-
-1.1.1 ICMP - Ping
-
-Die Option -PI nutzt  einen  klassischen Ping (ICMP
-echo request), um die Erreichbarkeit von Systemen
-und Broadcast - Adressen von Subnetzen zu identifizieren.  
-Letztere sind extern erreichbare IP - Adressen, die eine  
-Umwandlung zu einem internen Broadcast des Subnetzes  
-durchführen. Sie stellen die Voraussetzung für eine Reihe von 
-Denial of Service-Attacken (Smurf ist die bekannteste Variante)
-dar und sollten deshalb verhindert werden.
-
-
-
-1.1.1 ICMP timestamp - Anfrage 
-
-Die Option -PP benutzt eine ICMP timestamp - Anfrage 
-(Typ 13, Code 0), um ansprechbare Hosts zu finden.
-
-
-
-1.1.1 Parallele Ausführung von TCP- und ICMP - Ping
-
-Der Parameter -PB <Port> ist der standardmäßig 
-gewählte Ping - Typus. Es werden beide o.g. Techniken
-(-PT und -PI) parallel durchgeführt. Auf diese Weise 
-können Firewall - Elemente  ausgetrickst  werden,  
-die nur eine der beiden Protokolle herausfiltern. 
-Der Zielport wird analog der zuvor erklärten Optionen 
-angegeben.
-
-
-
-1.1.1 ICMP address mask request
-
-Es wird ein ICMP address mask request (Typ 17, Code 0) verwendet.
-
-
-
-
-1.1 Ausgabeoptionen
-
-
-
-1.1.1 Komplette DNS-Auflösung erzwingen
-
-Die Option -R versucht, während eines Scan-Vorgangs alle
-Host-Namen aufzulösen, und zwar nicht nur die Aktiven. 
-Durch die explizite Anweisung auch inaktive Rechner-Namen 
-in Erfahrung zu bringen, kann diese Funktion unter 
-Umständen einen Durchlauf extrem in die Länge ziehen.
-
-
-
-1.1.1 Verbose Option 
-
-Im Verbose-Modus, der mit -v aktiviert wird und sehr 
-zu empfehlen ist, werden Informationen in ausführlicher
-Form ausgegeben. Die doppelte Verwendung -vv erhöht 
-den Umfang der Ausgabe nochmals. Ebenso kann -d einige
-Male aktiviert werden, falls Sie wirklich vor einem
-vollem Bildschirm verrückt werden wollen!
-
-
-
-1.1.1 Ausgabe in Protokoll-Datei
-
-Mit Parameter -oN <Protokoll-Dateiname> werden die Resultate 
-des Scans in einem normalen, für Menschen lesbaren Format 
-abgespeichert. Der Paraemter -oX hingeggen protokolliert die 
-Resultate in einer XML-Datei. Sollen die Informationen mit 
-grep gefiltert werden, bietet sich der Parameter -oG an. 
-Sind  alle drei Formate von Belang, so kann man mit 
-Option -oA <Basisdateiname> alle Formate bekommen.
-
-Weiterhin existiert die Möglichkeit, mit Parameter -oS 
-ein für s|<ripT kiDd|3 lesbares Format auszuwählen.
-
-
-
-1.1.1 Protokolldatei erweitern
-
-Mit --append_output werden die  Scan - Resultate 
-an die spezifizierte Protokoll-Datei angehängt, anstatt 
-diese zu überschreiben.
-
-
-
-1.1 Verschleierungsparameter
+    </textblock>
+   </section>
+  </section>
+ </split>
  
-Ganz offensichtlich kann ein 
-<!-- LINK: chapter="ids"-->Intrusion Detection System 
-(IDS)<!-- ENDLINK --> nmap - Scans oftmals erkennen. Neben der 
-Deaktivierung der ICMP - Pings sind weitere Manipulationen 
-möglich, die in den folgenden Abschnitten beschrieben 
-werden. 
-
-
-
-1.1.1 Verbergen der Identität / IP - Source manipulieren
-
-Unter  bestimmten  Umständen ist nmap nicht in der
-Lage, Ihre  Quell - IP - Adresse zu identifizieren  
-(nmap  wird  Ihnen dies mitteilen). In einer solchen
-Situation kann mit der Hilfe der Option -S die  IP-
-Adresse (der gewünschten Schnittstelle) festgelegt
+ <split>
+  <section>
+   <heading>
+Parameter für zusätzliche Optionen
+   </heading>
+   
+   <textblock>
+Keine der folgenden Optionen ist zwingend erforderlich. Einige von ihnen sind
+jedoch äußerst sinnvoll.
+   </textblock>
+   
+   <section>
+    <heading>
+Bestimmte Ports / Portbereiche auswählen
+    </heading>
+    
+    <textblock>
+Der Parameter <command>-p</command> legt fest, welche Ports gescannt werden
+sollen. Wird bei der Wahl der Zielports auf diese Option verzichtet, werden
+sämtliche  <strong>well-known Ports</strong> zwischen 1 und 1024 sowie alle in
+der services - Datei von <command>nmap</command> gelisteten Dienste gescannt.
+Für einen IP - Protokoll - Scan (<command>-sO</command>) legt der Parameter
+<command>-p</command> die zu scannende Protokoll-Nummer (0-255) fest.
+    </textblock>
+    
+    <textblock>
+Beispiele: <command>-p 23</command> wird lediglich einen Zugriff auf den Port 23
+(Telnet) der Zielsysteme durchführen. <command>-p 20-30,139,60000-</command>
+scannt die Ports zwischen 20 und 30, Port 139 und  alle  Ports größer als 60000.
+    </textblock>
+    
+    <textblock>
+Bei gleichzeitigem TCP- und UDP - Portscan wird das jeweilige Protokoll durch
+ein  vorangestelltes <strong>T:</strong> oder <strong>U:</strong> angewählt. Für
+die übergebenen Ports gilt so lange das spezifizierte Übertragungsprotokoll, bis
+ein anderes angegeben wird (Beispiel <strong>-p U:53,111,137,T:21-25,80</strong>
+= UDP-Ports 53, 111 und 137 sowie die TCP - Ports 21 bis 25 und 80). Bei einem
+gleichzeitigen TCP- und UDP - Scan muss mindestens eine TCP - Scan - Variante
+(<command>-sS</command>, <command>-sF</command> oder <command>-sT</command>)
+angegeben werden.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Wiederaufnahme eines abgebrochenen Scan
+    </heading>
+    
+    <textblock>
+Die Option <command>--resume &lt;Protokoll-Dateiname&gt;</command> reaktiviert
+einen Netzwerk-Scan, der durch das Drücken von Control-C unterbrochen wurde.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Performance-Optimierung
+    </heading>
+    
+    <section>
+     <heading>
+Schneller Scannen
+     </heading>
+     
+     <textblock>
+Mit der Funktion <command>F</command> wird ähnlich wie beim
+<ref lang="en" url="http://linux.maruhn.com/sec/strobe.html">Strobe</ref>
+(einfacher und schneller TCP-Portscanner) ein ziemlich schneller Scan
+durchgeführt, da nur die Ports angesprochen werden, die in
+<path>/etc/services</path> angeführt wurden. Normalerweise reicht ein Scan auf
+diese Standard-Ports  aus, da damit die gängigsten Dienste in Erfahrung gebracht
+werden können.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+DNS-Auflösung deaktivieren
+     </heading>
+     
+     <textblock>
+Um einen Ping-Scan zu beschleunigen, kann mit der Option <command>-n</command>
+die DNS-Auflösung ausgeschaltet werden.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Begrenzung der Sockets (Vermeidung eines Zusammenbruchs des Zielsystems)
+     </heading>
+     
+     <textblock>
+Mit <command>-M &lt;Maximale Sockets&gt;</command> wird die maximale Anzahl der
+Sockets bei einem parallel durchgeführten TCP connect()-Scan festgelegt. Dies
+ist zum Beispiel in Situationen nützlich, wenn der Scanvorgang künstlich
+verlangsamt werden soll, damit das Zielsystem nicht unter der Last der Zugriffe
+zusammenbricht. Eine andere Herangehensweise ist die Verwendung von
+<ref iref="TCP - SYN - Stealth Portscan">-sS</ref>.
+     </textblock>
+    </section>
+   </section>
+   
+   <section>
+    <heading>
+Scannen ohne vorheriges An-ping-en des Hosts
+    </heading>
+    
+    <textblock>
+Der Parameter <command>-P0</command> verhindert das Pingen eines Hosts, bevor
+dieser gescannt wird. So können ganze Netzwerke gescannt werden, die aufgrund
+einer restriktiv konfigurierten Firewall keine ICMP echo requests/responses)
+zulassen. Microsoft.com ist ein Beispiel für ein solch gut geschütztes Netzwerk,
+in dem nur die Verwendung dieser Option zum gewünschten Resultat führt.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Klein fragmentierte Pakete für "Stealth-Scans"
+    </heading>
+    
+    <textblock>
+Durch die zusätzlich Option <command>-f</command> werden sehr kleine
+fragmentierte Pakete für SYN-, FIN-, Xmas- oder NULL- Scans verwendet. Das
+bedeutet, dass die TCP - Header auf mehrere Pakete verteilt werden. Ziel ist es,
+den Scan vor <ref chapter="iptables">Firewall-</ref> und
+<ref chapter="ids">IDS - Systemen</ref> zu verstecken. Gerade bei älteren
+Geräten werden  die Pakete oftmals nicht zuerst defragmentiert. Heutzutage
+reihen  Paketfilter in den meisten Fällen die einzelnen Pakete in eine
+Warteschlange ein, bevor sie mit der Auswertung / Filterung beginnen. Damit
+rückt das Ziel dieser Option in weite Ferne.
+    </textblock>
+    
+    <textblock>
+Bei verschiedenen Testläufen ist wurde festgestellt, dass ein SYN - Scan mit
+einer großen Anzahl klein fragmentierter Pakete in einer kleinen Anzahl Versuche
+<command>nmap</command> verfälschte Daten ausgab. Der Test lief von einem SuSE
+Linux 6.3-Client mit 10 MBit/Sek. (Koaxial-Kabel) gegen ein SuSE Linux
+6.3-Gateway. <command>Nmap</command> behauptete in einigen Fällen, dass zwischen
+dem zweitletzten wirklich offenen Port 139 (netbios-ssn) und dem allerletzten
+Port 8080 (http-proxy) ein gefilterter TCP - Port offen sei.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Timing-Einstellungen
+    </heading>
+    
+    <textblock>
+Mit <command>Nmap</command> können Scans weitestgehend unentdeckt bleiben. In
+einigen Fällen kann mit zusätzlichen Optionen das Timing noch feiner abgestimmt
 werden.
+    </textblock>
+    
+    <textblock>
+Mit den <command>-T</command> Optionen Paranoid, Sneaky, Polite, Normal,
+Aggressive und Insane lässt sich das Timing der Scans auf das Zielsystem
+einstellen:
+    </textblock>
+    
+    <ul>
+     <li>
+Der Paranoid - Modus scannt sehr langsam, in der Hoffnung, nicht von Intrusion
+Detection-Systemen entdeckt zu werden. Er serialisiert alle Scand und wartet im 
+Normalfall einfach fünf Minuten bis zur Sendung des Folgepaketes.
+     </li>
+     <li>
+Der Sneaky - Modus (dt. schleichend) ist mit dem Paranoid-Modus vergleichbar,
+allerdings sendet dieser die Pakete im Abstand von 15 Sekunden.
+     </li>
+     <li>
+Der Polite - Modus (dt. höflich) verringert die Netzlast und verkleinert die
+Gefahr des Zusammenbrechens der Zielmaschine. Er serialisiert ebenfalls die zu
+sendenden Pakte und wartet dazwischen mindestens 0.4 Sekunden.
+     </li>
+     <li>
+Der Normal-Modus scannt so schnell wie möglich, ohne das Netz dabei zu überlasten.
+     </li>
+     <li>
+Im Aggressive-Modus (dt.  aggressiv) wird eine Wartezeit von 5 Minuten zwischen
+den einzelnen Hosts hinzugefügt, jedoch wird nie länger als 1.25 Sekunden auf
+Antworten gewartet.
+     </li>
+     <li>
+Der Insane - Modus (dt. geisteskrank) ist lediglich in sehr schnellen Netzwerken
+verwendbar, oder überall dort zu empfehlen, wo einzelne Resultatsinformationen
+verloren gehen dürfen. Zwischen den einzelnen Systemen werden 75 Sekunden und
+zwischen den Zugriffen 300 ms gewartet.
+     </li>
+    </ul>
+    
+    <textblock>
+Weiterhin sind verschiedene sehr feingranulare Einstellungen mit verschiedenen
+Parametern wie  z. B. <command>--host_timeout</command>,
+<command>--max_rtt_timeout</command>, <command>--initial_rtt_timeout</command>,
+<command>--max_parallelism</command>, <command>--scan_delay</command>, etc.
+möglich.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Fingerprints zur Ermittlung des Betriebssystems
+    </heading>
+    
+    <textblock>
+Mit <command>-O</command> wird ein so genannter Fingerabdruck des gescannten
+Systems angefertigt. Es wird eine Anzahl spezifischer Tests mit dem Ziel
+ausgeführt, das typische Verhalten der jeweiligen TCP/IP - Implementierungen zu
+erkennen. Die erhaltenen Informationen stellen quasi einen
+<strong>Fingerabdruck</strong> des Systems dar, der mit bekannten
+Betriebssystem-Fingerabdrücken verglichen wird. Diese sind in der
+nmap-os-fingerprints Datei zu finden.
+    </textblock>
+    
+    <textblock>
+Es kommt nahezu nie vor, dass ein falsches Betriebssystem prognostiziert wird,
+solange die Protokollstapel beim Host nicht manipuliert wurden. Es kann
+höchstens vorkommen, dass <command>nmap</command> dem Fingerabdruck des
+Computers kein Betriebssystem zuordnen kann. Sollte es einem Endanwender von
+<command>nmap</command> möglich sein das Betriebssystem zu identifizieren, kann
+er per CGI-Script auf
+<ref lang="en" url="http://www.insecure.org/cgi-bin/nmap-submit.cgi">http://www.insecure.org/cgi-bin/nmap-submit.cgi</ref>
+aktiv zur Perfektionierung von <command>nmap</command> beitragen.
+    </textblock>
+    
+    <textblock>
+Die Option <command>-O</command> aktiviert weiterhin einige zusätzliche Tests
+wie z. B. das Messen der <strong>Uptime</strong> (wann wurde das Zielsystem das
+letzte Mal neu gestartet) oder die Klassifizierung der Berechenbarkeit der
+TCP-Sequenznummer (wie schwer es ist, eine bestehende Verbindung zu entführen).
+    </textblock>
+    
+    <textblock>
+Mit Eingriffen in die Handhabung des Betriebssystems bei
+Verbindungs-Anforderungen und direkt beim Protokollstapel könnte ein anderes
+Betriebssystem vorgetäuscht werden. Diese Aktion ist jedoch mit dem bitteren
+Beigeschmack eines möglichen Performance- und Stabilitäts-Verlusts des
+Betriebssystems verbunden. Beispiele:
+    </textblock>
+    
+    <textblock>
+bei Microsoft Windows 98
+    </textblock>
+    
+    <shell>
+     <root>
+nmap 192.168.0.3 -O
+     </root>
+     <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on rieekan.matrix.net (192.168.0.3):
+Port State Protocol Service
+139 open tcp netbios-ssn
 
-Eine andere Möglichkeit dieser  Option  ist, die
-Quelle des Scans zu spoofen, so dass das Zielsystem
-glaubt, dass jemand  anderes den Scan durchführt.
-(VERWEIS auf Spoofen->Grundlagen Sicherheit)
+TCP Sequence Prediction: Class=trivial time dependency
+Difficulty=0 (Trivial joke)
+Remote operating system guess: Windows NT4 / Win95 / Win98
 
-Diese wirklich exzellent ausgedachte und umgesetzte Funktion 
-kann unter Umständen auch für Denial of Service-Attacken genutzt 
-werden (angegebener Host nicht ansprechbar).
+Nmap run completed -- 1 IP address (1 host up) scanned in 7 seconds
+     </output>
+    </shell>
+    
+    <textblock>
+bei SuSE Linux 6.3
+    </textblock>
+    
+    <shell>
+     <root>
+nmap 192.168.0.3 -O
+     </root>
+     <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on gateway.matrix.net (192.168.0.1):
+Port State Protocol Service
+21 open tcp ftp
+23 open tcp telnet
+139 open tcp netbios-ssn
+8080 open tcp http-proxy
 
+TCP Sequence Prediction: Class=random positive increments
+Difficulty=2150475 (Good luck!)
+Remote operating system guess: Linux 2.1.122 - 2.2.12
 
+Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
+     </output>
+    </shell>
+    
+    <textblock>
+bei unbekanntem Betriebssystem
+    </textblock>
+    
+    <shell>
+     <root>
+nmap 192.168.0.6 -O
+     </root>
+     <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on hidden.matrix.net (192.168.0.6):
+Port State Protocol Service
+7 open tcp echo
+9 open tcp discard
+13 open tcp daytime
+17 open tcp qotd
+19 open tcp chargen
+[...]
+465 open tcp smtps
+1030 open tcp iad1
+1433 open tcp ms-sql-s
+6667 open tcp irc
+6668 open tcp irc
 
-1.1.1 Lockvogel
+TCP Sequence Prediction: Class=trivial time dependency
+Difficulty=11 (Easy)
+No OS matches for host (If you know what OS is running on it, 
+	see http://www.insecure.org/cgi-bin/nmap-submit.cgi).
+TCP/IP fingerprint:
+TSeq(Class=RI%gcd=1%SI=F4F9)
+TSeq(Class=TD%gcd=1%SI=A)
+TSeq(Class=TD%gcd=1%SI=B)
+T1(Resp=Y%DF=Y%W=4470%ACK=S++%Flags=AS%Ops=M)
+T2(Resp=Y%DF=N%W=0%ACK=S%Flags=AR%Ops=)
+T3(Resp=Y%DF=Y%W=4470%ACK=S++%Flags=AS%Ops=M)
+T4(Resp=Y%DF=N%W=0%ACK=O%Flags=R%Ops=)
+T5(Resp=Y%DF=N%W=0%ACK=S++%Flags=AR%Ops=)
+T6(Resp=Y%DF=N%W=0%ACK=O%Flags=R%Ops=)
+T7(Resp=Y%DF=N%W=0%ACK=S++%Flags=AR%Ops=)
+T7(Resp=N)
+PU(Resp=Y%DF=N%TOS=0%IPLEN=38%RIPTL=148%RID=E%RIPCK=E%UCK=F%ULEN=134%DAT=E)
 
-Mit der Option -D <Decoy1 [,Decoy2][,ME],...> wird ein
-so genannter Decoy-Scan (dt. Lockvolgel) veranlasst. 
-Für einen unabhängigen Betrachter sieht es so aus, als 
-würde eine Reihe zusätzlicher Hosts die Zielumgebung
-scannen. Durch die Option -D host.fake1.com,ME,test.fake2.com 
-verfälscht nmap die Scan-Pakete mit den Absendeadressen von 
-host.fake1.com und test.fake2.com. 
+Nmap run completed -- 1 IP address (1 host up) scanned in 19 seconds
+     </output>
+    </shell>
+   </section>
+   
+   <section>
+    <heading>
+Besitzer eines Prozesses ermitteln
+    </heading>
+    
+    <textblock>
+Mit dem Parameter <command>-I</command> wird die identd - Information laut
+<ref lang="en" url="http://www.ietf.org/rfc/rfc1413.txt">RFC 1413</ref> über die
+laufenden Prozesse auf dem Ziel-System eingeholt. Beispiele:
+    </textblock>
+    
+    <textblock>
+bei Microsoft Windows 98
+    </textblock>
+    
+    <shell>
+     <root>
+nmap 192.168.0.3 -I
+     </root>
+     <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on rieekan.matrix.net (192.168.0.3):
+Port State Protocol Service Owner
+139 open tcp netbios-ssn
 
+Nmap run completed -- 1 IP address (1 host up) scanned in 6 seconds
+     </output>
+    </shell>
+    
+    <textblock>
+bei SuSE Linux 6.3
+    </textblock>
+    
+    <shell>
+     <root>
+nmap 192.168.0.1 -I
+     </root>
+     <output>
+Starting nmap V. 2.3BETA6 by Fyodor (fyodor@dhp.com, www.insecure.org/nmap/)
+Interesting ports on gateway.matrix.net (192.168.0.1):
+Port State Protocol Service Owner
+21 open tcp ftp mruef
+23 open tcp telnet
+139 open tcp netbios-ssn rieekan
+8080 open tcp http-proxy lanman
 
-
-1.1.1 sonstige Verschleierungsversuche
-
-Die Option --data_length <Anzahl> legt die Länge der
-zu versendenden Pakete fest. Normalerweise verschickt 
-nmap möglichst kleine Pakete, die lediglich aus dem 
-Header bestehen. So weisen TCP - Datagramme im Normalfall 
-eine Länge von 40 und ICMP echo  request-Anfragen  
-28  Bytes  auf. Diese Option weist nmap an, 
-die verschickten Pakete um Null-Bytes 
-zu verlängern. Pakete zur  Erkennung des 
-Betriebssystens (-O) sind im Gegensatz zu 
-Ping-Zugriffen und Portscan-Paketen nicht betroffen.  
-Natürlich verlangsamt sich dadurch das Scannen- 
-aber ebenso erhöht es die Unauffälligkeit des Scans.
-
-Spielt Zeit eine untergeordnete Rolle, können durch
-Verwendung der Option -q ein unauffälliges Verhalten 
-eingestellt werden. (Siehe auch Bugtraq, FTP, ICMP, 
-IP, Linux, Networking, nmap, Ping, Port, RFC 792, 
-RFC 793, RFC 1413, Scanning, Security, Strobe, 
-TCP, UDP, Unix, Windows)
-
-
-
-
-1.1 Sonstige Optionen
-
-
-
-1.1.1 Ursprungsort der Ports festlegen
-
-Mit -g <Portadresse> wird der Ursprungsport 
-eines Scans definiert. Die Ports 20 und 53 sind 
-erfahrungsgemäss eine gute Wahl.
-
-
-
-1.1.1 Auswahl des Device
-
-Mit -e <Gerätename> wird bestimmt, an welcher 
-Schnittstelle (Device) die Datenpakete auf die 
-Reise geschickt werden sollen. Je nach dem muss 
-für den Gerätename eth0, eth1 oder ppp0 definiert 
+Nmap run completed -- 1 IP address (1 host up) scanned in 1 second
+     </output>
+    </shell>
+   </section>
+   
+   <section>
+    <heading>
+zusätzliche TCP- und ICMP- Optionen
+    </heading>
+    
+    <section>
+     <heading>
+TCP - Pings
+     </heading>
+     
+     <textblock>
+Diese Funktion ist immer dann anzuwenden, wenn die Erreichbarkeit von Systemen
+oder Netzwerken identifiziert werden soll und eine Überprüfung mittels ICMP vom
+Zielsystem nicht zugelassen wird.
+     </textblock>
+     
+     <textblock>
+Der Parameter <command>-PT &lt;Port&gt;</command> verwendet einen TCP-Ping-Scan
+um zu verifizieren, welche Hosts im Netzwerk erreichbar sind. Diese Option kann
+auch ohne die Definierung eines Ports verwendet werden (standardmäßig wird
+HTTP-Port TCP/80 verwendet).
+     </textblock>
+     
+     <textblock>
+Ansprechbare Systeme sollten auf das gesendete TCP-Datagramm (ACK-Flag gesetzt)
+mit einem RST antworten.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+TCP-SYN-Suchlauf bei TCP-Ping-Scan
+     </heading>
+     
+     <textblock>
+Hierbei kann mit der Option <command>-PS</command> ein SYN-Suchlauf anstelle des
+standardmäßigen ACK-Suchlaufs bei TCP - Ping - Scans verwendet werden. Das
+Setzen des Zielports erfolgt auf die selbe Art und Weise wie bei den zuvor
+erläuterten TCP - Pings.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+TCP reverse ident-Scanning
+     </heading>
+     
+     <textblock>
+Mit Option <command>-I</command> wird das TCP reverse ident - Scanning
+aktiviert. Wie Dave Goldsmith in einem Bugtraq-Posting aus dem Jahre 1996
+publiziert  hat, ermöglicht das ident - Protokoll (RFC 1413) das Identifizieren
+des Besitzers eines TCP - Dienstes.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+ICMP - Ping
+     </heading>
+     
+     <textblock>
+Die Option <command>-PI</command> nutzt einen klassischen Ping (ICMP echo
+request), um die Erreichbarkeit von Systemen und Broadcast - Adressen von
+Subnetzen zu identifizieren. Letztere sind extern erreichbare IP - Adressen, die
+eine Umwandlung zu einem internen Broadcast des Subnetzes durchführen. Sie
+stellen die Voraussetzung für eine Reihe von Denial of Service-Attacken (Smurf
+ist die bekannteste Variante) dar und sollten deshalb verhindert werden.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+ICMP timestamp - Anfrage
+     </heading>
+     
+     <textblock>
+Die Option -PP benutzt eine ICMP timestamp - Anfrage (Typ 13, Code 0), um
+ansprechbare Hosts zu finden.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Parallele Ausführung von TCP- und ICMP - Ping
+     </heading>
+     
+     <textblock>
+Der Parameter <command>-PB &lt;Port&gt;</command> ist der standardmäßig
+gewählte Ping - Typus. Es werden beide o. g. Techniken (<command>-PT</command>
+und <command>-PI</command>) parallel durchgeführt. Auf diese Weise können
+Firewall - Elemente  ausgetrickst werden, die nur eine der beiden Protokolle
+herausfiltern. Der Zielport wird analog der zuvor erklärten Optionen angegeben.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+ICMP address mask request
+     </heading>
+     
+     <textblock>
+Es wird ein ICMP address mask request (Typ 17, Code 0) verwendet.
+     </textblock>
+    </section>
+   </section>
+   
+   <section>
+    <heading>
+Ausgabeoptionen
+    </heading>
+    
+    <section>
+     <heading>
+Komplette DNS-Auflösung erzwingen
+     </heading>
+     
+     <textblock>
+Die Option <command>-R</command> versucht, während eines Scan-Vorgangs alle
+Host-Namen aufzulösen, und zwar nicht nur die Aktiven. Durch die explizite
+Anweisung auch inaktive Rechner-Namen in Erfahrung zu bringen, kann diese
+Funktion unter Umständen einen Durchlauf extrem in die Länge ziehen.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Verbose Option
+     </heading>
+     
+     <textblock>
+Im Verbose-Modus, der mit <command>-v</command> aktiviert wird und sehr zu
+empfehlen ist, werden Informationen in ausführlicher Form ausgegeben. Die
+doppelte Verwendung <command>-vv</command> erhöht den Umfang der Ausgabe
+nochmals. Ebenso kann <command>-d</command> einige Male aktiviert werden, falls
+Sie wirklich vor einem vollem Bildschirm verrückt werden wollen!
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Ausgabe in Protokoll-Datei
+     </heading>
+     
+     <textblock>
+Mit Parameter <command>-oN &lt;Protokoll-Dateiname&gt;</command> werden die
+Resultate des Scans in einem normalen, für Menschen lesbaren Format
+abgespeichert. Der Paraemter <command>-oX</command> hingeggen protokolliert die
+Resultate in einer XML-Datei. Sollen die Informationen mit
+<command>grep</command> gefiltert werden, bietet sich der Parameter
+<command>-oG</command> an. Sind alle drei Formate von Belang, so kann man mit
+Option <command>-oA &lt;Basisdateiname&gt;</command> alle Formate bekommen.
+     </textblock>
+     
+     <textblock>
+Weiterhin existiert die Möglichkeit, mit Parameter <command>-oS</command> ein
+für s|&lt;ripT kiDd|3 lesbares Format auszuwählen.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Protokolldatei erweitern
+     </heading>
+     
+     <textblock>
+Mit <command>--append_output</command> werden die Scan - Resultate an die
+spezifizierte Protokoll-Datei angehängt, anstatt diese zu überschreiben.
+     </textblock>
+    </section>
+   </section>
+   
+   <section>
+    <heading>
+Verschleierungsparameter
+    </heading>
+    
+    <textblock>
+Ganz offensichtlich kann ein
+<ref chapter="ids">Intrusion Detection System (IDS)</ref> nmap - Scans oftmals
+erkennen. Neben der Deaktivierung der ICMP - Pings sind weitere Manipulationen
+möglich, die in den folgenden Abschnitten beschrieben werden.
+    </textblock>
+    
+    <section>
+     <heading>
+Verbergen der Identität / IP - Source manipulieren
+     </heading>
+     
+     <textblock>
+Unter bestimmten Umständen ist <command>nmap</command> nicht in der Lage, Ihre
+Quell - IP - Adresse zu identifizieren (<command>nmap</command> wird Ihnen dies
+mitteilen). In einer solchen Situation kann mit der Hilfe der Option
+<command>-S</command> die IP-Adresse (der gewünschten Schnittstelle) festgelegt
 werden.
-
-
-
-1.1.1 IPv6-Unterstützung
-
-IPv6 wir mit der Option -6 erreicht. Momentan werden 
-nur TCP connect()-  und Ping - Scans  von nmap unterstützt. 
-Sollen UDP-  oder andere Scan - Typen genutzt werden, 
-lohnt sich  ein  Blick auf http://nmap6.sourceforge.net/.
-
-
-
-
-
-1 ZIEL-SPEZIFIKATION
-
-Alle Angaben, die nmap nicht als Option oder als
-Argument einer Option interpretiert, wird als 
-Ziel - Spezifikation angesehen. Die einfachste Form 
-ist das Auflisten von einzelnen 
-Hostnamen oder IP-Adressen in der Kommandozeile. 
-Falls Sie ein Subnetz scannen wollen, geben Sie  
-dieses in gebräuchlicher Syntax an (z.B. 192.168.1.0/24 
-für ein lokales Klasse C-Netzwerk)
-
-nmap verwendet zudem eine sehr mächtige und komfortable 
-Notation zur Spezifikation von  IP-Adressbereichen. So
-kann das Klasse B-Netzwerk 192.168.*.*  mit der Angabe 
-von 
-   '192.168.*.*'  
-   '192.168.0-255.0-255'
-   '192.168.1-50,51-255.1,2,3,4,5-255' 
-gescannt werden. Falls Sie das Asteriks - Zeichen 
-(dt. Stern, '*') benutzen wollen, denken Sie daran, dass 
-einige Shells einen vorangestellten "\" oder ein 
+     </textblock>
+     
+     <textblock>
+Eine andere Möglichkeit dieser Option ist, die Quelle des Scans zu
+<ref chapter="grundlagen_sicherheit" iref="Spoofing">spoofen</ref>, so
+dass das Zielsystem glaubt, dass jemand anderes den Scan durchführt.
+     </textblock>
+     
+     <textblock>
+Diese wirklich exzellent ausgedachte und umgesetzte Funktion kann unter
+Umständen auch für Denial of Service-Attacken genutzt werden (angegebener Host
+nicht ansprechbar).
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Lockvogel
+     </heading>
+     
+     <textblock>
+Mit der Option <command>-D &lt;Decoy1 [,Decoy2][,ME],...&gt;</command> wird ein
+so genannter Decoy-Scan (dt. Lockvolgel) veranlasst. Für einen unabhängigen
+Betrachter sieht es so aus, als würde eine Reihe zusätzlicher Hosts die
+Zielumgebung scannen. Durch die Option
+<command>-D host.fake1.com,ME,test.fake2.com</command> verfälscht
+<command>nmap</command> die Scan-Pakete mit den Absendeadressen von
+host.fake1.com und test.fake2.com.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+sonstige Verschleierungsversuche
+     </heading>
+     
+     <textblock>
+Die Option <command>--data_length &lt;Anzahl&gt;</command> legt die Länge der zu
+versendenden Pakete fest. Normalerweise verschickt <command>nmap</command>
+möglichst kleine Pakete, die lediglich aus dem Header bestehen. So weisen
+TCP - Datagramme im Normalfall eine Länge von 40 und ICMP echo request-Anfragen
+28 Bytes auf. Diese Option weist <command>nmap</command> an, die verschickten
+Pakete um Null-Bytes zu verlängern. Pakete zur Erkennung des Betriebssystens
+(<command>-O</command>) sind im Gegensatz zu Ping-Zugriffen und Portscan-Paketen
+nicht betroffen. Natürlich verlangsamt sich dadurch das Scannen - aber ebenso
+erhöht es die Unauffälligkeit des Scans.
+     </textblock>
+     
+     <textblock>
+Spielt Zeit eine untergeordnete Rolle, können durch Verwendung der Option
+<command>-q</command> ein unauffälliges Verhalten eingestellt werden. (Siehe
+auch Bugtraq, FTP, ICMP, IP, Linux, Networking, nmap, Ping, Port, RFC 792,
+RFC 793, RFC 1413, Scanning, Security, Strobe, TCP, UDP, Unix, Windows)
+     </textblock>
+    </section>
+   </section>
+   
+   <section>
+    <heading>
+Sonstige Optionen
+    </heading>
+    
+    <section>
+     <heading>
+Ursprungsort der Ports festlegen
+     </heading>
+     
+     <textblock>
+Mit <command>-g &lt;Portadresse&gt;</command> wird der Ursprungsport eines Scans
+definiert. Die Ports 20 und 53 sind erfahrungsgemäss eine gute Wahl.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+Auswahl des Device
+     </heading>
+     
+     <textblock>
+Mit <command>-e &lt;Gerätename&gt;</command> wird bestimmt, an welcher
+Schnittstelle (Device) die Datenpakete auf die Reise geschickt werden sollen. Je
+nach dem muss für den Gerätename eth0, eth1 oder ppp0 definiert werden.
+     </textblock>
+    </section>
+    
+    <section>
+     <heading>
+IPv6-Unterstützung
+     </heading>
+     
+     <textblock>
+IPv6 wir mit der Option <command>-6</command> erreicht. Momentan werden nur TCP
+connect()-  und Ping - Scans von <command>nmap</command> unterstützt. Sollen
+UDP- oder andere Scan - Typen genutzt werden, lohnt sich ein Blick auf
+<ref lang="en" url="http://nmap6.sourceforge.net/">http://nmap6.sourceforge.net/</ref>.
+     </textblock>
+    </section>
+   </section>
+  </section>
+ </split>
+ 
+ <split>
+  <section>
+   <heading>
+ZIEL-SPEZIFIKATION
+   </heading>
+   
+   <textblock>
+Alle Angaben, die <command>nmap</command> nicht als Option oder als Argument
+einer Option interpretiert, wird als Ziel - Spezifikation angesehen. Die
+einfachste Form ist das Auflisten von einzelnen Hostnamen oder IP-Adressen in
+der Kommandozeile. Falls Sie ein Subnetz scannen wollen, geben Sie dieses in
+gebräuchlicher Syntax an (z. B. 192.168.1.0/24 für ein lokales Klasse
+C-Netzwerk)
+   </textblock>
+   
+   <textblock>
+<command>nmap</command> verwendet zudem eine sehr mächtige und komfortable
+Notation zur Spezifikation von IP-Adressbereichen. So kann das Klasse B-Netzwerk
+192.168.*.* mit der Angabe von <strong>192.168.*.*</strong>,
+<strong>192.168.0-255.0-255</strong>,
+<strong>192.168.1-50,51-255.1,2,3,4,5-255</strong> gescannt werden. Falls Sie
+das Asteriks - Zeichen (dt. Stern, <strong>*</strong>) benutzen wollen, denken
+Sie daran, dass einige Shells einen vorangestellten <strong>\</strong> oder ein
 Auskommentieren mittels Gänsefüßchen verlangen.
-
-Eine weitere Möglichkeit erschließt sich durch die 
-entgegensetze Herangehensweise.  Anstatt ein ganzes Klasse 
-B-Netzwerk zu scannen, kann mit der Angabe von '*.*.5.6-7'  
-jede  IP - Adresse  gescannt  werden,  die  auf .5.6 
-oder .5.7 endet.
-
-**FETT***Nutzen einer Eingabedatei.****ENDE FETT****
-Mit -i <Eingabedatei> wird aus einer dafür vorgesehenen Datei eine 
-Liste mit IP-Adressen oder Host-Namen eingelesen. Der Parameter 
--iL <Eingabe-Dateiname> weist nmap an, die  Ziel-Spezifizierung 
-ZUERST von der angegebenen Datei einzulesen und erst danach 
-von der Kommandozeile.
-
-
-
-1 Beispiele
-
+   </textblock>
+   
+   <textblock>
+Eine weitere Möglichkeit erschließt sich durch die entgegensetze
+Herangehensweise.  Anstatt ein ganzes Klasse B-Netzwerk zu scannen, kann mit der
+Angabe von <strong>*.*.5.6-7</strong> jede IP - Adresse gescannt werden, die auf
+.5.6 oder .5.7 endet.
+   </textblock>
+   
+   <textblock>
+<strong>Nutzen einer Eingabedatei.</strong><br/>
+Mit <command>-i &lt;Eingabedatei&gt;</command> wird aus einer dafür vorgesehenen
+Datei eine Liste mit IP-Adressen oder Host-Namen eingelesen. Der Parameter
+<command>-iL &lt;Eingabe-Dateiname&gt;</command> weist <command>nmap</command>
+an, die Ziel-Spezifizierung ZUERST von der angegebenen Datei einzulesen und erst
+danach von der Kommandozeile.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Beispiele
+   </heading>
+   
+   <shell>
+    <root>
 nmap -v ziel.beispiel.com
-
-Diese Option scannt alle reservierten TCP-Ports  am  Ziel­
-system mit dem Namen ziel.beispiel.com. Das -v aktiviert
-den Verbose - Modus.
-
-
+    </root>
+   </shell>
+   
+   <textblock>
+Diese Option scannt alle reservierten TCP-Ports am Ziel­system mit dem Namen
+ziel.beispiel.com. Das <command>-v</command> aktiviert den Verbose - Modus.
+   </textblock>
+   
+   <shell>
+    <root>
 nmap -sS -O ziel.beispiel.com/24
-
-Hier wird ein stealth SYN-Scan gegen jede der potentiell 
-vorhandenen 255 Maschinen des Klasse C-Netzwerks  
-von ziel.beispiel.com gestartet. Ebenso wird versucht,
-das Betriebssystem der aktiven Systeme zu ermitteln.  
-Dieser Vorgang erfordert root-Privilegien.
-
-
+    </root>
+   </shell>
+   
+   <textblock>
+Hier wird ein stealth SYN-Scan gegen jede der potentiell vorhandenen 255
+Maschinen des Klasse C-Netzwerks von ziel.beispiel.com gestartet. Ebenso wird
+versucht, das Betriebssystem der aktiven Systeme zu ermitteln. Dieser Vorgang
+erfordert <ref chapter="nutzer_unter_linux" iref="root">root</ref>-Privilegien.
+   </textblock>
+   
+   <shell>
+    <root>
 nmap -v --randomize_hosts -p 80 '*.*.2.3-5'
-
-Manchmal ist es nicht erforderlich, einen IP-Adressbereich
-zu scannen. So kann es durchaus sein, dass in 
-einer Situation das Absuchen spezieller Geräte 
-nötig  wird. Dieses Kommando findet sämtliche 
-Webserver, die eine IP - Adresse aufweisen, 
-die auf .2.3 .2.4 oder .2.5 endet. Es könnten noch
-mehr interessante Systeme gefunden werden, wenn 
-bei 127 gestartet wird (IMHO). In diesem Fall
-können die durch die Sterne gegebenen Platzhalter  
-durch '127-222' ersetzt werden.
-
-       
+    </root>
+   </shell>
+   
+   <textblock>
+Manchmal ist es nicht erforderlich, einen IP-Adressbereich zu scannen. So kann
+es durchaus sein, dass in einer Situation das Absuchen spezieller Geräte nötig
+wird. Dieses Kommando findet sämtliche Webserver, die eine IP - Adresse
+aufweisen, die auf .2.3 .2.4 oder .2.5 endet. Es könnten noch mehr interessante
+Systeme gefunden werden, wenn bei 127 gestartet wird (IMHO). In diesem Fall
+können die durch die Sterne gegebenen Platzhalter durch <strong>127-222</strong>
+ersetzt werden.
+   </textblock>
+   
+   <shell>
+    <root>
 host -l firma.com | cut '-d ' -f 4 | ./nmap -v -iL -
-
-Führt einen  DNS-Zonetransfer durch, um sämtliche Hosts
-von firma.com zu finden. Die Ausgabe der IP - Adressen wird
-sodann  für die weitere Verarbeitung zu nmap umgeleitet.
-
-Mit den folgenden beiden Befehlen sollen diejenigen Maschinen
-identifiziert werden, bei denen named als root läuft:
-
-nohup nmap -r -iR -I -sT -p53 > /tmp/named-scan.out &
+    </root>
+   </shell>
+   
+   <textblock>
+Führt einen DNS-Zonetransfer durch, um sämtliche Hosts von firma.com zu finden. 
+Die Ausgabe der IP - Adressen wird sodann für die weitere Verarbeitung zu
+<command>nmap</command> umgeleitet.
+   </textblock>
+   
+   <textblock>
+Mit den folgenden beiden Befehlen sollen diejenigen Maschinen identifiziert
+werden, bei denen named als
+<ref chapter="nutzer_unter_linux" iref="root">root</ref> läuft:
+   </textblock>
+   
+   <shell>
+    <root>
+nohup nmap -r -iR -I -sT -p53 > /tmp/named-scan.out &amp;
 tail -f /tmp/named-scan.out
-
-Die Option -r scannt die Ports der Zielmaschine in einer zufälligen 
-Reihenfolge, -iR wählt zufällige IP's als Ziel der Scans 
-aus, -I aktiviert den 
-<!-- LINK: iref="TCP reverse ident-Scanning"-->reverse ident scan<!-- ENDLINK -->, 
-der nur mit einem 
-TCP-connect()-Scan (-sT) funktioniert. -p53 definiert schließlich 
-Port 53 als Scanziel. 
-
-In einem weiteren Beispiel soll target.host gescannt werden, 
-allerdings so, dass wir dabei unentdeckt bleiben. Dazu
-werden einige Lockvögel (Decoy Hosts) benutzt: 
-
+    </root>
+   </shell>
+   
+   <textblock>
+Die Option <command>-r</command> scannt die Ports der Zielmaschine in einer
+zufälligen Reihenfolge, <command>-iR</command> wählt zufällige IP's als Ziel der
+Scans aus, <command>-I</command> aktiviert den 
+<ref iref="TCP reverse ident-Scanning">reverse ident scan</ref>, der nur mit
+einem TCP-connect()-Scan (<command>-sT</command>) funktioniert.
+<command>-p53</command> definiert schließlich Port 53 als Scanziel.
+   </textblock>
+   
+   <textblock>
+In einem weiteren Beispiel soll target.host gescannt werden, allerdings so, dass
+wir dabei unentdeckt bleiben. Dazu werden einige Lockvögel (Decoy Hosts) benutzt:
+   </textblock>
+   
+   <shell>
+    <root>
 nohup nmap -r -P0 -sS -Ddecoy1,decoy2,decoy3,decoy4,decoy5 target.host
+    </root>
+   </shell>
+   
+   <textblock>
+Die Hosts decoy1 bis decoy5 sollten erreichbar sein. Die Option
+<ref iref="Scannen ohne vorheriges An-ping-en des Hosts">-P0</ref>
+deaktivert das an-ping-en von target.host vor dem Scan.
+<ref iref="TCP - SYN - Stealth Portscan">-sS</ref> aktiviert den SYN-Scan und
+<ref iref="Lockvogel">-Ddecoy1,decoy2,decoy3,decoy4,decoy5</ref> benutzt die
+Hosts decoy1 bis decoy5 um ein wenig Verwirrung zu stiften.
+   </textblock>
+  </section>
+  
+  <section>
+   <heading>
+Letzter Kommentar
+   </heading>
+   
+   <textblock>
+Ein empfehlenswertes Print - Medium zu Scanning und nmap ist
+<strong>Das Anti-Hacker-Buch</strong> (ISBN 3-8266-4072-1), erschienen im
+<ref lang="de" url="http://www.mitp.de/">mitp-Verlag</ref>. Dank für freundliche
+Hilfe und kooperative Zusammenarbeit mit mir an diesem Dokument ernten in erster
+Linie Snakebyte, Anthraxx und DukeCS von Kryptocrew.
+   </textblock>
+  </section>
+ </split>
+</chapter>
 
-Die Hosts decoy1 bis decoy5 sollten erreichbar sein. Die Option 
-<!-- LINK: iref="Scannen ohne vorheriges An-ping-en des Hosts"-->-P0<!-- ENDLINK --> 
-deaktivert das an-ping-en von target.host vor dem Scan. 
-<!-- LINK: iref="TCP - SYN - Stealth Portscan"-->-sS<!-- ENDLINK --> 
-aktiviert den SYN-Scan und 
-<!-- LINK: iref="Lockvogel"-->-Ddecoy1,decoy2,decoy3,decoy4,decoy5<!-- ENDLINK --> 
-benutzt die 
-Hosts decoy1 bis decoy5 um ein wenig Verwirrung zu stiften. 
-
-
-
-1 Letzter Kommentar
-
-Ein empfehlenswertes Print - Medium zu Scanning und nmap ist 
-"Das Anti-Hacker-Buch" (ISBN 3-8266-4072-1), erschienen im 
-mitp-Verlag (http://www.mitp.de/).
-Dank für freundliche Hilfe und kooperative Zusammenarbeit mit mir 
-an diesem Dokument ernten in erster Linie Snakebyte, Anthraxx 
-und DukeCS von Kryptocrew.

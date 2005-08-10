@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <chapter>
- <title>Richtlinien zur Systemverwaltung</title>
+ <title>Samhain</title>
 
  <author>
   <name>Rainer Wichman</name>
@@ -10,7 +10,7 @@
  
  <layout>
   <name>Florian Frank</name>
-  <mailto>florian.frank@pingos.org</name>
+  <mailto>florian.frank@pingos.org</mailto>
  </layout>
 
  <layout>
@@ -186,7 +186,7 @@ tar xzvf samhain-X.Y.Z.tar.gz
 cd samhain-X.Y.Z/
       </user>
       <user path="~/samhain-X.Y.Z">
-./configure && make
+./configure &amp;&amp; make
       </user>
      </shell>
 
@@ -264,22 +264,20 @@ Zeilenende ignoriert.
 Die wesentlichen Eigenschaften, die konfiguriert werden sollten, sind:
      </textblock>
      
-     <textblock>
-      <ol>
-       <li>
+     <ol>
+      <li>
 das Logging (siehe Abschnitt
 <ref iref="Konfiguration der Logging-Eigenschaften">Konfiguration der Logging-Eigenschaften</ref>),
 d. h. wie ausführlich soll <name>Samhain</name> seine Aktivität protokollieren,
 und welche Methoden soll es benutzen ?, und
-       </li>
-       <li>
+      </li>
+      <li>
 die Integritätseigenschaften innerhalb des Dateisystems (siehe Abschnitt
 <ref iref="Konfiguration der Integritätseigenschaften innerhalb des Dateisystems">Konfiguration der Integritätseigenschaften innerhalb des Dateisystems</ref>),
 d. h. welche Dateien sollen überwacht werden, und welche Eigenschaften dieser
 Dateien sollen überprüft werden?
-       </li>
-      </ol>
-     </textblock>
+      </li>
+     </ol>
     </section>
     
     <section>
@@ -348,18 +346,18 @@ Diese Datenbank sollte natürlich vor unabsichtlichem oder böswilligem
 
      <ol>
       <li>
-(a) die Datenbank kann auf einem nicht beschreibbaren Gerät gespeichert werden,
-z. B. ein USB-Stick, der auf 'nicht beschreibbar' geschaltet ist,
+die Datenbank kann auf einem nicht beschreibbaren Gerät gespeichert werden,
+z. B. ein USB-Stick, der auf <strong>nicht beschreibbar</strong>' geschaltet ist,
       </li>
       <li>
-(b) die Datenbank kann mit <ref chapter="gpg_handbuch">GnuPG</ref> signiert
+die Datenbank kann mit <ref chapter="gpg_handbuch_vorwort">GnuPG</ref> signiert
 werden, wie
 <ref iref="Signierte Datenbank- und Konfigurationsdateien">weiter unten</ref>.
 beschrieben wird - dies schützt zwar nicht davor, dass sie überschrieben wird,
 ermöglicht aber, eine solche Manipulation zu erkennen -, oder
       </li>
       <li>
-(c) die Datenbank kann auf einem anderen Rechner gespeichert werden, und Samhain
+die Datenbank kann auf einem anderen Rechner gespeichert werden, und Samhain
 kann so konfiguriert werden, dass die Datenbank beim Start von diesem Rechner
 heruntergeladen wird (siehe Abschnitt 
 <ref iref="Logging zu einem Log-Server (Yule)">Logging zu einem Log-Server (Yule)</ref>).
@@ -500,14 +498,14 @@ Dabei gibt es folgende Einschränkungen:
 
      <ol>
       <li>
-(1) alle Email sollten in einer Datei sein (z.B eine Mailbox im mbox-Format),
+alle Email sollten in einer Datei sein (z.B eine Mailbox im mbox-Format),
       </li>
       <li>
-(2) die jeweils erste Email nach dem Start von Samhain kann nicht verifiziert
+die jeweils erste Email nach dem Start von Samhain kann nicht verifiziert
 werden, und
       </li>
       <li>
-(3) das zur Verifikation benutzte Samhain-Programm muss den selben Schlüssel
+das zur Verifikation benutzte Samhain-Programm muss den selben Schlüssel
 enthalten wie das sendende Samhain-Programm (siehe Abschnitt
 <ref iref="Verifikation des Samhain-Programmes">Verifikation des Samhain-Programmes</ref>). 
       </li>
@@ -537,12 +535,12 @@ Dabei gibt es folgende Einschränkungen:
  
      <ol>
       <li>
-(1) es ist ein Schlüssel notwendig, der nach Eröffnung der Log-Datei per Email
+es ist ein Schlüssel notwendig, der nach Eröffnung der Log-Datei per Email
 geschickt wird, falls (und nur falls) auch Email als Log-Option benutzt wird,
 und
       </li>
       <li>
-(2) das zur Verifikation benutzte Samhain-Programm muss den selben Schlüssel
+das zur Verifikation benutzte Samhain-Programm muss den selben Schlüssel
 enthalten wie das sendende Samhain-Programm (siehe Abschnitt 
 <ref iref="Verifikation des Samhain-Programmes">Verifikation des Samhain-Programmes</ref>). 
       </li>
@@ -622,20 +620,20 @@ Weitere Möglichkeiten sind:
     
     <ol>
      <li>
-(a) Logging zu einem Log-Server. Dies wird weiter unten in einem
-<ref iref="Logging zu einem Log-Server (Yule)" -->eigenen Abschnitt</ref>
+Logging zu einem Log-Server. Dies wird weiter unten in einem
+<ref iref="Logging zu einem Log-Server (Yule)">eigenen Abschnitt</ref>
 näher beschrieben.
      </li>
      <li>
-(b) Logging zu einem Prelude IDS-System. Hierzu muss die libprelude-Bibliothek
+Logging zu einem Prelude IDS-System. Hierzu muss die libprelude-Bibliothek
 installiert sein, und die Option <command>--with-prelude</command> muss bei
 <command>./configure</command> angegeben werden, wenn die Quellen übersetzt
 werden. Der Sensor-Name, der beim Ausführen des Prelude-Programmes
 <command>sensor-adduser</command> (zum Anmelden eines Sensors) angegeben werden
-muss, lautet 'Samhain'.
+muss, lautet <strong>Samhain</strong>.
      </li>
      <li>
-(c) Logging zu einer relationalen Datenbank (MySQL, PostgreSQL, Oracle).
+Logging zu einer relationalen Datenbank (MySQL, PostgreSQL, Oracle).
 Hierzu muss die entsprechende Client-Bibliothek der Datenbank installiert
 sein, und die Option <command>--with-database=mysql</command> (oder postgresql,
 oracle) muss bei <command>./configure</command> angegeben werden, wenn die
@@ -668,7 +666,7 @@ Die Reihenfolge der Levels ist:
      </textblock>
      
      <table>
-      <pdf-column/>
+      <pdf-column width="100"/>
       <pdf-column/>
       <tr>
        <td>
@@ -737,7 +735,7 @@ Start/Stopp des Programmes; Fehler, die zum Programmabbruch führen
      </table>
      
      <textblock>
-Der gewünschte Level wird eingestellt in der [Log]-Sektion der
+Der gewünschte Level wird eingestellt in der <strong>[Log]</strong>-Sektion der
 Konfigurationsdatei mit den Optionen der Form
 <command>xxxSeverity = level</command>:
      </textblock>
@@ -779,7 +777,8 @@ Der Level einer Nachricht ist im Allgemeinen festgelegt. Die folgenden
 Nachrichten haben konfigurierbare Levels: Änderungen bei überwachten Dateien,
 Zugriffsfehler bei Dateien und Directories, Dateien mit ungültigen UIDs/GIDs
 oder seltsamen Dateinamen (nicht-druckbare Zeichen). Diese Levels werden
-konfiguriert in der [EventSeverity]-Sektion der Konfigurationsdatei:
+konfiguriert in der <strong>[EventSeverity]</strong>-Sektion der
+Konfigurationsdatei:
      </textblock>
      
      <file>
@@ -821,7 +820,7 @@ Die folgenden Ereignisklassen sind definiert:
      </textblock>
      
      <table>
-      <pdf-column/>
+      <pdf-column width="100"/>
       <pdf-column/>
       <tr>
        <td>
@@ -884,9 +883,9 @@ System-Aufrufe (für Fehlersuche)
 
      <textblock>
 Standardmäßig sind alle Ereignisklassen für alle Log-Möglichkeiten zugelassen.
-Will man dies ändern, so geschieht dies in der [Log]-Sektion der
+Will man dies ändern, so geschieht dies in der <strong>[Log]</strong>-Sektion der
 Konfigurationsdatei mit Optionen der Form <command>xxxClass = Liste</command>
-der zugelassen Ereignisklassen', wobei in der Liste Leerzeichen zur Separation
+der zugelassen Ereignisklassen, wobei in der Liste Leerzeichen zur Separation
 benutzt werden sollten, z. B.:
      </textblock>
      
@@ -937,7 +936,7 @@ Email
      </heading>
      
      <textblock>
-Spezielle Optionen für Email werden in der [Misc]-Sektion der
+Spezielle Optionen für Email werden in der <strong>[Misc]</strong>-Sektion der
 Konfigurationsdatei gesetzt:
      </textblock>
      
@@ -976,8 +975,8 @@ Datenbank
      
      <textblock>
 Für den Zugriff auf eine Datenbank ist es notwendig, die relevanten
-Informationen anzugeben. Dies geschieht in der '[Database]'-Sektion der
-Konfigurationsdatei:
+Informationen anzugeben. Dies geschieht in der
+<strong>[Database]</strong>-Sektion der Konfigurationsdatei:
      </textblock>
      
      <file>
@@ -1014,7 +1013,9 @@ UsePersistent = True
     </section>
    </section>
   </section>
-  
+ </split>
+ 
+ <split>
   <section>
    <heading>
 Konfiguration der Integritätseigenschaften innerhalb des Dateisystems
@@ -1059,7 +1060,7 @@ Die folgenden Policys sind vordefiniert:
     </textblock>
     
     <table>
-     <pdf-column/>
+     <pdf-column width="100"/>
      <pdf-column/>
      <tr>
       <td>
@@ -1127,8 +1128,8 @@ der Zeit des letzten Zugriffs ignoriert wird.
 User0, User1
       </td>
       <td>
-Diese Policys sind standardmäßig auf 'nichts darf sich ändern' gesetzt und für
-benutzerdefinierte Policys gedacht.
+Diese Policys sind standardmäßig auf <strong>nichts darf sich ändern</strong>
+gesetzt und für benutzerdefinierte Policys gedacht.
       </td>
      </tr>
     </table>
@@ -1143,7 +1144,7 @@ Wahl einer Policy
 Jede Policy entspricht einer Sektion in der Konfigurationsdatei, deren Titel der
 Name der Policy ist. Ein Verzeichnis oder eine einzelne Datei wird unter diese
 Policy gestellt, indem man in der entsprechenden Sektion einen Eintrag der Form
-<command>dir=/directory'</command> bzw. <command>file=/file</command> macht. Dabei
+<command>dir=/directory</command> bzw. <command>file=/file</command> macht. Dabei
 sind immer absolute Pfade anzugeben;
 <ref chapter="dateien_unter_linux" iref="Jokerzeichen">Jokerzeichen</ref>
 im Shell-Stil werden unterstützt:
@@ -1175,8 +1176,8 @@ Rekursionstiefe
     <textblock>
 Standardmäßig werden Verzeichnisse nicht rekursiv geprüft. Dies kann global
 geändert werden mit dem Eintrag <command>SetRecursionLevel = zahl</command>
-in der [Misc]-Sektion, wobei <strong>zahl</strong> die Anzahl der
-Rekursionsebenen angibt (maximal 99).
+in der <strong>[Misc]</strong>-Sektion, wobei <strong>zahl</strong> die Anzahl
+der Rekursionsebenen angibt (maximal 99).
     </textblock>
 
     <textblock>
@@ -1205,7 +1206,7 @@ Unterverzeichnisse ignorieren
     <textblock>
 Will man einen Verzeichnisbaum rekursiv prüfen, aber bestimmte
 Unterverzeichnisse (Teilbäume) komplett auslassen, so müssen diese
-Unterverzeichnisse mit einer Rekursionstiefe von <strong-1</strong> unter die
+Unterverzeichnisse mit einer Rekursionstiefe von <strong>-1</strong> unter die
 Policy <strong>[IgnoreAll]</strong> gestellt werden:
     </textblock>
     
@@ -1231,8 +1232,8 @@ Gelegentlich möchte man es vermeiden, über bestimmte Dateien informiert zu
 werden, die ständig neu erzeugt und/oder gelöscht werden. Hierzu dienen die 
 Optionen <command>IgnoreAdded = regexp</command> (neu erzeugt ignorieren)
 und/oder <command>IgnoreMissing = regexp</command> (gelöscht ignorieren) in der 
-[Misc]-Sektion der Konfigurationsdatei. Das Argument ist jeweils ein
-<ref chapter="regex">regulärer Ausdruck</ref> für den absoluten Pfad.
+<strong>[Misc]</strong>-Sektion der Konfigurationsdatei. Das Argument ist
+jeweils ein <ref chapter="regex">regulärer Ausdruck</ref> für den absoluten Pfad.
     </textblock>
    </section>
    
@@ -1243,18 +1244,20 @@ Hardlink Test
     
     <textblock>
 Unter UNIX oder Linux hat eine Directory üblicherweise ebensoviele Hardlinks
-wie sie Unterverzeichnisse hat (einschließlich '.' und '..'). Samhain testet
-dies - die Idee dabei ist, dass ein Rootkit ein Unterverzeichnis verbergen
-kann, aber in der Regel nicht die Zahl der Hardlinks des darüberliegenden
-Verzeichnisses korrigiert. Dieser Test lässt sich ausschalten mit der Option
-<command>UseHardlinkCheck = no</command> in der [Misc]-Sektion.
+wie sie Unterverzeichnisse hat (einschließlich <strong>.</strong> und
+<strong>..</strong>). Samhain testet dies - die Idee dabei ist, dass ein Rootkit
+ein Unterverzeichnis verbergen kann, aber in der Regel nicht die Zahl der
+Hardlinks des darüberliegenden Verzeichnisses korrigiert. Dieser Test lässt sich
+ausschalten mit der Option <command>UseHardlinkCheck = no</command> in der
+<strong>[Misc]</strong>-Sektion.
     </textblock>
 
     <textblock>
 Das Wurzelverzeichnis einer ReiserFS-Partition hat zwei zusätzliche Hardlinks.
 Für solche Fälle ist es möglich, mit der Option
-<command>HardlinkOffset = N:/directory</command> in der [Misc]-Sektion eine
-Korrektur anzugeben. Dabei ist N gleich (tatsächliche - erwartete) Hardlinks.
+<command>HardlinkOffset = N:/directory</command> in der
+<strong>[Misc]</strong>-Sektion eine Korrektur anzugeben. Dabei ist N gleich
+(tatsächliche - erwartete) Hardlinks.
     </textblock>
    </section>
    
@@ -1266,9 +1269,10 @@ Test auf seltsame Dateinamen
     <textblock>
 Samhain prüft Dateinamen auf unübliche Zeichen, z. B. Zeilenvorschub,
 Tabulator o. ä. Mit der Option <command>AddOKChars = N1, N2, ..</command> in
-der [Misc]-Sektion lässt sich die Menge der <strong>guten</strong> Zeichen
-erweitern; dabei ist N1 ... der vorzeichenlose Byte-Wert des Zeichen in
-hexadezimaler (0xNN), oktaler (0NNN) oder dezimaler Notation.
+der <strong>[Misc]</strong>-Sektion lässt sich die Menge der
+<strong>guten</strong> Zeichen erweitern; dabei ist N1 ... der vorzeichenlose
+Byte-Wert des Zeichen in hexadezimaler (0xNN), oktaler (0NNN) oder dezimaler
+Notation.
     </textblock>
 
     <textblock>
@@ -1283,11 +1287,12 @@ ausschalten.
     </heading>
     
     <textblock>
-Möchte man eine Policy ändern, so geschieht dies in der [Misc]-Sektion
-mit Anweisungen der Form: <command>RedefPOLICYNAME = +XXX -YYY ...</command>,
-wobei die Liste der +/-XXX die Tests sind, die man hinzufügen oder streichen
-möchte. Mögliche Tests sind: CHK (Prüfsumme), LNK (Name eines Links), HLN
-(Anzahl Hardlinks), INO (Inode-Nummer), USR (Besitzer), GRP (Gruppe), MTM
+Möchte man eine Policy ändern, so geschieht dies in der
+<strong>[Misc]</strong>-Sektion mit Anweisungen der Form:
+<command>RedefPOLICYNAME = +XXX -YYY ...</command>, wobei die Liste der +/-XXX
+die Tests sind, die man hinzufügen oder streichen möchte. Mögliche Tests sind:
+CHK (Prüfsumme), LNK (Name eines Links), HLN (Anzahl Hardlinks),
+INO (Inode-Nummer), USR (Besitzer), GRP (Gruppe), MTM
 (Zeit der letzten Änderung), ATM (Zeit des letzten Zugriffs), CTM (Zeit der
 letzten Inode-Änderung), SIZ (Dateigröße), RDEV (Gerätenummer) und/oder MOD
 (Zugriffsrechte und Dateityp).
@@ -1296,7 +1301,7 @@ letzten Inode-Änderung), SIZ (Dateigröße), RDEV (Gerätenummer) und/oder MOD
     <textblock>
 Dabei ist zu beachten, dass eine Policy in der Konfigurationsdatei geändert
 werden muss, bevor sie benutzt wird, d.h. im nachfolgenden Beispiel wäre es
-falsch, die [Misc]-Sektion hinten anzustellen:
+falsch, die <strong>[Misc]</strong>-Sektion hinten anzustellen:
     </textblock>
     
     <file>
@@ -1321,14 +1326,15 @@ dir = /usr/bin
     </file>
    </section>
    
-   <section
+   <section>
     <heading>
 Zeiten der Integritätsprüfung
     </heading>
     
     <textblock>
 Wenn Samhain als Dämon läuft, so gibt es zwei verschiedene Möglichkeiten,
-in der [Misc]-Sektion die Zeiten der Integritätsprüfung festzulegen:
+in der <strong>[Misc]</strong>-Sektion die Zeiten der Integritätsprüfung
+festzulegen:
     </textblock>
     
     <ul>
@@ -1381,7 +1387,9 @@ dir = /Pfad/seltener/prüfen
     </file>
    </section>
   </section>
-  
+ </split>
+ 
+ <split>
   <section>
    <heading>
 Logging zu einem Log-Server (Yule)
@@ -1432,9 +1440,9 @@ namens <command>Beltane</command>.
     <textblock>
 Yule wird aus den gleichen Quellen übersetzt wie Samhain. Das
 <command>configure</command>-Skript muss hierbei jedoch mit der Option
-<command>--enable-network=server</command>' aufgerufen werden; ansonsten erfolgt
+<command>--enable-network=server</command> aufgerufen werden; ansonsten erfolgt
 das Übersetzen und Installieren analog zu Samhain. Als Name des installierten
-Programmes wird standardmäßig <command>Yule</command gesetzt.
+Programmes wird standardmäßig <command>Yule</command> gesetzt.
     </textblock>
 
     <textblock>
@@ -1448,7 +1456,7 @@ des Systems überprüfen.
 Alle Konfigurations-Optionen, die die Überprüfung des Systems betreffen, sind
 also irrelevant für Yule; Konfigurations-Optionen bezüglich des Loggings sind
 dagegen auch für Yule gültig (siehe aber auch den Abschnitt 
-<ref iref="Besonderheiten beim Logging">Besonderheiten beim Logging</ref).
+<ref iref="Besonderheiten beim Logging">Besonderheiten beim Logging</ref>).
     </textblock>
    </section>
    
@@ -1481,7 +1489,7 @@ Name des Log-Rechners ist),
 werden soll), und
      </li>
      <li>
-<command>--with-data-file=REQ_FROM_SERVER/var/lib/samhain/samhain_file</command>'.
+<command>--with-data-file=REQ_FROM_SERVER/var/lib/samhain/samhain_file</command>.
      </li>
     </ul>
 
@@ -1540,7 +1548,7 @@ yule -G
      </root>
      <output>
 5B5CDF18CE8D66A3
-     <output>
+     </output>
     </shell>
     
     <textblock>
@@ -1562,15 +1570,16 @@ INFO   finished
 Das Hilfsprogramm samhain_setpwd wird erzeugt, wenn man Yule übersetzt. Es liest
 ein ausführbares Samhain-Programm (erstes Argument, also
 <command>samhain</command>), und schreibt eine Kopie mit dem gewünschten Suffix
-(zweites Argument, also <command>new</command>'), in die das Passwort
+(zweites Argument, also <command>new</command>), in die das Passwort
 (drittes Argument) eingebettet ist.
     </textblock>
 
     <textblock>
 Um das Passwort verifizieren zu können, braucht Yule in seiner
 Konfigurationsdatei (standardmäßig <path>/etc/yulerc</path>) einen
-entsprechenden Eintrag in der '[Clients]'-Sektion. Falls diese Sektion die
-letzte in der Konfigurationsdatei ist, kann dies einfach folgendermaßen geschehen:
+entsprechenden Eintrag in der <strong>[Clients]</strong>-Sektion. Falls diese
+Sektion die letzte in der Konfigurationsdatei ist, kann dies einfach
+folgendermaßen geschehen:
     </textblock>
     
     <shell>
@@ -1580,7 +1589,11 @@ tail -2 /etc/yulerc
      </root>
      <output>
 [Clients]
-Client=client.example.com@8A542F99C3514499@744C3A3EE8323470D9DAD42E2485BD0B138F6B4116E964A9991A0B0D221E1AADE5800968804B99B494C39E7B9DD5710D18F1E6703D1DB6D6393295E05DF6A6AA8D10BB4A21D7D9DC4901D444500D4EA358C1B44A3E3D44ACEC645F938F790A11AB0D03586143977E2BCE3A2D689445AC89134B409E68F34B0DE8BD8242ADD7C0
+Client=client.example.com@8A542F99C3514499@744C3A3EE8323470D9DAD42E2485BD0
+B138F6B4116E964A9991A0B0D221E1AADE5800968804B99B494C39E7B9DD5710D18F1E6703
+D1DB6D6393295E05DF6A6AA8D10BB4A21D7D9DC4901D444500D4EA358C1B44A3E3D44ACEC6
+45F938F790A11AB0D03586143977E2BCE3A2D689445AC89134B409E68F34B0DE8BD8242ADD
+7C0
      </output>
     </shell>
     
@@ -1589,8 +1602,9 @@ Der Befehl <command>yule -P passwort</command> erzeugt eine einzige, sehr lange
 Zeile mit der notwendigen Verifikations-Information. Diese Zeile enthält die
 Zeichenkette <strong>HOSTNAME</strong>, die ersetzt werden muss durch den Namen
 des Rechners, auf dem Samhain läuft (dies geschieht hier mit dem
-<command>sed<command>-Befehl). Schließlich muss diese Zeile in die [Clients]-Sektion
-der Konfigurationsdatei von Yule eingetragen werden. 
+<command>sed</command>-Befehl). Schließlich muss diese Zeile in die
+<strong>[Clients]</strong>-Sektion der Konfigurationsdatei von Yule eingetragen
+werden.
     </textblock>
 
     <textblock>
@@ -1650,202 +1664,265 @@ Filter-Einstellungen von Yule unterliegen.
     </textblock>
 
     <textblock>
-Hierzu muss man in der '[Misc]'-Sektion die Optionen 
-'UseClientSeverity = yes' und 'UseClientClass = yes' setzen.
+Hierzu muss man in der <strong>[Misc]</strong>-Sektion die Optionen
+<command>UseClientSeverity = yes</command> und
+<command>UseClientClass = yes</command> setzen.
     </textblock>
    </section>
   </section>
-  
+ </split>
+ 
+ <split>
   <section>
    <heading>
-7 Weitere Eigenschaften von Samhain
-
-
-
-7.1 Signierte Datenbank- und Konfigurationsdateien
-
-Samhain unterstützt 
-<!-- LINK: chapter="gpg_handbuch" -->GnuPG<!-- ENDLINK -->-signierte  
+Weitere Eigenschaften von Samhain
+   </heading>
+   
+   <section>
+    <heading>
+Signierte Datenbank- und Konfigurationsdateien
+    </heading>
+    
+    <textblock>
+Samhain unterstützt  <ref chapter="gpg_handbuch_vorwort">GnuPG</ref>-signierte
 Datenbank- und Konfigurationsdateien. Dabei ist folgendes zu beachten:
+    </textblock>
+    
+    <ul>
+     <li>
+Separate Signaturen werden nicht unterstützt.
+     </li>
+     <li>
+Die Signatur muss so erfolgen, dass die Datei nicht verändert wird. Das Ende der
+Konfigurationsdatei sollte mit <strong>[EOF]</strong> markiert werden, damit
+Samhain nicht versucht, die Signatur als Option zu interpretieren. Die
+empfohlenen GnuPG-Optionen zum Signieren sind:
+<command>gpg -a --clearsign --not-dash-escaped DATEI</command>
+     </li>
+     <li>
+Der öffentliche Schlüssel des Schlüsselpaares muss im Schlüsselring
+(<path>HOME/.gnupg/pubkey.gpg</path>) des Benutzers sein, mit dessen Rechten
+Samhain läuft - in der Regel also
+<ref chapter="nutzer_unter_linux" iref="root">root</ref>.
+     </li>
+     <li>
+Zur Überprüfung kann man als Benutzer
+<ref chapter="nutzer_unter_linux" iref="root">root</ref> mit dem Befehl
+<command>/pfad/zu/gpg --status-fd 1 --verify DATEI</command> die Signatur
+überprüfen. Wenn das nicht klappt, wird Samhain auch keinen Erfolg haben ...
+     </li>
+    </ul>
+   
+    <textblock>
+Zur Verifikation der Signatur muss Samhain mit der entsprechenden Option
+übersetzt sein: <command>./configure --with-gpg=/PFAD_ZU_GPG</command>.
+    </textblock>
 
-- Separate Signaturen werden nicht unterstützt.
+    <textblock>
+Es empfiehlt sich, den Fingerabdruck des verwendeten GnuPG-Schlüssels mit
+anzugeben, damit Samhain auch überprüfen kann, ob der korrekte Schlüssel
+zum Signieren verwendet wurde.
+    </textblock>
 
-- Die Signatur muss so erfolgen, dass die Datei nicht verändert wird.
-  Das Ende der Konfigurationsdatei sollte mit '[EOF]' markiert werden,
-  damit Samhain nicht versucht, die Signatur als Option zu interpretieren.
-  Die empfohlenen GnuPG-Optionen zum Signieren sind: 
-  'gpg -a --clearsign --not-dash-escaped DATEI'
-
-- Der öffentliche Schlüssel des Schlüsselpaares muss im Schlüsselring
-  (HOME/.gnupg/pubkey.gpg)
-  des Benutzers sein, mit dessen Rechten Samhain läuft - in der Regel
-  also 'root'.
-
-- Zur Überprüfung kann man als Benutzer 'root' mit dem Befehl
-  '/pfad/zu/gpg --status-fd 1 --verify DATEI' die Signatur überprüfen.
-  Wenn das nicht klappt, wird Samhain auch keinen Erfolg haben ... 
-
-Zur Verifikation der Signatur muss Samhain mit der entsprechenden
-Option übersetzt sein: './configure --with-gpg=/PFAD_ZU_GPG'.
-     </textblock>
-
-     <textblock>
-Es empfiehlt sich, den Fingerabdruck des verwendeten GnuPG-Schlüssels
-mit anzugeben, damit Samhain auch überprüfen kann, ob der korrekte
-Schlüssel zum Signieren verwendet wurde. 
-     </textblock>
-
-     <textblock>
-Weiterhin ist es möglich, die TIGER192-Prüfsumme des GnuPG-Programmes 
-mit anzugeben. Dies schließt die
-Lücke, dass ein Einbrecher die Samhain-Datenbank modifizieren könnte,
-und außerdem das GnuPG-Programmes austauschen könnte, um zu verbergen,
-dass die Signatur nicht mehr gültig ist. Der Nachteil dabei ist, dass
-Samhain neu übersetzt werden muss, wenn GnuPG aktualisiert wird.
-Die TIGER192-Prüfsumme lässt sich berechnen mit 
-'gpg --load-extension tiger --print-md TIGER192 /usr/bin/gpg' oder mit 
-'samhain -H /usr/bin/gpg'; die komplette Ausgabe sollte angegeben werden:
-
-=========== term ===================
-bash # ./configure --with-gpg=/usr/bin/gpg \
+    <textblock>
+Weiterhin ist es möglich, die TIGER192-Prüfsumme des GnuPG-Programmes mit
+anzugeben. Dies schließt die Lücke, dass ein Einbrecher die Samhain-Datenbank
+modifizieren könnte, und außerdem das GnuPG-Programmes austauschen könnte, um zu
+verbergen, dass die Signatur nicht mehr gültig ist. Der Nachteil dabei ist, dass
+Samhain neu übersetzt werden muss, wenn GnuPG aktualisiert wird. Die
+TIGER192-Prüfsumme lässt sich berechnen mit
+<command>gpg --load-extension tiger --print-md TIGER192 /usr/bin/gpg</command>
+oder mit <command>samhain -H /usr/bin/gpg</command>; die komplette Ausgabe
+sollte angegeben werden:
+    </textblock>
+   
+    <shell>
+     <root>
+./configure --with-gpg=/usr/bin/gpg \
 --with-checksum="/usr/bin/gpg: 1C739B6A F768C949 FABEF313 5F0B37F5 22ED4A27 60D59664" \
 --with-fp="EF6C EF54 701A 0AFD B86A F4C3 1AAD 26C8 0F57 1F6C"
-=========== / term==================
+     </root>
+    </shell>
+   </section>
+   
+   <section>
+    <heading>
+Stealth (versteckter Modus)
+    </heading>
+    
+    <textblock>
+Samhain unterstützt die Möglichkeit, auf versteckte Weise zu arbeiten. Dabei
+gibt es beim Übersetzen der Quellen die folgenden Optionen:
+    </textblock>
+    
+    <ul>
+     <li>
+Mit <command>--enable-install-name=NAME</command> wird nicht nur der Name des
+Programmes geändert; auch alle Verzeichnisse und Dateien, die diesen Namen
+enthalten (<path>/var/lib/samhain/</path>, <path>/etc/samhainrc</path>, ...)
+werden bei der Installation unter geändertem Namen angelegt.
+     </li>
+     <li>
+Mit <command>--enable-nocl[=XYZ]</command> wird die Interpretation von Optionen
+auf der Kommandozeile verhindert. Das optionale Argument XYZ ist ein
+<strong>magisches Wort</strong>, das es ermöglicht, Kommandozeilen-Argumente von
+stdin zu lesen, z. B.: <command>echo -- --help | samhain XYZ</command>
+     </li>
+     <li>
+Mit <command>--enable-micro-stealth=ZAHL</command> (ZAHL muss ganzzahlig und im
+Bereich 127 bis 255 sein) werden alle Zeichenketten in den Quellen so verändert,
+dass sie nicht mehr mit dem Befehl <command>strings</command> sichtbar werden.
+Dies soll verhindern, dass ein Einbrecher nach Samhain suchen kann mit z. B. dem
+Befehl: <command>strings /usr/local/sbin/* | grep samhain</command>.
+     </li>
+     <li>
+Mit <command>--enable-stealth=ZAHL</command> (ZAHL muss ganzzahlig und im
+Bereich 127 bis 255 sein) anstelle von
+<command>--enable-micro-stealth=ZAHL</command> werden auch Zeichenketten in der
+Logdatei und in der Samhain-Datenbank entsprechend verändert. Weiterhin erwartet
+Samhain nun, dass die Konfigurationsdatei steganographisch in einem Bild
+versteckt ist. Das Bild muss in unkomprimiertem Postskript-Format vorliegen;
+dieses Format kann z. B.
+mit <command>convert +compress bild.jpg bild.ps</command> erzeugt werden. Ein
+Hilfsprogramm <command>samhain_stealth</command> steht zur Verfügung, um die
+Konfigurationsdatei zu verstecken:
+<command>samhain_stealth -s bild.ps konfigurationsdatei</command> zum Verstecken,
+<command>samhain_stealth -g bild.ps</command>, um die versteckte Datei wieder zu
+sehen.
+     </li>
+     <li>
+Mit <command>--enable-khide=/boot/System.map-$(uname -r)</command> (das Argument
+ist also die System.map-Datei, die zum Kernel gehört) wird ein Kernel-Modul
+erzeugt, das beim Laden alle Prozesse und Dateien versteckt, die die
+Zeichenkette <command>samhain</command> enthalten, bzw. die Zeichenkette 
+<command>NAME</command>, wenn die Option
+<command>--enable-install-name=NAME</command> benutzt wurde, um Samhain unter
+einem anderen Namen zu installieren.
+     </li>
+    </ul>
+    
+    <textblock>
+Offensichtlich ist es nicht möglich, die Logdatei einfach mit
+<command>more</command> oder <command>less</command> anzusehen, wenn die Option
+<command>--enable-stealth=ZAHL</command> benutzt wird. Stattdessen kann man die
+Datei mit <command>samhain -jL /pfad/zur/logdatei | less</command> ansehen.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Überwachung des Kernels
+    </heading>
+    
+    <textblock>
+Samhain kann die Integrität des Kernels überwachen, also prüfen, ob der Kernel
+zur Laufzeit z. B. durch Laden eines Rootkit-Moduls verändert wurde. Hierzu ist
+es notwendig, beim Übersetzen der Quellen die Option
+<command>--with-kcheck=/boot/System.map-$(uname -r)</command> anzugeben (d. h.
+das Argument ist die zum Kernel passende System.map-Datei).
+    </textblock>
 
+    <textblock>
+Mit dem Standard-Kernel neuerer Fedora Core-Systeme ist diese Option nicht
+verfügbar, da durch einen Kernel-Patch die Datei  /dev/kmem nicht mehr lesbar
+(oder beschreibbar) ist.
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Überwachung von Login/Logout-Vorgängen
+    </heading>
+    
+    <textblock>
+Wird Samhain mit der Option <command>--enable-login-watch</command> übersetzt,
+so ist es möglich, Login/Logout-Vorgänge zu überwachen. D. h. es wird eine
+Nachricht geschickt, wenn ein solcher Vorgang stattfindet.
+    </textblock>
 
-
-7.2 Stealth (versteckter Modus)
-
-Samhain unterstützt die Möglichkeit, auf versteckte Weise zu arbeiten. 
-Dabei gibt es beim Übersetzen der Quellen die folgenden Optionen:
-
-- Mit '--enable-install-name=NAME' wird nicht nur der Name des Programmes
-  geändert; auch alle Verzeichnisse und Dateien, die diesen Namen
-  enthalten (/var/lib/samhain/, /etc/samhainrc, ...) werden bei der
-  Installation unter geändertem Namen angelegt.
-
-- Mit '--enable-nocl[=XYZ]' wird die Interpretation von Optionen auf der
-  Kommandozeile verhindert. Das optionale Argument XYZ ist ein 'magisches
-  Wort', das es ermöglicht, Kommandozeilen-Argumente von stdin zu
-  lesen, z.B.: echo '--help' | samhain XYZ
-  
-- Mit '--enable-micro-stealth=ZAHL' (ZAHL muss ganzzahlig und im Bereich
-  127 bis 255 sein) werden alle Zeichenketten in den Quellen so verändert,
-  dass sie nicht mehr mit dem Befehl 'strings' sichtbar werden.
-  Dies soll verhindern, dass ein Einbrecher nach Samhain suchen kann mit
-  z.B. dem Befehl: 'strings /usr/local/sbin/* | grep samhain'.
-
-- Mit '--enable-stealth=ZAHL' (ZAHL muss ganzzahlig und im Bereich
-  127 bis 255 sein) anstelle von '--enable-micro-stealth=ZAHL' 
-  werden auch Zeichenketten in der Logdatei und in der Samhain-Datenbank
-  entsprechend verändert. Weiterhin erwartet Samhain nun, dass die
-  Konfigurationsdatei steganographisch in einem Bild versteckt ist.
-  Das Bild muss in unkomprimiertem Postskript-Format vorliegen; dieses
-  Format kann z.B. mit 'convert +compress bild.jpg bild.ps' erzeugt
-  werden. Ein Hilfsprogramm 'samhain_stealth' steht zur Verfügung,
-  um die Konfigurationsdatei zu verstecken: 
-  'samhain_stealth -s bild.ps konfigurationsdatei' zum Verstecken,
-  'samhain_stealth -g bild.ps', um die versteckte Datei wieder zu
-  sehen. 
-
-- Mit "--enable-khide=/boot/System.map-$(uname -r)" (das Argument
-  ist also die System.map-Datei, die zum Kernel gehört) wird ein
-  Kernel-Modul erzeugt, das beim Laden alle Prozesse und Dateien
-  versteckt, die die Zeichenkette 'samhain' enthalten, bzw. die
-  Zeichenkette 'NAME', wenn die Option '--enable-install-name=NAME'
-  benutzt wurde, um Samhain unter einem anderen Namen zu 
-  installieren.  
-
-Offensichtlich ist es nicht möglich, die Logdatei einfach 
-mit 'more' oder 'less'
-anzusehen, wenn die Option '--enable-stealth=ZAHL' benutzt wird. 
-Stattdessen kann man die Datei mit 
-'samhain -jL /pfad/zur/logdatei | less' ansehen.
-
-
-
-7.3 Überwachung des Kernels
-
-Samhain kann die Integrität des Kernels überwachen, also prüfen, ob
-der Kernel zur Laufzeit z.B. durch Laden eines Rootkit-Moduls
-verändert wurde. Hierzu ist es notwendig, beim Übersetzen der
-Quellen die Option "--with-kcheck=/boot/System.map-$(uname -r)" 
-anzugeben (d.h. das Argument ist die zum Kernel passende 
-System.map-Datei).
-     </textblock>
-
-     <textblock>
-Mit dem Standard-Kernel neuerer Fedora Core-Systeme ist diese 
-Option nicht verfügbar, da durch einen Kernel-Patch die Datei 
-/dev/kmem nicht mehr lesbar (oder beschreibbar) ist.
-
-
-
-7.4 Überwachung von Login/Logout-Vorgängen
-
-Wird Samhain mit der Option '--enable-login-watch' übersetzt, so
-ist es möglich, Login/Logout-Vorgänge zu überwachen. D.h. es wird
-eine Nachricht geschickt, wenn ein solcher Vorgang stattfindet.
-     </textblock>
-
-     <textblock>
+    <textblock>
 Diese Funktion beruht auf der Überwachung der 
-<!-- LINK: chapter="grundlagen_sicherheit" iref="Überwachung der Verbindungen (Login / Connection Accounting)" -->wtmp<!-- ENDLINK -->-Datei
-in regelmäßigen Abständen (standardmäßig 300 Sekunden). 
-
-
-
-7.5 Suche nach <!-- LINK: chapter="grundlagen_sicherheit" iref="t-Bit (sticky Bit), SGID, SUID" -->SUID/SGID<!-- ENDLINK -->-Dateien
-
-Wenn Samhain mit der Option '--enable-suidcheck' übersetzt ist,
-so ist es möglich, das gesamte Dateisystem regelmäßig nach
-Dateien zu durchsuchen, bei denen das SUID- oder SGID-Bit gesetzt
-ist, und neu entdeckte Dateien dieser Art zu melden.
-
-
-
-8 Optionen in der Konfigurationsdatei
-
-Standardmäßig heißt die Konfigurationsdatei /etc/samhainrc
-(Samhain) bzw. /etc/yulerc (Yule).
-
-Die Konfigurationsdatei besteht aus einzelnen Sektionen, die
-jeweils mit einer Überschrift in der Form '[Sektionsname]' 
-eingeleitet werden. Zeilen, die mit '#' beginnen, sind Kommentare
-und werden ignoriert.
-
-Optionen haben die Form 'Optionsname = Wert'; dabei sind 
-Leerzeichen vor und nach dem Gleichheitszeichen optional.  
-
-Alles, was vor der ersten Sektion und nach einem '[EOF]' steht,
-wird ignoriert. Es ist nicht generell notwendig, die Datei mit
-'[EOF]' abzuschließen, aber empfehlenswert, wenn am Ende der
-Datei Dinge stehen, die nicht als Optionen interpretiert werden
-sollen (z.B. eine GnuPG-Signatur, siehe Abschnitt
-<!-- LINK: iref="Signierte Datenbank- und Konfigurationsdateien" -->Signierte Datenbank- und Konfigurationsdateien<!-- ENDLINK -->).
-
-Manche Optionen sind nur relevant, wenn Samhain bzw. Yule mit 
-Unterstützung für entsprechende Möglichkeiten übersetzt wurde. 
-Falls eine solche Option
-dennoch benutzt wird, erfolgt eine Warnung beim Lesen der 
-Konfigurationsdatei.
-
-
-
-8.1 Bedingte Anweisungen
-
-Bedingte Anweisungen ermöglichen es, in die Konfigurationsdatei
-Optionen zu schreiben, die nur auf bestimmten Rechnern interpretiert
-(und sonst ignoriert) werden.
-     </textblock>
-
-     <textblock>
-Die Bedingung kann entweder der Name des Rechners sein, oder das
-Tripel Betriebssystem:Version:Hardware, das man mit 'uname -srm' 
-erhält. Durch Voranstellen eines Ausrufezeichens kann die
-Bedingung invertiert werden.
+<ref chapter="grundlagen_sicherheit" iref="Überwachung der Verbindungen (Login / Connection Accounting)">wtmp</ref>-Datei
+in regelmäßigen Abständen (standardmäßig 300 Sekunden).
+    </textblock>
+   </section>
+   
+   <section>
+    <heading>
+Suche nach SUID/SGID-Dateien
+    </heading>
+    
+    <textblock>
+Wenn Samhain mit der Option <command>--enable-suidcheck</command> übersetzt ist,
+so ist es möglich, das gesamte Dateisystem regelmäßig nach Dateien zu
+durchsuchen, bei denen das SUID- oder SGID-Bit gesetzt ist, und neu entdeckte
+Dateien dieser Art zu melden.
+    </textblock>
+   </section>
+  </section>
+ </split>
  
-========= /etc/samhainrc =================
+ <split>
+  <section>
+   <heading>
+Optionen in der Konfigurationsdatei
+   </heading>
+   
+   <textblock>
+Standardmäßig heißt die Konfigurationsdatei <path>/etc/samhainrc</path>
+(Samhain) bzw. <path>/etc/yulerc</path> (Yule).
+   </textblock>
+   
+   <textblock>
+Die Konfigurationsdatei besteht aus einzelnen Sektionen, die jeweils mit einer
+Überschrift in der Form <strong>[Sektionsname]</strong> eingeleitet werden.
+Zeilen, die mit <strong>#</strong> beginnen, sind Kommentare und werden
+ignoriert.
+   </textblock>
+   
+   <textblock>
+Optionen haben die Form <command>Optionsname = Wert</command>; dabei sind
+Leerzeichen vor und nach dem Gleichheitszeichen optional.
+   </textblock>
+   
+   <textblock>
+Alles, was vor der ersten Sektion und nach einem <strong>[EOF]</strong> steht,
+wird ignoriert. Es ist nicht generell notwendig, die Datei mit
+<strong>[EOF]</strong> abzuschließen, aber empfehlenswert, wenn am Ende der
+Datei Dinge stehen, die nicht als Optionen interpretiert werden sollen (z. B.
+eine GnuPG-Signatur, siehe Abschnitt
+<ref iref="Signierte Datenbank- und Konfigurationsdateien">Signierte Datenbank- und Konfigurationsdateien</ref>).
+   </textblock>
+   
+   <textblock>
+Manche Optionen sind nur relevant, wenn Samhain bzw. Yule mit Unterstützung für
+entsprechende Möglichkeiten übersetzt wurde. Falls eine solche Option dennoch
+benutzt wird, erfolgt eine Warnung beim Lesen der Konfigurationsdatei.
+   </textblock>
+   
+   <section>
+    <heading>
+Bedingte Anweisungen
+    </heading>
+    
+    <textblock>
+Bedingte Anweisungen ermöglichen es, in die Konfigurationsdatei Optionen zu
+schreiben, die nur auf bestimmten Rechnern interpretiert (und sonst ignoriert)
+werden.
+    </textblock>
+
+    <textblock>
+Die Bedingung kann entweder der Name des Rechners sein, oder das Tripel
+<strong>Betriebssystem:Version:Hardware</strong>, das man mit
+<command>uname -srm</command> erhält. Durch Voranstellen eines Ausrufezeichens
+kann die Bedingung invertiert werden.
+    </textblock>
+   
+    <file>
+     <title>
+/etc/samhainrc
+     </title>
+     <content>
 @abc.example.com                                   
 # Wird nur gelesen wenn 'abc.example.com' der Name dieses Rechners ist
 @end                                              
@@ -1862,33 +1939,42 @@ $end
 !$Linux:2.4.26:i686
 # Wird nicht auf Rechnern gelesen, auf denen
 # 'uname -srm' "Linux 2.4.26 i686" ausgibt
-$end            
-===================================
+$end
+     </content>
+    </file>
+   </section>
+  
+   <section>
+    <heading>
+Überwachte Dateien
+    </heading>
+    
+    <textblock>
+Die möglichen Sektionsnamen sind hier: [Attributes], [LogFiles],
+[GrowingLogFiles], [IgnoreAll], [IgnoreNone], [ReadOnly], [User0], [User1],
+und [Prelink].
+    </textblock>
 
+    <textblock>
+Jede dieser Sektionen entspricht einer gleichnamigen
+<ref iref="Vordefinierte Policys">Policy</ref> zur Überwachung der Dateien in
+der betreffenden Sektion.
+    </textblock>
 
-
-8.2 Überwachte Dateien
-
-Die möglichen Sektionsnamen sind hier:
-[Attributes], [LogFiles], [GrowingLogFiles], [IgnoreAll], 
-[IgnoreNone], [ReadOnly], [User0], [User1], und [Prelink].
-     </textblock>
-
-     <textblock>
-Jede dieser Sektionen entspricht einer gleichnamigen 
-<!-- LINK: iref="Vordefinierte Policys" -->Policy<!-- ENDLINK --> 
-zur Überwachung der Dateien in der betreffenden Sektion.
-     </textblock>
-
-     <textblock>
+    <textblock>
 Jede dieser Sektionen kann beliebig viele Einträge der Form
-'file = /absoluter/pfad/zur/datei' und 
-'dir = optionale_rekursionstiefe/absoluter/pfad/zum/verzeichnis'
-haben; dabei ist 'optionale_rekursionstiefe' die 
-<!-- LINK: iref="Rekursionstiefe" -->Rekursionstiefe<!-- ENDLINK -->
-für das betreffende Verzeichnis (maximal 99). 
-
-========= /etc/samhainrc =================
+<command>file = /absoluter/pfad/zur/datei</command> und
+<command>dir = optionale_rekursionstiefe/absoluter/pfad/zum/verzeichnis</command>
+haben; dabei ist <strong>optionale_rekursionstiefe</strong> die
+<ref iref="Rekursionstiefe">Rekursionstiefe</ref>
+für das betreffende Verzeichnis (maximal 99).
+    </textblock>
+    
+    <file>
+     <title>
+/etc/samhainrc
+     </title>
+     <content>
 [ReadOnly]
 dir = /bin
 dir = /sbin
@@ -1901,229 +1987,539 @@ file = /etc/motd
 [GrowingLogFiles]
 file = /var/log/messages
 file = /var/log/mail
-===================================
-
-
-
-8.3 Dringlichkeitsstufe von Ereignissen
-
-In einer Sektion, die mit '[EventSeverity]' eingeleitet wird,
-ist es möglich, die Dringlichkeitsstufe mancher Ereignisse
-anzupassen. Mögliche Dringlichkeitsstufen sind:
-none (nichts loggen), debug (niedrigste Stufe), 
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Dringlichkeitsstufe von Ereignissen
+    </heading>
+    
+    <textblock>
+In einer Sektion, die mit <strong>[EventSeverity]</strong> eingeleitet wird, ist
+es möglich, die Dringlichkeitsstufe mancher Ereignisse anzupassen. Mögliche
+Dringlichkeitsstufen sind: none (nichts loggen), debug (niedrigste Stufe),
 info, notice, warn, mark, err, crit, alert (höchste Stufe).
-     </textblock>
+    </textblock>
 
-     <textblock>
-Mögliche Ereignisse sind hier: 
-
-- Veränderungen von überwachten
-  Dateien unter den verschiedenen Policys 
-  (Optionen  SeverityReadOnly, SeverityLogFiles, SeverityGrowingLogs,
-  SeverityIgnoreNone, SeverityIgnoreAll, SeverityUser0, SeverityUser1,
-  SeverityPrelink) 
-
-- Zugriffsfehler bei Dateien (Option SeverityFiles)
-
-- Zugriffsfehler bei Verzeichnissen (Option SeverityDirs)
-
-- Seltsame Dateinamen, verwaiste Dateien (Option SeverityNames)
-
-========= /etc/samhainrc =================
-[EventSeverity]  
-#  
-# Überwachte Dateien (für die Bedeutung von 'ReadOnly', 
-# 'LogFiles', usw. siehe Abschnitt <!-- LINK iref="Konfiguration der Integritätseigenschaften innerhalb des Dateisystems" -->Konfiguration der Integritätseigenschaften innerhalb des Dateisystems<!-- ENDLINK -->).
+    <textblock>
+Mögliche Ereignisse sind hier:
+    </textblock>
+    
+    <ul>
+     <li>
+Veränderungen von überwachten Dateien unter den verschiedenen Policys
+(Optionen SeverityReadOnly, SeverityLogFiles, SeverityGrowingLogs,
+SeverityIgnoreNone, SeverityIgnoreAll, SeverityUser0, SeverityUser1,
+SeverityPrelink)
+     </li>
+     <li>
+Zugriffsfehler bei Dateien (Option SeverityFiles)
+     </li>
+     <li>
+Zugriffsfehler bei Verzeichnissen (Option SeverityDirs)
+     </li>
+     <li>
+Seltsame Dateinamen, verwaiste Dateien (Option SeverityNames)
+     </li>
+    </ul>
+    
+    <file>
+     <title>
+/etc/samhainrc>
+     </title>
+     <content>
+[EventSeverity]
 # 
-SeverityReadOnly=crit 
+# Überwachte Dateien (für die Bedeutung von 'ReadOnly',
+# 'LogFiles', usw. siehe Abschnitt Konfiguration der Integritätseigenschaften innerhalb des Dateisystems).
+#
+SeverityReadOnly=crit
 SeverityLogFiles=crit
-SeverityGrowingLogs=warn 
-SeverityIgnoreNone=crit 
-SeverityIgnoreAll=info 
-#  
+SeverityGrowingLogs=warn
+SeverityIgnoreNone=crit
+SeverityIgnoreAll=info
+#
 # Zugriffsfehler für Dateien (Files) und Directories (Dirs)
-# 
-SeverityFiles=err 
-SeverityDirs=err 
-#  
+#
+SeverityFiles=err
+SeverityDirs=err
+#
 # Dateinamen, ungültige UIDS/GIDs
-# 
-SeverityNames=info 
-===================================
-
-
-
-8.4 Filter für Log-Möglichkeiten
-
-In einer Sektion, die mit '[Log]' eingeleitet wird, wird definiert,
-was zu welcher Log-Möglichkeiten geloggt werden soll. D.h., es
+#
+SeverityNames=info
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Filter für Log-Möglichkeiten
+    </heading>
+    
+    <textblock>
+In einer Sektion, die mit <strong>[Log]</strong> eingeleitet wird, wird
+definiert, was zu welcher Log-Möglichkeiten geloggt werden soll. D. h., es
 werden die gewünschten 
-<!-- LINK: iref="Levels (Dringlichkeitsstufen)" -->Dringlichkeitsstufen<!-- ENDLINK --> 
-und eventuell 
-<!-- LINK: iref="Ereignisklassen" -->Ereignisklassen<!-- ENDLINK --> 
-eingestellt.
-     </textblock>
+<ref iref="Levels (Dringlichkeitsstufen)">Dringlichkeitsstufen</ref> 
+und eventuell <ref iref="Ereignisklassen">Ereignisklassen</ref> eingestellt.
+    </textblock>
 
-     <textblock>
-Mögliche Optionen für Dringlichkeitsstufen sind: 
-MailSeverity (Email), PrintSeverity (Konsole), LogSeverity (Logdatei),
-SyslogSeverity (Syslog), PreludeSeverity (Prelude), 
-ExportSeverity (logging zu Yule), ExternalSeverity (externe Skripte),
-DatabaseSeverity (logging zu relationaler Datenbank).
-     </textblock>
+    <textblock>
+Mögliche Optionen für Dringlichkeitsstufen sind: MailSeverity (Email),
+PrintSeverity (Konsole), LogSeverity (Logdatei), SyslogSeverity (Syslog),
+PreludeSeverity (Prelude), ExportSeverity (logging zu Yule), ExternalSeverity
+(externe Skripte), DatabaseSeverity (logging zu relationaler Datenbank).
+    </textblock>
 
-     <textblock>
-Die zuweisbaren Dringlichkeitsstufen sind: none (kein Logging), 
-debug (niedrigste Stufe), info, notice, warn, mark, err, crit, 
-alert (höchste Stufe).
-     </textblock>
+    <textblock>
+Die zuweisbaren Dringlichkeitsstufen sind: none (kein Logging),  debug
+(niedrigste Stufe), info, notice, warn, mark, err, crit, alert (höchste Stufe).
+    </textblock>
 
-     <textblock>
-Mögliche Optionen für Ereignisklassen (Standard ist alle) sind: 
-MailClass (Email), PrintClass (Konsole), LogClass (Logdatei),
-SyslogClass (Syslog), PreludeClass (Prelude), 
-ExportClass (logging zu Yule), ExternalClass (externe Skripte),
-DatabaseClass (logging zu relationaler Datenbank).
-     </textblock>
+    <textblock>
+Mögliche Optionen für Ereignisklassen (Standard ist alle) sind: MailClass
+(Email), PrintClass (Konsole), LogClass (Logdatei), SyslogClass (Syslog),
+PreludeClass (Prelude), ExportClass (logging zu Yule), ExternalClass
+(externe Skripte), DatabaseClass (logging zu relationaler Datenbank).
+    </textblock>
 
-     <textblock>
-Das Argument ist eine Liste (mit Komma oder Leerzeichen getrennt)
-von zugelassenen Ereignisklassen:
-EVENT	Überwachte Ereignisse (z.B. Änderungen einer Datei)
-START	Start/Stopp-Meldungen
-STAMP	Zeitmarken
-LOGKEY	Der Schlüssel zur Verifikation der Log-Datei (siehe Abschnitt <!-- LINK iref="Verifikation der lokalen Log-Datei" -->Verifikation der lokalen Log-Datei<!-- ENDLINK -->)
-ERROR	Fehlermeldungen
-OTHER	Alles andere (z.B. detaillierte Informationen)
-AUD	System-Aufrufe (für Fehlersuche)
+    <textblock>
+Das Argument ist eine Liste (mit Komma oder Leerzeichen getrennt) von
+zugelassenen Ereignisklassen:
+    </textblock>
+    
+    <table>
+     <pdf-column width="100"/>
+     <pdf-column/>
+     <tr>
+      <td>
+EVENT
+      </td>
+      <td>
+Überwachte Ereignisse (z.B. Änderungen einer Datei)
+      </td>
+     </tr>
+     <tr>
+      <td>
+START
+      </td>
+      <td>
+Start/Stopp-Meldungen
+      </td>
+     </tr>
+     <tr>
+      <td>
+STAMP
+      </td>
+      <td>
+Zeitmarken
+      </td>
+     </tr>
+     <tr>
+      <td>
+LOGKEY
+      </td>
+      <td>
+Der Schlüssel zur Verifikation der Log-Datei (siehe Abschnitt
+<ref iref="Verifikation der lokalen Log-Datei">Verifikation der lokalen Log-Datei</ref>)
+      </td>
+     </tr>
+     <tr>
+      <td>
+ERROR
+      </td>
+      <td>
+Fehlermeldungen
+      </td>
+     </tr>
+     <tr>
+      <td>
+OTHER
+      </td>
+      <td>
+Alles andere (z.B. detaillierte Informationen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+AUD
+      </td>
+      <td>
+System-Aufrufe (für Fehlersuche)
+      </td>
+     </tr>
+    </table>
+    
+    <file>
+     <title>
+/etc/samhainrc
+     </title>
+      <content>
+[Log]
 
-========= /etc/samhainrc =================
-[Log]  
-  
 MailSeverity = alert
 PrintSeverity = mark
 LogSeverity = notice
 LogClass = EVENT, START, STAMP, ERROR
 SyslogSeverity = err
-===================================
-
-
-
-8.5 Überwachung von Login/Logout-Ereignissen
-
-In der Sektion '[Utmp]' 
-werden Optionen für die Überwachung von Login/Logout-Ereignissen
-gesetzt.
-
-LoginCheckActive = yes|no      'yes' zum Einschalten, 'no' zum Ausschalten
-LoginCheckInterval = Sekunden  Intervall zwischen Überprüfungen
-SeverityLogin = Level          Level/Dringlichkeitsstufe für Login-Ereignis
-SeverityLoginMulti = Level     Level/Dringlichkeitsstufe für  mehrfaches Login
-SeverityLogout = Level         Level/Dringlichkeitsstufe für Logout-Ereignis
-
-========= /etc/samhainrc =================
-[Utmp]  
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Überwachung von Login/Logout-Ereignissen
+    </heading>
+    
+    <textblock>
+In der Sektion <strong>[Utmp]</strong> werden Optionen für die Überwachung von
+Login/Logout-Ereignissen gesetzt.
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+LoginCheckActive = yes|no
+      </td>
+      <td>
+<strong>yes</strong> zum Einschalten, <strong>no</strong> zum Ausschalten
+      </td>
+     </tr>
+     <tr>
+      <td>
+LoginCheckInterval = Sekunden
+      </td>
+      <td>
+Intervall zwischen Überprüfungen
+      </td>
+     </tr>
+     <tr>
+      <td>
+SeverityLogin = Level
+      </td>
+      <td>
+Level/Dringlichkeitsstufe für Login-Ereignis
+      </td>
+     </tr>
+     <tr>
+      <td>
+SeverityLoginMulti = Level
+      </td>
+      <td>
+Level/Dringlichkeitsstufe für  mehrfaches Login
+      </td>
+     </tr>
+     <tr>
+      <td>
+SeverityLogout = Level
+      </td>
+      <td>
+Level/Dringlichkeitsstufe für Logout-Ereignis
+      </td>
+     </tr>
+    </table>
+    
+    <file>
+     <title>
+/etc/samhainrc
+     </title>
+     <content>
+[Utmp]
 #
 LoginCheckActive = yes
 LoginCheckInterval = 10
 SeverityLogin = crit
 SeverityLoginMulti = crit
 SeverityLogout = notice
-===================================
-
-
-
-8.6 Überprüfung des Kernels
-
-In der Sektion '[Kernel]' werden Optionen zur Überprüfung 
-des Kernels gesetzt. Die folgenden Optionen stehen zur Verfügung:
- 
-KernelCheckActive = yes|no       'yes' zum Einschalten, 'no' zum Ausschalten
-KernelCheckInterval = Sekunden   Intervall zwischen Überprüfungen
-KernelCheckIDT = yes|no          Auch Kernel Interrupt Descriptor Table
-                                 prüfen ? Standard ist ja (yes).
-SeverityKernel = Level           Level/Dringlichkeitsstufe für Ereignis
-
-Die folgenden Optionen sind nur notwendig, wenn der Kernel neu übersetzt
-wurde (auch wenn die Version gleich geblieben ist !). Das Argument
-'Adresse' ist eine hexadezimale Zahl, mit der die Zeile beginnt, die
-der jeweils angegebene 'grep'-Befehl ausgibt. Die Zahl sollte
-mit dem Präfix '0x' versehen werden.
-
-KernelSystemCall = Adresse     Adresse der system_call Funktion
-                               (grep system_call System.map)
-KernelSyscallTable = Adresse   Adresse der sys_call_table Tabelle
-                               (grep ' sys_call_table' System.map)
-KernelProcRoot = Adresse       Adresse der proc_root Funktion
-                               (grep ' proc_root$' System.map)
-KernelProcRootIops = Adresse   Adresse der proc_root_inode_operations Funktion
-                               (grep proc_root_inode_operations System.map)
-KernelProcRootLookup = Adresse Adresse der proc_root_lookup Funktion
-                               (grep proc_root_lookup System.map)
-
-========= /etc/samhainrc =================
-[Kernel]  
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Überprüfung des Kernels
+    </heading>
+    
+    <textblock>
+In der Sektion <strong>[Kernel]</strong> werden Optionen zur Überprüfung des
+Kernels gesetzt. Die folgenden Optionen stehen zur Verfügung:
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+KernelCheckActive = yes|no
+      </td>
+      <td>
+<strong>yes</strong> zum Einschalten, <strong>no</strong> zum Ausschalten
+      </td>
+     </tr>
+     <tr>
+      <td>
+KernelCheckInterval = Sekunden
+      </td>
+      <td>
+Intervall zwischen Überprüfungen
+      </td>
+     </tr>
+     <tr>
+      <td>
+KernelCheckIDT = yes|no
+      </td>
+      <td>
+Auch Kernel Interrupt Descriptor Table prüfen ? Standard ist ja (yes).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SeverityKernel = Level
+      </td>
+      <td>
+Level/Dringlichkeitsstufe für Ereignis
+      </td>
+     </tr>
+    </table>
+    
+    <textblock>
+Die folgenden Optionen sind nur notwendig, wenn der Kernel neu übersetzt wurde
+(auch wenn die Version gleich geblieben ist !). Das Argument
+<strong>Adresse</strong> ist eine hexadezimale Zahl, mit der die Zeile beginnt,
+die der jeweils angegebene <command>grep</command>-Befehl ausgibt. Die Zahl
+sollte mit dem Präfix <strong>0x</strong> versehen werden.
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+KernelSystemCall = Adresse
+      </td>
+      <td>
+Adresse der system_call Funktion (<command>grep system_call System.map</command>)
+      </td>
+     </tr>
+     <tr>
+      <td>
+KernelSyscallTable = Adresse
+      </td>
+      <td>
+Adresse der sys_call_table Tabelle (<command>grep sys_call_table System.map</command>)
+      </td>
+     </tr>
+     <tr>
+      <td>
+KernelProcRoot = Adresse
+      </td>
+      <td>
+Adresse der proc_root Funktion (<command>grep proc_root$ System.map</command>)
+      </td>
+     </tr>
+     <tr>
+      <td>
+KernelProcRootIops = Adresse
+      </td>
+      <td>
+Adresse der proc_root_inode_operations Funktion (<command>grep proc_root_inode_operations System.map</command>)
+      </td>
+     </tr>
+     <tr>
+      <td>
+KernelProcRootLookup = Adresse
+      </td>
+      <td>
+Adresse der proc_root_lookup Funktion (<command>grep proc_root_lookup System.map</command>)
+      </td>
+     </tr>
+    </table>
+    
+    <file>
+     <title>
+/etc/samhainrc
+     </title>
+     <content>
+[Kernel]
 KernelCheckActive=yes
-KernelCheckInterval=20 
+KernelCheckInterval=20
 KernelCheckIDT=yes
-SeverityKernel=crit 
+SeverityKernel=crit
 #
 KernelSystemCall = 0xc0106cf8
 KernelSyscallTable = 0xc01efb98
 KernelProcRoot = 0xc01efb98
 KernelProcRootIops = 0xc01efb98
 KernelProcRootLookup = 0xc01efb98
-===================================
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Suchen nach SUID/SGID-Dateien
+    </heading>
+    
+    <textblock>
+Die Suche nach SUID/SGID-Dateien wird konfiguriert in einer Sektion, die mit
+<strong>[SuidCheck]</strong> eingeleitet wird. Die Optionen sind:
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+SuidCheckActive = yes|no
+      </td>
+      <td>
+<strong>yes</strong> zum Einschalten, <strong>no</strong> zum Ausschalten
+      </td>
+     </tr>
+     <tr>
+      <td>
+SeveritySuidCheck= Level
+      </td>
+      <td>
+Level/Dringlichkeitsstufe für Ereignis
+      </td>
+     </tr>
+     <tr>
+      <td>
+SuidCheckInterval = Sekunden
+      </td>
+      <td>
+Intervall zwischen Überprüfungen
+      </td>
+     </tr>
+     <tr>
+      <td>
+SuidCheckSchedule = Zeitplan
+      </td>
+      <td>
+Zeitplan im <ref chapter="cron" iref="cron Konfiguration">crontab</ref>-Stil
+      </td>
+     </tr>
+     <tr>
+      <td>
+SuidCheckExclude = /path
+      </td>
+      <td>
+Optional ein Verzeichnis, das ausgelassen werden soll
+      </td>
+     </tr>
+     <tr>
+      <td>
+SuidCheckFps = Anzahl
+      </td>
+      <td>
+Optional die maximale Anzahl Dateien/Sekunde, die überprüft werden sollen
+      </td>
+     </tr>
+    </table>
 
-
-
-8.7 Suche nach SUID/SGID-Dateien
-
-Die Suche nach SUID/SGID-Dateien wird konfiguriert in einer
-Sektion, die mit '[SuidCheck]' eingeleitet wird. Die Optionen sind:
-
-SuidCheckActive = yes|no      'yes' zum Einschalten, 'no' zum Ausschalten
-SeveritySuidCheck= Level      Level/Dringlichkeitsstufe für Ereignis
-SuidCheckInterval = Sekunden  Intervall zwischen Überprüfungen
-SuidCheckSchedule = Zeitplan  Zeitplan im <!-- LINK: chapter="cron" iref="cron Konfiguration" -->crontab<!-- ENDLINK -->-Stil
-SuidCheckExclude = /path      Optional ein Verzeichnis, das ausgelassen
-                              werden soll
-SuidCheckFps = Anzahl         Optional die maximale Anzahl Dateien/Sekunde, 
-                              die überprüft werden sollen
-
-Es kann entweder SuidCheckInterval oder SuidCheckSchedule angegeben
-werden, aber beides gleichzeitig ist sinnlos.
-
-========= /etc/samhainrc =================
+    <textblock>
+Es kann entweder SuidCheckInterval oder SuidCheckSchedule angegeben werden, aber
+beides gleichzeitig ist sinnlos.
+    </textblock>
+    
+    <file>
+     <title>
+/etc/samhainrc
+     </title>
+     <content>
 [SuidCheck]
 SuidCheckActive = yes
 SuidCheckSchedule=0 * * * *
 SeveritySuidCheck=crit
-===================================
-
-
-
-8.8 Logging zu einer relationalen Datenbank
-
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Logging zu einer relationalen Datenbank
+    </heading>
+    
+    <textblock>
 Sofern man zu einer Datenbank loggen möchte, z.B. zu einer
-<!-- LINK: chapter="mysql" -->MySQL-<!-- ENDLINK -->
-oder 
-<!-- LINK: chapter="postgresql" -->PostgreSQL-<!-- ENDLINK --> - Datenbank,
-muss der Zugriff auf die Datenbank konfiguriert werden. Dies
-erfolgt in der '[Database]'-Sektion. Die Optionen sind:
-
-SetDBHost = Rechner-Name     Name des Datenbank-Servers. Für PostgreSQL muss
-                             dies die numerische IP-Adresse sein.
-SetDBName = Datenbank        Name der Datenbank (Standard: samhain)
-SetDBTable = Tabelle         Name der Tabelle (Standard: log)
-SetDBUser = Benutzer         Als 'Benutzer' anmelden (Standard: samhain)
-SetDBPassword = Passwort     Beim Anmelden 'Passwort' benutzen
-UsePersistent = yes|no       'yes' für dauerhafte Verbindung zur Datenbank
-SetDBServerTstamp = yes|no   (nur Yule) Diese Option sagt dem Server, ob er
-                             eigene Zeitstempel für Nachrichten von Samhain
-                             loggen soll (yes) oder nicht (no)
-
-========= /etc/samhainrc =================
+<ref chapter="mysql">MySQL-</ref> oder
+<ref chapter="postgresql">PostgreSQL-</ref> - Datenbank, muss der Zugriff auf
+die Datenbank konfiguriert werden. Dies erfolgt in der
+<strong>[Database]</strong>-Sektion. Die Optionen sind:
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+SetDBHost = Rechner-Name
+      </td>
+      <td>
+Name des Datenbank-Servers. Für PostgreSQL muss dies die numerische IP-Adresse sein.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDBName = Datenbank
+      </td>
+      <td>
+Name der Datenbank (Standard: samhain)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDBTable = Tabelle
+      </td>
+      <td>
+Name der Tabelle (Standard: log)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDBUser = Benutzer
+      </td>
+      <td>
+Als <strong>Benutzer</strong> anmelden (Standard: samhain)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDBPassword = Passwort
+      </td>
+      <td>
+Beim Anmelden <strong>Passwort</strong> benutzen
+      </td>
+     </tr>
+     <tr>
+      <td>
+UsePersistent = yes|no
+      </td>
+      <td>
+<strong>yes</strong> für dauerhafte Verbindung zur Datenbank
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDBServerTstamp = yes|no
+      </td>
+      <td>
+(nur Yule) Diese Option sagt dem Server, ob er eigene Zeitstempel für
+Nachrichten von Samhain loggen soll (yes) oder nicht (no)
+      </td>
+     </tr>
+    </table>
+    
+    <file>
+     <title>
+/etc/samhainrc
+     </title>
+     <content>
 [Database]
 SetDBHost = mysql.example.com
 SetDBName = samhain
@@ -2131,194 +2527,651 @@ SetDBTable = log
 SetDBUser = samhain
 SetDBPassword = jsabfkej
 UsePersistent = no
-===================================
-
-
-
-8.9 Verschiedenes
-
-In der Sektion '[Misc]' finden sich verschiedene weitere Optionen:
-
-Daemon = yes|no               Als Dämon laufen (yes = ja)
-ChecksumTest = none|init|update|check Die Standard-Handlung, wenn nicht auf der
-                              Kommandozeile angegeben (keine|Datenbank 
-                              initialisieren|Datenbank aktualisieren|mit
-                              Datenbank vergleichen). Standard ist 'none'
-VersionString = Zeichenkette  In der Datenbank 'Zeichenkette' zum Markieren
-                              der Version einsetzen (zusammen mit Rechner-Name
-                              und Zeitstempel)
-SetNiceLevel = -19..19        Priorität des Prozesses für Dateiprüfung setzen
-                              (-19 = höchste, 19 = niedrigste)
-SetIOLimit = kbps             Datenrate (Kilobytes pro Sekunde) begrenzen.
-SetLoopTime = Sekunden        Intervall zwischen geloggten Zeitstempeln
-SetFilecheckTime = Sekunden   Intervall zwischen Dateiprüfungen (Standard: 600)
-FileCheckScheduleOne = Plan   Zeitplan im crontab-Stil für Dateiprüfungen
-                              (alternativ zu SetFilecheckTime)
-UseHardlinkCheck = yes|no     Anzahl Hardlinks für Verzeichnisse prüfen
-                              (yes = ja, no = nein)
-HardlinkOffset=N:/Pfad        Ausnahme für Hardlink-Prüfung. N ist der 
-                              Unterschied (tatsächliche - erwartet) für /Pfad.
-AddOKChars = N1, N2, ..       Liste der akzeptablen Zeichen (Byte-Werte) für
-                              den Test auf seltsame Dateinamen. Nn muß 
-                              entweder hexadezimal (führendes '0x': 0xNN), 
-			      oktal (führende Null: 0NNN), oder dezimal sein.
-			      Mit 'all' als Argument wird der Test 
-			      ausgeschaltet.
-IgnoreAdded = /regex          Ignorieren, wenn die Datei '/regex' neu erzeugt
-                              wird. '/regex' kann ein regulärer Ausdruck sein,
-                              und muss einen absoluten Pfad bezeichnen.
-IgnoreMissing = /regex        Ignorieren, wenn die Datei '/regex' gelöscht
-                              wird. '/regex' kann ein regulärer Ausdruck sein,
-                              und muss einen absoluten Pfad bezeichnen. 
-ReportOnlyOnce = yes|no       Jede Dateiveränderung nur einmal berichten
-                              (Standard: yes = ja)
-ReportFullDetail = yes|no     Alle Details zu einer veränderten Datei 
-                              berichten (Standard: no = nein)
-UseLocalTime = yes|no         Zeitstempel für Dateien in lokaler Zeit statt GMT
-                              berichten. Diese Option sollte nicht benutzt 
-                              werden, wenn Beltane eingesetzt wird.
-SetConsole = Gerät            Das Konsolen-Gerät bestimmen 
-                              (Standard: /dev/console).
-MessageQueueActive = yes|no   Die System V IPC message queue benutzen 
-                              (Standard: no = nein).
-SetMailTime = Sekunden        Maximale Zeitspanne zwischen Email-Nachrichten
-                              (Standard: 86400).
-SetMailNum = 0..127           Maximale Anzahl wartender Emails in interner
-                              Warteschlange.
-SetMailAddress = Empfänger    Einen Email-Empfänger hinzufügen (maximal 8).
-SetMailRelay = IP-Adresse     Einen Relay-Rechner für Email festlegen.
-MailSubject = Zeichenkette    Eigenes Format für die Betreff-Zeile definieren.
-SamhainPath = /Pfad           Pfad des Programmes. Falls diese Option benutzt
-                              wird, wird die Prüfsumme beim Programmende mit
-                              derjenigen zum Programmstart verglichen.
-SetBindAddress = IP-Adresse   IP-Adresse (Netzwerk-Karte) für ausgehende
-                              Verbindungen (auf Maschinen mit mehreren
-                              IP-Adressen).
-SetTimeServer = IP-Adresse    Optionaler Zeitdienst. Es wird das einfache 
-                              'time'-Protokoll (37/tcp) benutzt.
-MessageHeader="\%S \%T \%F \%L \%C" ? Specify custom format for message header.
-SyslogFacility = LOG_xxx      Welche syslog-Facility soll benutzt werden 
-                              (Standard: LOG_AUTHPRIV) ?
-HideSetup = yes|no            Beim Start keine Namen von Datenbank und 
-                              Konfigurations-Dateien loggen
-TrustedUser = user1, ..       Liste zusätzlicher vertrauenswürdiger Benutzer
-SetDatabasePath = AUTO|/Pfad  Pfad zur Datenbank (AUTO um Rechner-Namen
-                              an Standard-Pfad anzuhängen)
-SetLogfilePath = AUTO|/Pfad   Pfad zur Log-Datei (AUTO um Rechner-Namen
-                              an Standard-Pfad anzuhängen)
-SetLockfilePath = AUTO|/Pfad  Pfad zur Lock-Datei, die den Zugriff zur 
-                              Log-Datei blockiert (AUTO um Rechner-Namen
-                              an Standard-Pfad anzuhängen)
-DigestAlgo = SHA1|MD5         SHA1 oder MD5 anstelle von TIGER192 als
-                              Prüfsummenalgorithmus benutzen 
-                              (Standard: TIGER192)
-RedefReadOnly = +XXX|-XXX     Den Test XXX zur Policy 'ReadOnly' hinzufügen
-                              bzw. von dieser wegnehmen (Liste möglich).
-RedefAttributes= +XXX|-XXX    Den Test XXX zur Policy 'Attributes' hinzufügen
-                              bzw. von dieser wegnehmen (Liste möglich).
-RedefLogFiles= +XXX|-XXX      Den Test XXX zur Policy 'LogFiles' hinzufügen
-                              bzw. von dieser wegnehmen (Liste möglich).
-RedefGrowingLogFiles = +XXX|-XXX Den Test XXX zur Policy 'GrowingLogFiles' 
-                              hinzufügen bzw. von dieser wegnehmen 
-                              (Liste möglich).
-RedefIgnoreAll = +XXX|-XXX    Den Test XXX zur Policy 'IgnoreAll' hinzufügen
-                              bzw. von dieser wegnehmen (Liste möglich).
-RedefIgnoreNone= +XXX|-XXX    Den Test XXX zur Policy 'IgnoreNone' hinzufügen
-                              bzw. von dieser wegnehmen (Liste möglich).
-RedefUser0 = +XXX|-XXX        Den Test XXX zur Policy 'User0' hinzufügen
-                              bzw. von dieser wegnehmen (Liste möglich).
-RedefUser1 = +XXX|-XXX        Den Test XXX zur Policy 'User1' hinzufügen
-                              bzw. von dieser wegnehmen (Liste möglich).
-SetLogServer = IP-Adresse     Adresse des Log-Servers
-MACType=HASH-TIGER|HMAC-TIGER Die Art der Authentifizierungs-Codes wählen.
-                              Falls diese Option benutzt wird, muss für Yule
-                              und Samhain derselbe Wert gesetzt sein. Standard
-                              ist HMAC-TIGER.
-SetReverseLookup = yes|no     Wenn nein (no), dann keinen reverse DNS-Lookup
-                              durchführen, wenn Verbindung zu einem Rechner
-                              hergestellt wird, der mit Namen statt IP-Adresse
-                              angegeben ist.
-
-
+     </content>
+    </file>
+   </section>
+   
+   <section>
+    <heading>
+Verschiedenes
+    </heading>
+    
+    <textblock>
+In der Sektion <strong>[Misc]</strong> finden sich verschiedene weitere Optionen:
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+Daemon = yes|no
+      </td>
+      <td>
+Als Dämon laufen (yes = ja)
+      </td>
+     </tr>
+     <tr>
+      <td>
+ChecksumTest = none|init|update|check
+      </td>
+      <td>
+Die Standard-Handlung, wenn nicht auf der Kommandozeile angegeben
+(keine|Datenbank initialisieren|Datenbank aktualisieren|mit Datenbank vergleichen).
+Standard ist <strong>none</strong>
+      </td>
+     </tr>
+     <tr>
+      <td>
+VersionString = Zeichenkette
+      </td>
+      <td>
+In der Datenbank <strong>Zeichenkette</strong> zum Markieren der Version
+einsetzen (zusammen mit Rechner-Name und Zeitstempel)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetNiceLevel = -19..19
+      </td>
+      <td>
+Priorität des Prozesses für Dateiprüfung setzen (-19 = höchste, 19 = niedrigste)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetIOLimit = kbps
+      </td>
+      <td>
+Datenrate (Kilobytes pro Sekunde) begrenzen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetLoopTime = Sekunden
+      </td>
+      <td>
+Intervall zwischen geloggten Zeitstempeln
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetFilecheckTime = Sekunden
+      </td>
+      <td>
+Intervall zwischen Dateiprüfungen (Standard: 600)
+      </td>
+     </tr>
+     <tr>
+      <td>
+FileCheckScheduleOne = Plan
+      </td>
+      <td>
+Zeitplan im crontab-Stil für Dateiprüfungen (alternativ zu SetFilecheckTime)
+      </td>
+     </tr>
+     <tr>
+      <td>
+UseHardlinkCheck = yes|no
+      </td>
+      <td>
+Anzahl Hardlinks für Verzeichnisse prüfen (yes = ja, no = nein)
+      </td>
+     </tr>
+     <tr>
+      <td>
+HardlinkOffset=N:/Pfad
+      </td>
+      <td>
+Ausnahme für Hardlink-Prüfung. N ist der Unterschied (tatsächliche - erwartet)
+für /Pfad.
+      </td>
+     </tr>
+     <tr>
+      <td>
+AddOKChars = N1, N2, ..
+      </td>
+      <td>
+Liste der akzeptablen Zeichen (Byte-Werte) für den Test auf seltsame Dateinamen.
+Nn muß entweder hexadezimal (führendes <strong>0x</strong>: 0xNN), oktal
+(führende Null: 0NNN), oder dezimal sein. Mit <strong>all</strong> als Argument
+wird der Test ausgeschaltet.
+      </td>
+     </tr>
+     <tr>
+      <td>
+IgnoreAdded = /regex
+      </td>
+      <td>
+Ignorieren, wenn die Datei <path>/regex</path> neu erzeugt wird.
+<path>/regex</path> kann ein regulärer Ausdruck sein, und muss einen absoluten
+Pfad bezeichnen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+IgnoreMissing = /regex
+      </td>
+      <td>
+Ignorieren, wenn die Datei <path>/regex</path> gelöscht wird.
+<path>/regex</path> kann ein regulärer Ausdruck sein, und muss einen absoluten
+Pfad bezeichnen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+ReportOnlyOnce = yes|no
+      </td>
+      <td>
+Jede Dateiveränderung nur einmal berichten (Standard: yes = ja)
+      </td>
+     </tr>
+     <tr>
+      <td>
+ReportFullDetail = yes|no
+      </td>
+      <td>
+Alle Details zu einer veränderten Datei berichten (Standard: no = nein)
+      </td>
+     </tr>
+     <tr>
+      <td>
+UseLocalTime = yes|no
+      </td>
+      <td>
+Zeitstempel für Dateien in lokaler Zeit statt GMT berichten. Diese Option sollte
+nicht benutzt werden, wenn Beltane eingesetzt wird.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetConsole = Gerät
+      </td>
+      <td>
+Das Konsolen-Gerät bestimmen (Standard: /dev/console).
+      </td>
+     </tr>
+     <tr>
+      <td>
+MessageQueueActive = yes|no
+      </td>
+      <td>
+Die System V IPC message queue benutzen (Standard: no = nein).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetMailTime = Sekunden
+      </td>
+      <td>
+Maximale Zeitspanne zwischen Email-Nachrichten (Standard: 86400).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetMailNum = 0..127
+      </td>
+      <td>
+Maximale Anzahl wartender Emails in interner Warteschlange.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetMailAddress = Empfänger
+      </td>
+      <td>
+Einen Email-Empfänger hinzufügen (maximal 8).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetMailRelay = IP-Adresse
+      </td>
+      <td>
+Einen Relay-Rechner für Email festlegen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+MailSubject = Zeichenkette
+      </td>
+      <td>
+Eigenes Format für die Betreff-Zeile definieren.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SamhainPath = /Pfad
+      </td>
+      <td>
+Pfad des Programmes. Falls diese Option benutzt wird, wird die Prüfsumme beim
+Programmende mit derjenigen zum Programmstart verglichen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetBindAddress = IP-Adresse
+      </td>
+      <td>
+IP-Adresse (Netzwerk-Karte) für ausgehende Verbindungen (auf Maschinen mit
+mehreren IP-Adressen).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetTimeServer = IP-Adresse
+      </td>
+      <td>
+Optionaler Zeitdienst. Es wird das einfache <strong>time</strong>-Protokoll
+(37/tcp) benutzt.
+      </td>
+     </tr>
+     <tr>
+      <td>
+MessageHeader="\%S \%T \%F \%L \%C"
+      </td>
+      <td>
+Benutzerdefiniertes Format für den Mail-Header
+      </td>
+     </tr>
+     <tr>
+      <td>
+SyslogFacility = LOG_xxx
+      </td>
+      <td>
+Welche syslog-Facility soll benutzt werden (Standard: LOG_AUTHPRIV)
+      </td>
+     </tr>
+     <tr>
+      <td>
+HideSetup = yes|no
+      </td>
+      <td>
+Beim Start keine Namen von Datenbank und Konfigurations-Dateien loggen
+      </td>
+     </tr>
+     <tr>
+      <td>
+TrustedUser = user1, ...
+      </td>
+      <td>
+Liste zusätzlicher vertrauenswürdiger Benutzer
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDatabasePath = AUTO|/Pfad
+      </td>
+      <td>
+Pfad zur Datenbank (AUTO um Rechner-Namen an Standard-Pfad anzuhängen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetLogfilePath = AUTO|/Pfad
+      </td>
+      <td>
+Pfad zur Log-Datei (AUTO um Rechner-Namen an Standard-Pfad anzuhängen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetLockfilePath = AUTO|/Pfad
+      </td>
+      <td>
+Pfad zur Lock-Datei, die den Zugriff zur Log-Datei blockiert (AUTO um
+Rechner-Namen an Standard-Pfad anzuhängen)
+      </td>
+     </tr>
+     <tr>
+      <td>
+DigestAlgo = SHA1|MD5
+      </td>
+      <td>
+SHA1 oder MD5 anstelle von TIGER192 als Prüfsummenalgorithmus benutzen
+(Standard: TIGER192)
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefReadOnly = +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>ReadOnly</strong> hinzufügen bzw. von dieser
+wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefAttributes= +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>Attributes</strong> hinzufügen bzw. von dieser
+wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefLogFiles= +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>LogFiles</strong> hinzufügen bzw. von dieser
+wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefGrowingLogFiles = +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>GrowingLogFiles</strong> hinzufügen bzw. von
+dieser wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefIgnoreAll = +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>IgnoreAll</strong> hinzufügen bzw. von dieser
+wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefIgnoreNone= +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>IgnoreNone</strong> hinzufügen bzw. von dieser
+wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefUser0 = +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>User0</strong> hinzufügen bzw. von dieser
+wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+RedefUser1 = +XXX|-XXX
+      </td>
+      <td>
+Den Test XXX zur Policy <strong>User1</strong> hinzufügen bzw. von dieser
+wegnehmen (Liste möglich).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetLogServer = IP-Adresse
+      </td>
+      <td>
+Adresse des Log-Servers
+      </td>
+     </tr>
+     <tr>
+      <td>
+MACType=HASH-TIGER|HMAC-TIGER
+      </td>
+      <td>
+Die Art der Authentifizierungs-Codes wählen. Falls diese Option benutzt wird,
+muss für Yule und Samhain derselbe Wert gesetzt sein. Standard ist HMAC-TIGER.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetReverseLookup = yes|no
+      </td>
+      <td>
+Wenn nein (no), dann keinen reverse DNS-Lookup durchführen, wenn Verbindung zu
+einem Rechner hergestellt wird, der mit Namen statt IP-Adresse angegeben ist.
+      </td>
+     </tr>
+    </table>
+    
+    <textblock>
 Die folgenden Optionen sind nur relevant für den Log-Server (Yule).
-
-SetClientFromAccept = yes|no  Wenn ja (yes), dann die Adresse des Clients
-                              benutzen, wie sie dem Kernel bekannt ist (kann
-                              falsch sein, wenn z.B. NAT-Router en route).
-                              Sonst (Standard) den Namen benutzen, den der
-                              Client bekanntgibt, gegen die IP-Adresse prüfen,
-                              und immer akzeptieren (mit einer Warnung, wenn
-                              die Prüfung fehlschlägt).
-SeverityLookup = Level        Level/Dringlichkeitsstufe für Meldung, wenn
-                              die oen erwähnte Prüfung fehlschlägt.
-UseClientSeverity = yes|no    Wenn ja (yes), Nachrichten von Samhain nicht mit
-                              spezieller Dringlichkeitsstufe loggen.
-UseClientClass = yes|no       Wenn ja (yes), Nachrichten von Samhain nicht mit
-                              spezieller Ereignisklasse loggen.
-UseSeparateLogs = yes|no      Wenn ja (yes), Nachrichten von unterschiedlichen
-                              Clients nach unterschiedlichen Log-Dateien
-                              loggen (Name des Clients wird an Standard-Pfad
-                              angehängt).
-SetClientTimeLimit = Sekunden Maximale Zeit bis zur nächsten Meldung eines 
-                              Clients (bei Überschreitung Alarm).
-SetUseSocket = yes|no         Wenn ja (yes), ein Unix Domain Socket öffnen,
-                              um Yule Kommandos zu übergeben, die an Clients
-                              weitergeleitet werden sollen (wenn diese Kontakt
-                              zu Yule aufnehmen).
-SetSocketAllowUid = UID       Der Benutzer, der Kommandos über o.g. Socket
-                              absetzen kann (Standard: 0 = root)
-SetChrootDir = /Pfad          Falls diese Option gesetzt ist, macht der Server
-                              nach dem Start ein 'chroot /Pfad'
-SetStripDomain = yes|no       Wenn ja (yes), wird der Name des Clients ohne 
-                              die Domäne geloggt (Standard: ja)
-SetUDPActive = yes|no         Auch auf 514/udp (syslog port) auf Nachrichten
-                              von syslog-Dämonen warten
-
-
-
-8.10 Externe Skripte
-
-In der Sektion '[External]' ist es möglich, externe Skripte oder Programme
-zu definieren, die zum Loggen benutzt werden können. Das
-Skript/Programm erhält jeweils eine Zeile mit Informationen, gefolgt von
-einer weiteren Zeile mit '[EOF]'. Die Optionen sind:
-
-OpenCommand=/Pfad/zum/Skript  Beginnt einen Definitions-Block
-SetType = log|srv             Mit 'log' wird das Programm als Log-Möglichkeit
-                              definiert; mit 'srv' (nur Yule) wird es 
-                              aufgerufen, wenn sich der Status eines Clients
-                              ändert.
-SetCommandline = Liste        Die Kommandozeile (also Argumente für das Skript)
-SetEnviron = Variable=Wert    Umgebungsvariable (kann mehrfach benutzt werden)
-SetChecksum = TIGER Prüfsumme Tiger/192-Prüfsumme des Skripts (optional)
-SetCredentials = Benutzer     Der Benutzer, als der das Skript ausgeführt
-                              werden soll.
-SetFilterNot = Liste          Worte, die in der geloggten Nachricht nicht
-                              vorkommen sollen
-SetFilterAnd = Liste          Worte, die alle in der geloggten Nachricht 
-                              vorkommen müssen
-SetFilterOr = Liste           Worte, von denen mindestens eines in der 
-                              geloggten Nachricht vorkommen muss
-SetDeadtime = Sekunden        Minimale Zeit zwischen zwei Aufrufen des Skripts
-SetDefault = yes|no           Standard-Umgebung setzen (yes = ja) ? Die
-                              Standard-Umgebung ist: HOME aus /etc/passwd, 
-                              SHELL=/bin/sh, 
-                              PATH=/sbin:/usr/sbin:/bin:/usr/bin
-
-
-
-8.11 Clients
-
-In der '[Clients]'-Sektion, die nur für den Server (Yule) relevant ist,
-hat jeder Samhain-Client einen Eintrag der Form:
-
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+SetClientFromAccept = yes|no
+      </td>
+      <td>
+Wenn ja (yes), dann die Adresse des Clients benutzen, wie sie dem Kernel bekannt
+ist (kann falsch sein, wenn z. B. NAT-Router en route). Sonst (Standard) den
+Namen benutzen, den der Client bekanntgibt, gegen die IP-Adresse prüfen, und
+immer akzeptieren (mit einer Warnung, wenn die Prüfung fehlschlägt).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SeverityLookup = Level
+      </td>
+      <td>
+Level/Dringlichkeitsstufe für Meldung, wenn die oen erwähnte Prüfung fehlschlägt.
+      </td>
+     </tr>
+     <tr>
+      <td>
+UseClientSeverity = yes|no
+      </td>
+      <td>
+Wenn ja (yes), Nachrichten von Samhain nicht mit spezieller Dringlichkeitsstufe
+loggen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+UseClientClass = yes|no
+      </td>
+      <td>
+Wenn ja (yes), Nachrichten von Samhain nicht mit spezieller Ereignisklasse loggen.
+      </td>
+     </tr>
+     <tr>
+      <td>
+UseSeparateLogs = yes|no
+      </td>
+      <td>
+Wenn ja (yes), Nachrichten von unterschiedlichen Clients nach unterschiedlichen
+Log-Dateien loggen (Name des Clients wird an Standard-Pfad angehängt).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetClientTimeLimit = Sekunden
+      </td>
+      <td>
+Maximale Zeit bis zur nächsten Meldung eines Clients (bei Überschreitung Alarm).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetUseSocket = yes|no
+      </td>
+      <td>
+Wenn ja (yes), ein Unix Domain Socket öffnen, um Yule Kommandos zu übergeben,
+die an Clients weitergeleitet werden sollen (wenn diese Kontakt zu Yule
+aufnehmen).
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetSocketAllowUid = UID
+      </td>
+      <td>
+Der Benutzer, der Kommandos über o. g. Socket absetzen kann (Standard: 0 = root)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetChrootDir = /Pfad
+      </td>
+      <td>
+Falls diese Option gesetzt ist, macht der Server nach dem Start ein
+<command>chroot /Pfad</command>
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetStripDomain = yes|no
+      </td>
+      <td>
+Wenn ja (yes), wird der Name des Clients ohne die Domäne geloggt (Standard: ja)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetUDPActive = yes|no
+      </td>
+      <td>
+Auch auf 514/udp (syslog port) auf Nachrichten von syslog-Dämonen warten
+      </td>
+     </tr>
+    </table>
+   </section>
+   
+   <section>
+    <heading>
+Externe Skripte
+    </heading>
+    
+    <textblock>
+In der Sektion <strong>[External]</strong> ist es möglich, externe Skripte oder
+Programme zu definieren, die zum Loggen benutzt werden können. Das
+Skript/Programm erhält jeweils eine Zeile mit Informationen, gefolgt von einer
+weiteren Zeile mit <strong>[EOF]</strong>. Die Optionen sind:
+    </textblock>
+    
+    <table>
+     <pdf-column width="200"/>
+     <pdf-column/>
+     <tr>
+      <td>
+OpenCommand=/Pfad/zum/Skript
+      </td>
+      <td>
+Beginnt einen Definitions-Block
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetType = log|srv
+      </td>
+      <td>
+Mit <strong>log</strong> wird das Programm als Log-Möglichkeit definiert; mit
+<strong>srv</strong> (nur Yule) wird es aufgerufen, wenn sich der Status eines
+Clients ändert.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetCommandline = Liste
+      </td>
+      <td>
+Die Kommandozeile (also Argumente für das Skript)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetEnviron = Variable=Wert
+      </td>
+      <td>
+Umgebungsvariable (kann mehrfach benutzt werden)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetChecksum = TIGER Prüfsumme
+      </td>
+      <td>
+Tiger/192-Prüfsumme des Skripts (optional)
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetCredentials = Benutzer
+      </td>
+      <td>
+Der Benutzer, als der das Skript ausgeführt werden soll.
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetFilterNot = Liste
+      </td>
+      <td>
+Worte, die in der geloggten Nachricht nicht vorkommen sollen
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetFilterAnd = Liste
+      </td>
+      <td>
+Worte, die alle in der geloggten Nachricht vorkommen müssen
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetFilterOr = Liste
+      </td>
+      <td>
+Worte, von denen mindestens eines in der geloggten Nachricht vorkommen muss
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDeadtime = Sekunden
+      </td>
+      <td>
+Minimale Zeit zwischen zwei Aufrufen des Skripts
+      </td>
+     </tr>
+     <tr>
+      <td>
+SetDefault = yes|no
+      </td>
+      <td>
+Standard-Umgebung setzen (yes = ja) Die Standard-Umgebung ist: HOME aus
+<path>/etc/passwd</path>, SHELL=/bin/sh, PATH=/sbin:/usr/sbin:/bin:/usr/bin
+      </td>
+     </tr>
+    </table>
+   </section>
+   
+   <section>
+    <heading>
+Clients
+    </heading>
+    
+    <textblock>
+In der <strong>[Clients]</strong>-Sektion, die nur für den Server (Yule)
+relevant ist, hat jeder Samhain-Client einen Eintrag der Form:
+    </textblock>
+    
+    <file>
+     <content>
 Client = Rechnername@abc@xyz
-
-'Rechnername' ist dabei der volle Name (üblicherweise keine IP-Adresse),
-unter dem Yule den Client kennt. Falls 'Rechnername' falsch ist,
-wird Yule folgende Fehlermeldung ausgeben:  
-"Invalid connection attempt: Not in client list", und wird in dieser 
+     </content>
+    </file>
+    
+    <textblock>
+<strong>Rechnername</strong> ist dabei der volle Name (üblicherweise keine
+IP-Adresse), unter dem Yule den Client kennt. Falls <strong>Rechnername</strong>
+falsch ist, wird Yule folgende Fehlermeldung ausgeben: <strong>Invalid
+connection attempt: Not in client list</strong>, und wird in dieser
 Fehlermeldung auch sagen, welchen Namen es für den Client ermittelt hat:
-'client="client.example.com"'.
-
+<strong>client="client.example.com"</strong>.
+    </textblock>
+   </section>
+  </section>
+ </split>
 </chapter>
