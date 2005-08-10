@@ -39,8 +39,6 @@ Beispiele für solche Dienste sind FTP-, Web- und Mail-Server.
 1.1. Hintergrundaktivitäten
 
 
-<!-- KEYWORDS: Hintergrundprozesse; Dienste; -->
-
 Da ein Dienst nicht über ein eigenes Fenster als direkte Benutzerschnittstelle
 verfügt, kann er Meldungen und Fehler nicht direkt an den Benutzer
 melden. Oft sind diejenigen Benutzer, die gerade
@@ -58,8 +56,6 @@ Auch der Linux-Kernel selbst erzeugt Meldungen, zum Beispiel
 
 
 1.2. Log-Dateien
-
-<!-- KEYWORDS: Log-Dateien für Systemmeldungen; Syslog; -->
 
 Um derartige Meldungen zu verarbeiten, kann man sie
 zum Beispiel in Log-Dateien schreiben. 
@@ -84,10 +80,6 @@ Besonders häufig wird hierfür der Dienst Syslog verwendet.
 1.3. Syslog, der System Logger
 
 
-<!-- KEYWORDS: Syslog; Meldungen protokollieren; System Logger;
-               Syslog Schnittstelle;  -->
-
-
 Syslog stellt anderen Diensten eine Schnittstelle bereit, über die
 sie Meldungen weitergeben können. Der Dienst Syslog verarbeitet diese Meldungen, 
 indem er sie in Dateien schreibt.
@@ -109,9 +101,6 @@ auf einem Server zusammenfassen.
 2. Meldungen
 
 
-<!-- KEYWORDS: Systemmeldung; Meldungen von Diensten; -->
-
-
 Wenn ein Dienst den Dienst Syslog verwendet, schickt er diesem einfach alle seine
 Meldungen. Eine Meldung ist im
 Wesentlichen eine Textzeile. Darüber hinaus enthält sie einige
@@ -126,8 +115,6 @@ Mail-Systems auf einen anderen Rechner übertragen werden.
 
 
 2.1. Quellen von Meldungen
-
-<!-- KEYWORDS: Meldungsquellen; auth; authpriv; cron; daemon; kern; lpr; mail; mark; news; syslog; user; uucp; local; -->
 
 
 Syslog definiert für Meldungen eine Reihe von Quellen und Themengebieten ("facilities"). 
@@ -188,8 +175,6 @@ local0 bis local7       Diese sind frei definierbar und können nach Belieben
 
 2.2. Priorität von Meldungen
 
-<!-- KEYWORDS: Meldungspriorität; Priorität von Systemmeldungen; debug; info; notice; warning; err; crit; alert; emerg; -->
-
 
 Syslog definiert eine Reihe von Namen, um die Wichtigkeit
 von Meldungen zu beschreiben. Diese Namen ergeben eine bestimmte Rangordnung (englisch "priority" oder "log level"). 
@@ -247,10 +232,6 @@ die Meldungen mehrerer Systeme über das Netzwerk zentral protokolliert.
 2.4. Festes Format der Meldungen
 
 
-<!-- KEYWORDS: Meldungsformat; Format von Systemmeldungen; -->
-
-
-
 Für das Schreiben in Log-Dateien verwendet Syslog ein festes Format.
 Eine Meldung ist immer eine Zeile lang. Diese Zeile beginnt mit dem
 Zeitstempel, danach folgt der Host-Name des Systems. An dritter Stelle steht
@@ -275,9 +256,6 @@ namens "atlas" erzeugt und gibt an, dass Syslog gestartet wurde
 2.5. Meldungen des Kernel
 
 
-<!-- KEYWORDS: Kernel-Meldung; Meldung des Kernel; klogd; Kernel Logger; -->
-
-
 Der Kernel verschickt seine Meldungen auf eine etwas andere Art.
 Er kann sich nicht wie ein normales Programm verhalten,
 weil er vor allen anderen Prozessen gestartet wird, kein normaler
@@ -300,9 +278,6 @@ automatisch direkt nach syslogd gestartet.
 
 
 3. Konfiguration von Syslog
-
-
-<!-- KEYWORDS: Syslog-Konfiguration; Konfiguration von Syslog; -->
 
 
 Über eine zentrale Datei wird das Verhalten von Syslog gesteuert.
@@ -348,9 +323,6 @@ mehrere Dateien geschrieben und
 
 
 3.1.1. Meldungsbeschreibung
-
-
-<!-- KEYWORDS: Beschreibung von Systemmeldungen; -->
 
 
 Die Meldungsbeschreibung ist eine Liste aus
@@ -420,9 +392,6 @@ aus der Quelle "mail".
 
 
 3.1.2 Meldungsaktion
-
-
-<!-- KEYWORDS: Meldungsaktion; Aktionen bei Systemmeldungen -->
 
 
 Auf der rechten Seite steht dann, was mit einer Meldung geschehen
@@ -529,9 +498,6 @@ mail.*                          	-/var/log/mail
 3.2. Befehlszeilenoptionen
 
 
-<!-- KEYWORDS: Syslog und Befehlszeilenoptionen; Befehlszeilenoptionen für Syslog -->
-
-
 Auch Befehlszeilenoptionen steuern das Verhalten von Syslog. 
 Über Befehlszeilenoptionen kann Syslog so konfiguriert
 werden, dass es Meldungen aus dem Netzwerk, also die Meldungen andere System Logger,
@@ -632,8 +598,6 @@ angeben, indem man SYSLOGD_OPTIONS="" (z.B. "-r -m 0 -s picard.inka.de:zeibig.ne
 3.3. Remote Logging
 
 
-<!-- KEYWORDS: Meldungen remote protokollieren; Remote Logging; Log-Host; -->
-
 Remote Logging bedeutet, dass ein Host Syslog-Meldungen an einen
 anderen Host weitersendet. Dieser andere Host schreibt die
 Meldungen dann in Dateien. Gewöhnlich konfiguriert man dieses Verfahren so,
@@ -699,9 +663,6 @@ andere Absicherung der Netzwerkkommunikation.
 
 
 3.3.2 Konfiguration des Log-Hosts
-
-
-<!-- KEYWORDS: Log-Host konfigurieren; Konfiguration des Log-Host; -->
 
 
 Die Konfiguration des Log-Hosts ist einfach. Man muss lediglich den
@@ -827,9 +788,6 @@ sofort gewechselt und die Bandsicherung zurückgespielt.
 3.4.1. Serverkonfiguration
 
 
-<!-- KEYWORDS: logrotate; Serverkonfiguration; Konfiguration eines Servers; -->
-
-
 Bei der Installation eines Servers muss man entscheiden, wie man
 mit großen Log-Dateien umgehen möchte. Hier ist zunächst zu 
 bedenken, dass große Log-Dateien Dateisysteme füllen können. Hat man
@@ -882,9 +840,6 @@ starten. Aus Sicherheitsgründen sollte man davor z. B. eine Sekunde warten. Bei 
 3.4.2. Syslog-Konfiguration
 
 
-<!-- KEYWORDS: Syslog-Konfiguration; Konfiguration von Syslog; -->
-
-
 Man sollte darauf achten, dass es keine Meldungen gibt, die überhaupt nicht
 protokolliert werden. Meist möchte man verschiedene Protokolldateien pflegen,
 damit man alle Meldungen schnell finden kann. Oft werden mindestens die Dateien
@@ -904,8 +859,6 @@ Der Abschnitt
 
 3.4.3 Einheitliche Netzwerkzeit
 
-<!-- KEYWORDS: Netzwerkzeit synchronisieren; xntpd; Network Time Protocol; -->
-
 
 Bei der Analyse von Störungen ist es wichtig, dass man die Reihenfolge von und
 Abstände zwischen Fehlermeldungen oder Fehler-Mails richtig feststellen
@@ -921,10 +874,6 @@ wie zum Beispiel xntpd.
 
 
 3.4.4 Firewall-Konfiguration
-
-
-<!-- KEYWORDS: Syslog und Firewall; -->
-
 
 
 Firewalls sollen Flutangriffe verhindern und daher die Weiterleitung von UDP/514-Paketen vom Internet in
@@ -967,7 +916,6 @@ eine interne Netzwerküberlastung eher unwahrscheinlich ist.
 
 4. Starten und Stoppen von Syslog
 
-<!-- KEYWORDS: Syslog starten; Syslog anhalten; -->
 
 Syslog wird beim Hochfahren des Systems immer automatisch gestartet, und zwar meist über ein rc-Script wie z. B.
 /etc/rc.d/syslog. Bei gängigen GNU/Linux-Distributionen ist dies
@@ -990,9 +938,6 @@ Um den Dienst zu stoppen, ersetzt man "start" durch "stop".
 
 
 1. Meldungen selbst erzeugen
-
-
-<!-- KEYWORDS: Systemmeldungen erzeugen; logger; -->
 
 
 Manchmal möchte man selbst Meldungen erzeugen. 
@@ -1074,7 +1019,6 @@ Apr 13 13:20:45 atlas script.sh[6338]: eine andere Fehlermeldung
 
 1. Log-Dateien auswerten
 
-<!-- KEYWORDS: Auswertung von Protokolldateien; Syslog-Dateien auswerten; logmail; -->
 
 Sehr wichtig ist natürlich die Auswertung der erzeugten Log-Dateien. 
 Für gewöhnlich hat ein Administrator jedoch keine 
