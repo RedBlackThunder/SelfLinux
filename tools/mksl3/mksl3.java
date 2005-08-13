@@ -1,16 +1,3 @@
-/*
- * mksl3
- *
- * $Revision: 1.19 $
- * $Source: /selflinux/tools/mksl3/mksl3.java,v $
- * Autor: Florian Frank <florian.frank@pingos.org>
- *
- * Lizenz: GPL
- *
- *** $Id: mksl3.java,v 1.19 2004/04/07 14:17:27 florian Exp $
- */
- 
- // Importiere benoetigte Klassen
 import java.io.*;
 import java.util.*;
 import java.text.*;

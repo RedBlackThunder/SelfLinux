@@ -1,16 +1,3 @@
-/*
- * mksl3
- *
- * $Revision: 1.14 $
- * $Source: /selflinux/tools/mksl3/Document.java,v $
- * Autor: Florian Frank <florian.frank@pingos.org>
- *
- * Lizenz: GPL
- *
- *** $Id: Document.java,v 1.14 2004/04/07 14:17:27 florian Exp $
- */
-
-// Importiere benoetigte Klassen
 import java.io.*;
 import java.util.*;
 import javax.xml.transform.sax.*;

@@ -1,16 +1,3 @@
-/*
- * mksl3
- *
- * $Revision: 1.11 $
- * $Source: /selflinux/tools/mksl3/Index.java,v $
- * Autor: Florian Frank <florian.frank@pingos.org>
- *
- * Lizenz: GPL
- *
- *** $Id: Index.java,v 1.11 2004/04/07 14:17:27 florian Exp $
- */
-
-// Importiere benoetigte Klassen
 import java.io.*;
 import javax.xml.transform.stream.*;
 import javax.xml.transform.*;

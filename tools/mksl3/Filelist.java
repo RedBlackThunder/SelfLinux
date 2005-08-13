@@ -1,16 +1,3 @@
-/*
- * mksl3
- *
- * $Revision: 1.8 $
- * $Source: /selflinux/tools/mksl3/Filelist.java,v $
- * Autor: Florian Frank <florian.frank@pingos.org>
- *
- * Lizenz: GPL
- *
- *** $Id: Filelist.java,v 1.8 2004/04/07 14:17:27 florian Exp $
- */
-
-// Importiere benoetigte Klassen
 import java.io.*;
 import java.util.*;
 

@@ -1,17 +1,3 @@
-/*
- * mksl3
- *
- * $Revision: 1.4 $
- * $Source: /selflinux/tools/mksl3/Dirs.java,v $
- * Autor: Florian Frank <florian.frank@pingos.org>
- *
- * Lizenz: GPL
- *
- *** $Id: Dirs.java,v 1.4 2004/04/07 14:17:27 florian Exp $
- */
- 
-// Importiere benoetigte Klassen
-
 import java.io.*;
 import javax.xml.transform.stream.*;
 import javax.xml.transform.*;

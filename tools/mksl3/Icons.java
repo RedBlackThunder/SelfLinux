@@ -1,16 +1,4 @@
-/*
- * mksl3
- *
- * $Revision: 1.7 $
- * $Source: /selflinux/tools/mksl3/Icons.java,v $
- * Autor: Florian Frank <florian.frank@pingos.org>
- *
- * Lizenz: GPL
- *
- *** $Id: Icons.java,v 1.7 2004/04/07 14:17:27 florian Exp $
- */
- 
- import java.io.*;
+import java.io.*;
 
 public class Icons {
 	
