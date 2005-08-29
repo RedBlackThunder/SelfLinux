@@ -140,19 +140,7 @@ public class Document {
 			
 			// Analysiere Inputstream
 			while ((line = in.readLine()) != null) {
-				// Ignoriere Kommentare
-				if (line.matches("^.*<!--.*$")) {
-					if (line.matches("^.*-->.*$")) {
-						break;
-					} else {
-						while ((line = in.readLine()) != null) {
-							if (line.matches("^.*-->.*$")) {
-								break;
-							}
-						}						
-					}
-				}
-				//	Extrahiere Index-Referenz
+				// Extrahiere Index-Referenz
 				if (line.matches("^.*<index>.*$")) {
 					if (line.matches("^.*</index>.*$")) {
 						indextag=line;
