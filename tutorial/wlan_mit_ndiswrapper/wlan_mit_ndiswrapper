@@ -1,0 +1,95 @@
+Autor: Robin Haunschild
+E-Mail: H@unschild.de
+Lizenz: GPL
+
+
+
+WLAN mit ndiswrapper
+
+
+
+1. Einleitung
+
+Netzwerke und Linux ist ein alter Hut, aber anders sieht es da mit
+Funknetzwerken aus: Die meisten Hersteller von WLAN-Chips stellen keine
+Linuxtreiber bereit. Einige legen die Spezifikationen ihrer Chips nicht
+offen, so dass die Programmierung freier Treiber unmöglich oder
+zumindest unnötig erschwert wird. Windows-Treiber stellt eigentlich
+jeder Hersteller bereit. Daher ist es ansich eine naheliegende Idee,
+die Windows-Treiber zur Nutzung unter Linux zu verwenden, wenn es
+keine Linux-Treiber für den WLAN-Chip gibt.
+Dies erledigt ndiswrapper. 
+
+
+
+2. Installation
+
+Man benötigt zum Betrieb von ndiswrapper zum Einen das ndiswrapper
+Userspace-Programm und zum Anderen das ndiswrapper-Kernelmodul.
+Das Userspace-Programm ist in den meisten Distributionen als Paket
+enthalten. Mit dem Kernel-Modul verhält es sich meist auch so, hier aber
+nur für die Distributionskernel. Hat man einen eigenen Kernel oder
+bietet die verwendete Linux-Distribution kein ndiswrapper-Kernelmodul an,
+muß man es selbst kompilieren. Dazu müssen die Kernelquellen des
+verwendeten Kernels installiert sein, was bei einem selbstkompilierten
+Kernel der Fall sein sollte. Den Quellcode des Kernelmoduls kann man
+sich bei
+<!-- LINK: url="http://sourceforge.net/projects/ndiswrapper/" -->Sourceforge<!-- ENDLINK -->
+herunterladen.
+
+Durch ein
+
+<!-- Listing Beginn -->
+# make install
+<!-- Listing Ende -->
+
+als root im Verzeichnis des heruntergeladenen und ausgepacken
+Quellcodearchivs baut und installiert man das Kernelmodul für den
+momentan laufenden Kernel. Für jedes Kernel-Update muß dieser Vorgang
+wiederholt werden.
+
+
+
+3. Verwendung
+
+Zum Betrieb von ndiswrapper bentigt man noch die INF-Dateien des
+Windows-Treibers. Mit dem Kommando
+
+<!-- Listing Beginn -->
+# ndiswrapper -i /Pfad/zur/INF/Datei/Modellname.INF
+<!-- Listing Ende -->
+
+, ebenfalls als root, installiert man den Windows-Treiber in der
+ndiswrapper-Umgebung. Bevor man den Treiber verwenden kann, muß man
+das Kernelmodul laden:
+
+<!-- Listing Beginn -->
+# modprobe ndiswrapper
+<!-- Listing Ende -->
+
+Im Erfolgsfalle sollte man am Ende der Ausgabe von dmesg eine Meldung
+vom ndiswrapper erhalten.
+
+Mit:
+
+<!-- Listing Beginn -->
+# ndiswrapper -l
+<!-- Listing Ende -->
+
+Kann man sich die installierten Treiber anzeigen lassen. Wichtig dabei
+ist, dass nach mindestens einem installierten Treiber die
+Bestätigung "driver present, hardware present" erscheint. In diesem
+Fall hat ndiswrapper die passende Hardware zum geladenen Treiber
+gefunden. Damit man nach jedem Neustart diese Prozedur nicht
+wiederholen muß, speichert man sie durch ein:
+
+<!-- Listing Beginn -->
+# ndiswrapper -m
+<!-- Listing Ende -->
+
+ab. Nun kann man die Funknetzwerkkarte mit den Distributionseigenen
+Programmen oder auf der console mit
+<!-- FUTURELINK: chapter="Auf das kommende Kapitel Funknetzwerkkarten unter Linux verlinken" -->iwconfig<!-- ENDLINK -->
+
+konfigurieren.
+
