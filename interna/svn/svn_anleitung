@@ -66,39 +66,17 @@ Dann wechselst du in dieses Verzeichnis:
 
 user$ cd /home/<username>/selflinux/svn
 
-Jetzt benötigen wir noch einige kleine Skripte und Anpassungen, um um
-unzulänglichkeiten von Subversion herumzuarbeiten:
-
-1. Die Datei /usr/local/bin/svnssl mit folgendem Inhalt anlegen:
-
-#!/bin/sh
-# access svnserve daemon over an SSL tunnel
-exec openssl s_client -quiet -connect $1:3690 2> /dev/null
-
-2. Nun müssen wir Subversion noch mitteilen, dass wir dieses Skript
-verwenden wollen. Hierzu muss man die Datei
-/home/<username>/.subversion/config editieren. Es muss folgendes enthalten
-sein:
-
-[tunnels]
-ssl = svnssl
-
 Als nächstes logst du dich wie oben beschrieben in das Pingos.org-SVN ein.
 Mit folgendem Befehl wird das gesamte
-SL-Repository als Arbeitskopie readonly "ausgecheckt":
+SL-Repository als Arbeitskopie "ausgecheckt":
 
-svn checkout svn+ssl://neptun.pingos.org/selflinux/trunk/
-
-Dies ist für alle möglich, die keinen Schreibzugriff auf das SVN haben.
-
-
-Für alle mit Schreibzugriff checkt man mit folgendem Befehl aus:
-
-svn checkout svn+ssl://neptun.pingos.org/selflinux/trunk
+svn co http://subversion.pingos.org/selflinux/trunk
 
 Diesen Checkout der Arbeitskopie macht man eigentlich nur
 einmal. Später wird die Arbeitskopie durch den "svn update"-Befehl
 aktualisiert.
+
+Schreibzugriff auf das SL-Repository gibt es bei Frank.
 
 
 
