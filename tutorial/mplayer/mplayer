@@ -8362,26 +8362,6 @@ an.
     </textblock>
 
     <textblock>
-MPlayer benutzt <command>libdvdread</command> und <command>libdvdcss</command> für die DVD
-Entschlüsselung und Wiedergabe. Diese beiden Bibliotheken sind im
-<path>libmpdvdkit2/</path>-Unterverzeichnis enthalten und müssen nicht separat
-installiert werden. Wir haben uns dazu entschlossen, da wir einen
-Fehler in der <command>libdvdread</command> beheben mussten und einen Patch hinzufügt
-haben, welcher <strong>Caching-Support für gecrackte CSS-Keys</strong> für
-<command>libdvdcss</command> ermöglicht. Dies führt zu einer
-Geschwindigkeitssteigerung, da MPlayer nicht vor jeder Wiedergabe die
-Verschlüsselung erneut knacken muss.
-    </textblock>
-
-    <textblock>
-MPlayer kann jedoch auch die systemweiten <command>libdvdread</command>- und
-<command>libdvdcss</command>-Bibliotheken verwenden. Diese Lösung wird jedoch aus oben
-den oben genannten Gründen *nicht* empfohlen. Außerdem kann es zu
-Fehlern, Inkompatibilitäten zwischen den Bibliotheken und niedriger
-Geschwindigkeit führen.
-    </textblock>
-
-    <textblock>
 <strong>Unterstützung für DVD-Navigation:</strong>
     </textblock>
 
@@ -8390,20 +8370,6 @@ An einer Unterstützung für DVD-Navigation via <command>dvdnav</command> wird
 gearbeitet. Sie ist jedoch noch nicht vollendet und wird momentan
 nicht gewartet. Wer weiß - vielleicht lässt sie sich sogar
 kompilieren.
-    </textblock>
-
-    <textblock>
-<strong>Alte DVD-Unterstützung - Optional:</strong>
-    </textblock>
-
-    <textblock>
-Nützlich, wenn du verschlüsselte VOBs von der Festplatte abspielen
-willst. Kompiliere und installiere <strong>libcss</strong> 0.0.1 (nicht neuer). Wenn
-MPlayer sie nicht findet, dann benutze die Option <command>-csslib
-/pfad/zu/libcss.so</command>. Um diese Bibliothek zu benutzen musst du
-root-Rechte haben, das SUID-Bit für die MPlayer-Programmdatei setzen
-oder den fibmap_mplayer-Wrapper benutzen, der das SUID-Bit gesetzt
-hat.
     </textblock>
 
     <textblock>
@@ -8446,8 +8412,7 @@ Sei root oder gib der mplayer-Programmdatei das SUID-Bit.
      <li>
 Lass MPlayer das Wrapper-Programm fibmap_mplayer ausführen,
 welches das SUID-Bit gesetzt hat, um Zugriff auf die DVD zu
-bekommen (wird bei der alten DVD-Unterstützung mit der <command>libcss</command> so
-gemacht).
+bekommen.
      </li>
      <li>
 Lass die Dateisystemtreiber des Kernels links liegen und
@@ -8484,82 +8449,6 @@ Device, oder gib es beim Starten mit der Option <command>-dvd-device</command> s
 an.
     </textblock>
 
-    <textblock>
-<strong>DVD-Authentifizierung:</strong>
-    </textblock>
-
-    <textblock>
-Die Authentifizierung und Entschlüsselung der neuen DVD-Unterstützung
-wird durch eine gepatchte <command>libdvdcss</command> ermöglicht (siehe oben). Die
-Zugriffsmethoden können über die Umgebungsvariable <command>DVDCSS_METHOD</command>
-gewählt werden. Gültige Werte sind <command>key</command>,
-<command>disk</command> und <command>title</command>.
-    </textblock>
-
-    <textblock>
-Wird nichts angegeben, so versucht libdvdcss die folgenden Methoden
-(Standardwerte: key, title-Request):
-    </textblock>
-
-    <ol>
-     <li>
-<command>bus key:</command> Dieser Schlüssel wird während der Authentifizierung
-(eine lange Mischung aus ioctls und verschiedenen
-Schlüsselaustauschen, dient der Entschlüsselung) verhandelt. Er
-wird benutzt, um die title- und disk-Schlüssel vor dem Versand
-über den ungeschützten Systembus zu verschlüsseln und damit ein
-Ablauschen der Schlüssel zu verhindern. Der bus key ist
-erforderlich, um den verschlüsselten disk key zu erhalten und
-zu  entschlüsseln.
-     </li>
-     <li>
-<command>cached key:</command> MPlayer sucht nach bereits gecrackten Schlüsseln,
-die im <path>~/.mplayer/DVDKeys</path>-Verzeichnis gespeichert werden (das
-ist schnell ;).
-     </li>
-     <li>
-<command>key:</command> Falls kein cached key vorhanden ist, so versucht MPlayer
-den disk key mit Hilfe einer Reihe von mitgelieferten und
-einkompilierten player keys zu entschlüsseln.</li>
-     <li>
-<command>disk:</command> Wenn die key-Methode fehlschlägt (z.B. wenn keine
-Player-Schlüssel dabei sind), so versucht MPlayer, den disk key
-mit Hilfe eines brute-force-Algorithmusses zu knacken. Dieser
-Prozess belastet die CPU sehr und benötigt mindestens 64MB
-Speicher (16M 32Bit breite Einträge in einer Hashtabelle), um
-temporäre Werte zu speichern. Diese Methode sollte immer
-funktionieren, ist aber langsam.
-     </li>
-     <li>
-<command>title request:</command> Mit dem disk key kann MPlayer den
-verschlüsselten title key anfordern, der auf /versteckten
-Sektoren/, die mit <command>ioctl()</command> ausgelesen werden, auf der DVD
-gespeichert ist. Der Gebietsschutz der RPC-2-konformen
-DVD-Laufwerke wird in diesem Schritt realisiert. Bei manchen
-Laufwerken kann dieser Schritt fehlschlagen. Wenn die
-Anforderung erfolgreich war, wird der title key mit dem bus key
-und dem disk key entschlüsselt.
-     </li>
-     <li>
-<command>title:</command> Diese Methode wird dann benutzt, wenn die Anforderung für
-den title key fehlgeschlagen ist. Sie basiert nicht auf einem
-Datenaustausch mit dem DVD-Laufwerk sondern benutzt einen
-kryptographischen Angriff, der den title key versucht zu
-erraten. (Dabei wird versucht, sich wiederholende Muster im
-entschlüsselten Inhalt der VOBs zu finden. Geraten wird dann,
-dass die ersten verschlüsselten Bytes des dazu passenden
-verschlüsselten Textes eine Weiterführung dieser Muster sind.)
-Diese Methode ist auch als "known plaintext attack" (Angriff bei
-bekanntem Klartext) oder "DeCSSPlus" bekannt. In seltenen Fällen
-kann auch diese Methode fehlschlagen, wenn nicht genug
-verschlüsselte Daten auf der DVD vorhanden sind, um einen
-statistischen Angriff zu starten, oder weil sich der Schlüssel
-mitten in einem Titel ändert. Diese Methode ist die einzige
-Möglichkeit, den auf der Festplatte gespeicherten Inhalt einer
-DVD zu entschlüsseln und bei RPC2-Laufwerken mit falschem
-Regionalcode (langsam).
-     </li>
-    </ol>
     <textblock>
 RPC-1-konforme DVD-Laufwerke sind nur über den Gebietsschutz
 geschützt, den der Softwareplayer bietet. RPC-2-konforme Laufwerke
@@ -8931,24 +8820,6 @@ Kernel.
 <strong>A:</strong> Du musst die Makefile.cfg von SVGAlib editieren. Kommentier
 <command>BACKGROUND = y</command> aus.
 </quotation>
-
-    <textblock>
-<strong>Q:</strong> Ich habe MPlayer mit libdvdcss/libdivxdecore-Unterstützung
-kompiliert, aber wenn ich versuche es zu starten, erhalte ich
-eine Fehlermeldung, obwohl ich die Datei überprüft habe und sie
-sich in <command>/usr/local/lib</command> befindet! Die Fehlermeldung lautet:</textblock>
-
-    <shell>
-     <output>
-error while loading shared libraries: lib.so.0: cannot load
-shared object file: No such file or directory
-     </output>
-    </shell>
-
-    <quotation>
-<strong>A:</strong> Füge <path>/usr/local/lib</path> deiner <path>/etc/ld.so.conf</path> Datei hinzu und
-starte <command>ldconfig</command>.
-    </quotation>
 
     <textblock>
 <strong>Q:</strong> Hmm, eigenartig. Beim Laden des mga_vid.o-Kernelmodules kann ich
@@ -9760,19 +9631,6 @@ standardmäßig verwendet wird.
     </quotation>
 
     <textblock>
-<strong>Q:</strong> Kann ich libdvdread und libdvdcss z.B. auf meinem süssen
- Sparc/Solaris kompilieren?
-    </textblock>
-
-    <quotation>
-<strong>A:</strong> Wer weiß... Angeblich soll es funktionieren. Teste es, und sag
-uns dann bitte bescheid. Bitte lies auch die Dokumentation von
-libdvdread und seine Homepage. Wir sind nicht die Autoren von
-libdvdread. Verwende libmpdvdkit2, welches sich in den
-MPlayer-Sourcen befindet und standardmäßig verwendet wird.
-    </quotation>
-
-    <textblock>
 <strong>Q:</strong> Was ist mit den Untertiteln? Kann MPlayer sie anzeigen?
     </textblock>
 
@@ -9798,18 +9656,6 @@ abspielen zu können?
 <strong>A:</strong> Nein, das ist nur bei der alten DVD-Unterstützung notwendig.
 Natürlich brauchst du aber die Zugriffsrechte für das DVD-Laufwerk
 (in <command>/dev</command>).
-    </quotation>
-
-    <textblock>
-<strong>Q:</strong> Wo kann ich die libdvdread- und libcss-Pakete bekommen?
-    </textblock>
-
-    <quotation>
-<strong>A:</strong> Die werden nicht benötigt. Verwende libmpdvdkit2, welches sich
-in den MPlayer-Sourcen befindet und standardmäßig verwendet wird.
-Die erwähnten Pakete können von der
-<ref lang="en" url="http://www.dtek.chalmers.se/groups/dvd">Ogle-Seite</ref>
-heruntergeladen werden.
     </quotation>
 
     <textblock>
