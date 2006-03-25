@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
 <!--
  * {Motif Window Manager (mwm)}
  * Copyright {Jörg Kositza}
@@ -11,181 +13,307 @@
  *** $ $
 -->
 
+<chapter runlevel="{user advanced}">
 
+ <title>{Motif Window Manager (mwm)}</title>
 
-1 Einleitung
+ <author>
+  <name>{Jörg Kositza}</name>
+  <mailto>{jkositza@yahoo.de}</mailto>
+ </author>
 
-Der Motif Window Manager (mwm) ist der Standard-Fenstermanager
+ <layout>
+  <name>{Robin Haunschild}</name>
+  <mailto>{H@unschild.de}</mailto>
+ </layout>
+
+ <license>GPL</license>
+ <index>{mwm}</index>
+
+ <keyword>{mwm}</keyword>
+ <keyword>{Windowmanager}</keyword>
+
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
+
+   <textblock>
+Der Motif Window Manager (mwm) ist der Standard-Fenster-Manager
 unter UNIX-Systemen.
 Man kann ihn unter dem Namen openmotif von
-http://www.rpmseek.com oder von http://rpm.pbone.net herunterladen.
+<ref lang="de" url="http://www.rpmseek.com">rpmseek</url> oder von 
+<ref lang="en" url="http://rpm.pbone.net"rpm pbone</ref> herunterladen.
 Er zeichnet sich dadurch aus, daß er keinerlei
 Hintergrundprozesse startet. Der mwm ist somit auch für
 langsame Rechner bestens geeignet.
 Er stellt eine Iconbox bereit; der Bildschirm sieht somit
 immer aufgeräumt aus.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Aussehen und Bedienung
+   </heading>
 
-
-2 Aussehen und Bedienung
-
-<!-- Bild Anfang -->
-
+   <image height="480">
+    <title>
+Desktop
+    </title>
+    <filename>
 mwm_mwm-desktop.png
+    </filename>
+   </image>
 
-<!-- Bild Ende -->
-
+   <textblock>
 Beim ersten Start präsentiert sich mwm aufgeräumt und meist
 sehr leer. Ein Klick mit einer der 3 Maustasten auf einen
 freien Platz der Arbeitsfläche bringt jeweils ein anderes Menü
 hervor.
+   </textblock>
 
-<!-- Bild Anfang -->
-
+   <image height="232">
+    <title>
+Menü
+    </title>
+    <filename>
 mwm_mwm-menu1.png
+    </filename>
+   </image>
 
-<!-- Bild Ende -->
-
+   <textblock>
 Bei gedrückter Maustaste wählt man die gewünschte Funktion
 aus. Beim Loslassen der Maustaste verschwindet das Menü wieder
 und kurz darauf erscheint das Fenster der ausgewählten
 Funktion.
 Nach der Neuinstallation von Openmotif ist lediglich das Menü
 der rechten Maustaste belegt.
-Man kann das Drücken der 3 Maustasten noch mit der Funktion
-Doubleclick und dem parallelen Betätigen der Shift-,Ctrl- oder
-Alt-Taste kombinieren. Somit erhält man 15 verschiedene Menüs
+Man kann das Drücken der 3 Maustasten noch mit einem Doppelklick
+und dem gleichzeitigen Betatigen der Tasten
+<strong>SHIFT</strong>, <strong>CTRL</strong> oder 
+<strong>ALT</strong>kombinieren. Somit erhält man 15 verschiedene Menüs
 und kann darauf eine große Anzahl Funktionen unterbringen.
 Normalerweise befindet sich am unteren Bildschirmrand die
 Iconbox. Man kann sie jedoch auch an beliebiger anderer Stelle
 auf dem Bildschirm unterbringen. Die Icons lassen sich mit
 kleinen 50x50 Pixel großen xpm-Grafiken ausfüllen. Hierzu
 später mehr.
-Mit der Funktion display läßt sich ein Hntergrundbild
-einrichten. Diese Funktion ist Bestandteil des Pakets
-ImageMagick. Mit Shuffle Up bzw. Shuffle Down können Fenster
+Mit der Befehl <command>display</command> läßt sich ein Hntergrundbild
+einrichten. Dieses Programm ist Bestandteil des Pakets
+<strong>ImageMagick</strong>. Mit <strong>Shuffle Up</strong> bzw. <strong>Shuffle Down</strong> können Fenster
 in den Vordergrund bzw. Hintergrund geschaltet werden. Mit
-Pack Icons lassen sich die Icons der Iconbox
-zusammenschieben. Mit Restart kann der Fenstermanager nach
-einer Änderung der Parameterdateien neu gestartet werden.
+<strong>Pack Icons</strong> lassen sich die Icons der Iconbox
+zusammenschieben. Mit <strong>Restart</strong> kann der Fenster-Manager nach
+einer Änderung der Konfigurationsdateien neu gestartet werden.
+   </textblock>
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Besonderheiten
+   </heading>
 
+   <section>
+    <heading>
+Fenster verändern
+    </heading>
 
-3 Besonderheiten
-
-
-
-3.1 Fenster verändern
-
+    <textblock>
 Wenn man mit der linken Maustaste auf das kleine Qudrat links
-oben im Fenster klickt,so erhält man das folgende Fenstermenü:
+oben im Fenster klickt, so erhält man das folgende Fenstermenü:
+    </textblock>
 
-<!-- Bild Anfang -->
-
+    <image height="296">
+     <title>
+Fenstermenü
+     </title>
+     <filename>
 mwm_mwm-fenstermenu.png
+     </filename>
+    </image>
 
-<!-- Bild Ende -->
-
+    <textblock>
 mit den Funktionen:
+    </textblock>
 
-<!-- Aufzählung Anfang -->
-
-- Restore: Fenster von Bildschirmgröße auf Normalgröße verkleinern
+    <ul>
+     <li>
+Restore: Fenster von Bildschirmgröße auf Normalgröße verkleinern
 (vorherige Fenstergröße Wiederherstellen)
-- Move: Fenster verschieben
-- Size: Fenstergröße ändern
-- Minimize: Fenster in der Iconbox verschwinden lassen
-- Maximize: Fenster auf Bildschirmgröße vergrößern
-- Raise: Fenster in den Vordergrund klicken
-- Lower: Fenster in den Hintergrund klicken
-- Close: Fenster schließen
+     </li>
+     <li>
+Move: Fenster verschieben
+     </li>
+     <li>
+Size: Fenstergröße ändern
+     </li>
+     <li>
+Minimize: Fenster in der Iconbox verschwinden lassen
+     </li>
+     <li>
+Maximize: Fenster auf Bildschirmgröße vergrößern
+     </li>
+     <li>
+Raise: Fenster in den Vordergrund klicken
+     </li>
+     <li>
+Lower: Fenster in den Hintergrund klicken
+     </li>
+     <li>
+Close: Fenster schließen
+     </li>
+    </ul>
 
-<Aufzählung Ende -->
-
+    <textblock>
 Die obigen Funktionen lassen sich auch folgendermaßen
 ausführen:
+    </textblock>
 
-<!-- Aufzählung Anfang -->
+    <ul>
+     <li>
+Wiederherstellen: mit linker Taste auf rechtes Quadrat klicken
+     </li>
+     <li>
+Fenster verschieben: mit linker Taste auf die Titelleiste klicken
+     </li>
+     <li>
+Größe ändern: mit linker Taste auf den Rand klicken
+     </li>
+     <li>
+Minimieren: mit linker Taste auf 2. Quadrat von rechts klicken
+     </li>
+     <li>
+Maximieren: mit linker Taste auf rechtes Quadrat klicken
+     </li>
+     <li>
+Fenster in den Vordergrund: Titelleiste anklicken
+     </li>
+     <li>
+Fenster aus Iconbox auf den Bildschirm: Doppelklick auf Icon
+     </li>
+     <li>
+Fenster schließen: Doppelklick auf linkes Quadrat
+     </li>
+    </ul>
 
-- Wiederherstellen: mit linker Taste auf rechtes Quadrat klicken
-- Fenster verschieben: mit linker Taste auf die Titelleiste klicken
-- Größe ändern: mit linker Taste auf den Rand klicken
-- Minimieren: mit linker Taste auf 2. Quadrat von rechts klicken
-- Maximieren: mit linker Taste auf rechtes Quadrat klicken
-- Fenster in den Vordergrund: Titelleiste anklicken
-- Fenster aus Iconbox auf den Bildschirm: Doppelklick auf Icon
-- Fenster schließen: Doppelklick auf linkes Quadrat
-
-<!-- Aufzählung Ende -->
-
-
-
-3.2 Konfigurationsdateien
-
+   </section>
+   <section>
+    <heading>
+Konfigurationsdateien
+    </heading>
+   
+    <textblock>
 Es existieren drei verschiedene System-Konfigurationsdateien. Man
 kann sich eine Kopie im benutzereigenen Verzeichnis erstellen und diese
 nach Belieben verändern.
+    </textblock>
 
-<!-- Beginn Tabelle -->
-
+    <file>
+     <content>
 Systemdatei                        Kopie im benutzereigenen Verzeichnis
 /usr/X11R6/lib/X11/system.mwmrc    .mwmrc         
 /etc/X11/xinit/xinitrc             .xinitrc       
 /usr/X11R6/lib/X11/Xresources      .Xdefaults     
+     </content>
+    </file>
 
-<!-- Ende Tabelle -->
-
-Im Verzeichnis /usr/X11R6/lib/X11/app-defaults befinden sich
+    <textblock>
+Im Verzeichnis <path>/usr/X11R6/lib/X11/app-defaults</path> befinden sich
 Dateien mit Standardwerten zu vielen installierten
 grafischen Programmen. Die entsprechenden Werte für mwm lassen sich
 in der Manpage nachsehen.
+    </textblock>
 
-<!-- Beginn Aufzählung -->
-
-- .mwmrc: In dieser Datei befinden sich sämtliche Einstellungen zu den
+    <ul>
+     <li>
+.mwmrc: In dieser Datei befinden sich sämtliche Einstellungen zu den
 Menüs. Manualseite: mwmrc
+     </li>
+     <li>
 - .xinitrc: In dieser Datei befinden sich sämtliche Kommandos, die beim
-Start des Fenstermanagers ausgeführt werden.
+Start des Fenster-Managers ausgeführt werden.
+     </li>
+     <li>
 - .Xdefaults: In dieser Datei befinden sich sämtliche Einstellungen, die
-das Aussehen des Fenstermanagers betreffen, insbesondere die Farben.
+das Aussehen des Fenster-Managers betreffen, insbesondere die Farben.
+     </li>
+    </ul>
+   </section>
 
-<!-- Ende Aufzählung -->
+  </section>
+ </split>
 
+ <split>
+  <section>
+   <heading>
+Konfiguration
+   </heading>
 
-
-4 Konfiguration
- 
-Sollte in der Datei .mwmrc etwas verändert worden sein, muß mwm
+   <textbolck>
+Sollte in der Datei <strong>.mwmrc</strong> etwas verändert worden sein, muß mwm
 neu gestartet werden. Nach Änderungen in der Datei
-.Xdefaults ist vor einem Neustart das Kommando
-xrdb .Xdefaults
-einzugeben.
+<strong>.Xdefaults</strong> ist vor einem Neustart das Kommando
+<command>xrdb .Xdefaults</command> einzugeben.
+   </textblock>
+    <section>
+     <heading>
+.mwmrc
+     </heading>
 
-
-
-4.1 .mwmrc
-
+     <textblock>
 In dieser Datei befinden sich die Konfigurationen sämtlicher
 Menüs.
+     </textblock>
 
-<!-- Beginn Aufzählung -->
-
-- Root Menu Description: Hier werden sämtliche Anwendermenüs beschrieben
-    - f.title: Titelzeile
-    - f.exec: Ausführen von Funktionen
-    - f.separator: Trennstrich im Menü
-- Default Window Menu: Hier wird das Fenstermenü beschrieben. (Klick
+     <ul>
+      <li>
+Root Menu Description: Hier werden sämtliche Anwendermenüs beschrieben
+      </li>
+      <ul>
+       <li>
+    f.title: Titelzeile
+       </li>
+       <li>
+    f.exec: Ausführen von Funktionen
+       </li>
+       <li>
+    f.separator: Trennstrich im Menü
+       </li>
+       <li>
+      <ul>
+Default Window Menu: Hier wird das Fenstermenü beschrieben. (Klick
 auf das linke kleine Quadrat)
-- Default Key Bindings: Der Fenstermanager kann auch über die Tastatur
-bedient werden, z.B. Alt Shift Esc bzw. Alt Esc schalten das Fenster
-in den Vorder-/Hintergrund.
-- Button Binding Description(s): Hier werden die Tastenkombinationen von
-Maustasten ,Ctrl-,Alt- und Shift-Taste sowie Doubleclick eingerichtet.
+      </li>
+      <li>
+Default Key Bindings: Der Fenster-Manager kann auch über die Tastatur
+bedient werden, z.B. 
+      <keycomb mode="hold">
+       <key>ALT</key>
+       <key>SHIFT</key>
+       <key>ESC</key>
+      </keycomb>
+bzw.
+      <keycomb mode="hold">
+       <key>ALT</key>
+       <key>ESC</key>
+      </keycomb>
+schalten das Fenster in den Vorder- bzw. Hintergrund.
+      </li>
+      <li>
+Button Binding Description(s): Hier werden die Kombinationen von 
+Maustasten, <strong>Ctrl</strong>-, <strong>Alt</strong>- und <strong>Shift</strong>-Taste 
+sowie der Doppelklick eingerichtet.
+      </li>
+     </ul>
 
-<!-- Ende Aufzählung -->
-
-<!-- Beginn Listing -->
-
+     <file>
+      <content> <![CDATA[
 !!                                                         
 !! Root Menu Description                                   
 !!                                                         
@@ -280,27 +408,37 @@ Buttons DefaultButtonBindings
         Ctrl<Btn3Down>   root        f.menu RootMenu3c     
         Alt<Btn3Down>    root        f.menu RootMenu3a     
 }                                                          
+      ]]></content>
+    </file>
+   </section>
+  </split>
 
+  </split>
+   <section>
+    <heading>
+.xinitrc
+    </heading>
 
-
-4.2 .xinitrc
-
+    <textblock>
 In dieser Datei befinden sich sämtliche Kommandos, die beim Start des
-Fenstermanagers ausgeführt werden.
+Fenster-Managers ausgeführt werden.
+    </textblock>
 
+    <textblock>
 Zunächst werden xclock und xosview gestartet. Danach werden zwei
 minimierte xterm-Fenster eröffnet und das Hintergrundbild eingerichtet.
 Die wichtigen Zeichen | / \ { [ ] } und @ sind nur sehr umständlich über
-AltGr bzw. Shift zu erreichen. Daher wurden diese Zeichen auf die
-Funktionstasten F1 - F9 gelegt. Falls die Funktionstasten in irgendeinem
-Programm benötigt werden, müssen diese Zeilen in .xinitrc deaktiviert
+<strong>ALTGR</strong> bzw. <strong>SHIFT</strong> zu erreichen. Daher wurden diese Zeichen auf die
+Funktionstasten <strong>F1</strong> bis <strong>F9</strong> gelegt. Falls die Funktionstasten in irgendeinem
+Programm benötigt werden, müssen diese Zeilen in <strong>.xinitrc</strong> deaktiviert
 werden. Danach werden auch noch die eigentlich überflüssigen
 Windows-Tasten einer sinnvollen Verwendung zugeführt. Zu guter letzt
 wird noch der numerische Tastaturblock belegt, welcher standardmäßig
 unter Linux nicht belegt ist.
+    </textblock>
 
-<!-- Anfang Listing -->
-
+    <file>
+     <content> <![CDATA[
 [...]
 #                                                           
 # Add your own lines here...                                
@@ -344,38 +482,57 @@ xmodmap -e "keycode 81 = 9"
 xmodmap -e "keycode 90 = 0"                                 
 xmodmap -e "keycode 91 = period"                            
 [...]
+      ]]></content>
+    </file>
+   </section>
+  </split>
 
-<!-- Ende Listing -->
+  <split>
+   <section>
+    <heading>
+.Xdefaults
+    </heading>
 
-
-
-4.3 .Xdefaults
-
+    <textblock>
 In dieser Datei befinden sich sämtliche Voreinstellungen z. B.
 Fensterfarben, Fenstergrößen, Menüfarben. Der Eintrag:
+    </textblock>
 
-Mwm*AUSWERT*iconImage: auswert.xpm
+    <textblock>
+<strong>Mwm*AUSWERT*iconImage: auswert.xpm</strong>
+    </textblock>
 
+    <textblock>
 stellt für die Funktion:
+    </textblock>
 
-xosview +net +disk -name AUSWERT -title XOSVIEW -geometry - 40+420 &
+    <textblock>
+     <command>
+xosview +net +disk -name AUSWERT -title XOSVIEW -geometry - 40+420 &amp;
+     </command>
+    </textblock>
 
+    <textblock>
 mit dem Namen AUSWERT das Iconbild auswert.xpm zur Verfügung.
+    </textblock>
 
-<!-- Anfang Bild -->
-
+    <image height="157">
+     <title>
+Xosview-Auswertung
+     </title>
+     <filename>
 mwm_mwm-icon.png
+     </filename>
+    </image>
 
-<!-- Ende Bild -->
-
+    <textblock>
 Hier ein Beispiel für die Datei .Xdefaults, das ein Aussehen von mwm wie
 in den Abbildungen bewirkt.
+    </textblock>
 
-<!-- Beginn Listing -->
-
-.                                              
-.                                              
-.                                              
+    <file>
+     <content> <![CDATA[
+[...]
                                                
 Mwm*UseIconBox:                 true           
 Mwm*iconBoxGeometry:            10x1+1-1       
@@ -435,49 +592,65 @@ Mwm*activeBackground:  turquoise
 Mwm*activeForeground:  orangered               
 Mwm*wMenuButtonClick2:         True            
 Mwm*doubleClickTime: 1000                      
-.                                              
-.                                              
-.                                              
+[...]
+      ]]></content>
+    </file>
+   </section>
+  </split>
 
-<!-- Ende Listing -->
+  <split>
+   <section>
+    <heading>
+Sonstiges
+    </heading>
 
-
-
-4.4 Sonstiges
-
+    <textblock>
 Es lassen sich anstelle von Texten auch kleine Bitmap-Grafiken in die
 Menüs einfügen.
+    </textblock>
 
-<!-- Anfang Bild -->
-
+    <image height="105">
+     <title>
+Menü mit Bitmapgrafik
+     </title>
+     <filename>
 mwm_mwm-menu.png
+     </filename>
+    </image>
 
-<!-- Ende Bild -->
+    <textblock>
+Hierzu ist die folgende Änderung in <strong>.mwmrc</strong> vorzunehmen:
+    </textblock>
 
-Hierzu ist die folgende Änderung in .mwmrc vorzunehmen:
-
-<!-- Anfang Listing -->
-
+    <file>
+     <content> <![CDATA[
 Menu RootMenu3                        
 {                                     
  "Root Menu3"           f.title       
  @xskat.xbm             f.exec "xskat"
 }                                     
+      ]]></content>
+    </file>
 
-<!-- Ende Listing -->
-
+    <textblock>
 Weiterhin lassen sich auch Untermenüs erzeugen.
+    </textblock>
 
-<!-- Anfang Bild -->
-
+    <image height="130">
+     <title>
+Untermenüs
+     </title>
+     <filename>
 mwm_mwm-submenu.png
+     </filename>
+    </image>
 
-<!-- Ende Bild -->
+    <textblock>
+In <strong>.mwmrc</strong> ist hierzu folgende Eintragung notwendig:
+    </textblock>
 
-In .mwmrc ist hierzu folgende Eintragung notwendig:
-
-<!-- Anfang Listing -->
-
+   <file>
+     <content> <![CDATA[
 Menu RootMenu1s                            
 {                                          
  "Root Menu 1s"          f.title           
@@ -488,15 +661,24 @@ Menu RootMenu1s1
  "Root Menu 1s1"         f.title           
  @xskat.xbm              f.exec "xskat"    
 }                                          
+      ]]></content>
+    </file>
+   </section>
+  </split>
+ </section>
 
-<!-- Ende Listing -->
+ <split>
+  <section>
+   <heading>
+Rückmeldung
+   </heading>
 
-
-
-5 Rückmeldung
-
+   <textblock>
 Der Autor freut sich über konstruktive Kritik, gefundene Fehler,
-Anregungen, etc.  Zu erreichen ist er per E-Mail an Jörg Kositza
-(jkositza@yahoo.de). Viel Spaß bei der Konfiguration und der Nutzung
-von mwm.
-
+Anregungen, etc.  Zu erreichen ist er per E-Mail an <name email="jkositza@yahoo.de">Jörg Kositza</name>.
+Viel Spaß bei der Konfiguration und der Nutzung
+von <strong>mwm</strong>.
+   </textblock>
+  </section>
+ </split>
+</chapter>
