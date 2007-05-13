@@ -1,15 +1,30 @@
-Autor: Robin Haunschild
-E-Mail: H@unschild.de
-Lizenz: GPL
+<?xml version="1.0" encoding="iso-8859-1"?>
 
+<chapter>
+ <title>WLAN mit Ndiswrapper</title>
 
+ <author>
+  <name>Robin Haunschild</name>
+  <mailto>H@unschild.de</mailto>
+ </author>
 
-WLAN mit ndiswrapper
+ <layout>
+  <name>Robin Haunschild</name>
+  <mailto>H@unschild.de</mailto>
+ </layout>
 
+ <license>GPL</license>
 
+ <index>WLAN mit Ndiswrapper</index>
 
-1. Einleitung
+ <keyword>Ndiswrapper</keyword>
+ <keyword>WLAN</keyword>
 
+ <split>
+  <section>
+   <heading>Einleitung</heading>
+
+   <textblock>
 Netzwerke und Linux ist ein alter Hut, aber anders sieht es da mit
 Funknetzwerken aus: Die meisten Hersteller von WLAN-Chips stellen keine
 Linuxtreiber bereit. Einige legen die Spezifikationen ihrer Chips nicht
@@ -19,11 +34,14 @@ jeder Hersteller bereit. Daher ist es ansich eine naheliegende Idee,
 die Windows-Treiber zur Nutzung unter Linux zu verwenden, wenn es
 keine Linux-Treiber für den WLAN-Chip gibt.
 Dies erledigt ndiswrapper. 
+   </textblock>
 
+  </section>
 
+  <section>
+  <heading>Installation</heading>
 
-2. Installation
-
+   <textblock>
 Man benötigt zum Betrieb von ndiswrapper zum Einen das ndiswrapper
 Userspace-Programm und zum Anderen das ndiswrapper-Kernelmodul.
 Das Userspace-Programm ist in den meisten Distributionen als Paket
@@ -34,62 +52,95 @@ muss man es selbst kompilieren. Dazu müssen die Kernelquellen des
 verwendeten Kernels installiert sein, was bei einem selbstkompilierten
 Kernel der Fall sein sollte. Den Quellcode des Kernelmoduls kann man
 sich bei
-<!-- LINK: url="http://sourceforge.net/projects/ndiswrapper/" -->Sourceforge<!-- ENDLINK -->
+<ref lang="en" url="http://sourceforge.net/projects/ndiswrapper/">Sourceforge</ref>
 herunterladen.
+   </textblock>
 
+   <textblock>
 Durch ein
+   </textblock>
 
-<!-- Listing Beginn -->
-# make install
-<!-- Listing Ende -->
+   <shell>
+    <root path="/usr/src/modules/ndiswrapper">
+make install
+    </root>
+   </shell>
 
+   <textblock>
 als root im Verzeichnis des heruntergeladenen und ausgepackten
 Quellcodearchivs baut und installiert man das Kernelmodul für den
 momentan laufenden Kernel. Für jedes Kernel-Update muss dieser Vorgang
 wiederholt werden.
+   </textblock>
+ </section>
 
+ <section>
+  <heading>Verwendung</heading>
 
-
-3. Verwendung
-
+   <textblock>
 Zum Betrieb von ndiswrapper benötigt man noch die INF-Dateien des
 Windows-Treibers. Mit dem Kommando
+   </textblock>
 
-<!-- Listing Beginn -->
-# ndiswrapper -i /Pfad/zur/INF/Datei/Modellname.INF
-<!-- Listing Ende -->
+   <shell>
+    <root path="~">
+ndiswrapper -i /Pfad/zur/INF/Datei/Modellname.INF
+    </root>
+   </shell>
 
-, ebenfalls als root, installiert man den Windows-Treiber in der
+   <textblock>
+ebenfalls als root, installiert man den Windows-Treiber in der
 ndiswrapper-Umgebung. Bevor man den Treiber verwenden kann, muss man
 das Kernelmodul laden:
+   </textblock>
 
-<!-- Listing Beginn -->
-# modprobe ndiswrapper
-<!-- Listing Ende -->
+   <shell>
+    <root path="~">
+modprobe ndiswrapper
+    </root>
+   </shell>
 
+   <textblock>
 Im Erfolgsfalle sollte man am Ende der Ausgabe von dmesg eine Meldung
 vom ndiswrapper erhalten.
+   </textblock>
 
+   <textblock>
 Mit:
+   </textblock>
 
-<!-- Listing Beginn -->
-# ndiswrapper -l
-<!-- Listing Ende -->
+   <shell>
+    <root path="~">
+ndiswrapper -l
+    </root>
+   </shell>
 
+   <textblock>
 kann man sich die installierten Treiber anzeigen lassen. Wichtig dabei
 ist, dass nach mindestens einem installierten Treiber die
 Bestätigung "driver present, hardware present" erscheint. In diesem
 Fall hat ndiswrapper die passende Hardware zum geladenen Treiber
 gefunden. Damit man nach jedem Neustart diese Prozedur nicht
 wiederholen muss, speichert man sie durch ein:
+   </textblock>
 
-<!-- Listing Beginn -->
-# ndiswrapper -m
-<!-- Listing Ende -->
+   <shell>
+    <root path="~">
+ndiswrapper -m
+    </root>
+   </shell>
 
+   <textblock>
 ab. Nun kann man die Funknetzwerkkarte mit den Distributionseigenen
 Programmen oder auf der console mit
-<!-- FUTURELINK: chapter="Auf das kommende Kapitel Funknetzwerkkarten unter Linux verlinken" -->iwconfig<!-- ENDLINK -->
-
+<ref chapter="wlan" iref="iwconfig">iwconfig</ref>
 konfigurieren.
+   </textblock>
 
+   <textblock>
+Wie immer freut sich der Autor über konstruktive Kritik, gefundene
+Fehler, Anregungen, etc.
+   </textblock>
+  </section>
+ </split>
+</chapter>
