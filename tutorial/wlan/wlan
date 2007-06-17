@@ -14,7 +14,7 @@ Dieses Kapitel von SelfLinux erklärt Schritt für Schritt, wie man seine
 Funknetzwerkschnittstelle unter Linux einrichtet. Dabei wird auch das
 Thema Verschlüsselung angesprochen. Lange Zeit war es ein großes Problem,
 seine Netzwerkkarte unter Linux zum Funken zu bewegen. Mit der Zeit werden
-aber immer mehr WLAN-Chips nativ vom Linux-Kernel unterstützt. Der Rest
+aber immer mehr WLAN-Chips direkt vom Linux-Kernel unterstützt. Der Rest
 kann - zumindest auf 32-Bit-Linux-Systemen - mit dem Ndiswrapper und
 dem Windows-Treiber verwendet werden.
 
@@ -35,9 +35,9 @@ installierten Linux-Kernels.
 
 Je nach benötigtem/verwendetem Treiber unterscheiden sich die
 Gerätenamen für die WLAN-Verbindung. Bei Chipsätzen, die per Ndiswrapper
-angesteuert werden, heißt das Gerät wlan0, andere Treiber hingegen
-bevorzugen meist die ethx-Nomenklatur. In diesem Kapitel wird als
-Grätename für das Netzwerkgerät wlan0 verwendet.
+angesteuert werden, heißt das Gerät wlanX, andere Treiber hingegen
+bevorzugen meist die ethX-Nomenklatur. In diesem Kapitel wird als
+Gerätename für das Netzwerkgerät wlan0 verwendet.
 
 
 
@@ -108,7 +108,7 @@ lo        no wireless extensions.
 eth0      no wireless extensions.
 <--! END LISTING -->
 
-Dabei stellt lo die loopback-Scnittstelle und eth0 das kabelgebundene
+Dabei stellt lo die loopback-Schnittstelle und eth0 das kabelgebundene
 Netzwerkgerät dar.
 Ein Beispiel für die Ausgabe, wenn eine drahtlose und eine kabelgebundene
 Schnittstelle vorhanden sind könnte etwa so aussehen:
@@ -138,7 +138,7 @@ iwconfig wlan0 essid "ESSID"
 Der erste Befehl sorgt dafür, daß der WLAN-Chip in den verwalteten Modus
 versetzt wird. Alternativ kann man durch den Parameter "Ad-Hoc" ein
 sogenanntes "Point-to-Point"-Netzwerk zwischen zwei Funknetzwerkkarten
-aufbauen. Der zweite Befehl setzt die Session-ID. Auf den Wert ESSID.
+aufbauen. Der zweite Befehl setzt die Session-ID auf den Wert ESSID.
 Mit der ESSID "*" kann man jedem beliebigen offenen Netzwerk beitreten.
 
 Nach dieser Konfiguration kann man, wenn sich im Funknetzwerk ein
@@ -172,10 +172,12 @@ gibt es wahrscheinlich auch Pakete Ihrer Linux-Distribution. Im Folgenden
 wird die Einrichtung der WPA-Verschlüsselung mit wpasupplicant
 beschrieben.
 
+
+
 4.1 WPASupplicant
 
 Nach der Installation von WPASupplicant trennen Sie nur noch die
-Kofiguration und das WPA-Zertifikat vom Betrieb Ihres "sicheren"
+Konfiguration und das WPA-Zertifikat vom Betrieb Ihres "sicheren"
 Funknetzwerkes. Das WPA-Zertifikat erhält man vom Betreiber des
 Funknetzwerkes und sollte es im Linux-Dateisystem ablegen.
 
@@ -205,7 +207,7 @@ network={
 
 Selbstverständlich müssen die Werte von ssid, identity, password und
 ca_cert ersetzt werden. Ggf. verwenden Sie auch andere
-Autentifikationsmethoden dazu sollten Sie den Adminitrator des
+Authentifikationsmethoden dazu sollten Sie den Administrator des
 betreffenden Funknetzwerkes oder das Handbuch Ihrer Funkstation
 konsultieren.
 
@@ -250,12 +252,12 @@ ist, mit dem bekannten Befehl "ifup wlan0" aktiviert werden.
 
 5. Schlußbemerkungen
 
-Es dürfte bekannt sein, daß es wenig hilft, ein Netwerk mit WEP
+Es dürfte bekannt sein, daß es wenig hilft, ein Netzwerk mit WEP
 (Wired Equivalent Privacy) zu verschlüsseln. Lauscht ein versierter
 Angreifer wenige Minuten im verschlüsselten Netzwerkverkehr ist ihm
 aufgrund der Schwäche des Verschlüsselungsalgorithmus von WEP der
 ehemals geheime Schlüssel bekannt. Allein das Verstecken der ESSID
-bietet auch keinen asureichenden Schutz. Am Besten verwendet man eine
+bietet auch keinen ausreichenden Schutz. Am Besten verwendet man eine
 WPA-Verschlüsselung und versteckt die ESSID/SSID. Ansonsten ist nicht
 nur die Sicherheit des eigenen Funknetzwerkes in Gefahr, sondern man
 hat mit juristischen Kosequenzen zu rechnen, wenn jemand über ein nicht
