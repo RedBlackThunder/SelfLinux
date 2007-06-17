@@ -1,15 +1,36 @@
-Autor: Robin Haunschild
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--Autor: Robin Haunschild
 E-Mail: H@unschild.de
 Lizenz: GPL
+-->
+<chapter>
+ <title>WLAN unter Linux</title>
+  <author>
+  <name>Robin Haunschild</name>
+  <mailto>H@unschild.de</mailto>
+ </author>
 
+ <layout>
+  <name>Robin Haunschild</name>
+  <mailto>H@unschild.de</mailto>
+ </layout>
 
+ <license>GPL</license>
 
-WLAN unter Linux
+ <index>wlan</index>
 
+ <keyword>wlan</keyword>
+ <keyword>wep</keyword>
+ <keyword>wpa</keyword>
+ <keyword>Funknetzwerk</keyword>
 
+ <split>
+  <section>
+   <heading>
+Einleitung
+   </heading>
 
-1. Einleitung
-
+    <textblock>
 Dieses Kapitel von SelfLinux erklärt Schritt für Schritt, wie man seine
 Funknetzwerkschnittstelle unter Linux einrichtet. Dabei wird auch das
 Thema Verschlüsselung angesprochen. Lange Zeit war es ein großes Problem,
@@ -17,53 +38,64 @@ seine Netzwerkkarte unter Linux zum Funken zu bewegen. Mit der Zeit werden
 aber immer mehr WLAN-Chips direkt vom Linux-Kernel unterstützt. Der Rest
 kann - zumindest auf 32-Bit-Linux-Systemen - mit dem Ndiswrapper und
 dem Windows-Treiber verwendet werden.
+    </textblock>
+   </section>
 
+  <section>
+    <heading>
+Treiber
+    </heading>
 
-
-2. Treiber
-
+    <textblock>
 Generell sollte man zwischen WLAN-Chipsätzen, für die es native
 Linux-Treiber gibt, und denen für die es nur Windows-Treiber gibt
 unterscheiden. Im letzteren Fall wird der Windows-Treiber mit dem
 Programm
-<!-- FUTURELINK: chapter="Auf das neue Kapitel wlan_mit_ndiswrapper verlinken" -->Ndiswrapper<!-- ENDLINK -->
+<ref chapter="wlan_mit_ndiswrapper" iref="Einleitung">Ndiswrapper</ref>
 geladen. Bei den nativ von Linux unterstützten
 Chipsätzen ist der Treiber entweder bereits im Linux-Kernel enthalten
 oder man muß das Modul für den WLAN-Chipsatz selbst kompilieren und
 laden. Beim selbst kompilieren benötigt man die Header-Dateien des
 installierten Linux-Kernels.
-
 Je nach benötigtem/verwendetem Treiber unterscheiden sich die
 Gerätenamen für die WLAN-Verbindung. Bei Chipsätzen, die per Ndiswrapper
 angesteuert werden, heißt das Gerät wlanX, andere Treiber hingegen
 bevorzugen meist die ethX-Nomenklatur. In diesem Kapitel wird als
 Gerätename für das Netzwerkgerät wlan0 verwendet.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+Die Wireless-Tools
+    </heading>
 
-
-3. Die Wireless-Tools
-
+    <textblock>
 Die wichtigsten Programme zur Konfiguration drahtloser Netzwerkkarten
 unter Linux sind iwconfig und iwlist. Bei Debian sind sie im Paket
 wireless-tools zusammen mit weiteren Programmen enthalten.
-
 Als Alternative zu den Programmen iwlist und iwconfig existieren einige
 grafische Anwendungen zur Konfiguration von drahtlosen Netzwerken. Jedoch
 versagen sie beim Einrichten mancher Funknetzwerkschnittstellen.
+    </textblock>
 
+   <section>
+    <heading>
+iwlist
+    </heading>
 
-
-3.1 iwlist
-
+    <textblock>
 Die wichtigste Verwendung von iwlist, ist das Auffinden von Hotspots
 (offenen Funknetzwerken) und das scannen nach dem eigenen Netzwerk.
 Ein Beispiel zeigt das folgende Listing:
+    </textblock>
 
-<--! BEGIN LISTING -->
+    <file>
+     <content>
 # iwlist wlan0 scan
 wlan0     Scan completed :
           Cell 01 - Address: 00:02:2D:39:9B:1A
-                    ESSID:"<hidden>"
+                    ESSID:"&lt;hidden&gt;"
                     Protocol:IEEE 802.11b
                     Mode:Master
                     Channel:11
@@ -86,34 +118,46 @@ wlan0     Scan completed :
                         Pairwise Ciphers (1) : TKIP
                         Authentication Suites (1) : PSK
                     Extra: Last beacon: 204ms ago
-<--! END LISTING -->
+     </content>
+    </file>
 
+    <textblock>
 Bei diesem Scan wurden zwei Funknetzwerke gefunden: Ein
 unverschlüsseltes mit versteckter Session-ID (Cell 01) und ein mit WPA
 verschlüsseltes Funknetzwerk mit sichtbarer ESSID (Cell 02). Beide
 Konfigurationen sollte man vermeiden. Allerdings ist das Netzwerk Cell 02
 deutlich sicherer konfiguriert als das Netzwerk Cell 01.
+    </textblock>
+   </section>
 
+   <section>
+    <heading>
+iwconfig
+    </heading>
 
-
-3.2 iwconfig
-
+    <textblock>
 Die Eingabe von iwconfig gibt für jede Netzwerkschnittstelle des Systems
 aus, ob sie drahtlos ist oder nicht. Wurden keine drahtlosen Schnittstellen
 erkannt, so könnte die Ausgabe wie folgt aussehen:
+    </textblock>
 
-<--! BEGIN LISTING -->
+    <file>
+     <content>
 lo        no wireless extensions.
 
 eth0      no wireless extensions.
-<--! END LISTING -->
+     </content>
+    </file>
 
+    <textblock>
 Dabei stellt lo die loopback-Schnittstelle und eth0 das kabelgebundene
 Netzwerkgerät dar.
 Ein Beispiel für die Ausgabe, wenn eine drahtlose und eine kabelgebundene
 Schnittstelle vorhanden sind könnte etwa so aussehen:
+    </textblock>
 
-<--! BEGIN LISTING -->
+    <file>
+     <content>
 lo        no wireless extensions.
 
 eth0      no wireless extensions.
@@ -125,67 +169,101 @@ wlan0     IEEE 802.11b/g  ESSID:off/any  Nickname:"Broadcom 4306"
           Link Quality:0  Signal level:0  Noise level:0
           Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
           Tx excessive retries:0  Invalid misc:0   Missed beacon:0
-<--! END LISTING -->
+     </content>
+    </file>
 
+    <textblock>
 Die wichtigsten Schritte, um sich mit einer Funkstation ohne Verschlüsselung
 anzumelden sind die Folgenden:
+    </textblock>
 
-<--! BEGIN LISTING -->
+    <shell>
+     <root path="/root">
 iwconfig wlan0 mode Managed
-iwconfig wlan0 essid "ESSID"
-<--! END LISTING -->
+     </root>
 
+     <root path="/root">
+iwconfig wlan0 essid "ESSID"
+     </root>
+    </shell>
+
+    <textblock>
 Der erste Befehl sorgt dafür, daß der WLAN-Chip in den verwalteten Modus
 versetzt wird. Alternativ kann man durch den Parameter "Ad-Hoc" ein
 sogenanntes "Point-to-Point"-Netzwerk zwischen zwei Funknetzwerkkarten
 aufbauen. Der zweite Befehl setzt die Session-ID auf den Wert ESSID.
 Mit der ESSID "*" kann man jedem beliebigen offenen Netzwerk beitreten.
+    </textblock>
 
+    <textblock>
 Nach dieser Konfiguration kann man, wenn sich im Funknetzwerk ein
 DHCP-Server befindet (meist die Funkstation) die konfigurierte
 Funknetzwerkschnittstelle mit
+    </textblock>
 
-<--! BEGIN LISTING -->
+    <shell>
+     <root path="/root">
 ifup wlan0
-<--! END LISTING -->
+     </root>
+    </shell>
 
+    <textblock>
 in Betrieb nehmen. Es wird an dieser Stelle jedoch explizit davor
 gewarnt, Funknetzwerke ohne Verschlüsselung zu betreiben. Dies birgt
 nicht nur Sicherheitsrisiken, sondern kann auch juristische Folgen
 nach sich ziehen. Weitere Bemerkungen dazu folgen in den Schlußbemerkungen
 zu diesem Kapitel.
+    </textblock>
+   </section>
+  </section>
+ </split>
 
+ <split>
+  <section>
+    <heading>
+Verschlüsselung
+    </heading>
 
-
-4. Verschlüsselung
-
+    <textblock>
 Aus den Gründen, die in den Schlußbemerkungen angesprochen werden, wird
 an dieser Stelle lediglich die Verschlüsselung per WPA (Wi-Fi Protected
 Access) besprochen.
+    </textblock>
 
+    <textblock>
 Unter Linux ermöglichen die Zusatzprogramme
-<!-- LINK: url="http://sourceforge.net/project/showfiles.php?group_id=60236" -->xsupplicant<!-- ENDLINK -->
+<ref url="http://sourceforge.net/project/showfiles.php?group_id=60236">xsupplicant</ref>
 und
-<!-- LINK: url="http://hostap.epitest.fi/wpa_supplicant/" -->wpasupplicant<!-- ENDLINK -->
+<ref url="http://hostap.epitest.fi/wpa_supplicant/">wpasupplicant</ref>
 die Möglichkeit, den Funkverkehr zu verschlüsseln. Von beiden Programmen
 gibt es wahrscheinlich auch Pakete Ihrer Linux-Distribution. Im Folgenden
 wird die Einrichtung der WPA-Verschlüsselung mit wpasupplicant
 beschrieben.
+    </textblock>
 
+   <section>
+    <heading>
+WPASupplicant
+    </heading>
 
-
-4.1 WPASupplicant
-
+    <textblock>
 Nach der Installation von WPASupplicant trennen Sie nur noch die
 Konfiguration und das WPA-Zertifikat vom Betrieb Ihres "sicheren"
 Funknetzwerkes. Das WPA-Zertifikat erhält man vom Betreiber des
 Funknetzwerkes und sollte es im Linux-Dateisystem ablegen.
+    </textblock>
 
+    <textblock>
 Ein Beispiel für eine Konfigurationsdatei, die ebenfalls an einer
 beliebigen Stelle im Dateisystem liegen kann (/etc bietet sich für
 Konfigurationsdateien an) zeigt das folgende Listing:
+    </textblock>
 
-<!-- BEGIN LISTING -->
+    <file>
+     <title>
+Beispiel einer WPASupplicant-Konfigurationsdatei
+     </title>
+     <content>
 network={
        pairwise=TKIP
        scan_ssid=1
@@ -203,55 +281,138 @@ network={
        # Pfad zum Zertifikat
        ca_cert="PFAD_ZUM_ZERTIFIKAT"
 }
-<!-- END LISTING -->
+     </content>
+    </file>
 
+    <textblock>
 Selbstverständlich müssen die Werte von ssid, identity, password und
 ca_cert ersetzt werden. Ggf. verwenden Sie auch andere
 Authentifikationsmethoden dazu sollten Sie den Administrator des
 betreffenden Funknetzwerkes oder das Handbuch Ihrer Funkstation
 konsultieren.
+    </textblock>
 
+    <textblock>
 Der Befehl
+    </textblock>
 
-<!-- BEGIN LISTING -->
-wpa_supplicant -i wlan0 -c /etc/wpasupplicant.conf -D ndiswrapper &
-<!-- END LISTING -->
+     <shell>
+      <root path="/root">
+wpa_supplicant -i wlan0 -c /etc/wpasupplicant.conf -D ndiswrapper &amp;
+      </root>
+     </shell>
 
-startet den WPASupplicant wenn Ihre Konfigurationsdatei
+    <textblock>
+startet den WPASupplicant-Dienst wenn Ihre Konfigurationsdatei
 wpasupplicant.conf heißt und unter /etc liegt und Sie den ndiswrapper
 zum Betrieb Ihres WLAN-Chips nutzen. Andernfalls gilt es, auch diese
 Werte zu ersetzen. Verfügbare Werte für den verwendeten Linuxtreiber
 zeigt die folgende Tabelle.
+    </textblock>
 
-<!-- BEGIN Table -->
-hostap         Host AP Treiber (Intersil Prism2/2.5/3)
+    <table border="1">
+     <th>
+      <td>Treiber</td>
+      <td>Chipsatz</td>
+     </th>
+
+     <tr>
+      <td>
+hostap
+     </td>
+     <td>
+               Host AP Treiber (Intersil Prism2/2.5/3)
                Diese Option ist auch für den Linuxant-DriverLoader die
                richtige Wahl.
+     </td>
+     </tr>
 
-hermes         Agere Systems Inc. Treiber (Hermes-I/Hermes-II)
+    <tr>
+     <td>
+hermes
+     </td>
+     <td>
+               Agere Systems Inc. Treiber (Hermes-I/Hermes-II)
+    </td>
+     </tr>
 
-madwifi        MADWIFI 802.11 Chipsätze (Atheros, etc.)
+    <tr>
+     <td>
+madwifi
+     </td>
+     <td>
+              MADWIFI 802.11 Chipsätze (Atheros, etc.)
+    </td>
+     </tr>
 
-atmel          ATMEL AT76C5XXx (viele USB- und PCMCIA-WLAN-Karten)
+    <tr>
+     <td>
+atmel
+     </td>
+     <td>
+              ATMEL AT76C5XXx (viele USB- und PCMCIA-WLAN-Karten)
+    </td>
+     </tr>
 
-wext           Linux wireless extensions (generisch)
+    <tr>
+     <td>
+wext
+     </td>
+     <td>
+              Linux wireless extensions (generisch)
+     </td>
+    </tr>
 
-ndiswrapper    Linux Ndiswrapper
+    <tr>
+     <td>
+ndiswrapper
+     </td>
+      <td>
+              Linux Ndiswrapper
+     </td>
+    </tr>
 
-broadcom       Broadcom wl.o Treiber
+    <tr>
+     <td>
+broadcom
+     </td>
+      <td>
+              Broadcom wl.o Treiber
+    </td>
+    </tr>
 
-ipw            Intel ipw2100/2200 Treiber
+    <tr>
+     <td>
+ipw
+     </td>
+      <td>
+              Intel ipw2100/2200 Treiber
+    </td>
+    </tr>
 
-wired          Zur WPA-Verschlüsselung kabelgebundener Netzwerke
-<!-- END Table -->
+    <tr>
+     <td>
+wired
+     </td>
+      <td>
+              Zur WPA-Verschlüsselung kabelgebundener Netzwerke
+      </td>
+     </tr>
+    </table>
 
+    <textblock>
 Anschließend kann das Funknetzwerk, wenn ein DHCP-Server darin vorhanden
 ist, mit dem bekannten Befehl "ifup wlan0" aktiviert werden.
+    </textblock>
+   </section>
+  </section>
 
+  <section>
+    <heading>
+Schlußbemerkungen
+    </heading>
 
-
-5. Schlußbemerkungen
-
+    <textblock>
 Es dürfte bekannt sein, daß es wenig hilft, ein Netzwerk mit WEP
 (Wired Equivalent Privacy) zu verschlüsseln. Lauscht ein versierter
 Angreifer wenige Minuten im verschlüsselten Netzwerkverkehr ist ihm
@@ -266,7 +427,13 @@ Der Betreiber des Funknetzwerkes ist über den Provider und die vergebene
 öffentliche IP-Adresse ausfindig zu machen, aber selbst bei intensivem
 Protokollieren des Netzwerkverkehrs ist es nahezu unmöglich den
 WLAN-Hacker zu lokalisieren.
+    </textblock>
 
+    <textblock>
 Wie immer freut sich der Autor über konstruktive Kritik, gefundene
 Fehler, Anregungen, etc.
+    </textblock>
 
+  </section>
+ </split>
+</chapter>
