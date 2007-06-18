@@ -5,7 +5,7 @@
 
  <author>
   <name>Alexander Fischer</name>
-  <mailto>Alexander.Fischer@SelfLinux.org</mailto>
+  <mailto>tbanus@tbanus.de</mailto>
  </author>
 
  <layout>
@@ -22,8 +22,12 @@ GFDL
  <description>
 
   <textblock>
-Dieses Dokument unterliegt der GNU FDL. Es darf gemäß dieser Lizenz frei
+Dieses Dokument unterliegt der GNU FDL. 
+Es darf gemäß dieser Lizenz frei
 kopiert und weitergegeben werden.
+Teile der Dokumentation habe ich aus dem Englischen 
+der Original-Dokumenation des XMMS Projektes übersetzt. 
+Hier ein herzliches Danke an die XMMS-Entwickler. 
   </textblock>
 
   <textblock>
@@ -34,11 +38,265 @@ können derzeit alle verbreiteten Audiodateien abgespielt werden. Ebenfalls ist e
 möglich, einen Stream über das Internet zu empfangen.<br/>
 xmms ist in etwa dem Winamp für Microsoft Windows nachempfunden. In der
 Bedienung sind nur minimale Unterschiede zu verspüren. Dieser ist auch mit
-den Dateien vom Winamp kompatibel. (Windows und Winamp sind eingetragene
+den Dateien vom WinAmp kompatibel. (Windows und WinAmp sind eingetragene
 Warenzeichen der jeweiligen Hersteller)
+Anzumerken bleibt jedoch, dass XMMS <strong>KEINE</strong> 
+Portierung vom WinAmp ist! Die Entwickler haben sie lediglich
+die grafische Benutzeroberfläche geborgt.
+
   </textblock>
  </description>
+ <split>
+  <section>
+<!-- *. Kapitel -->
+   <heading>
+Installation
+   </heading>
+   <textblock>
+Das Kapitel über die Installation ist in mehrere Abschnitte
+aufgeteilt. Es werden zum einen die normale Paket-Installtion, 
+zum anderen die manuelle distributionsunabhängige Installtion, 
+sowie spezifische Installationen durchgegangen.
+   </textblock>
+   <section>
+    <heading>
+Die Installation mit Paketen
+    </heading>
+    <textblock>
+Die meisten Distributionen liefern XMMS mit aus. In letzter Zeit
+jedoch distanzieren sich einige davon (Wie Gentoo zum Beispiel), 
+da XMMS nach wie vor nur auf GTK+/GLIB 1.2 baut und nicht explizit 
+unter GTK+ 2.x lauffähig ist. Sollte Ihre Distribution darunter 
+fallen, empfiehlt es sich, XMMS aus den Quellen manuell zu übersetzen. 
+Oder sie greifen auf auf einen XMMS-Fork wie etwa Beep zurück.
+    </textblock>
+    <textblock>
+Je nach dem, welche Distribution Sie verwenden, kann sich die 
+Installation mit den Paketen, anders verhalten. Wohingegen
+bei <em>Debian</em> ein <command>apt-get install xmms</command> 
+oder ein <command>dpkg -i xmms-1.2.8.deb</command> in Frage kommt, 
+würden Sie bei <em>Red Hat</em> eher ein 
+<command>rpm -i xmms-1.2.8.rpm</command> verwenden. 
+Welcher Paket-Manager bei Ihrer Distribution in Frage kommt, 
+erfahren Sie am idealsten auf der jeweiligen Homepage oder 
+in deren Benutzerhandbuch.
+    </textblock>
+   </section>
+   <section>
+    <heading>
+Die manuelle Installation aus den Quellen
+    </heading>
+    <section>
+     <heading>
+Voraussetzungen
+     </heading>
+     <textblock>
+Folgende Bibliothek wird für die Kompelierung von XMMS benötigt:
+     </textblock>
+     <textblock>
+      <ul>
+       <li>gtk/glib 1.2.2 oder besser<br />
+           <ref url="ftp://ftp.gtk.org/pub/gtk/v1.2/">
+           ftp://ftp.gtk.org/pub/gtk/v1.2/</ref></li>
+      </ul>
+     </textblock>
+     <textblock>
+Wenn Sie die libc5 im Einsatz haben benötigen Sie ausserdem:
+     </textblock>
+     <textblock>
+      <ul>
+       <li>gnu gettext 0.10<br />
+           (benutzen Sie beim Kompelieren von XMMS Folgendes:
+           <command>configure --with-gnu-gettext</command>)<br />
+           <ref url="ftp://prep.ai.mit.edu/pub/gnu/gettext/gettext-0.10.tar.gz">
+            ftp://prep.ai.mit.edu/pub/gnu/gettext/gettext-0.10.tar.gz
+           </ref>
+       </li>
+       <li>linuxthreads 0.761<br />
+           <ref url="http://www.xmms.org/files/libc5/linuxthreads.tar.gz">
+            http://www.xmms.org/files/libc5/linuxthreads.tar.gz
+           </ref>
+       </li>
+       <li>Thread safe Xlibs<br />
+           <ref url="http://www.xmms.org/files/libc5/XFree86-3.3-libs.tar.gz">
+            http://www.xmms.org/files/libc5/XFree86-3.3-libs.tar.gz
+           </ref>
+       </li>
+      </ul>
+     </textblock>
+     <textblock>
+Wenn Sie wollen, dass XMMS Formate wie <command>mod</command>, 
+<command>s3m</command>, <command>med</command>, und/oder Formate 
+die mikmod unterstützt, dann sollten Sie noch vor dem 
+<command>./configure</command> von XMMS die Bibliothek libmikmod 
+installieren. Herunterladen können Sie das Archiv von 
+<ref url="http://www.ibiblio.org/pub/linux/apps/sound/libs/">
+http://www.ibiblio.org/pub/linux/apps/sound/libs/</ref>.
+      </textblock>
+      <textblock>
+Unter der Domain <ref url="http://www.mesa3d.org/">
+http://www.mesa3d.org/</ref> erhalten Sie <em>Mesa 3.0</em>, 
+sofern Sie OpenGL PlugIn's nutzen wollen.
+      </textblock>
+      <textblock>
+Um das freie Format Ogg Vorbis mit Ihrem XMMS abspielen zu können, 
+ist zusätzlich auch noch die Bibliothek libvorbis von nöten, 
+die sie unter <ref url="http://www.vorbis.com/download_unix.psp">
+http://www.vorbis.com/download_unix.psp</ref> herunterladen können.
+      </textblock>
+     </section>
+     <section>
+      <heading>
+Die Basis Installation
+      </heading>
+      <textblock>
+Nach dem Sie die Vorbereitungen alle abgeschlossen haben und das 
+XMMS-Archiv entpackt haben, können Sie XMMS wie folgt installieren:
+      </textblock>
+      <textblock>
+       <shell>
+        <root path="~">
+cd xmms-1.2.8
+        </root>
+        <root path="~/xmms-1.2.8">
+./configure
+        </root>
+        <root path="~/xmms-1.2.8">
+make
+        </root>
+        <root path="~/xmms-1.2.8">
+make install
+        </root>
+       </shell>
+      </textblock>
+      <textblock>
+Nach der erfolgreichen Installation finden Sie die ausführbaren 
+Dateien unter <command>/usr/local/bin</command> und die PlugIns unter <command>/usr/local/lib/xmms/</command>
+      </textblock>
+     </section>
+     <section>
+      <heading>
+Die Randlose (Borderless) Installation
+      </heading>
+      <textblock>
+Die meisten WM's (Window Maker) akzeptieren die GTK-Fenster-Dekoration
+des jeweiligen Programmes. Bei jenen wird XMMS auch ohne Ränder dargestellt.
+Jedoch einige WM's unterstützen dies nicht und Sie müssen dort leider etwas
+Handarbeit vornehmen:
+      </textblock>
+      <textblock>
 
+       <file>
+        <title>
+Bei AfterStep 1.0 muss die Datei<command>~/.steprc</command> 
+folgende Zeilen beinhalten
+        </title>
+        <content><![CDATA[
+Style "XMMS_Player" NoTitle, NoHandles
+Style "XMMS_Playlist" NoTitle, NoHandles
+Style "XMMS_Equalizer" NoTitle, NoHandles
+        ]]></content>
+       </file>
+
+       <file>
+        <title>
+Bei AfterSetp 1.4 muss die Datei
+<command>~/GNUstep/Library/AfterStep/database</command>
+folgende Zeilen beinhalten
+        </title>
+        <content><![CDATA[
+Style "XMMS_Player" NoTitle, NoHandles
+Style "XMMS_Playlist" NoTitle, NoHandles
+Style "XMMS_Equalizer" NoTitle, NoHandles
+        ]]></content>
+       </file>
+
+       <file>
+        <title>
+Beim Einsatz des Fvwm's müssen Sie die datei <command>~/.fvwm95rc</command>
+um drei Zeilen erweitern:
+        </title>
+        <content><![CDATA[
+Style "XMMS_Player" NoTitle
+Style "XMMS_Playlist" NoTitle
+Style "XMMS_Equalizer" NoTitle
+        ]]></content>
+       </file>
+
+       <file>
+        <title>
+Die Datei <command>~/.ctwmrc</command> kommt in Frage, wenn Sie CTWM 
+benutzen
+        </title>
+        <content><![CDATA[
+NoTitle and NoBorder sections:
+NoTitle {
+    "xmms"
+}
+
+NoBorder {
+    "xmms"
+}
+        ]]></content>
+       </file>
+      </textblock>
+     </section>
+     <section>
+      <heading>
+Installieren weiterer Skins
+      </heading>
+      <textblock>
+Beim ersten Start von XMMS wird in Ihrem Home-Verzeichnis
+das Verzeichnis <command>~/.xmms/Skins/</command> erstellt.
+In jenes können Sie die Skins entpacken wie Sie es bei WinAmp
+auch gewohnt sind. Der Unterschied ist, daß Sie <strong>nicht</strong>
+zwingend die Archive entpacken müssen. XMMS kann auch gepackte Skins
+lesen, die in dem Verzeichnis abgelegt wurden. Unterstützte Formate der
+Archive sind: <command>zip</command>,<command>wsz</command>,<command>
+tar</command>,<command>tar.gz</command> und <command>tar.bz2</command>.
+Es genügt, wenn Sie einfach das archivierte Skin in das entsprechende
+Verzeichnis hineinkopieren. Über den Rest kümmert sich sodann XMMS.
+(Natürlich wird davon ausgegangen, daß Ihr GNU/Linux-System mit dem
+jeweiligen Archiv-Format von sich aus umgehen kann. Sollte dies bei
+einigen nicht der Fall sein, so installieren Sie bitte den Unpacker
+einfach nach.)
+      </textblock>
+      <textblock>
+Damit XMMS Ihr neu installiertes Skin auch nutzt, drücken Sie im
+laufenden Betrieb von XMMS einfach
+die Tastenkombination <keykomb mode="hold"><key>ALT</key>
+<key>S</key></keykomb>, um den Skin-Auswahl-Dialog hervorzurufen.
+XMMS erinnert sich anhand der Konfigurationsdatei <command>
+~/.xmms/config</command> welchen Skin sie als letztes benutzt haben
+und wird diesen bei einem erneuten Start von XMMS wieder laden.
+In dem Dialog der Skin-Auswahl haben Sie obendrein die Möglichkeit
+die Option <em>random Skin</em> auszuwählen. Dort ein Haken gesetzt bewirkt,
+daß bei jedem neuen Start von xmms ein anderer Skin genutzt wird.
+XMMS benutzt hierbei die Skins aus den Verzeichnissen
+<command>/share/xmms/Skins</command> und <command>~/.xmms/Skins</command>.
+Wenn Sie weitere Verzeichnisse verfügbar machen willen, exportieren Sie
+einfach den Pfad in die Variable <em>SKINSDIR</em>.
+      </textblock>
+      <textblock>
+Beispiel für den Export in der Bash:
+       <shell>
+        <user path="~">
+export SKINSDIR=/path/to/Skins:/more/paths/to/other/locations/of/Skins
+        </user>
+       </shell>
+      </textblock>
+      <textblock>
+Beispiel für den Export in der csh:
+       <shell>
+        <user path="~">
+setenv SKINSDIR /path/to/Skins:/more/paths/to/other/locations/of/Skins
+        </user>
+       </shell>
+      </textblock>
+     </section>
+    </section>
+   </section>
+ </split>
  <split>
   <section>
 <!-- *. Kapitel-->
@@ -96,16 +354,27 @@ Deswegen werden Sie mit der Bedienung keine großen Schwierigkeiten haben.
   </textblock>
 
   <textblock>
-Die Oberfläche des <command>xmms</command> besteht aus zwei Displays, drei 
+Die Oberfläche des <command>xmms</command> besteht aus 
+einer Titelleiste, zwei Displays, drei 
 Schiebereglern
 und mehreren Bedienknöpfen:
   </textblock>
-
+  <textblock>
+Die Titelleiste weist neben dem Titel selbst drei
+Buttons (Knöpfe) auf. Der linke Button minimiert das Programm,
+der mittlere verkleinert das Programm, sodass Sie nur noch
+die Titel-Leiste sehen können und der rechte Button schliesst
+XMMS augenblicklich.
+  </textblock>
   <textblock>
 In der Anzeige links oben sehen Sie die Spieldauer des aktuell laufenden 
-Musikstückes zusammen mit einer kleinen Visualisierung (Equalizer).
-Rechts daneben zeigt das Display den Interpret, Titel, Spieldauer, Bitrate und die
-Samplingrate für das Lied an.<br/>
+Musikstückes zusammen mit einm Spectrum Analyzer.
+Ein Rechtsklick auf diesen Analyzer öffnet das Visualisierungs-Menü.
+Ein Linksklick daraf welchselt den Analyzer zu einem Oszilloskop
+und/oder zu garkeiner Anzeige.<br />
+Rechts neben dem Analyzer zeigt das Display den Interpret, 
+Titel, Spieldauer, Bitrate, die Samplingrate für das Lied, sowie
+ob es über den Mono oder Stereo Kanal wiedergegeben wird, an.<br/>
 Die Lautstärke und die Balance können Sie mit den beiden Schiebereglern
 unter den Displays einstellen.<br/>
 Um an jede beliebige Stelle des Liedes zu gelangen, ist der große
@@ -123,7 +392,47 @@ weitere Fenster zu öffnen. Die Buttons sind dann blau markiert.
   <textblock>
 Mit den 6 Knöpfen unter dem großen Schieberegler können Sie den Titel
 bedienen. Die Bedienung funktioniert genauso wie auf einem normalen
-CD-Player.
+CD-Player. Von Links nach Rechts lauten diese:<br />
+   <table>
+    <tr>
+     <td><command>Previous Track</command></td>
+     <td>(Einen Titel zurück)</td>
+    </tr>
+    <tr>
+     <td><command>Play</command></td>
+     <td>(Abspielen)</td>
+    </tr>
+    <tr>
+     <td><command>Pause</command></td>
+     <td>(Das Abspielen pausieren)</td>
+    </tr>
+    <tr>
+     <td><command>Stop</command></td>
+     <td>(Anhalten des Titels)</td>
+    </tr>
+    <tr>
+     <td><command>Next Track</command></td>
+     <td>(Einen Titel nach Vorne)</td>
+    </tr>
+    <tr>
+     <td><command>Eject</command></td>
+     <td>(Eigentlich bedeutet das bei CD-Playern "Auswurf". Bei XMMS
+jedoch löst dies das Datei-öffnen aus, in dem es Ihnen gestattet ist,
+einen oder mehrere Titel im Dateibrowser auszuwählen, damit diese(r)
+abgespielt wird. Zeitgleich können Sie diese Titel auch in die aktuelle
+Playlist mit aufnehmen.</td>
+    </tr>
+    <tr>
+     <td><command>Shuffle</command></td>
+     <td>Ist dies aktiviert, Spielt XMMS die Titel in der Playlist
+"durcheinander" ab, ohne die festgelegte Reihenfolge zu beachten.</td>
+    </tr>
+    <tr>
+     <td><command>Repeat</command></td>
+     <td>Ist Repeat (Wiederholung) aktiviert, so beginnt XMMS erneut
+mit dem Abspielen, wenn die Playlist das Ende erreicht hat.</td>
+    </tr>
+   </table>
   </textblock>
 
   <textblock>
@@ -132,6 +441,37 @@ Die beiden Knöpfe neben den CD-Playern-Buttons <command>Rand</command>.
 Random) und <command>Rep</command> (Repeat) können Sie dazu benutzen, um eine
 Zufallswiedergabe (Rand.) und/oder eine automatische Wiederholung (Rep.)
 der Playlist starten.
+  </textblock>
+  <textblock>
+Wenn Sie links vom Spectrum Analyzer sehen, dann finden Sie
+dort mehrere Buchstaben (beim normalen Default-Skin):<br/>
+O A I D V - Bei einem Klick auf einen der Buchstaben öffnet sich
+entweder das jeweilige Menü oder es löst eine Aktion aus, 
+wie folgende Tabelle zeigt:
+  </textblock>
+  <textblock>
+   <table>
+    <tr>
+     <td><command>O</command></td>
+     <td>Das Options-Menü</td>
+    </tr>
+    <tr>
+     <td><command>A</command></td>
+     <td>XMMS immer im Vordergrund halten</td>
+    </tr>
+    <tr>
+     <td><command>I</command></td>
+     <td>Datei Informations Dialog</td>
+    </tr>
+    <tr>
+     <td><command>D</command></td>
+     <td>XMMS in Doppelte Größe anzeigen</td>
+    </tr>
+    <tr>
+     <td><command>V</command></td>
+     <td>Visualisierungs Menü</td>
+    </tr>
+   </table>
   </textblock>
   </section>
  </split>
@@ -688,7 +1028,7 @@ Shuffle Ein/Ausschalten (Zufallswiedergabe)
 <command><keycomb mode="hold"><key>Shift</key><key>1</key></keycomb></command>
       </td>
       <td>
-Spiele Verzeichnis; Öffnet das "Fügte Verzeichnis hinzu"
+Spiele Verzeichnis; Öffnet das "Füge Verzeichnis hinzu"
       </td>
      </tr>
 
@@ -1087,7 +1427,8 @@ Das zuletzt verwendete Skin wird unter <command>~/.xmms/config</command>
 gespeichert. Dort
 können Sie auch einstellen, dass <command>xmms</command> bei jedem neuen Titel 
 automatisch
-das Aussehen wechselt.
+das Aussehen wechselt. Nähere Informationen finden Sie
+im Kapitel Installation von Skins hier in der XMMS Dokumentation von SelfLinux.
   </textblock>
  </section>
 </split>
@@ -1109,20 +1450,35 @@ Unterstützt werden:
 
   <ul>
    <li>
+OGG Vorbis
+   </li>
+   <li>
 MP2- und MP3-Streams
    </li>
    <li>
 WAV/AU-Samples
    </li>
    <li>
-diverse Modul-Formate: <command>mod</command>, <command>xm</command>,
-<command>s3m</command>,
-<command>med</command>, <command>it</command>, <command>669</command>,
-<command>amf</command>, <command>dsm</command>, <command>far</command>
-<command>gdm</command>, <command>imf</command>,
-<command>m15</command>, <command>mtm</command>, <command>stm</command>,
-<command>stx</command>, <command>ult</command>,
-<command>uni</command>
+diverse Modul-Formate: 
+    <ul>
+     <li><command>mod</command></li>
+     <li><command>xm</command></li>
+     <li><command>s3m</command></li>
+     <li><command>med</command></li>
+     <li><command>it</command></li>
+     <li><command>669</command></li>
+     <li><command>amf</command></li>
+     <li><command>dsm</command></li>
+     <li><command>far</command></li>
+     <li><command>gdm</command></li>
+     <li><command>imf</command></li>
+     <li><command>m15</command></li>
+     <li><command>mtm</command></li>
+     <li><command>stm</command></li>
+     <li><command>stx</command></li>
+     <li><command>ult</command></li>
+     <li><command>uni</command></li>
+    </ul>
    </li>
    <li>
 abspielen von Audio-CDs
@@ -1134,6 +1490,36 @@ Shoutcast-Streams
 Icecast-Streams
    </li>
    <li>
+Seeking in Dateien
+   </li>
+   <li>
+Lautstärken und Balance-Regelung
+   </li>
+   <li>
+Zufallswiedergabe (Shuffle)
+   </li>
+   <li>
+Wiederholungsfunktion (Repeat)
+   </li>
+   <li>
+Playlist Editor
+   </li>
+   <li>
+"One Line" Modus wie etwa WinShade im WinAmp
+   </li>
+   <li>
+Oszilloskop
+   </li>
+   <li>
+Zeit verstrichen / Zeit verbleibend beim Abspielen
+   </li>
+   <li>
+PlugIn-Sytem
+   </li>
+   <li>
+Output/Input/Effect/General/Visualization
+   </li>
+   <li>
 HTTP-Streams auf der Festplatte aufzeichnen
    </li>
    <li>   
@@ -1143,7 +1529,7 @@ Input- und Output-Plugins
 Effekt- und Visualisierungsplugins
    </li>
    <li>
-Verwendung von Winamp-Skins
+Verwendung von WinAmp 2.0-Skins (wsz Format)
    </li>
    <li>
 Spectrum Analyzer
