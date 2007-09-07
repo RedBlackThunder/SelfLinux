@@ -652,10 +652,7 @@
        </img>
       </a>
      </td>
-     <td align="left" width="25%">
-      <xsl:text>&#160;</xsl:text>
-     </td>
-     <td align="center" width="50%">
+     <td align="center" width="100%">
       <xsl:choose>
        <xsl:when test="$pos = 'down'">
         <a href="inhalt.html">
@@ -676,26 +673,6 @@
        </img>
       </a>
      </td>
-     <xsl:choose>
-      <xsl:when test="$variant = 'online'">
-       <form action="http://www.selflinux.org/cgi-bin/htsearch">
-        <td align="left" width="25%">
-         <img src="../bilder/lupe.png" border="0" width="16" height="15" alt="Suchen" title="Suchen"/>
-         <xsl:text>&#160;</xsl:text>
-         <input type="text" name="words" size="10"/>
-         <input type="hidden" name="method" value="and"/>
-         <input type="hidden" name="config">
-          <xsl:attribute name="value"><xsl:value-of select="$version"/></xsl:attribute>
-         </input>
-        </td>
-       </form>
-      </xsl:when>
-      <xsl:otherwise>
-       <td align="right" width="25%">
-        <xsl:text>&#160;</xsl:text>
-       </td>
-      </xsl:otherwise>
-     </xsl:choose>
      <td align="right">
       <a href="../index.html">
        <img border="0" width="24" height="24" alt="SelfLinux" title="SelfLinux">
@@ -725,10 +702,7 @@
        </xsl:when>
       </xsl:choose>
      </td>
-     <td align="left" width="25%">
-      <xsl:text>&#160;</xsl:text>
-     </td>
-     <td align="center" width="50%">
+     <td align="center" width="100%">
       <xsl:choose>
        <xsl:when test="ancestor::directory|ancestor::selflinux">
         <a href="../index.html">
@@ -758,37 +732,6 @@
        </xsl:when>
       </xsl:choose>
      </td>
-     <xsl:choose>
-      <xsl:when test="$variant = 'online'">
-       <form action="http://www.selflinux.org/cgi-bin/htsearch">
-        <td align="left" width="25%">
-         <img border="0" width="16" height="15" alt="Suchen" title="Suchen">
-          <xsl:attribute name="src">
-           <xsl:choose>
-            <xsl:when test="self::selflinux">
-             <xsl:text>bilder/lupe.png</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-             <xsl:text>../bilder/lupe.png</xsl:text>
-            </xsl:otherwise>
-           </xsl:choose>
-          </xsl:attribute>
-         </img>
-         <xsl:text>&#160;</xsl:text>
-         <input type="text" name="words" size="10"/>
-         <input type="hidden" name="method" value="and"/>
-         <input type="hidden" name="config">
-          <xsl:attribute name="value"><xsl:value-of select="$version"/></xsl:attribute>
-         </input>
-        </td>
-       </form>
-      </xsl:when>
-      <xsl:otherwise>
-       <td align="right" width="25%">
-        <xsl:text>&#160;</xsl:text>
-       </td>
-      </xsl:otherwise>
-     </xsl:choose>
      <td align="right">
       <xsl:choose>
        <xsl:when test="child::directory|chapter">

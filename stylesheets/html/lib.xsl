@@ -334,26 +334,12 @@
      <td align="left">
       <xsl:call-template name="prevdok" />
      </td>
-     <td align="left" width="25%">
-      <xsl:text>&#160;</xsl:text>
-     </td>
-     <td align="center" width="50%">
+     <td align="center" width="100%">
       <xsl:call-template name="nav_center">
        <xsl:with-param name="pos" select="$pos"/>
        <xsl:with-param name="split">0</xsl:with-param>
       </xsl:call-template>
      </td>
-    
-     <xsl:choose>
-      <xsl:when test="$variant = 'online'">
-       <xsl:call-template name="search_form"/>
-      </xsl:when>
-      <xsl:otherwise>
-       <td align="right" width="25%">
-        <xsl:text>&#160;</xsl:text>
-       </td>
-      </xsl:otherwise>
-     </xsl:choose>
     
      <td align="right">
       <xsl:call-template name="nextdok" />
@@ -396,27 +382,12 @@
        </xsl:choose>
       </td>
       
-      <td align="left" width="25%">
-       <xsl:text>&#160;</xsl:text>
-      </td>
-      
-      <td align="center" width="50%">
+      <td align="center" width="100%">
        <xsl:call-template name="nav_center">
         <xsl:with-param name="pos" select="$pos" />
         <xsl:with-param name="split">1</xsl:with-param>
        </xsl:call-template>
       </td>
-     
-      <xsl:choose>
-       <xsl:when test="$variant = 'online'">
-        <xsl:call-template name="search_form"/>
-       </xsl:when>
-       <xsl:otherwise>
-        <td align="right" width="25%">
-         <xsl:text>&#160;</xsl:text>
-        </td>
-       </xsl:otherwise>
-      </xsl:choose>
      
       <td align="right">
        <xsl:choose>
@@ -449,28 +420,13 @@
        <xsl:call-template name="prevdok" />
       </td>
       
-      <td align="left" width="25%">
-       <xsl:text>&#160;</xsl:text>
-      </td>
-     
-      <td align="center" width="50%">
+      <td align="center" width="100%">
        <xsl:call-template name="nav_center">
         <xsl:with-param name="pos" select="$pos"/>
         <xsl:with-param name="split">0</xsl:with-param>
        </xsl:call-template>
       </td>
      
-      <xsl:choose>
-       <xsl:when test="$variant = 'online'">
-        <xsl:call-template name="search_form"/>
-       </xsl:when>
-       <xsl:otherwise>
-        <td align="right" width="25%">
-         <xsl:text>&#160;</xsl:text>
-        </td>
-       </xsl:otherwise>
-      </xsl:choose>
-      
       <td align="right">
       <a>
        <xsl:attribute name="href">
@@ -490,24 +446,6 @@
   </xsl:choose>
  </xsl:template>
 
- <!--
-  search_form - erzeugt das Suchformular für die Navigationszeile
- -->
-
- <xsl:template name="search_form">
-  <form action="http://www.selflinux.org/cgi-bin/htsearch">
-   <td align="left" width="25%">
-    <img src="../bilder/lupe.png" border="0" width="16" height="15" alt="Suchen" title="Suchen"/>
-    <xsl:text>&#160;</xsl:text>
-    <input type="text" name="words" size="10"/>
-    <input type="hidden" name="method" value="and"/>
-    <input type="hidden" name="config">
-     <xsl:attribute name="value"><xsl:value-of select="$version"/></xsl:attribute>
-    </input>
-   </td>
-  </form>
- </xsl:template>
- 
  <!--
   nav_center - erzeugt die Navigationselemente in der Mitte der Navigationszeile 
   'pos' gibt die Position der Navigationszeile (up,down) an,
