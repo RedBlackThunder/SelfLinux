@@ -125,3 +125,379 @@ Klicken Sie jetzt auf, um die zwei hervorgehobenen Einträge herunter zu laden.
   </section>
  </split>
 </chapter>
+
+
+
+<!--
+Das Handbuch zu KGet
+
+Jonathan E. Drews
+Übersetzung: Frank Schütte
+Version 0.8.4 (2005-08-31)
+
+Copyright © 2003 Jonathan E. Drews
+Rechtlicher Hinweis
+
+KGet erlaubt die Gruppierung von Dateitransfers. In einigen Fällen kann KGet sogar begonnene Transfers wieder aufnehmen, selbst wenn der Rechner zwischendurch neu gestartet wird. 
+
+
+
+Kapitel 1. Einleitung
+
+Um den Transfer eines Dokuments oder Pakets zu starten, ziehen Sie einfach die URL auf KGet. 
+
+
+Kapitel 2. Arbeiten mit KGet
+
+Inhaltsverzeichnis
+
+Einführung zu KGet
+
+Einführung zu KGet
+
+In dieser kurzen Einführung werden einige der Funktionen von KGet vorgestellt. Die drei unten aufgeführten Programmpakete sollen heruntergeladen werden. Das mittlere Paket soll zuerst heruntergeladen werden, gefolgt vom oberen und zum Schluss das untere Paket.
+
+   1.
+
+      Sie können KGet in den Offline-Modus versetzen.Verwenden Sie dazu den Menüeintrag Optionen->Offline-Modus.
+   2.
+
+      Klicken Sie zunächst mit der linken Maustaste auf den oberen Eintrag. Halten Sie jetzt die Strg-Taste gedrückt und klicken Sie auf den unteren Eintrag. Es ergibt sich folgendes Bild:
+      Einträge, die in Konqueror heruntergeladen werden sollen
+
+   3.
+
+      Klicken Sie auf den Knopf "Verzögert", um diese Dateien vorerst nicht herunterzuladen.
+   4.
+
+      Klicken Sie jetzt auf den mittleren Eintrag, um ihn hervorzuheben. Dadurch wird gleichzeitig die Hervorhebung des oberen und unteren Eintrags entfernt.
+      Einträge, die in Konqueror heruntergeladen werden sollen
+
+   5.
+
+      Versetzen Sie KGet nun zurück in den Online-Modus. Heben Sie dazu die Markierung bei Optionen->Offline-Modus auf. KGet lädt nun den mittleren Eintrag herunter.
+   6.
+
+      Klicken Sie auf den oberen Eintrag, halten Sie die Umschalt-Taste gedrückt und klicken Sie auf den unteren Eintrag. Es bietet sich folgendes Bild:
+      Einträge, die in Konqueror heruntergeladen werden sollen
+
+      Anmerkung
+
+      Durch Halten der Strg-Taste können einzelne Einträge ausgewählt werden, durch Halten der Umschalt-Taste wird ein Bereich aufeinander folgender Einträge ausgewählt.
+   7.
+
+      Klicken Sie nun auf den Knopf Warteschlange oder wählen Sie im Menü Transfer->Warteschlange, um die beiden markierten Einträge herunterzuladen. 
+
+
+
+
+
+Kapitel 3. Besondere Einstellungen
+
+Inhaltsverzeichnis
+
+Einrichtung der automatischen Trennung
+Herunterladen in festgelegte Ordner
+
+Einrichtung der automatischen Trennung
+
+Diese Funktion dient zur automatischen Trennung des Modems nach Fertigstellung eines Transfers. Dazu wird KGet folgendermaßen konfiguriert:
+
+    *
+
+      Wählen Sie Optionen->Automatisches Trennen zur automatischen Trennung der Modemverbindung. (Dies ist zumeist KPPP.) Diese Funktion ist nur im Expertenmodus verfügbar.
+    *
+
+      Benutzer von SuSE-Linux müssen den Befehl cinternet -i ppp0 -0 an Stelle von kppp -k unter Einstellungen->KGet einrichten ... Automatisierung verwenden.
+    *
+
+      Benutzer von Fedora Core müssen /usr/sbin/usernetctl ppp0 down verwenden.
+
+
+
+
+
+
+Herunterladen in festgelegte Ordner
+
+Damit heruntergeladene jpeg-Dateien in einem bestimmten Ordner abgelegt werden, gehen Sie wie folgt vor:
+
+    *
+
+      Wählen Sie im Menü Einstellungen->KGet einrichten ... und dort den Eintrag Ordner.
+    *
+
+      Geben Sie die gewünschten Dateien durch Eingabe der Dateiendungen .jpg und .jpeg an:
+      Herunterladen in festgelegte Dateien
+    *
+
+      Klicken Sie auf Anwenden und OK. Wenn Sie jetzt eine Datei mit der Endung .jpeg herunterladen, wird diese ohne Nachfrage im Ordner /home/kdecvs/pics/JPEG gespeichert.
+
+
+
+
+
+
+Kapitel 4. Befehlsreferenz
+
+Inhaltsverzeichnis
+
+Das Hauptfenster von KGet
+
+    Das Menü Datei
+    Das Menü Ansicht
+    Das Menü Transfer
+    Das Menü Optionen
+    Das Menü Einstellungen
+    Das Menü Hilfe
+
+Das Hauptfenster von KGet
+Das Menü Datei
+
+Datei->Öffnen (Strg+O)
+
+    Öffnet das Transferfenster, in das Sie URLs hineinziehen können. 
+Datei->Einfügen (Strg+ V)
+
+    Fügt den Inhalt der Zwischenablage in das Transferfenster ein.
+Datei->Transferliste exportieren ...
+
+    Öffnet einen den Dialog "Speichern unter". Damit ist es möglich, ausgewählte URLs in eine .kget-Datei zu speichern. Wenden Sie diese Funktion so an:
+
+        *
+
+          Versetzen Sie KGet in den Offline-Modus, indem Sie in der Werkzeugleiste auf den Knopf "Offline-Modus" klicken oder im Menü Optionen->Offline-Modus wählen.
+        *
+
+          Ziehen Sie die zu übertragenden URLs in das Fenster von KGet.
+        *
+
+          Wählen Sie den obersten Eintrag der Liste durch Klicken aus.
+        *
+
+          Halten Sie die Umschalt-Taste gedrückt und klicken Sie auf die unterste URL. Dadurch werden alle Einträge in der Liste ausgewählt.
+
+        *
+
+          Klicken Sie nun auf Datei->Transferliste exportieren ... und tragen Sie den gewünschten Namen der .kget-Datei für die Dateitransfers ein. 
+
+    Auf diese Weise können Sie Einträge für Dateien speichern, die Sie häufig herunterladen, wie z. B. die KDE-Schnappschüsse. 
+Datei->Transferliste importieren ...
+
+    Lädt eine .kget-Datei, die mit Hilfe von Datei->Transferliste exportieren ... erzeugt wurde. 
+Datei->Textdatei importieren ...
+
+    Importiert URLs, die sich in einer Textdatei befinden. Diese Funktion kann Textdateien und E-Mails nach URLs durchsuchen. Sie kann zwischen normalem Text und URLs unterscheiden, sofern die URL am linken Rand des Dokuments beginnt. KGet findet solche URLs und lädt sie in sein Hauptfenster.
+    Anmerkung
+
+    Normaler Text wird nur dann ignoriert, wenn Sie vorher auf das Symbol Expertenmodus klicken. Falls der Expertenmodus nicht verwendet wird, darf der Text nur URLs enthalten.
+
+Datei->Beenden (Strg+Q)
+
+    Beendet KGet
+
+Das Menü Ansicht
+
+Ansicht->Protokollfenster anzeigen
+
+    Öffnet ein Protokollfenster, das die bisherigen Ereignisse anzeigt. Damit können Sie z. B. einen längeren Transfer überwachen. Hierbei wird angezeigt, ob Pakete übersprungen oder ein Zeitlimit überschritten wurde. 
+
+Das Menü Transfer
+Anmerkung
+
+Die Einträge dieses Menüs sind nur dann aktiv (nicht grau), wenn Sie zuvor einen Transfereintrag durch Klicken mit der linken Maustaste ausgewählt haben.
+
+Transfer->URL in die Zwischenablage kopieren
+
+    Kopiert die ausgewählte Zeile in die KDE-Zwischenablage (Klipper). 
+Transfer->Individuelles Fenster öffnen
+
+    Zeigt den ausgewählten Transfer in einem eigenen Fenster an. 
+Transfer->An den Anfang stellen
+
+    Verschiebt den ausgewählten Eintrag an den Anfang der Transferliste.
+    Anmerkung
+
+    Die erste URL der Liste wird von KGet zuerst heruntergeladen.
+
+Transfer->Ans Ende stellen
+
+    Verschiebt den ausgewählten Eintrag an das Ende der Transferliste.
+Transfer->Fortsetzen
+
+    Setzt einen Transfer fort, der zuvor unterbrochen wurde. 
+Transfer->Pause
+
+    Hält einen laufenden Transfer an. 
+Transfer->Löschen
+
+    Entfernt den ausgewählten Eintrag aus der Liste im Hauptfenster von KGet.
+Transfer->Neustart
+
+    Kombiniert die Funktionen Pause und Fortsetzen in einem Knopf.
+Transfer->Warteschlange
+
+    Der Transfer für die ausgewählten Einträge in KGet wird gestartet.
+Transfer->Timer
+
+    Verzögert den Transfer der ausgewählten Einträge um eine Minute. Das ist nützlich, um einen Transfer kurzzeitig zu unterbrechen, beispielsweise um zwischendurch neue E-Mails herunterzuladen oder eine Webseite zu besuchen.
+Transfer->Verzögerung
+
+    Verzögert den Transfer der ausgewählten Einträge auf unbestimmte Zeit.
+    Anmerkung
+
+    Warteschlange, Timer und Verzögerung schließen sich gegenseitig aus; es kann jeweils nur eine der drei Funktionen gleichzeitig genutzt werden.
+
+Das Menü Optionen
+
+Optionen->Animation verwenden
+
+    Schaltet die Verwendung von Animationen ein/aus, um den derzeitigen Status von KGet anzuzeigen.
+Optionen->Sound verwenden
+
+    Schaltet Sound ein/aus, um auf Ereignisse aufmerksam zu machen, z. B. wenn eine Datei zur Transferliste hinzugefügt wurde oder wenn ein Transfer abgeschlossen ist.
+Optionen->Expertenmodus
+
+    Schaltet Bestätigungsnachfragen aus.
+Optionen->Letzten Ordner verwenden
+
+    KGet ignoriert die aktuellen Ordnereinstellungen und überträgt alle weiteren Transfers in den Ordner des letzten Transfers. 
+Optionen->Offline-Modus
+
+    Schaltet KGet vom Online-Modus (bereit zum Herunterladen) in den Offline-Modus um. Der Offline-Modus wird beispielsweise verwendet, wenn Sie URLs in KGet kopieren möchten, diese aber nicht sofort heruntergeladen werden sollen.
+Optionen->Automatisches Trennen
+
+    Veranlasst KGet, die Modemverbindung zu trennen. Die Modemverbindung ist üblicherweise KPPP. Diese Funktion ist nur mit aktiviertem Expertenmodus verfügbar.
+
+    Weitere Informationen zu dieser Funktion finden Sie unter ?Einrichtung der automatischen Trennung?. 
+Optionen->Automatisches Beenden
+
+    Beendet KGet nach dem Ende aller Transfers. Diese Funktion ist nur im Expertenmodus verfügbar.
+Optionen->Automatisches Einfügen
+
+    Aktiviert das automatische Aufnehmen von Adressen aus der Zwischenablage.
+
+Das Menü Einstellungen
+
+Einstellungen->Statusleiste ausblenden
+
+    Blendet die Statusleiste aus. Normalerweise zeigt die Statusleiste Statistiken über die gerade laufenden Transfers an.
+Einstellungen->Zielfeld anzeigen
+
+    Das Zielfeld ist ein Symbol für die Arbeitsfläche, mit dessen Hilfe KGet aus- und wieder eingeblendet werden kann. Das ist nützlich, um bei einer gefüllten Arbeitsfläche den Transferstatus von Zeit zu Zeit zu überprüfen.
+Einstellungen->Kurzbefehle festlegen ...
+
+    Zeigt den KDE-Dialog zum Einrichten der Kurzbefehle an.
+Einstellungen->Werkzeugleisten einrichten ...
+
+    Zeigt den KDE-Dialog zum Einrichten der Werkzeugleisten an.
+Einstellungen->KGet einrichten ...
+
+    Zeigt den Dialog zum Einrichten von KGet an.
+
+Das Menü Hilfe
+
+Hilfe->Handbuch zu KGet (F1)
+
+    Startet das Hilfe-System von KDE mit der KGet-Hilfe (diesem Dokument).
+Hilfe->Was ist das? (Umschalt+F1)
+
+    Ändert den Mauscursor zu einer Kombination von Zeiger und Fragezeichen. Das Klicken auf ein Element innerhalb von KGet öffnet ein Hilfefenster, das die Funktion des Elementes beschreibt (sofern es Hilfe für das bestimmte Element gibt).
+Hilfe->Probleme oder Wünsche berichten ...
+
+    Öffnet den Dialog für Problemberichte, in dem Sie Fehler und Wünsche berichten können.
+Hilfe->Über KGet
+
+    Zeigt Versions- und Autoreninformationen an.
+Hilfe->Über KDE
+
+    Zeigt Versionsinformation und Grundsätzliches zu KDE an.
+
+
+
+
+
+
+
+
+
+
+Kapitel 5. Mitwirkende und Lizenz
+
+KGet
+
+Programm Copyright 1998 Matej Moss
+
+Mitwirkende:
+
+    *
+
+      Patrick Charbonnier (pch AT freeshell.org)
+    *
+
+      Carsten Pfeiffer (pfeiffer AT kde.org)
+
+Dokumentation Copyright (c) 2003 Jonathan Drews (j.e.drews AT att.net)
+
+Deutsche Übersetzung Frank Schütte(F.Schuette AT t-online.de)
+
+Diese Dokumentation ist unter den Bedingungen der GNU Free Documentation License veröffentlicht.
+
+Dieses Programm ist unter den Bedingungen der GNU General Public License veröffentlicht.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Anhang A. Installation
+
+Inhaltsverzeichnis
+
+Wie Sie KGet erhalten
+Kompilierung und Installation
+
+Wie Sie KGet erhalten
+
+KGet ist Teil des KDE-Projekts http://www.kde.org/.
+
+KGet finden Sie im kdenetwork-Paket auf ftp://ftp.kde.org/pub/kde/, dem Haupt-FTP-Server des KDE-Projekts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kompilierung und Installation
+
+Um KGet auf Ihrem System zu kompilieren und zu installieren, geben Sie folgende Befehle im Hauptordner der Programm-Quellen von KGet ein:
+
+% ./configure
+% make
+% make install
+
+Da KGet autoconf und automake benutzt, sollte es dabei keine Schwierigkeiten geben. Sollten dennoch Probleme auftauchen, wenden Sie sich bitte an die KDE-Mailinglisten.
+
+
+
+
+
+
+
+
+
