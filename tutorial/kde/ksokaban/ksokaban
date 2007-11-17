@@ -1,0 +1,225 @@
+Das Handbuch zu KSokoban
+
+Anders Widell (awl passagen.se)
+Deutsche Übersetzung: Maren Pakura
+Version 0.4.2 (2006-06-19)
+
+Copyright © 2000 Anders Widell
+Rechtlicher Hinweis
+
+KSokoban ist Umsetzung des japanischen Warenhausarbeiter-Spiels Sokoban für KDE. 
+
+Kapitel 1. Einleitung
+
+Dieses Spiel wurde ursprünglich in Japan in den frühen achtziger Jahren erfunden und gewann dort einen Computerspielwettbewerb. Sokoban ist Japanisch und bedeutet Lagerverwalter. Die Idee ist, dass Sie Verwalter des Warenlagers sind, der versucht Kisten an die richtigen Stellen im Warenlager zu schieben.
+
+Das Problem dabei ist; Sie können die Kisten nicht ziehen oder darüber gehen. Wenn Sie nicht vorsichtig genug sind, können einige der Kisten an den falschen Stellen stecken bleiben oder Ihren Weg versperren.
+
+Es kann ganz schön schwierig werden, einen Raum zu lösen. Aber wenn man den Schwierigkeitsgrad steigern will, kann man dies mit einer Minimierung der Anzahl der benötigten Bewegungen und/oder Verschiebungen versuchen, die man zur Beendigung braucht.
+
+Damit das Spiel kleinen Kindern (jünger als 10) mehr Spaß macht, sind einige Sammlungen mit einfacheren Räumen bei KSokoban enthalten. Diese sind im Menü Raum-Sammlung mit (leicht) markiert. Natürlich können diese Räume auch Erwachsenen Spaß machen, z. B. wenn Sie sich nicht zuviel geistiger Anstrengung aussetzen wollen. 
+
+
+
+Kapitel 2. Spielanleitung
+
+Inhaltsverzeichnis
+
+Steuerung
+Laden von externen Räumen
+
+Ziel des Spieles ist, alle roten Edelsteine in die Zielfelder zu schieben. Diese enthalten grüne, runde Flächen.
+
+Benutzen Sie die Pfeiltasten oder die Maus um sich zu bewegen. Wenn Sie mit den Pfeiltasten oder der mittleren Maustaste gegen einen Edelstein kommen und nichts auf der Gegenseite blockiert, verschieben Sie den Edelstein. Es ist nicht möglich, die Edelsteine zu ziehen. Daraus folgt, wenn Sie einen Edelstein in eine Ecke schieben, bleibt er dort stecken. Sie können die Edelsteine nicht überspringen. Somit können Sie sich auch in einen Teil des Labyrinths einsperren, wenn Sie Ihren Weg mit Edelsteinen blockieren. Bitte beachten Sie auch, dass es nicht möglich ist, mehr als einen Edelstein zur gleichen Zeit zu verschieben.
+
+Wenn Sie bemerken, dass Sie die Edelsteine so verschoben haben, dass der Raum nicht mehr zu lösen ist, können Sie immer noch die Rückgängig-Funktion verwenden, um zu einem Zug zurückzukehren, in dem Sie den Fehler noch nicht gemacht hatten. Sie können auch den Raum neu starten.
+Steuerung
+
+Taste	Aktion
+Pfeiltasten 	Geht einen Schritt in eine Richtung.
+Strg+Pfeiltasten 	Gehe so weit wie möglich in eine Richtung, ohne einen Stein zu bewegen.
+Umschalt+Pfeiltasten 	Gehe so weit wie möglich in eine Richtung, bewege jeden Stein, der im Weg ist.
+linke Maustaste 	Gehe zu einem Ort im Labyrinth, der ohne Bewegen von Steinen erreicht werden kann.
+mittlere Maustaste oder Strg+Z	Macht die letzte Aktion rückgängig.
+rechte Maustaste 	Hoch/Runter/Links/Rechts in einer geraden Linie, bewege jeden Stein, der im Weg ist.
+Mausrad	Den Verlauf durchsuchen.
+Strg+Umschalt+Z	Stellt die zuletzt rückgängig gemachte Aktion wieder her.
+N 	Gehe in den nächsten Raum der aktuellen Raum-Sammlung.
+P 	Gehe in den vorherigen Raum der aktuellen Raum-Sammlung.
+Esc 	Startet den Raum neu.
+Strg+Q	Beendet das Spiel.
+
+
+
+Laden von externen Räumen
+
+KSokoban hat die Fähigkeit, externe Räume aus Text-Dateien zu lesen. Diese Räume können mit Spiel->Räume laden ... geladen werden oder durch Angabe der URL des Raumes als Befehlszeilenargument, wenn KSokoban aus der Shell gestartet wird.
+
+Die externen Räume müssen mit den Standardzeichen geschrieben sein, die in der nachfolgenden Tabelle dargestellt sind. Wenn eine Datei mehr als einen Raum enthält, sollten sie durch leere Zeilen getrennt sein. Die Datei kann auch Text zwischen den Räumen enthalten.
+Zeichen	Bedeutung
+#	Mauer
+(Leerzeichen)	Leeres Feld
+.	Zielfeld
+$	Edelstein auf leerem Feld
+*	Edelstein auf Zielfeld
+@	Startposition auf leerem Feld
++	Startposition auf Zielfeld
+
+Unten ist der erste Raum in der MicrobanRaum-Sammlung als Text dargestellt:
+
+####
+# .#
+#  ###
+#*@  #
+#  $ #
+#  ###
+####
+
+
+
+
+Kapitel 3. Menü-Referenz
+
+Inhaltsverzeichnis
+
+Das Menü Spiel
+Das Menü Animation
+Das Menü Lesezeichen
+Das Menü Hilfe
+
+Es folgt eine vollständige Beschreibung der Menüs von KSokoban.
+Das Menü Spiel
+
+Spiel->Räume laden ...
+
+    Lädt eine externe Spielstufe. Siehe den Abschnitt Externe Spielstufen laden für genauere Informationen.
+Spiel->Nächster Raum (N)
+
+    Lädt den nächsten Raum.
+Spiel->Vorheriger Raum (P)
+
+    Geht zurück zum vorherigen Raum.
+Spiel->Raum neu starten (Esc)
+
+    Startet den Raum neu.
+Spiel->Raum-Sammlung
+
+    Wechselt zu einer anderen Zusammenstellung von Räumen. KSokoban bringt verschiedene Raumsammlungen mit. Weitere Sammlungen finden Sie im Internet.
+Spiel->Rückgängig (Strg+Z)
+
+    Macht die letzte Aktion rückgängig.
+Spiel->Wiederherstellen (Strg+Umschalt+Z)
+
+    Stellt den letzten Spielzug wieder her, der mit dem vorigen Menüpunkt rückgängig gemacht wurde.
+Spiel->Beenden (Strg+Q)
+
+    Beendet KSokoban.
+
+
+Das Menü Animation
+
+Im Menü Animation können Sie die Geschwindigkeit der angezeigten Animation einstellen.
+
+Animation->Langsam
+
+    Spielt die Animation langsam ab.
+Animation->Mittel
+
+    Dies ist die Standardeinstellung und spielt die Animation mit etwas höherer Geschwindigkeit ab.
+Animation->Schnell
+
+    Spielt die Animation schnell ab.
+Animation->Aus
+
+    Zeigt keine Animation an.Das Menü Animation
+
+Im Menü Animation können Sie die Geschwindigkeit der angezeigten Animation einstellen.
+
+Animation->Langsam
+
+    Spielt die Animation langsam ab.
+Animation->Mittel
+
+    Dies ist die Standardeinstellung und spielt die Animation mit etwas höherer Geschwindigkeit ab.
+Animation->Schnell
+
+    Spielt die Animation schnell ab.
+Animation->Aus
+
+    Zeigt keine Animation an.
+
+
+
+Das Menü Lesezeichen
+
+Lesezeichen->Lesezeichen setzen
+
+    KSokoban kann Lesezeichen in einem bestimmten Raum in einem bestimmten Zustand setzen. Damit können Sie vermeiden, dieselben Anfangsschritte häufig wiederholen zu müssen.
+
+    Sie können bis zu zehn Lesezeichen gleichzeitig verwenden. Diese werden über Strg+X aufgerufen, wobei das X für eine Ziffer zwischen 0 und 9 steht.
+Lesezeichen->Gehe zu Lesezeichen
+
+    Stellt einen Zustand wieder her, der zuvor als Lesezeichen gespeichert wurde.
+
+
+
+
+
+Das Menü Hilfe
+
+Hilfe->Handbuch zu KSokoban (F1)
+
+    Startet das Hilfe-System von KDE mit der KSokoban-Hilfe (diesem Dokument).
+Hilfe->Was ist das? (Umschalt+F1)
+
+    Ändert den Mauscursor zu einer Kombination von Zeiger und Fragezeichen. Das Klicken auf ein Element innerhalb von KSokoban öffnet ein Hilfefenster, das die Funktion des Elementes beschreibt (sofern es Hilfe für das bestimmte Element gibt).
+Hilfe->Probleme oder Wünsche berichten ...
+
+    Öffnet den Dialog für Problemberichte, in dem Sie Fehler und Wünsche berichten können.
+Hilfe->Über KSokoban
+
+    Zeigt Versions- und Autoreninformationen an.
+Hilfe->Über KDE
+
+    Zeigt Versionsinformation und Grundsätzliches zu KDE an.
+
+
+
+
+
+
+
+Kapitel 4. Danksagungen und Lizenz
+
+KSokoban Copyright (c) 1998-2000 von Anders Widell (awl AT passagen.se). Die neusten Informationen über KSokoban finden Sie auf der Homepage zu KSokoban, http://hem.passagen.se/awl/ksokoban/.
+
+Das Hintergrundbild Sternenfeld wurde von Gimp übernommen. Alle anderen Grafiken wurden von Anders Widell (awl AT passagen.se) mit dem Raytracer-Programm Povray erstellt.
+
+Alle zur Zeit enthaltenen Sokoban-Räume wurden von David W. Skinner erstellt (sasquatch AT bentonrea.com). Sie können sich seine Seite zu Sokoban auf http://users.bentonrea.com/~sasquatch/sokoban/ ansehen.
+
+Deutsche Übersetzung von Maren Pakura (maren AT kde.org)
+
+Diese Dokumentation ist unter den Bedingungen der GNU Free Documentation License veröffentlicht.
+
+Dieses Programm ist unter den Bedingungen der GNU General Public License veröffentlicht.
+
+
+
+
+
+
+Anhang A. Installation
+
+KSokoban ist Teil des KDE-Projekts http://www.kde.org/.
+
+KSokoban finden Sie im kdegames-Paket auf ftp://ftp.kde.org/pub/kde/, dem Haupt-FTP-Server des KDE-Projekts.
+
+Um KSokoban auf Ihrem System zu kompilieren und zu installieren, schreiben Sie das Folgende in das Hauptverzeichnis in der KSokoban-Distribution:
+
+% ./configure
+% make
+% make install
+
+Da KSokoban autoconf und automake benutzt, sollte es dabei keine Schwierigkeiten geben. Sollten dennoch Probleme auftauchen, wenden Sie sich bitte an die KDE-Mailinglisten.
+
+
