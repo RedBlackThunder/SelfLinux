@@ -1,0 +1,263 @@
+Das Handbuch zu kmenuedit
+
+Milos Prudek
+reviewer: Lauri Watts
+Deutsche Übersetzung: Marco Wegner
+Version 0.7 (KDE 3.5.5) (2006-11-23)
+
+Copyright © 2000 Milos Prudek
+Rechtlicher Hinweis
+
+kmenuedit ermöglicht das Bearbeiten des Hauptmenüs von KDE (K-Menü). 
+
+
+Kapitel 1. Einleitung
+
+kmenuedit ermöglicht das Bearbeiten des Hauptmenüs von KDE (K-Menü).
+
+kmenuedit kann entweder durch Klicken mit der rechten Maustaste auf den Knopf K-Menü und Auswahl von Menü-Editor oder durch das Auswählen von Menü-Editor aus dem Untermenü Einstellungen des K-Menü aufgerufen werden.
+
+kmenuedit ermöglicht das:
+
+    *
+
+      Anzeigen und Bearbeiten des vorhandenen K-Menüs
+    *
+
+      Das Ausschneiden, Kopieren und Einfügen von Menüeinträgen
+    *
+
+      Das Anlegen und Löschen von Untermenüs
+
+
+
+Kapitel 2. Kurzanleitung für das Hinzufügen eines Eintrags für das K-Menü
+
+Virgil J. Nisly
+
+In diesem Beispiel werden wir Firefox zum Menü Internet hinzufügen.
+Anmerkung
+
+Die meisten Anwendungen können über Kappfinder hinzugefügt werden. Dazu zählt eigentlich auch Firefox. Mangels eines besseren Beispiels fügen wir den Eintrag trotzdem von Hand hinzu.
+
+Zu Beginn müssen wir kmenuedit starten: Klicken Sie dazu mit der rechten Maustaste auf das K-Menü und wählen Sie Menü-Editor. Nachdem kmenuedit gestartet ist, wählen Sie wie im Bildschirmfoto unten Internet.
+Wählen Sie Internet
+
+Wenn Sie Internet ausgewählt haben, klicken Sie auf Datei->Neues Element ... und öffnen damit den unten gezeigten Dialog Neues Element. Geben Sie nun den Namen des Programms ein, das Sie hinzufügen möchten. In diesem Fall ist das firefox.
+Der Dialog Neues Element.
+
+Drücken Sie Eingabe, und Sie sollten einen ähnlichen Bildschirm wie abgebildet sehen.
+Das neu angelegte Element.
+
+Lassen Sie uns jetzt Beschreibung: ausfüllen; in diesem Fall geben Sie Web Browser ein.
+Anmerkung
+
+Die Beschreibung und der Namen werden im K-Menü als Web Browser (Firefox) angezeigt.
+
+Im Textfeld Befehl: müssen Sie nun den Namen der ausführbaren Datei angeben. In diesem Fall ist das firefox.
+Anmerkung
+
+Nach dem Befehl können weitere Platzhalter folgen, die durch ihre eigentlichen Werte ersetzt werden, sobald das Programm aufgerufen wird:
+%f - ein Dateiname
+%F - eine Liste von Dateien. Benutzen Sie dies bei Anwendungen, die mehrere lokale Dateien gleichzeitig öffnen können
+%u - eine Adresse (URL)
+%U - eine Liste von URLs (Adressen)
+%d - der Ordner der zu öffnenden Datei
+%D - eine Liste von Ordnern
+%i - das Symbol
+%m - das Mini-Symbol
+%c - der Fenstertitel
+
+Ein Beispiel: Wenn Sie firefox mit der Seite www.kde.org starten wollen, geben Sie anstelle von firefox Folgendes ein: firefox %u www.kde.org.
+
+Wir möchten ein schöneres Symbol haben, also klicken wir auf das voreingestellte Symbol direkt neben Name:. Nun erscheint der Dialog Symbol auswählen, aus dem Sie, wie unten dargestellt, ein Symbol auswählen können.
+Der Dialog Symbol auswählen.
+
+Wir wählen aus der Liste das Symbol für firefox, und drücken Eingabe. Das Ergebnis sollte etwa so aussehen wie unten dargestellt.
+So sollte der fertiggestellte Menüeintrag ausssehen.
+
+Klicken Sie Datei->Speichern und warten Sie, bis der Dialog System-Einrichtung wird aktualisiert fertig ist. Jetzt sollte Firefox im K-Menü im Untermenü Internet auftauchen.
+
+
+
+
+
+Kapitel 3. Benutzung von kmenuedit
+
+Inhaltsverzeichnis
+
+Allgemeine Informationen zu einem Programm
+
+Das Feld auf der linken Seite der Anwendung gibt die Struktur des K-Menüs wieder. Wenn Sie einen Eintrag in diesem Feld auswählen, werden im Bereich auf der rechten Seite detaillierte Informationen zum ausgewählten Eintrag angezeigt.
+Allgemeine Informationen zu einem Programm
+
+Name:
+
+    Dies ist der Name des Programms, wie er im K-Menü angezeigt wird. Er kann sich vom tatsächlichen Namen der ausführbaren Datei unterscheiden. So lautet zum Beispiel der Name der ausführbaren Datei mc im Menü "Midnight Commander".
+Beschreibung:
+
+    Die Beschreibung wird zusammen mit dem Namen im K-Menü angezeigt. Diese Angabe ist optional.
+Kommentar:
+
+    In diesem Eingabefeld steht eine detaillierte Programmbeschreibung. Diese Angabe ist optional.
+Befehl:
+
+    Dies ist der Name der ausführbaren Datei. Stellen Sie sicher, dass Sie die Berechtigung zum Ausführen dieser Datei besitzen.
+Startrückmeldungen aktivieren
+
+    Wenn dieses Feld aktiviert ist, dann wird eine Rückmeldung angezeigt, wenn eine Anwendung gestartet wurde. 
+Im Systemabschnitt der Kontrollleiste anzeigen
+
+    Wenn dieses Feld aktiviert ist, dann wird das Symbol der Anwendung im Systemabschnitt der Kontrollleiste angezeigt. Dann können Sie die Anwendung durch Klicken auf das Symbol im Systemabschnitt aus- oder einblenden. Durch Klicken auf das Symbol mit der rechten Maustaste können Sie die Anwendung beenden oder aus dem Systemabschnitt lösen. 
+Symbolliste
+
+    Klicken Sie auf dieses Symbol, um eine Auswahl an Symbol anzuzeigen. Wählen Sie hier ein Symbol für das Programm.
+Arbeitsordner:
+
+    Geben Sie hier den Arbeitsordner des Programms an. Dies wird der aktuelle Ordner sein, wenn das Programm gestartet wird. Der Ordner muss nicht mit dem Ordner übereinstimmen, in dem sich die auszuführende Datei befindet.
+In Terminal starten
+
+    Markieren Sie dieses Ankreuzfeld, wenn das Programm nur in einem Terminal ausgeführt werden kann. Dies gilt hauptsächlich für Konsole-Anwendungen.
+Terminal-Einstellungen:
+
+    Tragen Sie alle Terminal-Optionen in dieses Eingabefeld ein.
+Unter anderer Benutzerkennung ausführen
+
+    Falls Sie das Programm unter einer anderen Benutzerkennung ausführen möchten, markieren Sie dieses Ankreuzfeld und geben die Benutzerkennung im Feld Benutzername: an.
+
+Sie können hier ein spezielles Tastaturkürzel angeben, mit dem das Programm ausgeführt werden kann.
+
+Klicken Sie auf den Knopf Keine rechts neben Aktuelles Tastenkürzel:.
+
+Es öffnet sich ein Dialogfenster, im dem Sie ein Primäres Tastenkürzel: für diese Programm durch Drücken der Tastenkombination auf der Tastatur eingeben können. Manchmal ist es erforderlich, ein zweites Tastenkürzel anzugeben. Markieren Sie dazu den Auswahlknopf Alternatives Tastenkürzel:. Dies kann beispielsweise dann sinnvoll sein, wenn Sie häufig zwischen verschiedenen Tastaturbelegungen umschalten und sich dadurch manche Tastenkombinationen nicht immer bequem eintippen lassen.
+
+Klicken Sie x, um das Tastenkürzel zu löschen, falls Sie eine falsche Eingabe gemacht haben. Klicken Sie auf das Ankreuzfeld Multi-Tasten-Modus, wenn Sie ein Tastenkürzel zuordnen möchten, das mehr als eine Taste verwendet.
+
+Der Dialog wird mit der Auswahl eines Tastenkürzels geschlossen. 
+
+
+
+
+
+Kapitel 4. Menü-Referenz
+
+Datei->Neues Element ... (Strg+N)
+
+    Fügt ein neues Element hinzu.
+Datei->Neues Untermenü ...
+
+    Fügt ein neues Untermenü hinzu.
+Datei->Neue Unterteilung
+
+    Fügt einen neuen Trenner hinzu.
+Datei->Speichern (Strg+S)
+
+    Speichert das Menü
+Datei->Beenden (Strg+Q)
+
+    Beendet kmenuedit.
+Bearbeiten->Ausschneiden (Strg+X)
+
+    Schneidet das aktuelle Element aus und fügt es in die Zwischenablage ein. Falls Sie einen Menü-Eintrag verschieben möchten, sollten Sie diesen zuerst ausschneiden. Gehen Sie dann im linken Bereich zum gewünschten Zielort und fügen Sie dort das Menü-Element mit Einfügen wieder aus der Zwischenablage ein.
+Bearbeiten->Kopieren (Strg+C)
+
+    Kopiert das aktuelle Element in die Zwischenablage. Sie können das kopierte Element später mit Hilfe von Einfügen wieder an einem neuen Zielort einfügen. Dasselbe Element lässt sich so mehrfach einfügen.
+Bearbeiten->Einfügen (Strg+V)
+
+    Ein Element aus der Zwischenablage einfügen und es am aktuell gewählten Zielort im Hauptmenü speichern. Wählen Sie zuerst Ausschneiden oder Kopieren, bevor Sie Einfügen auswählen können.
+Bearbeiten->Löschen (Entf)
+
+    Löscht das gerade ausgewählte Element.
+Einstellungen->Werkzeugleiste anzeigen/ausblenden
+
+    Blendet die Werkzeugleiste ein oder aus
+Einstellungen->Kurzbefehle festlegen ...
+
+    Anpassen der Kurzbefehle für die Tastatur
+Einrichtung->Werkzeugleisten einrichten ...
+
+    Anpassen der Symbole für die Werkzeugleisten.
+
+Hilfe->Handbuch zu diese Anwendung (F1)
+
+    Startet das Hilfe-System von KDE mit der diese Anwendung-Hilfe (diesem Dokument).
+Hilfe->Was ist das? (Umschalt+F1)
+
+    Ändert den Mauscursor zu einer Kombination von Zeiger und Fragezeichen. Das Klicken auf ein Element innerhalb von diese Anwendung öffnet ein Hilfefenster, das die Funktion des Elementes beschreibt (sofern es Hilfe für das bestimmte Element gibt).
+Hilfe->Probleme oder Wünsche berichten ...
+
+    Öffnet den Dialog für Problemberichte, in dem Sie Fehler und Wünsche berichten können.
+Hilfe->Über diese Anwendung
+
+    Zeigt Versions- und Autoreninformationen an.
+Hilfe->Über KDE
+
+    Zeigt Versionsinformation und Grundsätzliches zu KDE an.
+
+
+
+
+Kapitel 5. Mitwirkende und Lizenz
+
+kmenuedit
+
+Copyright (c) des Programms 2002 Raffaele Sandrini
+
+Mitwirkende:
+
+    *
+
+      Matthias Elter(elter AT kde.org) - Ursprünglicher Autor
+    *
+
+      Matthias Ettrich (ettrich AT kde.org)
+    *
+
+      Daniel M. Duley (dan.duley AT verizon.net)
+    *
+
+      Preston Brown (pbrown AT kde.org)
+
+Dokumentation Copyright (c) 2000 Milos Prudek
+
+Aktualisiert für KDE 3.0 von Lauri Watts(lauri AT kde.org), 2002
+
+Übersetzung ins Deutsche von:
+
+    *
+
+      Matthias Schulz(matthschulz AT linuxfreemail.com)
+    *
+
+      Marco Wegner(mail AT marcowegner.de)
+
+Diese Dokumentation ist unter den Bedingungen der GNU Free Documentation License veröffentlicht.
+
+Dieses Programm ist unter den Bedingungen der GNU General Public License veröffentlicht.
+
+
+
+Glossar
+
+Terminal-Emulator
+
+    Ein Terminal-Emulator ist eine Befehlszeile in einem Fenster; in anderen Arbeitsumgebungen auch bekannt unter der Bezeichung Kommandozeilen-Fenster. Falls Sie die Befehlszeile verwenden möchten, sollten Sie zumindest einige der Systembefehle des Betriebssystems kennen.
+Miniprogramm
+
+    Eine kleine Anwendung, die nur sehr wenig Speicher und Platz auf dem Bildschirm benötigt und gleichzeitig nützliche Informationen bereithält oder einen schnellen Zugriff auf bestimmte Funktionen bietet. So zeigt beispielsweise das Miniprogramm Uhr die aktuelle Zeit und das Datum (und sogar eine Monatsanzeige, wenn man darauf klickt); und das Miniprogramm Systemmonitor zeigt in Echtzeit an, wie ausgelastet der Rechner gerade ist.
+Ältere/fremde Programme
+
+    Eine Anwendung für X-Windows, die nicht für KDE geschrieben wurde. Solche Anwendungen laufen ohne Probleme unter KDE. Diese Anwendungen werden jedoch nicht automatisch benachrichtigt, wenn die aktuelle KDE-Sitzung heruntergefahren wird. Sie sollten daher nicht vergessen, offene Dokumente in diesen Anwendungen zu speichern, bevor Sie sich von KDE abmelden.
+
+    Darüberhinaus unterstützen nur wenige dieser Anwendungen die Funktionalität Kopieren und Einfügen wie Sie es von KDE-Anwendungen kennen. Der Browser Netscape® 4.x ist ein prominentes Beispiel für eine solche Anwendung [1].
+Konsole-Anwendungen
+
+    Anwendungen, die ursprünglich für eine nicht-graphische, textorientierte Umgebung geschrieben wurden. Solche Anwendungen laufen problemlos unter KDE. Sie müssen jedoch in einem Terminal-Emulator wie Konsole laufen. Sie werden nicht automatisch benachrichtigt, wenn die aktuelle KDE-Sitzung heruntergefahren wird. Sie sollten daher nicht vergessen, offene Dokumente in diesen Anwendungen zu speichern, bevor Sie sich von KDE abmelden.
+
+    Konsole-Anwendungen unterstützen das Kopieren und Einfügen von KDE-Anwendungen aus. Markieren Sie diesen Text in der Terminal-Anwendung einfach mit der Maus, wechseln Sie dann in die KDE-Anwendung und drücken Strg+V, um den Text einzufügen. Falls Sie Text aus einer KDE-Anwendung in eine Terminal-Anwendung einfügen möchten, markieren Sie diesen Text zuerst mit Ihrer Maus, drücken danach Strg+C und wechseln in die gewünschte Terminal-Anwendung, wo Sie dann die mittlere Maustaste drücken[2]
+
+
+[1] Einige GNOME-Anwendungen können eingeschränkt mit KDE zusammenarbeiten.
+
+[2] Wenn Ihre Maus keine mittlere Maustaste besitzt, müssen Sie die linke und rechte Maustaste gleichzeitig drücken. Dies wird Emulation der mittleren Maustaste genannt und muss von Ihrem Betriebssystem unterstützt werden, um korrekt arbeiten zu können.
+
