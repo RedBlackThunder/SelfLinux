@@ -32,7 +32,7 @@ einstellen lässt, das Rad aber nicht zum Scrollen benutzt werden kann.
    </textblock>
 
    <textblock>
-XFree86 erkennt standardmäßig eine 3-Tasten-Maus.
+XFree86/X.org erkennt standardmäßig eine 3-Tasten-Maus.
    </textblock>
 
    <textblock>
@@ -47,22 +47,22 @@ zusätzlichen Tasten zur Browsersteuerung zu aktivieren.
  <split>
   <section>
    <heading>
-XFree Konfiguration
+XFree/X.org Konfiguration
    </heading>
 
    <textblock>
-Ausgangspunkt ist eine fertige XFree86-Konfiguration, in der nur noch
+Ausgangspunkt ist eine fertige XFree86/X.org-Konfiguration, in der nur noch
 der Maus-Teil angepasst werden soll. Sollte die Maus nicht erkannt
 worden sein, kann man sie als 3-Tasten-PS/2-Maus deklarieren.
    </textblock>
 
    <textblock>
 Die MS Intellimouse Explorer lässt sich auch als USB-Maus benutzen.
-Eine XFree86-Beispielkonfiguration ist weiter unten im Text angegeben.
+Eine XFree86/X.org-Beispielkonfiguration ist weiter unten im Text angegeben.
    </textblock>
 
    <textblock>
-Die Konfiguration für <ref lang="en" url="http://www.xfree86.org">XFree86</ref> in <path>/etc/X11/XF86Config-4</path> ist in Sektionen
+Die Konfiguration für <ref lang="en" url="http://www.xfree86.org">XFree86/X.org</ref> in <path>/etc/X11/XF86Config-4</path> bzw. <path>/etc/X11/xorg.conf</path> ist in Sektionen
 aufgeteilt. Wir bearbeiten als Root im Editor die Sektion "InputDevice"
 für unsere Maus. Achtung, es können mehrere "InputDevice"-Einträge
 vorhanden sein. Es ist sinnvoll, schon bei der X-Konfiguration einen
@@ -81,7 +81,7 @@ Sektion "ServerLayout" eine Zeile mit dem Eintrag
 
    <file>
     <title>
-XF86Config
+XF86Config-4/xorg.conf
     </title>
     <content>
 InputDevice     "Mouse[1]"
@@ -97,7 +97,7 @@ PS/2-Maus:
 
    <file>
     <title>
-XF86Config
+XF86Config-4/xorg.conf
     </title>
     <content>
         Section "InputDevice"
@@ -117,7 +117,7 @@ Die Sektion "InputDevice" für die MS Intellimouse Explorer als USB-Maus:
 
    <file>
     <title>
-XF86Config (USB-Port)
+XF86Config-4/xorg.conf (USB-Port)
     </title>
     <content>
         Section "InputDevice"
@@ -143,7 +143,7 @@ PS/2-Maus:
 
    <file>
     <title>
-XF86Config (MS Intelli Mouse)
+XF86Config-4/xorg.conf (MS Intelli Mouse)
     </title>
     <content>
         Section "InputDevice"
@@ -160,7 +160,7 @@ XF86Config (MS Intelli Mouse)
    <textblock>
 Änderungen an der XF86Config-4 benötigen <strong>keinen</strong> Neustart des Rechners.
 Damit sie wirksam werden, reicht es, den X-Server neu zu starten.
-Die Tastenkombination <keycomb><key>CRTL</key><key>ALT</key><key>BACKSPACE</key></keycomb> bei laufendem XFree86
+Die Tastenkombination <keycomb><key>CRTL</key><key>ALT</key><key>BACKSPACE</key></keycomb> bei laufendem XFree86/X.org
 reicht für gewöhnlich, um X zu beenden. X startet anschließend selbst
 neu, wenn ein Login-Manager wie <command>xdm</command>, <command>kdm</command> oder <command>gdm</command> aktiv ist.
 Anderenfalls hilft startx weiter.
@@ -290,6 +290,38 @@ exec imwheel -k -b "67"
 
    <textblock>
 ein. Damit sollten diese Tasten auch ihre Funktion erfüllen.
+   </textblock>
+  </section>
+ </split>
+
+ <split>
+  <section>
+   <heading>
+So hatte ich mir das nicht gedacht.
+   </heading>
+   <textblock>
+Bei vielen Distributionen wird die Mausrad-Funktion automatisch aktiviert.
+In diesem Fall kann man durch kleine Anpassungen der Konfigurationsdatei <path>XF86Config-4/xorg.conf</path>
+die Mausrad-Funktion deaktivieren, aber den Komfort der dritten Maustaste erhalten.
+Durch Entfernen der Optionen
+   <file>
+    <title>
+XF86Config-4/xorg.conf
+    </title>
+    <content>
+Option "ZAxisMapping" "4 5"
+    </content>
+   </file>
+und zurücksetzen der <option>ButtonNumber</option> auf 3 durch hinzufügen der Option
+   <file>
+    <title>
+XF86Config-4/xorg.conf
+    </title>
+    <content>
+Option "ButtonNumber" "3"
+    </content>
+   </file>
+in der Sektion InputDevice der Maus kann man dies erreichen.
    </textblock>
   </section>
  </split>
